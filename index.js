@@ -38,7 +38,7 @@ const limiter = RateLimit({
 })
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const publicRun = process.argv[2];
 
 app.use(limiter);
@@ -53,18 +53,29 @@ app.use(function(req, res) {
     res.redirect('/');
 });
 
+// 创建HTTP服务器
 const server = http.createServer(app);
 
-if (publicRun == 'public') {
-    server.listen(port);
-} else {
-    server.listen(port, '0.0.0.0');
+// 简化监听方式，添加错误处理
+server.listen(port, '0.0.0.0', () => {
+    console.log('---------------------------------------');
+    console.log('DropShare 已启动，监听所有网络接口');
+    console.log('端口: ' + port);
+    console.log('请访问: http://localhost:' + port);
+    console.log('---------------------------------------');
+})
+.on('error', (err) => {
+    console.error('服务器启动失败:');
+    console.error(err);
+    if(err.code === 'EADDRINUSE') {
+        console.error(`端口 ${port} 已被占用，请尝试使用不同的端口`);
 }
+});
 
 const parser = require('ua-parser-js');
 const { uniqueNamesGenerator, animals, colors } = require('unique-names-generator');
 
-class SnapdropServer {
+class DropShareServer {
 
     constructor() {
         const WebSocket = require('ws');
@@ -74,7 +85,7 @@ class SnapdropServer {
 
         this._rooms = {};
 
-        console.log('Snapdrop is running on port', port);
+        console.log('DropShare is running on port', port);
     }
 
     _onConnection(peer) {
@@ -338,4 +349,4 @@ Object.defineProperty(String.prototype, 'hashCode', {
   }
 });
 
-new SnapdropServer();
+new DropShareServer();

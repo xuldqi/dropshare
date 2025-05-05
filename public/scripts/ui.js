@@ -6,11 +6,48 @@ window.isProductionEnvironment = !window.location.host.startsWith('localhost');
 window.iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
 // set display name
+let currentDisplayName = ''; // 存储当前显示名称
+
 Events.on('display-name', e => {
     const me = e.detail.message;
-    const $displayName = $('displayName')
-    $displayName.textContent = 'You are known as ' + me.displayName;
-    $displayName.title = me.deviceName;
+    currentDisplayName = me.displayName; // 存储当前名称
+    updateDisplayName(me.displayName, me.deviceName);
+});
+
+// 更新显示名称的函数
+function updateDisplayName(displayName, deviceName) {
+    const $displayName = $('displayName');
+    let displayText = '';
+    
+    // 确保始终检查是否有i18n可用，并应用正确的翻译
+    if (window.DROPSHARE_I18N) {
+        const prefix = window.DROPSHARE_I18N.translate('you_are_known_as');
+        displayText = prefix + ' ' + displayName;
+    } else {
+        displayText = 'You are known as ' + displayName;
+    }
+    
+    // 清除原有的placeholder，防止出现重复文本
+    $displayName.removeAttribute('placeholder');
+    $displayName.textContent = displayText;
+    if (deviceName) {
+        $displayName.title = deviceName;
+    }
+}
+
+// 当语言改变时更新所有需要翻译的文本
+document.addEventListener('language-changed', () => {
+    // 更新当前用户显示名称
+    if (currentDisplayName) {
+        updateDisplayName(currentDisplayName);
+    }
+    
+    // 更新所有对等节点的设备名称
+    document.querySelectorAll('x-peer').forEach(peer => {
+        if (peer.ui && typeof peer.ui._deviceName === 'function') {
+            peer.querySelector('.device-name').textContent = peer.ui._deviceName();
+        }
+    });
 });
 
 class PeersUI {
@@ -27,7 +64,6 @@ class PeersUI {
         if ($(peer.id)) return; // peer already exists
         const peerUI = new PeerUI(peer);
         $$('x-peers').appendChild(peerUI.$el);
-        setTimeout(e => window.animateBackground(false), 1750); // Stop animation
     }
 
     _onPeers(peers) {
@@ -74,7 +110,7 @@ class PeerUI {
 
     html() {
         return `
-            <label class="column center" title="Click to send files or right click to send a text">
+            <label class="column center" title="Click to send files or right click to send a message">
                 <input type="file" multiple>
                 <x-icon shadow="1">
                     <svg class="icon"><use xlink:href="#"/></svg>
@@ -103,6 +139,15 @@ class PeerUI {
         el.querySelector('svg use').setAttribute('xlink:href', this._icon());
         el.querySelector('.name').textContent = this._displayName();
         el.querySelector('.device-name').textContent = this._deviceName();
+        
+        // 为元素添加设备类型标识
+        const device = this._peer.name.device || this._peer.name;
+        const type = device.type || 'desktop';
+        el.setAttribute('data-device-type', type);
+        
+        // 为新创建的元素添加动画延迟
+        el.style.animationDelay = (Math.random() * 0.5) + 's';
+        
         this.$el = el;
         this.$progress = el.querySelector('.progress');
     }
@@ -126,18 +171,90 @@ class PeerUI {
     }
 
     _deviceName() {
-        return this._peer.name.deviceName;
+        const device = this._peer.name.device || this._peer.name;
+        const type = device.type || 'desktop';
+        const os = device.os || '';
+        
+        // 获取当前语言
+        let lang = 'en';
+        if (window.DROPSHARE_I18N) {
+            lang = window.DROPSHARE_I18N.getCurrentLanguage();
+        }
+        
+        // 设备类型的本地化显示名称
+        const deviceLabels = {
+            'en': {
+                'desktop': 'Computer',
+                'windows': 'Windows PC',
+                'mac': 'Mac',
+                'linux': 'Linux PC',
+                'mobile': 'Phone',
+                'android-mobile': 'Android Phone',
+                'ios-mobile': 'iPhone',
+                'tablet': 'Tablet',
+                'android-tablet': 'Android Tablet',
+                'ios-tablet': 'iPad'
+            },
+            'zh': {
+                'desktop': '电脑',
+                'windows': 'Windows 电脑',
+                'mac': 'Mac 电脑',
+                'linux': 'Linux 电脑',
+                'mobile': '手机',
+                'android-mobile': 'Android 手机',
+                'ios-mobile': 'iPhone',
+                'tablet': '平板',
+                'android-tablet': 'Android 平板',
+                'ios-tablet': 'iPad'
+            },
+            'zh-tw': {
+                'desktop': '電腦',
+                'windows': 'Windows 電腦',
+                'mac': 'Mac 電腦',
+                'linux': 'Linux 電腦',
+                'mobile': '手機',
+                'android-mobile': 'Android 手機',
+                'ios-mobile': 'iPhone',
+                'tablet': '平板',
+                'android-tablet': 'Android 平板',
+                'ios-tablet': 'iPad'
+            }
+        };
+        
+        // 默认使用英文
+        const labels = deviceLabels[lang] || deviceLabels['en'];
+        
+        // 生成设备标签
+        let deviceType = labels[type] || '';
+        
+        if (type === 'desktop') {
+            if (os) {
+                if (os.includes('Windows')) deviceType = labels['windows'];
+                else if (os.includes('Mac')) deviceType = labels['mac'];
+                else if (os.includes('Linux')) deviceType = labels['linux'];
+            }
+        } else if (type === 'mobile') {
+            if (os) {
+                if (os.includes('Android')) deviceType = labels['android-mobile'];
+                else if (os.includes('iOS')) deviceType = labels['ios-mobile'];
+            }
+        } else if (type === 'tablet') {
+            if (os) {
+                if (os.includes('Android')) deviceType = labels['android-tablet'];
+                else if (os.includes('iOS')) deviceType = labels['ios-tablet'];
+            }
+        }
+        
+        return deviceType || this._peer.name.deviceName || '';
     }
 
     _icon() {
         const device = this._peer.name.device || this._peer.name;
-        if (device.type === 'mobile') {
-            return '#phone-iphone';
-        }
-        if (device.type === 'tablet') {
-            return '#tablet-mac';
-        }
-        return '#desktop-mac';
+        const type = device.type || 'desktop';
+        const os = device.os ? device.os.toLowerCase() : 'default';
+        
+        const deviceType = deviceIcons[type] || deviceIcons['desktop'];
+        return deviceType[os] || deviceType['default'];
     }
 
     _onFilesSelected(e) {
@@ -147,7 +264,15 @@ class PeerUI {
             files: files,
             to: this._peer.id
         });
-        $input.value = null; // reset input
+        
+        // 跟踪文件发送事件
+        if (window.trackFileSent && files && files.length > 0) {
+            const totalSize = Array.from(files).reduce((size, file) => size + file.size, 0);
+            const fileTypes = Array.from(files).map(file => file.type || 'unknown').join(',');
+            window.trackFileSent(fileTypes, totalSize);
+        }
+        
+        $input.value = null;
     }
 
     setProgress(progress) {
@@ -170,6 +295,13 @@ class PeerUI {
     _onDrop(e) {
         e.preventDefault();
         const files = e.dataTransfer.files;
+        
+        // 添加拖放成功的动画效果
+        this.$el.classList.add('file-drop-success');
+        setTimeout(() => {
+            this.$el.classList.remove('file-drop-success');
+        }, 700);
+        
         Events.fire('files-selected', {
             files: files,
             to: this._peer.id
@@ -192,11 +324,11 @@ class PeerUI {
 
     _onTouchStart(e) {
         this._touchStart = Date.now();
-        this._touchTimer = setTimeout(_ => this._onTouchEnd(), 610);
+        this._touchTimer = setTimeout(_ => this._onTouchEnd(), 300);
     }
 
     _onTouchEnd(e) {
-        if (Date.now() - this._touchStart < 500) {
+        if (Date.now() - this._touchStart < 300) {
             clearTimeout(this._touchTimer);
         } else { // this was a long tap
             if (e) e.preventDefault();
@@ -215,13 +347,22 @@ class Dialog {
 
     show() {
         this.$el.setAttribute('show', 1);
-        if (this.$autoFocus) this.$autoFocus.focus();
+        return new Promise(resolve => {
+            // 优化对话框动画
+            setTimeout(() => {
+                this.$el.querySelector('x-paper').classList.add('dialog-entered');
+                resolve();
+            }, 50);
+        });
     }
 
     hide() {
         this.$el.removeAttribute('show');
-        document.activeElement.blur();
-        window.blur();
+        // 重置对话框状态
+        setTimeout(() => {
+            const $paper = this.$el.querySelector('x-paper');
+            if ($paper) $paper.classList.remove('dialog-entered');
+        }, 300);
     }
 }
 
@@ -386,9 +527,17 @@ class Toast extends Dialog {
     }
 
     _onNotfiy(message) {
-        this.$el.textContent = message;
+        this.$el.querySelector('#toast-text').textContent = message;
         this.show();
-        setTimeout(_ => this.hide(), 3000);
+        
+        // 添加淡入淡出动画
+        this.$el.classList.add('toast-shown');
+        
+        clearTimeout(this._hideTimeout);
+        this._hideTimeout = setTimeout(_ => {
+            this.$el.classList.remove('toast-shown');
+            setTimeout(_ => this.hide(), 300);
+        }, 3000);
     }
 }
 
@@ -608,17 +757,17 @@ Events.on('load', () => {
     let loading = true;
 
     function animate() {
-        if (loading || step % dw < dw - 5) {
-            requestAnimationFrame(function() {
-                drawCircles();
-                animate();
-            });
-        }
+        requestAnimationFrame(function() {
+            drawCircles();
+            animate();
+        });
     }
+    
     window.animateBackground = function(l) {
         loading = l;
         animate();
     };
+    
     init();
     animate();
 });
@@ -634,3 +783,47 @@ document.body.onclick = e => { // safari hack to fix audio
     if (!(/.*Version.*Safari.*/.test(navigator.userAgent))) return;
     blop.play();
 }
+
+// Initialize language selector
+window.addEventListener('load', () => {
+    // 设置背景动画为激活状态
+    const bgAnimation = document.querySelector('.background-animation');
+    if (bgAnimation) {
+        bgAnimation.classList.add('animate');
+    }
+    
+    // Set up language selector dropdown
+    const langSelector = document.getElementById('language-selector');
+    if (langSelector) {
+        // Set initial value based on stored preference or default
+        if (window.DROPSHARE_I18N) {
+            const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+            langSelector.value = currentLang;
+            
+            // Add change event
+            langSelector.addEventListener('change', e => {
+                window.DROPSHARE_I18N.changeLanguage(e.target.value);
+            });
+        }
+    }
+});
+
+// 增强设备图标系统
+const deviceIcons = {
+    'desktop': {
+        'windows': '#windows-desktop',
+        'mac': '#desktop-mac',
+        'linux': '#desktop-linux',
+        'default': '#desktop-mac'
+    },
+    'mobile': {
+        'android': '#phone-android',
+        'ios': '#phone-iphone',
+        'default': '#phone-iphone'
+    },
+    'tablet': {
+        'android': '#tablet-android',
+        'ios': '#tablet-mac',
+        'default': '#tablet-mac'
+    }
+};

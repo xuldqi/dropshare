@@ -205,6 +205,11 @@ class Peer {
     _onFileReceived(proxyFile) {
         Events.fire('file-received', proxyFile);
         this.sendJSON({ type: 'transfer-complete' });
+        
+        // 跟踪文件接收事件
+        if (window.trackFileReceived && proxyFile) {
+            window.trackFileReceived(proxyFile.mime || 'unknown', proxyFile.size || 0);
+        }
     }
 
     _onTransferCompleted() {

@@ -1,8 +1,8 @@
 {
-  "name": "snapdrop",
+  "name": "dropshare",
   "private": true,
   "version": "1.0.0",
-  "description": "",
+  "description": "Instantly share files with devices on the same network",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
