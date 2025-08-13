@@ -1,0 +1,27 @@
+// Traditional Chinese (zh-tw) translations for the About page
+export default {
+    'about_page_title': '關於 DropShare - 輕鬆檔案共享',
+    'about_header_title': '關於 DropShare',
+    'about_what_is_title': '什麼是 DropShare？',
+    'about_what_is_p1': 'DropShare 是一款現代網頁應用程式，可讓您在同一網路上的裝置之間輕鬆共享檔案。無需設定，無需註冊，無需雲端儲存 - 只需即時點對點檔案共享。',
+    'about_how_it_works_title': '運作方式',
+    'about_how_it_works_p1': 'DropShare 使用 WebRTC 技術在裝置之間建立直接連接。您的檔案直接從一個裝置傳輸到另一個裝置，無需經過伺服器，確保隱私和速度。',
+    'about_no_setup_title': '無需設定',
+    'about_no_setup_p1': '只需在瀏覽器中開啟 DropShare 即可立即開始共享檔案。無需建立帳戶或安裝軟體。',
+    'about_privacy_focused_title': '注重隱私',
+    'about_privacy_focused_p1': '所有傳輸都是點對點的，這意味著您的檔案永遠不會儲存在我們的伺服器上。您的資料保持私密和安全。',
+    'about_cross_platform_title': '跨平台',
+    'about_cross_platform_p1': '適用於所有現代裝置和瀏覽器，包括運行 Windows、macOS、Linux、iOS 或 Android 的智慧型手機、平板電腦和電腦。',
+    'about_fast_transfers_title': '快速傳輸',
+    'about_fast_transfers_p1': '直接的裝置到裝置連接意味著比基於雲端的服務更快的傳輸速度。',
+    'about_how_to_use_title': '如何使用 DropShare',
+    'about_step1_title': '步驟 1：連接裝置',
+    'about_step1_p1': '確保所有裝置都連接到同一 Wi-Fi 網路或區域網路。',
+    'about_step2_title': '步驟 2：開啟 DropShare',
+    'about_step2_p1': '在您要在其間共享檔案的所有裝置上開啟 DropShare。只需在瀏覽器中訪問該網站即可。',
+    'about_step3_title': '步驟 3：選擇裝置',
+    'about_step3_p1': '您將看到網路上所有可用的裝置。點擊要向其發送檔案的裝置。',
+    'about_step4_title': '步驟 4：發送檔案',
+    'about_step4_p1': '選擇要共享的檔案。收件人將收到通知並可以接受傳輸。',
+    'about_back_button': '返回 DropShare'
+}; 

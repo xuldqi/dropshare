@@ -5,6 +5,40 @@ window.isDownloadSupported = (typeof document.createElement('a').download !== 'u
 window.isProductionEnvironment = !window.location.host.startsWith('localhost');
 window.iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
+// 对话框管理器
+class DialogManager {
+    static dialogs = [];
+    
+    static register(dialog) {
+        this.dialogs.push(dialog);
+    }
+    
+    static closeAll() {
+        this.dialogs.forEach(dialog => {
+            if (dialog.$el && dialog.$el.hasAttribute('show')) {
+                dialog.hide();
+            }
+        });
+    }
+}
+
+// 全局错误处理
+window.addEventListener('error', (event) => {
+    console.error('Global error:', event.error);
+    // 防止错误导致页面完全卡住
+    if (event.error && event.error.message && event.error.message.includes('dialog')) {
+        console.warn('Dialog-related error detected, attempting to clean up dialogs');
+        document.querySelectorAll('x-dialog[show]').forEach(dialog => {
+            dialog.removeAttribute('show');
+        });
+    }
+});
+
+// 暂时禁用对话框初始化，避免干扰
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, skipping dialog initialization');
+});
+
 // set display name
 let currentDisplayName = ''; // 存储当前显示名称
 
@@ -278,6 +312,7 @@ class PeerUI {
     setProgress(progress) {
         if (progress > 0) {
             this.$el.setAttribute('transfer', '1');
+            this._addProgressIndicators();
         }
         if (progress > 0.5) {
             this.$progress.classList.add('over50');
@@ -286,10 +321,101 @@ class PeerUI {
         }
         const degrees = `rotate(${360 * progress}deg)`;
         this.$progress.style.setProperty('--progress', degrees);
+        
+        // 更新进度文本
+        this._updateProgressText(progress);
+        
+        // 计算传输速度
+        this._updateTransferSpeed(progress);
+        
         if (progress >= 1) {
+            this._onTransferComplete();
             this.setProgress(0);
             this.$el.removeAttribute('transfer');
+            this._removeProgressIndicators();
         }
+    }
+    
+    _addProgressIndicators() {
+        if (!this.$el.querySelector('.progress-text')) {
+            const progressText = document.createElement('div');
+            progressText.className = 'progress-text';
+            progressText.textContent = '0%';
+            this.$el.appendChild(progressText);
+        }
+        
+        if (!this.$el.querySelector('.transfer-speed')) {
+            const speedIndicator = document.createElement('div');
+            speedIndicator.className = 'transfer-speed';
+            speedIndicator.textContent = '';
+            this.$el.appendChild(speedIndicator);
+        }
+    }
+    
+    _removeProgressIndicators() {
+        const progressText = this.$el.querySelector('.progress-text');
+        const speedIndicator = this.$el.querySelector('.transfer-speed');
+        
+        if (progressText) progressText.remove();
+        if (speedIndicator) speedIndicator.remove();
+    }
+    
+    _updateProgressText(progress) {
+        const progressText = this.$el.querySelector('.progress-text');
+        if (progressText) {
+            progressText.textContent = Math.round(progress * 100) + '%';
+        }
+    }
+    
+    _updateTransferSpeed(progress) {
+        const speedIndicator = this.$el.querySelector('.transfer-speed');
+        if (!speedIndicator) return;
+        
+        const now = Date.now();
+        if (!this._transferStartTime) {
+            this._transferStartTime = now;
+            this._lastProgress = 0;
+            this._lastTime = now;
+            return;
+        }
+        
+        const timeDiff = (now - this._lastTime) / 1000; // 秒
+        const progressDiff = progress - this._lastProgress;
+        
+        if (timeDiff > 0.5 && progressDiff > 0) { // 每0.5秒更新一次
+            const speed = progressDiff / timeDiff; // 进度/秒
+            const remainingProgress = 1 - progress;
+            const estimatedTime = remainingProgress / speed;
+            
+            if (estimatedTime > 0 && estimatedTime < 3600) { // 小于1小时
+                const minutes = Math.floor(estimatedTime / 60);
+                const seconds = Math.floor(estimatedTime % 60);
+                
+                if (minutes > 0) {
+                    speedIndicator.textContent = `${minutes}m ${seconds}s remaining`;
+                } else {
+                    speedIndicator.textContent = `${seconds}s remaining`;
+                }
+            }
+            
+            this._lastProgress = progress;
+            this._lastTime = now;
+        }
+    }
+    
+    _onTransferComplete() {
+        // 添加完成动画
+        this.$el.classList.add('transfer-complete');
+        
+        // 重置传输计时器
+        this._transferStartTime = null;
+        this._lastProgress = 0;
+        this._lastTime = null;
+        
+        // 移除完成动画类
+        setTimeout(() => {
+            this.$el.classList.remove('transfer-complete');
+        }, 1000);
     }
 
     _onDrop(e) {
@@ -323,11 +449,23 @@ class PeerUI {
     }
 
     _onTouchStart(e) {
+        // 检查是否启用了移动端增强功能
+        if (window.mobileEnhancements && window.mobileEnhancements.isMobile) {
+            // 移动端增强功能会处理触摸事件
+            return;
+        }
+        
         this._touchStart = Date.now();
         this._touchTimer = setTimeout(_ => this._onTouchEnd(), 300);
     }
 
     _onTouchEnd(e) {
+        // 检查是否启用了移动端增强功能
+        if (window.mobileEnhancements && window.mobileEnhancements.isMobile) {
+            // 移动端增强功能会处理触摸事件
+            return;
+        }
+        
         if (Date.now() - this._touchStart < 300) {
             clearTimeout(this._touchTimer);
         } else { // this was a long tap
@@ -343,9 +481,13 @@ class Dialog {
         this.$el = $(id);
         this.$el.querySelectorAll('[close]').forEach(el => el.addEventListener('click', e => this.hide()))
         this.$autoFocus = this.$el.querySelector('[autofocus]');
+        // 注册到对话框管理器
+        DialogManager.register(this);
     }
 
     show() {
+        // 关闭其他对话框
+        DialogManager.closeAll();
         this.$el.setAttribute('show', 1);
         return new Promise(resolve => {
             // 优化对话框动画
@@ -363,6 +505,11 @@ class Dialog {
             const $paper = this.$el.querySelector('x-paper');
             if ($paper) $paper.classList.remove('dialog-entered');
         }, 300);
+    }
+    
+    // 添加 close 方法，映射到 hide
+    close() {
+        this.hide();
     }
 }
 
@@ -413,6 +560,9 @@ class ReceiveDialog extends Dialog {
             this.$el.querySelector("#img-preview").src = url;
         }
 
+        // 添加预览按钮
+        this._addPreviewButton(file);
+
         this.$el.querySelector('#fileName').textContent = file.name;
         this.$el.querySelector('#fileSize').textContent = this._formatFileSize(file.size);
         this.show();
@@ -423,6 +573,49 @@ class ReceiveDialog extends Dialog {
         const reader = new FileReader();
         reader.onload = e => $a.href = reader.result;
         reader.readAsDataURL(file.blob);
+    }
+    
+    _addPreviewButton(file) {
+        // 检查是否支持预览
+        if (!window.filePreview) return;
+        
+        const fileType = file.mime || file.type;
+        const isSupported = window.filePreview.supportedImageTypes.includes(fileType) ||
+                           window.filePreview.supportedVideoTypes.includes(fileType) ||
+                           window.filePreview.supportedAudioTypes.includes(fileType) ||
+                           window.filePreview.supportedDocumentTypes.includes(fileType);
+        
+        if (!isSupported) return;
+        
+        // 移除之前的预览按钮
+        const existingBtn = this.$el.querySelector('.preview-btn');
+        if (existingBtn) existingBtn.remove();
+        
+        // 创建预览按钮
+        const previewBtn = document.createElement('button');
+        previewBtn.className = 'preview-btn';
+        previewBtn.innerHTML = '👁️ 预览';
+        previewBtn.style.cssText = `
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 8px 0;
+            transition: background-color 0.2s;
+        `;
+        
+        previewBtn.addEventListener('click', () => {
+            // 创建File对象用于预览
+            const previewFile = new File([file.blob], file.name, { type: file.mime });
+            window.filePreview.open(previewFile, file.name);
+        });
+        
+        // 将按钮插入到下载按钮之前
+        const downloadBtn = this.$el.querySelector('#download');
+        downloadBtn.parentNode.insertBefore(previewBtn, downloadBtn);
     }
 
     _formatFileSize(bytes) {
@@ -440,6 +633,11 @@ class ReceiveDialog extends Dialog {
     hide() {
         this.$el.querySelector('.preview').style.visibility = 'hidden';
         this.$el.querySelector("#img-preview").src = "";
+        
+        // 清理预览按钮
+        const previewBtn = this.$el.querySelector('.preview-btn');
+        if (previewBtn) previewBtn.remove();
+        
         super.hide();
         this._dequeueFile();
     }
@@ -680,6 +878,82 @@ class Snapdrop {
             const notifications = new Notifications();
             const networkStatusUI = new NetworkStatusUI();
             const webShareTargetUI = new WebShareTargetUI();
+            
+            // Initialize Transfer History
+            if (typeof TransferHistory !== 'undefined' && typeof TransferHistoryUI !== 'undefined') {
+                const transferHistory = new TransferHistory();
+                const transferHistoryUI = new TransferHistoryUI(transferHistory);
+                
+                // Set up history button click handler
+                const historyBtn = document.getElementById('historyBtn');
+                if (historyBtn) {
+                    historyBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        transferHistoryUI.show();
+                    });
+                }
+                
+                // Listen for transfer events to record history
+                Events.on('file-received', e => {
+                    const detail = e.detail;
+                    transferHistory.recordTransfer({
+                        type: 'file',
+                        direction: 'received',
+                        fileName: detail.name,
+                        fileSize: detail.size,
+                        fileType: detail.type || 'unknown',
+                        peerId: detail.sender,
+                        peerName: detail.senderName || 'Unknown Device',
+                        timestamp: Date.now(),
+                        status: 'completed'
+                    });
+                });
+                
+                Events.on('files-selected', e => {
+                    const detail = e.detail;
+                    if (detail.files && detail.files.length > 0) {
+                        detail.files.forEach(file => {
+                            transferHistory.recordTransfer({
+                                type: 'file',
+                                direction: 'sent',
+                                fileName: file.name,
+                                fileSize: file.size,
+                                fileType: file.type || 'unknown',
+                                peerId: detail.to,
+                                peerName: detail.toName || 'Unknown Device',
+                                timestamp: Date.now(),
+                                status: 'completed'
+                            });
+                        });
+                    }
+                });
+                
+                Events.on('text-received', e => {
+                    const detail = e.detail;
+                    transferHistory.recordTransfer({
+                        type: 'text',
+                        direction: 'received',
+                        content: detail.text,
+                        peerId: detail.sender,
+                        peerName: detail.senderName || 'Unknown Device',
+                        timestamp: Date.now(),
+                        status: 'completed'
+                    });
+                });
+                
+                Events.on('send-text', e => {
+                    const detail = e.detail;
+                    transferHistory.recordTransfer({
+                        type: 'text',
+                        direction: 'sent',
+                        content: detail.text,
+                        peerId: detail.to,
+                        peerName: detail.toName || 'Unknown Device',
+                        timestamp: Date.now(),
+                        status: 'completed'
+                    });
+                });
+            }
         });
     }
 }
@@ -827,3 +1101,40 @@ const deviceIcons = {
         'default': '#tablet-mac'
     }
 };
+
+// 初始化语言选择器
+function initLanguageSelector() {
+    const langSelector = document.getElementById('language-selector');
+    if (langSelector) {
+        // 根据当前localStorage中保存的语言设置选中值
+        const savedLang = localStorage.getItem('preferred_language') || 'en';
+        if (langSelector.querySelector(`option[value="${savedLang}"]`)) {
+            langSelector.value = savedLang;
+        }
+
+        // 监听语言选择变化
+        langSelector.addEventListener('change', function() {
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.changeLanguage === 'function') {
+                // 保存用户语言偏好到localStorage
+                localStorage.setItem('preferred_language', this.value);
+                window.DROPSHARE_I18N.changeLanguage(this.value);
+                console.log('Language changed to:', this.value);
+            } else {
+                console.error('DROPSHARE_I18N not initialized or changeLanguage not available');
+            }
+        });
+    }
+}
+
+// 当DOM加载完成后初始化语言选择器
+document.addEventListener('DOMContentLoaded', function() {
+    // 等待DROPSHARE_I18N初始化完成
+    setTimeout(() => {
+        initLanguageSelector();
+    }, 500);
+});
+
+// 如果页面已加载完成，立即初始化
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initLanguageSelector, 500);
+}

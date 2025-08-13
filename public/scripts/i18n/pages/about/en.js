@@ -1,0 +1,27 @@
+// English (en) translations for the About page
+export default {
+    'about_page_title': 'About DropShare - Easy File Sharing',
+    'about_header_title': 'About DropShare',
+    'about_what_is_title': 'What is DropShare?',
+    'about_what_is_p1': 'DropShare is a modern web application that allows you to easily share files between devices on the same network. No setup, no signup, no cloud storage needed - just instant peer-to-peer file sharing.',
+    'about_how_it_works_title': 'How It Works',
+    'about_how_it_works_p1': 'DropShare uses WebRTC technology to establish a direct connection between devices. Your files are transferred directly from one device to another without going through a server, ensuring privacy and speed.',
+    'about_no_setup_title': 'No Setup Required',
+    'about_no_setup_p1': 'Just open DropShare in your browser and start sharing files immediately. No account creation or software installation needed.',
+    'about_privacy_focused_title': 'Privacy Focused',
+    'about_privacy_focused_p1': 'All transfers are peer-to-peer, meaning your files are never stored on our servers. Your data remains private and secure.',
+    'about_cross_platform_title': 'Cross-Platform',
+    'about_cross_platform_p1': 'Works on all modern devices and browsers including smartphones, tablets, and computers running Windows, macOS, Linux, iOS, or Android.',
+    'about_fast_transfers_title': 'Fast Transfers',
+    'about_fast_transfers_p1': 'Direct device-to-device connection means faster transfer speeds than cloud-based services.',
+    'about_how_to_use_title': 'How to Use DropShare',
+    'about_step1_title': 'Step 1: Connect Devices',
+    'about_step1_p1': 'Make sure all devices are connected to the same Wi-Fi network or local area network.',
+    'about_step2_title': 'Step 2: Open DropShare',
+    'about_step2_p1': 'Open DropShare on all devices you want to share files between. Just visit the website in your browser.',
+    'about_step3_title': 'Step 3: Select Device',
+    'about_step3_p1': 'You\'ll see all available devices on the network. Click on the device you want to send files to.',
+    'about_step4_title': 'Step 4: Send Files',
+    'about_step4_p1': 'Select the files you want to share. The recipient will get a notification and can accept the transfer.',
+    'about_back_button': 'Back to DropShare'
+}; 

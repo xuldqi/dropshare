@@ -1,0 +1,472 @@
+/* 私密房间功能样式 */
+
+/* 房间按钮激活状态 */
+.icon-button.active {
+    background-color: var(--primary-color, #3367d6);
+    color: white;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(51, 103, 214, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(51, 103, 214, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(51, 103, 214, 0);
+    }
+}
+
+/* 房间对话框样式 */
+#roomDialog x-paper,
+#joinRoomDialog x-paper,
+#roomSettingsDialog x-paper,
+#roomMembersDialog x-paper {
+    max-width: 500px;
+    width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+/* 房间选项按钮 */
+.room-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.room-options .button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--button-bg, #f5f5f5);
+    color: var(--text-color, #333);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.room-options .button:hover {
+    background-color: var(--button-hover-bg, #e0e0e0);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 输入组样式 */
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-color, #333);
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border-color, #ddd);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    background-color: var(--input-bg, white);
+    color: var(--text-color, #333);
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: var(--primary-color, #3367d6);
+    box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+}
+
+/* 复选框组样式 */
+.checkbox-group {
+    margin: 16px 0;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 8px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* 房间列表样式 */
+.room-list {
+    margin: 20px 0;
+}
+
+.room-list h3 {
+    margin-bottom: 12px;
+    color: var(--text-color, #333);
+    font-size: 18px;
+}
+
+.recent-room-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: var(--card-bg, #f9f9f9);
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #e0e0e0);
+    transition: all 0.3s ease;
+}
+
+.recent-room-item:hover {
+    background-color: var(--card-hover-bg, #f0f0f0);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.room-info {
+    flex: 1;
+}
+
+.room-name {
+    font-weight: 600;
+    color: var(--text-color, #333);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.room-code {
+    font-family: 'Courier New', monospace;
+    background-color: var(--code-bg, #e8e8e8);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--code-color, #666);
+    margin-right: 8px;
+}
+
+.join-date {
+    font-size: 12px;
+    color: var(--muted-text, #888);
+}
+
+.rejoin-btn {
+    padding: 8px 16px;
+    background-color: var(--primary-color, #3367d6);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.rejoin-btn:hover {
+    background-color: var(--primary-hover, #2557c7);
+}
+
+.no-rooms {
+    text-align: center;
+    color: var(--muted-text, #888);
+    font-style: italic;
+    padding: 20px;
+}
+
+/* 房间信息显示 */
+.room-code-display,
+.room-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background-color: var(--info-bg, #f0f8ff);
+    border-radius: 8px;
+    border: 1px solid var(--info-border, #b3d9ff);
+}
+
+.room-code-display strong {
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    color: var(--primary-color, #3367d6);
+    background-color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color, #ddd);
+}
+
+.room-link input {
+    flex: 1;
+    font-size: 14px;
+    padding: 8px;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 4px;
+    background-color: white;
+}
+
+/* 成员列表样式 */
+.members-list {
+    margin: 20px 0;
+}
+
+.members-list h3 {
+    margin-bottom: 12px;
+    color: var(--text-color, #333);
+    font-size: 18px;
+}
+
+.member-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: var(--card-bg, #f9f9f9);
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #e0e0e0);
+    transition: all 0.3s ease;
+}
+
+.member-item:hover {
+    background-color: var(--card-hover-bg, #f0f0f0);
+}
+
+.member-info {
+    flex: 1;
+}
+
+.member-name {
+    font-weight: 600;
+    color: var(--text-color, #333);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.member-device {
+    font-size: 14px;
+    color: var(--muted-text, #666);
+}
+
+.host-badge {
+    display: inline-block;
+    background-color: var(--success-color, #4caf50);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.kick-member-btn {
+    background-color: var(--danger-color, #f44336);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.kick-member-btn:hover {
+    background-color: var(--danger-hover, #d32f2f);
+}
+
+.kick-member-btn .icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* 对话框操作按钮 */
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color, #e0e0e0);
+}
+
+.dialog-actions .button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.dialog-actions .button.primary {
+    background-color: var(--primary-color, #3367d6);
+    color: white;
+}
+
+.dialog-actions .button.primary:hover {
+    background-color: var(--primary-hover, #2557c7);
+}
+
+.dialog-actions .button.danger {
+    background-color: var(--danger-color, #f44336);
+    color: white;
+}
+
+.dialog-actions .button.danger:hover {
+    background-color: var(--danger-hover, #d32f2f);
+}
+
+.dialog-actions .button:not(.primary):not(.danger) {
+    background-color: var(--button-bg, #f5f5f5);
+    color: var(--text-color, #333);
+}
+
+.dialog-actions .button:not(.primary):not(.danger):hover {
+    background-color: var(--button-hover-bg, #e0e0e0);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    #roomDialog x-paper,
+    #joinRoomDialog x-paper,
+    #roomSettingsDialog x-paper,
+    #roomMembersDialog x-paper {
+        width: 95vw;
+        padding: 16px;
+        max-height: 90vh;
+    }
+    
+    .room-options {
+        gap: 8px;
+    }
+    
+    .room-options .button {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    .recent-room-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .rejoin-btn {
+        align-self: flex-end;
+    }
+    
+    .room-code-display,
+    .room-link {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .room-link input {
+        width: 100%;
+    }
+    
+    .dialog-actions {
+        flex-direction: column;
+    }
+    
+    .dialog-actions .button {
+        width: 100%;
+    }
+}
+
+/* 暗色主题支持 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --button-bg: #2d2d2d;
+        --button-hover-bg: #3d3d3d;
+        --input-bg: #2d2d2d;
+        --card-bg: #2d2d2d;
+        --card-hover-bg: #3d3d3d;
+        --info-bg: #1a2332;
+        --info-border: #2d4a66;
+        --code-bg: #3d3d3d;
+        --code-color: #ccc;
+        --border-color: #444;
+        --text-color: #fff;
+        --muted-text: #aaa;
+    }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+    .input-group input,
+    .input-group select {
+        border-width: 3px;
+    }
+    
+    .recent-room-item,
+    .member-item {
+        border-width: 2px;
+    }
+    
+    .dialog-actions .button {
+        border: 2px solid currentColor;
+    }
+}
+
+/* 减少动画效果 */
+@media (prefers-reduced-motion: reduce) {
+    .icon-button.active {
+        animation: none;
+    }
+    
+    .room-options .button,
+    .recent-room-item,
+    .member-item,
+    .input-group input,
+    .input-group select,
+    .dialog-actions .button {
+        transition: none;
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .room-options .button,
+    .rejoin-btn,
+    .kick-member-btn,
+    .dialog-actions .button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .input-group input,
+    .input-group select {
+        min-height: 44px;
+        font-size: 16px; /* 防止iOS缩放 */
+    }
+}
+
+/* 打印样式 */
+@media print {
+    #roomDialog,
+    #joinRoomDialog,
+    #roomSettingsDialog,
+    #roomMembersDialog {
+        display: none !important;
+    }
+}

@@ -1,0 +1,27 @@
+// Korean (ko) translations for the About page
+export default {
+    'about_page_title': 'DropShare 소개 - 쉬운 파일 공유',
+    'about_header_title': 'DropShare 소개',
+    'about_what_is_title': 'DropShare란 무엇인가요?',
+    'about_what_is_p1': 'DropShare는 같은 네트워크에 있는 장치 간에 파일을 쉽게 공유할 수 있는 현대적인 웹 애플리케이션입니다. 설정 필요 없음, 회원 가입 필요 없음, 클라우드 저장소 필요 없음 - 즉시 피어 투 피어 파일 공유가 가능합니다.',
+    'about_how_it_works_title': '작동 방식',
+    'about_how_it_works_p1': 'DropShare는 WebRTC 기술을 사용하여 장치 간 직접 연결을 설정합니다. 파일은 서버를 통하지 않고 한 장치에서 다른 장치로 직접 전송되어 개인 정보 보호와 속도를 보장합니다.',
+    'about_no_setup_title': '설정 필요 없음',
+    'about_no_setup_p1': '브라우저에서 DropShare를 열고 즉시 파일 공유를 시작하세요. 계정 생성이나 소프트웨어 설치가 필요하지 않습니다.',
+    'about_privacy_focused_title': '개인 정보 보호 중심',
+    'about_privacy_focused_p1': '모든 전송은 피어 투 피어 방식으로 이루어지며, 이는 귀하의 파일이 우리 서버에 저장되지 않음을 의미합니다. 귀하의 데이터는 비공개로 안전하게 유지됩니다.',
+    'about_cross_platform_title': '크로스 플랫폼',
+    'about_cross_platform_p1': 'Windows, macOS, Linux, iOS 또는 Android를 실행하는 스마트폰, 태블릿 및 컴퓨터를 포함한 모든 현대적인 장치와 브라우저에서 작동합니다.',
+    'about_fast_transfers_title': '빠른 전송',
+    'about_fast_transfers_p1': '장치 간 직접 연결은 클라우드 기반 서비스보다 더 빠른 전송 속도를 의미합니다.',
+    'about_how_to_use_title': 'DropShare 사용 방법',
+    'about_step1_title': '1단계: 장치 연결',
+    'about_step1_p1': '모든 장치가 동일한 Wi-Fi 네트워크 또는 로컬 영역 네트워크에 연결되어 있는지 확인하세요.',
+    'about_step2_title': '2단계: DropShare 열기',
+    'about_step2_p1': '파일을 공유하려는 모든 장치에서 DropShare를 엽니다. 브라우저에서 웹사이트를 방문하기만 하면 됩니다.',
+    'about_step3_title': '3단계: 장치 선택',
+    'about_step3_p1': '네트워크에서 사용 가능한 모든 장치가 표시됩니다. 파일을 보내려는 장치를 클릭하세요.',
+    'about_step4_title': '4단계: 파일 보내기',
+    'about_step4_p1': '공유하려는 파일을 선택하세요. 수신자는 알림을 받고 전송을 수락할 수 있습니다.',
+    'about_back_button': 'DropShare로 돌아가기'
+}; 

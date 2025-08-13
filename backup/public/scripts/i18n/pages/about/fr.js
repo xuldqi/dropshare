@@ -1,0 +1,27 @@
+// French (fr) translations for the About page
+export default {
+    'about_page_title': 'À propos de DropShare - Partage de fichiers facile',
+    'about_header_title': 'À propos de DropShare',
+    'about_what_is_title': 'Qu\'est-ce que DropShare?',
+    'about_what_is_p1': 'DropShare est une application web moderne qui vous permet de partager facilement des fichiers entre appareils sur le même réseau. Pas de configuration, pas d\'inscription, pas de stockage cloud nécessaire - juste un partage de fichiers peer-to-peer instantané.',
+    'about_how_it_works_title': 'Comment ça fonctionne',
+    'about_how_it_works_p1': 'DropShare utilise la technologie WebRTC pour établir une connexion directe entre les appareils. Vos fichiers sont transférés directement d\'un appareil à l\'autre sans passer par un serveur, garantissant confidentialité et rapidité.',
+    'about_no_setup_title': 'Aucune configuration requise',
+    'about_no_setup_p1': 'Ouvrez simplement DropShare dans votre navigateur et commencez à partager des fichiers immédiatement. Aucune création de compte ou installation de logiciel nécessaire.',
+    'about_privacy_focused_title': 'Axé sur la confidentialité',
+    'about_privacy_focused_p1': 'Tous les transferts sont peer-to-peer, ce qui signifie que vos fichiers ne sont jamais stockés sur nos serveurs. Vos données restent privées et sécurisées.',
+    'about_cross_platform_title': 'Multi-plateforme',
+    'about_cross_platform_p1': 'Fonctionne sur tous les appareils et navigateurs modernes, y compris les smartphones, tablettes et ordinateurs fonctionnant sous Windows, macOS, Linux, iOS ou Android.',
+    'about_fast_transfers_title': 'Transferts rapides',
+    'about_fast_transfers_p1': 'La connexion directe entre appareils permet des vitesses de transfert plus rapides que les services basés sur le cloud.',
+    'about_how_to_use_title': 'Comment utiliser DropShare',
+    'about_step1_title': 'Étape 1: Connecter les appareils',
+    'about_step1_p1': 'Assurez-vous que tous les appareils sont connectés au même réseau Wi-Fi ou réseau local.',
+    'about_step2_title': 'Étape 2: Ouvrir DropShare',
+    'about_step2_p1': 'Ouvrez DropShare sur tous les appareils entre lesquels vous souhaitez partager des fichiers. Visitez simplement le site web dans votre navigateur.',
+    'about_step3_title': 'Étape 3: Sélectionner l\'appareil',
+    'about_step3_p1': 'Vous verrez tous les appareils disponibles sur le réseau. Cliquez sur l\'appareil vers lequel vous souhaitez envoyer des fichiers.',
+    'about_step4_title': 'Étape 4: Envoyer des fichiers',
+    'about_step4_p1': 'Sélectionnez les fichiers que vous souhaitez partager. Le destinataire recevra une notification et pourra accepter le transfert.',
+    'about_back_button': 'Retour à DropShare'
+}; 

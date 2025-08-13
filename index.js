@@ -84,6 +84,7 @@ class DropShareServer {
         this._wss.on('headers', (headers, response) => this._onHeaders(headers, response));
 
         this._rooms = {};
+        this._privateRooms = {}; // 私密房间存储
 
         console.log('DropShare is running on port', port);
     }
@@ -123,6 +124,18 @@ class DropShareServer {
                 break;
             case 'pong':
                 sender.lastBeat = Date.now();
+                break;
+            case 'create-room':
+                this._createPrivateRoom(sender, message.roomSettings);
+                break;
+            case 'join-room':
+                this._joinPrivateRoom(sender, message.roomCode, message.password);
+                break;
+            case 'leave-room':
+                this._leavePrivateRoom(sender, message.roomCode);
+                break;
+            case 'kick-member':
+                this._kickMember(sender, message.roomCode, message.memberId);
                 break;
         }
 
@@ -215,6 +228,232 @@ class DropShareServer {
         if (peer && peer.timerId) {
             clearTimeout(peer.timerId);
         }
+    }
+
+    // 私密房间功能方法
+    _createPrivateRoom(host, roomSettings) {
+        const roomCode = roomSettings.code;
+        
+        // 检查房间码是否已存在
+        if (this._privateRooms[roomCode]) {
+            this._send(host, {
+                type: 'room-error',
+                error: 'Room code already exists. Please try again.'
+            });
+            return;
+        }
+
+        // 创建新房间
+        const room = {
+            code: roomCode,
+            name: roomSettings.name,
+            password: roomSettings.password,
+            maxMembers: roomSettings.maxMembers,
+            isPrivate: roomSettings.isPrivate,
+            hostId: host.id,
+            members: new Map(),
+            createdAt: Date.now()
+        };
+
+        // 添加房主到房间
+        room.members.set(host.id, {
+            id: host.id,
+            displayName: host.name.displayName,
+            deviceName: host.name.deviceName,
+            isHost: true,
+            joinedAt: Date.now()
+        });
+
+        this._privateRooms[roomCode] = room;
+        host.currentRoom = roomCode;
+
+        // 通知房主房间创建成功
+        this._send(host, {
+            type: 'room-created',
+            room: {
+                code: room.code,
+                name: room.name,
+                maxMembers: room.maxMembers,
+                isPrivate: room.isPrivate
+            },
+            hostId: host.id,
+            hostInfo: room.members.get(host.id)
+        });
+    }
+
+    _joinPrivateRoom(peer, roomCode, password) {
+        const room = this._privateRooms[roomCode];
+        
+        if (!room) {
+            this._send(peer, {
+                type: 'room-error',
+                error: 'Room not found. Please check the room code.'
+            });
+            return;
+        }
+
+        // 检查密码
+        if (room.password && room.password !== password) {
+            this._send(peer, {
+                type: 'room-error',
+                error: 'Incorrect password.'
+            });
+            return;
+        }
+
+        // 检查房间是否已满
+        if (room.members.size >= room.maxMembers) {
+            this._send(peer, {
+                type: 'room-error',
+                error: 'Room is full.'
+            });
+            return;
+        }
+
+        // 检查用户是否已在房间中
+        if (room.members.has(peer.id)) {
+            this._send(peer, {
+                type: 'room-error',
+                error: 'You are already in this room.'
+            });
+            return;
+        }
+
+        // 添加成员到房间
+        const memberInfo = {
+            id: peer.id,
+            displayName: peer.name.displayName,
+            deviceName: peer.name.deviceName,
+            isHost: false,
+            joinedAt: Date.now()
+        };
+
+        room.members.set(peer.id, memberInfo);
+        peer.currentRoom = roomCode;
+
+        // 通知新成员加入成功
+        this._send(peer, {
+            type: 'room-joined',
+            room: {
+                code: room.code,
+                name: room.name,
+                maxMembers: room.maxMembers,
+                isPrivate: room.isPrivate
+            },
+            members: Array.from(room.members.values())
+        });
+
+        // 通知其他成员有新成员加入
+        this._broadcastToRoom(roomCode, {
+            type: 'room-member-joined',
+            member: memberInfo
+        }, peer.id);
+    }
+
+    _leavePrivateRoom(peer, roomCode) {
+        const room = this._privateRooms[roomCode];
+        
+        if (!room || !room.members.has(peer.id)) {
+            return;
+        }
+
+        const isHost = room.members.get(peer.id).isHost;
+        room.members.delete(peer.id);
+        peer.currentRoom = null;
+
+        // 通知其他成员有成员离开
+        this._broadcastToRoom(roomCode, {
+            type: 'room-member-left',
+            memberId: peer.id
+        });
+
+        // 如果房主离开，解散房间
+        if (isHost || room.members.size === 0) {
+            this._broadcastToRoom(roomCode, {
+                type: 'room-disbanded',
+                reason: isHost ? 'Host left the room' : 'Room is empty'
+            });
+            
+            // 清理所有成员的房间状态
+            room.members.forEach((member, memberId) => {
+                const memberPeer = this._findPeerById(memberId);
+                if (memberPeer) {
+                    memberPeer.currentRoom = null;
+                }
+            });
+            
+            delete this._privateRooms[roomCode];
+        }
+
+        // 通知离开的成员
+        this._send(peer, {
+            type: 'room-left',
+            roomCode: roomCode
+        });
+    }
+
+    _kickMember(host, roomCode, memberId) {
+        const room = this._privateRooms[roomCode];
+        
+        if (!room || !room.members.has(host.id) || !room.members.get(host.id).isHost) {
+            this._send(host, {
+                type: 'room-error',
+                error: 'You do not have permission to kick members.'
+            });
+            return;
+        }
+
+        if (!room.members.has(memberId)) {
+            this._send(host, {
+                type: 'room-error',
+                error: 'Member not found in room.'
+            });
+            return;
+        }
+
+        const memberPeer = this._findPeerById(memberId);
+        if (memberPeer) {
+            // 通知被踢出的成员
+            this._send(memberPeer, {
+                type: 'room-kicked',
+                roomCode: roomCode,
+                reason: 'You have been removed from the room by the host.'
+            });
+            
+            memberPeer.currentRoom = null;
+        }
+
+        room.members.delete(memberId);
+
+        // 通知其他成员
+        this._broadcastToRoom(roomCode, {
+            type: 'room-member-left',
+            memberId: memberId,
+            reason: 'kicked'
+        });
+    }
+
+    _broadcastToRoom(roomCode, message, excludePeerId = null) {
+        const room = this._privateRooms[roomCode];
+        if (!room) return;
+
+        room.members.forEach((member, memberId) => {
+            if (memberId !== excludePeerId) {
+                const peer = this._findPeerById(memberId);
+                if (peer) {
+                    this._send(peer, message);
+                }
+            }
+        });
+    }
+
+    _findPeerById(peerId) {
+        for (const ip in this._rooms) {
+            if (this._rooms[ip][peerId]) {
+                return this._rooms[ip][peerId];
+            }
+        }
+        return null;
     }
 }
 

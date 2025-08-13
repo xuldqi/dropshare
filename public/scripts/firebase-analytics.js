@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // 初始化Analytics
         const analytics = firebase.analytics();
         
+        // 将analytics实例暴露到全局作用域
+        window.firebaseAnalytics = analytics;
+        
         // 记录页面访问
         analytics.logEvent('page_view', {
             page_title: document.title,
@@ -46,4 +49,4 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('Firebase SDK not loaded');
     }
-}); 
+});

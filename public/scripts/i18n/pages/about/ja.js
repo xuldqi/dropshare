@@ -1,0 +1,27 @@
+// Japanese (ja) translations for the About page
+export default {
+    'about_page_title': 'DropShareについて - 簡単なファイル共有',
+    'about_header_title': 'DropShareについて',
+    'about_what_is_title': 'DropShareとは？',
+    'about_what_is_p1': 'DropShareは、同じネットワーク上のデバイス間で簡単にファイルを共有できる最新のウェブアプリケーションです。設定不要、登録不要、クラウドストレージ不要 - 即時のピアツーピアファイル共有を実現します。',
+    'about_how_it_works_title': '仕組み',
+    'about_how_it_works_p1': 'DropShareはWebRTC技術を使用してデバイス間に直接接続を確立します。ファイルはサーバーを経由せずに直接デバイス間で転送され、プライバシーと速度を確保します。',
+    'about_no_setup_title': '設定不要',
+    'about_no_setup_p1': 'ブラウザでDropShareを開くだけで、すぐにファイル共有を開始できます。アカウント作成やソフトウェアのインストールは不要です。',
+    'about_privacy_focused_title': 'プライバシー重視',
+    'about_privacy_focused_p1': 'すべての転送はピアツーピアで行われ、ファイルが当社のサーバーに保存されることはありません。データはプライベートで安全に保たれます。',
+    'about_cross_platform_title': 'クロスプラットフォーム',
+    'about_cross_platform_p1': 'Windows、macOS、Linux、iOS、Androidを実行しているスマートフォン、タブレット、コンピュータを含む、すべての最新デバイスとブラウザで動作します。',
+    'about_fast_transfers_title': '高速転送',
+    'about_fast_transfers_p1': 'デバイス間の直接接続により、クラウドベースのサービスよりも高速な転送速度を実現します。',
+    'about_how_to_use_title': 'DropShareの使用方法',
+    'about_step1_title': 'ステップ1：デバイスを接続する',
+    'about_step1_p1': 'すべてのデバイスが同じWi-Fiネットワークまたはローカルエリアネットワークに接続されていることを確認してください。',
+    'about_step2_title': 'ステップ2：DropShareを開く',
+    'about_step2_p1': 'ファイルを共有したいすべてのデバイスでDropShareを開きます。ブラウザでウェブサイトにアクセスするだけです。',
+    'about_step3_title': 'ステップ3：デバイスを選択',
+    'about_step3_p1': 'ネットワーク上のすべての利用可能なデバイスが表示されます。ファイルを送信したいデバイスをクリックします。',
+    'about_step4_title': 'ステップ4：ファイルを送信',
+    'about_step4_p1': '共有したいファイルを選択します。受信者は通知を受け取り、転送を受け入れることができます。',
+    'about_back_button': 'DropShareに戻る'
+}; 

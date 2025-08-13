@@ -1,0 +1,245 @@
+// DropShare Language System
+
+// Define the language codes and names
+const LANGUAGES = {
+  'en': {
+    code: 'en',
+    name: 'English',
+    rtl: false,
+    translations: {
+      'open_snapdrop': 'Open Snapdrop on other devices to send files',
+      'click_to_send': 'Click to send files or right click to send a message',
+      'tap_to_send': 'Tap to send files or long press to send a message',
+      'file_received': 'File Received',
+      'filename': 'Filename',
+      'ask_save_files': 'Ask to save each file before downloading',
+      'save': 'Save',
+      'ignore': 'Ignore',
+      'send_message': 'Send a Message',
+      'send': 'Send',
+      'cancel': 'Cancel',
+      'message_received': 'Message Received',
+      'copy': 'Copy',
+      'close': 'Close',
+      'file_transfer_completed': 'File Transfer Completed',
+      'about_snapdrop': 'About DropShare',
+      'easiest_way': 'The easiest way to transfer files across devices',
+      'github': 'GitHub',
+      'cover_server_costs': 'Help cover the server costs!',
+      'twitter': 'Tweet about DropShare',
+      'faq': 'FAQ',
+      'enable_js': 'Enable JavaScript',
+      'snapdrop_js_only': 'DropShare works only with JavaScript',
+      'you_discovered': 'You can be discovered by everyone on this network',
+      'select_language': 'Select Language',
+      'modified_by': 'Modified Node version by',
+      'you_are_known_as': 'You are known as',
+      // Navigation menu items
+      'nav_about': 'About',
+      'nav_faq': 'FAQ',
+      'nav_blog': 'Blog',
+      'nav_privacy': 'Privacy',
+      'nav_terms': 'Terms'
+    }
+  },
+  'zh': {
+    code: 'zh',
+    name: '中文简体',
+    rtl: false,
+    translations: {
+      'open_snapdrop': '在其他设备上打开DropShare以发送文件',
+      'click_to_send': '点击发送文件或右键发送消息',
+      'tap_to_send': '点击发送文件或长按发送消息',
+      'file_received': '文件已接收',
+      'filename': '文件名',
+      'ask_save_files': '下载前询问是否保存每个文件',
+      'save': '保存',
+      'ignore': '忽略',
+      'send_message': '发送消息',
+      'send': '发送',
+      'cancel': '取消',
+      'message_received': '收到消息',
+      'copy': '复制',
+      'close': '关闭',
+      'file_transfer_completed': '文件传输完成',
+      'about_snapdrop': '关于DropShare',
+      'easiest_way': '在设备之间传输文件的最简单方式',
+      'github': 'GitHub',
+      'cover_server_costs': '帮助支付服务器费用！',
+      'twitter': '在Twitter上分享DropShare',
+      'faq': '常见问题',
+      'enable_js': '启用JavaScript',
+      'snapdrop_js_only': 'DropShare只能在启用JavaScript的情况下工作',
+      'you_discovered': '此网络上的所有人都可以发现您',
+      'select_language': '选择语言',
+      'modified_by': '修改版本由',
+      'you_are_known_as': '您的名称是',
+      // Navigation menu items
+      'nav_about': '关于',
+      'nav_faq': '常见问题',
+      'nav_blog': '博客',
+      'nav_privacy': '隐私政策',
+      'nav_terms': '服务条款'
+    }
+  },
+  'zh-tw': {
+    code: 'zh-tw',
+    name: '中文繁體',
+    rtl: false,
+    translations: {
+      'open_snapdrop': '在其他裝置上打開DropShare以發送文件',
+      'click_to_send': '點擊發送文件或右鍵發送消息',
+      'tap_to_send': '點擊發送文件或長按發送消息',
+      'file_received': '已收到檔案',
+      'filename': '檔案名稱',
+      'ask_save_files': '下載前詢問是否儲存每個檔案',
+      'save': '儲存',
+      'ignore': '忽略',
+      'send_message': '發送訊息',
+      'send': '發送',
+      'cancel': '取消',
+      'message_received': '已收到訊息',
+      'copy': '複製',
+      'close': '關閉',
+      'file_transfer_completed': '檔案傳輸完成',
+      'about_snapdrop': '關於DropShare',
+      'easiest_way': '跨裝置傳輸檔案的最簡單方式',
+      'github': 'DropShare的Github頁面',
+      'cover_server_costs': '幫助支付伺服器費用！',
+      'twitter': '在Twitter上分享DropShare',
+      'faq': '常見問題',
+      'enable_js': '啟用JavaScript',
+      'snapdrop_js_only': 'DropShare只能在啟用JavaScript的情況下工作',
+      'you_discovered': '此網路上的所有人都可以發現您',
+      'select_language': '選擇語言',
+      'modified_by': '由以下開發者修改的Node版本',
+      'you_are_known_as': '您的名稱是',
+      // Navigation menu items
+      'nav_about': '關於',
+      'nav_faq': '常見問題',
+      'nav_blog': '部落格',
+      'nav_privacy': '隱私',
+      'nav_terms': '條款'
+    }
+  },
+  'ko': {
+    code: 'ko',
+    name: '한국어',
+    rtl: false,
+    translations: {
+      'open_snapdrop': '파일을 보내려면 다른 기기에서 DropShare를 열어주세요',
+      'click_to_send': '파일을 보내려면 클릭하거나 메시지를 보내려면 오른쪽 클릭하세요',
+      'tap_to_send': '파일을 보내려면 탭하거나 메시지를 보내려면 길게 누르세요',
+      'file_received': '파일 받음',
+      'filename': '파일 이름',
+      'ask_save_files': '다운로드 전 각 파일 저장 여부 확인',
+      'save': '저장',
+      'ignore': '무시',
+      'send_message': '메시지 보내기',
+      'send': '보내기',
+      'cancel': '취소',
+      'message_received': '메시지 받음',
+      'copy': '복사',
+      'close': '닫기',
+      'file_transfer_completed': '파일 전송 완료',
+      'about_snapdrop': 'DropShare 정보',
+      'easiest_way': '기기 간 파일 전송의 가장 쉬운 방법',
+      'github': 'GitHub',
+      'cover_server_costs': '서버 비용을 지원해주세요!',
+      'twitter': 'DropShare에 대해 트윗하기',
+      'faq': 'FAQ',
+      'enable_js': '자바스크립트 활성화',
+      'snapdrop_js_only': 'DropShare는 자바스크립트가 활성화된 상태에서만 작동합니다',
+      'you_discovered': '이 네트워크의 모든 사람이 당신을 발견할 수 있습니다',
+      'select_language': '언어 선택',
+      'modified_by': '수정된 노드 버전',
+      'you_are_known_as': '당신의 이름은',
+      // Navigation menu items
+      'nav_about': '소개',
+      'nav_faq': 'FAQ',
+      'nav_blog': '블로그',
+      'nav_privacy': '개인정보',
+      'nav_terms': '이용약관'
+    }
+  }
+};
+
+// Get user language based on browser settings or localStorage
+function getUserLanguage() {
+  // Try to get language from localStorage
+  const savedLang = localStorage.getItem('snapdrop-language');
+  if (savedLang && LANGUAGES[savedLang]) {
+    return savedLang;
+  }
+  
+  // Try to match browser language with available languages
+  const browserLang = (navigator.language || navigator.userLanguage).substr(0, 2);
+  if (LANGUAGES[browserLang]) {
+    return browserLang;
+  }
+  
+  // Default to English
+  return 'en';
+}
+
+// Set default language
+let currentLanguage = getUserLanguage();
+
+// Function to translate the UI
+function translateUI() {
+  const lang = LANGUAGES[currentLanguage];
+  
+  // Set RTL if needed
+  document.documentElement.setAttribute('dir', lang.rtl ? 'rtl' : 'ltr');
+  
+  // Get all elements with data-i18n attribute
+  const elements = document.querySelectorAll('[data-i18n]');
+  
+  elements.forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (lang.translations[key]) {
+      el.textContent = lang.translations[key];
+    }
+  });
+  
+  // Dispatch a custom event to notify that language has changed
+  document.dispatchEvent(new CustomEvent('language-changed'));
+}
+
+// Function to change language
+function changeLanguage(langCode) {
+  if (LANGUAGES[langCode]) {
+    currentLanguage = langCode;
+    localStorage.setItem('snapdrop-language', langCode);
+    translateUI();
+  }
+}
+
+// Function to get translation for a specific key
+function translate(key) {
+  const lang = LANGUAGES[currentLanguage];
+  return lang.translations[key] || key;
+}
+
+// Initialize language from localStorage or browser settings
+function initLanguage() {
+  const savedLang = localStorage.getItem('snapdrop-language');
+  if (savedLang && LANGUAGES[savedLang]) {
+    currentLanguage = savedLang;
+  }
+  translateUI();
+}
+
+// Export the functions and languages
+window.DROPSHARE_I18N = {
+  LANGUAGES,
+  getUserLanguage,
+  translateUI,
+  changeLanguage,
+  initLanguage,
+  getCurrentLanguage: () => currentLanguage,
+  translate: translate
+};
+
+// Initialize language on page load
+document.addEventListener('DOMContentLoaded', initLanguage);

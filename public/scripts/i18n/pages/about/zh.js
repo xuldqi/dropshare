@@ -1,0 +1,27 @@
+// Chinese (zh) translations for the About page
+export default {
+    'about_page_title': '关于DropShare - 轻松文件共享',
+    'about_header_title': '关于DropShare',
+    'about_what_is_title': '什么是DropShare？',
+    'about_what_is_p1': 'DropShare是一款现代Web应用程序，可让您在同一网络上的设备之间轻松共享文件。无需设置，无需注册，无需云存储 - 只需即时点对点文件共享。',
+    'about_how_it_works_title': '工作原理',
+    'about_how_it_works_p1': 'DropShare使用WebRTC技术在设备之间建立直接连接。您的文件直接从一台设备传输到另一台设备，无需通过服务器，确保隐私和速度。',
+    'about_no_setup_title': '无需设置',
+    'about_no_setup_p1': '只需在浏览器中打开DropShare即可立即开始共享文件。无需创建帐户或安装软件。',
+    'about_privacy_focused_title': '注重隐私',
+    'about_privacy_focused_p1': '所有传输都是点对点的，这意味着您的文件永远不会存储在我们的服务器上。您的数据保持私密和安全。',
+    'about_cross_platform_title': '跨平台',
+    'about_cross_platform_p1': '适用于所有现代设备和浏览器，包括运行Windows、macOS、Linux、iOS或Android的智能手机、平板电脑和计算机。',
+    'about_fast_transfers_title': '快速传输',
+    'about_fast_transfers_p1': '直接的设备到设备连接意味着比基于云的服务更快的传输速度。',
+    'about_how_to_use_title': '如何使用DropShare',
+    'about_step1_title': '步骤1：连接设备',
+    'about_step1_p1': '确保所有设备都连接到同一Wi-Fi网络或局域网。',
+    'about_step2_title': '步骤2：打开DropShare',
+    'about_step2_p1': '在您要在其间共享文件的所有设备上打开DropShare。只需在浏览器中访问该网站即可。',
+    'about_step3_title': '步骤3：选择设备',
+    'about_step3_p1': '您将看到网络上所有可用的设备。单击要向其发送文件的设备。',
+    'about_step4_title': '步骤4：发送文件',
+    'about_step4_p1': '选择要共享的文件。收件人将收到通知并可以接受传输。',
+    'about_back_button': '返回DropShare'
+}; 

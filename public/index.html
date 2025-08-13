@@ -5,62 +5,277 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!-- Web App Config -->
-    <title>DropShare</title>
+    <title>DropShare - Fast Local File Sharing Without Setup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#3367d6">
     <meta name="color-scheme" content="dark light">
+    <!-- 禁用缓存和确保渲染一致性 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
     <meta name="apple-mobile-web-app-capable" content="no">
     <meta name="apple-mobile-web-app-title" content="DropShare">
     <!-- Descriptions -->
-    <meta name="description" content="Instantly share images, videos, PDFs, and links with people nearby. Peer2Peer and Open Source. No Setup, No Signup.">
-    <meta name="keywords" content="File, Transfer, Share, Peer2Peer">
+    <meta name="description" content="DropShare - 免费的局域网文件传输工具，支持手机电脑互传文件，无需注册安装。安全的点对点文件分享，支持iPhone、Android、Mac、Windows跨设备传输。零配置快速文件共享，办公室和家庭网络文件传输的最佳选择。">
+    <meta name="keywords" content="DropShare, file sharing, local network, peer-to-peer, P2P file transfer, no setup file sharing, secure file transfer, WebRTC, wireless file transfer, 手机电脑互传文件, 局域网文件传输工具, 无需注册文件分享, 免费文件传输软件, 跨设备文件共享, 手机传文件到电脑, 电脑传文件到手机, 无线文件传输, 局域网共享文件, 点对点文件传输, 免安装文件分享, 在线文件传输, 设备间文件同步, iPhone传文件到电脑, Android文件传输, Mac文件共享, Windows文件传输, 办公室文件分享, 家庭网络文件共享, 快速文件传输, 安全文件传输, 私密文件分享, 临时文件传输, 大文件传输工具, 多设备文件同步, 浏览器文件传输, 网页版文件分享, 免费局域网传输, 企业文件分享工具, 团队协作文件传输, 移动办公文件共享, 远程文件传输, 云端文件分享替代, 本地文件传输, 离线文件分享, 即时文件传输, 一键文件分享, 拖拽文件传输, 批量文件传输, 文件传输不限大小, 高速文件传输, 零配置文件分享, 跨平台文件传输, 多语言文件分享工具">
     <meta name="author" content="RobinLinus">
-    <meta property="og:title" content="DropShare">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="https://snapdrop.net/">
+    <link rel="canonical" href="https://yourdomain.com/">
+    <meta property="og:title" content="DropShare - Fast Local File Sharing">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/">
     <meta property="og:author" content="https://facebook.com/RobinLinus">
     <meta name="twitter:author" content="@RobinLinus">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:description" content="Instantly share images, videos, PDFs, and links with people nearby. Peer2Peer and Open Source. No Setup, No Signup.">
-    <meta name="og:description" content="Instantly share images, videos, PDFs, and links with people nearby. Peer2Peer and Open Source. No Setup, No Signup.">
+    <meta name="twitter:description" content="免费局域网文件传输工具，支持手机电脑互传文件，无需注册安装。安全的跨设备文件分享，支持iPhone、Android、Mac、Windows。零配置快速文件共享。">
+    <meta name="og:description" content="免费局域网文件传输工具，支持手机电脑互传文件，无需注册安装。安全的跨设备文件分享，支持iPhone、Android、Mac、Windows。零配置快速文件共享。">
     <!-- Icons -->
     <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
     <link rel="shortcut icon" href="images/favicon-96x96.png">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <meta name="msapplication-TileImage" content="images/mstile-150x150.png">
     <link rel="fluid-icon" type="image/png" href="images/android-chrome-192x192.png">
-    <meta name="twitter:image" content="https://snapdrop.net/images/twitter-stream.jpg">
-    <meta property="og:image" content="https://snapdrop.net/images/twitter-stream.jpg">
+    <meta name="twitter:image" content="https://yourdomain.com/images/dropshare-social-preview.jpg">
+    <meta property="og:image" content="https://yourdomain.com/images/dropshare-social-preview.jpg">
     <!-- Resources -->
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles/browser-compatibility.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles/transfer-animations.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles/mobile-enhancements.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles/transfer-history.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles/private-rooms.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles/file-preview.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles/analytics-dashboard.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles/file-converter.css?v=1754902068">
     <link rel="manifest" href="manifest.json">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "DropShare",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Windows, macOS, Linux, iOS, Android",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "DropShare是免费的局域网文件传输工具，支持手机电脑互传文件，无需注册安装。安全的点对点文件分享应用，支持iPhone、Android、Mac、Windows跨设备传输。零配置快速文件共享，办公室和家庭网络文件传输的最佳选择。"
+    }
+    </script>
+    <style>
+        /* 导航菜单样式 */
+        .nav-container {
+            position: fixed;
+            top: 16px; /* 与header的padding-top保持一致，确保与其他元素对齐 */
+            left: 16px;
+            z-index: 1100;
+            max-width: calc(100vw - 200px);
+        }
+        
+        /* RTL语言适配 */
+        [dir="rtl"] .nav-container {
+            left: auto;
+            right: 16px;
+        }
+        
+        .hamburger-menu {
+            display: none;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+            /* 增强浏览器兼容性 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+        
+        .hamburger-menu span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: var(--text-color, #333);
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+            flex-direction: row;
+        }
+        
+        .nav-links a {
+            color: var(--text-color, #333);
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 5px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            -webkit-transition: background-color 0.3s;
+            -moz-transition: background-color 0.3s;
+            -o-transition: background-color 0.3s;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 响应式样式 */
+        @media (max-width: 768px) {
+            .nav-container {
+                z-index: 1200; /* 确保在移动设备上也有足够高的层级 */
+            }
+            
+            .hamburger-menu {
+                display: flex;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 40px;
+                left: 0;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -webkit-flex-direction: column;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                width: 200px;
+                background-color: var(--bg-color-secondary, #f1f3f4);
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+                padding: 10px;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                -webkit-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                -moz-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                z-index: 1201;
+                border: 1px solid var(--hover-color, rgba(0, 0, 0, 0.08));
+            }
+            
+            .nav-links a {
+                margin: 5px 0;
+                color: var(--text-color, #333);
+                padding: 8px 12px;
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                border-radius: 4px;
+            }
+            
+            .nav-links a:hover {
+                background-color: var(--hover-color, rgba(0, 0, 0, 0.08));
+            }
+            
+            .nav-links.show {
+                display: flex;
+            }
+        }
+        
+        /* 浅色模式下的导航菜单样式 */
+        body.light-theme .nav-links,
+        html[data-theme="light"] .nav-links {
+            background-color: rgba(245, 245, 245, 0.95);
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.light-theme .nav-links a,
+        html[data-theme="light"] .nav-links a {
+            color: #333;
+        }
+        
+        body.light-theme .nav-links a:hover,
+        html[data-theme="light"] .nav-links a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* 深色模式下的导航菜单样式 */
+        body.dark-theme .nav-links,
+        html[data-theme="dark"] .nav-links {
+            background-color: rgba(18, 18, 18, 0.95);
+            color: #eee;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-theme .nav-links a,
+        html[data-theme="dark"] .nav-links a {
+            color: #eee;
+        }
+        
+        body.dark-theme .nav-links a:hover,
+        html[data-theme="dark"] .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+    </style>
 </head>
 
 <body translate="no">
-    <!-- 添加背景动画 -->
-    <div class="background-animation"></div>
+    <!-- 添加particles.js容器 -->
+    <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
     
-    <header class="row-reverse">
-        <a href="#about" class="icon-button" title="About DropShare" style="display: none;">
-            <svg class="icon">
-                <use xlink:href="#info-outline" />
-            </svg>
-        </a>
-        <a href="#" id="theme" class="icon-button" title="Switch Darkmode/Lightmode" >
-            <svg class="icon">
-                <use xlink:href="#icon-theme" />
-            </svg>
-        </a>
-        <a href="#" id="notification" class="icon-button" title="Enable Notifications" hidden>
-            <svg class="icon">
-                <use xlink:href="#notifications" />
-            </svg>
-        </a>
-        <a href="#" id="install" class="icon-button" title="Install Snapdrop" hidden>
-            <svg class="icon">
-                <use xlink:href="#homescreen" />
-            </svg>
-        </a>
+    <!-- 导航菜单 -->
+    <div class="nav-container">
+        <button class="hamburger-menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+            <a href="index.html" id="sendNav" data-i18n="nav_send">发送</a>
+            <a href="converter.html" id="converterNav" data-i18n="nav_converter">转换</a>
+            <a href="history.html" id="historyNav" data-i18n="nav_history">历史</a>
+            <a href="#" id="roomNav" data-i18n="nav_room">私人房间</a>
+            <a href="analytics.html" id="analyticsNav" data-i18n="nav_analytics">统计</a>
+            <a href="about.html" data-i18n="nav_about">About</a>
+            <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+            <a href="blog.html" data-i18n="nav_blog">Blog</a>
+            <a href="privacy.html" data-i18n="nav_privacy">Privacy</a>
+            <a href="terms.html" data-i18n="nav_terms">Terms</a>
+        </div>
+    </div>
+    
+    <header>
+        <!-- 语言选择器和主题按钮放在右侧 -->
         <div class="lang-selector">
             <select id="language-selector" title="Select Language">
                 <option value="en">English</option>
@@ -76,6 +291,22 @@
                 <option value="ko">한국어</option>
             </select>
         </div>
+        <a href="#" id="theme" class="icon-button" title="Switch Darkmode/Lightmode" >
+            <svg class="icon">
+                <use xlink:href="#icon-theme" />
+            </svg>
+        </a>
+        <!-- 保留的其他图标按钮 -->
+        <a href="#" id="notification" class="icon-button" title="Enable Notifications" hidden>
+            <svg class="icon">
+                <use xlink:href="#notifications" />
+            </svg>
+        </a>
+        <a href="#" id="install" class="icon-button" title="Install Snapdrop" hidden>
+            <svg class="icon">
+                <use xlink:href="#homescreen" />
+            </svg>
+        </a>
     </header>
     <!-- Peers -->
     <x-peers class="center"></x-peers>
@@ -156,6 +387,77 @@
             <span id="toast-text" data-i18n="file_transfer_completed">File Transfer Completed</span>
         </x-toast>
     </div>
+    
+    <!-- Transfer History Dialog -->
+    <x-dialog id="transferHistoryDialog">
+        <x-background class="full center">
+            <x-paper shadow="2" class="transfer-history-dialog">
+                <div class="transfer-history-header">
+                    <h3 data-i18n="transfer_history">Transfer History</h3>
+                    <button class="close-btn" close>
+                        <svg class="icon">
+                            <use xlink:href="#close" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="transfer-history-stats">
+                    <div class="stat-item">
+                        <span class="stat-label" data-i18n="total_transfers">Total Transfers</span>
+                        <span class="stat-value" id="totalTransfers">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label" data-i18n="total_size">Total Size</span>
+                        <span class="stat-value" id="totalSize">0 B</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label" data-i18n="most_common_type">Most Common Type</span>
+                        <span class="stat-value" id="mostCommonType">-</span>
+                    </div>
+                </div>
+                
+                <div class="transfer-history-controls">
+                    <div class="search-container">
+                        <input type="text" id="historySearch" placeholder="Search history..." data-i18n-placeholder="search_history">
+                    </div>
+                    
+                    <div class="filter-container">
+                        <select id="typeFilter">
+                            <option value="all" data-i18n="filter_all">All</option>
+                            <option value="sent" data-i18n="filter_sent">Sent</option>
+                            <option value="received" data-i18n="filter_received">Received</option>
+                            <option value="file" data-i18n="filter_files">Files</option>
+                            <option value="text" data-i18n="filter_messages">Messages</option>
+                        </select>
+                        
+                        <select id="sortBy">
+                            <option value="time_desc" data-i18n="sort_time_desc">Latest first</option>
+                            <option value="time_asc" data-i18n="sort_time_asc">Oldest first</option>
+                            <option value="size_desc" data-i18n="sort_size_desc">Largest first</option>
+                            <option value="size_asc" data-i18n="sort_size_asc">Smallest first</option>
+                            <option value="name_asc" data-i18n="sort_name_asc">Name A-Z</option>
+                            <option value="name_desc" data-i18n="sort_name_desc">Name Z-A</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="transfer-history-list" id="historyList">
+                    <div class="no-history" id="noHistory" data-i18n="no_history">No transfer history yet</div>
+                </div>
+                
+                <div class="transfer-history-pagination" id="historyPagination" style="display: none;">
+                    <button id="prevPage" disabled>‹</button>
+                    <span id="pageInfo">1 / 1</span>
+                    <button id="nextPage" disabled>›</button>
+                </div>
+                
+                <div class="transfer-history-actions">
+                    <button class="button secondary" id="exportHistory" data-i18n="export_history">Export History</button>
+                    <button class="button danger" id="clearHistory" data-i18n="clear_history">Clear History</button>
+                </div>
+            </x-paper>
+        </x-background>
+    </x-dialog>
     <!-- About Page -->
     <x-about id="about" class="full center column" style="display: none;">
         <section class="center column fade-in">
@@ -198,37 +500,37 @@
     </x-about>
     <!-- SVG Icon Library -->
     <svg style="display: none;">
-        <symbol id=wifi-tethering viewBox="0 0 24 24">
+        <symbol id="wifi-tethering" viewBox="0 0 24 24">
             <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"></path>
         </symbol>
-        <symbol id=desktop-mac viewBox="0 0 24 24">
+        <symbol id="desktop-mac" viewBox="0 0 24 24">
             <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z"></path>
         </symbol>
-        <symbol id=windows-desktop viewBox="0 0 24 24">
+        <symbol id="windows-desktop" viewBox="0 0 24 24">
             <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z M4 7h4v4H4z M10 7h4v4h-4z M4 13h4v2H4z M10 13h4v2h-4z M16 7h4v4h-4z M16 13h4v2h-4z"></path>
         </symbol>
-        <symbol id=desktop-linux viewBox="0 0 24 24">
+        <symbol id="desktop-linux" viewBox="0 0 24 24">
             <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z"></path>
         </symbol>
-        <symbol id=phone-iphone viewBox="0 0 24 24">
+        <symbol id="phone-iphone" viewBox="0 0 24 24">
             <path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"></path>
         </symbol>
-        <symbol id=phone-android viewBox="0 0 24 24">
-            <path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm-2 20h-4v-1h4v1zm3-3H7V4h10v14z"></path>
+        <symbol id="phone-android" viewBox="0 0 24 24">
+            <path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm-2 20h-4v-1h4v1zm3.25-3H6.75V4h10.5v14z"></path>
         </symbol>
-        <symbol id=tablet-mac viewBox="0 0 24 24">
+        <symbol id="tablet-mac" viewBox="0 0 24 24">
             <path d="M18.5 0h-14C3.12 0 2 1.12 2 2.5v19C2 22.88 3.12 24 4.5 24h14c1.38 0 2.5-1.12 2.5-2.5v-19C21 1.12 19.88 0 18.5 0zm-7 23c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7.5-4H4V3h15v16z"></path>
         </symbol>
-        <symbol id=tablet-android viewBox="0 0 24 24">
+        <symbol id="tablet-android" viewBox="0 0 24 24">
             <path d="M18 0H6C4.34 0 3 1.34 3 3v18c0 1.66 1.34 3 3 3h12c1.66 0 3-1.34 3-3V3c0-1.66-1.34-3-3-3zm-4 22h-4v-1h4v1zm5.25-3H4.75V3h14.5v16z"></path>
         </symbol>
-        <symbol id=info-outline viewBox="0 0 24 24">
+        <symbol id="info-outline" viewBox="0 0 24 24">
             <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
         </symbol>
-        <symbol id=close viewBox="0 0 24 24">
+        <symbol id="close" viewBox="0 0 24 24">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
         </symbol>
-        <symbol id=help-outline viewBox="0 0 24 24">
+        <symbol id="help-outline" viewBox="0 0 24 24">
             <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
         </symbol>
         <symbol id="twitter">
@@ -240,25 +542,115 @@
         <g id="notifications">
             <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
         </g>
-        <symbol id="homescreen">
-            <path fill="none" d="M0 0h24v24H0V0z" />
+        <symbol id="homescreen" viewBox="0 0 24 24">
             <path d="M18 1.01L8 1c-1.1 0-2 .9-2 2v3h2V5h10v14H8v-1H6v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM10 15h2V8H5v2h3.59L3 15.59 4.41 17 10 11.41z" />
-            <path fill="none" d="M0 0h24v24H0V0z" />
+            <path d="M0 0h24v24H0V0z" fill="none" />
         </symbol>
-        <symbol id="monetarization">
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z" />
+        <symbol id="icon-theme" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></symbol>
+        
+        <!-- Add the sun icon for light mode -->
+        <symbol id="icon-sun" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0 c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2 c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1 S11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0 s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06 c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41 c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36 c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z" /></symbol>
+        
+        <!-- History icon -->
+        <symbol id="history" viewBox="0 0 24 24">
+            <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
         </symbol>
-        <symbol id="icon-theme" viewBox="0 0 24 24">
-         <rect fill="none" height="24" width="24"/><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>
+        
+        <!-- History icon alias -->
+        <symbol id="history-icon" viewBox="0 0 24 24">
+            <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+        </symbol>
+        
+        <!-- Room icon -->
+        <symbol id="room-icon" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </symbol>
+        
+        <!-- Analytics icon -->
+        <symbol id="analytics-icon" viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+        </symbol>
+        
+        <!-- Converter icon -->
+        <symbol id="converter-icon" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+        </symbol>
+        
+        <!-- More vertical icon -->
+        <symbol id="more-vert" viewBox="0 0 24 24">
+            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </symbol>
     </svg>
     <!-- Scripts -->
+    <!-- Load the language loader first -->
     <script src="scripts/i18n/languages.js"></script>
+    <!-- Load other scripts -->
     <script src="scripts/network.js"></script>
     <script src="scripts/ui.js"></script>
+    <script src="scripts/transfer-animations.js"></script>
+    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="scripts/transfer-history.js"></script>
+    <script src="scripts/transfer-history-ui.js"></script>
+    <script src="scripts/private-rooms.js"></script>
+    <script src="scripts/file-preview.js"></script>
+    <script src="scripts/analytics-enhanced.js"></script>
+    <script src="scripts/analytics-dashboard.js"></script>
+    <script src="scripts/analytics-integration.js"></script>
     <script src="scripts/theme.js" async></script>
     <script src="scripts/clipboard.js" async></script>
+    <script src="scripts/file-converter.js"></script>
+
+    <!-- 对话菜单的JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 汉堡菜单功能
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('nav-links');
+            
+            hamburger.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+            });
+            
+            // 点击外部区域关闭菜单
+            document.addEventListener('click', function(event) {
+                if (!hamburger.contains(event.target) && !navLinks.contains(event.target)) {
+                    navLinks.classList.remove('show');
+                }
+            });
+            
+            // 初始化多语言支持
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+            
+            
+            // 统计仪表板按钮事件
+            const analyticsBtn = document.getElementById('analyticsBtn');
+            if (analyticsBtn) {
+                analyticsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (window.analyticsDashboard) {
+                        window.analyticsDashboard.show();
+                    }
+                });
+            }
+            
+            // Initialize Analytics Components
+            if (window.AnalyticsEnhanced) {
+                window.analyticsEnhanced = new window.AnalyticsEnhanced();
+            }
+            
+            if (window.AnalyticsDashboard) {
+                window.analyticsDashboard = new window.AnalyticsDashboard();
+            }
+        });
+    </script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics-compat.js"></script>
+    <script src="scripts/firebase-analytics.js"></script>
+    
     <!-- Sounds -->
     <audio id="blop" autobuffer="true">
         <source src="/sounds/blop.mp3" type="audio/mpeg">
@@ -282,6 +674,89 @@
         }
         </style>
     </noscript>
+    
+    <!-- 在其他脚本之前添加particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 160,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.2,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 0.6
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+    </script>
 </body>
 
 </html>

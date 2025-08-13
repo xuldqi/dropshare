@@ -1,0 +1,27 @@
+// Arabic (ar) translations for the About page
+export default {
+    'about_page_title': 'حول DropShare - مشاركة الملفات بسهولة',
+    'about_header_title': 'حول DropShare',
+    'about_what_is_title': 'ما هو DropShare؟',
+    'about_what_is_p1': 'DropShare هو تطبيق ويب حديث يتيح لك مشاركة الملفات بسهولة بين الأجهزة على نفس الشبكة. لا إعداد، لا تسجيل، لا حاجة للتخزين السحابي - فقط مشاركة الملفات المباشرة فورًا.',
+    'about_how_it_works_title': 'كيف يعمل',
+    'about_how_it_works_p1': 'يستخدم DropShare تقنية WebRTC لإنشاء اتصال مباشر بين الأجهزة. يتم نقل ملفاتك مباشرة من جهاز إلى آخر دون المرور عبر خادم، مما يضمن الخصوصية والسرعة.',
+    'about_no_setup_title': 'لا حاجة للإعداد',
+    'about_no_setup_p1': 'ما عليك سوى فتح DropShare في متصفحك وابدأ مشاركة الملفات على الفور. لا حاجة لإنشاء حساب أو تثبيت برامج.',
+    'about_privacy_focused_title': 'التركيز على الخصوصية',
+    'about_privacy_focused_p1': 'جميع عمليات النقل تتم مباشرة بين الأجهزة، مما يعني أن ملفاتك لا يتم تخزينها أبدًا على خوادمنا. تظل بياناتك خاصة وآمنة.',
+    'about_cross_platform_title': 'متعدد المنصات',
+    'about_cross_platform_p1': 'يعمل على جميع الأجهزة والمتصفحات الحديثة بما في ذلك الهواتف الذكية والأجهزة اللوحية وأجهزة الكمبيوتر التي تعمل بنظام Windows وmacOS وLinux وiOS وAndroid.',
+    'about_fast_transfers_title': 'نقل سريع',
+    'about_fast_transfers_p1': 'الاتصال المباشر بين الأجهزة يعني سرعات نقل أسرع من الخدمات السحابية.',
+    'about_how_to_use_title': 'كيفية استخدام DropShare',
+    'about_step1_title': 'الخطوة 1: توصيل الأجهزة',
+    'about_step1_p1': 'تأكد من اتصال جميع الأجهزة بنفس شبكة Wi-Fi أو الشبكة المحلية.',
+    'about_step2_title': 'الخطوة 2: فتح DropShare',
+    'about_step2_p1': 'افتح DropShare على جميع الأجهزة التي تريد مشاركة الملفات بينها. ما عليك سوى زيارة الموقع في متصفحك.',
+    'about_step3_title': 'الخطوة 3: اختيار الجهاز',
+    'about_step3_p1': 'سترى جميع الأجهزة المتاحة على الشبكة. انقر على الجهاز الذي تريد إرسال الملفات إليه.',
+    'about_step4_title': 'الخطوة 4: إرسال الملفات',
+    'about_step4_p1': 'حدد الملفات التي تريد مشاركتها. سيتلقى المستلم إشعارًا ويمكنه قبول النقل.',
+    'about_back_button': 'العودة إلى DropShare'
+}; 

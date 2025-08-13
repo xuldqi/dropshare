@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件转换器 - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/file-converter.css">
+    <link rel="stylesheet" type="text/css" href="styles/ui-ux-enhancements.css">
+    <style>
+        body {
+            padding: 20px;
+            background: var(--bg-color);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .page-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .converter-container {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-color-secondary);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: var(--bg-color-secondary);
+        }
+        
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .format-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .format-option {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--surface-color);
+        }
+        
+        .format-option:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .format-option.selected {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .conversion-progress {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-color-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+        <div class="page-header">
+            <h1>🔄 文件转换器</h1>
+            <a href="index.html" class="back-button">
+                ← 返回首页
+            </a>
+        </div>
+        
+        <div class="converter-container">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <h3>选择或拖拽文件到这里</h3>
+                <p style="color: var(--text-muted); margin-top: 10px;">
+                    支持图片、文档、音频、视频等多种格式转换
+                </p>
+                <input type="file" id="fileInput" style="display: none;" multiple accept="*/*">
+                <button class="button primary" onclick="document.getElementById('fileInput').click()" style="margin-top: 15px;">
+                    选择文件
+                </button>
+            </div>
+            
+            <div id="fileInfo" style="display: none;">
+                <h3>选中的文件:</h3>
+                <div id="fileDetails"></div>
+                
+                <h3 style="margin-top: 25px;">转换格式:</h3>
+                <div class="format-selector" id="formatSelector">
+                    <!-- 格式选项将根据文件类型动态生成 -->
+                </div>
+                
+                <div class="conversion-progress" id="conversionProgress">
+                    <h4>转换进度:</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div id="progressText">0%</div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="button primary" id="convertBtn" disabled>
+                        开始转换
+                    </button>
+                    <button class="button secondary" id="clearBtn" style="margin-left: 10px;">
+                        清空文件
+                    </button>
+                </div>
+            </div>
+            
+            <div id="conversionResults" style="display: none; margin-top: 30px;">
+                <h3>转换结果:</h3>
+                <div id="resultsList"></div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 20px; background: var(--bg-color-secondary); border-radius: 12px;">
+            <h3>📋 支持的转换格式</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                <div>
+                    <strong>🖼️ 图片格式</strong>
+                    <div style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">
+                        JPG, PNG, GIF, BMP, WebP, SVG
+                    </div>
+                </div>
+                <div>
+                    <strong>📄 文档格式</strong>
+                    <div style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">
+                        PDF, DOC, TXT, RTF, HTML
+                    </div>
+                </div>
+                <div>
+                    <strong>🎵 音频格式</strong>
+                    <div style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">
+                        MP3, WAV, OGG, M4A, FLAC
+                    </div>
+                </div>
+                <div>
+                    <strong>🎥 视频格式</strong>
+                    <div style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">
+                        MP4, AVI, MOV, MKV, WebM
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts/file-converter.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFileConverter();
+        });
+        
+        function initializeFileConverter() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileDetails = document.getElementById('fileDetails');
+            const formatSelector = document.getElementById('formatSelector');
+            const convertBtn = document.getElementById('convertBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            
+            let selectedFiles = [];
+            let selectedFormat = '';
+            
+            // 拖拽上传
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                handleFiles(e.dataTransfer.files);
+            });
+            
+            // 文件选择
+            fileInput.addEventListener('change', function() {
+                handleFiles(this.files);
+            });
+            
+            // 处理文件
+            function handleFiles(files) {
+                selectedFiles = Array.from(files);
+                if (selectedFiles.length > 0) {
+                    displayFileInfo();
+                    generateFormatOptions();
+                    fileInfo.style.display = 'block';
+                }
+            }
+            
+            // 显示文件信息
+            function displayFileInfo() {
+                let html = '';
+                selectedFiles.forEach(file => {
+                    html += `
+                        <div style="padding: 10px; margin-bottom: 10px; background: var(--bg-color-secondary); border-radius: 8px;">
+                            <strong>${file.name}</strong>
+                            <div style="font-size: 0.9em; color: var(--text-muted); margin-top: 5px;">
+                                大小: ${formatFileSize(file.size)} | 类型: ${file.type || '未知'}
+                            </div>
+                        </div>
+                    `;
+                });
+                fileDetails.innerHTML = html;
+            }
+            
+            // 生成格式选项
+            function generateFormatOptions() {
+                const firstFile = selectedFiles[0];
+                const fileType = firstFile.type.split('/')[0];
+                
+                let formats = [];
+                
+                if (fileType === 'image') {
+                    formats = ['jpg', 'png', 'gif', 'bmp', 'webp'];
+                } else if (fileType === 'audio') {
+                    formats = ['mp3', 'wav', 'ogg', 'm4a'];
+                } else if (fileType === 'video') {
+                    formats = ['mp4', 'avi', 'mov', 'mkv'];
+                } else {
+                    formats = ['pdf', 'txt', 'html'];
+                }
+                
+                let html = '';
+                formats.forEach(format => {
+                    html += `<div class="format-option" data-format="${format}">${format.toUpperCase()}</div>`;
+                });
+                
+                formatSelector.innerHTML = html;
+                
+                // 绑定格式选择事件
+                formatSelector.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('format-option')) {
+                        // 移除其他选中状态
+                        formatSelector.querySelectorAll('.format-option').forEach(option => {
+                            option.classList.remove('selected');
+                        });
+                        
+                        // 选中当前格式
+                        e.target.classList.add('selected');
+                        selectedFormat = e.target.dataset.format;
+                        convertBtn.disabled = false;
+                    }
+                });
+            }
+            
+            // 转换按钮
+            convertBtn.addEventListener('click', function() {
+                if (selectedFormat && selectedFiles.length > 0) {
+                    startConversion();
+                }
+            });
+            
+            // 清空按钮
+            clearBtn.addEventListener('click', function() {
+                selectedFiles = [];
+                selectedFormat = '';
+                fileInput.value = '';
+                fileInfo.style.display = 'none';
+                document.getElementById('conversionResults').style.display = 'none';
+                document.getElementById('conversionProgress').style.display = 'none';
+            });
+            
+            // 开始转换
+            function startConversion() {
+                const progressDiv = document.getElementById('conversionProgress');
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                
+                progressDiv.style.display = 'block';
+                convertBtn.disabled = true;
+                
+                // 模拟转换进度
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 20;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        showResults();
+                    }
+                    
+                    progressFill.style.width = progress + '%';
+                    progressText.textContent = Math.round(progress) + '%';
+                }, 200);
+            }
+            
+            // 显示结果
+            function showResults() {
+                const resultsDiv = document.getElementById('conversionResults');
+                const resultsList = document.getElementById('resultsList');
+                
+                let html = '';
+                selectedFiles.forEach(file => {
+                    const newName = file.name.replace(/\.[^/.]+$/, '') + '.' + selectedFormat;
+                    html += `
+                        <div style="padding: 15px; margin-bottom: 10px; background: var(--bg-color-secondary); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${newName}</strong>
+                                <div style="font-size: 0.9em; color: var(--success-color); margin-top: 5px;">
+                                    ✓ 转换完成
+                                </div>
+                            </div>
+                            <button class="button primary" onclick="downloadFile('${newName}')">
+                                下载
+                            </button>
+                        </div>
+                    `;
+                });
+                
+                resultsList.innerHTML = html;
+                resultsDiv.style.display = 'block';
+                convertBtn.disabled = false;
+                convertBtn.textContent = '重新转换';
+            }
+            
+            // 格式化文件大小
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+        
+        // 下载文件（模拟）
+        function downloadFile(filename) {
+            alert('下载 ' + filename + '\n\n注意：这是一个演示版本，实际的文件转换功能需要服务端支持。');
+        }
+    </script>
+</body>
+</html>

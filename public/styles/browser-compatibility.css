@@ -1,0 +1,1430 @@
+/* 浏览器兼容性样式 */
+
+/* CSS Variables fallbacks for older browsers */
+:root {
+    --primary-color: #4285f4;
+    --bg-color: #fafafa;
+    --bg-color-secondary: #f5f5f5;
+    --text-color: #333;
+    --border-color: #ddd;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --hover-color: #e8f0fe;
+    --surface-color: #ffffff;
+    --surface-hover: #f8f9fa;
+    --text-muted: #666;
+    --backdrop-color: rgba(0, 0, 0, 0.5);
+    --success-color: #34a853;
+    --warning-color: #fbbc04;
+    --error-color: #ea4335;
+    --info-color: #4285f4;
+    --button-background: #4285f4;
+    --button-hover-background: #3367d6;
+    --tab-background: #f1f3f4;
+    --tab-hover-background: #e8eaed;
+    --icon-background: #f8f9fa;
+    --hover-background: #f1f3f4;
+    --code-bg: #f5f5f5;
+    --code-color: #d73a49;
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --primary-gradient: linear-gradient(135deg, #4285f4, #34a853);
+}
+
+/* CSS变量回退方案 */
+body {
+    /* 回退颜色值 */
+    color: #333;
+    background-color: #fff;
+    /* 使用CSS变量 */
+    color: var(--text-color, #333);
+    background-color: var(--bg-color, #fff);
+}
+
+body.dark-theme {
+    /* 回退颜色值 */
+    color: #eee;
+    background-color: #121212;
+    /* 使用CSS变量 */
+    color: var(--text-color, #eee);
+    background-color: var(--bg-color, #121212);
+}
+
+/* Flexbox浏览器前缀 */
+.row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.column {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.center {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.grow {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+x-peers {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+/* Transform浏览器前缀 */
+x-peer:not([transfer]):hover x-icon,
+x-peer:not([transfer]):focus x-icon {
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -o-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+/* Transition浏览器前缀 */
+x-peer x-icon {
+    -webkit-transition: -webkit-transform 150ms;
+    -moz-transition: -moz-transform 150ms;
+    -o-transition: -o-transform 150ms;
+    transition: transform 150ms;
+}
+
+body {
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -o-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+
+/* Border-radius浏览器前缀 */
+x-peer x-icon {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.lang-selector select {
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+}
+
+/* Box-shadow浏览器前缀 */
+[shadow="1"] {
+    -webkit-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+        0 1px 8px 0 rgba(0, 0, 0, 0.12),
+        0 3px 3px -2px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+        0 1px 8px 0 rgba(0, 0, 0, 0.12),
+        0 3px 3px -2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+        0 1px 8px 0 rgba(0, 0, 0, 0.12),
+        0 3px 3px -2px rgba(0, 0, 0, 0.4);
+}
+
+.lang-selector select {
+    -webkit-box-shadow: 0 2px 4px var(--shadow-color, rgba(0, 0, 0, 0.1));
+    -moz-box-shadow: 0 2px 4px var(--shadow-color, rgba(0, 0, 0, 0.1));
+    box-shadow: 0 2px 4px var(--shadow-color, rgba(0, 0, 0, 0.1));
+}
+
+/* User-select浏览器前缀 */
+x-peer {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Appearance浏览器前缀 */
+.lang-selector select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+}
+
+/* Font-smoothing浏览器前缀 */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Backdrop-filter浏览器前缀和回退 */
+.nav-links {
+    /* 回退样式 */
+    background-color: rgba(245, 245, 245, 0.95);
+    /* 现代浏览器 */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+body.dark-theme .nav-links,
+html[data-theme="dark"] .nav-links {
+    /* 回退样式 */
+    background-color: rgba(18, 18, 18, 0.95);
+    /* 现代浏览器 */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+/* Grid浏览器前缀（如果需要） */
+.grid-container {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* 旧版IE支持 */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    /* IE10+ 特定样式 */
+    .nav-links {
+        background-color: #f5f5f5;
+    }
+    
+    body.dark-theme .nav-links {
+        background-color: #121212;
+    }
+    
+    /* 移除不支持的属性 */
+    .nav-links {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
+/* 旧版Safari支持 */
+@supports not (backdrop-filter: blur(10px)) {
+    .nav-links {
+        background-color: rgba(245, 245, 245, 0.98) !important;
+    }
+    
+    body.dark-theme .nav-links,
+    html[data-theme="dark"] .nav-links {
+        background-color: rgba(18, 18, 18, 0.98) !important;
+    }
+}
+
+/* CSS变量不支持的浏览器回退 */
+@supports not (color: var(--text-color)) {
+    body {
+        color: #333;
+        background-color: #fff;
+    }
+    
+    body.dark-theme {
+        color: #eee;
+        background-color: #121212;
+    }
+    
+    .nav-links {
+        background-color: #f5f5f5;
+    }
+    
+    body.dark-theme .nav-links {
+        background-color: #121212;
+    }
+    
+    .nav-links a {
+        color: #333;
+    }
+    
+    body.dark-theme .nav-links a {
+        color: #eee;
+    }
+    
+    .hamburger-menu span {
+        background-color: #333;
+    }
+    
+    body.dark-theme .hamburger-menu span {
+        background-color: #eee;
+    }
+    
+    .lang-selector select {
+        background-color: #f1f3f4;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.dark-theme .lang-selector select {
+        background-color: #333;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* 导航菜单浏览器兼容性修复 */
+.nav-container {
+    position: -webkit-fixed;
+    position: fixed;
+}
+
+.hamburger-menu {
+    display: none;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+/* 修复IE中的flexbox问题 */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .nav-links {
+        display: block;
+    }
+    
+    .nav-links a {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    @media (max-width: 768px) {
+        .nav-links {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 200px;
+            background-color: #f1f3f4;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-theme .nav-links {
+            background-color: #333;
+        }
+    }
+}
+
+/* 修复Safari中的backdrop-filter问题 */
+@supports not (backdrop-filter: blur(10px)) {
+    @media (max-width: 768px) {
+        .nav-links {
+            background-color: rgba(245, 245, 245, 0.98) !important;
+        }
+        
+        body.dark-theme .nav-links,
+        html[data-theme="dark"] .nav-links {
+            background-color: rgba(51, 51, 51, 0.98) !important;
+        }
+    }
+}
+
+/* 修复Chrome中的z-index层叠问题 */
+.nav-container {
+    z-index: 1100;
+    isolation: isolate;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        z-index: 1201;
+        isolation: isolate;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 200px;
+        min-width: 200px;
+    }
+}
+
+/* 修复header布局在不同浏览器中的兼容性 */
+header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 8px;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    /* 确保在所有浏览器中的一致性 */
+    min-height: 64px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+}
+
+/* 修复header在不同浏览器中的显示问题 */
+header > * {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+
+/* 确保导航链接容器的正确布局 */
+header .nav-links {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+/* 确保右侧按钮组的正确对齐 */
+header .theme-button,
+header .lang-selector {
+    margin-left: 8px;
+}
+
+/* RTL语言支持的兼容性修复 */
+[dir="rtl"] header .theme-button,
+[dir="rtl"] header .lang-selector {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+/* 修复语言选择器在不同浏览器中的显示 */
+.lang-selector {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+
+.lang-selector select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23666" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    padding-right: 24px;
+}
+
+/* 修复Firefox中的flexbox gap问题 */
+@-moz-document url-prefix() {
+    .nav-links {
+        gap: 0;
+    }
+    
+    .nav-links a {
+        margin: 5px 0;
+    }
+    
+    header {
+        gap: 0;
+    }
+    
+    header > * {
+        margin-left: 8px;
+    }
+    
+    header > *:first-child {
+        margin-left: 0;
+    }
+}
+
+/* 修复Safari中的flexbox问题 */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    _::-webkit-full-page-media, _:future, :root header {
+        display: -webkit-flex;
+        -webkit-justify-content: flex-end;
+        -webkit-align-items: center;
+    }
+    
+    _::-webkit-full-page-media, _:future, :root .lang-selector {
+        display: -webkit-flex;
+        -webkit-align-items: center;
+    }
+    
+    _::-webkit-full-page-media, _:future, :root .nav-links {
+        display: -webkit-flex;
+        -webkit-flex-direction: row;
+    }
+    
+    @media (max-width: 768px) {
+        _::-webkit-full-page-media, _:future, :root .nav-links {
+            -webkit-flex-direction: column;
+            display: block;
+        }
+    }
+}
+
+/* 移动端触摸优化 */
+@media (pointer: coarse) {
+    .nav-links a {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px;
+    }
+    
+    .hamburger-menu {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px;
+    }
+}
+
+/* 修复Edge Legacy中的问题 */
+@supports (-ms-ime-align: auto) {
+    .nav-links {
+        display: -ms-flexbox;
+        -ms-flex-direction: row;
+    }
+    
+    @media (max-width: 768px) {
+        .nav-links {
+            -ms-flex-direction: column;
+            display: block;
+        }
+        
+        .nav-links a {
+            display: block;
+            width: 100%;
+        }
+    }
+}
+
+/* 修复旧版WebKit中的问题 */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .hamburger-menu span {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+    
+    .nav-links {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    body {
+        --text-color: #000000 !important;
+        --bg-color: #ffffff !important;
+        --border-color: #000000 !important;
+    }
+    
+    body.dark-theme {
+        --text-color: #ffffff !important;
+        --bg-color: #000000 !important;
+        --border-color: #ffffff !important;
+    }
+    
+    .nav-links {
+        border: 2px solid currentColor;
+    }
+}
+
+/* 现代CSS特性回退方案 */
+
+/* Flexbox 兼容性 */
+.flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.flex-column {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.flex-row {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.flex-center {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.flex-start {
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.flex-end {
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: end;
+    -webkit-align-items: flex-end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+
+.flex-between {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.flex-around {
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+}
+
+.flex-wrap {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.flex-nowrap {
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
+.flex-1 {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.flex-auto {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.flex-none {
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -ms-flex: none;
+    flex: none;
+}
+
+.flex-grow {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+.flex-shrink {
+    -webkit-flex-shrink: 1;
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+}
+
+.flex-no-shrink {
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+
+/* Transform 兼容性 */
+.transform {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.translate-center {
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.translate-x-center {
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.translate-y-center {
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.scale-95 {
+    -webkit-transform: scale(0.95);
+    -moz-transform: scale(0.95);
+    -ms-transform: scale(0.95);
+    -o-transform: scale(0.95);
+    transform: scale(0.95);
+}
+
+.scale-98 {
+    -webkit-transform: scale(0.98);
+    -moz-transform: scale(0.98);
+    -ms-transform: scale(0.98);
+    -o-transform: scale(0.98);
+    transform: scale(0.98);
+}
+
+.scale-105 {
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -o-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+.scale-110 {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.rotate-0 {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+.rotate-90 {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.rotate-180 {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.rotate-270 {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+
+.rotate-360 {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+/* Transition 兼容性 */
+.transition {
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.transition-fast {
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -ms-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}
+
+.transition-slow {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.transition-transform {
+    -webkit-transition: -webkit-transform 0.2s ease;
+    -moz-transition: -moz-transform 0.2s ease;
+    -ms-transition: -ms-transform 0.2s ease;
+    -o-transition: -o-transform 0.2s ease;
+    transition: transform 0.2s ease;
+}
+
+.transition-opacity {
+    -webkit-transition: opacity 0.2s ease;
+    -moz-transition: opacity 0.2s ease;
+    -ms-transition: opacity 0.2s ease;
+    -o-transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease;
+}
+
+.transition-colors {
+    -webkit-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    -moz-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    -ms-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    -o-transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.transition-shadow {
+    -webkit-transition: box-shadow 0.2s ease;
+    -moz-transition: box-shadow 0.2s ease;
+    -ms-transition: box-shadow 0.2s ease;
+    -o-transition: box-shadow 0.2s ease;
+    transition: box-shadow 0.2s ease;
+}
+
+.transition-cubic {
+    -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -ms-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-none {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
+/* CSS Grid回退方案 */
+@supports not (display: grid) {
+    .grid-container {
+        display: block;
+        overflow: hidden;
+    }
+    
+    .grid-item {
+        float: left;
+        width: 50%;
+        box-sizing: border-box;
+    }
+    
+    .grid-item:nth-child(odd) {
+        clear: left;
+    }
+}
+
+/* Flexbox回退方案 */
+@supports not (display: flex) {
+    .row, .column, .center {
+        display: block;
+    }
+    
+    .row > * {
+        display: inline-block;
+        vertical-align: top;
+    }
+    
+    .center {
+        text-align: center;
+    }
+    
+    .center > * {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    
+    .grow {
+        width: 100%;
+    }
+    
+    header {
+        text-align: right;
+    }
+    
+    header > * {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+/* CSS变量回退方案增强 */
+@supports not (color: var(--text-color)) {
+    /* 基础颜色 */
+    body {
+        color: #333 !important;
+        background-color: #fff !important;
+    }
+    
+    body.dark-theme {
+        color: #eee !important;
+        background-color: #121212 !important;
+    }
+    
+    /* 导航菜单 */
+    .nav-links {
+        background-color: #f5f5f5 !important;
+    }
+    
+    body.dark-theme .nav-links {
+        background-color: #333 !important;
+    }
+    
+    .nav-links a {
+        color: #333 !important;
+    }
+    
+    body.dark-theme .nav-links a {
+        color: #eee !important;
+    }
+    
+    .nav-links a:hover {
+        background-color: rgba(0, 0, 0, 0.08) !important;
+    }
+    
+    body.dark-theme .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    
+    /* 汉堡菜单 */
+    .hamburger-menu span {
+        background-color: #333 !important;
+    }
+    
+    body.dark-theme .hamburger-menu span {
+        background-color: #eee !important;
+    }
+    
+    /* 语言选择器 */
+    .lang-selector select {
+        background-color: #f1f3f4 !important;
+        color: #333 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    body.dark-theme .lang-selector select {
+        background-color: #333 !important;
+        color: #eee !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* 对话框 */
+    x-dialog x-paper {
+        background-color: #fff !important;
+        color: #333 !important;
+    }
+    
+    body.dark-theme x-dialog x-paper {
+        background-color: #121212 !important;
+        color: #eee !important;
+    }
+    
+    /* 文本区域 */
+    .textarea {
+        background-color: #f1f3f4 !important;
+        color: #333 !important;
+    }
+    
+    body.dark-theme .textarea {
+        background-color: #333 !important;
+        color: #eee !important;
+    }
+}
+
+/* Object-fit回退方案 */
+@supports not (object-fit: cover) {
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Position: sticky回退方案 */
+@supports not (position: sticky) {
+    .sticky {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+    }
+}
+
+/* Backdrop-filter回退方案增强 */
+@supports not (backdrop-filter: blur(10px)) {
+    .nav-links {
+        background-color: rgba(245, 245, 245, 0.98) !important;
+    }
+    
+    body.dark-theme .nav-links,
+    html[data-theme="dark"] .nav-links {
+        background-color: rgba(51, 51, 51, 0.98) !important;
+    }
+    
+    .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.8) !important;
+    }
+}
+
+/* CSS Clip-path回退方案 */
+@supports not (clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%)) {
+    .clipped-element {
+        overflow: hidden;
+        border-radius: 8px;
+    }
+}
+
+/* CSS Mask回退方案 */
+@supports not (mask: url(#mask)) {
+    .masked-element {
+        opacity: 0.8;
+    }
+}
+
+/* 减少动画模式支持 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        -webkit-animation-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        -webkit-animation-iteration-count: 1 !important;
+        animation-iteration-count: 1 !important;
+        -webkit-transition-duration: 0.01ms !important;
+        -o-transition-duration: 0.01ms !important;
+        -moz-transition-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 移动端和桌面端一致性修复 */
+@media (max-width: 768px) {
+    header {
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: 8px 16px;
+        min-height: 56px;
+    }
+    
+    .lang-selector {
+        -webkit-order: -1;
+        -ms-flex-order: -1;
+        order: -1;
+        -webkit-flex-basis: 100%;
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        margin-bottom: 8px;
+    }
+    
+    .icon-button {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        min-height: 32px;
+        -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+    }
+    
+    /* 移动端触摸优化 */
+    .mobile-enhanced {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        tap-highlight-color: transparent;
+    }
+    
+    /* 移动端滚动优化 */
+    .mobile-enhanced {
+        -webkit-overflow-scrolling: touch;
+        overflow-scrolling: touch;
+    }
+    
+    /* 移动端按钮触摸目标 */
+    .mobile-enhanced button,
+    .mobile-enhanced .icon-button,
+    .mobile-enhanced x-peer {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+    }
+    
+    /* 移动端导航菜单 */
+    .mobile-enhanced .nav-links {
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        background-color: rgba(0, 0, 0, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        -webkit-transform: translateX(-100%);
+        -moz-transform: translateX(-100%);
+        -ms-transform: translateX(-100%);
+        -o-transform: translateX(-100%);
+        transform: translateX(-100%);
+        -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        -moz-transition: -moz-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        -ms-transition: -ms-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        -o-transition: -o-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .mobile-enhanced .nav-links.show {
+        -webkit-transform: translateX(0);
+        -moz-transform: translateX(0);
+        -ms-transform: translateX(0);
+        -o-transform: translateX(0);
+        transform: translateX(0);
+    }
+    
+    /* 移动端对话框 */
+    .mobile-enhanced x-dialog {
+        -webkit-align-items: flex-end;
+        -ms-flex-align: end;
+        align-items: flex-end;
+    }
+    
+    .mobile-enhanced x-dialog x-paper {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        border-radius: 20px 20px 0 0;
+        max-height: 80vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 移动端安全区域适配 */
+    .mobile-enhanced {
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 16px;
+    }
+    
+    .mobile-enhanced header {
+        padding-top: 16px;
+    }
+    
+    .mobile-enhanced x-toast {
+        bottom: 80px;
+    }
+}
+
+/* 支持安全区域的浏览器 */
+@supports (padding: max(0px)) {
+    @media (max-width: 768px) {
+        .mobile-enhanced {
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+            padding-bottom: max(16px, env(safe-area-inset-bottom));
+        }
+        
+        .mobile-enhanced header {
+            padding-top: max(16px, env(safe-area-inset-top));
+        }
+        
+        .mobile-enhanced x-toast {
+            bottom: max(80px, calc(80px + env(safe-area-inset-bottom)));
+        }
+    }
+}
+
+/* 横屏模式优化 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .mobile-enhanced x-peers {
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .mobile-enhanced x-peer {
+        -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+        width: 120px;
+    }
+    
+    .mobile-enhanced header {
+        height: 48px;
+        padding: 8px 16px;
+    }
+    
+    .mobile-enhanced .icon-button {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* 桌面端优化 */
+@media (min-width: 769px) {
+    header {
+        padding: 16px;
+        min-height: 64px;
+    }
+    
+    .nav-links {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        position: static;
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+    
+    .hamburger-menu {
+        display: none !important;
+    }
+}
+
+/* 增强的浏览器前缀支持 */
+.icon-button {
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Fallback styles for browsers that don't support CSS variables */
+.no-css-variables {
+    background-color: #fafafa;
+    color: #333;
+}
+
+.no-css-variables header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+.no-css-variables .icon-button {
+    background-color: #4285f4;
+    color: white;
+}
+
+.no-css-variables .icon-button:hover {
+    background-color: #3367d6;
+}
+
+.no-css-variables x-peer {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-css-variables x-peer:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.no-css-variables .nav-links {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+}
+
+.no-css-variables .nav-links a {
+    color: #333;
+}
+
+.no-css-variables .nav-links a:hover {
+    background-color: #f1f3f4;
+}
+
+.no-css-variables .button {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+}
+
+.no-css-variables .button:hover {
+    background-color: #3367d6;
+}
+
+.no-css-variables .button.secondary {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.no-css-variables .button.secondary:hover {
+    background-color: #e8eaed;
+}
+
+.no-css-variables x-dialog {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.no-css-variables x-dialog x-paper {
+    background-color: #ffffff;
+    color: #333;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.no-css-variables .progress {
+    background-color: #f1f3f4;
+}
+
+.no-css-variables .progress-bar {
+    background-color: #4285f4;
+}
+
+.no-css-variables x-toast {
+    background-color: #333;
+    color: white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.no-css-variables x-toast.success {
+    background-color: #34a853;
+}
+
+.no-css-variables x-toast.error {
+    background-color: #ea4335;
+}
+
+.no-css-variables x-toast.warning {
+    background-color: #fbbc04;
+    color: #333;
+}
+
+.no-css-variables .textarea {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.no-css-variables .textarea:focus {
+    border-color: #4285f4;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+}
+
+.no-css-variables code {
+    background-color: #f5f5f5;
+    color: #d73a49;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.nav-links a {
+    -webkit-transition: background-color 0.2s ease;
+    -moz-transition: background-color 0.2s ease;
+    -o-transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.hamburger-menu span {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
