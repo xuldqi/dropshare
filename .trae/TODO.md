@@ -1,7 +1,7 @@
 # TODO:
 
-- [x] 1: 修复导航菜单按钮的垂直对齐问题，将top值从18px调整为13px以匹配header中心位置(28px) (priority: High)
-- [x] 2: 检查并修复软件预览与Chrome浏览器预览不一致的问题，可能涉及CSS前缀或渲染差异 (priority: High)
-- [x] 3: 增强浏览器兼容性，确保所有CSS属性都有适当的前缀和回退值 (priority: Medium)
-- [x] 4: 测试修复后的header对齐效果在不同浏览器中的表现 (priority: Medium)
-- [x] 5: 验证软件预览和浏览器预览的一致性 (priority: Medium)
+- [x] 1: 检查项目是否已初始化为Git仓库，如果没有则初始化 (priority: High)
+- [x] 2: 拉取远程更改并合并分支 (priority: High)
+- [ ] 3: 添加所有文件到Git暂存区 (**IN PROGRESS**) (priority: High)
+- [ ] 4: 创建提交 (priority: High)
+- [ ] 5: 推送代码到GitHub的main分支 (priority: High)
