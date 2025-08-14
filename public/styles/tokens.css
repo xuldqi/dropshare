@@ -1,0 +1,39 @@
+:root {
+  /* Color tokens */
+  --primary-color: #3367d6;
+  --primary-hover: #2855b3;
+  --success-color: #34a853;
+  --warning-color: #fbbc04;
+  --error-color: #ea4335;
+
+  /* Surface & text */
+  --surface-color: #ffffff;
+  --background-color: #f8f9fa;
+  --text-primary: #202124;
+  --text-secondary: #5f6368;
+  --border-color: #e0e0e0;
+
+  /* Layout tokens */
+  --container-max-width: 1200px;
+  --page-padding: 24px;
+  --section-gap: 64px;
+  --card-gap: 24px;
+  --header-height: 64px;
+
+  /* Radius & shadow */
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 16px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.1);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+[data-theme="dark"] {
+  --surface-color: #303030;
+  --background-color: #121212;
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --border-color: #3c4043;
+}
+
+
