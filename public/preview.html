@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropShare 预览对比</title>
+    <style>
+        :root { --toolbar-h: 56px; }
+        html, body { height: 100%; margin: 0; font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", Helvetica, Arial, sans-serif; }
+        .toolbar {
+            height: var(--toolbar-h);
+            display: flex; align-items: center; gap: 12px;
+            padding: 8px 12px; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; background: #fff; z-index: 10;
+        }
+        .toolbar h1 { font-size: 16px; margin: 0 8px 0 0; }
+        .toolbar select, .toolbar input[type="range"] { height: 32px; }
+        .wrap { height: calc(100% - var(--toolbar-h)); display: grid; grid-template-columns: 1fr 1fr; }
+        .col { display: flex; flex-direction: column; min-width: 260px; border-right: 1px solid #eee; }
+        .col:last-child { border-right: none; }
+        .col .label { height: 36px; display: flex; align-items: center; padding: 0 10px; font-size: 12px; color: #666; background: #fafafa; border-bottom: 1px solid #eee; }
+        iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+        .note { margin-left: auto; font-size: 12px; color: #888; }
+    </style>
+    <link rel="stylesheet" href="styles/tokens.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const pageSelect = document.getElementById('page');
+        const widthRange = document.getElementById('width');
+        const left = document.getElementById('left');
+        const right = document.getElementById('right');
+        const leftLabel = document.getElementById('leftLabel');
+        const rightLabel = document.getElementById('rightLabel');
+
+        const entries = [
+            { label: '首页 (新)', newPath: '/index.html', oldPath: '/index.html.old' },
+            { label: '关于 (新)', newPath: '/about.html' },
+            { label: 'FAQ (新)', newPath: '/faq.html' },
+            { label: '隐私 (新)', newPath: '/privacy.html' },
+            { label: '条款 (新)', newPath: '/terms.html' },
+            { label: '博客 (新)', newPath: '/blog.html' },
+            { label: '分享页 (新)', newPath: '/share.html' },
+            { label: '首页 深色版本 (新)', newPath: '/dark/index.html' },
+            { label: '首页 浅色版本 (新)', newPath: '/light/index.html' }
+        ];
+
+        // 填充下拉
+        entries.forEach((e, i) => {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = e.label;
+            pageSelect.appendChild(opt);
+        });
+
+        async function setPages(idx) {
+            const e = entries[idx];
+            right.src = e.newPath;
+            rightLabel.textContent = '新版本：' + e.newPath;
+
+            if (e.oldPath) {
+                try {
+                    const res = await fetch(e.oldPath, { method: 'HEAD' });
+                    if (res.ok) {
+                        left.src = e.oldPath;
+                        leftLabel.textContent = '旧版本：' + e.oldPath;
+                        return;
+                    }
+                } catch(_) {}
+            }
+            left.src = e.newPath;
+            leftLabel.textContent = '旧版本：无（展示新版本）';
+        }
+
+        pageSelect.addEventListener('change', e => setPages(e.target.value));
+        setPages(0);
+
+        // 宽度联动，模拟移动/桌面
+        function applyWidth() {
+            const w = widthRange.value;
+            left.style.maxWidth = w + 'px';
+            right.style.maxWidth = w + 'px';
+        }
+        widthRange.addEventListener('input', applyWidth);
+        applyWidth();
+    });
+    </script>
+</head>
+<body>
+    <div class="toolbar">
+        <h1>可视化对比预览</h1>
+        <label>页面：
+            <select id="page"></select>
+        </label>
+        <label>视口宽度：
+            <input id="width" type="range" min="320" max="1200" step="10" value="1200">
+        </label>
+        <span class="note">左侧旧版（若有），右侧新版</span>
+    </div>
+    <div class="wrap">
+        <div class="col">
+            <div class="label" id="leftLabel">旧版本</div>
+            <iframe id="left" title="旧版本"></iframe>
+        </div>
+        <div class="col">
+            <div class="label" id="rightLabel">新版本</div>
+            <iframe id="right" title="新版本"></iframe>
+        </div>
+    </div>
+</body>
+</html>
+
+
