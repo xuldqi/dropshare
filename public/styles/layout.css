@@ -13,21 +13,19 @@ body {
 }
 
 header.app-header {
-  position: fixed;
-  inset-inline: 0;
-  top: 0;
-  height: var(--header-height);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--surface-color);
-  box-shadow: var(--shadow);
-  z-index: 1000;
+  position: fixed !important;
+  inset-inline: 0 !important;
+  top: 0 !important;
+  height: var(--header-height) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: var(--surface-color) !important;
+  box-shadow: var(--shadow) !important;
+  z-index: 1000 !important;
 }
 
-main.app-main {
-  padding-top: var(--header-height);
-}
+main.app-main { padding-top: var(--header-height) !important; }
 
 /* Grid */
 .grid-cards {
