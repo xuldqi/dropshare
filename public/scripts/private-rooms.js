@@ -561,10 +561,10 @@ class PrivateRoomManager {
     }
 }
 
-// 暂时禁用私密房间管理器初始化
+// 私密房间管理器初始化
 window.addEventListener('DOMContentLoaded', () => {
-    console.log('Private room manager initialization skipped');
-    // window.privateRoomManager = new PrivateRoomManager();
+    console.log('Private room manager ready for initialization');
+    // window.privateRoomManager = new PrivateRoomManager(); // 由主页面控制初始化
 });
 
 // 导出给其他模块使用

@@ -5,758 +5,1399 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!-- Web App Config -->
-    <title>DropShare - Fast Local File Sharing Without Setup</title>
+    <title>DropShare - Fast Local File Sharing Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#3367d6">
     <meta name="color-scheme" content="dark light">
-    <!-- 禁用缓存和确保渲染一致性 -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="renderer" content="webkit">
-    <meta name="force-rendering" content="webkit">
     <meta name="apple-mobile-web-app-capable" content="no">
     <meta name="apple-mobile-web-app-title" content="DropShare">
     <!-- Descriptions -->
-    <meta name="description" content="DropShare - 免费的局域网文件传输工具，支持手机电脑互传文件，无需注册安装。安全的点对点文件分享，支持iPhone、Android、Mac、Windows跨设备传输。零配置快速文件共享，办公室和家庭网络文件传输的最佳选择。">
-    <meta name="keywords" content="DropShare, file sharing, local network, peer-to-peer, P2P file transfer, no setup file sharing, secure file transfer, WebRTC, wireless file transfer, 手机电脑互传文件, 局域网文件传输工具, 无需注册文件分享, 免费文件传输软件, 跨设备文件共享, 手机传文件到电脑, 电脑传文件到手机, 无线文件传输, 局域网共享文件, 点对点文件传输, 免安装文件分享, 在线文件传输, 设备间文件同步, iPhone传文件到电脑, Android文件传输, Mac文件共享, Windows文件传输, 办公室文件分享, 家庭网络文件共享, 快速文件传输, 安全文件传输, 私密文件分享, 临时文件传输, 大文件传输工具, 多设备文件同步, 浏览器文件传输, 网页版文件分享, 免费局域网传输, 企业文件分享工具, 团队协作文件传输, 移动办公文件共享, 远程文件传输, 云端文件分享替代, 本地文件传输, 离线文件分享, 即时文件传输, 一键文件分享, 拖拽文件传输, 批量文件传输, 文件传输不限大小, 高速文件传输, 零配置文件分享, 跨平台文件传输, 多语言文件分享工具">
+    <meta name="description" content="DropShare - Instantly share files between devices on your local network. No setup, no signup, no cloud storage needed. Fast, secure peer-to-peer file transfers.">
+    <meta name="keywords" content="DropShare, file sharing, local network, peer-to-peer, P2P file transfer, no setup file sharing, secure file transfer, WebRTC, wireless file transfer">
     <meta name="author" content="RobinLinus">
     <link rel="canonical" href="https://yourdomain.com/">
-    <meta property="og:title" content="DropShare - Fast Local File Sharing">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourdomain.com/">
-    <meta property="og:author" content="https://facebook.com/RobinLinus">
-    <meta name="twitter:author" content="@RobinLinus">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:description" content="免费局域网文件传输工具，支持手机电脑互传文件，无需注册安装。安全的跨设备文件分享，支持iPhone、Android、Mac、Windows。零配置快速文件共享。">
-    <meta name="og:description" content="免费局域网文件传输工具，支持手机电脑互传文件，无需注册安装。安全的跨设备文件分享，支持iPhone、Android、Mac、Windows。零配置快速文件共享。">
     <!-- Icons -->
     <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
     <link rel="shortcut icon" href="images/favicon-96x96.png">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <meta name="msapplication-TileImage" content="images/mstile-150x150.png">
     <link rel="fluid-icon" type="image/png" href="images/android-chrome-192x192.png">
-    <meta name="twitter:image" content="https://yourdomain.com/images/dropshare-social-preview.jpg">
-    <meta property="og:image" content="https://yourdomain.com/images/dropshare-social-preview.jpg">
     <!-- Resources -->
-    <link rel="stylesheet" type="text/css" href="styles.css?v=1754902068">
-    <link rel="stylesheet" type="text/css" href="styles/browser-compatibility.css?v=1754902068">
-    <link rel="stylesheet" type="text/css" href="styles/transfer-animations.css?v=1754902068">
-    <link rel="stylesheet" type="text/css" href="styles/mobile-enhancements.css?v=1754902068">
-    <link rel="stylesheet" type="text/css" href="styles/transfer-history.css?v=1754902068">
-    <link rel="stylesheet" type="text/css" href="styles/private-rooms.css?v=1754902068">
-    <link rel="stylesheet" type="text/css" href="styles/file-preview.css?v=1754902068">
-    <link rel="stylesheet" type="text/css" href="styles/analytics-dashboard.css?v=1754902068">
-    <link rel="stylesheet" type="text/css" href="styles/file-converter.css?v=1754902068">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "DropShare",
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "Windows, macOS, Linux, iOS, Android",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "description": "DropShare是免费的局域网文件传输工具，支持手机电脑互传文件，无需注册安装。安全的点对点文件分享应用，支持iPhone、Android、Mac、Windows跨设备传输。零配置快速文件共享，办公室和家庭网络文件传输的最佳选择。"
-    }
-    </script>
+    
     <style>
-        /* 导航菜单样式 */
-        .nav-container {
-            position: fixed;
-            top: 16px; /* 与header的padding-top保持一致，确保与其他元素对齐 */
-            left: 16px;
-            z-index: 1100;
-            max-width: calc(100vw - 200px);
+        :root {
+            --primary-color: #3367d6;
+            --primary-hover: #2855b3;
+            --success-color: #34a853;
+            --warning-color: #fbbc04;
+            --error-color: #ea4335;
+            --surface-color: #ffffff;
+            --background-color: #f8f9fa;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --border-color: #e0e0e0;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-hover: 0 4px 16px rgba(0,0,0,0.15);
+            --border-radius: 12px;
         }
-        
-        /* RTL语言适配 */
-        [dir="rtl"] .nav-container {
-            left: auto;
-            right: 16px;
+
+        [data-theme="dark"] {
+            --surface-color: #303030;
+            --background-color: #121212;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --border-color: #3c4043;
         }
-        
-        .hamburger-menu {
-            display: none;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -webkit-flex-direction: column;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            -webkit-box-pack: justify;
-            -webkit-justify-content: space-between;
-            -ms-flex-pack: justify;
-            justify-content: space-between;
-            width: 30px;
-            height: 20px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
             padding: 0;
-            z-index: 1001;
-            /* 增强浏览器兼容性 */
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
+        }
+
+        /* Override original styles.css that prevent scrolling */
+        html, body {
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            height: auto !important;
+            display: block !important;
+            flex-direction: initial !important;
+            align-items: initial !important;
+            justify-content: initial !important;
+            flex-grow: initial !important;
         }
         
-        .hamburger-menu span {
-            display: block;
-            height: 3px;
-            width: 100%;
-            background-color: var(--text-color, #333);
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            -webkit-transition: all 0.3s ease;
-            -moz-transition: all 0.3s ease;
-            -o-transition: all 0.3s ease;
-            transition: all 0.3s ease;
+        /* Force reset any flexbox on body */
+        body {
+            display: block !important;
+            position: static !important;
+            align-items: initial !important;
+            justify-content: initial !important;
         }
         
-        .nav-links {
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
+        /* Disable all animations and transitions */
+        *, *::before, *::after {
+            animation: none !important;
+            transition: none !important;
+            transform: none !important;
+            will-change: auto !important;
+        }
+        
+        /* Additional animation disabling */
+        .status-indicator {
+            animation: none !important;
+            transition: none !important;
+        }
+        
+        .status-indicator:hover {
+            transform: none !important;
+            animation: none !important;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            background: var(--background-color) !important;
+            color: var(--text-primary) !important;
+            line-height: 1.6 !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--surface-color);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            padding: 12px 24px;
             display: flex;
-            -webkit-box-orient: horizontal;
-            -webkit-box-direction: normal;
-            -webkit-flex-direction: row;
-            -ms-flex-direction: row;
-            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
         }
-        
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--primary-color);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
         .nav-links a {
-            color: var(--text-color, #333);
+            color: var(--text-secondary);
             text-decoration: none;
-            padding: 5px 10px;
-            margin: 0 5px;
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            border-radius: 4px;
-            -webkit-transition: background-color 0.3s;
-            -moz-transition: background-color 0.3s;
-            -o-transition: background-color 0.3s;
-            transition: background-color 0.3s;
+            font-weight: 500;
+            transition: color 0.3s;
         }
-        
+
         .nav-links a:hover {
-            text-decoration: underline;
+            color: var(--primary-color);
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .icon-button:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .icon-button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .lang-selector select {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 70px !important;
+            padding: 0 0 200px 0 !important;
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            display: block !important;
+            position: relative !important;
+            z-index: 1 !important;
+        }
+
+        .welcome-section {
+            background: var(--primary-color) !important;
+            color: white !important;
+            padding: 100px 20px !important;
+            margin: 0 0 60px 0 !important;
+            text-align: center !important;
+            position: relative !important;
+            overflow: hidden !important;
+            display: block !important;
+            width: 100vw !important;
+            margin-left: calc(-50vw + 50%) !important;
+            box-sizing: border-box !important;
+        }
+
+
+        .welcome-title {
+            font-size: 56px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .welcome-subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.4;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0px;
+            padding: 12px 32px;
+            min-width: 140px;
+            width: auto;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
         }
         
-        /* 响应式样式 */
+        .status-indicator:hover {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Removed status-dot styles - no longer needed */
+
+        /* Feature Highlights */
+        .features-section {
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+            padding: 0 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .feature-highlight {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-highlight:hover {
+            /* No hover effects */
+        }
+        
+        .feature-icon {
+            width: 84px;
+            height: 84px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent !important;
+            border-radius: 0;
+            color: #9e9e9e !important;
+            font-size: 24px;
+        }
+        
+        .feature-icon svg {
+            width: 56px;
+            height: 56px;
+            stroke: #9e9e9e !important;
+            fill: none !important;
+            stroke-width: 1.5;
+        }
+        
+        .feature-title {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .feature-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin: 0 20px 120px 20px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .card-icon.share { background: var(--primary-color); }
+        .card-icon.rooms { background: var(--warning-color); }
+        .card-icon.convert { background: var(--success-color); }
+        .card-icon.history { background: #9c27b0; }
+        .card-icon.analytics { background: #ff5722; }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .card-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .action-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-button:hover {
+            background: var(--primary-hover);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: rgba(52, 168, 83, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-ready {
+            background: rgba(51, 103, 214, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .nav-container {
-                z-index: 1200; /* 确保在移动设备上也有足够高的层级 */
+            .header {
+                padding: 8px 16px;
             }
-            
-            .hamburger-menu {
-                display: flex;
-            }
-            
+
             .nav-links {
                 display: none;
-                position: absolute;
-                top: 40px;
-                left: 0;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -webkit-flex-direction: column;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                width: 200px;
-                background-color: var(--bg-color-secondary, #f1f3f4);
-                -webkit-backdrop-filter: blur(10px);
-                backdrop-filter: blur(10px);
-                padding: 10px;
-                -webkit-border-radius: 5px;
-                -moz-border-radius: 5px;
-                border-radius: 5px;
-                -webkit-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-                -moz-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-                z-index: 1201;
-                border: 1px solid var(--hover-color, rgba(0, 0, 0, 0.08));
             }
-            
-            .nav-links a {
-                margin: 5px 0;
-                color: var(--text-color, #333);
-                padding: 8px 12px;
-                -webkit-border-radius: 4px;
-                -moz-border-radius: 4px;
-                border-radius: 4px;
+
+            .main-content {
+                margin-top: 70px;
+                padding: 20px 16px;
             }
-            
-            .nav-links a:hover {
-                background-color: var(--hover-color, rgba(0, 0, 0, 0.08));
+
+            .welcome-section {
+                margin: 0 0 40px 0 !important;
+                padding: 60px 20px !important;
+                margin-left: calc(-50vw + 50%) !important;
+                width: 100vw !important;
             }
-            
-            .nav-links.show {
-                display: flex;
+
+            .welcome-title {
+                font-size: 40px;
+            }
+
+            .welcome-subtitle {
+                font-size: 18px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .feature-card {
+                padding: 24px;
+            }
+
+            .card-stats {
+                justify-content: center;
             }
         }
-        
-        /* 浅色模式下的导航菜单样式 */
-        body.light-theme .nav-links,
-        html[data-theme="light"] .nav-links {
-            background-color: rgba(245, 245, 245, 0.95);
-            color: #333;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+        /* Hidden dialogs */
+        .dialog-container {
+            display: none;
         }
-        
-        body.light-theme .nav-links a,
-        html[data-theme="light"] .nav-links a {
-            color: #333;
+
+        /* Footer */
+        /* Fix overlap: undo global footer { position:absolute } from styles.css */
+        .site-footer {
+            position: static !important;
+            background: #3c4043;
+            color: #e8eaed;
+            padding: 60px 40px 40px;
+            margin-top: 80px;
+            z-index: 0;
         }
-        
-        body.light-theme .nav-links a:hover,
-        html[data-theme="light"] .nav-links a:hover {
-            background-color: rgba(0, 0, 0, 0.05);
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        
-        /* 深色模式下的导航菜单样式 */
-        body.dark-theme .nav-links,
-        html[data-theme="dark"] .nav-links {
-            background-color: rgba(18, 18, 18, 0.95);
-            color: #eee;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
         }
-        
-        body.dark-theme .nav-links a,
-        html[data-theme="dark"] .nav-links a {
-            color: #eee;
+
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
         }
-        
-        body.dark-theme .nav-links a:hover,
-        html[data-theme="dark"] .nav-links a:hover {
-            background-color: rgba(255, 255, 255, 0.08);
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #9aa0a6;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .footer-links a.external::after {
+            content: '↗';
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #5f6368;
+            padding-top: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .footer-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-color);
+        }
+
+        .footer-copyright {
+            font-size: 13px;
+            color: #9aa0a6;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .site-footer {
+                padding: 40px 20px 30px;
+                margin-top: 60px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                gap: 15px;
+            }
         }
     </style>
 </head>
 
 <body translate="no">
-    <!-- 添加particles.js容器 -->
-    <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
-    
-    <!-- 导航菜单 -->
-    <div class="nav-container">
-        <button class="hamburger-menu" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="nav-links" id="nav-links">
-            <a href="index.html" id="sendNav" data-i18n="nav_send">发送</a>
-            <a href="converter.html" id="converterNav" data-i18n="nav_converter">转换</a>
-            <a href="history.html" id="historyNav" data-i18n="nav_history">历史</a>
-            <a href="#" id="roomNav" data-i18n="nav_room">私人房间</a>
-            <a href="analytics.html" id="analyticsNav" data-i18n="nav_analytics">统计</a>
-            <a href="about.html" data-i18n="nav_about">About</a>
-            <a href="faq.html" data-i18n="nav_faq">FAQ</a>
-            <a href="blog.html" data-i18n="nav_blog">Blog</a>
-            <a href="privacy.html" data-i18n="nav_privacy">Privacy</a>
-            <a href="terms.html" data-i18n="nav_terms">Terms</a>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+            </svg>
+            <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
         </div>
-    </div>
-    
-    <header>
-        <!-- 语言选择器和主题按钮放在右侧 -->
-        <div class="lang-selector">
-            <select id="language-selector" title="Select Language">
-                <option value="en">English</option>
-                <option value="zh">中文简体</option>
-                <option value="zh-tw">中文繁體</option>
-                <option value="ja">日本語</option>
-                <option value="fr">Français</option>
-                <option value="es">Español</option>
-                <option value="de">Deutsch</option>
-                <option value="pt">Português</option>
-                <option value="ru">Русский</option>
-                <option value="ar">العربية</option>
-                <option value="ko">한국어</option>
-            </select>
+
+        <div class="header-controls">
+            <nav class="nav-links">
+                <a href="about.html" data-i18n="nav_about">About</a>
+                <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+                <a href="blog.html" data-i18n="nav_blog">Blog</a>
+                <a href="privacy.html" data-i18n="nav_privacy">Privacy</a>
+                <a href="terms.html" data-i18n="nav_terms">Terms</a>
+            </nav>
+
+            <div class="control-buttons">
+                <div class="lang-selector">
+                    <select id="language-selector" title="Select Language">
+                        <option value="en">English</option>
+                        <option value="zh">中文简体</option>
+                        <option value="zh-tw">中文繁體</option>
+                        <option value="ja">日本語</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ar">العربية</option>
+                        <option value="ko">한국어</option>
+                    </select>
+                </div>
+                
+                <button class="icon-button" id="theme" title="Switch Theme">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
-        <a href="#" id="theme" class="icon-button" title="Switch Darkmode/Lightmode" >
-            <svg class="icon">
-                <use xlink:href="#icon-theme" />
-            </svg>
-        </a>
-        <!-- 保留的其他图标按钮 -->
-        <a href="#" id="notification" class="icon-button" title="Enable Notifications" hidden>
-            <svg class="icon">
-                <use xlink:href="#notifications" />
-            </svg>
-        </a>
-        <a href="#" id="install" class="icon-button" title="Install Snapdrop" hidden>
-            <svg class="icon">
-                <use xlink:href="#homescreen" />
-            </svg>
-        </a>
     </header>
-    <!-- Peers -->
-    <x-peers class="center"></x-peers>
-    <x-no-peers>
-        <h2 data-i18n="open_snapdrop">Open Snapdrop on other devices to send files</h2>
-    </x-no-peers>
-    
-    <!-- 添加一个用于指令提示的居中容器 -->
-    <div class="instructions-container">
-        <x-instructions desktop data-i18n="click_to_send">Click to send files or right click to send a message</x-instructions>
-        <x-instructions mobile data-i18n="tap_to_send">Tap to send files or long press to send a message</x-instructions>
-    </div>
-    
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title">DropShare</h1>
+            <p class="welcome-subtitle">Fast local file sharing across devices on your network</p>
+            <a href="share.html" class="status-indicator">
+                <span id="connectionStatus">立刻分享</span>
+            </a>
+        </section>
+
+        <!-- Feature Highlights -->
+        <section class="features-section">
+            <div class="features-grid">
+                <div class="feature-highlight">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Fast</h3>
+                    <p class="feature-description">Instant peer-to-peer file transfers</p>
+                </div>
+                
+                <div class="feature-highlight">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Simple</h3>
+                    <p class="feature-description">No setup, no accounts needed</p>
+                </div>
+                
+                <div class="feature-highlight">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Safe</h3>
+                    <p class="feature-description">Files stay on your local network</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <section class="dashboard-grid">
+            <!-- File Transfer & Sharing -->
+            <div class="feature-card" id="shareCard">
+                <div class="card-header">
+                    <div class="card-icon share">📁</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="file_sharing">File Sharing</h3>
+                    </div>
+                </div>
+                <p class="card-description" data-i18n="share_description">
+                    Instantly share files with nearby devices. No signup required, completely peer-to-peer.
+                </p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="connectedDevices">0</div>
+                        <div class="stat-label" data-i18n="devices">Devices</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="filesShared">0</div>
+                        <div class="stat-label" data-i18n="shared">Shared</div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="action-button" id="startSharingBtn" onclick="window.location.href='share.html'">
+                        <span data-i18n="start_sharing">Start Sharing</span>
+                        →
+                    </button>
+                    <span class="status-badge status-ready" data-i18n="ready">Ready</span>
+                </div>
+            </div>
+
+            <!-- Private Rooms -->
+            <div class="feature-card" id="roomsCard">
+                <div class="card-header">
+                    <div class="card-icon rooms">🏠</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="private_rooms">Private Rooms</h3>
+                    </div>
+                </div>
+                <p class="card-description" data-i18n="rooms_description">
+                    Create private rooms with access codes for secure file sharing with specific people.
+                </p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="activeRooms">0</div>
+                        <div class="stat-label" data-i18n="active">Active</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="roomMembers">0</div>
+                        <div class="stat-label" data-i18n="members">Members</div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="action-button" id="createRoomBtn" onclick="window.dashboard.createRoom()">
+                        <span data-i18n="create_room">Create Room</span>
+                        →
+                    </button>
+                    <span class="status-badge status-ready" data-i18n="ready">Ready</span>
+                </div>
+            </div>
+
+            <!-- Image Converter -->
+            <div class="feature-card" id="imageConverterCard">
+                <div class="card-header">
+                    <div class="card-icon convert">🖼️</div>
+                    <div>
+                        <h3 class="card-title">Image Converter</h3>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Convert images between formats and resize. Supports JPEG, PNG, WebP, GIF, BMP.
+                </p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Formats</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">Fast</div>
+                        <div class="stat-label">Processing</div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="action-button" onclick="window.location.href='image-converter.html'">
+                        <span>Open Converter</span>
+                        →
+                    </button>
+                    <span class="status-badge status-ready">Ready</span>
+                </div>
+            </div>
+
+            <!-- Audio Converter -->
+            <div class="feature-card" id="audioConverterCard">
+                <div class="card-header">
+                    <div class="card-icon convert">🎵</div>
+                    <div>
+                        <h3 class="card-title">Audio Converter</h3>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Convert audio files between formats. Supports MP3, WAV, AAC, OGG, FLAC.
+                </p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Formats</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">Pro</div>
+                        <div class="stat-label">Quality</div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="action-button" onclick="window.location.href='audio-converter.html'">
+                        <span>Open Converter</span>
+                        →
+                    </button>
+                    <span class="status-badge status-ready">Ready</span>
+                </div>
+            </div>
+
+            <!-- Document Converter -->
+            <div class="feature-card" id="documentConverterCard">
+                <div class="card-header">
+                    <div class="card-icon convert">📄</div>
+                    <div>
+                        <h3 class="card-title">Document Converter</h3>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Convert documents between formats. Supports TXT, HTML, JSON, CSV, Markdown.
+                </p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Formats</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">Smart</div>
+                        <div class="stat-label">Convert</div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="action-button" onclick="window.location.href='document-converter.html'">
+                        <span>Open Converter</span>
+                        →
+                    </button>
+                    <span class="status-badge status-ready">Ready</span>
+                </div>
+            </div>
+
+            <!-- Video Converter -->
+            <div class="feature-card" id="videoConverterCard">
+                <div class="card-header">
+                    <div class="card-icon convert">🎥</div>
+                    <div>
+                        <h3 class="card-title">Video Converter</h3>
+                    </div>
+                </div>
+                <p class="card-description">
+                    Convert videos between formats with quality control. Supports MP4, WebM, AVI, MOV.
+                </p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Formats</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">Pro</div>
+                        <div class="stat-label">Quality</div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="action-button" onclick="window.location.href='video-converter.html'">
+                        <span>Open Converter</span>
+                        →
+                    </button>
+                    <span class="status-badge status-ready">Ready</span>
+                </div>
+            </div>
+
+            <!-- Transfer History -->
+            <div class="feature-card" id="historyCard">
+                <div class="card-header">
+                    <div class="card-icon history">📋</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="transfer_history">Transfer History</h3>
+                    </div>
+                </div>
+                <p class="card-description" data-i18n="history_description">
+                    View all your file transfers, track statistics, and export your data.
+                </p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalTransfers">0</div>
+                        <div class="stat-label" data-i18n="transfers">Transfers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalSize">0 MB</div>
+                        <div class="stat-label" data-i18n="total_size">Total Size</div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="action-button" id="viewHistoryBtn" onclick="window.dashboard.viewHistory()">
+                        <span data-i18n="view_history">View History</span>
+                        →
+                    </button>
+                    <span class="status-badge status-ready" data-i18n="ready">Ready</span>
+                </div>
+            </div>
+
+            <!-- Analytics -->
+            <div class="feature-card" id="analyticsCard">
+                <div class="card-header">
+                    <div class="card-icon analytics">📊</div>
+                    <div>
+                        <h3 class="card-title" data-i18n="analytics">Analytics</h3>
+                    </div>
+                </div>
+                <p class="card-description" data-i18n="analytics_description">
+                    View detailed analytics about your file sharing usage and performance metrics.
+                </p>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="avgSpeed">0 MB/s</div>
+                        <div class="stat-label" data-i18n="avg_speed">Avg Speed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="successRate">100%</div>
+                        <div class="stat-label" data-i18n="success_rate">Success</div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <button class="action-button" id="viewAnalyticsBtn" onclick="window.dashboard.viewAnalytics()">
+                        <span data-i18n="view_analytics">View Analytics</span>
+                        →
+                    </button>
+                    <span class="status-badge status-ready" data-i18n="ready">Ready</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <!-- Footer -->
-    <footer>
-        <div class="logo-container">
-            <svg class="icon logo">
-                <use xlink:href="#wifi-tethering" />
-            </svg>
-        </div>
-        <div class="text-container">
-            <div id="displayName" class="text-line"></div>
-            <div class="font-body2 text-line" data-i18n="you_discovered">You can be discovered by everyone on this network</div>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Docs</h3>
+                    <ul class="footer-links">
+                        <li><a href="about.html" data-i18n="nav_about">About</a></li>
+                        <li><a href="faq.html" data-i18n="nav_faq">FAQ</a></li>
+                        <li><a href="blog.html" data-i18n="nav_blog">Blog</a></li>
+                        <li><a href="#" data-i18n="user_guide">User Guide</a></li>
+                        <li><a href="#" data-i18n="api_reference">API Reference</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="external" data-i18n="github_discussions">GitHub Discussions</a></li>
+                        <li><a href="#" class="external" data-i18n="discord">Discord Server</a></li>
+                        <li><a href="#" class="external" data-i18n="reddit">Reddit Community</a></li>
+                        <li><a href="#" class="external" data-i18n="stack_overflow">Stack Overflow</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>More</h3>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html" data-i18n="nav_privacy">Privacy Policy</a></li>
+                        <li><a href="terms.html" data-i18n="nav_terms">Terms of Service</a></li>
+                        <li><a href="#" class="external" data-i18n="github">GitHub</a></li>
+                        <li><a href="#" class="external" data-i18n="twitter">Twitter</a></li>
+                        <li><a href="#" data-i18n="changelog">Changelog</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                    </svg>
+                    <span>DropShare</span>
+                </div>
+                <div class="footer-copyright">
+                    <p>Copyright © 2024 DropShare and contributors.<br>
+                    Open source file sharing solution. Built with ❤️ for the community.</p>
+                </div>
+            </div>
         </div>
     </footer>
-    <!-- Receive Dialog -->
-    <x-dialog id="receiveDialog">
-        <x-background class="full center">
-            <x-paper shadow="2">
-                <h3 data-i18n="file_received">File Received</h3>
-                <div class="font-subheading" id="fileName" data-i18n=""></div>
-                <div class="font-body2" id="fileSize"></div>
-                <div class='preview' style="visibility: hidden;">
-                    <img id='img-preview' src="">
-                </div>
-                <div class="row">
-                    <label for="autoDownload" class="grow" data-i18n="ask_save_files">Ask to save each file before downloading</label>
-                    <input type="checkbox" id="autoDownload" checked="">
-                </div>
-                <div class="row-reverse">
-                    <a class="button" close id="download" title="Download File" autofocus data-i18n="save">Save</a>
-                    <button class="button" close data-i18n="ignore">Ignore</button>
-                </div>
-            </x-paper>
-        </x-background>
-    </x-dialog>
-    <!-- Send Text Dialog -->
-    <x-dialog id="sendTextDialog">
-        <form action="#">
+
+    <!-- Hidden functional elements (for compatibility) -->
+    <div class="dialog-container">
+        <x-peers class="center" style="display: none;"></x-peers>
+        <x-no-peers style="display: none;">
+            <h2 data-i18n="open_snapdrop">Open DropShare on other devices to send files</h2>
+        </x-no-peers>
+        
+        <!-- Footer (hidden but functional) -->
+        <footer style="display: none;">
+            <div class="logo-container">
+                <svg class="icon logo">
+                    <use xlink:href="#wifi-tethering" />
+                </svg>
+            </div>
+            <div class="text-container">
+                <div id="displayName" class="text-line"></div>
+                <div class="font-body2 text-line" data-i18n="you_discovered">You can be discovered by everyone on this network</div>
+            </div>
+        </footer>
+
+        <!-- All existing dialogs (hidden) -->
+        <x-dialog id="receiveDialog" style="display: none;">
             <x-background class="full center">
                 <x-paper shadow="2">
-                    <h3 data-i18n="send_message">Send a Message</h3>
-                    <div id="textInput" class="textarea" role="textbox" data-placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
+                    <h3 data-i18n="file_received">File Received</h3>
+                    <div class="font-subheading" id="fileName" data-i18n=""></div>
+                    <div class="font-body2" id="fileSize"></div>
+                    <div class='preview' style="visibility: hidden;">
+                        <img id='img-preview' src="">
+                    </div>
+                    <div class="row">
+                        <label for="autoDownload" class="grow" data-i18n="ask_save_files">Ask to save each file before downloading</label>
+                        <input type="checkbox" id="autoDownload" checked="">
+                    </div>
                     <div class="row-reverse">
-                        <button class="button" type="submit" close data-i18n="send">Send</button>
-                        <a class="button" close data-i18n="cancel">Cancel</a>
+                        <a class="button" close id="download" title="Download File" autofocus data-i18n="save">Save</a>
+                        <button class="button" close data-i18n="ignore">Ignore</button>
                     </div>
                 </x-paper>
             </x-background>
-        </form>
-    </x-dialog>
-    <!-- Receive Text Dialog -->
-    <x-dialog id="receiveTextDialog">
-        <x-background class="full center">
-            <x-paper shadow="2">
-                <h3 data-i18n="message_received">Message Received</h3>
-                <div class="font-subheading" id="text"></div>
-                <div class="row-reverse">
-                    <button class="button" id="copy" close autofocus data-i18n="copy">Copy</button>
-                    <button class="button" close data-i18n="close">Close</button>
-                </div>
-            </x-paper>
-        </x-background>
-    </x-dialog>
-    <!-- Toast -->
-    <div class="toast-container full center">
-        <x-toast class="row" shadow="1" id="toast">
-            <span id="toast-text" data-i18n="file_transfer_completed">File Transfer Completed</span>
-        </x-toast>
+        </x-dialog>
+
+        <x-dialog id="sendTextDialog" style="display: none;">
+            <form action="#">
+                <x-background class="full center">
+                    <x-paper shadow="2">
+                        <h3 data-i18n="send_message">Send a Message</h3>
+                        <div id="textInput" class="textarea" role="textbox" data-placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
+                        <div class="row-reverse">
+                            <button class="button" type="submit" close data-i18n="send">Send</button>
+                            <a class="button" close data-i18n="cancel">Cancel</a>
+                        </div>
+                    </x-paper>
+                </x-background>
+            </form>
+        </x-dialog>
+
+        <x-dialog id="receiveTextDialog" style="display: none;">
+            <x-background class="full center">
+                <x-paper shadow="2">
+                    <h3 data-i18n="message_received">Message Received</h3>
+                    <div class="font-subheading" id="text"></div>
+                    <div class="row-reverse">
+                        <button class="button" id="copy" close autofocus data-i18n="copy">Copy</button>
+                        <button class="button" close data-i18n="close">Close</button>
+                    </div>
+                </x-paper>
+            </x-background>
+        </x-dialog>
+
+        <div class="toast-container full center">
+            <x-toast class="row" shadow="1" id="toast">
+                <span id="toast-text" data-i18n="file_transfer_completed">File Transfer Completed</span>
+            </x-toast>
+        </div>
     </div>
-    
-    <!-- Transfer History Dialog -->
-    <x-dialog id="transferHistoryDialog">
-        <x-background class="full center">
-            <x-paper shadow="2" class="transfer-history-dialog">
-                <div class="transfer-history-header">
-                    <h3 data-i18n="transfer_history">Transfer History</h3>
-                    <button class="close-btn" close>
-                        <svg class="icon">
-                            <use xlink:href="#close" />
-                        </svg>
-                    </button>
-                </div>
-                
-                <div class="transfer-history-stats">
-                    <div class="stat-item">
-                        <span class="stat-label" data-i18n="total_transfers">Total Transfers</span>
-                        <span class="stat-value" id="totalTransfers">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label" data-i18n="total_size">Total Size</span>
-                        <span class="stat-value" id="totalSize">0 B</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label" data-i18n="most_common_type">Most Common Type</span>
-                        <span class="stat-value" id="mostCommonType">-</span>
-                    </div>
-                </div>
-                
-                <div class="transfer-history-controls">
-                    <div class="search-container">
-                        <input type="text" id="historySearch" placeholder="Search history..." data-i18n-placeholder="search_history">
-                    </div>
-                    
-                    <div class="filter-container">
-                        <select id="typeFilter">
-                            <option value="all" data-i18n="filter_all">All</option>
-                            <option value="sent" data-i18n="filter_sent">Sent</option>
-                            <option value="received" data-i18n="filter_received">Received</option>
-                            <option value="file" data-i18n="filter_files">Files</option>
-                            <option value="text" data-i18n="filter_messages">Messages</option>
-                        </select>
-                        
-                        <select id="sortBy">
-                            <option value="time_desc" data-i18n="sort_time_desc">Latest first</option>
-                            <option value="time_asc" data-i18n="sort_time_asc">Oldest first</option>
-                            <option value="size_desc" data-i18n="sort_size_desc">Largest first</option>
-                            <option value="size_asc" data-i18n="sort_size_asc">Smallest first</option>
-                            <option value="name_asc" data-i18n="sort_name_asc">Name A-Z</option>
-                            <option value="name_desc" data-i18n="sort_name_desc">Name Z-A</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="transfer-history-list" id="historyList">
-                    <div class="no-history" id="noHistory" data-i18n="no_history">No transfer history yet</div>
-                </div>
-                
-                <div class="transfer-history-pagination" id="historyPagination" style="display: none;">
-                    <button id="prevPage" disabled>‹</button>
-                    <span id="pageInfo">1 / 1</span>
-                    <button id="nextPage" disabled>›</button>
-                </div>
-                
-                <div class="transfer-history-actions">
-                    <button class="button secondary" id="exportHistory" data-i18n="export_history">Export History</button>
-                    <button class="button danger" id="clearHistory" data-i18n="clear_history">Clear History</button>
-                </div>
-            </x-paper>
-        </x-background>
-    </x-dialog>
-    <!-- About Page -->
-    <x-about id="about" class="full center column" style="display: none;">
-        <section class="center column fade-in">
-            <header class="row-reverse">
-                <a href="#" class="close icon-button">
-                    <svg class="icon">
-                        <use xlink:href="#close" />
-                    </svg>
-                </a>
-            </header>
-            <svg class="icon logo">
-                <use xlink:href="#wifi-tethering" />
-            </svg>
-            <h1>DropShare</h1>
-            <div class="font-subheading"><span data-i18n="easiest_way">The easiest way to transfer files across devices</span><div style="font-size:10px;"><span data-i18n="modified_by">Modified version by</span> <a href="#" target="_blank">YourNameHere</a></div></div>
-            <div class="row">
-                <a class="icon-button" target="_blank" href="#" title="DropShare on Github" rel="noreferrer">
-                    <svg class="icon">
-                        <use xlink:href="#github" />
-                    </svg>
-                </a>
-                <a class="icon-button" target="_blank" href="#" title="Help cover the server costs!" rel="noreferrer">
-                    <svg class="icon">
-                        <use xlink:href="#monetarization" />
-                    </svg>
-                </a>
-                <a class="icon-button" target="_blank" href="#" title="Tweet about DropShare" rel="noreferrer">
-                    <svg class="icon">
-                        <use xlink:href="#twitter" />
-                    </svg>
-                </a>
-                <a class="icon-button" target="_blank" href="#" title="Frequently asked questions" rel="noreferrer">
-                    <svg class="icon">
-                        <use xlink:href="#help-outline" />
-                    </svg>
-                </a>
-            </div>
-        </section>
-        <x-background></x-background>
-    </x-about>
-    <!-- SVG Icon Library -->
-    <svg style="display: none;">
-        <symbol id="wifi-tethering" viewBox="0 0 24 24">
-            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"></path>
-        </symbol>
-        <symbol id="desktop-mac" viewBox="0 0 24 24">
-            <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z"></path>
-        </symbol>
-        <symbol id="windows-desktop" viewBox="0 0 24 24">
-            <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z M4 7h4v4H4z M10 7h4v4h-4z M4 13h4v2H4z M10 13h4v2h-4z M16 7h4v4h-4z M16 13h4v2h-4z"></path>
-        </symbol>
-        <symbol id="desktop-linux" viewBox="0 0 24 24">
-            <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z"></path>
-        </symbol>
-        <symbol id="phone-iphone" viewBox="0 0 24 24">
-            <path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"></path>
-        </symbol>
-        <symbol id="phone-android" viewBox="0 0 24 24">
-            <path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm-2 20h-4v-1h4v1zm3.25-3H6.75V4h10.5v14z"></path>
-        </symbol>
-        <symbol id="tablet-mac" viewBox="0 0 24 24">
-            <path d="M18.5 0h-14C3.12 0 2 1.12 2 2.5v19C2 22.88 3.12 24 4.5 24h14c1.38 0 2.5-1.12 2.5-2.5v-19C21 1.12 19.88 0 18.5 0zm-7 23c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7.5-4H4V3h15v16z"></path>
-        </symbol>
-        <symbol id="tablet-android" viewBox="0 0 24 24">
-            <path d="M18 0H6C4.34 0 3 1.34 3 3v18c0 1.66 1.34 3 3 3h12c1.66 0 3-1.34 3-3V3c0-1.66-1.34-3-3-3zm-4 22h-4v-1h4v1zm5.25-3H4.75V3h14.5v16z"></path>
-        </symbol>
-        <symbol id="info-outline" viewBox="0 0 24 24">
-            <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
-        </symbol>
-        <symbol id="close" viewBox="0 0 24 24">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-        </symbol>
-        <symbol id="help-outline" viewBox="0 0 24 24">
-            <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
-        </symbol>
-        <symbol id="twitter">
-            <path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z" />
-        </symbol>
-        <symbol id="github">
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-        </symbol>
-        <g id="notifications">
-            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
-        </g>
-        <symbol id="homescreen" viewBox="0 0 24 24">
-            <path d="M18 1.01L8 1c-1.1 0-2 .9-2 2v3h2V5h10v14H8v-1H6v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM10 15h2V8H5v2h3.59L3 15.59 4.41 17 10 11.41z" />
-            <path d="M0 0h24v24H0V0z" fill="none" />
-        </symbol>
-        <symbol id="icon-theme" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></symbol>
-        
-        <!-- Add the sun icon for light mode -->
-        <symbol id="icon-sun" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0 c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2 c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1 S11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0 s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06 c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41 c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36 c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z" /></symbol>
-        
-        <!-- History icon -->
-        <symbol id="history" viewBox="0 0 24 24">
-            <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
-        </symbol>
-        
-        <!-- History icon alias -->
-        <symbol id="history-icon" viewBox="0 0 24 24">
-            <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
-        </symbol>
-        
-        <!-- Room icon -->
-        <symbol id="room-icon" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </symbol>
-        
-        <!-- Analytics icon -->
-        <symbol id="analytics-icon" viewBox="0 0 24 24">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-        </symbol>
-        
-        <!-- Converter icon -->
-        <symbol id="converter-icon" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-        </symbol>
-        
-        <!-- More vertical icon -->
-        <symbol id="more-vert" viewBox="0 0 24 24">
-            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-        </symbol>
-    </svg>
+
     <!-- Scripts -->
-    <!-- Load the language loader first -->
     <script src="scripts/i18n/languages.js"></script>
-    <!-- Load other scripts -->
     <script src="scripts/network.js"></script>
     <script src="scripts/ui.js"></script>
-    <script src="scripts/transfer-animations.js"></script>
-    <script src="scripts/mobile-enhancements.js"></script>
-    <script src="scripts/transfer-history.js"></script>
-    <script src="scripts/transfer-history-ui.js"></script>
-    <script src="scripts/private-rooms.js"></script>
-    <script src="scripts/file-preview.js"></script>
-    <script src="scripts/analytics-enhanced.js"></script>
-    <script src="scripts/analytics-dashboard.js"></script>
-    <script src="scripts/analytics-integration.js"></script>
     <script src="scripts/theme.js" async></script>
     <script src="scripts/clipboard.js" async></script>
-    <script src="scripts/file-converter.js"></script>
+    <script src="scripts/private-rooms.js"></script>
+    <script src="scripts/transfer-history.js"></script>
+    <script src="scripts/analytics-enhanced.js"></script>
 
-    <!-- 对话菜单的JavaScript -->
+    <!-- Dashboard Logic -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 汉堡菜单功能
-            const hamburger = document.getElementById('hamburger');
-            const navLinks = document.getElementById('nav-links');
-            
-            hamburger.addEventListener('click', function() {
-                navLinks.classList.toggle('show');
-            });
-            
-            // 点击外部区域关闭菜单
-            document.addEventListener('click', function(event) {
-                if (!hamburger.contains(event.target) && !navLinks.contains(event.target)) {
-                    navLinks.classList.remove('show');
-                }
-            });
-            
-            // 初始化多语言支持
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
+        class DropShareDashboard {
+            constructor() {
+                this.stats = {
+                    connectedDevices: 0,
+                    filesShared: 0,
+                    activeRooms: 0,
+                    roomMembers: 0,
+                    conversionsCount: 0,
+                    totalTransfers: 0,
+                    totalSize: 0,
+                    avgSpeed: 0,
+                    successRate: 100
+                };
+                
+                this.init();
             }
-            
-            
-            // 统计仪表板按钮事件
-            const analyticsBtn = document.getElementById('analyticsBtn');
-            if (analyticsBtn) {
-                analyticsBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (window.analyticsDashboard) {
-                        window.analyticsDashboard.show();
+
+            init() {
+                this.initializeComponents();
+                this.bindEvents();
+                this.loadStats();
+                this.updateStats();
+                
+                // Initialize multilingual support
+                if (window.DROPSHARE_I18N) {
+                    window.DROPSHARE_I18N.init();
+                }
+            }
+
+            initializeComponents() {
+                // Initialize all feature modules
+                setTimeout(() => {
+                    try {
+                        
+                        // Private Rooms
+                        if (typeof PrivateRoomManager !== 'undefined') {
+                            window.privateRoomManager = new PrivateRoomManager();
+                            console.log('✅ Private room manager initialized');
+                        }
+                        
+                        // Transfer History
+                        if (typeof TransferHistory !== 'undefined') {
+                            window.transferHistory = new TransferHistory();
+                            console.log('✅ Transfer history initialized');
+                        }
+                        
+                        // Analytics
+                        if (typeof AnalyticsEnhanced !== 'undefined') {
+                            window.analytics = new AnalyticsEnhanced();
+                            console.log('✅ Analytics initialized');
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error initializing components:', error);
+                    }
+                }, 1000);
+            }
+
+            bindEvents() {
+                // Theme toggle
+                const themeBtn = document.getElementById('theme');
+                if (themeBtn) {
+                    themeBtn.addEventListener('click', this.toggleTheme.bind(this));
+                }
+
+                // Feature card actions
+                document.getElementById('createRoomBtn')?.addEventListener('click', this.createRoom.bind(this));
+                document.getElementById('viewHistoryBtn')?.addEventListener('click', this.viewHistory.bind(this));
+                document.getElementById('viewAnalyticsBtn')?.addEventListener('click', this.viewAnalytics.bind(this));
+
+                // Card hover effects
+                document.querySelectorAll('.feature-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('.action-button')) return;
+                        const button = card.querySelector('.action-button');
+                        if (button) button.click();
+                    });
+                });
+
+                // Listen for network events to update stats
+                if (typeof Events !== 'undefined') {
+                    Events.on('peer-joined', () => this.updateDeviceCount());
+                    Events.on('peer-left', () => this.updateDeviceCount());
+                    Events.on('file-transfer-completed', () => this.incrementFileCount());
+                }
+            }
+
+            toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            }
+
+            createRoom() {
+                if (window.privateRoomManager) {
+                    window.privateRoomManager.showRoomDialog();
+                } else {
+                    this.showNotification('Private rooms feature is loading...', 'info');
+                }
+                this.trackAction('room_creation_attempted');
+            }
+
+
+            viewHistory() {
+                this.showHistoryInterface();
+                this.trackAction('history_viewed');
+            }
+
+            viewAnalytics() {
+                this.showAnalyticsInterface();
+                this.trackAction('analytics_viewed');
+            }
+
+            showHistoryInterface() {
+                const dialog = document.createElement('div');
+                dialog.className = 'history-interface';
+                dialog.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center;">
+                        <div style="background: var(--surface-color); padding: 40px; border-radius: var(--border-radius); max-width: 800px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                <h2>📋 Transfer History</h2>
+                                <button onclick="this.closest('.history-interface').remove()" style="background: var(--border-color); color: var(--text-primary); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">×</button>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                                <div style="text-align: center; padding: 20px; background: var(--background-color); border-radius: 8px;">
+                                    <div style="font-size: 24px; font-weight: bold; color: var(--primary-color);">${this.stats.totalTransfers}</div>
+                                    <div style="color: var(--text-secondary);">Total Transfers</div>
+                                </div>
+                                <div style="text-align: center; padding: 20px; background: var(--background-color); border-radius: 8px;">
+                                    <div style="font-size: 24px; font-weight: bold; color: var(--success-color);">${this.stats.totalSize} MB</div>
+                                    <div style="color: var(--text-secondary);">Total Size</div>
+                                </div>
+                                <div style="text-align: center; padding: 20px; background: var(--background-color); border-radius: 8px;">
+                                    <div style="font-size: 24px; font-weight: bold; color: var(--warning-color);">${this.stats.avgSpeed} MB/s</div>
+                                    <div style="color: var(--text-secondary);">Avg Speed</div>
+                                </div>
+                            </div>
+                            <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
+                                <h4 style="margin-bottom: 15px;">Recent Transfers</h4>
+                                <div style="color: var(--text-secondary); text-align: center; padding: 40px;">
+                                    No transfers yet. Start sharing files to see your history here.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(dialog);
+            }
+
+            showAnalyticsInterface() {
+                const dialog = document.createElement('div');
+                dialog.className = 'analytics-interface';
+                dialog.innerHTML = `
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 2000; display: flex; align-items: center; justify-content: center;">
+                        <div style="background: var(--surface-color); padding: 40px; border-radius: var(--border-radius); max-width: 900px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                                <h2>📊 Analytics Dashboard</h2>
+                                <button onclick="this.closest('.analytics-interface').remove()" style="background: var(--border-color); color: var(--text-primary); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">×</button>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                                <div style="text-align: center; padding: 20px; background: var(--background-color); border-radius: 8px;">
+                                    <div style="font-size: 32px; margin-bottom: 10px;">📁</div>
+                                    <div style="font-size: 24px; font-weight: bold; color: var(--primary-color);">${this.stats.filesShared}</div>
+                                    <div style="color: var(--text-secondary);">Files Shared</div>
+                                </div>
+                                <div style="text-align: center; padding: 20px; background: var(--background-color); border-radius: 8px;">
+                                    <div style="font-size: 32px; margin-bottom: 10px;">👥</div>
+                                    <div style="font-size: 24px; font-weight: bold; color: var(--success-color);">${this.stats.connectedDevices}</div>
+                                    <div style="color: var(--text-secondary);">Connected Devices</div>
+                                </div>
+                                <div style="text-align: center; padding: 20px; background: var(--background-color); border-radius: 8px;">
+                                    <div style="font-size: 32px; margin-bottom: 10px;">🔄</div>
+                                    <div style="font-size: 24px; font-weight: bold; color: var(--warning-color);">${this.stats.conversionsCount}</div>
+                                    <div style="color: var(--text-secondary);">Conversions</div>
+                                </div>
+                                <div style="text-align: center; padding: 20px; background: var(--background-color); border-radius: 8px;">
+                                    <div style="font-size: 32px; margin-bottom: 10px;">✅</div>
+                                    <div style="font-size: 24px; font-weight: bold; color: var(--success-color);">${this.stats.successRate}%</div>
+                                    <div style="color: var(--text-secondary);">Success Rate</div>
+                                </div>
+                            </div>
+                            <div style="color: var(--text-secondary); text-align: center; margin-top: 20px;">
+                                Last updated: ${new Date().toLocaleString()}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(dialog);
+            }
+
+            loadStats() {
+                // Load stats from localStorage
+                const saved = localStorage.getItem('dropshare_stats');
+                if (saved) {
+                    this.stats = {...this.stats, ...JSON.parse(saved)};
+                }
+            }
+
+            saveStats() {
+                localStorage.setItem('dropshare_stats', JSON.stringify(this.stats));
+            }
+
+            updateStats() {
+                // Update UI with current stats
+                const elements = {
+                    connectedDevices: document.getElementById('connectedDevices'),
+                    filesShared: document.getElementById('filesShared'),
+                    activeRooms: document.getElementById('activeRooms'),
+                    roomMembers: document.getElementById('roomMembers'),
+                    conversionsCount: document.getElementById('conversionsCount'),
+                    totalTransfers: document.getElementById('totalTransfers'),
+                    totalSize: document.getElementById('totalSize'),
+                    avgSpeed: document.getElementById('avgSpeed'),
+                    successRate: document.getElementById('successRate')
+                };
+
+                Object.keys(elements).forEach(key => {
+                    if (elements[key]) {
+                        const value = this.stats[key];
+                        if (key === 'totalSize') {
+                            elements[key].textContent = value + ' MB';
+                        } else if (key === 'avgSpeed') {
+                            elements[key].textContent = value + ' MB/s';
+                        } else if (key === 'successRate') {
+                            elements[key].textContent = value + '%';
+                        } else {
+                            elements[key].textContent = value;
+                        }
                     }
                 });
+
+                this.saveStats();
             }
+
+            updateDeviceCount() {
+                if (window.peersManager) {
+                    this.stats.connectedDevices = window.peersManager._peers.size || 0;
+                    this.updateStats();
+                }
+            }
+
+            incrementFileCount() {
+                this.stats.filesShared++;
+                this.stats.totalTransfers++;
+                this.updateStats();
+            }
+
+            trackAction(action) {
+                console.log('Action:', action);
+                if (window.analytics) {
+                    window.analytics.trackEvent('dashboard_action', { action });
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                const toast = document.getElementById('toast-text');
+                if (toast) {
+                    toast.textContent = message;
+                    const container = toast.closest('#toast');
+                    if (container) {
+                        container.setAttribute('show', '1');
+                        setTimeout(() => {
+                            container.removeAttribute('show');
+                        }, 3000);
+                    }
+                }
+            }
+        }
+
+        // Initialize dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.dashboard = new DropShareDashboard();
             
-            // Initialize Analytics Components
-            if (window.AnalyticsEnhanced) {
-                window.analyticsEnhanced = new window.AnalyticsEnhanced();
-            }
-            
-            if (window.AnalyticsDashboard) {
-                window.analyticsDashboard = new window.AnalyticsDashboard();
-            }
+            // Set initial theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
         });
     </script>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics-compat.js"></script>
-    <script src="scripts/firebase-analytics.js"></script>
-    
+
     <!-- Sounds -->
     <audio id="blop" autobuffer="true">
         <source src="/sounds/blop.mp3" type="audio/mpeg">
         <source src="/sounds/blop.ogg" type="audio/ogg">
     </audio>
+
     <!-- no script -->
     <noscript>
-        <x-noscript class="full center column">
-            <h1 data-i18n="enable_js">Enable JavaScript</h1>
-            <h3 data-i18n="snapdrop_js_only">DropShare works only with JavaScript</h3>
-        </x-noscript>
-        <style>
-        x-noscript {
-            background: #599cfc;
-            color: white;
-            z-index: 2;
-        }
-
-        a[href="#info"] {
-            color: white;
-        }
-        </style>
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #599cfc; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;">
+            <h1>Enable JavaScript</h1>
+            <h3>DropShare works only with JavaScript</h3>
+        </div>
     </noscript>
-    
-    <!-- 在其他脚本之前添加particles.js -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            particlesJS('particles-js', {
-                "particles": {
-                    "number": {
-                        "value": 160,
-                        "density": {
-                            "enable": true,
-                            "value_area": 800
-                        }
-                    },
-                    "color": {
-                        "value": "#ffffff"
-                    },
-                    "shape": {
-                        "type": "circle"
-                    },
-                    "opacity": {
-                        "value": 0.5,
-                        "random": true,
-                        "anim": {
-                            "enable": true,
-                            "speed": 1,
-                            "opacity_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "size": {
-                        "value": 3,
-                        "random": true,
-                        "anim": {
-                            "enable": false
-                        }
-                    },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 150,
-                        "color": "#ffffff",
-                        "opacity": 0.2,
-                        "width": 1
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": 1,
-                        "direction": "none",
-                        "random": true,
-                        "straight": false,
-                        "out_mode": "out",
-                        "bounce": false
-                    }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": true,
-                            "mode": "grab"
-                        },
-                        "onclick": {
-                            "enable": true,
-                            "mode": "push"
-                        },
-                        "resize": true
-                    },
-                    "modes": {
-                        "grab": {
-                            "distance": 140,
-                            "line_linked": {
-                                "opacity": 0.6
-                            }
-                        },
-                        "push": {
-                            "particles_nb": 4
-                        }
-                    }
-                },
-                "retina_detect": true
-            });
-        });
-    </script>
 </body>
 
 </html>

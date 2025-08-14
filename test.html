@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { margin: 0; padding: 20px; }
+        .header-test {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            display: flex !important;
+            justify-content: flex-end !important;
+            align-items: center !important;
+            padding: 16px !important;
+            background: red !important;
+            z-index: 9999 !important;
+        }
+        .lang-selector select {
+            margin-right: 10px;
+            padding: 5px 10px;
+        }
+        .icon-button {
+            background: blue;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-test">
+        <div class="lang-selector">
+            <select>
+                <option>English</option>
+                <option>中文</option>
+            </select>
+        </div>
+        <a href="#" class="icon-button">Theme</a>
+    </div>
+    <div style="margin-top: 100px;">
+        <h1>测试页面</h1>
+        <p>这是测试内容，header应该在右上角显示红色背景</p>
+    </div>
+</body>
+</html>

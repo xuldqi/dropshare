@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片转换器 - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            padding: 20px;
+            background: var(--bg-color);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .converter-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-color-secondary);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: var(--bg-color-secondary);
+        }
+        
+        .format-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .format-option {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            background: var(--surface-color);
+        }
+        
+        .format-option:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .format-option.selected {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .settings-panel {
+            background: var(--bg-color-secondary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .setting-group {
+            margin-bottom: 15px;
+        }
+        
+        .setting-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .setting-group input, .setting-group select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--surface-color);
+            color: var(--text-color);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-color-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-color-secondary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .result-info h4 {
+            margin: 0 0 5px 0;
+        }
+        
+        .result-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* 预设按钮 */
+        .preset-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        
+        .preset-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--surface-color);
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .preset-btn:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .preset-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        /* 质量信息 */
+        .quality-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        
+        .compression-rate, .estimated-size {
+            padding: 4px 8px;
+            background: var(--bg-color-secondary);
+            border-radius: 4px;
+        }
+        
+        /* 尺寸输入 */
+        .size-inputs {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .size-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .size-input-group input {
+            width: 80px;
+            padding: 6px 8px;
+        }
+        
+        .size-input-group span {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        
+        .size-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        
+        /* 压缩预览 */
+        .compression-preview {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        
+        .preview-stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .stat-value.positive {
+            color: var(--success-color);
+        }
+        
+        .stat-value.negative {
+            color: var(--error-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>🖼️ 图片转换器</h1>
+        <a href="index.html" class="back-button">← 返回首页</a>
+    </div>
+    
+    <div class="converter-container">
+        <div class="upload-area" id="uploadArea">
+            <div style="font-size: 3em; margin-bottom: 15px;">📁</div>
+            <h3>拖拽图片到这里或点击选择</h3>
+            <p style="color: var(--text-secondary);">支持 JPG, PNG, GIF, BMP, WebP 格式</p>
+            <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+            <button class="button primary" onclick="document.getElementById('fileInput').click()">选择图片</button>
+        </div>
+        
+        <div id="conversionPanel" style="display: none;">
+            <div id="filePreview"></div>
+            
+            <h3>选择输出格式：</h3>
+            <div class="format-selector">
+                <div class="format-option" data-format="jpeg">JPEG</div>
+                <div class="format-option" data-format="png">PNG</div>
+                <div class="format-option" data-format="webp">WebP</div>
+                <div class="format-option" data-format="gif">GIF</div>
+                <div class="format-option" data-format="bmp">BMP</div>
+            </div>
+            
+            <div class="settings-panel">
+                <h4>转换设置</h4>
+                
+                <!-- 快速预设 -->
+                <div class="setting-group">
+                    <label>快速预设:</label>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-preset="high-quality">高质量</button>
+                        <button class="preset-btn" data-preset="balanced">平衡</button>
+                        <button class="preset-btn" data-preset="high-compress">高压缩</button>
+                        <button class="preset-btn" data-preset="web-optimized">网页优化</button>
+                    </div>
+                </div>
+                
+                <!-- 图片质量 -->
+                <div class="setting-group">
+                    <label for="qualitySlider">图片质量: <span id="qualityValue">80</span>%</label>
+                    <input type="range" id="qualitySlider" min="1" max="100" value="80">
+                    <div class="quality-info">
+                        <span class="compression-rate">压缩率: <strong id="compressionRate">-</strong></span>
+                        <span class="estimated-size">预估大小: <strong id="estimatedSize">-</strong></span>
+                    </div>
+                </div>
+                
+                <!-- 尺寸设置 -->
+                <div class="setting-group">
+                    <label>图片尺寸:</label>
+                    <div class="size-inputs">
+                        <div class="size-input-group">
+                            <label for="widthInput">宽度:</label>
+                            <input type="number" id="widthInput" placeholder="原始">
+                            <span>px</span>
+                        </div>
+                        <div class="size-input-group">
+                            <label for="heightInput">高度:</label>
+                            <input type="number" id="heightInput" placeholder="原始">
+                            <span>px</span>
+                        </div>
+                    </div>
+                    <div class="size-info">
+                        <span id="originalDimensions">原始: -</span>
+                        <span id="newDimensions">新尺寸: -</span>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="maintainRatio" checked>
+                        保持宽高比
+                    </label>
+                </div>
+                
+                <!-- 压缩预览 -->
+                <div class="compression-preview">
+                    <div class="preview-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">文件大小变化</span>
+                            <span class="stat-value" id="sizeChange">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">压缩效果</span>
+                            <span class="stat-value" id="compressionEffect">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="button primary" id="convertBtn" disabled>开始转换</button>
+                <button class="button" id="clearBtn">重新选择</button>
+            </div>
+            
+            <div id="progressSection" style="display: none; margin-top: 20px;">
+                <h4>转换进度:</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div id="progressText">准备转换...</div>
+            </div>
+            
+            <div id="resultsSection" style="display: none; margin-top: 30px;">
+                <h3>转换结果:</h3>
+                <div id="resultsList"></div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="button primary" id="shareAllBtn">分享所有文件</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        class ImageConverter {
+            constructor() {
+                this.selectedFiles = [];
+                this.selectedFormat = '';
+                this.convertedFiles = [];
+                this.originalImages = []; // 存储原始图片信息
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                const uploadArea = document.getElementById('uploadArea');
+                const fileInput = document.getElementById('fileInput');
+                const formatOptions = document.querySelectorAll('.format-option');
+                const convertBtn = document.getElementById('convertBtn');
+                const clearBtn = document.getElementById('clearBtn');
+                const qualitySlider = document.getElementById('qualitySlider');
+                const shareAllBtn = document.getElementById('shareAllBtn');
+                
+                // 拖拽上传
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    this.handleFiles(e.dataTransfer.files);
+                });
+                
+                // 文件选择
+                fileInput.addEventListener('change', (e) => {
+                    this.handleFiles(e.target.files);
+                });
+                
+                // 格式选择
+                formatOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        formatOptions.forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                        this.selectedFormat = option.dataset.format;
+                        convertBtn.disabled = false;
+                    });
+                });
+                
+                // 质量滑块
+                qualitySlider.addEventListener('input', (e) => {
+                    document.getElementById('qualityValue').textContent = e.target.value;
+                });
+                
+                // 转换按钮
+                convertBtn.addEventListener('click', () => {
+                    this.startConversion();
+                });
+                
+                // 清空按钮
+                clearBtn.addEventListener('click', () => {
+                    this.reset();
+                });
+                
+                // 分享按钮
+                shareAllBtn.addEventListener('click', () => {
+                    this.shareAllFiles();
+                });
+            }
+            
+            handleFiles(files) {
+                const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+                if (imageFiles.length === 0) {
+                    alert('请选择图片文件！');
+                    return;
+                }
+                
+                this.selectedFiles = imageFiles;
+                this.showPreview();
+                document.getElementById('conversionPanel').style.display = 'block';
+            }
+            
+            showPreview() {
+                const preview = document.getElementById('filePreview');
+                let html = '<h3>选中的图片:</h3>';
+                
+                this.selectedFiles.forEach((file, index) => {
+                    const url = URL.createObjectURL(file);
+                    html += `
+                        <div style="display: inline-block; margin: 10px; text-align: center;">
+                            <img src="${url}" style="max-width: 150px; max-height: 150px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <div style="margin-top: 8px; font-size: 0.9em;">
+                                <strong>${file.name}</strong><br>
+                                ${this.formatFileSize(file.size)}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                preview.innerHTML = html;
+            }
+            
+            async startConversion() {
+                if (!this.selectedFormat) {
+                    alert('请选择输出格式！');
+                    return;
+                }
+                
+                document.getElementById('progressSection').style.display = 'block';
+                document.getElementById('convertBtn').disabled = true;
+                
+                this.convertedFiles = [];
+                
+                for (let i = 0; i < this.selectedFiles.length; i++) {
+                    const file = this.selectedFiles[i];
+                    this.updateProgress((i / this.selectedFiles.length) * 100, `转换中: ${file.name}`);
+                    
+                    try {
+                        const convertedFile = await this.convertImage(file);
+                        this.convertedFiles.push(convertedFile);
+                    } catch (error) {
+                        console.error('转换失败:', error);
+                        alert(`转换 ${file.name} 失败: ${error.message}`);
+                    }
+                }
+                
+                this.updateProgress(100, '转换完成！');
+                setTimeout(() => {
+                    this.showResults();
+                }, 500);
+            }
+            
+            async convertImage(file) {
+                return new Promise((resolve, reject) => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const img = new Image();
+                    
+                    img.onload = () => {
+                        const quality = parseInt(document.getElementById('qualitySlider').value) / 100;
+                        const widthInput = document.getElementById('widthInput').value;
+                        const heightInput = document.getElementById('heightInput').value;
+                        const maintainRatio = document.getElementById('maintainRatio').checked;
+                        
+                        let newWidth = widthInput ? parseInt(widthInput) : img.width;
+                        let newHeight = heightInput ? parseInt(heightInput) : img.height;
+                        
+                        if (maintainRatio && (widthInput || heightInput)) {
+                            const aspectRatio = img.width / img.height;
+                            if (widthInput && !heightInput) {
+                                newHeight = newWidth / aspectRatio;
+                            } else if (heightInput && !widthInput) {
+                                newWidth = newHeight * aspectRatio;
+                            } else if (widthInput && heightInput) {
+                                if (newWidth / newHeight > aspectRatio) {
+                                    newWidth = newHeight * aspectRatio;
+                                } else {
+                                    newHeight = newWidth / aspectRatio;
+                                }
+                            }
+                        }
+                        
+                        canvas.width = newWidth;
+                        canvas.height = newHeight;
+                        
+                        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                        
+                        const mimeType = this.getMimeType(this.selectedFormat);
+                        const newFileName = this.changeFileExtension(file.name, this.selectedFormat);
+                        
+                        canvas.toBlob((blob) => {
+                            if (blob) {
+                                const convertedFile = new File([blob], newFileName, { type: mimeType });
+                                resolve(convertedFile);
+                            } else {
+                                reject(new Error('转换失败'));
+                            }
+                        }, mimeType, quality);
+                    };
+                    
+                    img.onerror = () => reject(new Error('图片加载失败'));
+                    img.src = URL.createObjectURL(file);
+                });
+            }
+            
+            showResults() {
+                const resultsList = document.getElementById('resultsList');
+                let html = '';
+                
+                this.convertedFiles.forEach((file, index) => {
+                    const url = URL.createObjectURL(file);
+                    html += `
+                        <div class="result-item">
+                            <div class="result-info">
+                                <h4>${file.name}</h4>
+                                <p>大小: ${this.formatFileSize(file.size)} | 格式: ${file.type}</p>
+                            </div>
+                            <div class="result-actions">
+                                <button class="button" onclick="imageConverter.downloadFile(${index})">下载</button>
+                                <button class="button primary" onclick="imageConverter.shareFile(${index})">分享</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsList.innerHTML = html;
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('convertBtn').disabled = false;
+            }
+            
+            downloadFile(index) {
+                const file = this.convertedFiles[index];
+                const url = URL.createObjectURL(file);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = file.name;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            
+            shareFile(index) {
+                const file = this.convertedFiles[index];
+                if (window.ui && window.ui.filesQueue) {
+                    window.ui.filesQueue.push(file);
+                    alert(`${file.name} 已添加到分享列表！`);
+                } else {
+                    alert('分享功能暂不可用');
+                }
+            }
+            
+            shareAllFiles() {
+                if (window.ui && window.ui.filesQueue) {
+                    this.convertedFiles.forEach(file => {
+                        window.ui.filesQueue.push(file);
+                    });
+                    alert(`${this.convertedFiles.length} 个文件已添加到分享列表！`);
+                } else {
+                    alert('分享功能暂不可用');
+                }
+            }
+            
+            updateProgress(percent, text) {
+                document.getElementById('progressFill').style.width = percent + '%';
+                document.getElementById('progressText').textContent = text;
+            }
+            
+            reset() {
+                this.selectedFiles = [];
+                this.selectedFormat = '';
+                this.convertedFiles = [];
+                document.getElementById('fileInput').value = '';
+                document.getElementById('conversionPanel').style.display = 'none';
+                document.getElementById('progressSection').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'none';
+                document.querySelectorAll('.format-option').forEach(opt => opt.classList.remove('selected'));
+            }
+            
+            getMimeType(format) {
+                const types = {
+                    'jpeg': 'image/jpeg',
+                    'png': 'image/png',
+                    'webp': 'image/webp',
+                    'gif': 'image/gif',
+                    'bmp': 'image/bmp'
+                };
+                return types[format] || 'image/jpeg';
+            }
+            
+            changeFileExtension(fileName, newExt) {
+                return fileName.replace(/\.[^/.]+$/, '') + '.' + newExt;
+            }
+            
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+        
+        // 初始化
+        let imageConverter;
+        document.addEventListener('DOMContentLoaded', () => {
+            imageConverter = new ImageConverter();
+        });
+    </script>
+</body>
+</html>

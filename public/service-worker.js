@@ -1,6 +1,6 @@
-var CACHE_NAME = 'dropshare-cache-v1';
+// Bump cache to invalidate old entries when deploying UI changes
+var CACHE_NAME = 'dropshare-cache-v3';
 var urlsToCache = [
-  'index.html',
   './',
   'styles.css',
   'scripts/network.js',
@@ -12,12 +12,8 @@ var urlsToCache = [
   'images/favicon-96x96.png',
   'images/apple-touch-icon.png',
   'images/android-chrome-192x192.png',
-  'images/android-chrome-512x512.png',
-  'about.html',
-  'faq.html',
-  'privacy.html',
-  'terms.html',
-  'blog.html'
+  'images/android-chrome-512x512.png'
+  // Intentionally omit HTML files here; we will use a network-first strategy for them
 ];
 
 // Install event - cache resources
@@ -59,36 +55,33 @@ self.addEventListener('activate', function(event) {
 
 // Fetch event - serve from cache or network
 self.addEventListener('fetch', function(event) {
+  const req = event.request;
+  const acceptHeader = req.headers.get('accept') || '';
+  const isHTML = req.mode === 'navigate' || acceptHeader.includes('text/html');
+  const isCSS = req.destination === 'style' || /\.css(\?|$)/.test(req.url);
+
+  // Network-first for HTML and CSS to ensure UI edits are visible immediately
+  if (isHTML || isCSS) {
+    event.respondWith(
+      fetch(req).then(function(networkRes) {
+        const resClone = networkRes.clone();
+        caches.open(CACHE_NAME).then(function(cache) { cache.put(req, resClone); });
+        return networkRes;
+      }).catch(function() {
+        return caches.match(req).then(function(cached) { return cached || caches.match('/'); });
+      })
+    );
+    return;
+  }
+
+  // Default cache-first for other requests
   event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        
-        // Clone the request because it's a one-time use stream
-        var fetchRequest = event.request.clone();
-        
-        return fetch(fetchRequest).then(
-          function(response) {
-            // Check if we received a valid response
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            
-            // Clone the response because it's a one-time use stream
-            var responseToCache = response.clone();
-            
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                // Add the new resource to the cache
-                cache.put(event.request, responseToCache);
-              });
-            
-            return response;
-          }
-      );
+    caches.match(req).then(function(res) {
+      return res || fetch(req).then(function(networkRes) {
+        const resClone = networkRes.clone();
+        caches.open(CACHE_NAME).then(function(cache) { cache.put(req, resClone); });
+        return networkRes;
+      });
     })
   );
 });

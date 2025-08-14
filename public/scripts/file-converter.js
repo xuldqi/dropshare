@@ -613,9 +613,9 @@ class FileConverter {
     }
 }
 
-// 暂时禁用文件转换器初始化
+// 文件转换器初始化
 let fileConverter;
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('File converter initialization skipped');
-    // fileConverter = new FileConverter();
+    console.log('File converter ready for initialization');
+    // fileConverter = new FileConverter(); // 由主页面控制初始化
 });
