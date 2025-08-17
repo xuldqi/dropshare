@@ -1,4 +1,4 @@
-const fr = {
+export default {
     "open_snapdrop": "Ouvrez DropShare sur d'autres appareils pour envoyer des fichiers",
     "click_to_send": "Cliquez pour envoyer des fichiers ou faites un clic droit pour envoyer un message",
     "tap_to_send": "Appuyez pour envoyer des fichiers ou appuyez longuement pour envoyer un message",

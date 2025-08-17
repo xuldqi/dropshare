@@ -1,4 +1,4 @@
-{
+export default {
     "open_snapdrop": "在其他裝置上開啟 DropShare 以傳送檔案",
     "click_to_send": "點擊傳送檔案或右鍵點擊傳送訊息",
     "tap_to_send": "點擊傳送檔案或長按傳送訊息",
@@ -133,6 +133,3 @@
     "faq_new_a4_troubleshooting": "網頁瀏覽器可能會限制背景索引標籤的功能，或在裝置鎖定時限制功能以節省電池和資料。為了可靠的傳輸，最好在兩台裝置上都保持 DropShare 索引標籤作用中且螢幕解鎖，尤其是在進行長時間傳輸時。",
     "faq_back_button": "返回 DropShare"
 }; 
-} } 
-
-} 

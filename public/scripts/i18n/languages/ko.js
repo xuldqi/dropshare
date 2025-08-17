@@ -1,4 +1,4 @@
-const ko = {
+export default {
     "open_snapdrop": "파일을 보내려면 다른 장치에서 DropShare를여십시오",
     "click_to_send": "파일을 보내려면 클릭하거나 메시지를 보내려면 마우스 오른쪽 버튼을 클릭하십시오.",
     "tap_to_send": "파일을 보내려면 탭하거나 메시지를 보내려면 길게 누르십시오.",
