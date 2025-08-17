@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档处理器 - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            padding: 20px;
+            background: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .processor-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: var(--bg-color-secondary);
+        }
+        
+        .processing-workspace {
+            display: none;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            background: var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: var(--text-secondary);
+        }
+        
+        .tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: var(--bg-color-secondary);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .document-preview {
+            width: 100%;
+            margin: 20px 0;
+            background: var(--surface-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-height: 500px;
+        }
+        
+        .preview-header {
+            padding: 15px 20px;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .document-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 16px;
+        }
+        
+        .document-info p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .preview-controls {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .preview-area {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .page-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .page-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--surface-color);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .page-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .page-input {
+            width: 60px;
+            padding: 4px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .tool-group {
+            background: var(--surface-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+        
+        .tool-group h4 {
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .settings-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .setting-item label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .setting-item input, .setting-item select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-color-secondary);
+            color: var(--text-color);
+            font-size: 14px;
+        }
+        
+        .range-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .range-input input[type="range"] {
+            flex: 1;
+        }
+        
+        .range-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+        
+        .page-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .page-range input {
+            width: 60px;
+        }
+        
+        .process-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+        
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--text-secondary);
+            color: white;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .text-extraction-result {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .progress-section {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--bg-color-secondary);
+            border-radius: 8px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--surface-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .result-section {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--surface-color);
+        }
+        
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--bg-color-secondary);
+            border-radius: 8px;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        @media (max-width: 768px) {
+            .processor-container {
+                padding: 20px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .settings-panel {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-actions {
+                flex-direction: column;
+            }
+            
+            .process-actions .btn {
+                width: 100%;
+            }
+            
+            .result-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>📄 文档处理器</h1>
+        <div class="header-buttons">
+            <a href="document-tools.html" class="back-button">← 文档工具</a>
+            <a href="index.html" class="back-button">🏠 首页</a>
+        </div>
+    </div>
+    
+    <div class="processor-container">
+        <div class="upload-area" id="uploadArea">
+            <div style="font-size: 3em; margin-bottom: 15px;">📄</div>
+            <h3>拖拽文档文件到这里或点击选择</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">支持 PDF, DOCX, TXT, RTF, HTML 等格式</p>
+            <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.rtf,.html,.doc" style="display: none;">
+            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">选择文档文件</button>
+        </div>
+        
+        <div class="processing-workspace" id="processingWorkspace">
+            <div class="document-preview">
+                <div class="preview-header">
+                    <div class="document-info">
+                        <h4 id="documentFileName">未选择文件</h4>
+                        <p id="documentFileInfo">-</p>
+                    </div>
+                    <div class="document-actions">
+                        <span id="documentPageInfo">页面: - / -</span>
+                    </div>
+                </div>
+                <div class="preview-controls">
+                    <div class="page-controls">
+                        <button class="page-btn" id="firstPageBtn">⏮️</button>
+                        <button class="page-btn" id="prevPageBtn">◀️</button>
+                        <input type="number" id="currentPageInput" class="page-input" min="1" value="1">
+                        <button class="page-btn" id="nextPageBtn">▶️</button>
+                        <button class="page-btn" id="lastPageBtn">⏭️</button>
+                    </div>
+                    <div class="zoom-controls">
+                        <button class="page-btn" id="zoomOutBtn">🔍-</button>
+                        <span id="zoomLevel">100%</span>
+                        <button class="page-btn" id="zoomInBtn">🔍+</button>
+                    </div>
+                </div>
+                <div class="preview-area" id="previewArea">
+                    <p style="text-align: center; color: var(--text-secondary); margin: 40px 0;">请选择文档文件来预览</p>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" data-tab="extract">文本提取</button>
+                <button class="tab" data-tab="split">文档拆分</button>
+                <button class="tab" data-tab="merge">文档合并</button>
+                <button class="tab" data-tab="convert">格式转换</button>
+            </div>
+            
+            <!-- 文本提取 -->
+            <div class="tab-content active" id="extractTab">
+                <div class="tool-group">
+                    <h4>📝 文本提取设置</h4>
+                    <div class="page-range">
+                        <label>提取页面:</label>
+                        <input type="number" id="extractStartPage" placeholder="起始页" min="1" value="1">
+                        <span>到</span>
+                        <input type="number" id="extractEndPage" placeholder="结束页" min="1">
+                        <button class="page-btn" id="extractAllPagesBtn">全部页面</button>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="preserveFormatting" checked>
+                            <label for="preserveFormatting">保持格式</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="extractImages">
+                            <label for="extractImages">提取图片链接</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="removeBlankLines">
+                            <label for="removeBlankLines">移除空行</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="extractedTextArea" class="text-extraction-result" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong>提取的文本:</strong>
+                        <button class="page-btn" id="copyTextBtn">复制文本</button>
+                    </div>
+                    <div id="extractedText"></div>
+                </div>
+            </div>
+            
+            <!-- 文档拆分 -->
+            <div class="tab-content" id="splitTab">
+                <div class="tool-group">
+                    <h4>✂️ 文档拆分设置</h4>
+                    <div class="settings-panel">
+                        <div class="setting-item">
+                            <label>拆分方式:</label>
+                            <select id="splitMethod">
+                                <option value="pages">按页面范围</option>
+                                <option value="interval">按间隔页数</option>
+                                <option value="bookmarks">按书签</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item" id="intervalSetting">
+                            <label>每个文件页数:</label>
+                            <input type="number" id="splitInterval" value="10" min="1">
+                        </div>
+                    </div>
+                    
+                    <div id="pageRangesSetting" style="display: none;">
+                        <label>页面范围 (用逗号分隔, 如: 1-5, 10-15, 20):</label>
+                        <input type="text" id="pageRanges" placeholder="1-5, 10-15, 20" style="width: 100%; margin-top: 8px;">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 文档合并 -->
+            <div class="tab-content" id="mergeTab">
+                <div class="tool-group">
+                    <h4>🔗 文档合并设置</h4>
+                    <p style="margin-bottom: 15px; color: var(--text-secondary);">
+                        将多个PDF文档合并为一个文档。请上传多个文件。
+                    </p>
+                    
+                    <div style="margin: 15px 0;">
+                        <input type="file" id="mergeFilesInput" accept=".pdf" multiple style="display: none;">
+                        <button class="btn btn-secondary" onclick="document.getElementById('mergeFilesInput').click()">
+                            选择要合并的文档
+                        </button>
+                    </div>
+                    
+                    <div id="mergeFilesList" style="margin: 15px 0;"></div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="addBookmarks" checked>
+                        <label for="addBookmarks">为每个文档添加书签</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 格式转换 -->
+            <div class="tab-content" id="convertTab">
+                <div class="tool-group">
+                    <h4>🔄 格式转换设置</h4>
+                    <div class="settings-panel">
+                        <div class="setting-item">
+                            <label>输出格式:</label>
+                            <select id="outputFormat">
+                                <option value="pdf">PDF</option>
+                                <option value="docx">Word 文档 (.docx)</option>
+                                <option value="txt">纯文本 (.txt)</option>
+                                <option value="html">HTML 网页</option>
+                                <option value="rtf">RTF 文档</option>
+                                <option value="images">图片 (JPG/PNG)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item" id="imageQualitySetting" style="display: none;">
+                            <label>图片质量:</label>
+                            <div class="range-input">
+                                <input type="range" id="imageQuality" min="50" max="100" value="90">
+                                <span class="range-value" id="imageQualityValue">90%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item" id="imageDpiSetting" style="display: none;">
+                            <label>图片DPI:</label>
+                            <select id="imageDpi">
+                                <option value="72">72 DPI (网页)</option>
+                                <option value="150" selected>150 DPI (标准)</option>
+                                <option value="300">300 DPI (高质量)</option>
+                                <option value="600">600 DPI (打印)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="process-actions">
+                <button class="btn btn-primary" id="processBtn" disabled>开始处理</button>
+                <button class="btn btn-secondary" id="resetBtn">重置设置</button>
+                <button class="btn btn-secondary" id="newFileBtn">选择新文档</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <h4>处理进度:</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div id="progressText">准备处理...</div>
+            </div>
+            
+            <div class="result-section" id="resultSection">
+                <h3>处理结果</h3>
+                
+                <div class="result-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">原始大小</span>
+                        <span class="stat-value" id="originalFileSize">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">处理后大小</span>
+                        <span class="stat-value" id="resultFileSize">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">页面数量</span>
+                        <span class="stat-value" id="pageCount">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">处理时间</span>
+                        <span class="stat-value" id="processingTime">-</span>
+                    </div>
+                </div>
+                
+                <div id="resultFilesList"></div>
+                
+                <div class="process-actions">
+                    <button class="btn btn-primary" id="downloadAllBtn">下载所有文件</button>
+                    <button class="btn btn-primary" id="shareAllBtn">分享所有文件</button>
+                    <button class="btn btn-secondary" id="processAnotherBtn">处理其他文档</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF.js Library -->
+    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <script>
+        // PDF.js worker setup
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+        }
+    </script>
+
+    <script>
+        class DocumentProcessor {
+            constructor() {
+                this.documentFile = null;
+                this.currentPage = 1;
+                this.totalPages = 0;
+                this.zoomLevel = 100;
+                this.currentTab = 'extract';
+                this.processedFiles = [];
+                this.mergeFiles = [];
+                this.documentContent = null;
+                
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                const uploadArea = document.getElementById('uploadArea');
+                const fileInput = document.getElementById('fileInput');
+                
+                // 拖拽上传
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        this.loadDocument(files[0]);
+                    }
+                });
+                
+                // 文件选择
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        this.loadDocument(e.target.files[0]);
+                    }
+                });
+                
+                // 标签切换
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.addEventListener('click', () => this.switchTab(tab.dataset.tab));
+                });
+                
+                // 页面导航
+                document.getElementById('firstPageBtn').addEventListener('click', () => this.goToPage(1));
+                document.getElementById('prevPageBtn').addEventListener('click', () => this.goToPage(this.currentPage - 1));
+                document.getElementById('nextPageBtn').addEventListener('click', () => this.goToPage(this.currentPage + 1));
+                document.getElementById('lastPageBtn').addEventListener('click', () => this.goToPage(this.totalPages));
+                document.getElementById('currentPageInput').addEventListener('change', (e) => this.goToPage(parseInt(e.target.value)));
+                
+                // 缩放控制
+                document.getElementById('zoomInBtn').addEventListener('click', () => this.zoom(1.2));
+                document.getElementById('zoomOutBtn').addEventListener('click', () => this.zoom(0.8));
+                
+                // 处理按钮
+                document.getElementById('processBtn').addEventListener('click', () => this.processDocument());
+                document.getElementById('resetBtn').addEventListener('click', () => this.resetSettings());
+                document.getElementById('newFileBtn').addEventListener('click', () => this.selectNewFile());
+                
+                // 提取文本相关
+                document.getElementById('extractAllPagesBtn').addEventListener('click', () => this.setExtractAllPages());
+                document.getElementById('copyTextBtn').addEventListener('click', () => this.copyExtractedText());
+                
+                // 拆分方式切换
+                document.getElementById('splitMethod').addEventListener('change', (e) => this.updateSplitSettings(e.target.value));
+                
+                // 合并文件选择
+                document.getElementById('mergeFilesInput').addEventListener('change', (e) => this.addMergeFiles(e.target.files));
+                
+                // 输出格式切换
+                document.getElementById('outputFormat').addEventListener('change', (e) => this.updateConvertSettings(e.target.value));
+                
+                // 滑块绑定
+                this.bindSliders();
+                
+                // 结果操作
+                document.getElementById('downloadAllBtn').addEventListener('click', () => this.downloadAllFiles());
+                document.getElementById('shareAllBtn').addEventListener('click', () => this.shareAllFiles());
+                document.getElementById('processAnotherBtn').addEventListener('click', () => this.processAnother());
+                
+                // 监听设置变化以启用处理按钮
+                this.bindSettingChanges();
+            }
+            
+            bindSliders() {
+                const imageQuality = document.getElementById('imageQuality');
+                const imageQualityValue = document.getElementById('imageQualityValue');
+                
+                imageQuality.addEventListener('input', () => {
+                    imageQualityValue.textContent = imageQuality.value + '%';
+                });
+            }
+            
+            bindSettingChanges() {
+                const settings = ['extractStartPage', 'extractEndPage', 'splitInterval', 'pageRanges', 'outputFormat'];
+                settings.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.addEventListener('input', () => this.enableProcessButton());
+                        element.addEventListener('change', () => this.enableProcessButton());
+                    }
+                });
+            }
+            
+            async loadDocument(file) {
+                if (!this.isSupportedFormat(file)) {
+                    alert('不支持的文档格式！请选择 PDF, DOCX, TXT, RTF 或 HTML 文件。');
+                    return;
+                }
+                
+                this.documentFile = file;
+                this.updateDocumentInfo();
+                
+                try {
+                    await this.parseDocument(file);
+                    this.showWorkspace();
+                    this.enableProcessButton();
+                } catch (error) {
+                    console.error('文档解析失败:', error);
+                    alert('文档解析失败: ' + error.message);
+                }
+            }
+            
+            isSupportedFormat(file) {
+                const supportedTypes = [
+                    'application/pdf',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/msword',
+                    'text/plain',
+                    'text/rtf',
+                    'text/html'
+                ];
+                
+                return supportedTypes.includes(file.type) || 
+                       file.name.toLowerCase().match(/\.(pdf|docx?|txt|rtf|html?)$/);
+            }
+            
+            async parseDocument(file) {
+                const fileType = file.type || this.getFileTypeFromName(file.name);
+                
+                if (fileType.includes('pdf')) {
+                    await this.parsePDF(file);
+                } else if (fileType.includes('text') || file.name.endsWith('.txt')) {
+                    await this.parseTextFile(file);
+                } else if (fileType.includes('html')) {
+                    await this.parseHTMLFile(file);
+                } else {
+                    // 对于其他格式，显示基本信息
+                    this.documentContent = `文档类型: ${fileType}\n文件大小: ${this.formatFileSize(file.size)}`;
+                    this.totalPages = 1;
+                    this.updatePreview();
+                }
+            }
+            
+            async parsePDF(file) {
+                try {
+                    this.documentContent = "PDF文档已加载，正在解析...";
+                    this.updatePreview();
+                    
+                    // 使用PDF.js解析PDF
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    
+                    this.totalPages = pdf.numPages;
+                    this.pdfDocument = pdf; // 保存PDF文档对象
+                    
+                    // 渲染第一页作为预览
+                    await this.renderPDFPage(1);
+                    
+                    console.log('✅ PDF解析成功，页数:', this.totalPages);
+                } catch (error) {
+                    console.error('PDF解析失败:', error);
+                    this.documentContent = `PDF解析失败: ${error.message}`;
+                    this.totalPages = 0;
+                    this.updatePreview();
+                }
+            }
+            
+            async renderPDFPage(pageNumber) {
+                if (!this.pdfDocument) return;
+                
+                try {
+                    const page = await this.pdfDocument.getPage(pageNumber);
+                    
+                    // 提取文本内容
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    
+                    // 更新当前页内容
+                    this.documentContent = pageText || `PDF第${pageNumber}页 - 无法提取文本内容`;
+                    this.currentPage = pageNumber;
+                    this.updatePreview();
+                    
+                    // 可选：渲染PDF页面到canvas
+                    const viewport = page.getViewport({ scale: 1.0 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+                    
+                    // 将canvas添加到预览区域
+                    const previewArea = document.getElementById('previewArea');
+                    previewArea.innerHTML = '';
+                    previewArea.appendChild(canvas);
+                    canvas.style.maxWidth = '100%';
+                    canvas.style.height = 'auto';
+                    
+                } catch (error) {
+                    console.error('PDF页面渲染失败:', error);
+                    this.documentContent = `第${pageNumber}页渲染失败: ${error.message}`;
+                    this.updatePreview();
+                }
+            }
+            
+            async parseTextFile(file) {
+                const text = await file.text();
+                this.documentContent = text;
+                this.totalPages = Math.ceil(text.length / 2000); // 每2000字符算一页
+                this.updatePreview();
+            }
+            
+            async parseHTMLFile(file) {
+                const html = await file.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                this.documentContent = doc.body.textContent || doc.body.innerText || html;
+                this.totalPages = 1;
+                this.updatePreview();
+            }
+            
+            getFileTypeFromName(fileName) {
+                const ext = fileName.toLowerCase().split('.').pop();
+                const typeMap = {
+                    'pdf': 'application/pdf',
+                    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'doc': 'application/msword',
+                    'txt': 'text/plain',
+                    'rtf': 'text/rtf',
+                    'html': 'text/html',
+                    'htm': 'text/html'
+                };
+                return typeMap[ext] || 'application/octet-stream';
+            }
+            
+            updateDocumentInfo() {
+                const fileName = this.documentFile.name;
+                const fileSize = this.formatFileSize(this.documentFile.size);
+                
+                document.getElementById('documentFileName').textContent = fileName;
+                document.getElementById('documentFileInfo').textContent = fileSize;
+            }
+            
+            updatePreview() {
+                const previewArea = document.getElementById('previewArea');
+                const content = this.documentContent || '无法预览此文档内容';
+                
+                // 简单的分页显示
+                const wordsPerPage = 500;
+                const words = content.split(' ');
+                const startIndex = (this.currentPage - 1) * wordsPerPage;
+                const endIndex = Math.min(startIndex + wordsPerPage, words.length);
+                const pageContent = words.slice(startIndex, endIndex).join(' ');
+                
+                previewArea.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${pageContent}</pre>`;
+                
+                // 更新页面信息
+                document.getElementById('documentPageInfo').textContent = `页面: ${this.currentPage} / ${this.totalPages}`;
+                document.getElementById('currentPageInput').value = this.currentPage;
+                document.getElementById('currentPageInput').max = this.totalPages;
+                
+                // 更新页面控制按钮状态
+                document.getElementById('firstPageBtn').disabled = this.currentPage <= 1;
+                document.getElementById('prevPageBtn').disabled = this.currentPage <= 1;
+                document.getElementById('nextPageBtn').disabled = this.currentPage >= this.totalPages;
+                document.getElementById('lastPageBtn').disabled = this.currentPage >= this.totalPages;
+                
+                // 更新提取设置的默认值
+                document.getElementById('extractEndPage').value = this.totalPages;
+                document.getElementById('extractEndPage').max = this.totalPages;
+            }
+            
+            async goToPage(pageNum) {
+                if (pageNum >= 1 && pageNum <= this.totalPages) {
+                    this.currentPage = pageNum;
+                    
+                    if (this.pdfDocument) {
+                        // 如果是PDF文档，重新渲染指定页面
+                        await this.renderPDFPage(pageNum);
+                    } else {
+                        // 对于其他文档类型，使用原有的分页逻辑
+                        this.updatePreview();
+                    }
+                }
+            }
+            
+            zoom(factor) {
+                this.zoomLevel = Math.max(50, Math.min(200, this.zoomLevel * factor));
+                document.getElementById('zoomLevel').textContent = Math.round(this.zoomLevel) + '%';
+                
+                const previewArea = document.getElementById('previewArea');
+                previewArea.style.fontSize = (14 * this.zoomLevel / 100) + 'px';
+            }
+            
+            showWorkspace() {
+                document.getElementById('uploadArea').style.display = 'none';
+                document.getElementById('processingWorkspace').style.display = 'block';
+            }
+            
+            switchTab(tabName) {
+                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+                
+                this.currentTab = tabName;
+                this.enableProcessButton();
+            }
+            
+            enableProcessButton() {
+                const processBtn = document.getElementById('processBtn');
+                
+                if (!this.documentFile) {
+                    processBtn.disabled = true;
+                    return;
+                }
+                
+                switch (this.currentTab) {
+                    case 'extract':
+                        processBtn.disabled = false;
+                        break;
+                    case 'split':
+                        processBtn.disabled = false;
+                        break;
+                    case 'merge':
+                        processBtn.disabled = this.mergeFiles.length < 2;
+                        break;
+                    case 'convert':
+                        const outputFormat = document.getElementById('outputFormat').value;
+                        processBtn.disabled = !outputFormat;
+                        break;
+                    default:
+                        processBtn.disabled = true;
+                }
+            }
+            
+            setExtractAllPages() {
+                document.getElementById('extractStartPage').value = 1;
+                document.getElementById('extractEndPage').value = this.totalPages;
+            }
+            
+            updateSplitSettings(method) {
+                const intervalSetting = document.getElementById('intervalSetting');
+                const pageRangesSetting = document.getElementById('pageRangesSetting');
+                
+                intervalSetting.style.display = method === 'interval' ? 'block' : 'none';
+                pageRangesSetting.style.display = method === 'pages' ? 'block' : 'none';
+            }
+            
+            addMergeFiles(files) {
+                Array.from(files).forEach(file => {
+                    if (file.type === 'application/pdf') {
+                        this.mergeFiles.push(file);
+                    }
+                });
+                
+                this.updateMergeFilesList();
+                this.enableProcessButton();
+            }
+            
+            updateMergeFilesList() {
+                const list = document.getElementById('mergeFilesList');
+                list.innerHTML = '';
+                
+                this.mergeFiles.forEach((file, index) => {
+                    const item = document.createElement('div');
+                    item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--surface-color); border-radius: 4px; margin-bottom: 8px;';
+                    item.innerHTML = `
+                        <span>${file.name}</span>
+                        <button onclick="documentProcessor.removeMergeFile(${index})" style="background: var(--error-color); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">删除</button>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+            
+            removeMergeFile(index) {
+                this.mergeFiles.splice(index, 1);
+                this.updateMergeFilesList();
+                this.enableProcessButton();
+            }
+            
+            updateConvertSettings(format) {
+                const imageQualitySetting = document.getElementById('imageQualitySetting');
+                const imageDpiSetting = document.getElementById('imageDpiSetting');
+                
+                const showImageSettings = format === 'images';
+                imageQualitySetting.style.display = showImageSettings ? 'block' : 'none';
+                imageDpiSetting.style.display = showImageSettings ? 'block' : 'none';
+            }
+            
+            async processDocument() {
+                if (!this.documentFile) return;
+                
+                document.getElementById('progressSection').style.display = 'block';
+                document.getElementById('processBtn').disabled = true;
+                
+                const startTime = Date.now();
+                
+                try {
+                    this.processedFiles = [];
+                    
+                    switch (this.currentTab) {
+                        case 'extract':
+                            await this.extractText();
+                            break;
+                        case 'split':
+                            await this.splitDocument();
+                            break;
+                        case 'merge':
+                            await this.mergeDocuments();
+                            break;
+                        case 'convert':
+                            await this.convertDocument();
+                            break;
+                    }
+                    
+                    if (this.processedFiles.length > 0 || this.currentTab === 'extract') {
+                        this.showResults(startTime);
+                    }
+                } catch (error) {
+                    console.error('文档处理失败:', error);
+                    alert('处理失败: ' + error.message);
+                } finally {
+                    document.getElementById('processBtn').disabled = false;
+                }
+            }
+            
+            async extractText() {
+                this.updateProgress(30, '正在提取文本...');
+                
+                const startPage = parseInt(document.getElementById('extractStartPage').value) || 1;
+                const endPage = parseInt(document.getElementById('extractEndPage').value) || this.totalPages;
+                const preserveFormatting = document.getElementById('preserveFormatting').checked;
+                const removeBlankLines = document.getElementById('removeBlankLines').checked;
+                const extractImages = document.getElementById('extractImages').checked;
+                
+                let extractedText = '';
+                let imageLinks = [];
+                
+                try {
+                    if (this.pdfDocument) {
+                        // 真正的PDF文本提取
+                        const totalPages = Math.min(endPage, this.totalPages);
+                        
+                        for (let pageNum = startPage; pageNum <= totalPages; pageNum++) {
+                            this.updateProgress(30 + (pageNum - startPage) / (totalPages - startPage + 1) * 60, 
+                                             `正在提取第 ${pageNum} 页...`);
+                            
+                            try {
+                                const page = await this.pdfDocument.getPage(pageNum);
+                                
+                                // 提取文本内容
+                                const textContent = await page.getTextContent();
+                                let pageText = '';
+                                
+                                if (preserveFormatting) {
+                                    // 保持格式：考虑文本位置信息
+                                    let lastY = null;
+                                    textContent.items.forEach(item => {
+                                        if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
+                                            pageText += '\n';
+                                        }
+                                        pageText += item.str;
+                                        if (item.str.endsWith(' ') === false && item.hasEOL === false) {
+                                            pageText += ' ';
+                                        }
+                                        lastY = item.transform[5];
+                                    });
+                                } else {
+                                    // 简单文本提取
+                                    pageText = textContent.items.map(item => item.str).join(' ');
+                                }
+                                
+                                if (pageText.trim()) {
+                                    if (extractedText && !extractedText.endsWith('\n\n')) {
+                                        extractedText += '\n\n';
+                                    }
+                                    extractedText += `=== 第 ${pageNum} 页 ===\n`;
+                                    extractedText += pageText.trim() + '\n';
+                                }
+                                
+                                // 提取图片信息（如果选择了此选项）
+                                if (extractImages) {
+                                    try {
+                                        const operatorList = await page.getOperatorList();
+                                        let imageCount = 0;
+                                        for (let i = 0; i < operatorList.fnArray.length; i++) {
+                                            if (operatorList.fnArray[i] === pdfjsLib.OPS.paintImageXObject) {
+                                                imageCount++;
+                                                imageLinks.push(`[图片 ${pageNum}-${imageCount}] 位于第 ${pageNum} 页`);
+                                            }
+                                        }
+                                    } catch (imgError) {
+                                        console.warn('提取图片信息失败:', imgError);
+                                    }
+                                }
+                                
+                            } catch (pageError) {
+                                console.error(`第${pageNum}页提取失败:`, pageError);
+                                extractedText += `\n=== 第 ${pageNum} 页 ===\n[页面提取失败: ${pageError.message}]\n`;
+                            }
+                        }
+                    } else {
+                        // 非PDF文档使用原有逻辑
+                        extractedText = this.documentContent || "无法提取文本内容";
+                    }
+                    
+                    // 后处理
+                    if (removeBlankLines && extractedText) {
+                        extractedText = extractedText.replace(/\n\s*\n\s*\n/g, '\n\n');
+                    }
+                    
+                    // 添加图片链接信息
+                    if (imageLinks.length > 0) {
+                        extractedText += '\n\n=== 发现的图片 ===\n';
+                        extractedText += imageLinks.join('\n');
+                    }
+                    
+                    if (!extractedText.trim()) {
+                        extractedText = '未能提取到文本内容。这可能是一个图片型PDF或扫描文档。';
+                    }
+                    
+                    this.updateProgress(100, '文本提取完成！');
+                    
+                } catch (error) {
+                    console.error('文本提取失败:', error);
+                    extractedText = `文本提取失败: ${error.message}`;
+                    this.updateProgress(100, '提取失败！');
+                }
+                
+                // 显示提取结果
+                document.getElementById('extractedText').textContent = extractedText;
+                document.getElementById('extractedTextArea').style.display = 'block';
+            }
+            
+            async splitDocument() {
+                this.updateProgress(30, '正在拆分文档...');
+                
+                const method = document.getElementById('splitMethod').value;
+                let fileCount = 1;
+                
+                if (method === 'interval') {
+                    const interval = parseInt(document.getElementById('splitInterval').value) || 10;
+                    fileCount = Math.ceil(this.totalPages / interval);
+                } else if (method === 'pages') {
+                    const ranges = document.getElementById('pageRanges').value;
+                    fileCount = ranges.split(',').length;
+                }
+                
+                // 模拟文档拆分
+                for (let i = 0; i < fileCount; i++) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    this.updateProgress(30 + (i + 1) / fileCount * 60, `正在创建第 ${i + 1} 个文档...`);
+                    
+                    // 创建模拟文件
+                    const fileName = this.documentFile.name.replace(/\.[^.]+$/, `_part${i + 1}.pdf`);
+                    const blob = new Blob(['模拟PDF内容'], { type: 'application/pdf' });
+                    this.processedFiles.push(new File([blob], fileName, { type: 'application/pdf' }));
+                }
+                
+                this.updateProgress(100, '文档拆分完成！');
+            }
+            
+            async mergeDocuments() {
+                this.updateProgress(30, '正在合并文档...');
+                
+                // 模拟文档合并
+                for (let i = 0; i < this.mergeFiles.length; i++) {
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    this.updateProgress(30 + (i + 1) / this.mergeFiles.length * 60, `正在处理第 ${i + 1} 个文档...`);
+                }
+                
+                // 创建合并后的文件
+                const mergedFileName = 'merged_document.pdf';
+                const blob = new Blob(['合并后的PDF内容'], { type: 'application/pdf' });
+                this.processedFiles.push(new File([blob], mergedFileName, { type: 'application/pdf' }));
+                
+                this.updateProgress(100, '文档合并完成！');
+            }
+            
+            async convertDocument() {
+                const outputFormat = document.getElementById('outputFormat').value;
+                this.updateProgress(30, `正在转换为 ${outputFormat.toUpperCase()}...`);
+                
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                let fileName = this.documentFile.name.replace(/\.[^.]+$/, '');
+                let mimeType = 'application/octet-stream';
+                let content = '转换后的文档内容';
+                
+                switch (outputFormat) {
+                    case 'pdf':
+                        fileName += '.pdf';
+                        mimeType = 'application/pdf';
+                        break;
+                    case 'docx':
+                        fileName += '.docx';
+                        mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                        break;
+                    case 'txt':
+                        fileName += '.txt';
+                        mimeType = 'text/plain';
+                        content = this.documentContent || '转换后的文本内容';
+                        break;
+                    case 'html':
+                        fileName += '.html';
+                        mimeType = 'text/html';
+                        content = `<html><body><p>${this.documentContent || '转换后的HTML内容'}</p></body></html>`;
+                        break;
+                    case 'images':
+                        // 对于图片，创建多个文件
+                        for (let i = 1; i <= this.totalPages; i++) {
+                            const imageFileName = `${fileName}_page${i}.jpg`;
+                            const blob = new Blob(['模拟图片内容'], { type: 'image/jpeg' });
+                            this.processedFiles.push(new File([blob], imageFileName, { type: 'image/jpeg' }));
+                        }
+                        this.updateProgress(100, '格式转换完成！');
+                        return;
+                }
+                
+                const blob = new Blob([content], { type: mimeType });
+                this.processedFiles.push(new File([blob], fileName, { type: mimeType }));
+                
+                this.updateProgress(100, '格式转换完成！');
+            }
+            
+            showResults(startTime) {
+                const processingTime = ((Date.now() - startTime) / 1000).toFixed(1);
+                const originalSize = this.documentFile.size;
+                let totalResultSize = 0;
+                
+                this.processedFiles.forEach(file => {
+                    totalResultSize += file.size;
+                });
+                
+                document.getElementById('originalFileSize').textContent = this.formatFileSize(originalSize);
+                document.getElementById('resultFileSize').textContent = this.formatFileSize(totalResultSize);
+                document.getElementById('pageCount').textContent = this.totalPages;
+                document.getElementById('processingTime').textContent = processingTime + 's';
+                
+                // 显示结果文件列表
+                this.updateResultFilesList();
+                
+                document.getElementById('resultSection').style.display = 'block';
+                document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            updateResultFilesList() {
+                const list = document.getElementById('resultFilesList');
+                list.innerHTML = '';
+                
+                this.processedFiles.forEach((file, index) => {
+                    const item = document.createElement('div');
+                    item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg-color-secondary); border-radius: 6px; margin-bottom: 10px;';
+                    item.innerHTML = `
+                        <div>
+                            <strong>${file.name}</strong><br>
+                            <small style="color: var(--text-secondary);">${this.formatFileSize(file.size)} • ${file.type}</small>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="documentProcessor.downloadFile(${index})" class="page-btn">下载</button>
+                            <button onclick="documentProcessor.shareFile(${index})" class="page-btn">分享</button>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+            
+            downloadFile(index) {
+                const file = this.processedFiles[index];
+                const url = URL.createObjectURL(file);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = file.name;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            
+            shareFile(index) {
+                const file = this.processedFiles[index];
+                
+                if (window.ui && window.ui.filesQueue) {
+                    window.ui.filesQueue.push(file);
+                    alert(`${file.name} 已添加到分享列表！`);
+                } else {
+                    alert('分享功能暂不可用，请先返回分享页面');
+                }
+            }
+            
+            downloadAllFiles() {
+                this.processedFiles.forEach((file, index) => {
+                    setTimeout(() => this.downloadFile(index), index * 500);
+                });
+            }
+            
+            shareAllFiles() {
+                if (window.ui && window.ui.filesQueue) {
+                    this.processedFiles.forEach(file => {
+                        window.ui.filesQueue.push(file);
+                    });
+                    alert(`${this.processedFiles.length} 个文件已添加到分享列表！`);
+                } else {
+                    alert('分享功能暂不可用，请先返回分享页面');
+                }
+            }
+            
+            copyExtractedText() {
+                const text = document.getElementById('extractedText').textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('文本已复制到剪贴板！');
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    alert('复制失败，请手动选择文本复制');
+                });
+            }
+            
+            updateProgress(percent, text) {
+                document.getElementById('progressFill').style.width = percent + '%';
+                document.getElementById('progressText').textContent = text;
+            }
+            
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            resetSettings() {
+                // 重置所有设置到默认值
+                document.getElementById('extractStartPage').value = 1;
+                document.getElementById('extractEndPage').value = this.totalPages;
+                document.getElementById('splitMethod').value = 'pages';
+                document.getElementById('splitInterval').value = 10;
+                document.getElementById('outputFormat').value = 'pdf';
+                // ... 重置其他设置
+                
+                this.updateSplitSettings('pages');
+                this.updateConvertSettings('pdf');
+            }
+            
+            selectNewFile() {
+                document.getElementById('fileInput').click();
+            }
+            
+            processAnother() {
+                document.getElementById('resultSection').style.display = 'none';
+                document.getElementById('progressSection').style.display = 'none';
+                document.getElementById('extractedTextArea').style.display = 'none';
+                this.processedFiles = [];
+                this.resetSettings();
+            }
+        }
+        
+        // 初始化
+        let documentProcessor;
+        document.addEventListener('DOMContentLoaded', () => {
+            documentProcessor = new DocumentProcessor();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Navigation Test - DropShare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .header-wrapper {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-nav-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .header-nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background: #f3f4f6;
+        }
+        
+        .header-nav-links a:hover {
+            color: #3367d6;
+            background: #e3f2fd;
+        }
+        
+        .content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-wrapper">
+        <h1>导航测试页面</h1>
+        <!-- 统一导航菜单 -->
+        <nav class="header-nav-links">
+            <a href="share.html" data-i18n="nav_transfer">传送</a>
+            <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
+            <a href="image-tools.html" data-i18n="nav_images">图片</a>
+            <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
+            <a href="video-tools.html" data-i18n="nav_video">视频</a>
+            <a href="document-tools.html" data-i18n="nav_files">文件</a>
+        </nav>
+    </div>
+    
+    <div class="content">
+        <h2>测试内容</h2>
+        <p>这是一个测试页面，用于验证导航功能是否正常工作。</p>
+        <p>如果您能看到上面的导航链接，说明导航代码正常。</p>
+        <p><a href="index.html">← 返回首页</a></p>
+    </div>
+</body>
+</html>

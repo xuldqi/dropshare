@@ -133,21 +133,13 @@
     }
   });
   
-  // 页面加载时自动跳转到正确的版本
+  // 暂时禁用自动重定向，让用户看到新设计
   function redirectToCorrectVersion() {
-    const preferredTheme = determineThemeVersion();
-    
-    // 如果当前页面已经是正确的版本，不需要跳转
-    if ((preferredTheme === 'dark' && isDarkVersion) || 
-        (preferredTheme === 'light' && isLightVersion)) {
-      return;
-    }
-    
-    // 获取目标URL并跳转
-    const targetUrl = getTargetUrl(currentPath, preferredTheme);
-    window.location.href = targetUrl;
+    // 重定向功能已禁用
+    console.log('Theme redirect disabled to show new design');
+    return;
   }
   
-  // 在页面加载完成后执行重定向
-  window.addEventListener('load', redirectToCorrectVersion);
+  // 重定向功能已禁用
+  // window.addEventListener('load', redirectToCorrectVersion);
 })(); 

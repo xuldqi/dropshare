@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片裁剪器 - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            padding: 20px;
+            background: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .cropper-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: var(--bg-color-secondary);
+        }
+        
+        .crop-workspace {
+            display: none;
+        }
+        
+        .crop-tools {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--bg-color-secondary);
+            border-radius: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .tool-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tool-group label {
+            font-weight: 500;
+            margin-bottom: 0;
+        }
+        
+        .aspect-ratio-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--surface-color);
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .aspect-ratio-btn:hover, .aspect-ratio-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .crop-canvas-container {
+            position: relative;
+            display: inline-block;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f0f0f0;
+            max-width: 100%;
+        }
+        
+        #cropCanvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            cursor: crosshair;
+        }
+        
+        .crop-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .crop-selection {
+            position: absolute;
+            border: 2px solid #3367d6;
+            background: rgba(51, 103, 214, 0.1);
+            pointer-events: all;
+            cursor: move;
+        }
+        
+        .crop-handle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #3367d6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .crop-handle.nw { top: -4px; left: -4px; cursor: nw-resize; }
+        .crop-handle.ne { top: -4px; right: -4px; cursor: ne-resize; }
+        .crop-handle.sw { bottom: -4px; left: -4px; cursor: sw-resize; }
+        .crop-handle.se { bottom: -4px; right: -4px; cursor: se-resize; }
+        .crop-handle.n { top: -4px; left: 50%; transform: translateX(-50%); cursor: n-resize; }
+        .crop-handle.s { bottom: -4px; left: 50%; transform: translateX(-50%); cursor: s-resize; }
+        .crop-handle.w { top: 50%; left: -4px; transform: translateY(-50%); cursor: w-resize; }
+        .crop-handle.e { top: 50%; right: -4px; transform: translateY(-50%); cursor: e-resize; }
+        
+        .crop-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 10px;
+            background: var(--bg-color-secondary);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .crop-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+        
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--text-secondary);
+            color: white;
+        }
+        
+        .preview-section {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color-secondary);
+        }
+        
+        .preview-images {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .preview-item {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .preview-item h4 {
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .preview-item img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .preview-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            flex: 1;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        @media (max-width: 768px) {
+            .cropper-container {
+                padding: 20px;
+            }
+            
+            .crop-tools {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .tool-group {
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .crop-actions {
+                flex-direction: column;
+            }
+            
+            .crop-actions .btn {
+                width: 100%;
+            }
+            
+            .preview-images {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>✂️ 图片裁剪器</h1>
+        <div class="header-buttons">
+            <a href="image-tools.html" class="back-button">← 图片工具</a>
+            <a href="index.html" class="back-button">🏠 首页</a>
+        </div>
+    </div>
+    
+    <div class="cropper-container">
+        <div class="upload-area" id="uploadArea">
+            <div style="font-size: 3em; margin-bottom: 15px;">✂️</div>
+            <h3>拖拽图片到这里或点击选择</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">支持 JPG, PNG, GIF, WebP 等格式</p>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">选择图片</button>
+        </div>
+        
+        <div class="crop-workspace" id="cropWorkspace">
+            <div class="crop-tools">
+                <div class="tool-group">
+                    <label>宽高比:</label>
+                    <button class="aspect-ratio-btn active" data-ratio="free">自由</button>
+                    <button class="aspect-ratio-btn" data-ratio="1:1">1:1</button>
+                    <button class="aspect-ratio-btn" data-ratio="4:3">4:3</button>
+                    <button class="aspect-ratio-btn" data-ratio="16:9">16:9</button>
+                    <button class="aspect-ratio-btn" data-ratio="3:2">3:2</button>
+                </div>
+                
+                <div class="tool-group">
+                    <label>输出尺寸:</label>
+                    <input type="number" id="outputWidth" placeholder="宽度" min="1" style="width: 80px;">
+                    <span>×</span>
+                    <input type="number" id="outputHeight" placeholder="高度" min="1" style="width: 80px;">
+                    <span>px</span>
+                </div>
+                
+                <div class="tool-group">
+                    <label>
+                        <input type="checkbox" id="maintainQuality" checked>
+                        保持原始质量
+                    </label>
+                </div>
+            </div>
+            
+            <div class="crop-canvas-container" id="canvasContainer">
+                <canvas id="cropCanvas"></canvas>
+                <div class="crop-overlay" id="cropOverlay"></div>
+                <div class="crop-selection" id="cropSelection" style="display: none;">
+                    <div class="crop-handle nw"></div>
+                    <div class="crop-handle ne"></div>
+                    <div class="crop-handle sw"></div>
+                    <div class="crop-handle se"></div>
+                    <div class="crop-handle n"></div>
+                    <div class="crop-handle s"></div>
+                    <div class="crop-handle w"></div>
+                    <div class="crop-handle e"></div>
+                </div>
+            </div>
+            
+            <div class="crop-info" id="cropInfo">
+                <span>选择区域: <strong id="selectionInfo">未选择</strong></span>
+                <span>原始尺寸: <strong id="originalSize">-</strong></span>
+                <span>裁剪尺寸: <strong id="cropSize">-</strong></span>
+            </div>
+            
+            <div class="crop-actions">
+                <button class="btn btn-primary" id="cropBtn" disabled>裁剪图片</button>
+                <button class="btn btn-secondary" id="resetBtn">重置选择</button>
+                <button class="btn btn-secondary" id="rotateBtn">旋转90°</button>
+                <button class="btn btn-secondary" id="flipHBtn">水平翻转</button>
+                <button class="btn btn-secondary" id="flipVBtn">垂直翻转</button>
+                <button class="btn btn-secondary" id="newImageBtn">选择新图片</button>
+            </div>
+        </div>
+        
+        <div class="preview-section" id="previewSection">
+            <h3>裁剪预览</h3>
+            <div class="preview-images">
+                <div class="preview-item">
+                    <h4>原始图片</h4>
+                    <img id="originalPreview" src="" alt="原始图片">
+                    <div class="preview-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">尺寸</span>
+                            <span class="stat-value" id="originalDimensions">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">大小</span>
+                            <span class="stat-value" id="originalFileSize">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="preview-item">
+                    <h4>裁剪结果</h4>
+                    <img id="croppedPreview" src="" alt="裁剪结果">
+                    <div class="preview-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">尺寸</span>
+                            <span class="stat-value" id="croppedDimensions">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">大小</span>
+                            <span class="stat-value" id="croppedFileSize">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="crop-actions">
+                <button class="btn btn-primary" id="downloadBtn">下载图片</button>
+                <button class="btn btn-primary" id="shareBtn">分享图片</button>
+                <button class="btn btn-secondary" id="cropAnotherBtn">继续裁剪</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ImageCropper {
+            constructor() {
+                this.originalImage = null;
+                this.canvas = null;
+                this.ctx = null;
+                this.isSelecting = false;
+                this.isDragging = false;
+                this.isResizing = false;
+                this.resizeHandle = null;
+                this.selection = { x: 0, y: 0, width: 0, height: 0 };
+                this.aspectRatio = null;
+                this.scale = 1;
+                this.rotation = 0;
+                this.flipH = false;
+                this.flipV = false;
+                
+                this.init();
+            }
+            
+            init() {
+                this.canvas = document.getElementById('cropCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.bindEvents();
+            }
+            
+            bindEvents() {
+                const uploadArea = document.getElementById('uploadArea');
+                const fileInput = document.getElementById('fileInput');
+                
+                // 拖拽上传
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        this.loadImage(files[0]);
+                    }
+                });
+                
+                // 文件选择
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        this.loadImage(e.target.files[0]);
+                    }
+                });
+                
+                // 宽高比按钮
+                document.querySelectorAll('.aspect-ratio-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.aspect-ratio-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const ratio = btn.dataset.ratio;
+                        this.setAspectRatio(ratio);
+                    });
+                });
+                
+                // 画布事件
+                this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
+                this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+                this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
+                
+                // 控制按钮
+                document.getElementById('cropBtn').addEventListener('click', () => this.cropImage());
+                document.getElementById('resetBtn').addEventListener('click', () => this.resetSelection());
+                document.getElementById('rotateBtn').addEventListener('click', () => this.rotateImage());
+                document.getElementById('flipHBtn').addEventListener('click', () => this.flipImage(true, false));
+                document.getElementById('flipVBtn').addEventListener('click', () => this.flipImage(false, true));
+                document.getElementById('newImageBtn').addEventListener('click', () => this.selectNewImage());
+                
+                // 预览按钮
+                document.getElementById('downloadBtn').addEventListener('click', () => this.downloadImage());
+                document.getElementById('shareBtn').addEventListener('click', () => this.shareImage());
+                document.getElementById('cropAnotherBtn').addEventListener('click', () => this.cropAnother());
+                
+                // 输出尺寸输入
+                document.getElementById('outputWidth').addEventListener('input', this.updateOutputSize.bind(this));
+                document.getElementById('outputHeight').addEventListener('input', this.updateOutputSize.bind(this));
+            }
+            
+            loadImage(file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('请选择图片文件！');
+                    return;
+                }
+                
+                this.originalFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        this.originalImage = img;
+                        this.setupCanvas();
+                        this.showWorkspace();
+                        this.updateInfo();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            setupCanvas() {
+                const container = document.getElementById('canvasContainer');
+                const maxWidth = Math.min(800, container.offsetWidth - 40);
+                const maxHeight = 600;
+                
+                let canvasWidth = this.originalImage.width;
+                let canvasHeight = this.originalImage.height;
+                
+                if (canvasWidth > maxWidth || canvasHeight > maxHeight) {
+                    const widthRatio = maxWidth / canvasWidth;
+                    const heightRatio = maxHeight / canvasHeight;
+                    this.scale = Math.min(widthRatio, heightRatio);
+                    
+                    canvasWidth *= this.scale;
+                    canvasHeight *= this.scale;
+                }
+                
+                this.canvas.width = canvasWidth;
+                this.canvas.height = canvasHeight;
+                this.canvas.style.width = canvasWidth + 'px';
+                this.canvas.style.height = canvasHeight + 'px';
+                
+                this.drawImage();
+                this.initSelection();
+            }
+            
+            drawImage() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.ctx.save();
+                
+                // 应用变换
+                this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
+                this.ctx.rotate(this.rotation * Math.PI / 180);
+                this.ctx.scale(this.flipH ? -1 : 1, this.flipV ? -1 : 1);
+                
+                const drawWidth = this.originalImage.width * this.scale;
+                const drawHeight = this.originalImage.height * this.scale;
+                
+                this.ctx.drawImage(
+                    this.originalImage,
+                    -drawWidth / 2,
+                    -drawHeight / 2,
+                    drawWidth,
+                    drawHeight
+                );
+                
+                this.ctx.restore();
+            }
+            
+            initSelection() {
+                const padding = 50;
+                this.selection = {
+                    x: padding,
+                    y: padding,
+                    width: this.canvas.width - padding * 2,
+                    height: this.canvas.height - padding * 2
+                };
+                this.updateSelection();
+                this.updateCropInfo();
+            }
+            
+            updateSelection() {
+                const selection = document.getElementById('cropSelection');
+                selection.style.display = 'block';
+                selection.style.left = this.selection.x + 'px';
+                selection.style.top = this.selection.y + 'px';
+                selection.style.width = this.selection.width + 'px';
+                selection.style.height = this.selection.height + 'px';
+                
+                // 更新遮罩
+                this.updateOverlay();
+                
+                // 启用裁剪按钮
+                document.getElementById('cropBtn').disabled = false;
+            }
+            
+            updateOverlay() {
+                const overlay = document.getElementById('cropOverlay');
+                overlay.style.width = this.canvas.width + 'px';
+                overlay.style.height = this.canvas.height + 'px';
+                
+                const clipPath = `polygon(
+                    0% 0%,
+                    0% 100%,
+                    ${(this.selection.x / this.canvas.width * 100).toFixed(2)}% 100%,
+                    ${(this.selection.x / this.canvas.width * 100).toFixed(2)}% ${(this.selection.y / this.canvas.height * 100).toFixed(2)}%,
+                    ${((this.selection.x + this.selection.width) / this.canvas.width * 100).toFixed(2)}% ${(this.selection.y / this.canvas.height * 100).toFixed(2)}%,
+                    ${((this.selection.x + this.selection.width) / this.canvas.width * 100).toFixed(2)}% ${((this.selection.y + this.selection.height) / this.canvas.height * 100).toFixed(2)}%,
+                    ${(this.selection.x / this.canvas.width * 100).toFixed(2)}% ${((this.selection.y + this.selection.height) / this.canvas.height * 100).toFixed(2)}%,
+                    ${(this.selection.x / this.canvas.width * 100).toFixed(2)}% 100%,
+                    100% 100%,
+                    100% 0%
+                )`;
+                overlay.style.clipPath = clipPath;
+            }
+            
+            handleMouseDown(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // 检查是否点击了选择区域
+                if (this.isInsideSelection(x, y)) {
+                    this.isDragging = true;
+                    this.dragStart = { x: x - this.selection.x, y: y - this.selection.y };
+                } else {
+                    // 开始新的选择
+                    this.isSelecting = true;
+                    this.selection = { x, y, width: 0, height: 0 };
+                }
+            }
+            
+            handleMouseMove(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                if (this.isDragging) {
+                    this.dragSelection(x, y);
+                } else if (this.isSelecting) {
+                    this.updateSelectionSize(x, y);
+                } else {
+                    // 更新鼠标样式
+                    if (this.isInsideSelection(x, y)) {
+                        this.canvas.style.cursor = 'move';
+                    } else {
+                        this.canvas.style.cursor = 'crosshair';
+                    }
+                }
+            }
+            
+            handleMouseUp() {
+                this.isSelecting = false;
+                this.isDragging = false;
+                this.canvas.style.cursor = 'crosshair';
+                
+                if (this.selection.width > 0 && this.selection.height > 0) {
+                    this.updateSelection();
+                    this.updateCropInfo();
+                }
+            }
+            
+            dragSelection(x, y) {
+                const newX = x - this.dragStart.x;
+                const newY = y - this.dragStart.y;
+                
+                // 边界检查
+                this.selection.x = Math.max(0, Math.min(newX, this.canvas.width - this.selection.width));
+                this.selection.y = Math.max(0, Math.min(newY, this.canvas.height - this.selection.height));
+                
+                this.updateSelection();
+                this.updateCropInfo();
+            }
+            
+            updateSelectionSize(x, y) {
+                const startX = Math.min(this.selection.x, x);
+                const startY = Math.min(this.selection.y, y);
+                const width = Math.abs(x - this.selection.x);
+                const height = Math.abs(y - this.selection.y);
+                
+                // 应用宽高比
+                if (this.aspectRatio) {
+                    const newHeight = width / this.aspectRatio;
+                    if (newHeight <= this.canvas.height - startY) {
+                        this.selection = { x: startX, y: startY, width, height: newHeight };
+                    } else {
+                        const newWidth = (this.canvas.height - startY) * this.aspectRatio;
+                        this.selection = { x: startX, y: startY, width: newWidth, height: this.canvas.height - startY };
+                    }
+                } else {
+                    this.selection = { x: startX, y: startY, width, height };
+                }
+                
+                this.updateSelection();
+                this.updateCropInfo();
+            }
+            
+            setAspectRatio(ratio) {
+                if (ratio === 'free') {
+                    this.aspectRatio = null;
+                } else {
+                    const [w, h] = ratio.split(':').map(Number);
+                    this.aspectRatio = w / h;
+                    
+                    // 调整当前选择以适应新的宽高比
+                    if (this.selection.width > 0 && this.selection.height > 0) {
+                        const newHeight = this.selection.width / this.aspectRatio;
+                        if (newHeight <= this.canvas.height - this.selection.y) {
+                            this.selection.height = newHeight;
+                        } else {
+                            this.selection.width = (this.canvas.height - this.selection.y) * this.aspectRatio;
+                        }
+                        this.updateSelection();
+                        this.updateCropInfo();
+                    }
+                }
+            }
+            
+            cropImage() {
+                if (this.selection.width === 0 || this.selection.height === 0) {
+                    alert('请先选择裁剪区域！');
+                    return;
+                }
+                
+                // 创建新画布进行裁剪
+                const cropCanvas = document.createElement('canvas');
+                const cropCtx = cropCanvas.getContext('2d');
+                
+                // 计算实际裁剪区域（考虑缩放）
+                const actualX = this.selection.x / this.scale;
+                const actualY = this.selection.y / this.scale;
+                const actualWidth = this.selection.width / this.scale;
+                const actualHeight = this.selection.height / this.scale;
+                
+                // 设置输出尺寸
+                const outputWidth = document.getElementById('outputWidth').value || this.selection.width;
+                const outputHeight = document.getElementById('outputHeight').value || this.selection.height;
+                
+                cropCanvas.width = outputWidth;
+                cropCanvas.height = outputHeight;
+                
+                // 裁剪并绘制
+                cropCtx.drawImage(
+                    this.originalImage,
+                    actualX, actualY, actualWidth, actualHeight,
+                    0, 0, outputWidth, outputHeight
+                );
+                
+                // 转换为Blob
+                cropCanvas.toBlob((blob) => {
+                    this.croppedBlob = blob;
+                    this.showPreview(cropCanvas.toDataURL());
+                }, 'image/png');
+            }
+            
+            showPreview(croppedDataUrl) {
+                const previewSection = document.getElementById('previewSection');
+                const originalPreview = document.getElementById('originalPreview');
+                const croppedPreview = document.getElementById('croppedPreview');
+                
+                // 显示原始图片
+                originalPreview.src = URL.createObjectURL(this.originalFile);
+                
+                // 显示裁剪结果
+                croppedPreview.src = croppedDataUrl;
+                
+                // 更新统计信息
+                document.getElementById('originalDimensions').textContent = 
+                    `${this.originalImage.width} × ${this.originalImage.height}`;
+                document.getElementById('originalFileSize').textContent = 
+                    this.formatFileSize(this.originalFile.size);
+                
+                const outputWidth = document.getElementById('outputWidth').value || this.selection.width;
+                const outputHeight = document.getElementById('outputHeight').value || this.selection.height;
+                
+                document.getElementById('croppedDimensions').textContent = 
+                    `${outputWidth} × ${outputHeight}`;
+                document.getElementById('croppedFileSize').textContent = 
+                    this.formatFileSize(this.croppedBlob.size);
+                
+                previewSection.style.display = 'block';
+                previewSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            downloadImage() {
+                if (!this.croppedBlob) return;
+                
+                const url = URL.createObjectURL(this.croppedBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `cropped_${this.originalFile.name}`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            
+            shareImage() {
+                if (!this.croppedBlob) return;
+                
+                const file = new File([this.croppedBlob], `cropped_${this.originalFile.name}`, { type: 'image/png' });
+                
+                if (window.ui && window.ui.filesQueue) {
+                    window.ui.filesQueue.push(file);
+                    alert('裁剪后的图片已添加到分享列表！');
+                } else {
+                    alert('分享功能暂不可用，请先返回分享页面');
+                }
+            }
+            
+            // 辅助方法
+            showWorkspace() {
+                document.getElementById('uploadArea').style.display = 'none';
+                document.getElementById('cropWorkspace').style.display = 'block';
+            }
+            
+            updateInfo() {
+                document.getElementById('originalSize').textContent = 
+                    `${this.originalImage.width} × ${this.originalImage.height}`;
+            }
+            
+            updateCropInfo() {
+                const selectionInfo = `${Math.round(this.selection.x)}, ${Math.round(this.selection.y)}`;
+                const cropSize = `${Math.round(this.selection.width)} × ${Math.round(this.selection.height)}`;
+                
+                document.getElementById('selectionInfo').textContent = selectionInfo;
+                document.getElementById('cropSize').textContent = cropSize;
+            }
+            
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            isInsideSelection(x, y) {
+                return x >= this.selection.x && x <= this.selection.x + this.selection.width &&
+                       y >= this.selection.y && y <= this.selection.y + this.selection.height;
+            }
+            
+            rotateImage() {
+                this.rotation = (this.rotation + 90) % 360;
+                this.drawImage();
+            }
+            
+            flipImage(horizontal, vertical) {
+                if (horizontal) this.flipH = !this.flipH;
+                if (vertical) this.flipV = !this.flipV;
+                this.drawImage();
+            }
+            
+            resetSelection() {
+                this.initSelection();
+            }
+            
+            selectNewImage() {
+                document.getElementById('fileInput').click();
+            }
+            
+            cropAnother() {
+                document.getElementById('previewSection').style.display = 'none';
+                this.resetSelection();
+            }
+            
+            updateOutputSize() {
+                // 实时更新输出尺寸信息
+                const width = document.getElementById('outputWidth').value;
+                const height = document.getElementById('outputHeight').value;
+                
+                if (width && height) {
+                    // 可以在这里添加实时预览逻辑
+                }
+            }
+        }
+        
+        // 初始化
+        let imageCropper;
+        document.addEventListener('DOMContentLoaded', () => {
+            imageCropper = new ImageCropper();
+        });
+    </script>
+</body>
+</html>

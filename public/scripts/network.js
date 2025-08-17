@@ -43,6 +43,24 @@ class ServerConnection {
                 break;
             case 'display-name':
                 Events.fire('display-name', msg);
+                // 存储当前用户的peer ID
+                window.currentPeerId = msg.message.peerId || this._peerId;
+                break;
+            // 房间相关消息处理
+            case 'room-created':
+            case 'room-joined':
+            case 'room-left':
+            case 'room-error':
+            case 'room-member-joined':
+            case 'room-member-left':
+            case 'room-disbanded':
+            case 'room-kicked':
+            case 'room-file-shared':
+            case 'room-file-removed':
+                // 将房间消息转发给房间管理器
+                if (window.roomManager) {
+                    window.roomManager.handleRoomMessage(msg);
+                }
                 break;
             default:
                 console.error('WS: unkown message type', msg);
@@ -526,3 +544,24 @@ RTCPeer.config = {
         urls: 'stun:stun.l.google.com:19302'
     }]
 }
+
+// 初始化网络连接
+let serverConnection, peersManager;
+
+window.addEventListener('DOMContentLoaded', () => {
+    serverConnection = new ServerConnection();
+    peersManager = new PeersManager(serverConnection);
+    
+    // 暴露网络连接和事件系统给全局，供房间管理器使用
+    window.network = {
+        send: (message) => serverConnection.send(message),
+        isConnected: () => serverConnection._isConnected(),
+        serverConnection: serverConnection,
+        peersManager: peersManager
+    };
+    
+    // 暴露Events系统
+    window.Events = Events;
+    
+    console.log('网络系统初始化完成，Events和network已暴露到全局');
+});

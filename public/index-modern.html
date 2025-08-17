@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DropShare - Free Online File Tools & Sharing</title>
-    <meta name="description" content="Free online tools for file sharing, image editing, audio/video conversion, PDF processing, and document tools. No registration required.">
+    <meta name="description" content="Free online tools for file sharing, image editing, audio processing, PDF conversion, and video tools. No registration required.">
     
     <!-- Icons -->
     <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
@@ -103,28 +103,18 @@
 
         .nav-links {
             display: flex;
-            gap: 16px;
+            gap: 20px;
         }
 
         .nav-links a {
-            color: #6b7280;
+            color: var(--gray-600);
             text-decoration: none;
             font-weight: 500;
-            font-size: 14px;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            transition: color 0.3s;
         }
 
         .nav-links a:hover {
-            color: #3367d6;
-            background: #f3f4f6;
-        }
-
-        .nav-links a.active {
-            color: #3367d6;
-            background: #e3f2fd;
-            font-weight: 600;
+            color: var(--primary-600);
         }
 
         .control-buttons {
@@ -351,12 +341,12 @@
         }
 
         /* Color variants */
-        .icon-share { background: var(--gray-100); }
-        .icon-image { background: var(--gray-100); }
-        .icon-audio { background: var(--gray-100); }
-        .icon-document { background: var(--gray-100); }
-        .icon-video { background: var(--gray-100); }
-        .icon-rooms { background: var(--gray-100); }
+        .icon-share { background: linear-gradient(135deg, var(--primary-500), var(--primary-600)); }
+        .icon-image { background: linear-gradient(135deg, var(--green-500), #059669); }
+        .icon-audio { background: linear-gradient(135deg, var(--purple-500), #7c3aed); }
+        .icon-document { background: linear-gradient(135deg, var(--red-500), #dc2626); }
+        .icon-video { background: linear-gradient(135deg, var(--blue-500), #0891b2); }
+        .icon-rooms { background: linear-gradient(135deg, var(--orange-500), #d97706); }
 
         /* Features Section */
         .features {
@@ -599,8 +589,8 @@
             }
             
             .nav-links a {
-                font-size: 12px;
-                padding: 4px 8px;
+                font-size: 13px;
+                padding: 6px 8px;
             }
 
             .control-buttons {
@@ -714,12 +704,12 @@
                     <div class="category-icon icon-audio">🎵</div>
                     <h3 class="category-title">Audio Tools</h3>
                     <p class="category-description">
-                        Convert audio between different formats
+                        Convert, trim, and enhance audio files
                     </p>
                     <div class="category-tools">
+                        <div class="category-tool">Audio Processor</div>
                         <div class="category-tool">Format Converter</div>
-                        <div class="category-tool">MP3, WAV, AAC, OGG, FLAC</div>
-                        <div class="category-tool">High Quality Output</div>
+                        <div class="category-tool">Audio Trimmer</div>
                     </div>
                     <div class="category-link">
                         View Tools →
@@ -748,12 +738,12 @@
                     <div class="category-icon icon-video">🎥</div>
                     <h3 class="category-title">Video Tools</h3>
                     <p class="category-description">
-                        Convert videos between different formats
+                        Convert, compress, and analyze videos
                     </p>
                     <div class="category-tools">
+                        <div class="category-tool">Video Info Viewer</div>
                         <div class="category-tool">Video Converter</div>
-                        <div class="category-tool">MP4, AVI, MOV, WebM, MKV</div>
-                        <div class="category-tool">Professional Quality</div>
+                        <div class="category-tool">Frame Extractor</div>
                     </div>
                     <div class="category-link">
                         View Tools →
@@ -806,9 +796,9 @@
                             ⭐ <span style="color: #6b7280;">4.7</span>
                         </div>
                     </div>
-                    <h3 class="popular-name">Audio Converter</h3>
+                    <h3 class="popular-name">Audio Processor</h3>
                     <p class="popular-usage">Used by 1.2K+ users this month</p>
-                    <button class="popular-btn" onclick="window.location.href='audio-converter.html'">Use Tool</button>
+                    <button class="popular-btn" onclick="window.location.href='audio-processor.html'">Use Tool</button>
                 </div>
 
                 <div class="popular-card">
@@ -842,9 +832,9 @@
                             ⭐ <span style="color: #6b7280;">4.5</span>
                         </div>
                     </div>
-                    <h3 class="popular-name">Video Converter</h3>
+                    <h3 class="popular-name">Video Info</h3>
                     <p class="popular-usage">Used by 750+ users this month</p>
-                    <button class="popular-btn" onclick="window.location.href='video-converter.html'">Use Tool</button>
+                    <button class="popular-btn" onclick="window.location.href='video-info.html'">Use Tool</button>
                 </div>
             </div>
         </div>
@@ -884,35 +874,34 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>Navigate</h3>
+                    <h3>Docs</h3>
                     <ul class="footer-links">
                         <li><a href="about.html" data-i18n="nav_about">About</a></li>
                         <li><a href="faq.html" data-i18n="nav_faq">FAQ</a></li>
                         <li><a href="blog.html" data-i18n="nav_blog">Blog</a></li>
+                        <li><a href="#" data-i18n="user_guide">User Guide</a></li>
+                        <li><a href="#" data-i18n="api_reference">API Reference</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="external" data-i18n="github_discussions">GitHub Discussions</a></li>
+                        <li><a href="#" class="external" data-i18n="discord">Discord Server</a></li>
+                        <li><a href="#" class="external" data-i18n="reddit">Reddit Community</a></li>
+                        <li><a href="#" class="external" data-i18n="stack_overflow">Stack Overflow</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>More</h3>
+                    <ul class="footer-links">
                         <li><a href="privacy.html" data-i18n="nav_privacy">Privacy Policy</a></li>
                         <li><a href="terms.html" data-i18n="nav_terms">Terms of Service</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Tools</h3>
-                    <ul class="footer-links">
-                        <li><a href="image-tools.html" data-i18n="nav_images">🖼️ Image Tools</a></li>
-                        <li><a href="audio-tools.html" data-i18n="nav_audio">🎵 Audio Tools</a></li>
-                        <li><a href="video-tools.html" data-i18n="nav_video">🎬 Video Tools</a></li>
-                        <li><a href="document-tools.html" data-i18n="nav_files">📄 Document Tools</a></li>
-                        <li><a href="share.html" data-i18n="nav_transfer">📤 File Transfer</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3>Features</h3>
-                    <ul class="footer-links">
-                        <li><a href="share.html">P2P File Sharing</a></li>
-                        <li><a href="share.html#rooms">Multi-user Rooms</a></li>
-                        <li><a href="image-tools.html">Image Processing</a></li>
-                        <li><a href="video-tools.html">Video Conversion</a></li>
-                        <li><a href="document-tools.html">Document Tools</a></li>
+                        <li><a href="#" class="external" data-i18n="github">GitHub</a></li>
+                        <li><a href="#" class="external" data-i18n="twitter">Twitter</a></li>
+                        <li><a href="#" data-i18n="changelog">Changelog</a></li>
                     </ul>
                 </div>
             </div>
@@ -935,5 +924,55 @@
     <!-- Load i18n system -->
     <script src="scripts/languages.js"></script>
     
+    <!-- Navigation functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化功能导航
+            initFunctionNavigation();
+        });
+        
+        function initFunctionNavigation() {
+            // 添加文件类型过滤功能入口
+            const imageLink = document.querySelector('a[href="#images"]');
+            const audioLink = document.querySelector('a[href="#audio"]'); 
+            const videoLink = document.querySelector('a[href="#video"]');
+            const filesLink = document.querySelector('a[href="#files"]');
+            
+            [imageLink, audioLink, videoLink, filesLink].forEach(link => {
+                if (link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const type = this.getAttribute('href').substring(1);
+                        showFileTypeFilter(type);
+                    });
+                }
+            });
+        }
+        
+        // 显示文件类型过滤功能
+        function showFileTypeFilter(type) {
+            const typeNames = {
+                'images': '图片',
+                'audio': '音频', 
+                'video': '视频',
+                'files': '文件'
+            };
+            
+            const typeUrls = {
+                'images': 'image-tools.html',
+                'audio': 'audio-tools.html',
+                'video': 'video-tools.html',
+                'files': 'document-tools.html'
+            };
+            
+            // 如果工具页面存在，跳转到对应页面
+            if (typeUrls[type]) {
+                window.location.href = typeUrls[type];
+            } else {
+                alert(`${typeNames[type]}功能正在开发中`);
+                console.log(`切换到${typeNames[type]}模式`);
+            }
+        }
+    </script>
 </body>
 </html>

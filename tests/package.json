@@ -1,0 +1,21 @@
+{
+  "name": "dropshare-tests",
+  "version": "1.0.0",
+  "description": "Automated tests for DropShare application",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test --grep '@smoke'",
+    "test:critical": "playwright test --grep '@critical'",
+    "install": "playwright install"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  },
+  "keywords": ["testing", "automation", "playwright", "dropshare"],
+  "author": "DropShare Team",
+  "license": "MIT"
+}

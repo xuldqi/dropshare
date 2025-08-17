@@ -734,12 +734,6 @@ body {
     --bg-color-secondary: #f1f3f4;
 }
 
-/* Dark theme colors */
-body.dark-theme {
-    --text-color: #eee;
-    --bg-color: #121212;
-    --bg-color-secondary: #333;
-}
 
 /* Colored Elements */
 body {
@@ -764,23 +758,6 @@ x-dialog x-paper {
 }
 
 
-/* Styles for users who prefer dark mode at the OS level */
-@media (prefers-color-scheme: dark) {
-
-    /* defaults to dark theme */
-    body {
-        --text-color: #eee;
-        --bg-color: #121212;
-        --bg-color-secondary: #333;
-    }
-
-    /* Override dark mode with light mode styles if the user decides to swap */
-    body.light-theme {
-        --text-color: #333;
-        --bg-color: #fafafa;
-        --bg-color-secondary: #f1f3f4;
-    }
-}
 
 /* Override dark mode with light mode styles if the user decides to swap */
 body.light-theme {

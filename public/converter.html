@@ -123,6 +123,169 @@
             width: 0%;
             transition: width 0.3s ease;
         }
+        
+        /* 设备选择弹窗样式 */
+        .device-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .device-modal.show {
+            display: flex;
+        }
+        
+        .device-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .device-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .device-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin: 0;
+        }
+        
+        .device-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-500);
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .device-modal-close:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        .device-list {
+            margin-bottom: 20px;
+        }
+        
+        .device-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .device-item:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-50);
+        }
+        
+        .device-item.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-100);
+        }
+        
+        .device-checkbox {
+            margin-right: 12px;
+        }
+        
+        .device-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        
+        .device-info {
+            flex: 1;
+        }
+        
+        .device-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+        }
+        
+        .device-type {
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+        
+        .no-devices {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-500);
+        }
+        
+        .no-devices-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        
+        .device-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-btn-cancel {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        .modal-btn-cancel:hover {
+            background: var(--gray-200);
+        }
+        
+        .modal-btn-send {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .modal-btn-send:hover {
+            background: var(--primary-600);
+        }
+        
+        .modal-btn-send:disabled {
+            background: var(--gray-300);
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -207,6 +370,25 @@
                         MP4, AVI, MOV, MKV, WebM
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 设备选择弹窗 -->
+    <div class="device-modal" id="deviceModal">
+        <div class="device-modal-content">
+            <div class="device-modal-header">
+                <h3 class="device-modal-title">选择传送设备</h3>
+                <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
+            </div>
+            <div class="device-list" id="deviceList">
+                <!-- 设备列表将在这里动态生成 -->
+            </div>
+            <div class="device-modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
+                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
+                    传送到选中设备
+                </button>
             </div>
         </div>
     </div>
@@ -363,7 +545,7 @@
                 const resultsList = document.getElementById('resultsList');
                 
                 let html = '';
-                selectedFiles.forEach(file => {
+                selectedFiles.forEach((file, index) => {
                     const newName = file.name.replace(/\.[^/.]+$/, '') + '.' + selectedFormat;
                     html += `
                         <div style="padding: 15px; margin-bottom: 10px; background: var(--bg-color-secondary); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
@@ -373,9 +555,14 @@
                                     ✓ 转换完成
                                 </div>
                             </div>
-                            <button class="button primary" onclick="downloadFile('${newName}')">
-                                下载
-                            </button>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="button" onclick="downloadFile('${newName}')">
+                                    下载
+                                </button>
+                                <button class="button primary" onclick="shareConvertedFile(${index})">
+                                    传送
+                                </button>
+                            </div>
                         </div>
                     `;
                 });
@@ -400,6 +587,188 @@
         function downloadFile(filename) {
             alert('下载 ' + filename + '\n\n注意：这是一个演示版本，实际的文件转换功能需要服务端支持。');
         }
+        
+        // 全局变量存储当前要传送的文件
+        let currentFileToShare = null;
+        let selectedDevices = new Set();
+        
+        // 传送转换后的文件到其他设备
+        function shareConvertedFile(index) {
+            const originalFile = selectedFiles[index];
+            const filename = originalFile.name.replace(/\.[^/.]+$/, '') + '.' + selectedFormat;
+            
+            // 创建模拟的转换后文件对象
+            currentFileToShare = new File([originalFile], filename, { 
+                type: originalFile.type || 'application/octet-stream' 
+            });
+            
+            // 显示设备选择弹窗
+            showDeviceModal();
+        }
+        
+        // 显示设备选择弹窗
+        function showDeviceModal() {
+            const modal = document.getElementById('deviceModal');
+            const deviceList = document.getElementById('deviceList');
+            
+            // 清空选中设备
+            selectedDevices.clear();
+            updateSendButton();
+            
+            // 获取可用设备
+            const devices = getAvailableDevices();
+            
+            if (devices.length === 0) {
+                deviceList.innerHTML = `
+                    <div class="no-devices">
+                        <div class="no-devices-icon">📱</div>
+                        <p>未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                    </div>
+                `;
+            } else {
+                deviceList.innerHTML = devices.map(device => `
+                    <div class="device-item" onclick="toggleDevice('${device.id}')">
+                        <input type="checkbox" class="device-checkbox" id="device-${device.id}">
+                        <div class="device-icon">${getDeviceIcon(device)}</div>
+                        <div class="device-info">
+                            <div class="device-name">${device.name}</div>
+                            <div class="device-type">${device.type}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        // 关闭设备选择弹窗
+        function closeDeviceModal() {
+            const modal = document.getElementById('deviceModal');
+            modal.classList.remove('show');
+            selectedDevices.clear();
+            currentFileToShare = null;
+        }
+        
+        // 切换设备选择状态
+        function toggleDevice(deviceId) {
+            const checkbox = document.getElementById(`device-${deviceId}`);
+            const deviceItem = checkbox.closest('.device-item');
+            
+            if (selectedDevices.has(deviceId)) {
+                selectedDevices.delete(deviceId);
+                checkbox.checked = false;
+                deviceItem.classList.remove('selected');
+            } else {
+                selectedDevices.add(deviceId);
+                checkbox.checked = true;
+                deviceItem.classList.add('selected');
+            }
+            
+            updateSendButton();
+        }
+        
+        // 更新发送按钮状态
+        function updateSendButton() {
+            const sendBtn = document.getElementById('sendToDevicesBtn');
+            const count = selectedDevices.size;
+            
+            if (count === 0) {
+                sendBtn.disabled = true;
+                sendBtn.textContent = '传送到选中设备';
+            } else {
+                sendBtn.disabled = false;
+                sendBtn.textContent = `传送到 ${count} 个设备`;
+            }
+        }
+        
+        // 传送到选中的设备
+        function sendToSelectedDevices() {
+            if (!currentFileToShare || selectedDevices.size === 0) return;
+            
+            const deviceCount = selectedDevices.size;
+            
+            // 检查是否有可用的传输系统
+            if (window.Events && typeof window.Events.fire === 'function') {
+                // 向每个选中的设备发送文件
+                selectedDevices.forEach(deviceId => {
+                    window.Events.fire('files-selected', {
+                        files: [currentFileToShare],
+                        to: deviceId
+                    });
+                });
+                
+                alert(`文件已开始传送到 ${deviceCount} 个设备！`);
+                closeDeviceModal();
+            } else {
+                // 如果传输系统不可用，提供跳转选项
+                if (confirm('传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？')) {
+                    // 将文件信息存储到sessionStorage，供传送页面使用
+                    const fileInfo = {
+                        name: currentFileToShare.name,
+                        type: currentFileToShare.type,
+                        size: currentFileToShare.size,
+                        timestamp: Date.now()
+                    };
+                    sessionStorage.setItem('pendingFileTransfer', JSON.stringify(fileInfo));
+                    window.location.href = 'share.html';
+                }
+            }
+        }
+        
+        // 获取可用设备列表
+        function getAvailableDevices() {
+            // 尝试从现有的传输系统获取设备列表
+            const devices = [];
+            
+            // 从DOM中获取设备信息（如果在传送页面）
+            const peerElements = document.querySelectorAll('x-peer');
+            if (peerElements.length > 0) {
+                peerElements.forEach(peer => {
+                    devices.push({
+                        id: peer.id,
+                        name: peer.querySelector('.name')?.textContent || '未知设备',
+                        type: peer.querySelector('.device-name')?.textContent || '设备'
+                    });
+                });
+            }
+            
+            // 如果没有找到设备，返回示例数据用于演示
+            if (devices.length === 0) {
+                // 检查是否有全局的设备信息
+                if (window.peersManager && window.peersManager.peers) {
+                    Object.keys(window.peersManager.peers).forEach(peerId => {
+                        devices.push({
+                            id: peerId,
+                            name: `设备 ${peerId.substring(0, 8)}`,
+                            type: '网络设备'
+                        });
+                    });
+                }
+            }
+            
+            return devices;
+        }
+        
+        // 获取设备图标
+        function getDeviceIcon(device) {
+            const type = device.type.toLowerCase();
+            if (type.includes('phone') || type.includes('mobile')) return '📱';
+            if (type.includes('tablet') || type.includes('ipad')) return '📺';
+            if (type.includes('mac') || type.includes('apple')) return '💻';
+            if (type.includes('windows') || type.includes('pc')) return '🖥️';
+            return '💻'; // 默认电脑图标
+        }
+        
+        // 阻止弹窗背景点击关闭
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('deviceModal');
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeDeviceModal();
+                }
+            });
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片滤镜特效 - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .filter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .filter-controls {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .filter-panel {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .filter-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-value {
+            background: #3367d6;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .filter-slider {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 12px;
+        }
+
+        .filter-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3367d6;
+            cursor: pointer;
+        }
+
+        .preset-filters {
+            margin-bottom: 20px;
+        }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        }
+
+        .preset-btn {
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .preset-btn:hover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .preset-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .image-workspace {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .workspace-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .image-container {
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .workspace-image {
+            max-width: 100%;
+            max-height: 400px;
+            display: block;
+            transition: filter 0.3s ease;
+        }
+
+        .image-info {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .image-info .size {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .comparison-mode {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .comparison-item h4 {
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: 6px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .quick-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .preset-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-panel {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🎨 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="share.html">传送</a>
+                <a href="share.html#rooms">多人房间</a>
+                <a href="image-tools.html" class="active">图片</a>
+                <a href="audio-tools.html">音频</a>
+                <a href="video-tools.html">视频</a>
+                <a href="document-tools.html">文件</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">图片滤镜特效</h1>
+        <p class="page-subtitle">应用专业级滤镜效果，让图片更具艺术感</p>
+
+        <div class="filter-card">
+            <!-- 上传区域 -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎨</div>
+                <div class="upload-text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <!-- 进度条 -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- 滤镜控制 -->
+            <div class="filter-controls" id="filterControls">
+                <div class="controls-grid">
+                    <!-- 滤镜面板 -->
+                    <div class="filter-panel">
+                        <div class="panel-title">🎛️ 滤镜控制</div>
+
+                        <!-- 预设滤镜 -->
+                        <div class="preset-filters">
+                            <div class="filter-title">🎭 预设滤镜</div>
+                            <div class="preset-grid">
+                                <button class="preset-btn active" data-preset="none">原图</button>
+                                <button class="preset-btn" data-preset="vintage">复古</button>
+                                <button class="preset-btn" data-preset="bw">黑白</button>
+                                <button class="preset-btn" data-preset="sepia">怀旧</button>
+                                <button class="preset-btn" data-preset="warm">暖调</button>
+                                <button class="preset-btn" data-preset="cool">冷调</button>
+                                <button class="preset-btn" data-preset="dramatic">戏剧</button>
+                                <button class="preset-btn" data-preset="dreamy">梦幻</button>
+                            </div>
+                        </div>
+
+                        <!-- 基础调整 -->
+                        <div class="filter-group">
+                            <div class="filter-title">
+                                💡 亮度
+                                <span class="filter-value" id="brightnessValue">100%</span>
+                            </div>
+                            <input type="range" class="filter-slider" id="brightnessSlider" 
+                                   min="0" max="200" value="100">
+                        </div>
+
+                        <div class="filter-group">
+                            <div class="filter-title">
+                                🌗 对比度
+                                <span class="filter-value" id="contrastValue">100%</span>
+                            </div>
+                            <input type="range" class="filter-slider" id="contrastSlider" 
+                                   min="0" max="200" value="100">
+                        </div>
+
+                        <div class="filter-group">
+                            <div class="filter-title">
+                                🌈 饱和度
+                                <span class="filter-value" id="saturationValue">100%</span>
+                            </div>
+                            <input type="range" class="filter-slider" id="saturationSlider" 
+                                   min="0" max="200" value="100">
+                        </div>
+
+                        <div class="filter-group">
+                            <div class="filter-title">
+                                🌅 色相
+                                <span class="filter-value" id="hueValue">0°</span>
+                            </div>
+                            <input type="range" class="filter-slider" id="hueSlider" 
+                                   min="-180" max="180" value="0">
+                        </div>
+
+                        <!-- 高级效果 -->
+                        <div class="filter-group">
+                            <div class="filter-title">
+                                🌫️ 模糊
+                                <span class="filter-value" id="blurValue">0px</span>
+                            </div>
+                            <input type="range" class="filter-slider" id="blurSlider" 
+                                   min="0" max="10" value="0" step="0.1">
+                        </div>
+
+                        <div class="filter-group">
+                            <div class="filter-title">
+                                ✨ 锐化
+                                <span class="filter-value" id="sharpenValue">0%</span>
+                            </div>
+                            <input type="range" class="filter-slider" id="sharpenSlider" 
+                                   min="0" max="100" value="0">
+                        </div>
+
+                        <div class="filter-group">
+                            <div class="filter-title">
+                                ☀️ 曝光
+                                <span class="filter-value" id="exposureValue">0%</span>
+                            </div>
+                            <input type="range" class="filter-slider" id="exposureSlider" 
+                                   min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="filter-group">
+                            <div class="filter-title">
+                                🎯 渐晕
+                                <span class="filter-value" id="vignetteValue">0%</span>
+                            </div>
+                            <input type="range" class="filter-slider" id="vignetteSlider" 
+                                   min="0" max="100" value="0">
+                        </div>
+
+                        <!-- 快速操作 -->
+                        <div class="quick-actions">
+                            <button class="quick-btn" id="resetFilters">🔄 重置</button>
+                            <button class="quick-btn" id="randomFilter">🎲 随机</button>
+                            <button class="quick-btn" id="toggleComparison">👁️ 对比</button>
+                        </div>
+                    </div>
+
+                    <!-- 图片工作区 -->
+                    <div class="image-workspace">
+                        <div class="workspace-title">🖼️ 实时预览</div>
+                        <div class="image-container">
+                            <img id="workspaceImage" class="workspace-image" alt="滤镜预览">
+                        </div>
+                        <div class="image-info">
+                            <div>尺寸: <span class="size" id="imageSize"></span></div>
+                            <div>文件大小: <span class="size" id="fileSize"></span></div>
+                        </div>
+
+                        <!-- 对比模式 -->
+                        <div class="comparison-mode" id="comparisonMode">
+                            <div class="comparison-container">
+                                <div class="comparison-item">
+                                    <h4>原图</h4>
+                                    <div class="image-container">
+                                        <img id="originalComparison" class="workspace-image" alt="原图">
+                                    </div>
+                                </div>
+                                <div class="comparison-item">
+                                    <h4>滤镜效果</h4>
+                                    <div class="image-container">
+                                        <img id="filteredComparison" class="workspace-image" alt="滤镜效果">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <button class="btn btn-success" id="downloadBtn" style="display: none;">
+                    📥 下载滤镜图片
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    🔄 重新选择
+                </button>
+                <a href="image-tools.html" class="btn btn-primary">
+                    ← 返回工具页
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let originalFile = null;
+        let originalImage = null;
+        let currentFilters = {
+            brightness: 100,
+            contrast: 100,
+            saturation: 100,
+            hue: 0,
+            blur: 0,
+            sharpen: 0,
+            exposure: 0,
+            vignette: 0
+        };
+        let isComparisonMode = false;
+
+        // 预设滤镜
+        const presets = {
+            none: { brightness: 100, contrast: 100, saturation: 100, hue: 0, blur: 0, sharpen: 0, exposure: 0, vignette: 0 },
+            vintage: { brightness: 95, contrast: 120, saturation: 85, hue: 15, blur: 0.2, sharpen: 0, exposure: 10, vignette: 20 },
+            bw: { brightness: 100, contrast: 110, saturation: 0, hue: 0, blur: 0, sharpen: 10, exposure: 0, vignette: 15 },
+            sepia: { brightness: 105, contrast: 105, saturation: 60, hue: 25, blur: 0.1, sharpen: 0, exposure: 5, vignette: 10 },
+            warm: { brightness: 110, contrast: 95, saturation: 120, hue: 10, blur: 0, sharpen: 0, exposure: 15, vignette: 0 },
+            cool: { brightness: 95, contrast: 105, saturation: 110, hue: -15, blur: 0, sharpen: 5, exposure: -10, vignette: 5 },
+            dramatic: { brightness: 85, contrast: 140, saturation: 130, hue: 0, blur: 0, sharpen: 20, exposure: 0, vignette: 30 },
+            dreamy: { brightness: 115, contrast: 80, saturation: 120, hue: 5, blur: 1, sharpen: 0, exposure: 20, vignette: 15 }
+        };
+
+        // DOM 元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const filterControls = document.getElementById('filterControls');
+        const workspaceImage = document.getElementById('workspaceImage');
+        const originalComparison = document.getElementById('originalComparison');
+        const filteredComparison = document.getElementById('filteredComparison');
+        const comparisonMode = document.getElementById('comparisonMode');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+
+        // 滑块元素
+        const sliders = {
+            brightness: document.getElementById('brightnessSlider'),
+            contrast: document.getElementById('contrastSlider'),
+            saturation: document.getElementById('saturationSlider'),
+            hue: document.getElementById('hueSlider'),
+            blur: document.getElementById('blurSlider'),
+            sharpen: document.getElementById('sharpenSlider'),
+            exposure: document.getElementById('exposureSlider'),
+            vignette: document.getElementById('vignetteSlider')
+        };
+
+        // 值显示元素
+        const valueDisplays = {
+            brightness: document.getElementById('brightnessValue'),
+            contrast: document.getElementById('contrastValue'),
+            saturation: document.getElementById('saturationValue'),
+            hue: document.getElementById('hueValue'),
+            blur: document.getElementById('blurValue'),
+            sharpen: document.getElementById('sharpenValue'),
+            exposure: document.getElementById('exposureValue'),
+            vignette: document.getElementById('vignetteValue')
+        };
+
+        // 事件监听器
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // 滑块事件
+        Object.keys(sliders).forEach(key => {
+            sliders[key].addEventListener('input', (e) => handleSliderChange(key, e.target.value));
+        });
+
+        // 预设按钮事件
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => applyPreset(e.target.dataset.preset));
+        });
+
+        // 快速操作按钮
+        document.getElementById('resetFilters').addEventListener('click', resetFilters);
+        document.getElementById('randomFilter').addEventListener('click', applyRandomFilter);
+        document.getElementById('toggleComparison').addEventListener('click', toggleComparison);
+
+        downloadBtn.addEventListener('click', downloadFilteredImage);
+        resetBtn.addEventListener('click', resetFilter);
+
+        // 拖拽处理
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        // 文件选择处理
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // 处理文件
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('请选择图片文件！');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('文件大小不能超过 10MB！');
+                return;
+            }
+
+            originalFile = file;
+            showProgress();
+            loadImage(file);
+        }
+
+        // 显示进度条
+        function showProgress() {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // 加载图片
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                originalImage = new Image();
+                originalImage.onload = function() {
+                    setupFilter(this, file);
+                };
+                originalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 设置滤镜器
+        function setupFilter(img, file) {
+            workspaceImage.src = img.src;
+            originalComparison.src = img.src;
+            filteredComparison.src = img.src;
+            
+            // 显示图片信息
+            document.getElementById('imageSize').textContent = `${img.width} × ${img.height}`;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            
+            // 重置滤镜
+            resetFilters();
+            
+            // 显示控制区域
+            filterControls.style.display = 'block';
+            downloadBtn.style.display = 'inline-flex';
+        }
+
+        // 滑块变化处理
+        function handleSliderChange(filterType, value) {
+            currentFilters[filterType] = parseFloat(value);
+            updateValueDisplay(filterType, value);
+            applyFilters();
+            
+            // 取消预设选择
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        // 更新值显示
+        function updateValueDisplay(filterType, value) {
+            const display = valueDisplays[filterType];
+            if (!display) return;
+            
+            switch (filterType) {
+                case 'hue':
+                    display.textContent = value + '°';
+                    break;
+                case 'blur':
+                    display.textContent = value + 'px';
+                    break;
+                case 'brightness':
+                case 'contrast':
+                case 'saturation':
+                case 'sharpen':
+                case 'exposure':
+                case 'vignette':
+                    display.textContent = value + '%';
+                    break;
+            }
+        }
+
+        // 应用滤镜
+        function applyFilters() {
+            const filters = [];
+            
+            if (currentFilters.brightness !== 100) {
+                filters.push(`brightness(${currentFilters.brightness}%)`);
+            }
+            if (currentFilters.contrast !== 100) {
+                filters.push(`contrast(${currentFilters.contrast}%)`);
+            }
+            if (currentFilters.saturation !== 100) {
+                filters.push(`saturate(${currentFilters.saturation}%)`);
+            }
+            if (currentFilters.hue !== 0) {
+                filters.push(`hue-rotate(${currentFilters.hue}deg)`);
+            }
+            if (currentFilters.blur > 0) {
+                filters.push(`blur(${currentFilters.blur}px)`);
+            }
+            
+            // CSS滤镜不支持锐化、曝光和渐晕，这里用近似效果
+            if (currentFilters.sharpen > 0) {
+                // 锐化可以通过增加对比度来模拟
+                const sharpenContrast = 100 + currentFilters.sharpen * 0.5;
+                if (!filters.some(f => f.includes('contrast'))) {
+                    filters.push(`contrast(${sharpenContrast}%)`);
+                }
+            }
+            
+            if (currentFilters.exposure !== 0) {
+                // 曝光可以通过亮度来模拟
+                const exposureBrightness = currentFilters.brightness + currentFilters.exposure;
+                if (!filters.some(f => f.includes('brightness'))) {
+                    filters.push(`brightness(${exposureBrightness}%)`);
+                }
+            }
+            
+            const filterString = filters.join(' ');
+            workspaceImage.style.filter = filterString;
+            
+            if (isComparisonMode) {
+                filteredComparison.style.filter = filterString;
+            }
+            
+            // 添加渐晕效果（使用CSS渐变叠加）
+            if (currentFilters.vignette > 0) {
+                const vignetteOpacity = currentFilters.vignette / 100 * 0.6;
+                const vignetteStyle = `radial-gradient(circle, transparent 30%, rgba(0,0,0,${vignetteOpacity}) 70%)`;
+                workspaceImage.style.background = vignetteStyle;
+                workspaceImage.style.backgroundBlendMode = 'multiply';
+                if (isComparisonMode) {
+                    filteredComparison.style.background = vignetteStyle;
+                    filteredComparison.style.backgroundBlendMode = 'multiply';
+                }
+            } else {
+                workspaceImage.style.background = 'none';
+                workspaceImage.style.backgroundBlendMode = 'normal';
+                if (isComparisonMode) {
+                    filteredComparison.style.background = 'none';
+                    filteredComparison.style.backgroundBlendMode = 'normal';
+                }
+            }
+        }
+
+        // 应用预设滤镜
+        function applyPreset(presetName) {
+            const preset = presets[presetName];
+            if (!preset) return;
+            
+            // 更新当前滤镜值
+            Object.assign(currentFilters, preset);
+            
+            // 更新滑块和显示
+            Object.keys(preset).forEach(key => {
+                if (sliders[key]) {
+                    sliders[key].value = preset[key];
+                    updateValueDisplay(key, preset[key]);
+                }
+            });
+            
+            // 应用滤镜
+            applyFilters();
+            
+            // 更新预设按钮状态
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.preset === presetName);
+            });
+        }
+
+        // 重置滤镜
+        function resetFilters() {
+            applyPreset('none');
+        }
+
+        // 应用随机滤镜
+        function applyRandomFilter() {
+            const presetNames = Object.keys(presets).filter(name => name !== 'none');
+            const randomPreset = presetNames[Math.floor(Math.random() * presetNames.length)];
+            
+            // 在预设基础上添加一些随机变化
+            const preset = { ...presets[randomPreset] };
+            preset.brightness += (Math.random() - 0.5) * 20;
+            preset.contrast += (Math.random() - 0.5) * 20;
+            preset.saturation += (Math.random() - 0.5) * 30;
+            preset.hue += (Math.random() - 0.5) * 30;
+            
+            // 限制范围
+            preset.brightness = Math.max(50, Math.min(150, preset.brightness));
+            preset.contrast = Math.max(50, Math.min(150, preset.contrast));
+            preset.saturation = Math.max(0, Math.min(200, preset.saturation));
+            preset.hue = Math.max(-180, Math.min(180, preset.hue));
+            
+            // 应用随机滤镜
+            Object.assign(currentFilters, preset);
+            Object.keys(preset).forEach(key => {
+                if (sliders[key]) {
+                    sliders[key].value = preset[key];
+                    updateValueDisplay(key, preset[key]);
+                }
+            });
+            
+            applyFilters();
+            
+            // 取消所有预设选择
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        // 切换对比模式
+        function toggleComparison() {
+            isComparisonMode = !isComparisonMode;
+            comparisonMode.style.display = isComparisonMode ? 'block' : 'none';
+            
+            const btn = document.getElementById('toggleComparison');
+            btn.textContent = isComparisonMode ? '🖼️ 单图' : '👁️ 对比';
+            
+            if (isComparisonMode) {
+                filteredComparison.style.filter = workspaceImage.style.filter;
+                filteredComparison.style.background = workspaceImage.style.background;
+                filteredComparison.style.backgroundBlendMode = workspaceImage.style.backgroundBlendMode;
+            }
+        }
+
+        // 下载滤镜图片
+        function downloadFilteredImage() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = originalImage.width;
+            canvas.height = originalImage.height;
+            
+            // 应用滤镜到画布（需要使用复杂的图像处理，这里简化处理）
+            ctx.filter = workspaceImage.style.filter;
+            ctx.drawImage(originalImage, 0, 0);
+            
+            const format = originalFile.type.includes('png') ? 'image/png' : 'image/jpeg';
+            const quality = format === 'image/jpeg' ? 0.9 : undefined;
+            
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `filtered_${originalFile.name}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, format, quality);
+        }
+
+        // 重置滤镜器
+        function resetFilter() {
+            originalFile = null;
+            originalImage = null;
+            currentFilters = {
+                brightness: 100,
+                contrast: 100,
+                saturation: 100,
+                hue: 0,
+                blur: 0,
+                sharpen: 0,
+                exposure: 0,
+                vignette: 0
+            };
+            isComparisonMode = false;
+            
+            filterControls.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            comparisonMode.style.display = 'none';
+            fileInput.value = '';
+            
+            // 重置UI
+            document.getElementById('toggleComparison').textContent = '👁️ 对比';
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.preset === 'none');
+            });
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>

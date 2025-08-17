@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背景移除器 - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .remover-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .removal-tools {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .tools-panel {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tool-section {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .tool-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .tool-btn {
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tool-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .tool-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .tolerance-slider {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 8px;
+        }
+
+        .tolerance-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3367d6;
+            cursor: pointer;
+        }
+
+        .tolerance-value {
+            text-align: center;
+            background: #3367d6;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .editor-workspace {
+            display: none;
+            margin: 30px 0;
+        }
+
+        .workspace-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .workspace-item {
+            text-align: center;
+        }
+
+        .workspace-item h3 {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .canvas-container {
+            position: relative;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #f0f0f0 75%), 
+                        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .workspace-canvas {
+            max-width: 100%;
+            max-height: 400px;
+            cursor: crosshair;
+            display: block;
+        }
+
+        .image-info {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .image-info .size {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .status-info {
+            text-align: center;
+            margin: 20px 0;
+            padding: 16px;
+            background: linear-gradient(135deg, #8bc34a, #4caf50);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .instructions {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #1e40af;
+        }
+
+        .instructions-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .workspace-container,
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .tool-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🎭 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="share.html">传送</a>
+                <a href="share.html#rooms">多人房间</a>
+                <a href="image-tools.html" class="active">图片</a>
+                <a href="audio-tools.html">音频</a>
+                <a href="video-tools.html">视频</a>
+                <a href="document-tools.html">文件</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">背景移除器</h1>
+        <p class="page-subtitle">智能移除图片背景，支持手动精确调整</p>
+
+        <div class="remover-card">
+            <!-- 上传区域 -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎭</div>
+                <div class="upload-text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <!-- 进度条 -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- 移除工具 -->
+            <div class="removal-tools" id="removalTools">
+                <div class="instructions">
+                    <div class="instructions-title">📝 使用说明:</div>
+                    <div>1. 选择"魔术棒"工具点击背景区域自动选择相似颜色</div>
+                    <div>2. 调整"容差"来控制选择的颜色范围</div>
+                    <div>3. 使用"橡皮擦"手动移除不想要的区域</div>
+                    <div>4. 使用"还原刷"恢复误删的区域</div>
+                </div>
+
+                <div class="tools-panel">
+                    <div class="tools-grid">
+                        <!-- 选择工具 -->
+                        <div class="tool-section">
+                            <div class="tool-title">🪄 选择工具</div>
+                            <div class="tool-buttons">
+                                <button class="tool-btn active" id="magicWand">魔术棒</button>
+                                <button class="tool-btn" id="eraser">橡皮擦</button>
+                                <button class="tool-btn" id="restoreBrush">还原刷</button>
+                            </div>
+                        </div>
+
+                        <!-- 自动选择 -->
+                        <div class="tool-section">
+                            <div class="tool-title">⚡ 快速操作</div>
+                            <div class="tool-buttons">
+                                <button class="tool-btn" id="autoRemove">智能移除</button>
+                                <button class="tool-btn" id="clearAll">清除全部</button>
+                                <button class="tool-btn" id="restoreAll">恢复全部</button>
+                            </div>
+                        </div>
+
+                        <!-- 容差设置 -->
+                        <div class="tool-section">
+                            <div class="tool-title">🎯 容差设置</div>
+                            <input type="range" class="tolerance-slider" id="toleranceSlider" 
+                                   min="1" max="100" value="20">
+                            <div style="text-align: center;">
+                                <span class="tolerance-value" id="toleranceValue">20</span>
+                            </div>
+                        </div>
+
+                        <!-- 画笔大小 -->
+                        <div class="tool-section">
+                            <div class="tool-title">🖌️ 画笔大小</div>
+                            <input type="range" class="tolerance-slider" id="brushSizeSlider" 
+                                   min="5" max="50" value="15">
+                            <div style="text-align: center;">
+                                <span class="tolerance-value" id="brushSizeValue">15px</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 编辑工作区 -->
+            <div class="editor-workspace" id="editorWorkspace">
+                <div class="workspace-container">
+                    <div class="workspace-item">
+                        <h3>原始图片</h3>
+                        <div class="canvas-container">
+                            <canvas id="originalCanvas" class="workspace-canvas"></canvas>
+                        </div>
+                        <div class="image-info">
+                            <div>尺寸: <span class="size" id="originalSize"></span></div>
+                            <div>文件大小: <span class="size" id="originalFileSize"></span></div>
+                        </div>
+                    </div>
+                    <div class="workspace-item">
+                        <h3>背景移除预览</h3>
+                        <div class="canvas-container">
+                            <canvas id="previewCanvas" class="workspace-canvas"></canvas>
+                        </div>
+                        <div class="image-info">
+                            <div>格式: <span class="size">PNG (透明背景)</span></div>
+                            <div>状态: <span class="size" id="editStatus">等待编辑</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 状态信息 -->
+                <div class="status-info" id="statusInfo">
+                    准备开始编辑...
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="processBtn" style="display: none;">
+                    🎭 应用移除效果
+                </button>
+                <button class="btn btn-success" id="downloadBtn" style="display: none;">
+                    📥 下载透明图片
+                </button>
+                <button class="btn btn-warning" id="undoBtn" style="display: none;">
+                    ↶ 撤销操作
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    🔄 重新选择
+                </button>
+                <a href="image-tools.html" class="btn btn-primary">
+                    ← 返回工具页
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let originalFile = null;
+        let originalImage = null;
+        let originalCanvas = null;
+        let previewCanvas = null;
+        let maskCanvas = null;
+        let currentTool = 'magicWand';
+        let tolerance = 20;
+        let brushSize = 15;
+        let isMouseDown = false;
+        let editHistory = [];
+        let hasEdits = false;
+
+        // DOM 元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const removalTools = document.getElementById('removalTools');
+        const editorWorkspace = document.getElementById('editorWorkspace');
+        const originalCanvasEl = document.getElementById('originalCanvas');
+        const previewCanvasEl = document.getElementById('previewCanvas');
+        const toleranceSlider = document.getElementById('toleranceSlider');
+        const toleranceValue = document.getElementById('toleranceValue');
+        const brushSizeSlider = document.getElementById('brushSizeSlider');
+        const brushSizeValue = document.getElementById('brushSizeValue');
+        const toolBtns = document.querySelectorAll('.tool-btn');
+        const processBtn = document.getElementById('processBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const undoBtn = document.getElementById('undoBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const statusInfo = document.getElementById('statusInfo');
+
+        // 事件监听器
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        toleranceSlider.addEventListener('input', handleToleranceChange);
+        brushSizeSlider.addEventListener('input', handleBrushSizeChange);
+
+        // 工具按钮事件
+        document.getElementById('magicWand').addEventListener('click', () => selectTool('magicWand'));
+        document.getElementById('eraser').addEventListener('click', () => selectTool('eraser'));
+        document.getElementById('restoreBrush').addEventListener('click', () => selectTool('restoreBrush'));
+        document.getElementById('autoRemove').addEventListener('click', autoRemoveBackground);
+        document.getElementById('clearAll').addEventListener('click', clearAllMask);
+        document.getElementById('restoreAll').addEventListener('click', restoreAllMask);
+
+        processBtn.addEventListener('click', applyRemovalEffect);
+        downloadBtn.addEventListener('click', downloadResult);
+        undoBtn.addEventListener('click', undoLastAction);
+        resetBtn.addEventListener('click', resetRemover);
+
+        // 拖拽处理
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        // 文件选择处理
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // 处理文件
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('请选择图片文件！');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('文件大小不能超过 10MB！');
+                return;
+            }
+
+            originalFile = file;
+            showProgress();
+            loadImage(file);
+        }
+
+        // 显示进度条
+        function showProgress() {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // 加载图片
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                originalImage = new Image();
+                originalImage.onload = function() {
+                    setupEditor(this, file);
+                };
+                originalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 设置编辑器
+        function setupEditor(img, file) {
+            // 显示原始图片信息
+            document.getElementById('originalSize').textContent = `${img.width} × ${img.height}`;
+            document.getElementById('originalFileSize').textContent = formatFileSize(file.size);
+            
+            // 设置画布
+            setupCanvases(img);
+            
+            // 显示控制区域和工作区
+            removalTools.style.display = 'block';
+            editorWorkspace.style.display = 'block';
+            processBtn.style.display = 'inline-flex';
+            undoBtn.style.display = 'inline-flex';
+            
+            // 更新状态
+            updateStatus('ready', '点击背景区域开始移除...');
+            document.getElementById('editStatus').textContent = '准备编辑';
+        }
+
+        // 设置画布
+        function setupCanvases(img) {
+            // 原始画布
+            originalCanvas = originalCanvasEl;
+            const originalCtx = originalCanvas.getContext('2d');
+            originalCanvas.width = img.width;
+            originalCanvas.height = img.height;
+            originalCtx.drawImage(img, 0, 0);
+            
+            // 预览画布
+            previewCanvas = previewCanvasEl;
+            const previewCtx = previewCanvas.getContext('2d');
+            previewCanvas.width = img.width;
+            previewCanvas.height = img.height;
+            previewCtx.drawImage(img, 0, 0);
+            
+            // 遮罩画布（用于标记要移除的区域）
+            maskCanvas = document.createElement('canvas');
+            maskCanvas.width = img.width;
+            maskCanvas.height = img.height;
+            const maskCtx = maskCanvas.getContext('2d');
+            maskCtx.fillStyle = 'black';
+            maskCtx.fillRect(0, 0, img.width, img.height);
+            
+            // 添加画布事件监听器
+            setupCanvasEvents();
+        }
+
+        // 设置画布事件
+        function setupCanvasEvents() {
+            originalCanvas.addEventListener('mousedown', handleCanvasMouseDown);
+            originalCanvas.addEventListener('mousemove', handleCanvasMouseMove);
+            originalCanvas.addEventListener('mouseup', handleCanvasMouseUp);
+            originalCanvas.addEventListener('click', handleCanvasClick);
+        }
+
+        // 容差变化
+        function handleToleranceChange(e) {
+            tolerance = parseInt(e.target.value);
+            toleranceValue.textContent = tolerance;
+        }
+
+        // 画笔大小变化
+        function handleBrushSizeChange(e) {
+            brushSize = parseInt(e.target.value);
+            brushSizeValue.textContent = brushSize + 'px';
+        }
+
+        // 选择工具
+        function selectTool(tool) {
+            currentTool = tool;
+            toolBtns.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tool).classList.add('active');
+            
+            // 更新光标样式
+            const cursor = tool === 'magicWand' ? 'crosshair' : 'pointer';
+            originalCanvas.style.cursor = cursor;
+        }
+
+        // 画布鼠标事件
+        function handleCanvasMouseDown(e) {
+            isMouseDown = true;
+            if (currentTool === 'eraser' || currentTool === 'restoreBrush') {
+                handleBrushAction(e);
+            }
+        }
+
+        function handleCanvasMouseMove(e) {
+            if (isMouseDown && (currentTool === 'eraser' || currentTool === 'restoreBrush')) {
+                handleBrushAction(e);
+            }
+        }
+
+        function handleCanvasMouseUp(e) {
+            isMouseDown = false;
+        }
+
+        function handleCanvasClick(e) {
+            if (currentTool === 'magicWand') {
+                handleMagicWandClick(e);
+            }
+        }
+
+        // 魔术棒点击处理
+        function handleMagicWandClick(e) {
+            const rect = originalCanvas.getBoundingClientRect();
+            const scaleX = originalCanvas.width / rect.width;
+            const scaleY = originalCanvas.height / rect.height;
+            const x = Math.floor((e.clientX - rect.left) * scaleX);
+            const y = Math.floor((e.clientY - rect.top) * scaleY);
+            
+            saveToHistory();
+            magicWandSelect(x, y);
+            updatePreview();
+            hasEdits = true;
+            document.getElementById('editStatus').textContent = '已编辑';
+        }
+
+        // 画笔操作处理
+        function handleBrushAction(e) {
+            const rect = originalCanvas.getBoundingClientRect();
+            const scaleX = originalCanvas.width / rect.width;
+            const scaleY = originalCanvas.height / rect.height;
+            const x = Math.floor((e.clientX - rect.left) * scaleX);
+            const y = Math.floor((e.clientY - rect.top) * scaleY);
+            
+            if (!hasEdits) {
+                saveToHistory();
+            }
+            
+            const maskCtx = maskCanvas.getContext('2d');
+            maskCtx.globalCompositeOperation = currentTool === 'eraser' ? 'source-over' : 'destination-out';
+            maskCtx.fillStyle = currentTool === 'eraser' ? 'white' : 'black';
+            maskCtx.beginPath();
+            maskCtx.arc(x, y, brushSize / 2, 0, 2 * Math.PI);
+            maskCtx.fill();
+            
+            updatePreview();
+            hasEdits = true;
+            document.getElementById('editStatus').textContent = '已编辑';
+        }
+
+        // 魔术棒选择算法
+        function magicWandSelect(startX, startY) {
+            const originalCtx = originalCanvas.getContext('2d');
+            const maskCtx = maskCanvas.getContext('2d');
+            const imageData = originalCtx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+            const maskData = maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
+            
+            const targetColor = getPixelColor(imageData, startX, startY);
+            const visited = new Set();
+            const stack = [[startX, startY]];
+            
+            while (stack.length > 0) {
+                const [x, y] = stack.pop();
+                const key = `${x},${y}`;
+                
+                if (visited.has(key) || x < 0 || y < 0 || x >= imageData.width || y >= imageData.height) {
+                    continue;
+                }
+                
+                const currentColor = getPixelColor(imageData, x, y);
+                if (!colorMatch(targetColor, currentColor, tolerance)) {
+                    continue;
+                }
+                
+                visited.add(key);
+                
+                // 标记为要移除的区域（白色）
+                const index = (y * imageData.width + x) * 4;
+                maskData.data[index] = 255;     // R
+                maskData.data[index + 1] = 255; // G
+                maskData.data[index + 2] = 255; // B
+                maskData.data[index + 3] = 255; // A
+                
+                // 添加相邻像素到栈
+                stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+            }
+            
+            maskCtx.putImageData(maskData, 0, 0);
+        }
+
+        // 获取像素颜色
+        function getPixelColor(imageData, x, y) {
+            const index = (y * imageData.width + x) * 4;
+            return {
+                r: imageData.data[index],
+                g: imageData.data[index + 1],
+                b: imageData.data[index + 2],
+                a: imageData.data[index + 3]
+            };
+        }
+
+        // 颜色匹配
+        function colorMatch(color1, color2, tolerance) {
+            const dr = Math.abs(color1.r - color2.r);
+            const dg = Math.abs(color1.g - color2.g);
+            const db = Math.abs(color1.b - color2.b);
+            const distance = Math.sqrt(dr * dr + dg * dg + db * db);
+            return distance <= tolerance * 2.55; // 转换为0-255范围
+        }
+
+        // 自动移除背景
+        function autoRemoveBackground() {
+            saveToHistory();
+            
+            // 简单的边缘检测背景移除
+            const corners = [
+                [0, 0], [originalCanvas.width - 1, 0],
+                [0, originalCanvas.height - 1], [originalCanvas.width - 1, originalCanvas.height - 1]
+            ];
+            
+            corners.forEach(([x, y]) => {
+                magicWandSelect(x, y);
+            });
+            
+            updatePreview();
+            hasEdits = true;
+            document.getElementById('editStatus').textContent = '已编辑';
+            updateStatus('processed', '自动背景移除完成');
+        }
+
+        // 清除所有遮罩
+        function clearAllMask() {
+            saveToHistory();
+            const maskCtx = maskCanvas.getContext('2d');
+            maskCtx.fillStyle = 'white';
+            maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+            updatePreview();
+            hasEdits = true;
+            document.getElementById('editStatus').textContent = '已编辑';
+        }
+
+        // 恢复所有遮罩
+        function restoreAllMask() {
+            saveToHistory();
+            const maskCtx = maskCanvas.getContext('2d');
+            maskCtx.fillStyle = 'black';
+            maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+            updatePreview();
+            hasEdits = true;
+            document.getElementById('editStatus').textContent = '已编辑';
+        }
+
+        // 更新预览
+        function updatePreview() {
+            const originalCtx = originalCanvas.getContext('2d');
+            const previewCtx = previewCanvas.getContext('2d');
+            const maskCtx = maskCanvas.getContext('2d');
+            
+            const originalData = originalCtx.getImageData(0, 0, originalCanvas.width, originalCanvas.height);
+            const maskData = maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
+            
+            for (let i = 0; i < originalData.data.length; i += 4) {
+                const maskIndex = i;
+                if (maskData.data[maskIndex] > 128) { // 白色区域 = 要移除的区域
+                    originalData.data[i + 3] = 0; // 设置为透明
+                }
+            }
+            
+            previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+            previewCtx.putImageData(originalData, 0, 0);
+        }
+
+        // 应用移除效果
+        function applyRemovalEffect() {
+            updatePreview();
+            downloadBtn.style.display = 'inline-flex';
+            updateStatus('completed', '背景移除完成！可以下载结果图片');
+        }
+
+        // 保存到历史记录
+        function saveToHistory() {
+            const maskCtx = maskCanvas.getContext('2d');
+            const imageData = maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
+            editHistory.push(imageData);
+            
+            // 限制历史记录数量
+            if (editHistory.length > 10) {
+                editHistory.shift();
+            }
+        }
+
+        // 撤销上一次操作
+        function undoLastAction() {
+            if (editHistory.length > 0) {
+                const lastState = editHistory.pop();
+                const maskCtx = maskCanvas.getContext('2d');
+                maskCtx.putImageData(lastState, 0, 0);
+                updatePreview();
+                
+                if (editHistory.length === 0) {
+                    hasEdits = false;
+                    document.getElementById('editStatus').textContent = '准备编辑';
+                }
+            }
+        }
+
+        // 下载结果
+        function downloadResult() {
+            previewCanvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `background_removed_${originalFile.name.replace(/\.[^/.]+$/, '')}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+
+        // 更新状态
+        function updateStatus(type, message) {
+            statusInfo.textContent = message;
+            statusInfo.style.display = 'block';
+            
+            const colors = {
+                ready: 'linear-gradient(135deg, #3367d6, #2563eb)',
+                processed: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                completed: 'linear-gradient(135deg, #10b981, #059669)'
+            };
+            
+            statusInfo.style.background = colors[type] || colors.ready;
+        }
+
+        // 重置移除器
+        function resetRemover() {
+            originalFile = null;
+            originalImage = null;
+            originalCanvas = null;
+            previewCanvas = null;
+            maskCanvas = null;
+            editHistory = [];
+            hasEdits = false;
+            
+            removalTools.style.display = 'none';
+            editorWorkspace.style.display = 'none';
+            processBtn.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            undoBtn.style.display = 'none';
+            statusInfo.style.display = 'none';
+            fileInput.value = '';
+            
+            document.getElementById('editStatus').textContent = '等待编辑';
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>

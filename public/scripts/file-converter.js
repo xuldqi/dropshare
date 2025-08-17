@@ -411,13 +411,88 @@ class FileConverter {
     }
     
     async convertAudio(file, targetFormat) {
-        // 注意：真实的音频转换需要使用 FFmpeg.wasm 或服务器端处理
-        // 这里提供一个简化的示例，实际应用中需要更复杂的实现
+        try {
+            // 使用 FFmpeg 懒加载管理器进行真实的音频转换
+            if (!window.ffmpegLoader) {
+                throw new Error('FFmpeg 加载管理器不可用');
+            }
+
+            // 获取 FFmpeg 实例（触发懒加载）
+            const ffmpeg = await window.ffmpegLoader.getFFmpeg({
+                onProgress: (percent, text) => {
+                    this.updateProgress(percent, text);
+                },
+                onStatusUpdate: (status) => {
+                    console.log('FFmpeg 状态:', status);
+                }
+            });
+
+            const inputFileName = `input_${Date.now()}.${file.name.split('.').pop().toLowerCase()}`;
+            const outputFileName = `output_${Date.now()}.${targetFormat}`;
+            
+            // 将文件写入 FFmpeg 文件系统
+            await ffmpeg.writeFile(inputFileName, new Uint8Array(await file.arrayBuffer()));
+            
+            // 构建转换命令参数
+            let args = ['-i', inputFileName];
+            
+            // 根据目标格式设置编码参数
+            switch (targetFormat) {
+                case 'mp3':
+                    args.push('-codec:a', 'libmp3lame', '-b:a', '192k');
+                    break;
+                case 'wav':
+                    args.push('-codec:a', 'pcm_s16le');
+                    break;
+                case 'aac':
+                    args.push('-codec:a', 'aac', '-b:a', '192k');
+                    break;
+                case 'ogg':
+                    args.push('-codec:a', 'libvorbis', '-b:a', '192k');
+                    break;
+                case 'flac':
+                    args.push('-codec:a', 'flac');
+                    break;
+                default:
+                    args.push('-codec:a', 'libmp3lame', '-b:a', '192k');
+            }
+            
+            args.push('-ar', '44100', outputFileName);
+            
+            // 执行转换
+            await ffmpeg.exec(args);
+            
+            // 读取转换后的文件
+            const data = await ffmpeg.readFile(outputFileName);
+            
+            // 清理临时文件
+            await ffmpeg.deleteFile(inputFileName);
+            await ffmpeg.deleteFile(outputFileName);
+            
+            // 创建新文件对象
+            const newFileName = this.changeFileExtension(file.name, targetFormat);
+            const mimeType = this.getMimeType(targetFormat);
+            
+            return new File([data], newFileName, { type: mimeType });
+            
+        } catch (error) {
+            console.error('音频转换失败:', error);
+            
+            // 如果 FFmpeg 转换失败，回退到简单的文件重命名
+            if (error.message.includes('FFmpeg') || error.message.includes('加载')) {
+                console.warn('FFmpeg 不可用，使用简化转换（仅更改文件扩展名）');
+                return this.fallbackAudioConversion(file, targetFormat);
+            }
+            
+            throw error;
+        }
+    }
+    
+    // 回退方案：简单的文件重命名（当 FFmpeg 不可用时）
+    async fallbackAudioConversion(file, targetFormat) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = () => {
-                // 简化处理：直接返回原文件但改变扩展名
-                // 实际应用中需要使用 Web Audio API 或 FFmpeg.wasm 进行真正的格式转换
                 const newFileName = this.changeFileExtension(file.name, targetFormat);
                 const mimeType = this.getMimeType(targetFormat);
                 const convertedFile = new File([reader.result], newFileName, { type: mimeType });

@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片尺寸调整器 - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .resizer-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .resize-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .control-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .preset-btn {
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .preset-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .custom-inputs {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .dimension-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .lock-aspect {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #3367d6;
+        }
+
+        .percentage-input {
+            width: 100px;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .resampling-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .image-preview {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .preview-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .preview-item {
+            text-align: center;
+        }
+
+        .preview-item h3 {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+        }
+
+        .image-info {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .image-info .size {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .size-comparison {
+            text-align: center;
+            margin: 20px 0;
+            padding: 16px;
+            background: linear-gradient(135deg, #3367d6, #2563eb);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .preview-container,
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .preset-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                📏 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="share.html">传送</a>
+                <a href="share.html#rooms">多人房间</a>
+                <a href="image-tools.html" class="active">图片</a>
+                <a href="audio-tools.html">音频</a>
+                <a href="video-tools.html">视频</a>
+                <a href="document-tools.html">文件</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">图片尺寸调整器</h1>
+        <p class="page-subtitle">智能调整图片尺寸，支持多种预设和自定义选项</p>
+
+        <div class="resizer-card">
+            <!-- 上传区域 -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📏</div>
+                <div class="upload-text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <!-- 进度条 -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- 调整控制 -->
+            <div class="resize-controls" id="resizeControls">
+                <div class="controls-grid">
+                    <!-- 尺寸设置 -->
+                    <div class="control-section">
+                        <div class="section-title">📐 尺寸设置</div>
+                        
+                        <div class="preset-buttons">
+                            <button class="preset-btn" data-size="320,240">320×240</button>
+                            <button class="preset-btn" data-size="640,480">640×480</button>
+                            <button class="preset-btn" data-size="800,600">800×600</button>
+                            <button class="preset-btn" data-size="1024,768">1024×768</button>
+                            <button class="preset-btn" data-size="1920,1080">1920×1080</button>
+                            <button class="preset-btn" data-size="custom">自定义</button>
+                        </div>
+
+                        <div class="custom-inputs">
+                            <input type="number" class="dimension-input" id="widthInput" placeholder="宽度" min="1">
+                            <span>×</span>
+                            <input type="number" class="dimension-input" id="heightInput" placeholder="高度" min="1">
+                        </div>
+
+                        <div class="lock-aspect">
+                            <input type="checkbox" class="checkbox" id="lockAspect" checked>
+                            <label for="lockAspect">锁定长宽比</label>
+                        </div>
+                    </div>
+
+                    <!-- 缩放设置 -->
+                    <div class="control-section">
+                        <div class="section-title">🔍 缩放设置</div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">缩放百分比:</label>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <input type="range" id="scaleSlider" min="10" max="500" value="100" 
+                                       style="flex: 1; height: 6px; border-radius: 3px; background: #e5e7eb; outline: none; -webkit-appearance: none;">
+                                <input type="number" class="percentage-input" id="scaleInput" value="100" min="10" max="500">
+                                <span>%</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">重采样方法:</label>
+                            <select class="resampling-select" id="resamplingMethod">
+                                <option value="auto">自动选择</option>
+                                <option value="smooth">平滑 (适合放大)</option>
+                                <option value="pixelated">像素化 (保持锐利)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="btn btn-primary" id="resizeBtn">
+                        📏 开始调整
+                    </button>
+                </div>
+            </div>
+
+            <!-- 图片预览 -->
+            <div class="image-preview" id="imagePreview">
+                <div class="preview-container">
+                    <div class="preview-item">
+                        <h3>原始图片</h3>
+                        <img id="originalImage" class="preview-image" alt="原始图片">
+                        <div class="image-info">
+                            <div>尺寸: <span class="size" id="originalSize"></span></div>
+                            <div>文件大小: <span class="size" id="originalFileSize"></span></div>
+                        </div>
+                    </div>
+                    <div class="preview-item">
+                        <h3>调整后图片</h3>
+                        <canvas id="resizedImage" class="preview-image"></canvas>
+                        <div class="image-info">
+                            <div>尺寸: <span class="size" id="resizedSize"></span></div>
+                            <div>预估大小: <span class="size" id="resizedFileSize"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 尺寸对比 -->
+                <div class="size-comparison" id="sizeComparison"></div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <button class="btn btn-success" id="downloadBtn" style="display: none;">
+                    📥 下载调整图片
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    🔄 重新选择
+                </button>
+                <a href="image-tools.html" class="btn btn-primary">
+                    ← 返回工具页
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let originalFile = null;
+        let originalCanvas = null;
+        let resizedCanvas = null;
+        let originalAspectRatio = 1;
+
+        // DOM 元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const resizeControls = document.getElementById('resizeControls');
+        const imagePreview = document.getElementById('imagePreview');
+        const originalImage = document.getElementById('originalImage');
+        const resizedImage = document.getElementById('resizedImage');
+        const widthInput = document.getElementById('widthInput');
+        const heightInput = document.getElementById('heightInput');
+        const lockAspect = document.getElementById('lockAspect');
+        const scaleSlider = document.getElementById('scaleSlider');
+        const scaleInput = document.getElementById('scaleInput');
+        const resamplingMethod = document.getElementById('resamplingMethod');
+        const resizeBtn = document.getElementById('resizeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+
+        // 事件监听器
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        widthInput.addEventListener('input', handleDimensionChange);
+        heightInput.addEventListener('input', handleDimensionChange);
+        scaleSlider.addEventListener('input', handleScaleChange);
+        scaleInput.addEventListener('input', handleScaleInputChange);
+
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', handlePresetChange);
+        });
+
+        resizeBtn.addEventListener('click', performResize);
+        downloadBtn.addEventListener('click', downloadResizedImage);
+        resetBtn.addEventListener('click', resetResizer);
+
+        // 拖拽处理
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        // 文件选择处理
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // 处理文件
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('请选择图片文件！');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert('文件大小不能超过 10MB！');
+                return;
+            }
+
+            originalFile = file;
+            showProgress();
+            loadImage(file);
+        }
+
+        // 显示进度条
+        function showProgress() {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // 加载图片
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    setupResizer(this, file);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 设置调整器
+        function setupResizer(img, file) {
+            originalImage.src = img.src;
+            originalAspectRatio = img.width / img.height;
+            
+            // 显示原始图片信息
+            document.getElementById('originalSize').textContent = `${img.width} × ${img.height}`;
+            document.getElementById('originalFileSize').textContent = formatFileSize(file.size);
+            
+            // 创建原始图片的 canvas
+            originalCanvas = document.createElement('canvas');
+            const ctx = originalCanvas.getContext('2d');
+            originalCanvas.width = img.width;
+            originalCanvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            
+            // 初始化输入框
+            widthInput.value = img.width;
+            heightInput.value = img.height;
+            
+            // 显示控制区域
+            resizeControls.style.display = 'block';
+        }
+
+        // 尺寸输入变化
+        function handleDimensionChange(e) {
+            if (lockAspect.checked) {
+                if (e.target === widthInput) {
+                    const width = parseInt(widthInput.value) || 0;
+                    heightInput.value = Math.round(width / originalAspectRatio);
+                } else {
+                    const height = parseInt(heightInput.value) || 0;
+                    widthInput.value = Math.round(height * originalAspectRatio);
+                }
+            }
+            updateScaleFromDimensions();
+        }
+
+        // 缩放滑块变化
+        function handleScaleChange(e) {
+            const scale = e.target.value;
+            scaleInput.value = scale;
+            updateDimensionsFromScale(scale);
+        }
+
+        // 缩放输入变化
+        function handleScaleInputChange(e) {
+            const scale = Math.max(10, Math.min(500, parseInt(e.target.value) || 100));
+            scaleSlider.value = scale;
+            scaleInput.value = scale;
+            updateDimensionsFromScale(scale);
+        }
+
+        // 从缩放更新尺寸
+        function updateDimensionsFromScale(scale) {
+            if (!originalCanvas) return;
+            
+            const newWidth = Math.round(originalCanvas.width * scale / 100);
+            const newHeight = Math.round(originalCanvas.height * scale / 100);
+            
+            widthInput.value = newWidth;
+            heightInput.value = newHeight;
+        }
+
+        // 从尺寸更新缩放
+        function updateScaleFromDimensions() {
+            if (!originalCanvas) return;
+            
+            const width = parseInt(widthInput.value) || 0;
+            const scale = Math.round((width / originalCanvas.width) * 100);
+            
+            scaleSlider.value = scale;
+            scaleInput.value = scale;
+        }
+
+        // 预设尺寸变化
+        function handlePresetChange(e) {
+            presetBtns.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            const sizeData = e.target.dataset.size;
+            if (sizeData !== 'custom') {
+                const [width, height] = sizeData.split(',').map(Number);
+                widthInput.value = width;
+                heightInput.value = height;
+                updateScaleFromDimensions();
+            }
+        }
+
+        // 执行调整
+        function performResize() {
+            if (!originalCanvas) return;
+            
+            const targetWidth = parseInt(widthInput.value) || originalCanvas.width;
+            const targetHeight = parseInt(heightInput.value) || originalCanvas.height;
+            
+            if (targetWidth <= 0 || targetHeight <= 0) {
+                alert('请输入有效的宽度和高度！');
+                return;
+            }
+            
+            // 创建调整后的 canvas
+            resizedCanvas = document.createElement('canvas');
+            const ctx = resizedCanvas.getContext('2d');
+            resizedCanvas.width = targetWidth;
+            resizedCanvas.height = targetHeight;
+            
+            // 设置重采样方法
+            const method = resamplingMethod.value;
+            if (method === 'smooth') {
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+            } else if (method === 'pixelated') {
+                ctx.imageSmoothingEnabled = false;
+            } else {
+                // 自动选择
+                ctx.imageSmoothingEnabled = targetWidth > originalCanvas.width || targetHeight > originalCanvas.height;
+                ctx.imageSmoothingQuality = 'high';
+            }
+            
+            // 绘制调整后的图片
+            ctx.drawImage(originalCanvas, 0, 0, targetWidth, targetHeight);
+            
+            // 显示预览
+            showPreview();
+        }
+
+        // 显示预览
+        function showPreview() {
+            if (!resizedCanvas) return;
+            
+            // 设置 canvas 样式
+            resizedImage.width = resizedCanvas.width;
+            resizedImage.height = resizedCanvas.height;
+            const ctx = resizedImage.getContext('2d');
+            ctx.drawImage(resizedCanvas, 0, 0);
+            
+            // 更新信息
+            document.getElementById('resizedSize').textContent = 
+                `${resizedCanvas.width} × ${resizedCanvas.height}`;
+            
+            // 估算文件大小
+            const estimatedSize = Math.round(resizedCanvas.width * resizedCanvas.height * 3 * 0.7);
+            document.getElementById('resizedFileSize').textContent = formatFileSize(estimatedSize);
+            
+            // 显示尺寸对比
+            const originalPixels = originalCanvas.width * originalCanvas.height;
+            const newPixels = resizedCanvas.width * resizedCanvas.height;
+            const changePercent = Math.round((newPixels / originalPixels) * 100);
+            
+            const sizeComparison = document.getElementById('sizeComparison');
+            if (changePercent > 100) {
+                sizeComparison.textContent = `图片尺寸增加了 ${changePercent - 100}%`;
+            } else if (changePercent < 100) {
+                sizeComparison.textContent = `图片尺寸减少了 ${100 - changePercent}%`;
+            } else {
+                sizeComparison.textContent = '图片尺寸保持不变';
+            }
+            sizeComparison.style.display = 'block';
+            
+            // 显示预览区域和下载按钮
+            imagePreview.style.display = 'block';
+            downloadBtn.style.display = 'inline-flex';
+        }
+
+        // 下载调整后的图片
+        function downloadResizedImage() {
+            if (!resizedCanvas) return;
+            
+            const format = originalFile.type.includes('png') ? 'image/png' : 'image/jpeg';
+            const quality = format === 'image/jpeg' ? 0.9 : undefined;
+            
+            resizedCanvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `resized_${originalFile.name}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, format, quality);
+        }
+
+        // 重置调整器
+        function resetResizer() {
+            originalFile = null;
+            originalCanvas = null;
+            resizedCanvas = null;
+            originalAspectRatio = 1;
+            
+            resizeControls.style.display = 'none';
+            imagePreview.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            fileInput.value = '';
+            
+            // 重置输入框
+            widthInput.value = '';
+            heightInput.value = '';
+            scaleSlider.value = 100;
+            scaleInput.value = 100;
+            
+            // 重置预设按钮
+            presetBtns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('sizeComparison').style.display = 'none';
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // 滑块样式
+        const style = document.createElement('style');
+        style.textContent = `
+            #scaleSlider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #3367d6;
+                cursor: pointer;
+            }
+            
+            #scaleSlider::-moz-range-thumb {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #3367d6;
+                cursor: pointer;
+                border: none;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

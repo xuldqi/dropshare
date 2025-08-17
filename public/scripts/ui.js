@@ -45,8 +45,32 @@ let currentDisplayName = ''; // 存储当前显示名称
 Events.on('display-name', e => {
     const me = e.detail.message;
     currentDisplayName = me.displayName; // 存储当前名称
+    
+    // 存储当前用户的peer ID到全局变量
+    if (me.peerId) {
+        window.currentPeerId = me.peerId;
+        console.log('Current peer ID stored:', me.peerId);
+        
+        // 也存储到displayName元素的dataset中，供房间管理器使用
+        const displayNameEl = document.getElementById('displayName');
+        if (displayNameEl) {
+            displayNameEl.dataset.peerId = me.peerId;
+        }
+    }
+    
     updateDisplayName(me.displayName, me.deviceName);
+    
+    // 同时更新房间区域的用户名称显示
+    updateRoomUserName(me.displayName);
 });
+
+// 更新房间区域用户名称显示
+function updateRoomUserName(displayName) {
+    const currentUserNameEl = document.getElementById('currentUserName');
+    if (currentUserNameEl && displayName) {
+        currentUserNameEl.textContent = displayName;
+    }
+}
 
 // 更新显示名称的函数
 function updateDisplayName(displayName, deviceName) {
@@ -74,6 +98,7 @@ document.addEventListener('language-changed', () => {
     // 更新当前用户显示名称
     if (currentDisplayName) {
         updateDisplayName(currentDisplayName);
+        updateRoomUserName(currentDisplayName);
     }
     
     // 更新所有对等节点的设备名称
@@ -96,13 +121,22 @@ class PeersUI {
 
     _onPeerJoined(peer) {
         if ($(peer.id)) return; // peer already exists
+        // 确保不显示当前用户自己
+        if (peer.id === window.currentPeerId) return;
         const peerUI = new PeerUI(peer);
         $$('x-peers').appendChild(peerUI.$el);
     }
 
     _onPeers(peers) {
         this._clearPeers();
-        peers.forEach(peer => this._onPeerJoined(peer));
+        // 如果当前用户ID还没设置，延迟处理
+        if (!window.currentPeerId) {
+            setTimeout(() => this._onPeers(peers), 100);
+            return;
+        }
+        // 过滤掉当前用户自己，确保只显示其他设备
+        const otherPeers = peers.filter(peer => peer.id !== window.currentPeerId);
+        otherPeers.forEach(peer => this._onPeerJoined(peer));
     }
 
     _onPeerLeft(peerId) {

@@ -20,6 +20,11 @@
             border-bottom: 2px solid var(--border-color);
         }
         
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -30,6 +35,7 @@
             border: 1px solid var(--primary-color);
             border-radius: 8px;
             transition: all 0.3s ease;
+            font-size: 14px;
         }
         
         .back-button:hover {
@@ -278,15 +284,18 @@
 </head>
 <body>
     <div class="page-header">
-        <h1>🖼️ 图片转换器</h1>
-        <a href="index.html" class="back-button">← 返回首页</a>
+        <h1>🔄 图片格式转换器</h1>
+        <div class="header-buttons">
+            <a href="image-tools.html" class="back-button">← 图片工具</a>
+            <a href="index.html" class="back-button">🏠 首页</a>
+        </div>
     </div>
     
     <div class="converter-container">
         <div class="upload-area" id="uploadArea">
             <div style="font-size: 3em; margin-bottom: 15px;">📁</div>
             <h3>拖拽图片到这里或点击选择</h3>
-            <p style="color: var(--text-secondary);">支持 JPG, PNG, GIF, BMP, WebP 格式</p>
+            <p style="color: var(--text-secondary);">支持 JPEG, PNG, WebP, GIF, BMP, TIFF, ICO, AVIF 格式</p>
             <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
             <button class="button primary" onclick="document.getElementById('fileInput').click()">选择图片</button>
         </div>
@@ -301,6 +310,9 @@
                 <div class="format-option" data-format="webp">WebP</div>
                 <div class="format-option" data-format="gif">GIF</div>
                 <div class="format-option" data-format="bmp">BMP</div>
+                <div class="format-option" data-format="tiff">TIFF</div>
+                <div class="format-option" data-format="ico">ICO</div>
+                <div class="format-option" data-format="avif">AVIF</div>
             </div>
             
             <div class="settings-panel">
@@ -450,7 +462,22 @@
                 // 质量滑块
                 qualitySlider.addEventListener('input', (e) => {
                     document.getElementById('qualityValue').textContent = e.target.value;
+                    this.updateQualityPreview();
                 });
+                
+                // 预设按钮
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.applyPreset(btn.dataset.preset);
+                    });
+                });
+                
+                // 尺寸输入
+                document.getElementById('widthInput').addEventListener('input', () => this.updateSizePreview());
+                document.getElementById('heightInput').addEventListener('input', () => this.updateSizePreview());
+                document.getElementById('maintainRatio').addEventListener('change', () => this.updateSizePreview());
                 
                 // 转换按钮
                 convertBtn.addEventListener('click', () => {
@@ -476,8 +503,160 @@
                 }
                 
                 this.selectedFiles = imageFiles;
+                this.loadImageInfo();
                 this.showPreview();
                 document.getElementById('conversionPanel').style.display = 'block';
+            }
+            
+            async loadImageInfo() {
+                // 加载第一张图片的信息用于预览计算
+                if (this.selectedFiles.length > 0) {
+                    const firstFile = this.selectedFiles[0];
+                    const img = new Image();
+                    img.onload = () => {
+                        this.originalImages[0] = {
+                            width: img.width,
+                            height: img.height,
+                            size: firstFile.size
+                        };
+                        document.getElementById('originalDimensions').textContent = 
+                            `原始: ${img.width} × ${img.height}`;
+                        this.updateQualityPreview();
+                        this.updateSizePreview();
+                    };
+                    img.src = URL.createObjectURL(firstFile);
+                }
+            }
+            
+            applyPreset(preset) {
+                const qualitySlider = document.getElementById('qualitySlider');
+                const qualityValue = document.getElementById('qualityValue');
+                const widthInput = document.getElementById('widthInput');
+                const heightInput = document.getElementById('heightInput');
+                
+                switch (preset) {
+                    case 'high-quality':
+                        qualitySlider.value = 95;
+                        qualityValue.textContent = '95';
+                        widthInput.value = '';
+                        heightInput.value = '';
+                        break;
+                    case 'balanced':
+                        qualitySlider.value = 80;
+                        qualityValue.textContent = '80';
+                        widthInput.value = '';
+                        heightInput.value = '';
+                        break;
+                    case 'high-compress':
+                        qualitySlider.value = 60;
+                        qualityValue.textContent = '60';
+                        if (this.originalImages[0]) {
+                            // 减小尺寸以增加压缩率
+                            const newWidth = Math.round(this.originalImages[0].width * 0.8);
+                            const newHeight = Math.round(this.originalImages[0].height * 0.8);
+                            widthInput.value = newWidth;
+                            heightInput.value = newHeight;
+                        }
+                        break;
+                    case 'web-optimized':
+                        qualitySlider.value = 75;
+                        qualityValue.textContent = '75';
+                        if (this.originalImages[0]) {
+                            // 优化为常见的网页尺寸
+                            const maxWidth = 1200;
+                            const maxHeight = 800;
+                            let newWidth = this.originalImages[0].width;
+                            let newHeight = this.originalImages[0].height;
+                            
+                            if (newWidth > maxWidth) {
+                                const ratio = maxWidth / newWidth;
+                                newWidth = maxWidth;
+                                newHeight = Math.round(newHeight * ratio);
+                            }
+                            
+                            if (newHeight > maxHeight) {
+                                const ratio = maxHeight / newHeight;
+                                newHeight = maxHeight;
+                                newWidth = Math.round(newWidth * ratio);
+                            }
+                            
+                            widthInput.value = newWidth;
+                            heightInput.value = newHeight;
+                        }
+                        break;
+                }
+                
+                this.updateQualityPreview();
+                this.updateSizePreview();
+            }
+            
+            updateQualityPreview() {
+                if (!this.originalImages[0]) return;
+                
+                const quality = parseInt(document.getElementById('qualitySlider').value);
+                const originalSize = this.originalImages[0].size;
+                
+                // 根据质量估算文件大小（简化版本）
+                let compressionRatio;
+                if (quality >= 90) {
+                    compressionRatio = 0.9 + (quality - 90) * 0.01; // 90%-100%
+                } else if (quality >= 70) {
+                    compressionRatio = 0.5 + (quality - 70) * 0.02; // 50%-90%
+                } else if (quality >= 50) {
+                    compressionRatio = 0.3 + (quality - 50) * 0.01; // 30%-50%
+                } else {
+                    compressionRatio = 0.1 + quality * 0.004; // 10%-30%
+                }
+                
+                const estimatedSize = Math.round(originalSize * compressionRatio);
+                const compressionPercent = Math.round((1 - compressionRatio) * 100);
+                
+                document.getElementById('compressionRate').textContent = `${compressionPercent}%`;
+                document.getElementById('estimatedSize').textContent = this.formatFileSize(estimatedSize);
+                
+                // 更新预览统计
+                const sizeChange = Math.round(((estimatedSize - originalSize) / originalSize) * 100);
+                const sizeChangeElement = document.getElementById('sizeChange');
+                sizeChangeElement.textContent = `${sizeChange > 0 ? '+' : ''}${sizeChange}%`;
+                sizeChangeElement.className = `stat-value ${sizeChange < 0 ? 'positive' : 'negative'}`;
+                
+                document.getElementById('compressionEffect').textContent = `${compressionPercent}% 压缩`;
+            }
+            
+            updateSizePreview() {
+                if (!this.originalImages[0]) return;
+                
+                const widthInput = document.getElementById('widthInput').value;
+                const heightInput = document.getElementById('heightInput').value;
+                const maintainRatio = document.getElementById('maintainRatio').checked;
+                
+                let newWidth = widthInput ? parseInt(widthInput) : this.originalImages[0].width;
+                let newHeight = heightInput ? parseInt(heightInput) : this.originalImages[0].height;
+                
+                if (maintainRatio && (widthInput || heightInput)) {
+                    const aspectRatio = this.originalImages[0].width / this.originalImages[0].height;
+                    if (widthInput && !heightInput) {
+                        newHeight = Math.round(newWidth / aspectRatio);
+                    } else if (heightInput && !widthInput) {
+                        newWidth = Math.round(newHeight * aspectRatio);
+                    } else if (widthInput && heightInput) {
+                        // 选择最符合宽高比的尺寸
+                        if (newWidth / newHeight > aspectRatio) {
+                            newWidth = Math.round(newHeight * aspectRatio);
+                        } else {
+                            newHeight = Math.round(newWidth / aspectRatio);
+                        }
+                    }
+                    
+                    // 更新输入框显示
+                    document.getElementById('widthInput').value = newWidth;
+                    document.getElementById('heightInput').value = newHeight;
+                }
+                
+                document.getElementById('newDimensions').textContent = `新尺寸: ${newWidth} × ${newHeight}`;
+                
+                // 更新质量预览以反映尺寸变化
+                this.updateQualityPreview();
             }
             
             showPreview() {
@@ -661,7 +840,10 @@
                     'png': 'image/png',
                     'webp': 'image/webp',
                     'gif': 'image/gif',
-                    'bmp': 'image/bmp'
+                    'bmp': 'image/bmp',
+                    'tiff': 'image/tiff',
+                    'ico': 'image/x-icon',
+                    'avif': 'image/avif'
                 };
                 return types[format] || 'image/jpeg';
             }
