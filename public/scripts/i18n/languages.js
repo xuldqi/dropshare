@@ -96,6 +96,16 @@ const LANGUAGES = {
             'section_choose_category': 'Choose Your Tool Category',
             'section_choose_description': 'Select from our comprehensive collection of tools organized by category',
             
+            // Room page content
+            'room_title': 'Multi-user Sharing Rooms',
+            'room_subtitle': 'Share files quickly with users on the same network or remote users via room codes',
+            'create_room_btn': 'Create Room',
+            'join_room_btn': 'Join Room',
+            'create_new_room': 'Create New Room',
+            'room_name_label': 'Room Name',
+            'room_name_placeholder': 'Enter room name',
+            'room_password_label': 'Room Password (Optional)',
+            
             // Page titles
             'about_page_title': 'About DropShare - Easy File Sharing',
             'faq_page_title': 'Frequently Asked Questions - DropShare',
@@ -231,6 +241,8 @@ const LANGUAGES = {
             
             // Private Rooms
             'private_rooms': 'Private Rooms',
+            'room_title': 'Multi-user Sharing Rooms',
+            'room_subtitle': 'Quickly share files with users on the same network or remote users via room codes',
             'create_room': 'Create Room',
             'join_room': 'Join Room',
             'room_code': 'Room Code',
@@ -347,6 +359,16 @@ const LANGUAGES = {
             'section_choose_category': '选择您的工具类别',
             'section_choose_description': '从我们按类别组织的综合工具集合中选择',
             
+            // 房间页面内容
+            'room_title': '多人共享房间',
+            'room_subtitle': '与同网络用户或通过房间码与远程用户快速共享文件',
+            'create_room_btn': '创建房间',
+            'join_room_btn': '加入房间',
+            'create_new_room': '创建新房间',
+            'room_name_label': '房间名称',
+            'room_name_placeholder': '输入房间名称',
+            'room_password_label': '房间密码 (可选)',
+            
             // 页面标题
             'faq_page_title': '常见问题 - DropShare',
             'blog_page_title': 'DropShare博客 - 文件共享技巧和新闻',
@@ -374,6 +396,8 @@ const LANGUAGES = {
             
             // Private Rooms
             'private_rooms': '私密房间',
+            'room_title': '多人共享房间',
+            'room_subtitle': '与同网络用户或通过房间码与远程用户快速共享文件',
             'create_room': '创建房间',
             'join_room': '加入房间',
             'room_code': '房间代码',
@@ -489,6 +513,16 @@ const LANGUAGES = {
             'btn_multiuser_rooms': '多人房間',
             'section_choose_category': '選擇您的工具類別',
             'section_choose_description': '從我們按類別組織的綜合工具集合中選擇',
+            
+            // 房間頁面內容
+            'room_title': '多人共享房間',
+            'room_subtitle': '與同網路用戶或通過房間碼與遠程用戶快速共享文件',
+            'create_room_btn': '創建房間',
+            'join_room_btn': '加入房間',
+            'create_new_room': '創建新房間',
+            'room_name_label': '房間名稱',
+            'room_name_placeholder': '輸入房間名稱',
+            'room_password_label': '房間密碼 (可選)',
             
             // Private rooms
             'private_rooms': '私人房間',
