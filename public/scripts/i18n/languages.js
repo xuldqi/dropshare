@@ -568,9 +568,16 @@ let currentLanguage = 'en';
 
 // Translate UI elements
 function translateUI() {
+    // Translate text content
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         element.textContent = translate(key);
+    });
+    
+    // Translate placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+        const key = element.getAttribute('data-i18n-placeholder');
+        element.placeholder = translate(key);
     });
     
     // 触发语言变更事件，通知所有组件更新
