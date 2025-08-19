@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片旋转器 - DropShare</title>
+    <title data-i18n="image_rotator_new_title">图片旋转器 - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -422,26 +422,26 @@
                 🔄 DropShare
             </a>
             <nav class="nav-links">
-                <a href="share.html">传送</a>
-                <a href="share.html#rooms">多人房间</a>
-                <a href="image-tools.html" class="active">图片</a>
-                <a href="audio-tools.html">音频</a>
-                <a href="video-tools.html">视频</a>
-                <a href="document-tools.html">文件</a>
+                <a href="share.html" data-i18n="nav_transfer">传送</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
+                <a href="image-tools.html" class="active" data-i18n="nav_images">图片</a>
+                <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
+                <a href="video-tools.html" data-i18n="nav_video">视频</a>
+                <a href="document-tools.html" data-i18n="nav_files">文件</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">图片旋转器</h1>
-        <p class="page-subtitle">支持任意角度旋转、翻转和精确角度调整</p>
+        <h1 class="page-title" data-i18n="image_rotator_new_page_title">图片旋转器</h1>
+        <p class="page-subtitle" data-i18n="image_rotator_new_page_subtitle">支持任意角度旋转、翻转和精确角度调整</p>
 
         <div class="rotator-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔄</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text" data-i18n="image_rotator_upload_text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint" data-i18n="image_rotator_upload_hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -455,43 +455,43 @@
                 <div class="controls-grid">
                     <!-- 快速旋转 -->
                     <div class="control-section">
-                        <div class="section-title">⚡ 快速旋转</div>
+                        <div class="section-title" data-i18n="quick_rotation_title">⚡ 快速旋转</div>
                         
                         <div class="rotation-buttons">
                             <button class="rotation-btn" data-angle="90">
-                                ↻ 顺时针 90°
+                                <span data-i18n="btn_rotate_clockwise_90">↻ 顺时针 90°</span>
                             </button>
                             <button class="rotation-btn" data-angle="-90">
-                                ↺ 逆时针 90°
+                                <span data-i18n="btn_rotate_counterclockwise_90">↺ 逆时针 90°</span>
                             </button>
                             <button class="rotation-btn" data-angle="180">
-                                ↻ 旋转 180°
+                                <span data-i18n="btn_rotate_180">↻ 旋转 180°</span>
                             </button>
                             <button class="rotation-btn" data-angle="270">
-                                ↻ 旋转 270°
+                                <span data-i18n="btn_rotate_270">↻ 旋转 270°</span>
                             </button>
                         </div>
 
                         <div class="flip-buttons">
                             <button class="rotation-btn" id="flipHorizontal">
-                                ↔ 水平翻转
+                                <span data-i18n="btn_flip_horizontal">↔ 水平翻转</span>
                             </button>
                             <button class="rotation-btn" id="flipVertical">
-                                ↕ 垂直翻转
+                                <span data-i18n="btn_flip_vertical">↕ 垂直翻转</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- 精确角度 -->
                     <div class="control-section">
-                        <div class="section-title">🎯 精确角度</div>
+                        <div class="section-title" data-i18n="precise_angle_title">🎯 精确角度</div>
                         
                         <div class="angle-input-container">
                             <input type="number" class="angle-input" id="angleInput" 
-                                   placeholder="输入角度" min="-360" max="360" step="0.1">
+                                   data-i18n-placeholder="placeholder_enter_angle" placeholder="输入角度" min="-360" max="360" step="0.1">
                             <button class="btn btn-primary" id="applyAngleBtn" 
                                     style="padding: 8px 16px; font-size: 14px;">
-                                应用
+                                <span data-i18n="btn_apply">应用</span>
                             </button>
                         </div>
 
@@ -505,7 +505,7 @@
                         <div class="custom-rotation">
                             <button class="btn btn-secondary" id="resetRotation" 
                                     style="width: 100%; padding: 8px 16px; font-size: 14px;">
-                                🔄 重置旋转
+                                <span data-i18n="btn_reset_rotation">🔄 重置旋转</span>
                             </button>
                         </div>
                     </div>
@@ -516,43 +516,43 @@
             <div class="image-workspace" id="imageWorkspace">
                 <div class="workspace-container">
                     <div class="workspace-item">
-                        <h3>原始图片</h3>
+                        <h3 data-i18n="original_image_title">原始图片</h3>
                         <div class="image-container">
                             <img id="originalImage" class="workspace-image" alt="原始图片">
                         </div>
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="originalSize"></span></div>
-                            <div>文件大小: <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">尺寸:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="label_file_size">文件大小:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="workspace-item">
-                        <h3>旋转预览</h3>
+                        <h3 data-i18n="rotation_preview_title">旋转预览</h3>
                         <div class="image-container">
                             <canvas id="rotatedImage" class="workspace-image"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="rotatedSize"></span></div>
-                            <div>当前角度: <span class="size" id="currentAngle">0°</span></div>
+                            <div><span data-i18n="label_dimensions">尺寸:</span> <span class="size" id="rotatedSize"></span></div>
+                            <div><span data-i18n="current_angle_label">当前角度:</span> <span class="size" id="currentAngle">0°</span></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 旋转信息 -->
                 <div class="rotation-info" id="rotationInfo">
-                    当前旋转角度: 0°
+                    <span data-i18n="current_rotation_angle">当前旋转角度:</span> 0°
                 </div>
             </div>
 
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 下载旋转图片
+                    <span data-i18n="btn_download_rotated">📥 下载旋转图片</span>
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 重新选择
+                    <span data-i18n="btn_reselect">🔄 重新选择</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    ← 返回工具页
+                    <span data-i18n="btn_back_to_tools">← 返回工具页</span>
                 </a>
             </div>
         </div>
@@ -642,12 +642,12 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('请选择图片文件！');
+                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || '请选择图片文件！');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert('文件大小不能超过 10MB！');
+                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || '文件大小不能超过 10MB！');
                 return;
             }
 
@@ -883,6 +883,18 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
     </script>
 </body>
 </html>

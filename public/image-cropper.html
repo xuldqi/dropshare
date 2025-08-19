@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片裁剪器 - DropShare</title>
+    <title data-i18n="image_cropper_title">图片裁剪器 - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -296,22 +296,60 @@
                 flex-direction: column;
             }
         }
+
+        /* Language selector styles */
+        .control-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .lang-selector select {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color, #ddd);
+            border-radius: 6px;
+            background: var(--surface-color, white);
+            color: var(--text-color, #333);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .lang-selector select:hover {
+            border-color: var(--primary-color, #007bff);
+        }
     </style>
 </head>
 <body>
     <div class="page-header">
-        <h1>✂️ 图片裁剪器</h1>
+        <h1 data-i18n="image_cropper_heading">✂️ 图片裁剪器</h1>
         <div class="header-buttons">
-            <a href="image-tools.html" class="back-button">← 图片工具</a>
-            <a href="index.html" class="back-button">🏠 首页</a>
+            <div class="control-buttons">
+                <div class="lang-selector">
+                    <select id="language-selector" title="Select Language" data-i18n="title_select_language">
+                        <option value="en">English</option>
+                        <option value="zh">中文简体</option>
+                        <option value="zh-tw">中文繁體</option>
+                        <option value="ja">日本語</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ar">العربية</option>
+                        <option value="ko">한국어</option>
+                    </select>
+                </div>
+            </div>
+            <a href="image-tools.html" class="back-button" data-i18n="back_to_image_tools">← 图片工具</a>
+            <a href="index.html" class="back-button" data-i18n="btn_home">🏠 首页</a>
         </div>
     </div>
     
     <div class="cropper-container">
         <div class="upload-area" id="uploadArea">
             <div style="font-size: 3em; margin-bottom: 15px;">✂️</div>
-            <h3>拖拽图片到这里或点击选择</h3>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">支持 JPG, PNG, GIF, WebP 等格式</p>
+            <h3 data-i18n="drop_images_here">拖拽图片到这里或点击选择</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;" data-i18n="supported_formats_image">支持 JPG, PNG, GIF, WebP 等格式</p>
             <input type="file" id="fileInput" accept="image/*" style="display: none;">
             <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">选择图片</button>
         </div>
@@ -886,7 +924,33 @@
         let imageCropper;
         document.addEventListener('DOMContentLoaded', () => {
             imageCropper = new ImageCropper();
+            // Initialize i18n after image cropper
+            if (typeof initializeI18n === 'function') {
+                initializeI18n();
+            }
         });
+    </script>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize the i18n system
+        function initializeI18n() {
+            // Get user language preference
+            const userLanguage = getUserLanguage();
+            
+            // Set initial language
+            setLanguage(userLanguage);
+            
+            // Update language selector
+            const languageSelector = document.getElementById('language-selector');
+            if (languageSelector) {
+                languageSelector.value = userLanguage;
+                languageSelector.addEventListener('change', (e) => {
+                    setLanguage(e.target.value);
+                });
+            }
+        }
     </script>
 </body>
 </html>

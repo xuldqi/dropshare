@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文档处理器 - DropShare</title>
+    <title data-i18n="document_processor_title">文档处理器 - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -422,20 +422,37 @@
 </head>
 <body>
     <div class="page-header">
-        <h1>📄 文档处理器</h1>
+        <h1 data-i18n="document_processor_heading">📄 文档处理器</h1>
         <div class="header-buttons">
-            <a href="document-tools.html" class="back-button">← 文档工具</a>
-            <a href="index.html" class="back-button">🏠 首页</a>
+            <div class="control-buttons">
+                <div class="lang-selector">
+                    <select id="language-selector" title="Select Language" data-i18n="title_select_language">
+                        <option value="en">English</option>
+                        <option value="zh">中文简体</option>
+                        <option value="zh-tw">中文繁體</option>
+                        <option value="ja">日本語</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ar">العربية</option>
+                        <option value="ko">한국어</option>
+                    </select>
+                </div>
+            </div>
+            <a href="document-tools.html" class="back-button" data-i18n="back_to_document_tools">← 文档工具</a>
+            <a href="index.html" class="back-button" data-i18n="btn_home">🏠 首页</a>
         </div>
     </div>
     
     <div class="processor-container">
         <div class="upload-area" id="uploadArea">
             <div style="font-size: 3em; margin-bottom: 15px;">📄</div>
-            <h3>拖拽文档文件到这里或点击选择</h3>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">支持 PDF, DOCX, TXT, RTF, HTML 等格式</p>
+            <h3 data-i18n="drop_documents_here">拖拽文档文件到这里或点击选择</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;" data-i18n="supported_formats_document">支持 PDF, DOCX, TXT, RTF, HTML 等格式</p>
             <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.rtf,.html,.doc" style="display: none;">
-            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">选择文档文件</button>
+            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()" data-i18n="btn_select_document">选择文档文件</button>
         </div>
         
         <div class="processing-workspace" id="processingWorkspace">
@@ -464,15 +481,15 @@
                     </div>
                 </div>
                 <div class="preview-area" id="previewArea">
-                    <p style="text-align: center; color: var(--text-secondary); margin: 40px 0;">请选择文档文件来预览</p>
+                    <p style="text-align: center; color: var(--text-secondary); margin: 40px 0;" data-i18n="select_file_to_preview">请选择文档文件来预览</p>
                 </div>
             </div>
             
             <div class="tabs">
-                <button class="tab active" data-tab="extract">文本提取</button>
-                <button class="tab" data-tab="split">文档拆分</button>
-                <button class="tab" data-tab="merge">文档合并</button>
-                <button class="tab" data-tab="convert">格式转换</button>
+                <button class="tab active" data-tab="extract" data-i18n="tab_extract">文本提取</button>
+                <button class="tab" data-tab="split" data-i18n="tab_split">文档拆分</button>
+                <button class="tab" data-tab="merge" data-i18n="tab_merge">文档合并</button>
+                <button class="tab" data-tab="convert" data-i18n="tab_convert">格式转换</button>
             </div>
             
             <!-- 文本提取 -->
@@ -515,25 +532,25 @@
             <!-- 文档拆分 -->
             <div class="tab-content" id="splitTab">
                 <div class="tool-group">
-                    <h4>✂️ 文档拆分设置</h4>
+                    <h4 data-i18n="split_settings">✂️ 文档拆分设置</h4>
                     <div class="settings-panel">
                         <div class="setting-item">
-                            <label>拆分方式:</label>
+                            <label data-i18n="split_method_label">拆分方式:</label>
                             <select id="splitMethod">
-                                <option value="pages">按页面范围</option>
-                                <option value="interval">按间隔页数</option>
-                                <option value="bookmarks">按书签</option>
+                                <option value="pages" data-i18n="split_by_range">按页面范围</option>
+                                <option value="interval" data-i18n="split_by_pages">按间隔页数</option>
+                                <option value="bookmarks" data-i18n="split_by_bookmarks">按书签</option>
                             </select>
                         </div>
                         
                         <div class="setting-item" id="intervalSetting">
-                            <label>每个文件页数:</label>
+                            <label data-i18n="pages_per_file">每个文件页数:</label>
                             <input type="number" id="splitInterval" value="10" min="1">
                         </div>
                     </div>
                     
                     <div id="pageRangesSetting" style="display: none;">
-                        <label>页面范围 (用逗号分隔, 如: 1-5, 10-15, 20):</label>
+                        <label data-i18n="page_range">页面范围 (用逗号分隔, 如: 1-5, 10-15, 20):</label>
                         <input type="text" id="pageRanges" placeholder="1-5, 10-15, 20" style="width: 100%; margin-top: 8px;">
                     </div>
                 </div>
@@ -1442,7 +1459,33 @@
         let documentProcessor;
         document.addEventListener('DOMContentLoaded', () => {
             documentProcessor = new DocumentProcessor();
+            // Initialize i18n after document processor
+            if (typeof initializeI18n === 'function') {
+                initializeI18n();
+            }
         });
+    </script>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize the i18n system
+        function initializeI18n() {
+            // Get user language preference
+            const userLanguage = getUserLanguage();
+            
+            // Set initial language
+            setLanguage(userLanguage);
+            
+            // Update language selector
+            const languageSelector = document.getElementById('language-selector');
+            if (languageSelector) {
+                languageSelector.value = userLanguage;
+                languageSelector.addEventListener('change', (e) => {
+                    setLanguage(e.target.value);
+                });
+            }
+        }
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片水印工具 - DropShare</title>
+    <title data-i18n="image_watermark_new_title">图片水印工具 - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -467,26 +467,26 @@
                 💧 DropShare
             </a>
             <nav class="nav-links">
-                <a href="share.html">传送</a>
-                <a href="share.html#rooms">多人房间</a>
-                <a href="image-tools.html" class="active">图片</a>
-                <a href="audio-tools.html">音频</a>
-                <a href="video-tools.html">视频</a>
-                <a href="document-tools.html">文件</a>
+                <a href="share.html" data-i18n="nav_transfer">传送</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
+                <a href="image-tools.html" class="active" data-i18n="nav_images">图片</a>
+                <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
+                <a href="video-tools.html" data-i18n="nav_video">视频</a>
+                <a href="document-tools.html" data-i18n="nav_files">文件</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">图片水印工具</h1>
-        <p class="page-subtitle">为图片添加文字或图片水印，保护版权信息</p>
+        <h1 class="page-title" data-i18n="image_watermark_new_page_title">图片水印工具</h1>
+        <p class="page-subtitle" data-i18n="image_watermark_new_page_subtitle">为图片添加文字或图片水印，保护版权信息</p>
 
         <div class="watermark-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">💧</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text" data-i18n="image_watermark_upload_text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint" data-i18n="image_watermark_upload_hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -500,12 +500,12 @@
                 <div class="controls-layout">
                     <!-- 控制面板 -->
                     <div class="control-panel">
-                        <div class="panel-title">💧 水印设置</div>
+                        <div class="panel-title" data-i18n="watermark_settings_title">💧 水印设置</div>
 
                         <!-- 水印类型标签 -->
                         <div class="watermark-tabs">
-                            <button class="tab-btn active" data-tab="text">文字水印</button>
-                            <button class="tab-btn" data-tab="image">图片水印</button>
+                            <button class="tab-btn active" data-tab="text" data-i18n="text_watermark_tab">文字水印</button>
+                            <button class="tab-btn" data-tab="image" data-i18n="image_watermark_tab">图片水印</button>
                         </div>
 
                         <!-- 文字水印设置 -->
@@ -513,7 +513,7 @@
                             <div class="form-group">
                                 <label class="form-label">水印文字</label>
                                 <input type="text" class="form-input" id="watermarkText" 
-                                       placeholder="输入水印文字" value="© DropShare">
+                                       data-i18n-placeholder="watermark_text_placeholder" placeholder="输入水印文字" value="© DropShare">
                             </div>
 
                             <div class="form-group">

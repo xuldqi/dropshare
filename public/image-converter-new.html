@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片格式转换器 - DropShare</title>
+    <title data-i18n="image_converter_new_title">图片格式转换器 - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -616,63 +616,63 @@
                 🔄 DropShare
             </a>
             <nav class="nav-links">
-                <a href="share.html">传送</a>
-                <a href="share.html#rooms">多人房间</a>
-                <a href="image-tools.html" class="active">图片</a>
-                <a href="audio-tools.html">音频</a>
-                <a href="video-tools.html">视频</a>
-                <a href="document-tools.html">文件</a>
+                <a href="share.html" data-i18n="nav_transfer">传送</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
+                <a href="image-tools.html" class="active" data-i18n="nav_images">图片</a>
+                <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
+                <a href="video-tools.html" data-i18n="nav_video">视频</a>
+                <a href="document-tools.html" data-i18n="nav_files">文件</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">图片格式转换器</h1>
-        <p class="page-subtitle">支持多种图片格式互相转换，保持最佳质量</p>
+        <h1 class="page-title" data-i18n="image_converter_new_page_title">图片格式转换器</h1>
+        <p class="page-subtitle" data-i18n="image_converter_new_page_subtitle">支持多种图片格式互相转换，保持最佳质量</p>
 
         <div class="converter-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🖼️</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, GIF, BMP, TIFF, WebP 格式，可选择多个文件</div>
+                <div class="upload-text" data-i18n="image_converter_upload_text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint" data-i18n="image_converter_upload_hint">支持 JPG, PNG, GIF, BMP, TIFF, WebP 格式，可选择多个文件</div>
                 <input type="file" id="fileInput" accept="image/*" multiple>
             </div>
 
             <!-- 格式选择 -->
             <div class="format-selection">
-                <div class="format-title">选择输出格式</div>
+                <div class="format-title" data-i18n="image_converter_select_format">选择输出格式</div>
                 <div class="format-grid">
                     <div class="format-option selected" data-format="jpeg">
                         <div class="format-name">JPEG</div>
-                        <div class="format-desc">高压缩比</div>
+                        <div class="format-desc" data-i18n="format_jpeg_desc">高压缩比</div>
                     </div>
                     <div class="format-option" data-format="png">
                         <div class="format-name">PNG</div>
-                        <div class="format-desc">无损压缩</div>
+                        <div class="format-desc" data-i18n="format_png_desc">无损压缩</div>
                     </div>
                     <div class="format-option" data-format="webp">
                         <div class="format-name">WebP</div>
-                        <div class="format-desc">现代格式</div>
+                        <div class="format-desc" data-i18n="format_webp_desc">现代格式</div>
                     </div>
                     <div class="format-option" data-format="gif">
                         <div class="format-name">GIF</div>
-                        <div class="format-desc">动图支持</div>
+                        <div class="format-desc" data-i18n="format_gif_desc">动图支持</div>
                     </div>
                     <div class="format-option" data-format="bmp">
                         <div class="format-name">BMP</div>
-                        <div class="format-desc">位图格式</div>
+                        <div class="format-desc" data-i18n="format_bmp_desc">位图格式</div>
                     </div>
                     <div class="format-option" data-format="tiff">
                         <div class="format-name">TIFF</div>
-                        <div class="format-desc">专业格式</div>
+                        <div class="format-desc" data-i18n="format_tiff_desc">专业格式</div>
                     </div>
                 </div>
 
                 <!-- 质量设置 -->
                 <div class="quality-settings" id="qualitySettings">
                     <label class="quality-label">
-                        图片质量: <span class="quality-value" id="qualityValue">90%</span>
+                        <span data-i18n="image_converter_quality_label">图片质量:</span> <span class="quality-value" id="qualityValue">90%</span>
                     </label>
                     <input type="range" class="quality-slider" id="qualitySlider" 
                            min="10" max="100" value="90">
@@ -684,7 +684,7 @@
 
             <!-- 转换按钮 -->
             <button class="convert-button" id="convertButton" disabled>
-                🔄 开始转换
+                <span data-i18n="btn_start_convert">🔄 开始转换</span>
             </button>
 
             <!-- 进度条 -->
@@ -698,10 +698,10 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 重新选择
+                    <span data-i18n="btn_reselect">🔄 重新选择</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    ← 返回工具页
+                    <span data-i18n="btn_back_to_tools">← 返回工具页</span>
                 </a>
             </div>
         </div>
@@ -711,16 +711,16 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title">选择传送设备</h3>
+                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    传送到选中设备
+                    <span data-i18n="btn_send_to_devices">传送到选中设备</span>
                 </button>
             </div>
         </div>
@@ -794,14 +794,14 @@
             const imageFiles = files.filter(file => file.type.startsWith('image/'));
             
             if (imageFiles.length === 0) {
-                alert('请选择图片文件！');
+                alert(window.DROPSHARE_I18N?.t('alert_select_image_files') || '请选择图片文件！');
                 return;
             }
 
             // 检查文件大小
             const oversizedFiles = imageFiles.filter(file => file.size > 10 * 1024 * 1024);
             if (oversizedFiles.length > 0) {
-                alert(`以下文件超过 10MB 限制：\n${oversizedFiles.map(f => f.name).join('\n')}`);
+                alert(`${window.DROPSHARE_I18N?.t('alert_files_oversized') || '以下文件超过 10MB 限制：'}\n${oversizedFiles.map(f => f.name).join('\n')}`);
                 return;
             }
 
@@ -832,7 +832,7 @@
                             </div>
                         </div>
                         <div class="file-status status-ready" id="status-${index}">
-                            待转换
+                            <span data-i18n="status_pending_convert">待转换</span>
                         </div>
                     `;
                 };
@@ -877,7 +877,7 @@
                 
                 try {
                     // 更新状态
-                    statusEl.textContent = '转换中...';
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_converting') || '转换中...';
                     statusEl.className = 'file-status status-converting';
                     
                     // 转换文件
@@ -891,12 +891,12 @@
                     });
                     
                     // 更新状态
-                    statusEl.textContent = '转换完成';
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_convert_complete') || '转换完成';
                     statusEl.className = 'file-status status-completed';
                     
                 } catch (error) {
                     console.error('转换失败:', error);
-                    statusEl.textContent = '转换失败';
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_convert_failed') || '转换失败';
                     statusEl.className = 'file-status status-error';
                 }
                 
@@ -942,25 +942,25 @@
         function showDownloadSection() {
             downloadSection.style.display = 'block';
             downloadSection.innerHTML = `
-                <h3 style="margin-bottom: 20px; color: #374151;">🎉 转换完成！</h3>
+                <h3 style="margin-bottom: 20px; color: #374151;"><span data-i18n="conversion_complete_title">🎉 转换完成！</span></h3>
                 <div style="margin-bottom: 20px;">
                     ${convertedFiles.map((file, index) => `
                         <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;">
                             <button class="download-button" onclick="downloadFile(${index})">
-                                📥 下载 ${file.newName}
+                                <span data-i18n="btn_download_file">📥 下载</span> ${file.newName}
                             </button>
                             <button class="download-button" onclick="shareFile(${index})" style="background: #10b981;">
-                                📤 传送 ${file.newName}
+                                <span data-i18n="btn_send_file">📤 传送</span> ${file.newName}
                             </button>
                         </div>
                     `).join('')}
                 </div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
                     <button class="download-button" onclick="downloadAllFiles()" style="background: #7c3aed;">
-                        📦 下载全部文件 (ZIP)
+                        <span data-i18n="btn_download_all_zip">📦 下载全部文件 (ZIP)</span>
                     </button>
                     <button class="download-button" onclick="shareAllFiles()" style="background: #f59e0b;">
-                        📤 传送全部文件
+                        <span data-i18n="btn_send_all_files">📤 传送全部文件</span>
                     </button>
                 </div>
             `;
@@ -1035,8 +1035,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p>未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p data-i18n="no_devices_found">未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="device_connection_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -1089,13 +1089,13 @@
             
             if (count === 0) {
                 sendBtn.disabled = true;
-                sendBtn.textContent = '传送到选中设备';
+                sendBtn.textContent = window.DROPSHARE_I18N?.t('btn_send_to_selected_devices') || '传送到选中设备';
             } else {
                 sendBtn.disabled = false;
                 if (shareMode === 'all') {
-                    sendBtn.textContent = `传送 ${fileCount} 个文件到 ${count} 个设备`;
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('btn_send_files') || '传送'} ${fileCount} ${window.DROPSHARE_I18N?.t('label_files') || '个文件到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
                 } else {
-                    sendBtn.textContent = `传送到 ${count} 个设备`;
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('btn_send_to') || '传送到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
                 }
             }
         }
@@ -1117,11 +1117,11 @@
                     });
                 });
                 
-                alert(`${fileCount} 个文件已开始传送到 ${deviceCount} 个设备！`);
+                alert(`${fileCount} ${window.DROPSHARE_I18N?.t('alert_files_sending_to') || '个文件已开始传送到'} ${deviceCount} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}!`);
                 closeDeviceModal();
             } else {
                 // 如果传输系统不可用，提供跳转选项
-                if (confirm('传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？')) {
+                if (confirm(window.DROPSHARE_I18N?.t('confirm_goto_transfer_page') || '传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？')) {
                     // 将文件信息存储到sessionStorage，供传送页面使用
                     const filesInfo = currentFilesToShare.map(file => ({
                         name: file.name,
@@ -1150,8 +1150,8 @@
                 peerElements.forEach(peer => {
                     devices.push({
                         id: peer.id,
-                        name: peer.querySelector('.name')?.textContent || '未知设备',
-                        type: peer.querySelector('.device-name')?.textContent || '设备'
+                        name: peer.querySelector('.name')?.textContent || (window.DROPSHARE_I18N?.t('unknown_device') || '未知设备'),
+                        type: peer.querySelector('.device-name')?.textContent || (window.DROPSHARE_I18N?.t('label_device') || '设备')
                     });
                 });
             }
@@ -1162,7 +1162,7 @@
                     Object.keys(window.peersManager.peers).forEach(peerId => {
                         devices.push({
                             id: peerId,
-                            name: `设备 ${peerId.substring(0, 8)}`,
+                            name: `${window.DROPSHARE_I18N?.t('label_device') || '设备'} ${peerId.substring(0, 8)}`,
                             type: '网络设备'
                         });
                     });
@@ -1227,6 +1227,18 @@
                         closeDeviceModal();
                     }
                 });
+            }
+        });
+    </script>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
             }
         });
     </script>

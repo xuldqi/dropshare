@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片裁剪器 - DropShare</title>
+    <title data-i18n="image_cropper_new_title">图片裁剪器 - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -400,26 +400,26 @@
                 ✂️ DropShare
             </a>
             <nav class="nav-links">
-                <a href="share.html">传送</a>
-                <a href="share.html#rooms">多人房间</a>
-                <a href="image-tools.html" class="active">图片</a>
-                <a href="audio-tools.html">音频</a>
-                <a href="video-tools.html">视频</a>
-                <a href="document-tools.html">文件</a>
+                <a href="share.html" data-i18n="nav_transfer">传送</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
+                <a href="image-tools.html" class="active" data-i18n="nav_images">图片</a>
+                <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
+                <a href="video-tools.html" data-i18n="nav_video">视频</a>
+                <a href="document-tools.html" data-i18n="nav_files">文件</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">图片裁剪器</h1>
-        <p class="page-subtitle">精确裁剪图片，支持多种长宽比和自由选择</p>
+        <h1 class="page-title" data-i18n="image_cropper_new_page_title">图片裁剪器</h1>
+        <p class="page-subtitle" data-i18n="image_cropper_new_page_subtitle">精确裁剪图片，支持多种长宽比和自由选择</p>
 
         <div class="cropper-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">✂️</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text" data-i18n="image_cropper_upload_text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint" data-i18n="image_cropper_upload_hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -428,9 +428,9 @@
                 <!-- 裁剪控制 -->
                 <div class="crop-controls">
                     <div class="control-group">
-                        <label class="control-label">预设比例:</label>
+                        <label class="control-label" data-i18n="preset_ratios_label">预设比例:</label>
                         <div class="aspect-ratios">
-                            <button class="aspect-btn" data-ratio="free">自由</button>
+                            <button class="aspect-btn" data-ratio="free" data-i18n="aspect_ratio_free">自由</button>
                             <button class="aspect-btn active" data-ratio="1:1">1:1</button>
                             <button class="aspect-btn" data-ratio="4:3">4:3</button>
                             <button class="aspect-btn" data-ratio="16:9">16:9</button>
@@ -438,13 +438,13 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">自定义尺寸:</label>
+                        <label class="control-label" data-i18n="custom_size_label">自定义尺寸:</label>
                         <div class="dimension-inputs">
-                            <input type="number" class="dimension-input" id="cropWidth" placeholder="宽度">
+                            <input type="number" class="dimension-input" id="cropWidth" data-i18n-placeholder="placeholder_width" placeholder="宽度">
                             <span>×</span>
-                            <input type="number" class="dimension-input" id="cropHeight" placeholder="高度">
+                            <input type="number" class="dimension-input" id="cropHeight" data-i18n-placeholder="placeholder_height" placeholder="高度">
                             <button class="btn btn-primary" id="applySizeBtn" style="padding: 8px 16px; font-size: 14px;">
-                                应用
+                                <span data-i18n="btn_apply">应用</span>
                             </button>
                         </div>
                     </div>
@@ -469,7 +469,7 @@
 
                 <!-- 裁剪信息 -->
                 <div class="crop-info" id="cropInfo">
-                    选择区域: 0 × 0 像素 | 位置: (0, 0)
+                    <span data-i18n="crop_selection_info">选择区域:</span> 0 × 0 <span data-i18n="pixels">像素</span> | <span data-i18n="position">位置:</span> (0, 0)
                 </div>
             </div>
 
@@ -477,19 +477,19 @@
             <div class="preview-section" id="previewSection">
                 <div class="preview-container">
                     <div class="preview-item">
-                        <h3>原始图片</h3>
+                        <h3 data-i18n="original_image_title">原始图片</h3>
                         <img id="originalPreview" class="preview-image" alt="原始图片">
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="originalSize"></span></div>
-                            <div>文件大小: <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">尺寸:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="label_file_size">文件大小:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="preview-item">
-                        <h3>裁剪预览</h3>
+                        <h3 data-i18n="crop_preview_title">裁剪预览</h3>
                         <canvas id="croppedPreview" class="preview-image"></canvas>
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="croppedSize"></span></div>
-                            <div>预估大小: <span class="size" id="croppedFileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">尺寸:</span> <span class="size" id="croppedSize"></span></div>
+                            <div><span data-i18n="estimated_size_label">预估大小:</span> <span class="size" id="croppedFileSize"></span></div>
                         </div>
                     </div>
                 </div>
@@ -498,16 +498,16 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-primary" id="cropBtn" disabled>
-                    ✂️ 开始裁剪
+                    <span data-i18n="btn_start_crop">✂️ 开始裁剪</span>
                 </button>
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 下载裁剪图片
+                    <span data-i18n="btn_download_cropped">📥 下载裁剪图片</span>
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 重新选择
+                    <span data-i18n="btn_reselect">🔄 重新选择</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    ← 返回工具页
+                    <span data-i18n="btn_back_to_tools">← 返回工具页</span>
                 </a>
             </div>
         </div>
@@ -588,12 +588,12 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('请选择图片文件！');
+                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || '请选择图片文件！');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert('文件大小不能超过 10MB！');
+                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || '文件大小不能超过 10MB！');
                 return;
             }
 
@@ -852,7 +852,7 @@
             const height = parseInt(cropHeightInput.value);
             
             if (!width || !height || width <= 0 || height <= 0) {
-                alert('请输入有效的宽度和高度！');
+                alert(window.DROPSHARE_I18N?.t('alert_enter_valid_dimensions') || '请输入有效的宽度和高度！');
                 return;
             }
             
@@ -958,6 +958,18 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
     </script>
 </body>
 </html>

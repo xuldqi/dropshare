@@ -141,6 +141,27 @@
             align-items: center;
         }
 
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
         /* 主要内容 */
         .main-content {
             position: relative;
@@ -870,6 +891,23 @@
                     <a href="video-tools.html" data-i18n="nav_video">视频</a>
                     <a href="document-tools.html" class="active" data-i18n="nav_files">文件</a>
                 </nav>
+                <div class="control-buttons">
+                    <div class="lang-selector">
+                        <select id="language-selector" title="Select Language">
+                            <option value="en">English</option>
+                            <option value="zh">中文简体</option>
+                            <option value="zh-tw">中文繁體</option>
+                            <option value="ja">日本語</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="ru">Русский</option>
+                            <option value="ar">العربية</option>
+                            <option value="ko">한국어</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -877,8 +915,8 @@
     <!-- 主要内容 -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">Document Tools</h1>
-            <p class="page-subtitle">Free Online Document Tools</p>
+            <h1 class="page-title" data-i18n="document_tools_title">Document Tools</h1>
+            <p class="page-subtitle" data-i18n="document_tools_subtitle">Free Online Document Tools</p>
         </div>
 
         <div class="tools-grid" id="toolsGrid">
@@ -886,13 +924,13 @@
             <div class="tool-card" data-keywords="txt html markdown convert text document web format" onclick="openTextConverter()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📝</div>
-                    <div class="tool-category">Popular</div>
+                    <div class="tool-category" data-i18n="category_popular">Popular</div>
                 </div>
-                <h3 class="tool-title">Text Converter</h3>
-                <p class="tool-description">Convert between TXT, HTML, and Markdown formats with formatting options</p>
+                <h3 class="tool-title" data-i18n="tool_text_converter_title">Text Converter</h3>
+                <p class="tool-description" data-i18n="tool_text_converter_desc">Convert between TXT, HTML, and Markdown formats with formatting options</p>
                 <div class="tool-stats">
-                    <span>🔄 6 formats</span>
-                    <span>⚡ Instant</span>
+                    <span data-i18n="tool_6_formats">🔄 6 formats</span>
+                    <span data-i18n="tool_instant">⚡ Instant</span>
                 </div>
             </div>
 
@@ -900,13 +938,13 @@
             <div class="tool-card" data-keywords="json csv yaml xml convert data api config" onclick="openDataConverter()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-data">📊</div>
-                    <div class="tool-category">Popular</div>
+                    <div class="tool-category" data-i18n="category_popular">Popular</div>
                 </div>
-                <h3 class="tool-title">Data Converter</h3>
-                <p class="tool-description">Convert between JSON, CSV, YAML, and XML data formats</p>
+                <h3 class="tool-title" data-i18n="tool_data_converter_title">Data Converter</h3>
+                <p class="tool-description" data-i18n="tool_data_converter_desc">Convert between JSON, CSV, YAML, and XML data formats</p>
                 <div class="tool-stats">
-                    <span>📈 5 formats</span>
-                    <span>🔧 API ready</span>
+                    <span data-i18n="tool_5_formats">📈 5 formats</span>
+                    <span data-i18n="tool_api_ready">🔧 API ready</span>
                 </div>
             </div>
 
@@ -914,13 +952,13 @@
             <div class="tool-card" data-keywords="docx html word document convert" onclick="window.location.href='docx-to-html.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📝</div>
-                    <div class="tool-category">Office</div>
+                    <div class="tool-category" data-i18n="category_office">Office</div>
                 </div>
-                <h3 class="tool-title">DOCX to HTML</h3>
-                <p class="tool-description">Convert Word documents to HTML format for web display</p>
+                <h3 class="tool-title" data-i18n="tool_docx_to_html_title">DOCX to HTML</h3>
+                <p class="tool-description" data-i18n="tool_docx_to_html_desc">Convert Word documents to HTML format for web display</p>
                 <div class="tool-stats">
-                    <span>📄 Word docs</span>
-                    <span>🌐 Web ready</span>
+                    <span data-i18n="tool_word_docs">📄 Word docs</span>
+                    <span data-i18n="tool_web_ready">🌐 Web ready</span>
                 </div>
             </div>
 
@@ -928,13 +966,13 @@
             <div class="tool-card" data-keywords="docx txt word text convert" onclick="window.location.href='docx-to-txt.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📃</div>
-                    <div class="tool-category">Office</div>
+                    <div class="tool-category" data-i18n="category_office">Office</div>
                 </div>
-                <h3 class="tool-title">DOCX to Text</h3>
-                <p class="tool-description">Extract plain text from Word documents</p>
+                <h3 class="tool-title" data-i18n="tool_docx_to_text_title">DOCX to Text</h3>
+                <p class="tool-description" data-i18n="tool_docx_to_text_desc">Extract plain text from Word documents</p>
                 <div class="tool-stats">
-                    <span>📄 Extract text</span>
-                    <span>📝 Plain format</span>
+                    <span data-i18n="tool_extract_text">📄 Extract text</span>
+                    <span data-i18n="tool_plain_format">📝 Plain format</span>
                 </div>
             </div>
 
@@ -942,13 +980,13 @@
             <div class="tool-card" data-keywords="xlsx csv excel spreadsheet convert" onclick="window.location.href='xlsx-to-csv.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📊</div>
-                    <div class="tool-category">Office</div>
+                    <div class="tool-category" data-i18n="category_office">Office</div>
                 </div>
-                <h3 class="tool-title">XLSX to CSV</h3>
-                <p class="tool-description">Convert Excel spreadsheets to CSV format for data processing</p>
+                <h3 class="tool-title" data-i18n="tool_xlsx_to_csv_title">XLSX to CSV</h3>
+                <p class="tool-description" data-i18n="tool_xlsx_to_csv_desc">Convert Excel spreadsheets to CSV format for data processing</p>
                 <div class="tool-stats">
-                    <span>📈 Excel files</span>
-                    <span>📋 CSV export</span>
+                    <span data-i18n="tool_excel_files">📈 Excel files</span>
+                    <span data-i18n="tool_csv_export">📋 CSV export</span>
                 </div>
             </div>
 
@@ -956,13 +994,13 @@
             <div class="tool-card" data-keywords="csv xlsx excel convert spreadsheet" onclick="window.location.href='csv-to-xlsx.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📋</div>
-                    <div class="tool-category">Office</div>
+                    <div class="tool-category" data-i18n="category_office">Office</div>
                 </div>
-                <h3 class="tool-title">CSV to XLSX</h3>
-                <p class="tool-description">Convert CSV data to Excel spreadsheet format</p>
+                <h3 class="tool-title" data-i18n="tool_csv_to_xlsx_title">CSV to XLSX</h3>
+                <p class="tool-description" data-i18n="tool_csv_to_xlsx_desc">Convert CSV data to Excel spreadsheet format</p>
                 <div class="tool-stats">
-                    <span>📋 CSV import</span>
-                    <span>📊 Excel format</span>
+                    <span data-i18n="tool_csv_import">📋 CSV import</span>
+                    <span data-i18n="tool_excel_format">📊 Excel format</span>
                 </div>
             </div>
 
@@ -970,13 +1008,13 @@
             <div class="tool-card" data-keywords="url encode decode web link" onclick="openUrlTool()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-web">🌐</div>
-                    <div class="tool-category">Web</div>
+                    <div class="tool-category" data-i18n="category_web">Web</div>
                 </div>
-                <h3 class="tool-title">URL Encoder/Decoder</h3>
-                <p class="tool-description">Encode and decode URLs for web applications</p>
+                <h3 class="tool-title" data-i18n="tool_url_encoder_decoder_title">URL Encoder/Decoder</h3>
+                <p class="tool-description" data-i18n="tool_url_encoder_decoder_desc">Encode and decode URLs for web applications</p>
                 <div class="tool-stats">
-                    <span>🔐 Auto detect</span>
-                    <span>🌐 Web safe</span>
+                    <span data-i18n="tool_auto_detect">🔐 Auto detect</span>
+                    <span data-i18n="tool_web_safe">🌐 Web safe</span>
                 </div>
             </div>
 
@@ -984,13 +1022,13 @@
             <div class="tool-card" data-keywords="count words characters lines text analysis" onclick="openWordCounter()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-editor">📊</div>
-                    <div class="tool-category">Text Tools</div>
+                    <div class="tool-category" data-i18n="category_text_tools">Text Tools</div>
                 </div>
-                <h3 class="tool-title">Word Counter</h3>
-                <p class="tool-description">Count words, characters, lines and analyze text statistics</p>
+                <h3 class="tool-title" data-i18n="tool_word_counter_title">Word Counter</h3>
+                <p class="tool-description" data-i18n="tool_word_counter_desc">Count words, characters, lines and analyze text statistics</p>
                 <div class="tool-stats">
-                    <span>📊 Real-time</span>
-                    <span>📈 5 metrics</span>
+                    <span data-i18n="tool_real_time">📊 Real-time</span>
+                    <span data-i18n="tool_5_metrics">📈 5 metrics</span>
                 </div>
             </div>
 
@@ -998,13 +1036,13 @@
             <div class="tool-card" data-keywords="base64 encode decode text convert" onclick="openBase64Tool()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">🔐</div>
-                    <div class="tool-category">Encoding</div>
+                    <div class="tool-category" data-i18n="category_encoding">Encoding</div>
                 </div>
-                <h3 class="tool-title">Base64 Encoder/Decoder</h3>
-                <p class="tool-description">Encode and decode text to/from Base64 format</p>
+                <h3 class="tool-title" data-i18n="tool_base64_encoder_decoder_title">Base64 Encoder/Decoder</h3>
+                <p class="tool-description" data-i18n="tool_base64_encoder_decoder_desc">Encode and decode text to/from Base64 format</p>
                 <div class="tool-stats">
-                    <span>🔄 Bi-directional</span>
-                    <span>🛡️ Safe encoding</span>
+                    <span data-i18n="tool_bi_directional">🔄 Bi-directional</span>
+                    <span data-i18n="tool_safe_encoding">🛡️ Safe encoding</span>
                 </div>
             </div>
 
@@ -1012,13 +1050,13 @@
             <div class="tool-card" data-keywords="qr code generate barcode scanner" onclick="openQRGenerator()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-ocr">📱</div>
-                    <div class="tool-category">Utilities</div>
+                    <div class="tool-category" data-i18n="category_utilities">Utilities</div>
                 </div>
-                <h3 class="tool-title">QR Code Generator</h3>
-                <p class="tool-description">Generate QR codes for text, URLs, and sharing</p>
+                <h3 class="tool-title" data-i18n="tool_qr_code_generator_title">QR Code Generator</h3>
+                <p class="tool-description" data-i18n="tool_qr_code_generator_desc">Generate QR codes for text, URLs, and sharing</p>
                 <div class="tool-stats">
-                    <span>📱 256x256px</span>
-                    <span>💾 Download PNG</span>
+                    <span data-i18n="tool_256_pixels">📱 256x256px</span>
+                    <span data-i18n="tool_download_png">💾 Download PNG</span>
                 </div>
             </div>
 
@@ -1026,13 +1064,13 @@
             <div class="tool-card" data-keywords="hash md5 sha1 sha256 checksum" onclick="openHashTool()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-splitter">🔒</div>
-                    <div class="tool-category">Security</div>
+                    <div class="tool-category" data-i18n="category_security">Security</div>
                 </div>
-                <h3 class="tool-title">Hash Generator</h3>
-                <p class="tool-description">Generate MD5, SHA1, SHA256 hashes for text verification</p>
+                <h3 class="tool-title" data-i18n="tool_hash_generator_title">Hash Generator</h3>
+                <p class="tool-description" data-i18n="tool_hash_generator_desc">Generate MD5, SHA1, SHA256 hashes for text verification</p>
                 <div class="tool-stats">
-                    <span>🔒 3 algorithms</span>
-                    <span>📋 Copy ready</span>
+                    <span data-i18n="tool_3_algorithms">🔒 3 algorithms</span>
+                    <span data-i18n="tool_copy_ready">📋 Copy ready</span>
                 </div>
             </div>
 
@@ -1040,13 +1078,13 @@
             <div class="tool-card" data-keywords="pdf docx merge split extract convert" onclick="window.location.href='document-processor.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-merger">📄</div>
-                    <div class="tool-category">Advanced</div>
+                    <div class="tool-category" data-i18n="category_advanced">Advanced</div>
                 </div>
-                <h3 class="tool-title">Document Processor</h3>
-                <p class="tool-description">Advanced PDF and document processing - merge, split, extract text</p>
+                <h3 class="tool-title" data-i18n="tool_document_processor_title">Document Processor</h3>
+                <p class="tool-description" data-i18n="tool_document_processor_desc">Advanced PDF and document processing - merge, split, extract text</p>
                 <div class="tool-stats">
-                    <span>📄 PDF support</span>
-                    <span>⚙️ Multi-tool</span>
+                    <span data-i18n="tool_pdf_support">📄 PDF support</span>
+                    <span data-i18n="tool_multi_tool">⚙️ Multi-tool</span>
                 </div>
             </div>
         </div>
@@ -1057,7 +1095,7 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>Navigate</h3>
+                    <h3 data-i18n="footer_navigate">Navigate</h3>
                     <ul class="footer-links">
                         <li><a href="about.html" data-i18n="nav_about">About</a></li>
                         <li><a href="faq.html" data-i18n="nav_faq">FAQ</a></li>
@@ -1068,7 +1106,7 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Tools</h3>
+                    <h3 data-i18n="footer_tools">Tools</h3>
                     <ul class="footer-links">
                         <li><a href="image-tools.html" data-i18n="nav_images">🖼️ Image Tools</a></li>
                         <li><a href="audio-tools.html" data-i18n="nav_audio">🎵 Audio Tools</a></li>
@@ -1079,13 +1117,13 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Features</h3>
+                    <h3 data-i18n="footer_features">Features</h3>
                     <ul class="footer-links">
-                        <li><a href="share.html">P2P File Sharing</a></li>
-                        <li><a href="share.html#rooms">Multi-user Rooms</a></li>
-                        <li><a href="image-tools.html">Image Processing</a></li>
-                        <li><a href="video-tools.html">Video Conversion</a></li>
-                        <li><a href="document-tools.html">Document Tools</a></li>
+                        <li><a href="share.html" data-i18n="feature_p2p_sharing">P2P File Sharing</a></li>
+                        <li><a href="share.html#rooms" data-i18n="feature_multi_user_rooms">Multi-user Rooms</a></li>
+                        <li><a href="image-tools.html" data-i18n="feature_image_processing">Image Processing</a></li>
+                        <li><a href="video-tools.html" data-i18n="feature_video_conversion">Video Conversion</a></li>
+                        <li><a href="document-tools.html" data-i18n="feature_document_tools">Document Tools</a></li>
                     </ul>
                 </div>
             </div>
@@ -1098,7 +1136,7 @@
                     <span>DropShare</span>
                 </div>
                 <div class="footer-copyright">
-                    <p>Copyright © 2024 DropShare and contributors.<br>
+                    <p data-i18n="footer_copyright">Copyright © 2024 DropShare and contributors.<br>
                     Open source file sharing solution. Built with ❤️ for the community.</p>
                 </div>
             </div>
@@ -1109,16 +1147,16 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title">选择传送设备</h3>
+                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    传送到选中设备
+                    <span data-i18n="btn_send_to_devices">传送到选中设备</span>
                 </button>
             </div>
         </div>
@@ -2289,6 +2327,18 @@
                     closeDeviceModal();
                 }
             });
+        });
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
         });
     </script>
 </body>

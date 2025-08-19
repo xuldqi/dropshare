@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片压缩器 - DropShare</title>
+    <title data-i18n="image_compressor_new_title">图片压缩器 - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -379,26 +379,26 @@
                 📷 DropShare
             </a>
             <nav class="nav-links">
-                <a href="share.html">传送</a>
-                <a href="share.html#rooms">多人房间</a>
-                <a href="image-tools.html" class="active">图片</a>
-                <a href="audio-tools.html">音频</a>
-                <a href="video-tools.html">视频</a>
-                <a href="document-tools.html">文件</a>
+                <a href="share.html" data-i18n="nav_transfer">传送</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
+                <a href="image-tools.html" class="active" data-i18n="nav_images">图片</a>
+                <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
+                <a href="video-tools.html" data-i18n="nav_video">视频</a>
+                <a href="document-tools.html" data-i18n="nav_files">文件</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">图片压缩器</h1>
-        <p class="page-subtitle">智能压缩图片，减小文件大小同时保持高质量</p>
+        <h1 class="page-title" data-i18n="image_compressor_new_page_title">图片压缩器</h1>
+        <p class="page-subtitle" data-i18n="image_compressor_new_page_subtitle">智能压缩图片，减小文件大小同时保持高质量</p>
 
         <div class="compressor-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📸</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, WebP 格式，最大 10MB</div>
+                <div class="upload-text" data-i18n="image_compressor_upload_text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint" data-i18n="image_compressor_upload_hint">支持 JPG, PNG, WebP 格式，最大 10MB</div>
                 <input type="file" id="fileInput" accept="image/*" multiple>
             </div>
 
@@ -411,40 +411,40 @@
             <div class="image-preview" id="imagePreview">
                 <div class="preview-container">
                     <div class="preview-item">
-                        <h3>原始图片</h3>
+                        <h3 data-i18n="original_image_title">原始图片</h3>
                         <img id="originalImage" class="preview-image" alt="原始图片">
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="originalSize"></span></div>
-                            <div>文件大小: <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">尺寸:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="label_file_size">文件大小:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="preview-item">
-                        <h3>压缩后图片</h3>
+                        <h3 data-i18n="compressed_image_title">压缩后图片</h3>
                         <img id="compressedImage" class="preview-image" alt="压缩后图片">
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="compressedSize"></span></div>
-                            <div>文件大小: <span class="size" id="compressedFileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">尺寸:</span> <span class="size" id="compressedSize"></span></div>
+                            <div><span data-i18n="label_file_size">文件大小:</span> <span class="size" id="compressedFileSize"></span></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 压缩大小显示 -->
                 <div class="size-reduction" id="sizeReduction" style="display: none;">
-                    文件大小减少了 <span id="reductionPercentage"></span>
+                    <span data-i18n="size_reduction_text">文件大小减少了</span> <span id="reductionPercentage"></span>
                 </div>
 
                 <!-- 压缩控制 -->
                 <div class="compression-controls">
                     <div class="control-group">
                         <label class="control-label">
-                            图片质量: <span class="quality-value" id="qualityValue">80%</span>
+                            <span data-i18n="image_quality_label">图片质量:</span> <span class="quality-value" id="qualityValue">80%</span>
                         </label>
                         <input type="range" class="quality-slider" id="qualitySlider" 
                                min="10" max="100" value="80">
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">输出格式:</label>
+                        <label class="control-label" data-i18n="output_format_label">输出格式:</label>
                         <div class="format-options">
                             <div class="format-option selected" data-format="jpeg">JPEG</div>
                             <div class="format-option" data-format="png">PNG</div>
@@ -456,13 +456,13 @@
                 <!-- 操作按钮 -->
                 <div class="action-buttons">
                     <button class="btn btn-success" id="downloadBtn">
-                        📥 下载压缩图片
+                        <span data-i18n="btn_download_compressed">📥 下载压缩图片</span>
                     </button>
                     <button class="btn btn-secondary" id="resetBtn">
-                        🔄 重新选择
+                        <span data-i18n="btn_reselect">🔄 重新选择</span>
                     </button>
                     <a href="image-tools.html" class="btn btn-primary">
-                        ← 返回工具页
+                        <span data-i18n="btn_back_to_tools">← 返回工具页</span>
                     </a>
                 </div>
             </div>
@@ -534,13 +534,13 @@
         function processFile(file) {
             // 验证文件类型
             if (!file.type.startsWith('image/')) {
-                alert('请选择图片文件！');
+                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || '请选择图片文件！');
                 return;
             }
 
             // 验证文件大小
             if (file.size > 10 * 1024 * 1024) {
-                alert('文件大小不能超过 10MB！');
+                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || '文件大小不能超过 10MB！');
                 return;
             }
 
@@ -697,6 +697,18 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
     </script>
 </body>
 </html>

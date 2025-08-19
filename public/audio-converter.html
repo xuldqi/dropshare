@@ -471,53 +471,159 @@
             background: #ccc;
             cursor: not-allowed;
         }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            background: #ffffff;
+        }
+        
+        .page-main-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: #3182ce;
+            text-decoration: none;
+            border: 1px solid #3182ce;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .back-button:hover {
+            background: #3182ce;
+            color: white;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .lang-selector select {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="page-header">
+        <h1 class="page-main-title" data-i18n="audio_converter_title">🎵 音频转换器</h1>
+        <div class="header-buttons">
+            <div class="control-buttons">
+                <div class="lang-selector">
+                    <select id="language-selector" title="Select Language" data-i18n="title_select_language">
+                        <option value="en">English</option>
+                        <option value="zh">中文简体</option>
+                        <option value="zh-tw">中文繁體</option>
+                        <option value="ja">日本語</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ar">العربية</option>
+                        <option value="ko">한국어</option>
+                    </select>
+                </div>
+            </div>
+            <a href="audio-tools.html" class="back-button" data-i18n="back_to_audio_tools">← 音频工具</a>
+            <a href="index.html" class="back-button" data-i18n="btn_home">🏠 首页</a>
+        </div>
+    </div>
+
     <div class="container">
-        <h1 class="page-title" id="pageTitle">MP3 to WAV audio</h1>
-        <p class="page-subtitle" id="pageSubtitle">Convert MP3 to WAV audio</p>
+        <h1 class="page-title" id="pageTitle" data-i18n="audio_converter_subtitle">MP3 to WAV audio</h1>
+        <p class="page-subtitle" id="pageSubtitle" data-i18n="audio_converter_description">Convert MP3 to WAV audio</p>
         
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon" id="uploadIcon">📄</div>
-            <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+            <button class="upload-button" onclick="document.getElementById('fileInput').click()" data-i18n="btn_upload_from_pc">
                 📤 Upload from PC or Mobile
             </button>
-            <div class="upload-text">or Drag files here</div>
+            <div class="upload-text" data-i18n="drop_files_here">or Drag files here</div>
             <input type="file" id="fileInput" multiple accept="audio/*" style="display: none;">
         </div>
         
         <div class="conversion-panel" id="conversionPanel" style="display: none;">
             <div id="fileList"></div>
             
-            <h3 id="formatSelectorTitle">选择输出格式：</h3>
+            <h3 id="formatSelectorTitle" data-i18n="label_output_format">选择输出格式：</h3>
             <div class="format-selector" id="formatSelector">
-                <div class="format-option" data-format="mp3">MP3</div>
-                <div class="format-option" data-format="wav">WAV</div>
-                <div class="format-option" data-format="aac">AAC</div>
-                <div class="format-option" data-format="ogg">OGG</div>
-                <div class="format-option" data-format="flac">FLAC</div>
+                <div class="format-option" data-format="mp3" data-i18n="format_mp3">MP3</div>
+                <div class="format-option" data-format="wav" data-i18n="format_wav">WAV</div>
+                <div class="format-option" data-format="aac" data-i18n="format_aac">AAC</div>
+                <div class="format-option" data-format="ogg" data-i18n="format_ogg">OGG</div>
+                <div class="format-option" data-format="flac" data-i18n="format_flac">FLAC</div>
             </div>
             
-            <button class="convert-button" id="convertBtn" disabled>开始转换</button>
+            <button class="convert-button" id="convertBtn" disabled data-i18n="btn_convert">开始转换</button>
             
             <div class="progress-section" id="progressSection" style="display: none;">
-                <div class="progress-text" id="progressText">准备转换...</div>
+                <div class="progress-text" id="progressText" data-i18n="status_preparing">准备转换...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
             
             <div class="results-section" id="resultsSection" style="display: none;">
-                <h3>转换结果:</h3>
+                <h3 data-i18n="label_conversion_results">转换结果:</h3>
                 <div id="resultsList"></div>
             </div>
         </div>
         
         <div class="footer-info">
-            <div class="footer-text">Uploaded and generated files are deleted 1 hour after upload</div>
+            <div class="footer-text" data-i18n="footer_file_deletion_notice">Uploaded and generated files are deleted 1 hour after upload</div>
             <div class="rating-section">
-                <div class="rating-text">Help Us Improve</div>
+                <div class="rating-text" data-i18n="rating_help_improve">Help Us Improve</div>
                 <div class="rating-display">
                     <div class="stars">★★★★★</div>
                     <div class="rating-score">4.8 (1703)</div>
@@ -789,7 +895,7 @@
                 let audioFiles = Array.from(files).filter(file => file.type.startsWith('audio/'));
                 
                 if (audioFiles.length === 0) {
-                    alert('请选择音频文件！');
+                    alert(window.DROPSHARE_I18N?.t('alert_select_audio_files') || '请选择音频文件！');
                     return;
                 }
                 
@@ -858,7 +964,7 @@
             
             async startConversion() {
                 if (!this.selectedFormat) {
-                    alert('请选择输出格式！');
+                    alert(window.DROPSHARE_I18N?.t('alert_select_output_format') || '请选择输出格式！');
                     return;
                 }
                 
@@ -873,17 +979,17 @@
                     
                     for (let i = 0; i < this.selectedFiles.length; i++) {
                         const file = this.selectedFiles[i];
-                        this.updateProgress(0, `准备转换: ${file.name}`);
+                        this.updateProgress(0, `${window.DROPSHARE_I18N?.t('status_preparing_conversion') || '准备转换'}: ${file.name}`);
                         
                         try {
                             const convertedFile = await this.convertAudio(file);
                             this.convertedFiles.push(convertedFile);
                             
                             const overallProgress = ((i + 1) / this.selectedFiles.length) * 100;
-                            this.updateProgress(overallProgress, `已完成 ${i + 1}/${this.selectedFiles.length} 个文件`);
+                            this.updateProgress(overallProgress, `${window.DROPSHARE_I18N?.t('status_completed_files') || '已完成'} ${i + 1}/${this.selectedFiles.length} ${window.DROPSHARE_I18N?.t('label_files') || '个文件'}`);
                         } catch (error) {
                             console.error('转换失败:', error);
-                            alert(`转换 ${file.name} 失败: ${error.message}`);
+                            alert(`${window.DROPSHARE_I18N?.t('alert_conversion_failed') || '转换失败'} ${file.name}: ${error.message}`);
                         }
                     }
                     
@@ -893,7 +999,7 @@
                     
                 } catch (error) {
                     console.error('FFmpeg 加载失败:', error);
-                    alert('音频转换引擎加载失败，请检查网络连接后重试');
+                    alert(window.DROPSHARE_I18N?.t('alert_audio_engine_load_failed') || '音频转换引擎加载失败，请检查网络连接后重试');
                     document.getElementById('convertBtn').disabled = false;
                 }
             }
@@ -961,8 +1067,8 @@
                                 <p>${this.formatFileSize(file.size)} • ${file.type}</p>
                             </div>
                             <div class="result-actions">
-                                <button class="action-button" onclick="audioConverter.downloadFile(${index})">下载</button>
-                                <button class="action-button primary" onclick="audioConverter.shareFile(${index})">分享</button>
+                                <button class="action-button" onclick="audioConverter.downloadFile(${index})" data-i18n="btn_download">下载</button>
+                                <button class="action-button primary" onclick="audioConverter.shareFile(${index})" data-i18n="btn_share">分享</button>
                             </div>
                         </div>
                     `;
@@ -991,7 +1097,7 @@
             
             shareAllFiles() {
                 if (this.convertedFiles.length === 0) {
-                    alert('没有可分享的文件！');
+                    alert(window.DROPSHARE_I18N?.t('alert_no_files_to_share') || '没有可分享的文件！');
                     return;
                 }
                 currentShareFiles = this.convertedFiles;
@@ -1076,8 +1182,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p>未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p data-i18n="no_devices_found">未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="device_connection_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -1127,10 +1233,10 @@
             
             if (count === 0) {
                 sendBtn.disabled = true;
-                sendBtn.textContent = '传送到选中设备';
+                sendBtn.textContent = window.DROPSHARE_I18N?.t('btn_send_to_selected_devices') || '传送到选中设备';
             } else {
                 sendBtn.disabled = false;
-                sendBtn.textContent = `传送到 ${count} 个设备`;
+                sendBtn.textContent = `${window.DROPSHARE_I18N?.t('btn_send_to_devices') || '传送到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
             }
         }
         
@@ -1140,7 +1246,7 @@
             
             const filesToSend = currentShareFiles || (currentShareFile ? [currentShareFile] : []);
             if (filesToSend.length === 0) {
-                alert('没有可传送的文件！');
+                alert(window.DROPSHARE_I18N?.t('alert_no_files_to_send') || '没有可传送的文件！');
                 return;
             }
             
@@ -1153,7 +1259,7 @@
                     });
                 });
                 
-                alert(`文件已开始传送到 ${selectedDevices.size} 个设备！`);
+                alert(`${window.DROPSHARE_I18N?.t('alert_files_sending') || '文件已开始传送到'} ${selectedDevices.size} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}!`);
                 closeDeviceModal();
             } else {
                 // 如果没有传输系统，尝试添加到分享队列
@@ -1161,7 +1267,7 @@
                     filesToSend.forEach(file => {
                         window.ui.filesQueue.push(file);
                     });
-                    alert(`文件已添加到分享列表！`);
+                    alert(window.DROPSHARE_I18N?.t('alert_files_added_to_share_list') || '文件已添加到分享列表!');
                     closeDeviceModal();
                 } else {
                     if (confirm('传输功能需要返回传送页面使用。\\n\\n是否现在跳转到传送页面？')) {
@@ -1217,20 +1323,31 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title">选择传送设备</h3>
+                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
-                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
+                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled data-i18n="btn_send_to_devices">
                     传送到选中设备
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
+    </script>
 </body>
 </html>

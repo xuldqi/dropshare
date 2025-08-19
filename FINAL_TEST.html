@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>最终测试 - DropShare所有语言</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 1000px; margin: 0 auto; }
+        .status { background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .language-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 20px 0; }
+        .lang-btn { 
+            padding: 12px; 
+            border: 1px solid #ccc; 
+            background: #f5f5f5; 
+            cursor: pointer; 
+            text-align: center; 
+            border-radius: 8px; 
+            transition: all 0.2s;
+        }
+        .lang-btn:hover { background: #e0e0e0; transform: translateY(-1px); }
+        .lang-btn.active { background: #007bff; color: white; }
+        .test-content { 
+            background: #fff; 
+            border: 2px solid #ddd; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0;
+        }
+        h1, h2 { color: #333; }
+        .highlight { background: yellow; padding: 2px 4px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>🌍 DropShare 最终语言测试</h1>
+    
+    <div class="status" id="status">
+        <h2>系统状态</h2>
+        <p id="system-status">检查中...</p>
+    </div>
+
+    <div class="test-content">
+        <h2>🎛️ 语言选择器 (共11种语言)</h2>
+        <div class="language-grid" id="language-buttons"></div>
+    </div>
+
+    <div class="test-content">
+        <h2>📝 实时翻译测试</h2>
+        <p><strong>网站标题:</strong> <span class="highlight" data-i18n="hero_title">Fast Local File Sharing Across Devices on Your Network</span></p>
+        <p><strong>开始按钮:</strong> <span class="highlight" data-i18n="btn_start_sharing">Start Sharing Files</span></p>
+        <p><strong>导航-传输:</strong> <span class="highlight" data-i18n="nav_transfer">Transfer</span></p>
+        <p><strong>导航-图片:</strong> <span class="highlight" data-i18n="nav_images">Images</span></p>
+        <p><strong>导航-音频:</strong> <span class="highlight" data-i18n="nav_audio">Audio</span></p>
+        <p><strong>导航-视频:</strong> <span class="highlight" data-i18n="nav_video">Video</span></p>
+        <p><strong>免费功能:</strong> <span class="highlight" data-i18n="feature_free_title">100% Free</span></p>
+        <p><strong>安全功能:</strong> <span class="highlight" data-i18n="feature_secure_title">Secure & Private</span></p>
+    </div>
+
+    <!-- 使用完整的原始语言文件 -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        console.log('🚀 开始最终测试...');
+
+        const languageNames = {
+            'en': 'English',
+            'zh': '中文简体', 
+            'zh-tw': '中文繁體',
+            'ja': '日本語',
+            'fr': 'Français',
+            'de': 'Deutsch',
+            'es': 'Español', 
+            'pt': 'Português',
+            'ru': 'Русский',
+            'ar': 'العربية',
+            'ko': '한국어'
+        };
+
+        function updateSystemStatus() {
+            const statusEl = document.getElementById('system-status');
+            let html = '';
+            
+            if (window.DROPSHARE_I18N) {
+                html += '<p class="success">✅ DROPSHARE_I18N 系统已加载</p>';
+                html += `<p>📍 当前语言: <strong>${window.DROPSHARE_I18N.getCurrentLanguage()}</strong></p>`;
+                
+                // 测试翻译功能
+                const testKey = 'hero_title';
+                const translation = window.DROPSHARE_I18N.translate(testKey);
+                html += `<p>🔍 翻译测试: "${testKey}" → "${translation}"</p>`;
+                
+                if (translation && translation !== testKey) {
+                    html += '<p class="success">✅ 翻译系统工作正常</p>';
+                } else {
+                    html += '<p class="error">❌ 翻译系统异常</p>';
+                }
+            } else {
+                html += '<p class="error">❌ DROPSHARE_I18N 未加载</p>';
+            }
+            
+            statusEl.innerHTML = html;
+        }
+
+        function createLanguageButtons() {
+            const container = document.getElementById('language-buttons');
+            
+            Object.keys(languageNames).forEach(langCode => {
+                const btn = document.createElement('div');
+                btn.className = 'lang-btn';
+                btn.textContent = `${languageNames[langCode]} (${langCode})`;
+                btn.onclick = () => switchLanguage(langCode);
+                btn.id = `lang-${langCode}`;
+                container.appendChild(btn);
+            });
+        }
+
+        function switchLanguage(langCode) {
+            console.log(`🔄 切换语言到: ${langCode}`);
+            
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.changeLanguage(langCode);
+                updateActiveLanguage();
+                updateSystemStatus();
+                console.log(`✅ 语言已切换到: ${langCode}`);
+            } else {
+                console.error('❌ DROPSHARE_I18N 不可用');
+            }
+        }
+
+        function updateActiveLanguage() {
+            // 移除所有活动状态
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 设置当前语言为活动状态
+            if (window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                const activeBtn = document.getElementById(`lang-${currentLang}`);
+                if (activeBtn) {
+                    activeBtn.classList.add('active');
+                }
+            }
+        }
+
+        function init() {
+            console.log('🔧 初始化系统...');
+            
+            if (window.DROPSHARE_I18N) {
+                console.log('✅ DROPSHARE_I18N 已就绪');
+                createLanguageButtons();
+                updateSystemStatus();
+                updateActiveLanguage();
+                
+                console.log('🎉 所有系统初始化完成！');
+                console.log('💡 提示：点击语言按钮测试切换功能');
+            } else {
+                console.log('⏳ 等待 DROPSHARE_I18N 加载...');
+                setTimeout(init, 100);
+            }
+        }
+
+        // 开始初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

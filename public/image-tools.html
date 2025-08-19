@@ -140,6 +140,27 @@
             align-items: center;
         }
 
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
         /* 主要内容 */
         .main-content {
             position: relative;
@@ -652,6 +673,24 @@
                     <a href="video-tools.html" data-i18n="nav_video">视频</a>
                     <a href="document-tools.html" data-i18n="nav_files">文件</a>
                 </nav>
+
+                <div class="control-buttons">
+                    <div class="lang-selector">
+                        <select id="language-selector" title="Select Language">
+                            <option value="en">English</option>
+                            <option value="zh">中文简体</option>
+                            <option value="zh-tw">中文繁體</option>
+                            <option value="ja">日本語</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="ru">Русский</option>
+                            <option value="ar">العربية</option>
+                            <option value="ko">한국어</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -659,8 +698,8 @@
     <!-- 主要内容 -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">Image Tools</h1>
-            <p class="page-subtitle">Free Online Image Processing Tools</p>
+            <h1 class="page-title" data-i18n="image_tools_title">Image Tools</h1>
+            <p class="page-subtitle" data-i18n="image_tools_subtitle">Free Online Image Processing Tools</p>
         </div>
 
         <div class="tools-grid" id="toolsGrid">
@@ -670,11 +709,11 @@
                     <div class="tool-icon icon-compress">🗜️</div>
                     <div class="tool-category">Popular</div>
                 </div>
-                <h3 class="tool-title">Image Compressor</h3>
-                <p class="tool-description">Reduce image file size while maintaining quality for web and storage optimization</p>
+                <h3 class="tool-title" data-i18n="tool_image_compressor_title">Image Compressor</h3>
+                <p class="tool-description" data-i18n="tool_image_compressor_desc">Reduce image file size while maintaining quality for web and storage optimization</p>
                 <div class="tool-stats">
-                    <span>📦 Up to 90% compression</span>
-                    <span>⚡ Instant</span>
+                    <span data-i18n="tool_compression_rate">📦 Up to 90% compression</span>
+                    <span data-i18n="tool_instant">⚡ Instant</span>
                 </div>
             </div>
 
@@ -684,11 +723,11 @@
                     <div class="tool-icon icon-convert">🔄</div>
                     <div class="tool-category">Essential</div>
                 </div>
-                <h3 class="tool-title">Format Converter</h3>
-                <p class="tool-description">Convert images between different formats like JPG, PNG, WebP, GIF, and more</p>
+                <h3 class="tool-title" data-i18n="tool_format_converter_title">Format Converter</h3>
+                <p class="tool-description" data-i18n="tool_format_converter_desc">Convert images between different formats like JPG, PNG, WebP, GIF, and more</p>
                 <div class="tool-stats">
-                    <span>📂 6+ formats</span>
-                    <span>🔄 Batch convert</span>
+                    <span data-i18n="tool_formats_count">📂 6+ formats</span>
+                    <span data-i18n="tool_batch_convert">🔄 Batch convert</span>
                 </div>
             </div>
 
@@ -696,13 +735,13 @@
             <div class="tool-card" data-keywords="resize scale dimensions width height pixels" onclick="window.location.href='image-resizer-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-resize">📏</div>
-                    <div class="tool-category">Popular</div>
+                    <div class="tool-category" data-i18n="category_popular">Popular</div>
                 </div>
-                <h3 class="tool-title">Image Resizer</h3>
-                <p class="tool-description">Resize images to specific dimensions while preserving aspect ratio or custom sizing</p>
+                <h3 class="tool-title" data-i18n="tool_image_resizer_title">Image Resizer</h3>
+                <p class="tool-description" data-i18n="tool_image_resizer_desc">Resize images to specific dimensions while preserving aspect ratio or custom sizing</p>
                 <div class="tool-stats">
-                    <span>📐 Precise control</span>
-                    <span>🎯 Aspect ratio lock</span>
+                    <span data-i18n="tool_precise_control">📐 Precise control</span>
+                    <span data-i18n="tool_aspect_ratio_lock">🎯 Aspect ratio lock</span>
                 </div>
             </div>
 
@@ -710,13 +749,13 @@
             <div class="tool-card" data-keywords="rotate flip mirror orientation degrees" onclick="window.location.href='image-rotator-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-rotate">🔄</div>
-                    <div class="tool-category">Essential</div>
+                    <div class="tool-category" data-i18n="category_essential">Essential</div>
                 </div>
-                <h3 class="tool-title">Image Rotator</h3>
-                <p class="tool-description">Rotate images by any angle, flip horizontally or vertically with precision</p>
+                <h3 class="tool-title" data-i18n="tool_image_rotator_title">Image Rotator</h3>
+                <p class="tool-description" data-i18n="tool_image_rotator_desc">Rotate images by any angle, flip horizontally or vertically with precision</p>
                 <div class="tool-stats">
-                    <span>🎛️ Any angle</span>
-                    <span>🔄 Flip & mirror</span>
+                    <span data-i18n="tool_any_angle">🎛️ Any angle</span>
+                    <span data-i18n="tool_flip_mirror">🔄 Flip & mirror</span>
                 </div>
             </div>
 
@@ -724,13 +763,13 @@
             <div class="tool-card" data-keywords="crop trim cut area selection" onclick="window.location.href='image-cropper-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-crop">✂️</div>
-                    <div class="tool-category">Essential</div>
+                    <div class="tool-category" data-i18n="category_essential">Essential</div>
                 </div>
-                <h3 class="tool-title">Image Cropper</h3>
-                <p class="tool-description">Crop images to specific areas with precise selection and aspect ratio control</p>
+                <h3 class="tool-title" data-i18n="tool_image_cropper_title">Image Cropper</h3>
+                <p class="tool-description" data-i18n="tool_image_cropper_desc">Crop images to specific areas with precise selection and aspect ratio control</p>
                 <div class="tool-stats">
-                    <span>✂️ Precise crop</span>
-                    <span>📐 Ratio presets</span>
+                    <span data-i18n="tool_precise_crop">✂️ Precise crop</span>
+                    <span data-i18n="tool_ratio_presets">📐 Ratio presets</span>
                 </div>
             </div>
 
@@ -738,13 +777,13 @@
             <div class="tool-card" data-keywords="watermark text logo brand copyright protection" onclick="window.location.href='image-watermark-tool-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-watermark">💧</div>
-                    <div class="tool-category">Pro</div>
+                    <div class="tool-category" data-i18n="category_pro">Pro</div>
                 </div>
-                <h3 class="tool-title">Watermark Tool</h3>
-                <p class="tool-description">Add text or logo watermarks to protect your images with customizable positioning</p>
+                <h3 class="tool-title" data-i18n="tool_watermark_title">Watermark Tool</h3>
+                <p class="tool-description" data-i18n="tool_watermark_desc">Add text or logo watermarks to protect your images with customizable positioning</p>
                 <div class="tool-stats">
-                    <span>🎨 Custom design</span>
-                    <span>🔒 Brand protection</span>
+                    <span data-i18n="tool_custom_design">🎨 Custom design</span>
+                    <span data-i18n="tool_brand_protection">🔒 Brand protection</span>
                 </div>
             </div>
 
@@ -752,13 +791,13 @@
             <div class="tool-card" data-keywords="background remove transparent png ai" onclick="window.location.href='image-background-remover-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-background">🎭</div>
-                    <div class="tool-category">AI-Powered</div>
+                    <div class="tool-category" data-i18n="category_ai_powered">AI-Powered</div>
                 </div>
-                <h3 class="tool-title">Background Remover</h3>
-                <p class="tool-description">Remove backgrounds from images automatically or manually with precision tools</p>
+                <h3 class="tool-title" data-i18n="tool_background_remover_title">Background Remover</h3>
+                <p class="tool-description" data-i18n="tool_background_remover_desc">Remove backgrounds from images automatically or manually with precision tools</p>
                 <div class="tool-stats">
-                    <span>🤖 AI-powered</span>
-                    <span>✨ One-click</span>
+                    <span data-i18n="tool_ai_powered">🤖 AI-powered</span>
+                    <span data-i18n="tool_one_click">✨ One-click</span>
                 </div>
             </div>
 
@@ -766,13 +805,13 @@
             <div class="tool-card" data-keywords="filter effects brightness contrast saturation vintage" onclick="window.location.href='image-filter-effects-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-filter">🎨</div>
-                    <div class="tool-category">Creative</div>
+                    <div class="tool-category" data-i18n="category_creative">Creative</div>
                 </div>
-                <h3 class="tool-title">Filter Effects</h3>
-                <p class="tool-description">Apply various filters and effects like vintage, black & white, sepia, and artistic styles</p>
+                <h3 class="tool-title" data-i18n="tool_filter_effects_title">Filter Effects</h3>
+                <p class="tool-description" data-i18n="tool_filter_effects_desc">Apply various filters and effects like vintage, black & white, sepia, and artistic styles</p>
                 <div class="tool-stats">
-                    <span>🎭 20+ effects</span>
-                    <span>🎨 Live preview</span>
+                    <span data-i18n="tool_20_effects">🎭 20+ effects</span>
+                    <span data-i18n="tool_live_preview">🎨 Live preview</span>
                 </div>
             </div>
 
@@ -780,13 +819,13 @@
             <div class="tool-card" data-keywords="color palette extract colors dominant scheme">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-palette">🎨</div>
-                    <div class="tool-category">Creative</div>
+                    <div class="tool-category" data-i18n="category_creative">Creative</div>
                 </div>
-                <h3 class="tool-title">Color Palette</h3>
-                <p class="tool-description">Extract color palettes from images and generate color schemes for design projects</p>
+                <h3 class="tool-title" data-i18n="tool_color_palette_title">Color Palette</h3>
+                <p class="tool-description" data-i18n="tool_color_palette_desc">Extract color palettes from images and generate color schemes for design projects</p>
                 <div class="tool-stats">
-                    <span>🌈 Color extraction</span>
-                    <span>🎯 Design ready</span>
+                    <span data-i18n="tool_color_extraction">🌈 Color extraction</span>
+                    <span data-i18n="tool_design_ready">🎯 Design ready</span>
                 </div>
             </div>
         </div>
@@ -797,7 +836,7 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>Navigate</h3>
+                    <h3 data-i18n="footer_navigate">Navigate</h3>
                     <ul class="footer-links">
                         <li><a href="about.html" data-i18n="nav_about">About</a></li>
                         <li><a href="faq.html" data-i18n="nav_faq">FAQ</a></li>
@@ -808,7 +847,7 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Tools</h3>
+                    <h3 data-i18n="footer_tools">Tools</h3>
                     <ul class="footer-links">
                         <li><a href="image-tools.html" data-i18n="nav_images">🖼️ Image Tools</a></li>
                         <li><a href="audio-tools.html" data-i18n="nav_audio">🎵 Audio Tools</a></li>
@@ -819,13 +858,13 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Features</h3>
+                    <h3 data-i18n="footer_features">Features</h3>
                     <ul class="footer-links">
-                        <li><a href="share.html">P2P File Sharing</a></li>
-                        <li><a href="share.html#rooms">Multi-user Rooms</a></li>
-                        <li><a href="image-tools.html">Image Processing</a></li>
-                        <li><a href="video-tools.html">Video Conversion</a></li>
-                        <li><a href="document-tools.html">Document Tools</a></li>
+                        <li><a href="share.html" data-i18n="feature_p2p_sharing">P2P File Sharing</a></li>
+                        <li><a href="share.html#rooms" data-i18n="feature_multi_user_rooms">Multi-user Rooms</a></li>
+                        <li><a href="image-tools.html" data-i18n="feature_image_processing">Image Processing</a></li>
+                        <li><a href="video-tools.html" data-i18n="feature_video_conversion">Video Conversion</a></li>
+                        <li><a href="document-tools.html" data-i18n="feature_document_tools">Document Tools</a></li>
                     </ul>
                 </div>
             </div>
@@ -838,7 +877,7 @@
                     <span>DropShare</span>
                 </div>
                 <div class="footer-copyright">
-                    <p>Copyright © 2024 DropShare and contributors.<br>
+                    <p data-i18n="footer_copyright">Copyright © 2024 DropShare and contributors.<br>
                     Open source file sharing solution. Built with ❤️ for the community.</p>
                 </div>
             </div>
@@ -1055,19 +1094,31 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title">选择传送设备</h3>
+                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    传送到选中设备
+                    <span data-i18n="btn_send_to_devices">传送到选中设备</span>
                 </button>
             </div>
         </div>
     </div>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
+    </script>
 </body>
 </html>

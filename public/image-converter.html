@@ -280,90 +280,141 @@
         .stat-value.negative {
             color: var(--error-color);
         }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .lang-selector select {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="page-header">
-        <h1>🔄 图片格式转换器</h1>
+        <h1 data-i18n="image_converter_title">🔄 图片格式转换器</h1>
         <div class="header-buttons">
-            <a href="image-tools.html" class="back-button">← 图片工具</a>
-            <a href="index.html" class="back-button">🏠 首页</a>
+            <div class="control-buttons">
+                <div class="lang-selector">
+                    <select id="language-selector" title="Select Language" data-i18n="title_select_language">
+                        <option value="en">English</option>
+                        <option value="zh">中文简体</option>
+                        <option value="zh-tw">中文繁體</option>
+                        <option value="ja">日本語</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ar">العربية</option>
+                        <option value="ko">한국어</option>
+                    </select>
+                </div>
+            </div>
+            <a href="image-tools.html" class="back-button" data-i18n="back_to_image_tools">← 图片工具</a>
+            <a href="index.html" class="back-button" data-i18n="btn_home">🏠 首页</a>
         </div>
     </div>
     
     <div class="converter-container">
         <div class="upload-area" id="uploadArea">
             <div style="font-size: 3em; margin-bottom: 15px;">📁</div>
-            <h3>拖拽图片到这里或点击选择</h3>
-            <p style="color: var(--text-secondary);">支持 JPEG, PNG, WebP, GIF, BMP, TIFF, ICO, AVIF 格式</p>
+            <h3 data-i18n="drop_files_here">拖拽图片到这里或点击选择</h3>
+            <p style="color: var(--text-secondary);" data-i18n="supported_formats_image">支持 JPEG, PNG, WebP, GIF, BMP, TIFF, ICO, AVIF 格式</p>
             <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
-            <button class="button primary" onclick="document.getElementById('fileInput').click()">选择图片</button>
+            <button class="button primary" onclick="document.getElementById('fileInput').click()" data-i18n="btn_select_files">选择图片</button>
         </div>
         
         <div id="conversionPanel" style="display: none;">
             <div id="filePreview"></div>
             
-            <h3>选择输出格式：</h3>
+            <h3 data-i18n="label_output_format">选择输出格式：</h3>
             <div class="format-selector">
-                <div class="format-option" data-format="jpeg">JPEG</div>
-                <div class="format-option" data-format="png">PNG</div>
-                <div class="format-option" data-format="webp">WebP</div>
-                <div class="format-option" data-format="gif">GIF</div>
-                <div class="format-option" data-format="bmp">BMP</div>
-                <div class="format-option" data-format="tiff">TIFF</div>
-                <div class="format-option" data-format="ico">ICO</div>
-                <div class="format-option" data-format="avif">AVIF</div>
+                <div class="format-option" data-format="jpeg" data-i18n="format_jpeg">JPEG</div>
+                <div class="format-option" data-format="png" data-i18n="format_png">PNG</div>
+                <div class="format-option" data-format="webp" data-i18n="format_webp">WebP</div>
+                <div class="format-option" data-format="gif" data-i18n="format_gif">GIF</div>
+                <div class="format-option" data-format="bmp" data-i18n="format_bmp">BMP</div>
+                <div class="format-option" data-format="tiff" data-i18n="format_tiff">TIFF</div>
+                <div class="format-option" data-format="ico" data-i18n="format_ico">ICO</div>
+                <div class="format-option" data-format="avif" data-i18n="format_avif">AVIF</div>
             </div>
             
             <div class="settings-panel">
-                <h4>转换设置</h4>
+                <h4 data-i18n="label_conversion_settings">转换设置</h4>
                 
                 <!-- 快速预设 -->
                 <div class="setting-group">
-                    <label>快速预设:</label>
+                    <label data-i18n="label_quick_presets">快速预设:</label>
                     <div class="preset-buttons">
-                        <button class="preset-btn" data-preset="high-quality">高质量</button>
-                        <button class="preset-btn" data-preset="balanced">平衡</button>
-                        <button class="preset-btn" data-preset="high-compress">高压缩</button>
-                        <button class="preset-btn" data-preset="web-optimized">网页优化</button>
+                        <button class="preset-btn" data-preset="high-quality" data-i18n="preset_high_quality">高质量</button>
+                        <button class="preset-btn" data-preset="balanced" data-i18n="preset_balanced">平衡</button>
+                        <button class="preset-btn" data-preset="high-compress" data-i18n="preset_high_compress">高压缩</button>
+                        <button class="preset-btn" data-preset="web-optimized" data-i18n="preset_web_optimized">网页优化</button>
                     </div>
                 </div>
                 
                 <!-- 图片质量 -->
                 <div class="setting-group">
-                    <label for="qualitySlider">图片质量: <span id="qualityValue">80</span>%</label>
+                    <label for="qualitySlider" data-i18n="label_image_quality">图片质量: <span id="qualityValue">80</span>%</label>
                     <input type="range" id="qualitySlider" min="1" max="100" value="80">
                     <div class="quality-info">
-                        <span class="compression-rate">压缩率: <strong id="compressionRate">-</strong></span>
-                        <span class="estimated-size">预估大小: <strong id="estimatedSize">-</strong></span>
+                        <span class="compression-rate" data-i18n="label_compression_rate">压缩率: <strong id="compressionRate">-</strong></span>
+                        <span class="estimated-size" data-i18n="label_estimated_size">预估大小: <strong id="estimatedSize">-</strong></span>
                     </div>
                 </div>
                 
                 <!-- 尺寸设置 -->
                 <div class="setting-group">
-                    <label>图片尺寸:</label>
+                    <label data-i18n="label_image_dimensions">图片尺寸:</label>
                     <div class="size-inputs">
                         <div class="size-input-group">
-                            <label for="widthInput">宽度:</label>
-                            <input type="number" id="widthInput" placeholder="原始">
+                            <label for="widthInput" data-i18n="label_width">宽度:</label>
+                            <input type="number" id="widthInput" placeholder="原始" data-i18n="placeholder_original">
                             <span>px</span>
                         </div>
                         <div class="size-input-group">
-                            <label for="heightInput">高度:</label>
-                            <input type="number" id="heightInput" placeholder="原始">
+                            <label for="heightInput" data-i18n="label_height">高度:</label>
+                            <input type="number" id="heightInput" placeholder="原始" data-i18n="placeholder_original">
                             <span>px</span>
                         </div>
                     </div>
                     <div class="size-info">
-                        <span id="originalDimensions">原始: -</span>
-                        <span id="newDimensions">新尺寸: -</span>
+                        <span id="originalDimensions" data-i18n="label_original_dimensions">原始: -</span>
+                        <span id="newDimensions" data-i18n="label_new_dimensions">新尺寸: -</span>
                     </div>
                 </div>
                 
                 <div class="setting-group">
                     <label>
                         <input type="checkbox" id="maintainRatio" checked>
-                        保持宽高比
+                        <span data-i18n="label_maintain_aspect_ratio">保持宽高比</span>
                     </label>
                 </div>
                 
@@ -371,11 +422,11 @@
                 <div class="compression-preview">
                     <div class="preview-stats">
                         <div class="stat-item">
-                            <span class="stat-label">文件大小变化</span>
+                            <span class="stat-label" data-i18n="label_file_size_change">文件大小变化</span>
                             <span class="stat-value" id="sizeChange">-</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">压缩效果</span>
+                            <span class="stat-label" data-i18n="label_compression_effect">压缩效果</span>
                             <span class="stat-value" id="compressionEffect">-</span>
                         </div>
                     </div>
@@ -383,23 +434,23 @@
             </div>
             
             <div style="text-align: center; margin-top: 30px;">
-                <button class="button primary" id="convertBtn" disabled>开始转换</button>
-                <button class="button" id="clearBtn">重新选择</button>
+                <button class="button primary" id="convertBtn" disabled data-i18n="btn_convert">开始转换</button>
+                <button class="button" id="clearBtn" data-i18n="btn_clear">重新选择</button>
             </div>
             
             <div id="progressSection" style="display: none; margin-top: 20px;">
-                <h4>转换进度:</h4>
+                <h4 data-i18n="label_conversion_progress">转换进度:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div id="progressText">准备转换...</div>
+                <div id="progressText" data-i18n="status_preparing">准备转换...</div>
             </div>
             
             <div id="resultsSection" style="display: none; margin-top: 30px;">
-                <h3>转换结果:</h3>
+                <h3 data-i18n="label_conversion_results">转换结果:</h3>
                 <div id="resultsList"></div>
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="button primary" id="shareAllBtn">分享所有文件</button>
+                    <button class="button primary" id="shareAllBtn" data-i18n="btn_share_all">分享所有文件</button>
                 </div>
             </div>
         </div>
@@ -498,7 +549,7 @@
             handleFiles(files) {
                 const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
                 if (imageFiles.length === 0) {
-                    alert('请选择图片文件！');
+                    alert(window.DROPSHARE_I18N?.t('alert_select_image_files') || '请选择图片文件！');
                     return;
                 }
                 
@@ -661,7 +712,7 @@
             
             showPreview() {
                 const preview = document.getElementById('filePreview');
-                let html = '<h3>选中的图片:</h3>';
+                let html = '<h3 data-i18n="label_selected_images">选中的图片:</h3>';
                 
                 this.selectedFiles.forEach((file, index) => {
                     const url = URL.createObjectURL(file);
@@ -681,7 +732,7 @@
             
             async startConversion() {
                 if (!this.selectedFormat) {
-                    alert('请选择输出格式！');
+                    alert(window.DROPSHARE_I18N?.t('alert_select_output_format') || '请选择输出格式！');
                     return;
                 }
                 
@@ -692,18 +743,18 @@
                 
                 for (let i = 0; i < this.selectedFiles.length; i++) {
                     const file = this.selectedFiles[i];
-                    this.updateProgress((i / this.selectedFiles.length) * 100, `转换中: ${file.name}`);
+                    this.updateProgress((i / this.selectedFiles.length) * 100, `${window.DROPSHARE_I18N?.t('status_converting') || '转换中'}: ${file.name}`);
                     
                     try {
                         const convertedFile = await this.convertImage(file);
                         this.convertedFiles.push(convertedFile);
                     } catch (error) {
                         console.error('转换失败:', error);
-                        alert(`转换 ${file.name} 失败: ${error.message}`);
+                        alert(`${window.DROPSHARE_I18N?.t('alert_conversion_failed') || '转换失败'} ${file.name}: ${error.message}`);
                     }
                 }
                 
-                this.updateProgress(100, '转换完成！');
+                this.updateProgress(100, window.DROPSHARE_I18N?.t('status_complete') || '转换完成！');
                 setTimeout(() => {
                     this.showResults();
                 }, 500);
@@ -775,8 +826,8 @@
                                 <p>大小: ${this.formatFileSize(file.size)} | 格式: ${file.type}</p>
                             </div>
                             <div class="result-actions">
-                                <button class="button" onclick="imageConverter.downloadFile(${index})">下载</button>
-                                <button class="button primary" onclick="imageConverter.shareFile(${index})">分享</button>
+                                <button class="button" onclick="imageConverter.downloadFile(${index})" data-i18n="btn_download">下载</button>
+                                <button class="button primary" onclick="imageConverter.shareFile(${index})" data-i18n="btn_share">分享</button>
                             </div>
                         </div>
                     `;
@@ -801,9 +852,9 @@
                 const file = this.convertedFiles[index];
                 if (window.ui && window.ui.filesQueue) {
                     window.ui.filesQueue.push(file);
-                    alert(`${file.name} 已添加到分享列表！`);
+                    alert(`${file.name} ${window.DROPSHARE_I18N?.t('alert_added_to_share_list') || '已添加到分享列表'}!`);
                 } else {
-                    alert('分享功能暂不可用');
+                    alert(window.DROPSHARE_I18N?.t('alert_share_unavailable') || '分享功能暂不可用');
                 }
             }
             
@@ -812,9 +863,9 @@
                     this.convertedFiles.forEach(file => {
                         window.ui.filesQueue.push(file);
                     });
-                    alert(`${this.convertedFiles.length} 个文件已添加到分享列表！`);
+                    alert(`${this.convertedFiles.length} ${window.DROPSHARE_I18N?.t('alert_files_added_to_share_list') || '个文件已添加到分享列表'}!`);
                 } else {
-                    alert('分享功能暂不可用');
+                    alert(window.DROPSHARE_I18N?.t('alert_share_unavailable') || '分享功能暂不可用');
                 }
             }
             
@@ -865,6 +916,18 @@
         let imageConverter;
         document.addEventListener('DOMContentLoaded', () => {
             imageConverter = new ImageConverter();
+        });
+    </script>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
         });
     </script>
 </body>

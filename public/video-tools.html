@@ -140,6 +140,27 @@
             align-items: center;
         }
 
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
         /* 主要内容 */
         .main-content {
             position: relative;
@@ -656,6 +677,23 @@
                     <a href="video-tools.html" class="active" data-i18n="nav_video">视频</a>
                     <a href="document-tools.html" data-i18n="nav_files">文件</a>
                 </nav>
+                <div class="control-buttons">
+                    <div class="lang-selector">
+                        <select id="language-selector" title="Select Language">
+                            <option value="en">English</option>
+                            <option value="zh">中文简体</option>
+                            <option value="zh-tw">中文繁體</option>
+                            <option value="ja">日本語</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="ru">Русский</option>
+                            <option value="ar">العربية</option>
+                            <option value="ko">한국어</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -663,8 +701,8 @@
     <!-- 主要内容 -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">Video Tools</h1>
-            <p class="page-subtitle">Free Online Video Processing Tools</p>
+            <h1 class="page-title" data-i18n="video_tools_title">Video Tools</h1>
+            <p class="page-subtitle" data-i18n="video_tools_subtitle">Free Online Video Processing Tools</p>
         </div>
 
         <div class="tools-grid" id="toolsGrid">
@@ -672,13 +710,13 @@
             <div class="tool-card" data-keywords="avi mp4 convert legacy" onclick="openVideoConverter('avi', 'mp4')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🎬</div>
-                    <div class="tool-category">Popular</div>
+                    <div class="tool-category" data-i18n="category_popular">Popular</div>
                 </div>
-                <h3 class="tool-title">AVI 转 MP4</h3>
-                <p class="tool-description">将老式 AVI 视频转换为现代通用的 MP4 格式</p>
+                <h3 class="tool-title" data-i18n="tool_avi_to_mp4_title">AVI 转 MP4</h3>
+                <p class="tool-description" data-i18n="tool_avi_to_mp4_desc">将老式 AVI 视频转换为现代通用的 MP4 格式</p>
                 <div class="tool-stats">
-                    <span>📺 经典格式</span>
-                    <span>⚡ 快速转换</span>
+                    <span data-i18n="tool_classic_format">📺 经典格式</span>
+                    <span data-i18n="tool_fast_conversion">⚡ 快速转换</span>
                 </div>
             </div>
 
@@ -686,13 +724,13 @@
             <div class="tool-card" data-keywords="mov mp4 convert quicktime apple" onclick="openVideoConverter('mov', 'mp4')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🍎</div>
-                    <div class="tool-category">Popular</div>
+                    <div class="tool-category" data-i18n="category_popular">Popular</div>
                 </div>
-                <h3 class="tool-title">MOV 转 MP4</h3>
-                <p class="tool-description">将 Apple QuickTime 格式转换为通用的 MP4 格式</p>
+                <h3 class="tool-title" data-i18n="tool_mov_to_mp4_title">MOV 转 MP4</h3>
+                <p class="tool-description" data-i18n="tool_mov_to_mp4_desc">将 Apple QuickTime 格式转换为通用的 MP4 格式</p>
                 <div class="tool-stats">
-                    <span>🍎 Apple 格式</span>
-                    <span>🌐 通用兼容</span>
+                    <span data-i18n="tool_apple_format">🍎 Apple 格式</span>
+                    <span data-i18n="tool_universal_compatibility">🌐 通用兼容</span>
                 </div>
             </div>
 
@@ -700,13 +738,13 @@
             <div class="tool-card" data-keywords="webm mp4 convert web" onclick="openVideoConverter('webm', 'mp4')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🌐</div>
-                    <div class="tool-category">Web</div>
+                    <div class="tool-category" data-i18n="category_web">Web</div>
                 </div>
-                <h3 class="tool-title">WebM 转 MP4</h3>
-                <p class="tool-description">将网页优化的 WebM 格式转换为 MP4 格式</p>
+                <h3 class="tool-title" data-i18n="tool_webm_to_mp4_title">WebM 转 MP4</h3>
+                <p class="tool-description" data-i18n="tool_webm_to_mp4_desc">将网页优化的 WebM 格式转换为 MP4 格式</p>
                 <div class="tool-stats">
-                    <span>🌐 网页格式</span>
-                    <span>📱 移动友好</span>
+                    <span data-i18n="tool_web_format">🌐 网页格式</span>
+                    <span data-i18n="tool_mobile_friendly">📱 移动友好</span>
                 </div>
             </div>
 
@@ -714,13 +752,13 @@
             <div class="tool-card" data-keywords="mp4 webm convert web optimize" onclick="openVideoConverter('mp4', 'webm')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">🗜️</div>
-                    <div class="tool-category">Web</div>
+                    <div class="tool-category" data-i18n="category_web">Web</div>
                 </div>
-                <h3 class="tool-title">MP4 转 WebM</h3>
-                <p class="tool-description">将 MP4 转换为网页优化的 WebM 格式，减小文件大小</p>
+                <h3 class="tool-title" data-i18n="tool_mp4_to_webm_title">MP4 转 WebM</h3>
+                <p class="tool-description" data-i18n="tool_mp4_to_webm_desc">将 MP4 转换为网页优化的 WebM 格式，减小文件大小</p>
                 <div class="tool-stats">
-                    <span>🌐 网页优化</span>
-                    <span>📉 高压缩</span>
+                    <span data-i18n="tool_web_optimized">🌐 网页优化</span>
+                    <span data-i18n="tool_high_compression">📉 高压缩</span>
                 </div>
             </div>
 
@@ -728,13 +766,13 @@
             <div class="tool-card" data-keywords="avi webm convert modern" onclick="openVideoConverter('avi', 'webm')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">💎</div>
-                    <div class="tool-category">Modern</div>
+                    <div class="tool-category" data-i18n="category_modern">Modern</div>
                 </div>
-                <h3 class="tool-title">AVI 转 WebM</h3>
-                <p class="tool-description">将老式 AVI 格式升级为现代的 WebM 网页格式</p>
+                <h3 class="tool-title" data-i18n="tool_avi_to_webm_title">AVI 转 WebM</h3>
+                <p class="tool-description" data-i18n="tool_avi_to_webm_desc">将老式 AVI 格式升级为现代的 WebM 网页格式</p>
                 <div class="tool-stats">
-                    <span>⬆️ 格式升级</span>
-                    <span>🌐 现代标准</span>
+                    <span data-i18n="tool_format_upgrade">⬆️ 格式升级</span>
+                    <span data-i18n="tool_modern_standard">🌐 现代标准</span>
                 </div>
             </div>
 
@@ -742,13 +780,13 @@
             <div class="tool-card" data-keywords="mov webm convert apple web" onclick="openVideoConverter('mov', 'webm')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🔓</div>
-                    <div class="tool-category">Open Source</div>
+                    <div class="tool-category" data-i18n="category_open_source">Open Source</div>
                 </div>
-                <h3 class="tool-title">MOV 转 WebM</h3>
-                <p class="tool-description">将 Apple MOV 格式转换为开源的 WebM 格式</p>
+                <h3 class="tool-title" data-i18n="tool_mov_to_webm_title">MOV 转 WebM</h3>
+                <p class="tool-description" data-i18n="tool_mov_to_webm_desc">将 Apple MOV 格式转换为开源的 WebM 格式</p>
                 <div class="tool-stats">
-                    <span>🔓 开源格式</span>
-                    <span>🌐 网页标准</span>
+                    <span data-i18n="tool_open_source_format">🔓 开源格式</span>
+                    <span data-i18n="tool_web_standard">🌐 网页标准</span>
                 </div>
             </div>
 
@@ -756,13 +794,13 @@
             <div class="tool-card" data-keywords="mp4 avi convert compatibility" onclick="openVideoConverter('mp4', 'avi')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">📼</div>
-                    <div class="tool-category">Legacy</div>
+                    <div class="tool-category" data-i18n="category_legacy">Legacy</div>
                 </div>
-                <h3 class="tool-title">MP4 转 AVI</h3>
-                <p class="tool-description">将 MP4 转换为 AVI 格式，提高老设备兼容性</p>
+                <h3 class="tool-title" data-i18n="tool_mp4_to_avi_title">MP4 转 AVI</h3>
+                <p class="tool-description" data-i18n="tool_mp4_to_avi_desc">将 MP4 转换为 AVI 格式，提高老设备兼容性</p>
                 <div class="tool-stats">
-                    <span>📼 兼容性</span>
-                    <span>🔧 老设备支持</span>
+                    <span data-i18n="tool_compatibility">📼 兼容性</span>
+                    <span data-i18n="tool_legacy_device_support">🔧 老设备支持</span>
                 </div>
             </div>
 
@@ -770,13 +808,13 @@
             <div class="tool-card" data-keywords="mp4 mov convert apple quicktime" onclick="openVideoConverter('mp4', 'mov')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🎭</div>
-                    <div class="tool-category">Apple</div>
+                    <div class="tool-category" data-i18n="category_apple">Apple</div>
                 </div>
-                <h3 class="tool-title">MP4 转 MOV</h3>
-                <p class="tool-description">将 MP4 转换为 Apple QuickTime MOV 格式</p>
+                <h3 class="tool-title" data-i18n="tool_mp4_to_mov_title">MP4 转 MOV</h3>
+                <p class="tool-description" data-i18n="tool_mp4_to_mov_desc">将 MP4 转换为 Apple QuickTime MOV 格式</p>
                 <div class="tool-stats">
-                    <span>🍎 Apple 生态</span>
-                    <span>🎬 专业编辑</span>
+                    <span data-i18n="tool_apple_ecosystem">🍎 Apple 生态</span>
+                    <span data-i18n="tool_professional_editing">🎬 专业编辑</span>
                 </div>
             </div>
 
@@ -784,13 +822,13 @@
             <div class="tool-card" data-keywords="convert format mp4 avi mov webm mkv universal advanced" onclick="window.location.href='video-converter.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🔄</div>
-                    <div class="tool-category">Advanced</div>
+                    <div class="tool-category" data-i18n="category_advanced">Advanced</div>
                 </div>
-                <h3 class="tool-title">通用视频转换器</h3>
-                <p class="tool-description">支持所有格式之间的自由转换，包含高级编码和质量设置</p>
+                <h3 class="tool-title" data-i18n="tool_universal_video_converter_title">通用视频转换器</h3>
+                <p class="tool-description" data-i18n="tool_universal_video_converter_desc">支持所有格式之间的自由转换，包含高级编码和质量设置</p>
                 <div class="tool-stats">
-                    <span>🔄 全格式支持</span>
-                    <span>⚙️ 高级设置</span>
+                    <span data-i18n="tool_all_formats_support">🔄 全格式支持</span>
+                    <span data-i18n="tool_advanced_settings">⚙️ 高级设置</span>
                 </div>
             </div>
         </div>
@@ -801,7 +839,7 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>Navigate</h3>
+                    <h3 data-i18n="footer_navigate">Navigate</h3>
                     <ul class="footer-links">
                         <li><a href="about.html" data-i18n="nav_about">About</a></li>
                         <li><a href="faq.html" data-i18n="nav_faq">FAQ</a></li>
@@ -812,7 +850,7 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Tools</h3>
+                    <h3 data-i18n="footer_tools">Tools</h3>
                     <ul class="footer-links">
                         <li><a href="image-tools.html" data-i18n="nav_images">🖼️ Image Tools</a></li>
                         <li><a href="audio-tools.html" data-i18n="nav_audio">🎵 Audio Tools</a></li>
@@ -823,13 +861,13 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Features</h3>
+                    <h3 data-i18n="footer_features">Features</h3>
                     <ul class="footer-links">
-                        <li><a href="share.html">P2P File Sharing</a></li>
-                        <li><a href="share.html#rooms">Multi-user Rooms</a></li>
-                        <li><a href="image-tools.html">Image Processing</a></li>
-                        <li><a href="video-tools.html">Video Conversion</a></li>
-                        <li><a href="document-tools.html">Document Tools</a></li>
+                        <li><a href="share.html" data-i18n="feature_p2p_sharing">P2P File Sharing</a></li>
+                        <li><a href="share.html#rooms" data-i18n="feature_multi_user_rooms">Multi-user Rooms</a></li>
+                        <li><a href="image-tools.html" data-i18n="feature_image_processing">Image Processing</a></li>
+                        <li><a href="video-tools.html" data-i18n="feature_video_conversion">Video Conversion</a></li>
+                        <li><a href="document-tools.html" data-i18n="feature_document_tools">Document Tools</a></li>
                     </ul>
                 </div>
             </div>
@@ -842,7 +880,7 @@
                     <span>DropShare</span>
                 </div>
                 <div class="footer-copyright">
-                    <p>Copyright © 2024 DropShare and contributors.<br>
+                    <p data-i18n="footer_copyright">Copyright © 2024 DropShare and contributors.<br>
                     Open source file sharing solution. Built with ❤️ for the community.</p>
                 </div>
             </div>
@@ -907,8 +945,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p>未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p data-i18n="no_devices_found">未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="no_devices_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -1044,20 +1082,32 @@
         });
     </script>
     
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
+    </script>
+    
     <!-- 设备选择弹窗 -->
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title">选择传送设备</h3>
+                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    传送到选中设备
+                    <span data-i18n="btn_send_to_devices">传送到选中设备</span>
                 </button>
             </div>
         </div>

@@ -109,6 +109,40 @@ document.addEventListener('language-changed', () => {
     });
 });
 
+// 语言选择器功能 - 延迟初始化以确保DROPSHARE_I18N已加载
+function initializeLanguageSelector() {
+    const languageSelector = document.getElementById('language-selector');
+    if (languageSelector && window.DROPSHARE_I18N) {
+        // 移除之前的监听器
+        languageSelector.onchange = null;
+        
+        languageSelector.addEventListener('change', (e) => {
+            window.DROPSHARE_I18N.changeLanguage(e.target.value);
+        });
+
+        // 设置当前选中的语言
+        languageSelector.value = window.DROPSHARE_I18N.getCurrentLanguage();
+        
+        console.log('语言选择器初始化完成, 当前语言:', window.DROPSHARE_I18N.getCurrentLanguage());
+        return true;
+    }
+    return false;
+}
+
+// 等待DROPSHARE_I18N加载完成
+function waitForDROPSHAREI18N() {
+    if (window.DROPSHARE_I18N) {
+        initializeLanguageSelector();
+    } else {
+        setTimeout(waitForDROPSHAREI18N, 50);
+    }
+}
+
+// DOM加载完成后等待DROPSHARE_I18N
+document.addEventListener('DOMContentLoaded', () => {
+    waitForDROPSHAREI18N();
+});
+
 class PeersUI {
 
     constructor() {
@@ -1092,27 +1126,12 @@ document.body.onclick = e => { // safari hack to fix audio
     blop.play();
 }
 
-// Initialize language selector
+// Initialize background animation
 window.addEventListener('load', () => {
     // 设置背景动画为激活状态
     const bgAnimation = document.querySelector('.background-animation');
     if (bgAnimation) {
         bgAnimation.classList.add('animate');
-    }
-    
-    // Set up language selector dropdown
-    const langSelector = document.getElementById('language-selector');
-    if (langSelector) {
-        // Set initial value based on stored preference or default
-        if (window.DROPSHARE_I18N) {
-            const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
-            langSelector.value = currentLang;
-            
-            // Add change event
-            langSelector.addEventListener('change', e => {
-                window.DROPSHARE_I18N.changeLanguage(e.target.value);
-            });
-        }
     }
 });
 
@@ -1136,39 +1155,3 @@ const deviceIcons = {
     }
 };
 
-// 初始化语言选择器
-function initLanguageSelector() {
-    const langSelector = document.getElementById('language-selector');
-    if (langSelector) {
-        // 根据当前localStorage中保存的语言设置选中值
-        const savedLang = localStorage.getItem('preferred_language') || 'en';
-        if (langSelector.querySelector(`option[value="${savedLang}"]`)) {
-            langSelector.value = savedLang;
-        }
-
-        // 监听语言选择变化
-        langSelector.addEventListener('change', function() {
-            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.changeLanguage === 'function') {
-                // 保存用户语言偏好到localStorage
-                localStorage.setItem('preferred_language', this.value);
-                window.DROPSHARE_I18N.changeLanguage(this.value);
-                console.log('Language changed to:', this.value);
-            } else {
-                console.error('DROPSHARE_I18N not initialized or changeLanguage not available');
-            }
-        });
-    }
-}
-
-// 当DOM加载完成后初始化语言选择器
-document.addEventListener('DOMContentLoaded', function() {
-    // 等待DROPSHARE_I18N初始化完成
-    setTimeout(() => {
-        initLanguageSelector();
-    }, 500);
-});
-
-// 如果页面已加载完成，立即初始化
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    setTimeout(initLanguageSelector, 500);
-}

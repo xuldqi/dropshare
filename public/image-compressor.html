@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片压缩器 - DropShare</title>
+    <title data-i18n="image_compressor_title">图片压缩器 - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -122,40 +122,109 @@
             background: var(--primary-hover);
             transform: translateY(-1px);
         }
+
+        /* Language selector styles */
+        .control-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .lang-selector select {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color, #ddd);
+            border-radius: 6px;
+            background: var(--surface-color, white);
+            color: var(--text-color, #333);
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .lang-selector select:hover {
+            border-color: var(--primary-color, #007bff);
+        }
     </style>
 </head>
 
 <body>
     <div class="page-header">
-        <h1>📦 图片压缩器</h1>
+        <h1 data-i18n="image_compressor_heading">📦 图片压缩器</h1>
         <div class="header-buttons">
-            <a href="image-tools.html" class="back-button">← 图片工具</a>
-            <a href="index.html" class="back-button">🏠 首页</a>
+            <div class="control-buttons">
+                <div class="lang-selector">
+                    <select id="language-selector" title="Select Language" data-i18n="title_select_language">
+                        <option value="en">English</option>
+                        <option value="zh">中文简体</option>
+                        <option value="zh-tw">中文繁體</option>
+                        <option value="ja">日本語</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ar">العربية</option>
+                        <option value="ko">한국어</option>
+                    </select>
+                </div>
+            </div>
+            <a href="image-tools.html" class="back-button" data-i18n="back_to_image_tools">← 图片工具</a>
+            <a href="index.html" class="back-button" data-i18n="btn_home">🏠 首页</a>
         </div>
     </div>
     
     <div class="tool-container">
-        <div class="coming-soon">🚧</div>
-        <h2 class="tool-title">即将推出</h2>
-        <p class="tool-description">
+        <div class="coming-soon" data-i18n="coming_soon_icon">🚧</div>
+        <h2 class="tool-title" data-i18n="coming_soon">即将推出</h2>
+        <p class="tool-description" data-i18n="tool_development_desc">
             智能图片压缩工具正在开发中，将为您提供高质量的图片压缩服务
         </p>
         
         <div class="features-list">
-            <h3>🎯 预期功能</h3>
+            <h3 data-i18n="expected_features">🎯 预期功能</h3>
             <ul>
-                <li>无损压缩算法</li>
-                <li>智能质量调整</li>
-                <li>批量处理支持</li>
-                <li>实时压缩预览</li>
-                <li>文件大小对比</li>
-                <li>多种压缩级别</li>
+                <li data-i18n="feature_lossless_compression">无损压缩算法</li>
+                <li data-i18n="feature_smart_quality">智能质量调整</li>
+                <li data-i18n="feature_batch_processing">批量处理支持</li>
+                <li data-i18n="feature_realtime_preview">实时压缩预览</li>
+                <li data-i18n="feature_size_comparison">文件大小对比</li>
+                <li data-i18n="feature_compression_levels">多种压缩级别</li>
             </ul>
         </div>
         
-        <button class="notify-btn" onclick="alert('感谢您的关注！我们会尽快推出这个功能。')">
+        <button class="notify-btn" onclick="showNotifyMessage()" data-i18n="btn_notify_launch">
             🔔 通知我上线
         </button>
     </div>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Show notification message
+        function showNotifyMessage() {
+            const message = getTranslation('alert_notify_message') || '感谢您的关注！我们会尽快推出这个功能。';
+            alert(message);
+        }
+
+        // Initialize the i18n system
+        function initializeI18n() {
+            // Get user language preference
+            const userLanguage = getUserLanguage();
+            
+            // Set initial language
+            setLanguage(userLanguage);
+            
+            // Update language selector
+            const languageSelector = document.getElementById('language-selector');
+            if (languageSelector) {
+                languageSelector.value = userLanguage;
+                languageSelector.addEventListener('change', (e) => {
+                    setLanguage(e.target.value);
+                });
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeI18n);
+    </script>
 </body>
 </html>

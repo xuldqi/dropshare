@@ -101,6 +101,39 @@
             color: #3367d6;
             background: #f3f4f6;
         }
+        
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+        
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
 
         .content-wrapper {
             margin-top: 100px;
@@ -207,6 +240,15 @@
                 padding: 4px 8px;
             }
             
+            .header-controls {
+                gap: 8px;
+            }
+            
+            .lang-selector select {
+                font-size: 12px;
+                padding: 6px 8px;
+            }
+            
             header {
                 padding: 0 12px;
             }
@@ -228,18 +270,37 @@
                         <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
                     </svg>
                 </a>
-                <h1>DropShare Blog</h1>
+                <h1 data-i18n="blog_page_title">DropShare Blog</h1>
             </div>
             
-            <!-- 统一导航菜单 -->
-            <nav class="header-nav-links">
-                <a href="share.html" data-i18n="nav_transfer">传送</a>
-                <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
-                <a href="image-tools.html" data-i18n="nav_images">图片</a>
-                <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
-                <a href="video-tools.html" data-i18n="nav_video">视频</a>
-                <a href="document-tools.html" data-i18n="nav_files">文件</a>
-            </nav>
+            <!-- 统一导航菜单和控制按钮 -->
+            <div class="header-controls">
+                <nav class="header-nav-links">
+                    <a href="share.html" data-i18n="nav_transfer">传送</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
+                    <a href="image-tools.html" data-i18n="nav_images">图片</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
+                    <a href="video-tools.html" data-i18n="nav_video">视频</a>
+                    <a href="document-tools.html" data-i18n="nav_files">文件</a>
+                </nav>
+                <div class="control-buttons">
+                    <div class="lang-selector">
+                        <select id="language-selector" title="Select Language">
+                            <option value="en">English</option>
+                            <option value="zh">中文简体</option>
+                            <option value="zh-tw">中文繁體</option>
+                            <option value="ja">日本語</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="ru">Русский</option>
+                            <option value="ar">العربية</option>
+                            <option value="ko">한국어</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </header>
     </div>
     
@@ -247,47 +308,47 @@
         <div class="container">
             <article class="blog-card">
                 <div class="blog-meta">
-                    <span class="blog-date">June 15, 2023</span>
-                    <span class="blog-category">Security</span>
+                    <span class="blog-date" data-i18n="blog_post_secure_file_sharing_guide_date">June 15, 2023</span>
+                    <span class="blog-category" data-i18n="blog_post_secure_file_sharing_guide_category">Security</span>
                 </div>
-                <h2 class="blog-title">The Ultimate Guide to Secure File Sharing in 2023</h2>
-                <p>File sharing has become an integral part of our digital lives, but with increasing cyber threats, it's more important than ever to ensure your data remains secure. In this comprehensive guide, we explore the best practices for secure file sharing in 2023, including end-to-end encryption, peer-to-peer transfers, and the advantages of local network sharing.</p>
-                <p>End-to-end encryption (E2EE) has become the gold standard for secure communications. When files are encrypted end-to-end, they can only be decrypted by the intended recipient, ensuring that even if data is intercepted during transfer, it remains unreadable to unauthorized parties.</p>
-                <p>DropShare uses WebRTC's built-in encryption protocols to establish secure connections between devices. This ensures that all files transferred through our service remain private and secure from interception.</p>
+                <h2 class="blog-title" data-i18n="blog_post_secure_file_sharing_guide_title">The Ultimate Guide to Secure File Sharing in 2023</h2>
+                <p data-i18n="blog_post_secure_file_sharing_guide_p1">File sharing has become an integral part of our digital lives, but with increasing cyber threats, it's more important than ever to ensure your data remains secure. In this comprehensive guide, we explore the best practices for secure file sharing in 2023, including end-to-end encryption, peer-to-peer transfers, and the advantages of local network sharing.</p>
+                <p data-i18n="blog_post_secure_file_sharing_guide_p2">End-to-end encryption (E2EE) has become the gold standard for secure communications. When files are encrypted end-to-end, they can only be decrypted by the intended recipient, ensuring that even if data is intercepted during transfer, it remains unreadable to unauthorized parties.</p>
+                <p data-i18n="blog_post_secure_file_sharing_guide_p3">DropShare uses WebRTC's built-in encryption protocols to establish secure connections between devices. This ensures that all files transferred through our service remain private and secure from interception.</p>
             </article>
             
             <article class="blog-card">
                 <div class="blog-meta">
-                    <span class="blog-date">May 28, 2023</span>
-                    <span class="blog-category">Tips & Tricks</span>
+                    <span class="blog-date" data-i18n="blog_post_speed_up_transfers_date">May 28, 2023</span>
+                    <span class="blog-category" data-i18n="blog_post_speed_up_transfers_category">Tips & Tricks</span>
                 </div>
-                <h2 class="blog-title">5 Ways to Speed Up Your File Transfers</h2>
-                <p>Frustrated with slow file transfers? Here are five ways to significantly boost your transfer speeds when sharing files between devices:</p>
+                <h2 class="blog-title" data-i18n="blog_post_speed_up_transfers_title">5 Ways to Speed Up Your File Transfers</h2>
+                <p data-i18n="blog_post_speed_up_transfers_p1">Frustrated with slow file transfers? Here are five ways to significantly boost your transfer speeds when sharing files between devices:</p>
                 <ol>
-                    <li><strong>Use a strong Wi-Fi connection</strong> - Ensure your devices are close to your router for maximum signal strength.</li>
-                    <li><strong>Reduce network congestion</strong> - Pause other downloads or streaming activities while transferring large files.</li>
-                    <li><strong>Update your browser</strong> - Newer browser versions often include performance improvements for WebRTC connections.</li>
-                    <li><strong>Compress large files</strong> - Use ZIP or RAR formats to reduce file size before sharing.</li>
-                    <li><strong>Close unnecessary applications</strong> - Free up system resources by closing apps you're not using during transfers.</li>
+                    <li data-i18n="blog_post_speed_up_transfers_li1"><strong>Use a strong Wi-Fi connection</strong> - Ensure your devices are close to your router for maximum signal strength.</li>
+                    <li data-i18n="blog_post_speed_up_transfers_li2"><strong>Reduce network congestion</strong> - Pause other downloads or streaming activities while transferring large files.</li>
+                    <li data-i18n="blog_post_speed_up_transfers_li3"><strong>Update your browser</strong> - Newer browser versions often include performance improvements for WebRTC connections.</li>
+                    <li data-i18n="blog_post_speed_up_transfers_li4"><strong>Compress large files</strong> - Use ZIP or RAR formats to reduce file size before sharing.</li>
+                    <li data-i18n="blog_post_speed_up_transfers_li5"><strong>Close unnecessary applications</strong> - Free up system resources by closing apps you're not using during transfers.</li>
                 </ol>
-                <p>By following these simple tips, you can dramatically improve your file sharing experience and reduce transfer times, especially for large media files.</p>
+                <p data-i18n="blog_post_speed_up_transfers_p2">By following these simple tips, you can dramatically improve your file sharing experience and reduce transfer times, especially for large media files.</p>
             </article>
             
             <article class="blog-card">
                 <div class="blog-meta">
-                    <span class="blog-date">April 22, 2023</span>
-                    <span class="blog-category">Technology</span>
+                    <span class="blog-date" data-i18n="blog_post_webrtc_technology_date">April 22, 2023</span>
+                    <span class="blog-category" data-i18n="blog_post_webrtc_technology_category">Technology</span>
                 </div>
-                <h2 class="blog-title">Understanding WebRTC: The Technology Behind DropShare</h2>
-                <p>WebRTC (Web Real-Time Communication) is the powerful technology that enables direct peer-to-peer connections in DropShare. This open-source project allows web browsers to communicate directly with each other without requiring plugins or additional software installation.</p>
-                <p>Key benefits of WebRTC include:</p>
+                <h2 class="blog-title" data-i18n="blog_post_webrtc_technology_title">Understanding WebRTC: The Technology Behind DropShare</h2>
+                <p data-i18n="blog_post_webrtc_technology_p1">WebRTC (Web Real-Time Communication) is the powerful technology that enables direct peer-to-peer connections in DropShare. This open-source project allows web browsers to communicate directly with each other without requiring plugins or additional software installation.</p>
+                <p data-i18n="blog_post_webrtc_technology_p2">Key benefits of WebRTC include:</p>
                 <ul>
-                    <li>Direct peer-to-peer connections between devices</li>
-                    <li>Built-in encryption for secure data transfer</li>
-                    <li>Low latency real-time communication</li>
-                    <li>Cross-platform compatibility across different operating systems and devices</li>
+                    <li data-i18n="blog_post_webrtc_technology_li1">Direct peer-to-peer connections between devices</li>
+                    <li data-i18n="blog_post_webrtc_technology_li2">Built-in encryption for secure data transfer</li>
+                    <li data-i18n="blog_post_webrtc_technology_li3">Low latency real-time communication</li>
+                    <li data-i18n="blog_post_webrtc_technology_li4">Cross-platform compatibility across different operating systems and devices</li>
                 </ul>
-                <p>DropShare leverages WebRTC to create seamless file sharing experiences while maintaining high levels of security and privacy. The technology allows us to facilitate direct device-to-device transfers without routing your files through our servers.</p>
+                <p data-i18n="blog_post_webrtc_technology_p3">DropShare leverages WebRTC to create seamless file sharing experiences while maintaining high levels of security and privacy. The technology allows us to facilitate direct device-to-device transfers without routing your files through our servers.</p>
             </article>
             
             <!-- New Security Article with i18n support -->
@@ -356,6 +417,18 @@
             </symbol>
         `;
         document.body.appendChild(iconSvg);
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
     </script>
 </body>
 </html>

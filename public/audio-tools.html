@@ -140,6 +140,27 @@
             align-items: center;
         }
 
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
         /* 主要内容 */
         .main-content {
             position: relative;
@@ -652,6 +673,23 @@
                     <a href="video-tools.html" data-i18n="nav_video">视频</a>
                     <a href="document-tools.html" data-i18n="nav_files">文件</a>
                 </nav>
+                <div class="control-buttons">
+                    <div class="lang-selector">
+                        <select id="language-selector" title="Select Language">
+                            <option value="en">English</option>
+                            <option value="zh">中文简体</option>
+                            <option value="zh-tw">中文繁體</option>
+                            <option value="ja">日本語</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="ru">Русский</option>
+                            <option value="ar">العربية</option>
+                            <option value="ko">한국어</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -659,8 +697,8 @@
     <!-- 主要内容 -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">Audio Tools</h1>
-            <p class="page-subtitle">Free Online Audio Processing Tools</p>
+            <h1 class="page-title" data-i18n="audio_tools_title">Audio Tools</h1>
+            <p class="page-subtitle" data-i18n="audio_tools_subtitle">Free Online Audio Processing Tools</p>
         </div>
 
         <div class="tools-grid" id="toolsGrid">
@@ -668,13 +706,13 @@
             <div class="tool-card" data-keywords="mp3 wav convert" onclick="openAudioConverter('mp3', 'wav')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🎵</div>
-                    <div class="tool-category">Popular</div>
+                    <div class="tool-category" data-i18n="category_popular">Popular</div>
                 </div>
-                <h3 class="tool-title">MP3 转 WAV</h3>
-                <p class="tool-description">将压缩的 MP3 音频转换为无损的 WAV 格式</p>
+                <h3 class="tool-title" data-i18n="tool_mp3_to_wav_title">MP3 转 WAV</h3>
+                <p class="tool-description" data-i18n="tool_mp3_to_wav_desc">将压缩的 MP3 音频转换为无损的 WAV 格式</p>
                 <div class="tool-stats">
-                    <span>📱 移动端友好</span>
-                    <span>⚡ 快速转换</span>
+                    <span data-i18n="tool_mobile_friendly">📱 移动端友好</span>
+                    <span data-i18n="tool_fast_conversion">⚡ 快速转换</span>
                 </div>
             </div>
 
@@ -682,13 +720,13 @@
             <div class="tool-card" data-keywords="wav mp3 convert compress" onclick="openAudioConverter('wav', 'mp3')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">🗜️</div>
-                    <div class="tool-category">Popular</div>
+                    <div class="tool-category" data-i18n="category_popular">Popular</div>
                 </div>
-                <h3 class="tool-title">WAV 转 MP3</h3>
-                <p class="tool-description">压缩 WAV 音频为 MP3 格式，减小文件大小</p>
+                <h3 class="tool-title" data-i18n="tool_wav_to_mp3_title">WAV 转 MP3</h3>
+                <p class="tool-description" data-i18n="tool_wav_to_mp3_desc">压缩 WAV 音频为 MP3 格式，减小文件大小</p>
                 <div class="tool-stats">
-                    <span>📉 压缩</span>
-                    <span>🎧 通用格式</span>
+                    <span data-i18n="tool_compression">📉 压缩</span>
+                    <span data-i18n="tool_universal_format">🎧 通用格式</span>
                 </div>
             </div>
 
@@ -696,13 +734,13 @@
             <div class="tool-card" data-keywords="flac mp3 convert lossless" onclick="openAudioConverter('flac', 'mp3')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">💿</div>
-                    <div class="tool-category">Essential</div>
+                    <div class="tool-category" data-i18n="category_essential">Essential</div>
                 </div>
-                <h3 class="tool-title">FLAC 转 MP3</h3>
-                <p class="tool-description">将无损 FLAC 音频转换为便携的 MP3 格式</p>
+                <h3 class="tool-title" data-i18n="tool_flac_to_mp3_title">FLAC 转 MP3</h3>
+                <p class="tool-description" data-i18n="tool_flac_to_mp3_desc">将无损 FLAC 音频转换为便携的 MP3 格式</p>
                 <div class="tool-stats">
-                    <span>🎼 无损源</span>
-                    <span>📱 便携格式</span>
+                    <span data-i18n="tool_lossless_source">🎼 无损源</span>
+                    <span data-i18n="tool_portable_format">📱 便携格式</span>
                 </div>
             </div>
 
@@ -710,13 +748,13 @@
             <div class="tool-card" data-keywords="wav flac convert lossless" onclick="openAudioConverter('wav', 'flac')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-enhance">💎</div>
-                    <div class="tool-category">Quality</div>
+                    <div class="tool-category" data-i18n="category_quality">Quality</div>
                 </div>
-                <h3 class="tool-title">WAV 转 FLAC</h3>
-                <p class="tool-description">将 WAV 转换为 FLAC，保持无损音质并压缩大小</p>
+                <h3 class="tool-title" data-i18n="tool_wav_to_flac_title">WAV 转 FLAC</h3>
+                <p class="tool-description" data-i18n="tool_wav_to_flac_desc">将 WAV 转换为 FLAC，保持无损音质并压缩大小</p>
                 <div class="tool-stats">
-                    <span>🎯 无损压缩</span>
-                    <span>💾 节省空间</span>
+                    <span data-i18n="tool_lossless_compression">🎯 无损压缩</span>
+                    <span data-i18n="tool_save_space">💾 节省空间</span>
                 </div>
             </div>
 
@@ -724,13 +762,13 @@
             <div class="tool-card" data-keywords="mp3 aac convert apple" onclick="openAudioConverter('mp3', 'aac')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🍎</div>
-                    <div class="tool-category">Apple</div>
+                    <div class="tool-category" data-i18n="category_apple">Apple</div>
                 </div>
-                <h3 class="tool-title">MP3 转 AAC</h3>
-                <p class="tool-description">转换为 AAC 格式，Apple 设备的优化音频格式</p>
+                <h3 class="tool-title" data-i18n="tool_mp3_to_aac_title">MP3 转 AAC</h3>
+                <p class="tool-description" data-i18n="tool_mp3_to_aac_desc">转换为 AAC 格式，Apple 设备的优化音频格式</p>
                 <div class="tool-stats">
-                    <span>🍎 Apple 优化</span>
-                    <span>🎧 高音质</span>
+                    <span data-i18n="tool_apple_optimized">🍎 Apple 优化</span>
+                    <span data-i18n="tool_high_quality">🎧 高音质</span>
                 </div>
             </div>
 
@@ -738,13 +776,13 @@
             <div class="tool-card" data-keywords="aac mp3 convert universal" onclick="openAudioConverter('aac', 'mp3')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🌐</div>
-                    <div class="tool-category">Universal</div>
+                    <div class="tool-category" data-i18n="category_universal">Universal</div>
                 </div>
-                <h3 class="tool-title">AAC 转 MP3</h3>
-                <p class="tool-description">将 AAC 转换为通用的 MP3 格式</p>
+                <h3 class="tool-title" data-i18n="tool_aac_to_mp3_title">AAC 转 MP3</h3>
+                <p class="tool-description" data-i18n="tool_aac_to_mp3_desc">将 AAC 转换为通用的 MP3 格式</p>
                 <div class="tool-stats">
-                    <span>🌐 通用兼容</span>
-                    <span>⚡ 快速处理</span>
+                    <span data-i18n="tool_universal_compatibility">🌐 通用兼容</span>
+                    <span data-i18n="tool_fast_processing">⚡ 快速处理</span>
                 </div>
             </div>
 
@@ -752,13 +790,13 @@
             <div class="tool-card" data-keywords="ogg mp3 convert open" onclick="openAudioConverter('ogg', 'mp3')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🔓</div>
-                    <div class="tool-category">Open Source</div>
+                    <div class="tool-category" data-i18n="category_open_source">Open Source</div>
                 </div>
-                <h3 class="tool-title">OGG 转 MP3</h3>
-                <p class="tool-description">将开源 OGG Vorbis 格式转换为 MP3</p>
+                <h3 class="tool-title" data-i18n="tool_ogg_to_mp3_title">OGG 转 MP3</h3>
+                <p class="tool-description" data-i18n="tool_ogg_to_mp3_desc">将开源 OGG Vorbis 格式转换为 MP3</p>
                 <div class="tool-stats">
-                    <span>🔓 开源格式</span>
-                    <span>🎵 标准化</span>
+                    <span data-i18n="tool_open_source_format">🔓 开源格式</span>
+                    <span data-i18n="tool_standardized">🎵 标准化</span>
                 </div>
             </div>
 
@@ -766,13 +804,13 @@
             <div class="tool-card" data-keywords="wav aac convert mobile" onclick="openAudioConverter('wav', 'aac')">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">📱</div>
-                    <div class="tool-category">Mobile</div>
+                    <div class="tool-category" data-i18n="category_mobile">Mobile</div>
                 </div>
-                <h3 class="tool-title">WAV 转 AAC</h3>
-                <p class="tool-description">将无损 WAV 转换为移动设备优化的 AAC 格式</p>
+                <h3 class="tool-title" data-i18n="tool_wav_to_aac_title">WAV 转 AAC</h3>
+                <p class="tool-description" data-i18n="tool_wav_to_aac_desc">将无损 WAV 转换为移动设备优化的 AAC 格式</p>
                 <div class="tool-stats">
-                    <span>📱 移动优化</span>
-                    <span>🎧 高效压缩</span>
+                    <span data-i18n="tool_mobile_optimized">📱 移动优化</span>
+                    <span data-i18n="tool_efficient_compression">🎧 高效压缩</span>
                 </div>
             </div>
 
@@ -780,13 +818,13 @@
             <div class="tool-card" data-keywords="convert format mp3 wav aac ogg flac universal" onclick="window.location.href='audio-converter.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🔄</div>
-                    <div class="tool-category">Advanced</div>
+                    <div class="tool-category" data-i18n="category_advanced">Advanced</div>
                 </div>
-                <h3 class="tool-title">通用音频转换器</h3>
-                <p class="tool-description">支持所有格式之间的自由转换，包含高级设置选项</p>
+                <h3 class="tool-title" data-i18n="tool_universal_audio_converter_title">通用音频转换器</h3>
+                <p class="tool-description" data-i18n="tool_universal_audio_converter_desc">支持所有格式之间的自由转换，包含高级设置选项</p>
                 <div class="tool-stats">
-                    <span>🔄 全格式支持</span>
-                    <span>⚙️ 高级设置</span>
+                    <span data-i18n="tool_all_formats_support">🔄 全格式支持</span>
+                    <span data-i18n="tool_advanced_settings">⚙️ 高级设置</span>
                 </div>
             </div>
         </div>
@@ -797,7 +835,7 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>Navigate</h3>
+                    <h3 data-i18n="footer_navigate">Navigate</h3>
                     <ul class="footer-links">
                         <li><a href="about.html" data-i18n="nav_about">About</a></li>
                         <li><a href="faq.html" data-i18n="nav_faq">FAQ</a></li>
@@ -808,7 +846,7 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Tools</h3>
+                    <h3 data-i18n="footer_tools">Tools</h3>
                     <ul class="footer-links">
                         <li><a href="image-tools.html" data-i18n="nav_images">🖼️ Image Tools</a></li>
                         <li><a href="audio-tools.html" data-i18n="nav_audio">🎵 Audio Tools</a></li>
@@ -819,13 +857,13 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Features</h3>
+                    <h3 data-i18n="footer_features">Features</h3>
                     <ul class="footer-links">
-                        <li><a href="share.html">P2P File Sharing</a></li>
-                        <li><a href="share.html#rooms">Multi-user Rooms</a></li>
-                        <li><a href="image-tools.html">Image Processing</a></li>
-                        <li><a href="video-tools.html">Video Conversion</a></li>
-                        <li><a href="document-tools.html">Document Tools</a></li>
+                        <li><a href="share.html" data-i18n="feature_p2p_sharing">P2P File Sharing</a></li>
+                        <li><a href="share.html#rooms" data-i18n="feature_multi_user_rooms">Multi-user Rooms</a></li>
+                        <li><a href="image-tools.html" data-i18n="feature_image_processing">Image Processing</a></li>
+                        <li><a href="video-tools.html" data-i18n="feature_video_conversion">Video Conversion</a></li>
+                        <li><a href="document-tools.html" data-i18n="feature_document_tools">Document Tools</a></li>
                     </ul>
                 </div>
             </div>
@@ -838,7 +876,7 @@
                     <span>DropShare</span>
                 </div>
                 <div class="footer-copyright">
-                    <p>Copyright © 2024 DropShare and contributors.<br>
+                    <p data-i18n="footer_copyright">Copyright © 2024 DropShare and contributors.<br>
                     Open source file sharing solution. Built with ❤️ for the community.</p>
                 </div>
             </div>
@@ -903,8 +941,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p>未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p data-i18n="no_devices_found">未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="no_devices_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -1037,6 +1075,18 @@
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             createBackgroundShapes();
+        });
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
         });
     </script>
     

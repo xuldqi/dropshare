@@ -149,6 +149,33 @@
             color: #3367d6;
             background: #f3f4f6;
         }
+        
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+        
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
 
         .content-wrapper {
             margin-top: 100px;
@@ -266,6 +293,11 @@
                 gap: 8px;
             }
             
+            .lang-selector select {
+                font-size: 12px;
+                padding: 6px 8px;
+            }
+            
             header {
                 padding: 0 12px;
             }
@@ -300,6 +332,23 @@
                     <a href="video-tools.html" data-i18n="nav_video">视频</a>
                     <a href="document-tools.html" data-i18n="nav_files">文件</a>
                 </nav>
+                <div class="control-buttons">
+                    <div class="lang-selector">
+                        <select id="language-selector" title="Select Language">
+                            <option value="en">English</option>
+                            <option value="zh">中文简体</option>
+                            <option value="zh-tw">中文繁體</option>
+                            <option value="ja">日本語</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="ru">Русский</option>
+                            <option value="ar">العربية</option>
+                            <option value="ko">한국어</option>
+                        </select>
+                    </div>
+                </div>
                 <button id="theme" class="icon-button" title="Toggle theme">
                     <svg class="icon">
                         <use xlink:href="#icon-theme" />
@@ -589,6 +638,18 @@
         updateThemeIcon(isDark ? 'dark' : 'light');
       });
     })();
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
     </script>
 </body>
 </html> 
