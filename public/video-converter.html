@@ -568,7 +568,7 @@
         <div class="header-buttons">
             <div class="control-buttons">
                 <div class="lang-selector">
-                    <select id="language-selector" title="Select Language" data-i18n="title_select_language">
+                    <select id="language-selector" title="选择语言" data-i18n="title_select_language">
                         <option value="en">English</option>
                         <option value="zh">中文简体</option>
                         <option value="zh-tw">中文繁體</option>
@@ -695,7 +695,7 @@
                     const formatSelectorTitle = document.getElementById('formatSelectorTitle');
                     const formatSelector = document.getElementById('formatSelector');
                     
-                    formatSelectorTitle.textContent = `输出格式：${toFormatUpper}`;
+                    formatSelectorTitle.innerHTML = `<span data-i18n="label_output_format">输出格式</span>：${toFormatUpper}`;
                     formatSelector.style.display = 'none';
                     
                     // 添加格式说明
@@ -731,19 +731,18 @@
             }
             
             getFormatDescription(from, to) {
-                const descriptions = {
-                    'avi_mp4': '将老式 AVI 视频转换为现代通用的 MP4 格式',
-                    'mov_mp4': '将 Apple QuickTime 格式转换为通用的 MP4 格式',
-                    'webm_mp4': '将网页优化的 WebM 格式转换为 MP4 格式',
-                    'mp4_webm': '将 MP4 转换为网页优化的 WebM 格式，减小文件大小',
-                    'avi_webm': '将老式 AVI 格式升级为现代的 WebM 网页格式',
-                    'mov_webm': '将 Apple MOV 格式转换为开源的 WebM 格式',
-                    'mp4_avi': '将 MP4 转换为 AVI 格式，提高老设备兼容性',
-                    'mp4_mov': '将 MP4 转换为 Apple QuickTime MOV 格式'
-                };
-                
                 const key = `${from}_${to}`;
-                return descriptions[key] || `将 ${from.toUpperCase()} 格式转换为 ${to.toUpperCase()} 格式`;
+                // Use i18n key if available
+                const i18nKey = `format_desc_${key}`;
+                if (window.DROPSHARE_I18N?.t(i18nKey) !== i18nKey) {
+                    return window.DROPSHARE_I18N.t(i18nKey);
+                }
+                
+                // Default fallback
+                const fromFormat = from.toUpperCase();
+                const toFormat = to.toUpperCase();
+                return window.DROPSHARE_I18N?.t('format_desc_default', { from: fromFormat, to: toFormat }) || 
+                       `将 ${fromFormat} 格式转换为 ${toFormat} 格式`;
             }
             
             async ensureFFmpegReady() {
@@ -798,12 +797,12 @@
                     overlay.innerHTML = `
                         <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
                             <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
-                            <h3 id="loadingTitle">正在加载视频转换引擎...</h3>
-                            <p id="loadingStatus">首次使用需要下载约25MB的转换库，请稍候...</p>
+                            <h3 id="loadingTitle" data-i18n="loading_video_engine">正在加载视频转换引擎...</h3>
+                            <p id="loadingStatus" data-i18n="loading_engine_message">首次使用需要下载约25MB的转换库，请稍候...</p>
                             <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 20px 0;">
                                 <div id="loadingProgressFill" style="height: 100%; background: #3182ce; width: 0%; transition: width 0.3s ease;"></div>
                             </div>
-                            <div id="loadingProgressText">准备加载...</div>
+                            <div id="loadingProgressText" data-i18n="status_preparing_load">准备加载...</div>
                         </div>
                     `;
                     
@@ -831,12 +830,12 @@
                     overlay.innerHTML = `
                         <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
                             <div style="font-size: 2em; margin-bottom: 15px; color: #ef4444;">❌</div>
-                            <h3 style="color: #ef4444;">视频转换引擎加载失败</h3>
+                            <h3 style="color: #ef4444;" data-i18n="error_video_engine_load_failed">视频转换引擎加载失败</h3>
                             <p>${error.message}</p>
-                            <p>请检查网络连接并重试</p>
+                            <p data-i18n="error_check_network">请检查网络连接并重试</p>
                             <div style="margin-top: 20px;">
-                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;">重新加载页面</button>
-                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">关闭</button>
+                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;" data-i18n="btn_reload_page">重新加载页面</button>
+                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;" data-i18n="btn_close">关闭</button>
                             </div>
                         </div>
                     `;
@@ -906,13 +905,13 @@
                     });
                     
                     if (validFiles.length === 0) {
-                        alert(`请选择 ${this.presetFromFormat.toUpperCase()} 格式的视频文件！`);
+                        alert(window.DROPSHARE_I18N?.t('alert_select_format_file', { format: this.presetFromFormat.toUpperCase() }) || `请选择 ${this.presetFromFormat.toUpperCase()} 格式的视频文件！`);
                         return;
                     }
                     
                     if (validFiles.length < videoFiles.length) {
                         const skipped = videoFiles.length - validFiles.length;
-                        alert(`已跳过 ${skipped} 个非 ${this.presetFromFormat.toUpperCase()} 格式的文件`);
+                        alert(window.DROPSHARE_I18N?.t('alert_skipped_files', { count: skipped, format: this.presetFromFormat.toUpperCase() }) || `已跳过 ${skipped} 个非 ${this.presetFromFormat.toUpperCase()} 格式的文件`);
                     }
                     
                     videoFiles = validFiles;
@@ -1297,7 +1296,7 @@
                     alert(window.DROPSHARE_I18N?.t('alert_files_added_to_share_list') || '文件已添加到分享列表!');
                     closeDeviceModal();
                 } else {
-                    if (confirm('传输功能需要返回传送页面使用。\\n\\n是否现在跳转到传送页面？')) {
+                    if (confirm(window.DROPSHARE_I18N?.t('confirm_go_to_transfer_page') || '传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？')) {
                         sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
                             files: filesToSend.map(f => ({ name: f.name, type: f.type, size: f.size })),
                             timestamp: Date.now()

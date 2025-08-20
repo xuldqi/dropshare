@@ -1112,7 +1112,7 @@
                     <a href="document-tools.html" class="nav-link" data-i18n="nav_files">文件</a>
                 </li>
                 <li class="nav-item language-selector">
-                    <select id="navbar-language-selector" title="Select Language">
+                    <select id="navbar-language-selector" title="选择语言">
                         <option value="en">English</option>
                         <option value="zh">中文简体</option>
                         <option value="zh-tw">中文繁體</option>
@@ -1157,7 +1157,7 @@
             </svg>
         </a>
         <div class="lang-selector">
-            <select id="language-selector" title="Select Language">
+            <select id="language-selector" title="选择语言">
                 <option value="en">English</option>
                 <option value="zh">中文简体</option>
                 <option value="zh-tw">中文繁體</option>
@@ -1202,15 +1202,15 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" data-i18n="room_password_label">房间密码 (可选)</label>
-                                <input type="password" id="roomPassword" name="room-password" class="form-input" placeholder="设置房间密码" maxlength="16" autocomplete="new-password">
+                                <input type="password" id="roomPassword" name="room-password" class="form-input" data-i18n-placeholder="room_password_placeholder" placeholder="设置房间密码" maxlength="16" autocomplete="new-password">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">最大成员数</label>
+                                <label class="form-label" data-i18n="max_members_label">最大成员数</label>
                                 <input type="number" id="maxMembers" name="max-members" class="form-input" value="10" min="2" max="50" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmCreateRoom" class="btn-primary">创建房间</button>
-                                <button type="button" id="cancelCreateRoom" class="btn-cancel">取消</button>
+                                <button type="button" id="confirmCreateRoom" class="btn-primary" data-i18n="confirm_create_room">创建房间</button>
+                                <button type="button" id="cancelCreateRoom" class="btn-cancel" data-i18n="cancel_create_room">取消</button>
                             </div>
                         </form>
                         <div id="createRoomError" class="error-message" style="display: none;"></div>
@@ -1218,19 +1218,19 @@
                     
                     <!-- 加入房间表单 -->
                     <div id="joinRoomForm" class="room-form">
-                        <h3>加入房间</h3>
+                        <h3 data-i18n="join_room_title">加入房间</h3>
                         <form autocomplete="off">
                             <div class="form-group">
-                                <label class="form-label">房间码</label>
-                                <input type="text" id="roomCode" name="room-code" class="form-input" placeholder="输入房间码" maxlength="10" style="text-transform: uppercase;" autocomplete="off">
+                                <label class="form-label" data-i18n="room_code_label">房间码</label>
+                                <input type="text" id="roomCode" name="room-code" class="form-input" data-i18n-placeholder="room_code_placeholder" placeholder="输入房间码" maxlength="10" style="text-transform: uppercase;" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">房间密码 (如果需要)</label>
-                                <input type="password" id="joinRoomPassword" name="join-password" class="form-input" placeholder="输入房间密码" autocomplete="off">
+                                <label class="form-label" data-i18n="join_password_label">房间密码 (如果需要)</label>
+                                <input type="password" id="joinRoomPassword" name="join-password" class="form-input" data-i18n-placeholder="join_password_placeholder" placeholder="输入房间密码" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmJoinRoom" class="btn-primary">加入房间</button>
-                                <button type="button" id="cancelJoinRoom" class="btn-cancel">取消</button>
+                                <button type="button" id="confirmJoinRoom" class="btn-primary" data-i18n="confirm_join_room">加入房间</button>
+                                <button type="button" id="cancelJoinRoom" class="btn-cancel" data-i18n="cancel_join_room">取消</button>
                             </div>
                         </form>
                         <div id="joinRoomError" class="error-message" style="display: none;"></div>
@@ -1245,13 +1245,13 @@
                             <span class="room-name-display" id="roomNameDisplay"></span>
                             <div class="room-code-row">
                                 <span class="room-code-display" id="roomCodeDisplay"></span>
-                                <button id="copyRoomCode" class="copy-btn-small" title="复制房间码">📋</button>
+                                <button id="copyRoomCode" class="copy-btn-small" data-i18n-title="copy_room_code" title="复制房间码">📋</button>
                             </div>
                             <div class="current-user-info">
-                                <span class="current-user-label">您的名称：</span>
+                                <span class="current-user-label" data-i18n="your_name_label">您的名称：</span>
                                 <span class="current-user-name" id="currentUserName"></span>
                             </div>
-                            <span class="member-count" id="memberCount">2人在线</span>
+                            <span class="member-count" id="memberCount"><span id="memberCountNumber">2</span><span data-i18n="members_online">人在线</span></span>
                         </div>
                         <button class="toggle-details-btn" id="toggleDetailsBtn">
                             <svg class="toggle-icon" viewBox="0 0 24 24" width="16" height="16">
@@ -1263,14 +1263,14 @@
                     <!-- 房间详细信息（可折叠） -->
                     <div class="room-details" id="roomDetails">
                         <div class="room-members-section">
-                            <strong>房间成员:</strong>
+                            <strong data-i18n="room_members_label">房间成员:</strong>
                             <div id="memberList" class="member-list"></div>
                         </div>
                     </div>
                     
                     <!-- 操作按钮 -->
                     <div class="room-actions">
-                        <button id="leaveRoomBtn" class="btn-leave-room">退出房间</button>
+                        <button id="leaveRoomBtn" class="btn-leave-room" data-i18n="leave_room_btn">退出房间</button>
                     </div>
                 </div>
                 
@@ -1290,16 +1290,16 @@
                     <div class="room-file-sharing">
                         <!-- 文件上传区域 -->
                         <div class="upload-section">
-                            <h3>📤 上传文件到房间</h3>
+                            <h3 data-i18n="upload_files_to_room">📤 上传文件到房间</h3>
                             <div id="dropZone" class="drop-zone">
                                 <div class="drop-zone-content">
                                     <svg class="upload-icon" viewBox="0 0 24 24" width="48" height="48">
                                         <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                                     </svg>
-                                    <p>拖拽文件到这里或点击上传</p>
-                                    <p class="upload-hint">文件将共享给房间内的所有成员</p>
+                                    <p data-i18n="drag_files_here">拖拽文件到这里或点击上传</p>
+                                    <p class="upload-hint" data-i18n="files_shared_to_all">文件将共享给房间内的所有成员</p>
                                     <input type="file" id="fileInput" multiple hidden>
-                                    <button id="selectFilesBtn" class="select-files-btn">选择文件上传</button>
+                                    <button id="selectFilesBtn" class="select-files-btn" data-i18n="select_files_upload">选择文件上传</button>
                                 </div>
                             </div>
                         </div>
@@ -1307,13 +1307,13 @@
                         <!-- 房间共享文件列表 -->
                         <div class="shared-files-section">
                             <div class="shared-files-header">
-                                <h3>📁 房间共享文件</h3>
-                                <span class="file-count" id="fileCount">0 个文件</span>
+                                <h3 data-i18n="room_shared_files">📁 房间共享文件</h3>
+                                <span class="file-count" id="fileCount">0 <span data-i18n="files_count">个文件</span></span>
                             </div>
                             <div id="sharedFilesList" class="shared-files-list">
                                 <div class="no-shared-files">
-                                    <p>房间内暂无共享文件</p>
-                                    <p class="hint">上传文件后，房间内所有成员都可以下载</p>
+                                    <p data-i18n="no_shared_files">房间内暂无共享文件</p>
+                                    <p class="hint" data-i18n="upload_hint">上传文件后，房间内所有成员都可以下载</p>
                                 </div>
                             </div>
                         </div>

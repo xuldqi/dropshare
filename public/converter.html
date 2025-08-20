@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件转换器 - DropShare</title>
+    <title data-i18n="file_converter_title">文件转换器 - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" type="text/css" href="styles/file-converter.css">
     <link rel="stylesheet" type="text/css" href="styles/ui-ux-enhancements.css">
@@ -291,36 +291,36 @@
 <body>
     <div class="page-content">
         <div class="page-header">
-            <h1>🔄 文件转换器</h1>
+            <h1><span data-i18n="file_converter_header">🔄 文件转换器</span></h1>
             <a href="index.html" class="back-button">
-                ← 返回首页
+                <span data-i18n="back_to_home">← 返回首页</span>
             </a>
         </div>
         
         <div class="converter-container">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📁</div>
-                <h3>选择或拖拽文件到这里</h3>
+                <h3 data-i18n="upload_files_here">选择或拖拽文件到这里</h3>
                 <p style="color: var(--text-muted); margin-top: 10px;">
-                    支持图片、文档、音频、视频等多种格式转换
+                    <span data-i18n="file_converter_subtitle">支持图片、文档、音频、视频等多种格式转换</span>
                 </p>
                 <input type="file" id="fileInput" style="display: none;" multiple accept="*/*">
                 <button class="button primary" onclick="document.getElementById('fileInput').click()" style="margin-top: 15px;">
-                    选择文件
+                    <span data-i18n="btn_select_files">选择文件</span>
                 </button>
             </div>
             
             <div id="fileInfo" style="display: none;">
-                <h3>选中的文件:</h3>
+                <h3 data-i18n="selected_files">选中的文件:</h3>
                 <div id="fileDetails"></div>
                 
-                <h3 style="margin-top: 25px;">转换格式:</h3>
+                <h3 style="margin-top: 25px;" data-i18n="convert_format">转换格式:</h3>
                 <div class="format-selector" id="formatSelector">
                     <!-- 格式选项将根据文件类型动态生成 -->
                 </div>
                 
                 <div class="conversion-progress" id="conversionProgress">
-                    <h4>转换进度:</h4>
+                    <h4 data-i18n="convert_progress">转换进度:</h4>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
@@ -329,43 +329,43 @@
                 
                 <div style="text-align: center; margin-top: 30px;">
                     <button class="button primary" id="convertBtn" disabled>
-                        开始转换
+                        <span data-i18n="btn_start_convert">开始转换</span>
                     </button>
                     <button class="button secondary" id="clearBtn" style="margin-left: 10px;">
-                        清空文件
+                        <span data-i18n="btn_clear_files">清空文件</span>
                     </button>
                 </div>
             </div>
             
             <div id="conversionResults" style="display: none; margin-top: 30px;">
-                <h3>转换结果:</h3>
+                <h3 data-i18n="convert_results">转换结果:</h3>
                 <div id="resultsList"></div>
             </div>
         </div>
         
         <div style="margin-top: 30px; padding: 20px; background: var(--bg-color-secondary); border-radius: 12px;">
-            <h3>📋 支持的转换格式</h3>
+            <h3><span data-i18n="supported_formats">📋 支持的转换格式</span></h3>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
                 <div>
-                    <strong>🖼️ 图片格式</strong>
+                    <strong><span data-i18n="image_formats">🖼️ 图片格式</span></strong>
                     <div style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">
                         JPG, PNG, GIF, BMP, WebP, SVG
                     </div>
                 </div>
                 <div>
-                    <strong>📄 文档格式</strong>
+                    <strong><span data-i18n="document_formats">📄 文档格式</span></strong>
                     <div style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">
                         PDF, DOC, TXT, RTF, HTML
                     </div>
                 </div>
                 <div>
-                    <strong>🎵 音频格式</strong>
+                    <strong><span data-i18n="audio_formats">🎵 音频格式</span></strong>
                     <div style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">
                         MP3, WAV, OGG, M4A, FLAC
                     </div>
                 </div>
                 <div>
-                    <strong>🎥 视频格式</strong>
+                    <strong><span data-i18n="video_formats">🎥 视频格式</span></strong>
                     <div style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">
                         MP4, AVI, MOV, MKV, WebM
                     </div>
@@ -585,7 +585,9 @@
         
         // 下载文件（模拟）
         function downloadFile(filename) {
-            alert('下载 ' + filename + '\n\n注意：这是一个演示版本，实际的文件转换功能需要服务端支持。');
+            const downloadText = getI18nText('alert_download_file') || '下载';
+            const demoNotice = getI18nText('alert_demo_notice') || '注意：这是一个演示版本，实际的文件转换功能需要服务端支持。';
+            alert(downloadText + ' ' + filename + '\n\n' + demoNotice);
         }
         
         // 全局变量存储当前要传送的文件
@@ -702,7 +704,8 @@
                 closeDeviceModal();
             } else {
                 // 如果传输系统不可用，提供跳转选项
-                if (confirm('传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？')) {
+                const confirmText = getI18nText('confirm_transfer_redirect') || '传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？';
+                if (confirm(confirmText)) {
                     // 将文件信息存储到sessionStorage，供传送页面使用
                     const fileInfo = {
                         name: currentFileToShare.name,

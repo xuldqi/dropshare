@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Tools - DropShare</title>
+    <title data-i18n="image_tools_page_title">Image Tools - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         * {
@@ -679,7 +679,7 @@
 
                 <div class="control-buttons">
                     <div class="lang-selector">
-                        <select id="language-selector" title="Select Language">
+                        <select id="language-selector" title="选择语言" data-i18n="title_select_language">
                             <option value="en">English</option>
                             <option value="zh">中文简体</option>
                             <option value="zh-tw">中文繁體</option>
@@ -710,7 +710,7 @@
             <div class="tool-card" data-keywords="compress optimize reduce size quality" onclick="window.location.href='image-compressor-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">🗜️</div>
-                    <div class="tool-category">Popular</div>
+                    <div class="tool-category" data-i18n="category_popular">Popular</div>
                 </div>
                 <h3 class="tool-title" data-i18n="tool_image_compressor_title">Image Compressor</h3>
                 <p class="tool-description" data-i18n="tool_image_compressor_desc">Reduce image file size while maintaining quality for web and storage optimization</p>
@@ -724,7 +724,7 @@
             <div class="tool-card" data-keywords="convert format jpg png webp gif bmp tiff" onclick="window.location.href='image-converter-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🔄</div>
-                    <div class="tool-category">Essential</div>
+                    <div class="tool-category" data-i18n="category_essential">Essential</div>
                 </div>
                 <h3 class="tool-title" data-i18n="tool_format_converter_title">Format Converter</h3>
                 <p class="tool-description" data-i18n="tool_format_converter_desc">Convert images between different formats like JPG, PNG, WebP, GIF, and more</p>
@@ -872,9 +872,11 @@
                     title.includes('Rotator') || title.includes('Merger') ||
                     title.includes('Watermark') || title.includes('EXIF') ||
                     title.includes('Renamer')) {
-                    alert(`${title}\n\nYasuopic integration available!\n\nThis tool can be integrated from your existing yasuopic project.`);
+                    const yasuopicText = getI18nText('alert_yasuopic_integration_available') || 'Yasuopic integration available!\n\nThis tool can be integrated from your existing yasuopic project.';
+                    alert(`${title}\n\n${yasuopicText}`);
                 } else {
-                    alert(`${title} - Coming Soon!\n\nThis tool is under development. Please check back later.`);
+                    const comingSoonText = getI18nText('alert_tool_coming_soon') || 'Coming Soon!\n\nThis tool is under development. Please check back later.';
+                    alert(`${title} - ${comingSoonText}`);
                 }
             });
         });
@@ -893,12 +895,12 @@
             
             const devices = getAvailableDevices();
             
-            if (devices.length === 0) {
+                            if (devices.length === 0) {
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p>未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p data-i18n="no_devices_found">未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="ensure_devices_connected">请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -948,10 +950,10 @@
             
             if (count === 0) {
                 sendBtn.disabled = true;
-                sendBtn.textContent = '传送到选中设备';
+                sendBtn.textContent = getI18nText('btn_send_to_devices');
             } else {
                 sendBtn.disabled = false;
-                sendBtn.textContent = `传送到 ${count} 个设备`;
+                sendBtn.textContent = getI18nText('btn_send_to_count_devices').replace('{count}', count);
             }
         }
         
@@ -968,7 +970,7 @@
                     });
                 });
                 
-                alert(`文件已开始传送到 ${selectedDevices.size} 个设备！`);
+                alert(getI18nText('files_sending_to_devices').replace('{count}', selectedDevices.size));
                 closeDeviceModal();
             } else {
                 // 如果没有传输系统，尝试添加到分享队列
@@ -976,10 +978,10 @@
                     currentShareFiles.forEach(file => {
                         window.ui.filesQueue.push(file);
                     });
-                    alert(`文件已添加到分享列表！`);
+                    alert(getI18nText('files_added_to_share_list'));
                     closeDeviceModal();
                 } else {
-                    if (confirm('传输功能需要返回传送页面使用。\\n\\n是否现在跳转到传送页面？')) {
+                    if (confirm(getI18nText('transfer_function_redirect_confirm'))) {
                         sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
                             files: currentShareFiles.map(f => ({ name: f.name, type: f.type, size: f.size })),
                             timestamp: Date.now()
@@ -1000,8 +1002,8 @@
                 peerElements.forEach(peer => {
                     devices.push({
                         id: peer.id,
-                        name: peer.querySelector('.name')?.textContent || '未知设备',
-                        type: peer.querySelector('.device-name')?.textContent || '设备'
+                        name: peer.querySelector('.name')?.textContent || getI18nText('unknown_device'),
+                        type: peer.querySelector('.device-name')?.textContent || getI18nText('device')
                     });
                 });
             }
@@ -1009,9 +1011,9 @@
             // 模拟设备（供测试）
             if (devices.length === 0) {
                 devices.push(
-                    { id: 'demo1', name: 'iPhone 13', type: 'iOS 手机' },
-                    { id: 'demo2', name: 'MacBook Pro', type: 'macOS 笔记本' },
-                    { id: 'demo3', name: 'Windows PC', type: 'Windows 桌面' }
+                    { id: 'demo1', name: 'iPhone 13', type: getI18nText('ios_phone') },
+                    { id: 'demo2', name: 'MacBook Pro', type: getI18nText('macos_laptop') },
+                    { id: 'demo3', name: 'Windows PC', type: getI18nText('windows_desktop') }
                 );
             }
             
@@ -1063,6 +1065,14 @@
     <!-- Load i18n system -->
     <script src="scripts/i18n/languages.js"></script>
     <script>
+        // Helper function to get i18n text
+        function getI18nText(key) {
+            if (window.DROPSHARE_I18N && window.DROPSHARE_I18N.translate) {
+                return window.DROPSHARE_I18N.translate(key);
+            }
+            return key;
+        }
+        
         // Initialize language system when page loads
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize the i18n system

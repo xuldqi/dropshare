@@ -1,8 +1,12 @@
 # TODO:
 
-- [x] 1: 检查项目是否已初始化为Git仓库，如果没有则初始化 (priority: High)
-- [x] 2: 拉取远程更改并合并分支 (priority: High)
-- [x] 3: 添加所有文件到Git暂存区 (priority: High)
-- [x] 4: 创建提交 (priority: High)
-- [x] 5: 推送代码到GitHub的main分支 - 仓库不存在，需要先创建 (priority: High)
-- [ ] 6: 告知用户仓库不存在的问题和解决方案 (priority: High)
+- [x] analyze_translations: 分析现有翻译结构和缺失内容 (priority: High)
+- [x] integrate_language_files: 整合独立语言文件到主系统 (priority: High)
+- [x] ensure_key_consistency: 确保所有语言文件的键值一致性 (priority: High)
+- [x] add_missing_blog_translations: 补充所有语言的博客页面翻译（缺失于10/10种语言） (priority: High)
+- [x] add_missing_privacy_translations: 补充所有语言的隐私政策翻译（缺失于10/10种语言） (priority: High)
+- [x] add_missing_terms_translations: 补充所有语言的服务条款翻译（缺失于10/10种语言） (priority: High)
+- [x] fix_javascript_errors: 修复JavaScript语法错误和DOM访问问题 (priority: High)
+- [x] test_multilingual_system: 测试多语言系统功能 (priority: Medium)
+- [x] add_missing_history_translations: 补充传输历史相关翻译（缺失于多种语言） (priority: Medium)
+- [x] add_missing_faq_translations: 补充FAQ页面的完整翻译 (priority: Medium)
