@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Tools - DropShare</title>
+    <title data-i18n="document_tools_page_title">文档工具 - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         * {
@@ -896,7 +896,7 @@
                 </nav>
                 <div class="control-buttons">
                     <div class="lang-selector">
-                        <select id="language-selector" title="Select Language">
+                        <select id="language-selector" title="选择语言" data-i18n="title_select_language">
                             <option value="en">English</option>
                             <option value="zh">中文简体</option>
                             <option value="zh-tw">中文繁體</option>
@@ -1114,6 +1114,14 @@
     </div>
 
     <script>
+        // 国际化辅助函数
+        function getI18nText(key) {
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.translate === 'function') {
+                return window.DROPSHARE_I18N.translate(key);
+            }
+            return null;
+        }
+
         // 生成背景装饰图形
         function createBackgroundShapes() {
             const shapesContainer = document.querySelector('.bg-shapes');
@@ -1190,20 +1198,25 @@
 
         // 转换工具通用界面
         function showConverterInterface(title, acceptFiles, conversionFunction) {
+            const selectFileText = getI18nText('btn_select_file') || '📁 选择文件';
+            const convertText = getI18nText('btn_convert') || '🔄 转换';
+            const clearText = getI18nText('btn_clear') || '🧹 清空';
+            const downloadText = getI18nText('btn_download') || '💾 下载';
+            
             const content = `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="converterInput">输入内容：</label>
-                        <textarea id="converterInput" rows="8" placeholder="请在此处输入或粘贴您的内容..."></textarea>
-                        ${acceptFiles ? `<div style="margin-top: 10px;"><input type="file" id="fileInput" accept="${acceptFiles}" style="display: none;"><button onclick="document.getElementById('fileInput').click()" class="action-btn">📁 选择文件</button></div>` : ''}
+                        <label for="converterInput" data-i18n="label_input_content">输入内容：</label>
+                        <textarea id="converterInput" rows="8" data-i18n="placeholder_enter_content" placeholder="请在此处输入或粘贴您的内容..."></textarea>
+                        ${acceptFiles ? `<div style="margin-top: 10px;"><input type="file" id="fileInput" accept="${acceptFiles}" style="display: none;"><button onclick="document.getElementById('fileInput').click()" class="action-btn">${selectFileText}</button></div>` : ''}
                     </div>
                     <div class="button-section">
-                        <button onclick="performConversion()" class="action-btn">🔄 转换</button>
-                        <button onclick="clearConverter()" class="action-btn">🧹 清空</button>
-                        <button onclick="downloadResult()" class="action-btn">💾 下载</button>
+                        <button onclick="performConversion()" class="action-btn">${convertText}</button>
+                        <button onclick="clearConverter()" class="action-btn">${clearText}</button>
+                        <button onclick="downloadResult()" class="action-btn">${downloadText}</button>
                     </div>
                     <div class="output-section">
-                        <label for="converterOutput">转换结果：</label>
+                        <label for="converterOutput" data-i18n="label_conversion_result">转换结果：</label>
                         <textarea id="converterOutput" rows="8" readonly></textarea>
                     </div>
                 </div>
@@ -1228,7 +1241,10 @@
             reader.onload = function(e) {
                 if (['docx', 'xlsx'].includes(fileExt)) {
                     window.currentFileContent = e.target.result;
-                    document.getElementById('converterInput').value = `已选择文件: ${file.name}\n文件大小: ${formatFileSize(file.size)}\n请点击转换按钮处理文件。`;
+                    const fileSelectedText = getI18nText('text_file_selected') || '已选择文件';
+                    const fileSizeText = getI18nText('text_file_size') || '文件大小';
+                    const clickConvertText = getI18nText('text_click_convert_to_process') || '请点击转换按钮处理文件。';
+                    document.getElementById('converterInput').value = `${fileSelectedText}: ${file.name}\n${fileSizeText}: ${formatFileSize(file.size)}\n${clickConvertText}`;
                 } else {
                     document.getElementById('converterInput').value = e.target.result;
                 }
@@ -1246,7 +1262,8 @@
             const outputElement = document.getElementById('converterOutput');
             
             if (!input.trim() && !window.currentFileContent) {
-                alert('请输入内容或选择文件！');
+                const alertText = getI18nText('alert_enter_content') || '请输入内容或选择文件！';
+                alert(alertText);
                 return;
             }
             
@@ -1256,7 +1273,8 @@
                 outputElement.value = result;
                 window.lastConversionResult = result;
             } catch (error) {
-                alert('转换失败：' + error.message);
+                const failedText = getI18nText('alert_conversion_failed') || '转换失败：';
+                alert(failedText + error.message);
                 console.error('转换错误:', error);
             }
         }
@@ -1270,7 +1288,8 @@
         
         function downloadResult() {
             if (!window.lastConversionResult) {
-                alert('没有转换结果可下载！');
+                const noResultText = getI18nText('alert_no_result') || '没有转换结果可下载！';
+                alert(noResultText);
                 return;
             }
             
@@ -1359,7 +1378,8 @@
             const data = JSON.parse(json);
             
             if (!Array.isArray(data)) {
-                throw new Error('JSON必须是数组格式');
+                const jsonArrayFormatError = getI18nText('error_json_must_be_array') || 'JSON必须是数组格式';
+                throw new Error(jsonArrayFormatError);
             }
             
             if (data.length === 0) {
@@ -1439,7 +1459,8 @@
                 .replace(/^    (.+)$/gm, '    $1')
                 .replace(/(https?:\/\/[^\s]+)/g, '[$1]($1)');
             
-            return 'Markdown 格式转换\n' + '='.repeat(20) + '\n\n' + markdown;
+            const markdownFormatTitle = getI18nText('text_markdown_format_conversion') || 'Markdown 格式转换';
+            return markdownFormatTitle + '\n' + '='.repeat(20) + '\n\n' + markdown;
         }
         
         function convertMarkdownToTxt(md) {
@@ -1457,7 +1478,8 @@
                 .replace(/^[-*_]{3,}$/gm, '')
                 .replace(/\n\s*\n\s*\n/g, '\n\n');
             
-            return '纯文本格式\n' + '='.repeat(15) + '\n\n' + text;
+            const plainTextFormatTitle = getI18nText('text_plain_text_format') || '纯文本格式';
+            return plainTextFormatTitle + '\n' + '='.repeat(15) + '\n\n' + text;
         }
         
         function convertYamlToJson(yaml) {
@@ -1479,7 +1501,8 @@
                 
                 return JSON.stringify(result, null, 2);
             } catch (error) {
-                throw new Error('YAML格式解析失败');
+                const yamlParseError = getI18nText('error_yaml_parse_failed') || 'YAML格式解析失败';
+                throw new Error(yamlParseError);
             }
         }
         
@@ -1528,10 +1551,12 @@
                     yaml = convertValue(data);
                 }
                 
-                return 'YAML 格式\n' + '='.repeat(12) + '\n\n' + yaml;
+                const yamlFormatTitle = getI18nText('text_yaml_format') || 'YAML 格式';
+                return yamlFormatTitle + '\n' + '='.repeat(12) + '\n\n' + yaml;
                 
             } catch (error) {
-                throw new Error('JSON格式错误：' + error.message);
+                const jsonFormatError = getI18nText('error_json_format') || 'JSON格式错误：';
+                throw new Error(jsonFormatError + error.message);
             }
         }
         
@@ -1563,78 +1588,93 @@
             if (input.includes('%') && input.match(/%[0-9A-Fa-f]{2}/)) {
                 try {
                     const decoded = decodeURIComponent(input);
-                    return 'URL 解码结果\n' + '='.repeat(15) + '\n\n' + decoded;
+                    const urlDecodeResultTitle = getI18nText('text_url_decode_result') || 'URL 解码结果';
+                    return urlDecodeResultTitle + '\n' + '='.repeat(15) + '\n\n' + decoded;
                 } catch (error) {
                     const encoded = encodeURIComponent(input);
-                    return 'URL 编码结果\n' + '='.repeat(15) + '\n\n' + encoded;
+                    const urlEncodeResultTitle = getI18nText('text_url_encode_result') || 'URL 编码结果';
+                    return urlEncodeResultTitle + '\n' + '='.repeat(15) + '\n\n' + encoded;
                 }
             } else {
                 const encoded = encodeURIComponent(input);
-                return 'URL 编码结果\n' + '='.repeat(15) + '\n\n' + encoded;
+                const urlEncodeResultTitle2 = getI18nText('text_url_encode_result') || 'URL 编码结果';
+                return urlEncodeResultTitle2 + '\n' + '='.repeat(15) + '\n\n' + encoded;
             }
         }
         
         
         // 合并转换器功能
         function openTextConverter() {
+            const convertText = getI18nText('btn_convert') || '🔄 转换';
+            const clearText = getI18nText('btn_clear') || '🧹 清空';
+            const downloadText = getI18nText('btn_download') || '💾 下载';
+            const shareText = getI18nText('btn_share') || '📤 传送';
+            
             const content = `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label>选择转换类型：</label>
+                        <label data-i18n="label_select_conversion_type">选择转换类型：</label>
                         <select id="textConvertType" style="margin-bottom: 10px; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; width: 100%;">
-                            <option value="txt-to-html">TXT → HTML</option>
-                            <option value="html-to-txt">HTML → TXT</option>
-                            <option value="txt-to-markdown">TXT → Markdown</option>
-                            <option value="markdown-to-txt">Markdown → TXT</option>
-                            <option value="markdown-to-html">Markdown → HTML</option>
-                            <option value="html-to-markdown">HTML → Markdown</option>
+                            <option value="txt-to-html" data-i18n="option_txt_to_html">TXT → HTML</option>
+                            <option value="html-to-txt" data-i18n="option_html_to_txt">HTML → TXT</option>
+                            <option value="txt-to-markdown" data-i18n="option_txt_to_markdown">TXT → Markdown</option>
+                            <option value="markdown-to-txt" data-i18n="option_markdown_to_txt">Markdown → TXT</option>
+                            <option value="markdown-to-html" data-i18n="option_markdown_to_html">Markdown → HTML</option>
+                            <option value="html-to-markdown" data-i18n="option_html_to_markdown">HTML → Markdown</option>
                         </select>
-                        <label for="textInput">输入内容：</label>
-                        <textarea id="textInput" rows="8" placeholder="请在此处输入或粘贴您的内容..."></textarea>
+                        <label for="textInput" data-i18n="label_input_content">输入内容：</label>
+                        <textarea id="textInput" rows="8" data-i18n="placeholder_enter_content" placeholder="请在此处输入或粘贴您的内容..."></textarea>
                     </div>
                     <div class="button-section">
-                        <button onclick="performTextConversion()" class="action-btn">🔄 转换</button>
-                        <button onclick="clearTextConverter()" class="action-btn">🧹 清空</button>
-                        <button onclick="downloadTextResult()" class="action-btn">💾 下载</button>
-                        <button onclick="shareTextResult()" class="action-btn">📤 传送</button>
+                        <button onclick="performTextConversion()" class="action-btn">${convertText}</button>
+                        <button onclick="clearTextConverter()" class="action-btn">${clearText}</button>
+                        <button onclick="downloadTextResult()" class="action-btn">${downloadText}</button>
+                        <button onclick="shareTextResult()" class="action-btn">${shareText}</button>
                     </div>
                     <div class="output-section">
-                        <label for="textOutput">转换结果：</label>
+                        <label for="textOutput" data-i18n="label_conversion_result">转换结果：</label>
                         <textarea id="textOutput" rows="8" readonly></textarea>
                     </div>
                 </div>
             `;
-            showToolInterface('Text Converter', content);
+            const textConverterTitle = getI18nText('tool_text_converter_title') || '文本转换器';
+            showToolInterface(textConverterTitle, content);
         }
         
         function openDataConverter() {
+            const convertText = getI18nText('btn_convert') || '🔄 转换';
+            const clearText = getI18nText('btn_clear') || '🧹 清空';
+            const downloadText = getI18nText('btn_download') || '💾 下载';
+            const shareText = getI18nText('btn_share') || '📤 传送';
+            
             const content = `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label>选择转换类型：</label>
+                        <label data-i18n="label_select_conversion_type">选择转换类型：</label>
                         <select id="dataConvertType" style="margin-bottom: 10px; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; width: 100%;">
-                            <option value="json-to-csv">JSON → CSV</option>
-                            <option value="csv-to-json">CSV → JSON</option>
-                            <option value="json-to-yaml">JSON → YAML</option>
-                            <option value="yaml-to-json">YAML → JSON</option>
-                            <option value="xml-format">XML 格式化</option>
+                            <option value="json-to-csv" data-i18n="option_json_to_csv">JSON → CSV</option>
+                            <option value="csv-to-json" data-i18n="option_csv_to_json">CSV → JSON</option>
+                            <option value="json-to-yaml" data-i18n="option_json_to_yaml">JSON → YAML</option>
+                            <option value="yaml-to-json" data-i18n="option_yaml_to_json">YAML → JSON</option>
+                            <option value="xml-format" data-i18n="option_xml_format">XML 格式化</option>
                         </select>
-                        <label for="dataInput">输入数据：</label>
-                        <textarea id="dataInput" rows="8" placeholder="请在此处输入或粘贴您的数据..."></textarea>
+                        <label for="dataInput" data-i18n="label_input_data">输入数据：</label>
+                        <textarea id="dataInput" rows="8" data-i18n="placeholder_enter_data" placeholder="请在此处输入或粘贴您的数据..."></textarea>
                     </div>
                     <div class="button-section">
-                        <button onclick="performDataConversion()" class="action-btn">🔄 转换</button>
-                        <button onclick="clearDataConverter()" class="action-btn">🧹 清空</button>
-                        <button onclick="downloadDataResult()" class="action-btn">💾 下载</button>
-                        <button onclick="shareDataResult()" class="action-btn">📤 传送</button>
+                        <button onclick="performDataConversion()" class="action-btn">${convertText}</button>
+                        <button onclick="clearDataConverter()" class="action-btn">${clearText}</button>
+                        <button onclick="downloadDataResult()" class="action-btn">${downloadText}</button>
+                        <button onclick="shareDataResult()" class="action-btn">${shareText}</button>
                     </div>
                     <div class="output-section">
-                        <label for="dataOutput">转换结果：</label>
+                        <label for="dataOutput" data-i18n="label_conversion_result">转换结果：</label>
                         <textarea id="dataOutput" rows="8" readonly></textarea>
                     </div>
                 </div>
             `;
-            showToolInterface('Data Converter', content);
+            const dataConverterTitle = getI18nText('tool_data_converter_title') || '数据转换器';
+            showToolInterface(dataConverterTitle, content);
         }
         
         
@@ -1649,7 +1689,8 @@
             const output = document.getElementById('textOutput');
             
             if (!input.trim()) {
-                alert('请输入内容！');
+                const enterContentText = getI18nText('alert_enter_content_simple') || '请输入内容！';
+                alert(enterContentText);
                 return;
             }
             
@@ -1666,7 +1707,8 @@
                 output.value = result;
                 window.lastTextResult = result;
             } catch (error) {
-                alert('转换失败：' + error.message);
+                const failedText = getI18nText('alert_conversion_failed') || '转换失败：';
+                alert(failedText + error.message);
             }
         }
         
@@ -1676,7 +1718,8 @@
             const output = document.getElementById('dataOutput');
             
             if (!input.trim()) {
-                alert('请输入数据！');
+                const enterDataText = getI18nText('alert_enter_data') || '请输入数据！';
+                alert(enterDataText);
                 return;
             }
             
@@ -1692,7 +1735,8 @@
                 output.value = result;
                 window.lastDataResult = result;
             } catch (error) {
-                alert('转换失败：' + error.message);
+                const failedText = getI18nText('alert_conversion_failed') || '转换失败：';
+                alert(failedText + error.message);
             }
         }
         
@@ -1712,7 +1756,8 @@
         function downloadTextResult() {
             const result = window.lastTextResult;
             if (!result) {
-                alert('没有转换结果可下载！');
+                const noResultText = getI18nText('alert_no_result') || '没有转换结果可下载！';
+                alert(noResultText);
                 return;
             }
             
@@ -1734,7 +1779,8 @@
         function downloadDataResult() {
             const result = window.lastDataResult;
             if (!result) {
-                alert('没有转换结果可下载！');
+                const noResultText = getI18nText('alert_no_result') || '没有转换结果可下载！';
+                alert(noResultText);
                 return;
             }
             
@@ -1773,31 +1819,32 @@
         
         // 工具功能实现
         function openWordCounter() {
-            showToolInterface('Word Counter', `
+            const wordCounterTitle = getI18nText('tool_word_counter_title') || '字数统计';
+            showToolInterface(wordCounterTitle, `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="textInput">输入文本：</label>
-                        <textarea id="textInput" rows="10" placeholder="请在此处输入或粘贴您的文本..."></textarea>
+                        <label for="textInput" data-i18n="label_input_text">输入文本：</label>
+                        <textarea id="textInput" rows="10" data-i18n="placeholder_enter_text" placeholder="请在此处输入或粘贴您的文本..."></textarea>
                     </div>
                     <div class="stats-section">
                         <div class="stat-item">
-                            <span class="stat-label">字数：</span>
+                            <span class="stat-label" data-i18n="label_character_count">字数：</span>
                             <span class="stat-value" id="charCount">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">字数（不含空格）：</span>
+                            <span class="stat-label" data-i18n="label_character_count_no_spaces">字数（不含空格）：</span>
                             <span class="stat-value" id="charCountNoSpaces">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">单词数：</span>
+                            <span class="stat-label" data-i18n="label_word_count">单词数：</span>
                             <span class="stat-value" id="wordCount">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">行数：</span>
+                            <span class="stat-label" data-i18n="label_line_count">行数：</span>
                             <span class="stat-value" id="lineCount">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">段落数：</span>
+                            <span class="stat-label" data-i18n="label_paragraph_count">段落数：</span>
                             <span class="stat-value" id="paragraphCount">0</span>
                         </div>
                     </div>
@@ -1819,19 +1866,24 @@
         }
         
         function openBase64Tool() {
-            showToolInterface('Base64 Encoder/Decoder', `
+            const encodeText = getI18nText('btn_encode') || '🔐 编码';
+            const decodeText = getI18nText('btn_decode') || '🔓 解码';
+            const clearText = getI18nText('btn_clear') || '🌉 清空';
+            
+            const base64ToolTitle = getI18nText('tool_base64_encoder_decoder_title') || 'Base64编码/解码';
+            showToolInterface(base64ToolTitle, `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="base64Input">输入文本：</label>
-                        <textarea id="base64Input" rows="5" placeholder="请输入要编码或解码的文本..."></textarea>
+                        <label for="base64Input" data-i18n="label_input_text">输入文本：</label>
+                        <textarea id="base64Input" rows="5" data-i18n="placeholder_enter_base64_text" placeholder="请输入要编码或解码的文本..."></textarea>
                     </div>
                     <div class="button-section">
-                        <button onclick="encodeBase64()" class="action-btn">🔐 编码</button>
-                        <button onclick="decodeBase64()" class="action-btn">🔓 解码</button>
-                        <button onclick="clearBase64()" class="action-btn">🌉 清空</button>
+                        <button onclick="encodeBase64()" class="action-btn">${encodeText}</button>
+                        <button onclick="decodeBase64()" class="action-btn">${decodeText}</button>
+                        <button onclick="clearBase64()" class="action-btn">${clearText}</button>
                     </div>
                     <div class="output-section">
-                        <label for="base64Output">输出结果：</label>
+                        <label for="base64Output" data-i18n="label_output_result">输出结果：</label>
                         <textarea id="base64Output" rows="5" readonly></textarea>
                     </div>
                 </div>
@@ -1844,7 +1896,8 @@
                 const encoded = btoa(unescape(encodeURIComponent(input)));
                 document.getElementById('base64Output').value = encoded;
             } catch (error) {
-                alert('编码失败：' + error.message);
+                const encodingFailedText = getI18nText('alert_encoding_failed') || '编码失败：';
+                alert(encodingFailedText + error.message);
             }
         }
         
@@ -1854,7 +1907,8 @@
                 const decoded = decodeURIComponent(escape(atob(input)));
                 document.getElementById('base64Output').value = decoded;
             } catch (error) {
-                alert('解码失败：请检查输入是否为有效的Base64编码');
+                const decodingFailedText = getI18nText('alert_decoding_failed') || '解码失败：请检查输入是否为有效的Base64编码';
+                alert(decodingFailedText);
             }
         }
         
@@ -1864,21 +1918,25 @@
         }
         
         function openQRGenerator() {
-            showToolInterface('QR Code Generator', `
+            const generateQRText = getI18nText('btn_generate_qr') || '📱 生成QR码';
+            const downloadImageText = getI18nText('btn_download_image') || '💾 下载图片';
+            
+            const qrGeneratorTitle = getI18nText('tool_qr_code_generator_title') || 'QR码生成器';
+            showToolInterface(qrGeneratorTitle, `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="qrInput">输入文本或URL：</label>
-                        <textarea id="qrInput" rows="4" placeholder="请输入要生成QR码的文本或URL..."></textarea>
+                        <label for="qrInput" data-i18n="label_input_text_or_url">输入文本或URL：</label>
+                        <textarea id="qrInput" rows="4" data-i18n="placeholder_enter_qr_text" placeholder="请输入要生成QR码的文本或URL..."></textarea>
                     </div>
                     <div class="button-section">
-                        <button onclick="generateQR()" class="action-btn">📱 生成QR码</button>
-                        <button onclick="downloadQR()" class="action-btn">💾 下载图片</button>
+                        <button onclick="generateQR()" class="action-btn">${generateQRText}</button>
+                        <button onclick="downloadQR()" class="action-btn">${downloadImageText}</button>
                     </div>
                     <div class="qr-output">
                         <canvas id="qrCanvas" style="display: none;"></canvas>
                         <div id="qrPlaceholder" class="qr-placeholder">
                             <div class="qr-icon">📱</div>
-                            <p>输入文本后点击生成QR码</p>
+                            <p data-i18n="text_enter_text_then_generate_qr">输入文本后点击生成QR码</p>
                         </div>
                     </div>
                 </div>
@@ -1888,7 +1946,8 @@
         function generateQR() {
             const text = document.getElementById('qrInput').value.trim();
             if (!text) {
-                alert('请输入要生成QR码的内容');
+                const enterQRContentText = getI18nText('alert_enter_qr_content') || '请输入要生成QR码的内容';
+                alert(enterQRContentText);
                 return;
             }
             
@@ -1912,7 +1971,8 @@
                 placeholder.style.display = 'none';
             };
             img.onerror = function() {
-                alert('QR码生成失败，请检查网络连接');
+                const qrGenerationFailedText = getI18nText('alert_qr_generation_failed') || 'QR码生成失败，请检查网络连接';
+                alert(qrGenerationFailedText);
             };
             img.src = qrURL;
         }
@@ -1920,7 +1980,8 @@
         function downloadQR() {
             const canvas = document.getElementById('qrCanvas');
             if (canvas.style.display === 'none') {
-                alert('请先生成QR码');
+                const generateQRFirstText = getI18nText('alert_generate_qr_first') || '请先生成QR码';
+                alert(generateQRFirstText);
                 return;
             }
             
@@ -1931,15 +1992,19 @@
         }
         
         function openHashTool() {
-            showToolInterface('Hash Generator', `
+            const generateHashesText = getI18nText('btn_generate_hashes') || '🔒 生成散列值';
+            const clearText = getI18nText('btn_clear') || '🌉 清空';
+            
+            const hashGeneratorTitle = getI18nText('tool_hash_generator_title') || '散列值生成器';
+            showToolInterface(hashGeneratorTitle, `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="hashInput">输入文本：</label>
-                        <textarea id="hashInput" rows="5" placeholder="请输入要生成散列值的文本..."></textarea>
+                        <label for="hashInput" data-i18n="label_input_text">输入文本：</label>
+                        <textarea id="hashInput" rows="5" data-i18n="placeholder_enter_hash_text" placeholder="请输入要生成散列值的文本..."></textarea>
                     </div>
                     <div class="button-section">
-                        <button onclick="generateHashes()" class="action-btn">🔒 生成散列值</button>
-                        <button onclick="clearHashes()" class="action-btn">🌉 清空</button>
+                        <button onclick="generateHashes()" class="action-btn">${generateHashesText}</button>
+                        <button onclick="clearHashes()" class="action-btn">${clearText}</button>
                     </div>
                     <div class="hash-results">
                         <div class="hash-item">
@@ -1965,7 +2030,8 @@
         async function generateHashes() {
             const text = document.getElementById('hashInput').value;
             if (!text) {
-                alert('请输入要生成散列值的文本');
+                const enterHashTextText = getI18nText('alert_enter_hash_text') || '请输入要生成散列值的文本';
+                alert(enterHashTextText);
                 return;
             }
             
@@ -1986,10 +2052,12 @@
                 document.getElementById('sha256Result').value = sha256Hex;
                 
                 // MD5 (简单实现)
-                document.getElementById('md5Result').value = 'MD5需要额外的库支持';
+                const md5SupportText = getI18nText('text_md5_needs_library') || 'MD5需要额外的库支持';
+                document.getElementById('md5Result').value = md5SupportText;
                 
             } catch (error) {
-                alert('生成散列值失败：' + error.message);
+                const hashGenerationFailedText = getI18nText('alert_hash_generation_failed') || '生成散列值失败：';
+                alert(hashGenerationFailedText + error.message);
             }
         }
         
@@ -2070,7 +2138,8 @@
         
         function shareConverterResult(result, type, filenamePrefix) {
             if (!result) {
-                alert('没有转换结果可传送！');
+                const noResultToShareText = getI18nText('alert_no_result_to_share') || '没有转换结果可传送！';
+                alert(noResultToShareText);
                 return;
             }
             
@@ -2128,8 +2197,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p>未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p data-i18n="no_devices_found">未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="no_devices_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -2179,7 +2248,8 @@
             
             if (count === 0) {
                 sendBtn.disabled = true;
-                sendBtn.textContent = '传送到选中设备';
+                const sendToSelectedText = getI18nText('btn_send_to_devices') || '传送到选中设备';
+                sendBtn.textContent = sendToSelectedText;
             } else {
                 sendBtn.disabled = false;
                 sendBtn.textContent = `传送到 ${count} 个设备`;
@@ -2208,7 +2278,8 @@
                     });
                 });
                 
-                alert(`文件已开始传送到 ${selectedDevices.size} 个设备！`);
+                const filesSentText = getI18nText('alert_files_sent_to_devices') || '文件已开始传送到 {count} 个设备！';
+                alert(filesSentText.replace('{count}', selectedDevices.size));
                 closeDeviceModal();
             } else {
                 // 如果没有传输系统，尝试添加到分享队列
@@ -2217,7 +2288,8 @@
                     alert(`文件已添加到分享列表！`);
                     closeDeviceModal();
                 } else {
-                    if (confirm('传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？')) {
+                    const confirmTransferText = getI18nText('confirm_jump_to_transfer_page') || '传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？';
+                    if (confirm(confirmTransferText)) {
                         sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
                             name: currentShareFilename,
                             type: file.type,
