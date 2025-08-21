@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动端测试 - DropShare</title>
+    
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 80px auto 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        
+        .test-title {
+            color: #1f2937;
+            border-bottom: 2px solid #3367d6;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list li::before {
+            content: "✅";
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .test-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 8px;
+            font-size: 16px;
+            min-height: 44px;
+            transition: background-color 0.2s;
+        }
+        
+        .test-button:hover {
+            background: #2563eb;
+        }
+        
+        .test-button:active {
+            background: #1d4ed8;
+        }
+        
+        .info-box {
+            background: #dbeafe;
+            border: 1px solid #3367d6;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .info-box h4 {
+            margin: 0 0 8px 0;
+            color: #1e40af;
+        }
+        
+        .device-info {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 6px;
+            margin: 16px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .gesture-demo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 16px 0;
+        }
+        
+        /* 创建虚假的header用于测试 */
+        .fake-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 1000;
+            padding: 12px 0;
+            height: 60px;
+            box-sizing: border-box;
+        }
+        
+        .fake-header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .fake-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+        }
+        
+        .fake-nav {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .fake-nav a {
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .fake-nav a:hover {
+            background: #f3f4f6;
+            color: #3367d6;
+        }
+        
+        .fake-lang-selector select {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 虚假的header用于测试移动端导航 -->
+    <header class="fake-header">
+        <div class="fake-header-container">
+            <div class="fake-logo">
+                📱 DropShare移动端测试
+            </div>
+            <nav class="fake-nav nav-links">
+                <a href="#transfer">Transfer</a>
+                <a href="#rooms">Rooms</a>
+                <a href="#images">Images</a>
+                <a href="#audio">Audio</a>
+                <a href="#video">Video</a>
+                <a href="#files">Files</a>
+            </nav>
+            <div class="fake-lang-selector">
+                <select id="language-selector">
+                    <option value="en">English</option>
+                    <option value="zh">中文简体</option>
+                    <option value="zh-tw">中文繁體</option>
+                    <option value="ja">日本語</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <div class="test-container">
+        <h1>📱 DropShare 移动端功能测试</h1>
+        <p>这个页面用于测试DropShare的移动端响应式设计和交互功能。</p>
+
+        <div class="test-section">
+            <h2 class="test-title">🎯 移动端功能特性</h2>
+            <ul class="feature-list">
+                <li>响应式布局适配各种屏幕尺寸</li>
+                <li>汉堡菜单导航（768px以下显示）</li>
+                <li>触摸优化的按钮和交互元素</li>
+                <li>滑动手势支持（右滑开菜单，左滑关菜单）</li>
+                <li>移动端专用语言选择器</li>
+                <li>44px最小触摸目标尺寸</li>
+                <li>iOS Safari滚动优化</li>
+                <li>防止页面滚动穿透</li>
+                <li>移动端特定的Analytics统计</li>
+                <li>横屏和竖屏自适应</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">🔧 功能测试</h2>
+            <div class="info-box">
+                <h4>汉堡菜单测试</h4>
+                <p>在移动端（宽度≤768px）访问此页面，右上角会显示汉堡菜单按钮。点击可打开/关闭导航菜单。</p>
+            </div>
+            
+            <button class="test-button" onclick="testMobileMenu()">测试移动菜单状态</button>
+            <button class="test-button" onclick="testScreenSize()">检查屏幕尺寸</button>
+            <button class="test-button" onclick="testTouchSupport()">测试触摸支持</button>
+            <button class="test-button" onclick="testMobileFeatures()">测试所有移动特性</button>
+            
+            <div class="gesture-demo">
+                <h3>🖐️ 手势操作测试区域</h3>
+                <p>在此区域右滑可打开菜单，左滑可关闭菜单</p>
+                <p>（需要在移动设备上测试）</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">📱 设备信息</h2>
+            <div class="device-info" id="device-info">正在加载设备信息...</div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">🔍 断点测试</h2>
+            <div class="info-box">
+                <h4>响应式断点</h4>
+                <ul>
+                    <li><strong>≤480px:</strong> 小屏手机优化</li>
+                    <li><strong>≤768px:</strong> 手机端，显示汉堡菜单</li>
+                    <li><strong>769-1024px:</strong> 平板端</li>
+                    <li><strong>>1024px:</strong> 桌面端</li>
+                </ul>
+            </div>
+            
+            <div id="current-breakpoint" class="device-info">当前断点: 检测中...</div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">📊 测试结果</h2>
+            <div id="test-results" class="device-info">点击上方按钮查看测试结果</div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (可选) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Analytics Configuration -->
+    <script src="scripts/firebase-analytics.js"></script>
+    <script src="scripts/analytics-enhanced.js"></script>
+    
+    <!-- Mobile Navigation and Touch Optimization -->
+    <script src="scripts/mobile-navigation.js"></script>
+
+    <script>
+        // 测试函数
+        function testMobileMenu() {
+            const results = document.getElementById('test-results');
+            let info = '';
+            
+            if (window.mobileNav) {
+                const status = window.mobileNav.getStatus();
+                info += `移动导航状态:\n`;
+                info += `- 是否移动端: ${status.isMobile}\n`;
+                info += `- 菜单是否打开: ${status.isMenuOpen}\n`;
+                info += `- 屏幕尺寸: ${status.screenWidth}x${status.screenHeight}\n`;
+                info += `- 汉堡菜单元素: ${document.getElementById('mobile-menu-toggle') ? '存在' : '不存在'}\n`;
+                info += `- 移动菜单元素: ${document.getElementById('mobile-nav') ? '存在' : '不存在'}\n`;
+            } else {
+                info = '移动导航管理器未初始化';
+            }
+            
+            results.textContent = info;
+        }
+
+        function testScreenSize() {
+            const results = document.getElementById('test-results');
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const ratio = window.devicePixelRatio || 1;
+            
+            let breakpoint = '';
+            if (width <= 480) breakpoint = '小屏手机';
+            else if (width <= 768) breakpoint = '手机端';
+            else if (width <= 1024) breakpoint = '平板端';
+            else breakpoint = '桌面端';
+            
+            const info = `屏幕尺寸测试:\n` +
+                        `- 视窗尺寸: ${width}x${height}\n` +
+                        `- 设备像素比: ${ratio}\n` +
+                        `- 当前断点: ${breakpoint}\n` +
+                        `- 方向: ${width > height ? '横屏' : '竖屏'}`;
+            
+            results.textContent = info;
+        }
+
+        function testTouchSupport() {
+            const results = document.getElementById('test-results');
+            const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const hasTouchOptimizer = !!window.mobileTouchOptimizer;
+            
+            const info = `触摸支持测试:\n` +
+                        `- 设备支持触摸: ${hasTouch}\n` +
+                        `- 触摸优化器: ${hasTouchOptimizer ? '已加载' : '未加载'}\n` +
+                        `- 最大触摸点: ${navigator.maxTouchPoints || '未知'}\n` +
+                        `- 用户代理: ${navigator.userAgent.substring(0, 60)}...`;
+            
+            results.textContent = info;
+        }
+
+        function testMobileFeatures() {
+            const results = document.getElementById('test-results');
+            const features = [];
+            
+            // 检查各种移动端功能
+            features.push(`CSS变量支持: ${CSS.supports('color', 'var(--test)') ? '✅' : '❌'}`);
+            features.push(`Flexbox支持: ${CSS.supports('display', 'flex') ? '✅' : '❌'}`);
+            features.push(`Grid支持: ${CSS.supports('display', 'grid') ? '✅' : '❌'}`);
+            features.push(`移动导航: ${window.mobileNav ? '✅' : '❌'}`);
+            features.push(`触摸优化: ${window.mobileTouchOptimizer ? '✅' : '❌'}`);
+            features.push(`Firebase Analytics: ${window.firebaseAnalytics ? '✅' : '❌'}`);
+            features.push(`本地存储: ${typeof localStorage !== 'undefined' ? '✅' : '❌'}`);
+            features.push(`Service Worker: ${'serviceWorker' in navigator ? '✅' : '❌'}`);
+            
+            results.textContent = '移动端功能检测:\n' + features.join('\n');
+        }
+
+        // 更新设备信息
+        function updateDeviceInfo() {
+            const deviceInfo = document.getElementById('device-info');
+            const currentBreakpoint = document.getElementById('current-breakpoint');
+            
+            const info = {
+                userAgent: navigator.userAgent.substring(0, 80) + '...',
+                platform: navigator.platform,
+                language: navigator.language,
+                languages: navigator.languages?.slice(0, 3).join(', ') || '未知',
+                screen: `${screen.width}x${screen.height}`,
+                viewport: `${window.innerWidth}x${window.innerHeight}`,
+                pixelRatio: window.devicePixelRatio || 1,
+                colorDepth: screen.colorDepth,
+                orientation: screen.orientation?.type || '未知',
+                connection: navigator.connection?.effectiveType || '未知',
+                memory: navigator.deviceMemory ? navigator.deviceMemory + 'GB' : '未知',
+                hardwareConcurrency: navigator.hardwareConcurrency || '未知'
+            };
+            
+            deviceInfo.innerHTML = Object.entries(info)
+                .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
+                .join('<br>');
+            
+            // 更新当前断点
+            const width = window.innerWidth;
+            let breakpoint = '';
+            if (width <= 480) breakpoint = '小屏手机 (≤480px)';
+            else if (width <= 768) breakpoint = '手机端 (≤768px)';
+            else if (width <= 1024) breakpoint = '平板端 (769-1024px)';
+            else breakpoint = '桌面端 (>1024px)';
+            
+            currentBreakpoint.textContent = `当前断点: ${breakpoint} | 视窗: ${width}x${window.innerHeight}`;
+        }
+
+        // 页面加载和窗口大小变化时更新信息
+        document.addEventListener('DOMContentLoaded', updateDeviceInfo);
+        window.addEventListener('resize', updateDeviceInfo);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateDeviceInfo, 100);
+        });
+
+        // 记录页面访问
+        if (window.analyticsEnhanced) {
+            setTimeout(() => {
+                window.analyticsEnhanced.trackEvent('mobile_test_page_visit', {
+                    screen_width: window.innerWidth,
+                    screen_height: window.innerHeight,
+                    is_mobile: window.innerWidth <= 768,
+                    user_agent: navigator.userAgent.substring(0, 100)
+                });
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

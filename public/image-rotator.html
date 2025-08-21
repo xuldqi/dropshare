@@ -26,7 +26,10 @@
         .control-buttons { display: flex; gap: 12px; align-items: center; }
         .lang-selector select { padding: 6px 12px; border: 1px solid var(--border-color, #ddd); border-radius: 6px; background: var(--surface-color, white); color: var(--text-color, #333); font-size: 14px; cursor: pointer; }
         .lang-selector select:hover { border-color: var(--primary-color, #007bff); }
-    </style>
+    </style>    
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+
 </head>
 <body>
     <div class="page-header">
@@ -81,7 +84,9 @@
     <script src="scripts/tools-analytics.js"></script>
     
     <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>
+    <script src="scripts/i18n/languages.js"></script>    
+    <!-- Mobile Navigation and Touch Optimization -->
+    <script src="scripts/mobile-navigation.js"></script>
     <script>
         // Show notification message
         function showNotifyMessage() {
