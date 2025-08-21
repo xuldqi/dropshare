@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Analytics 测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-title {
+            color: #333;
+            border-bottom: 2px solid #3367d6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .test-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .test-button:hover {
+            background: #2563eb;
+        }
+        .test-button.success {
+            background: #10b981;
+        }
+        .test-button.error {
+            background: #ef4444;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3367d6;
+        }
+        .log-output {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .file-input {
+            margin: 10px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Firebase Analytics 测试面板</h1>
+    <p>这个页面用于测试DropShare的Firebase Analytics集成是否正常工作。</p>
+
+    <div class="test-section">
+        <h2 class="test-title">📊 基础统计测试</h2>
+        <div id="basic-status" class="status info">初始化中...</div>
+        
+        <button class="test-button" onclick="testPageView()">测试页面访问</button>
+        <button class="test-button" onclick="testCustomEvent()">测试自定义事件</button>
+        <button class="test-button" onclick="testUserInteraction()">测试用户交互</button>
+        <button class="test-button" onclick="testPerformanceMetrics()">测试性能指标</button>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">🛠️ 工具功能测试</h2>
+        <div id="tools-status" class="status info">等待测试...</div>
+        
+        <input type="file" class="file-input" id="test-file" multiple accept="image/*">
+        <button class="test-button" onclick="testFileSelection()">测试文件选择</button>
+        <button class="test-button" onclick="testProcessingStart()">测试处理开始</button>
+        <button class="test-button" onclick="testProcessingProgress()">测试处理进度</button>
+        <button class="test-button" onclick="testProcessingComplete()">测试处理完成</button>
+        <button class="test-button error" onclick="testProcessingError()">测试处理错误</button>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">📱 设备和网络信息</h2>
+        <div id="device-info" class="status info">加载中...</div>
+        <button class="test-button" onclick="testNetworkInfo()">测试网络信息</button>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">📈 统计数据概览</h2>
+        <button class="test-button" onclick="showStats()">显示统计摘要</button>
+        <div id="stats-display" class="log-output" style="display: none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2 class="test-title">📝 实时日志</h2>
+        <button class="test-button" onclick="clearLogs()">清空日志</button>
+        <div id="log-display" class="log-output"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Analytics Configuration -->
+    <script src="scripts/firebase-analytics.js"></script>
+    <script src="scripts/analytics-enhanced.js"></script>
+    <script src="scripts/tools-analytics.js"></script>
+
+    <script>
+        let testCounter = 0;
+        let progressInterval;
+
+        // 日志功能
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDisplay = document.getElementById('log-display');
+            const prefix = type === 'success' ? '✅' : type === 'error' ? '❌' : '📝';
+            logDisplay.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            logDisplay.scrollTop = logDisplay.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('log-display').textContent = '';
+        }
+
+        // 基础测试功能
+        function testPageView() {
+            try {
+                if (window.analyticsEnhanced) {
+                    window.analyticsEnhanced.trackEvent('test_page_view', {
+                        test_id: ++testCounter,
+                        test_timestamp: Date.now()
+                    });
+                    log('页面访问事件已发送', 'success');
+                    updateBasicStatus('页面访问测试成功', 'success');
+                } else {
+                    throw new Error('analyticsEnhanced 未初始化');
+                }
+            } catch (error) {
+                log(`页面访问测试失败: ${error.message}`, 'error');
+                updateBasicStatus('页面访问测试失败', 'error');
+            }
+        }
+
+        function testCustomEvent() {
+            try {
+                if (window.analyticsEnhanced) {
+                    window.analyticsEnhanced.trackEvent('test_custom_event', {
+                        event_type: 'analytics_test',
+                        test_id: ++testCounter,
+                        custom_data: 'Hello Firebase!'
+                    });
+                    log('自定义事件已发送', 'success');
+                    updateBasicStatus('自定义事件测试成功', 'success');
+                } else {
+                    throw new Error('analyticsEnhanced 未初始化');
+                }
+            } catch (error) {
+                log(`自定义事件测试失败: ${error.message}`, 'error');
+                updateBasicStatus('自定义事件测试失败', 'error');
+            }
+        }
+
+        function testUserInteraction() {
+            try {
+                if (window.analyticsEnhanced) {
+                    window.analyticsEnhanced.trackUserInteraction('button_click', 'test_button', {
+                        button_name: 'test_user_interaction',
+                        test_id: ++testCounter
+                    });
+                    log('用户交互事件已发送', 'success');
+                    updateBasicStatus('用户交互测试成功', 'success');
+                } else {
+                    throw new Error('analyticsEnhanced 未初始化');
+                }
+            } catch (error) {
+                log(`用户交互测试失败: ${error.message}`, 'error');
+                updateBasicStatus('用户交互测试失败', 'error');
+            }
+        }
+
+        function testPerformanceMetrics() {
+            try {
+                if (window.analyticsEnhanced) {
+                    window.analyticsEnhanced.trackPerformance();
+                    log('性能指标已发送', 'success');
+                    updateBasicStatus('性能指标测试成功', 'success');
+                } else {
+                    throw new Error('analyticsEnhanced 未初始化');
+                }
+            } catch (error) {
+                log(`性能指标测试失败: ${error.message}`, 'error');
+                updateBasicStatus('性能指标测试失败', 'error');
+            }
+        }
+
+        // 工具测试功能
+        function testFileSelection() {
+            try {
+                const fileInput = document.getElementById('test-file');
+                const files = fileInput.files;
+                
+                if (files.length === 0) {
+                    // 模拟文件选择
+                    const mockFile = new File(['test content'], 'test.jpg', {
+                        type: 'image/jpeg',
+                        lastModified: Date.now()
+                    });
+                    
+                    if (window.toolsAnalytics) {
+                        window.toolsAnalytics.trackFileSelection(mockFile);
+                        log('模拟文件选择事件已发送', 'success');
+                        updateToolsStatus('文件选择测试成功', 'success');
+                    } else {
+                        throw new Error('toolsAnalytics 未初始化');
+                    }
+                } else {
+                    Array.from(files).forEach(file => {
+                        if (window.toolsAnalytics) {
+                            window.toolsAnalytics.trackFileSelection(file);
+                        }
+                    });
+                    log(`${files.length}个文件选择事件已发送`, 'success');
+                    updateToolsStatus('文件选择测试成功', 'success');
+                }
+            } catch (error) {
+                log(`文件选择测试失败: ${error.message}`, 'error');
+                updateToolsStatus('文件选择测试失败', 'error');
+            }
+        }
+
+        function testProcessingStart() {
+            try {
+                const mockFiles = [
+                    new File(['test content 1'], 'test1.jpg', { type: 'image/jpeg' }),
+                    new File(['test content 2'], 'test2.png', { type: 'image/png' })
+                ];
+                
+                if (window.toolsAnalytics) {
+                    window.toolsAnalytics.trackProcessingStart(mockFiles);
+                    log('处理开始事件已发送', 'success');
+                    updateToolsStatus('处理开始测试成功', 'success');
+                } else {
+                    throw new Error('toolsAnalytics 未初始化');
+                }
+            } catch (error) {
+                log(`处理开始测试失败: ${error.message}`, 'error');
+                updateToolsStatus('处理开始测试失败', 'error');
+            }
+        }
+
+        function testProcessingProgress() {
+            try {
+                if (window.toolsAnalytics) {
+                    let progress = 0;
+                    const progressFill = document.getElementById('progress-fill');
+                    
+                    progressInterval = setInterval(() => {
+                        progress += 10;
+                        progressFill.style.width = progress + '%';
+                        
+                        window.toolsAnalytics.trackProcessingProgress(progress);
+                        log(`处理进度: ${progress}%`, 'info');
+                        
+                        if (progress >= 100) {
+                            clearInterval(progressInterval);
+                            updateToolsStatus('处理进度测试完成', 'success');
+                        }
+                    }, 200);
+                    
+                    log('处理进度测试开始', 'success');
+                } else {
+                    throw new Error('toolsAnalytics 未初始化');
+                }
+            } catch (error) {
+                log(`处理进度测试失败: ${error.message}`, 'error');
+                updateToolsStatus('处理进度测试失败', 'error');
+            }
+        }
+
+        function testProcessingComplete() {
+            try {
+                const mockOutputFiles = [
+                    { name: 'compressed_test1.jpg', type: 'image/jpeg', size: 50000 },
+                    { name: 'compressed_test2.jpg', type: 'image/jpeg', size: 45000 }
+                ];
+                
+                const mockInputFiles = [
+                    { name: 'test1.jpg', type: 'image/jpeg', size: 100000 },
+                    { name: 'test2.png', type: 'image/png', size: 120000 }
+                ];
+                
+                if (window.toolsAnalytics) {
+                    window.toolsAnalytics.trackProcessingComplete(mockOutputFiles, mockInputFiles);
+                    log('处理完成事件已发送', 'success');
+                    updateToolsStatus('处理完成测试成功', 'success');
+                } else {
+                    throw new Error('toolsAnalytics 未初始化');
+                }
+            } catch (error) {
+                log(`处理完成测试失败: ${error.message}`, 'error');
+                updateToolsStatus('处理完成测试失败', 'error');
+            }
+        }
+
+        function testProcessingError() {
+            try {
+                const mockError = new Error('模拟处理错误');
+                mockError.name = 'ProcessingError';
+                
+                if (window.toolsAnalytics) {
+                    window.toolsAnalytics.trackProcessingError(mockError, 'analytics_test');
+                    log('处理错误事件已发送', 'success');
+                    updateToolsStatus('处理错误测试成功', 'success');
+                } else {
+                    throw new Error('toolsAnalytics 未初始化');
+                }
+            } catch (error) {
+                log(`处理错误测试失败: ${error.message}`, 'error');
+                updateToolsStatus('处理错误测试失败', 'error');
+            }
+        }
+
+        function testNetworkInfo() {
+            try {
+                if (window.analyticsEnhanced) {
+                    window.analyticsEnhanced.trackNetworkInfo();
+                    log('网络信息事件已发送', 'success');
+                } else {
+                    throw new Error('analyticsEnhanced 未初始化');
+                }
+            } catch (error) {
+                log(`网络信息测试失败: ${error.message}`, 'error');
+            }
+        }
+
+        function showStats() {
+            try {
+                const statsDisplay = document.getElementById('stats-display');
+                let stats = {};
+                
+                if (window.analyticsEnhanced) {
+                    stats.enhanced = window.analyticsEnhanced.getStats();
+                }
+                
+                if (window.toolsAnalytics) {
+                    stats.tools = window.toolsAnalytics.getStatsSummary();
+                }
+                
+                statsDisplay.textContent = JSON.stringify(stats, null, 2);
+                statsDisplay.style.display = 'block';
+                log('统计数据已显示', 'success');
+            } catch (error) {
+                log(`显示统计数据失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 状态更新函数
+        function updateBasicStatus(message, type) {
+            const status = document.getElementById('basic-status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        function updateToolsStatus(message, type) {
+            const status = document.getElementById('tools-status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+        }
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Analytics测试页面已加载');
+            
+            // 等待Firebase初始化
+            setTimeout(() => {
+                const deviceInfo = document.getElementById('device-info');
+                const info = {
+                    userAgent: navigator.userAgent.substring(0, 80) + '...',
+                    platform: navigator.platform,
+                    language: navigator.language,
+                    screen: `${screen.width}x${screen.height}`,
+                    connection: navigator.connection ? navigator.connection.effectiveType : 'unknown'
+                };
+                
+                deviceInfo.innerHTML = Object.entries(info)
+                    .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
+                    .join('<br>');
+                deviceInfo.className = 'status success';
+                
+                // 检查Analytics初始化状态
+                if (window.analyticsEnhanced) {
+                    updateBasicStatus('Enhanced Analytics 已初始化', 'success');
+                    log('Enhanced Analytics 初始化成功', 'success');
+                } else {
+                    updateBasicStatus('Enhanced Analytics 未初始化', 'error');
+                    log('Enhanced Analytics 初始化失败', 'error');
+                }
+                
+                if (window.toolsAnalytics) {
+                    updateToolsStatus('Tools Analytics 已初始化', 'success');
+                    log('Tools Analytics 初始化成功', 'success');
+                } else {
+                    updateToolsStatus('Tools Analytics 未初始化', 'error');
+                    log('Tools Analytics 初始化失败', 'error');
+                }
+                
+                if (window.firebaseAnalytics) {
+                    log('Firebase Analytics 已连接', 'success');
+                } else {
+                    log('Firebase Analytics 连接失败', 'error');
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
