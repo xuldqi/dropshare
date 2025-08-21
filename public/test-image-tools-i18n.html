@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Tools I18n Test - DropShare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .language-selector {
+            margin: 20px 0;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 4px;
+        }
+        .language-selector select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .translation-test {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .key-name {
+            font-weight: bold;
+            color: #007bff;
+            font-family: monospace;
+        }
+        .translated-text {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .missing {
+            color: #dc3545;
+            font-style: italic;
+        }
+        .success {
+            color: #28a745;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        .hardcoded-text {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .hardcoded-text strong {
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Tools 页面国际化测试</h1>
+    
+    <div class="language-selector">
+        <label for="language-selector">选择语言：</label>
+        <select id="language-selector">
+            <option value="en">English</option>
+            <option value="zh">中文简体</option>
+            <option value="zh-tw">中文繁體</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+        </select>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="total-keys">0</div>
+            <div class="stat-label">总翻译键数</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="translated-keys">0</div>
+            <div class="stat-label">已翻译键数</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="coverage">0%</div>
+            <div class="stat-label">翻译覆盖率</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>页面标题和导航</h2>
+        
+        <div class="translation-test">
+            <div class="key-name">image_tools_title</div>
+            <div class="translated-text" data-i18n="image_tools_title">Image Tools</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">image_tools_subtitle</div>
+            <div class="translated-text" data-i18n="image_tools_subtitle">Free Online Image Processing Tools</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">nav_transfer</div>
+            <div class="translated-text" data-i18n="nav_transfer">传送</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">nav_rooms</div>
+            <div class="translated-text" data-i18n="nav_rooms">多人房间</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">nav_images</div>
+            <div class="translated-text" data-i18n="nav_images">图片</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">nav_audio</div>
+            <div class="translated-text" data-i18n="nav_audio">音频</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">nav_video</div>
+            <div class="translated-text" data-i18n="nav_video">视频</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">nav_files</div>
+            <div class="translated-text" data-i18n="nav_files">文件</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>工具卡片翻译测试</h2>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_image_compressor_title</div>
+            <div class="translated-text" data-i18n="tool_image_compressor_title">Image Compressor</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_image_compressor_desc</div>
+            <div class="translated-text" data-i18n="tool_image_compressor_desc">Reduce image file size while maintaining quality...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_compression_rate</div>
+            <div class="translated-text" data-i18n="tool_compression_rate">📦 Up to 90% compression</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_instant</div>
+            <div class="translated-text" data-i18n="tool_instant">⚡ Instant</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_format_converter_title</div>
+            <div class="translated-text" data-i18n="tool_format_converter_title">Format Converter</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_format_converter_desc</div>
+            <div class="translated-text" data-i18n="tool_format_converter_desc">Convert images between different formats...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_formats_count</div>
+            <div class="translated-text" data-i18n="tool_formats_count">📂 6+ formats</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_batch_convert</div>
+            <div class="translated-text" data-i18n="tool_batch_convert">🔄 Batch convert</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_image_resizer_title</div>
+            <div class="translated-text" data-i18n="tool_image_resizer_title">Image Resizer</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_image_resizer_desc</div>
+            <div class="translated-text" data-i18n="tool_image_resizer_desc">Resize images to specific dimensions...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_precise_control</div>
+            <div class="translated-text" data-i18n="tool_precise_control">📐 Precise control</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_aspect_ratio_lock</div>
+            <div class="translated-text" data-i18n="tool_aspect_ratio_lock">🎯 Aspect ratio lock</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_image_rotator_title</div>
+            <div class="translated-text" data-i18n="tool_image_rotator_title">Image Rotator</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_image_rotator_desc</div>
+            <div class="translated-text" data-i18n="tool_image_rotator_desc">Rotate images by any angle...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_any_angle</div>
+            <div class="translated-text" data-i18n="tool_any_angle">🎛️ Any angle</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_flip_mirror</div>
+            <div class="translated-text" data-i18n="tool_flip_mirror">🔄 Flip & mirror</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_image_cropper_title</div>
+            <div class="translated-text" data-i18n="tool_image_cropper_title">Image Cropper</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_image_cropper_desc</div>
+            <div class="translated-text" data-i18n="tool_image_cropper_desc">Crop images to specific areas...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_precise_crop</div>
+            <div class="translated-text" data-i18n="tool_precise_crop">✂️ Precise crop</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_ratio_presets</div>
+            <div class="translated-text" data-i18n="tool_ratio_presets">📐 Ratio presets</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_watermark_title</div>
+            <div class="translated-text" data-i18n="tool_watermark_title">Watermark Tool</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_watermark_desc</div>
+            <div class="translated-text" data-i18n="tool_watermark_desc">Add text or logo watermarks...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_custom_design</div>
+            <div class="translated-text" data-i18n="tool_custom_design">🎨 Custom design</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_brand_protection</div>
+            <div class="translated-text" data-i18n="tool_brand_protection">🔒 Brand protection</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_background_remover_title</div>
+            <div class="translated-text" data-i18n="tool_background_remover_title">Background Remover</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_background_remover_desc</div>
+            <div class="translated-text" data-i18n="tool_background_remover_desc">Remove backgrounds from images...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_ai_powered</div>
+            <div class="translated-text" data-i18n="tool_ai_powered">🤖 AI-powered</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_one_click</div>
+            <div class="translated-text" data-i18n="tool_one_click">✨ One-click</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_filter_effects_title</div>
+            <div class="translated-text" data-i18n="tool_filter_effects_title">Filter Effects</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_filter_effects_desc</div>
+            <div class="translated-text" data-i18n="tool_filter_effects_desc">Apply various filters and effects...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_20_effects</div>
+            <div class="translated-text" data-i18n="tool_20_effects">🎭 20+ effects</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_live_preview</div>
+            <div class="translated-text" data-i18n="tool_live_preview">🎨 Live preview</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_color_palette_title</div>
+            <div class="translated-text" data-i18n="tool_color_palette_title">Color Palette</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_color_palette_desc</div>
+            <div class="translated-text" data-i18n="tool_color_palette_desc">Extract color palettes from images...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_color_extraction</div>
+            <div class="translated-text" data-i18n="tool_color_extraction">🌈 Color extraction</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">tool_design_ready</div>
+            <div class="translated-text" data-i18n="tool_design_ready">🎯 Design ready</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>分类标签翻译测试</h2>
+        
+        <div class="translation-test">
+            <div class="key-name">category_popular</div>
+            <div class="translated-text" data-i18n="category_popular">Popular</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">category_essential</div>
+            <div class="translated-text" data-i18n="category_essential">Essential</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">category_pro</div>
+            <div class="translated-text" data-i18n="category_pro">Pro</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">category_ai_powered</div>
+            <div class="translated-text" data-i18n="category_ai_powered">AI-Powered</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">category_creative</div>
+            <div class="translated-text" data-i18n="category_creative">Creative</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>模态框翻译测试</h2>
+        
+        <div class="translation-test">
+            <div class="key-name">modal_select_devices</div>
+            <div class="translated-text" data-i18n="modal_select_devices">选择传送设备</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">btn_cancel</div>
+            <div class="translated-text" data-i18n="btn_cancel">取消</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">btn_send_to_devices</div>
+            <div class="translated-text" data-i18n="btn_send_to_devices">传送到选中设备</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>硬编码文本识别</h2>
+        <p>以下是在 image-tools.html 中发现的硬编码文本，需要国际化：</p>
+        
+        <div class="hardcoded-text">
+            <strong>页面标题：</strong> "Image Tools - DropShare" (在 &lt;title&gt; 标签中)
+        </div>
+        
+        <div class="hardcoded-text">
+            <strong>JavaScript 中的硬编码文本：</strong>
+            <ul>
+                <li>"未发现可用设备"</li>
+                <li>"请确保其他设备已打开DropShare并连接到同一网络"</li>
+                <li>"未知设备"</li>
+                <li>"设备"</li>
+                <li>"iOS 手机"</li>
+                <li>"macOS 笔记本"</li>
+                <li>"Windows 桌面"</li>
+                <li>"传送到选中设备"</li>
+                <li>"传送到 {count} 个设备"</li>
+                <li>"文件已开始传送到 {count} 个设备！"</li>
+                <li>"文件已添加到分享列表！"</li>
+                <li>"传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？"</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+                
+                // Add language change event listener
+                const langSelect = document.getElementById('language-selector');
+                if (langSelect) {
+                    langSelect.addEventListener('change', function() {
+                        window.DROPSHARE_I18N.changeLanguage(this.value);
+                        updateStats();
+                    });
+                }
+                
+                // Initial stats update
+                updateStats();
+            }
+        });
+
+        function updateStats() {
+            const currentLang = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getCurrentLanguage() : 'en';
+            const langData = LANGUAGES[currentLang];
+            
+            if (langData && langData.translations) {
+                const allKeys = [
+                    'image_tools_title', 'image_tools_subtitle', 'nav_transfer', 'nav_rooms', 'nav_images', 'nav_audio', 'nav_video', 'nav_files',
+                    'tool_image_compressor_title', 'tool_image_compressor_desc', 'tool_compression_rate', 'tool_instant',
+                    'tool_format_converter_title', 'tool_format_converter_desc', 'tool_formats_count', 'tool_batch_convert',
+                    'tool_image_resizer_title', 'tool_image_resizer_desc', 'tool_precise_control', 'tool_aspect_ratio_lock',
+                    'tool_image_rotator_title', 'tool_image_rotator_desc', 'tool_any_angle', 'tool_flip_mirror',
+                    'tool_image_cropper_title', 'tool_image_cropper_desc', 'tool_precise_crop', 'tool_ratio_presets',
+                    'tool_watermark_title', 'tool_watermark_desc', 'tool_custom_design', 'tool_brand_protection',
+                    'tool_background_remover_title', 'tool_background_remover_desc', 'tool_ai_powered', 'tool_one_click',
+                    'tool_filter_effects_title', 'tool_filter_effects_desc', 'tool_20_effects', 'tool_live_preview',
+                    'tool_color_palette_title', 'tool_color_palette_desc', 'tool_color_extraction', 'tool_design_ready',
+                    'category_popular', 'category_essential', 'category_pro', 'category_ai_powered', 'category_creative',
+                    'modal_select_devices', 'btn_cancel', 'btn_send_to_devices'
+                ];
+                
+                const totalKeys = allKeys.length;
+                const translatedKeys = allKeys.filter(key => langData.translations[key]).length;
+                const coverage = Math.round((translatedKeys / totalKeys) * 100);
+                
+                document.getElementById('total-keys').textContent = totalKeys;
+                document.getElementById('translated-keys').textContent = translatedKeys;
+                document.getElementById('coverage').textContent = coverage + '%';
+                
+                // Update visual indicators
+                document.querySelectorAll('.translated-text').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (langData.translations[key]) {
+                        element.classList.remove('missing');
+                        element.classList.add('success');
+                    } else {
+                        element.classList.add('missing');
+                        element.classList.remove('success');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+

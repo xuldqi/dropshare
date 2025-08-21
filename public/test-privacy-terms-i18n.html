@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy & Terms I18n Test - DropShare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .language-selector {
+            margin: 20px 0;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 4px;
+        }
+        .language-selector select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .translation-test {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .key-name {
+            font-weight: bold;
+            color: #007bff;
+            font-family: monospace;
+        }
+        .translated-text {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .missing {
+            color: #dc3545;
+            font-style: italic;
+        }
+        .success {
+            color: #28a745;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Privacy & Terms 页面国际化测试</h1>
+    
+    <div class="language-selector">
+        <label for="language-selector">选择语言：</label>
+        <select id="language-selector">
+            <option value="en">English</option>
+            <option value="zh">中文简体</option>
+            <option value="zh-tw">中文繁體</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+        </select>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-number" id="total-keys">0</div>
+            <div class="stat-label">总翻译键数</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="translated-keys">0</div>
+            <div class="stat-label">已翻译键数</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="coverage">0%</div>
+            <div class="stat-label">翻译覆盖率</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Privacy 页面翻译测试</h2>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_page_title</div>
+            <div class="translated-text" data-i18n="privacy_page_title">Privacy Policy - DropShare</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_header_title</div>
+            <div class="translated-text" data-i18n="privacy_header_title">Privacy Policy</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_last_updated</div>
+            <div class="translated-text" data-i18n="privacy_last_updated">Last Updated:</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_intro</div>
+            <div class="translated-text" data-i18n="privacy_intro">At DropShare, we take your privacy seriously...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section1_title</div>
+            <div class="translated-text" data-i18n="privacy_section1_title">Information We Collect</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section1_content</div>
+            <div class="translated-text" data-i18n="privacy_section1_content">DropShare is designed with privacy in mind...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_device_info_title</div>
+            <div class="translated-text" data-i18n="privacy_device_info_title">Device Information:</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_device_info_content</div>
+            <div class="translated-text" data-i18n="privacy_device_info_content">We temporarily collect your device name...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_network_info_title</div>
+            <div class="translated-text" data-i18n="privacy_network_info_title">Network Information:</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_network_info_content</div>
+            <div class="translated-text" data-i18n="privacy_network_info_content">We collect your local IP address...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_files_messages_title</div>
+            <div class="translated-text" data-i18n="privacy_files_messages_title">Files and Messages:</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_files_messages_content</div>
+            <div class="translated-text" data-i18n="privacy_files_messages_content">The files and messages you share...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section2_title</div>
+            <div class="translated-text" data-i18n="privacy_section2_title">How We Use Your Information</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section2_content</div>
+            <div class="translated-text" data-i18n="privacy_section2_content">The limited information we collect...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section3_title</div>
+            <div class="translated-text" data-i18n="privacy_section3_title">Cookies and Tracking Technologies</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section3_content</div>
+            <div class="translated-text" data-i18n="privacy_section3_content">DropShare uses minimal cookies...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section4_title</div>
+            <div class="translated-text" data-i18n="privacy_section4_title">Third-Party Services</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section4_content1</div>
+            <div class="translated-text" data-i18n="privacy_section4_content1">DropShare may display advertisements...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section4_content2</div>
+            <div class="translated-text" data-i18n="privacy_section4_content2">You may opt out of personalized advertising...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section5_title</div>
+            <div class="translated-text" data-i18n="privacy_section5_title">Data Security</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section5_content</div>
+            <div class="translated-text" data-i18n="privacy_section5_content">We implement appropriate technical...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section6_title</div>
+            <div class="translated-text" data-i18n="privacy_section6_title">Children's Privacy</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section6_content</div>
+            <div class="translated-text" data-i18n="privacy_section6_content">Our services are not directed to children...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section7_title</div>
+            <div class="translated-text" data-i18n="privacy_section7_title">Changes to This Privacy Policy</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section7_content</div>
+            <div class="translated-text" data-i18n="privacy_section7_content">We may update our Privacy Policy...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section8_title</div>
+            <div class="translated-text" data-i18n="privacy_section8_title">Contact Us</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section8_content</div>
+            <div class="translated-text" data-i18n="privacy_section8_content">If you have any questions...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">privacy_section8_email</div>
+            <div class="translated-text" data-i18n="privacy_section8_email">Email: privacy@dropshare.example.com</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Terms 页面翻译测试</h2>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_page_title</div>
+            <div class="translated-text" data-i18n="terms_page_title">Terms of Service - DropShare</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_header_title</div>
+            <div class="translated-text" data-i18n="terms_header_title">Terms of Service</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_last_updated</div>
+            <div class="translated-text" data-i18n="terms_last_updated">Last Updated:</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_intro</div>
+            <div class="translated-text" data-i18n="terms_intro">Welcome to DropShare...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_section1_title</div>
+            <div class="translated-text" data-i18n="terms_section1_title">Acceptance of Terms</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_section1_content</div>
+            <div class="translated-text" data-i18n="terms_section1_content">By using DropShare, you agree...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_section5_title</div>
+            <div class="translated-text" data-i18n="terms_section5_title">Changes to Terms</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_section5_content</div>
+            <div class="translated-text" data-i18n="terms_section5_content">We reserve the right to modify...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_section6_title</div>
+            <div class="translated-text" data-i18n="terms_section6_title">Contact Us</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_section6_content</div>
+            <div class="translated-text" data-i18n="terms_section6_content">If you have any questions about these terms...</div>
+        </div>
+        
+        <div class="translation-test">
+            <div class="key-name">terms_section6_email</div>
+            <div class="translated-text" data-i18n="terms_section6_email">Email: legal@dropshare.example.com</div>
+        </div>
+    </div>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+                
+                // Add language change event listener
+                const langSelect = document.getElementById('language-selector');
+                if (langSelect) {
+                    langSelect.addEventListener('change', function() {
+                        window.DROPSHARE_I18N.changeLanguage(this.value);
+                        updateStats();
+                    });
+                }
+                
+                // Initial stats update
+                updateStats();
+            }
+        });
+
+        function updateStats() {
+            const currentLang = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getCurrentLanguage() : 'en';
+            const langData = LANGUAGES[currentLang];
+            
+            if (langData && langData.translations) {
+                const privacyKeys = [
+                    'privacy_page_title', 'privacy_header_title', 'privacy_last_updated', 'privacy_intro',
+                    'privacy_section1_title', 'privacy_section1_content', 'privacy_device_info_title', 'privacy_device_info_content',
+                    'privacy_network_info_title', 'privacy_network_info_content', 'privacy_files_messages_title', 'privacy_files_messages_content',
+                    'privacy_section2_title', 'privacy_section2_content', 'privacy_section3_title', 'privacy_section3_content',
+                    'privacy_section4_title', 'privacy_section4_content1', 'privacy_section4_content2', 'privacy_section5_title',
+                    'privacy_section5_content', 'privacy_section6_title', 'privacy_section6_content', 'privacy_section7_title',
+                    'privacy_section7_content', 'privacy_section8_title', 'privacy_section8_content', 'privacy_section8_email'
+                ];
+                
+                const termsKeys = [
+                    'terms_page_title', 'terms_header_title', 'terms_last_updated', 'terms_intro',
+                    'terms_section1_title', 'terms_section1_content', 'terms_section5_title', 'terms_section5_content',
+                    'terms_section6_title', 'terms_section6_content', 'terms_section6_email'
+                ];
+                
+                const allKeys = [...privacyKeys, ...termsKeys];
+                const totalKeys = allKeys.length;
+                const translatedKeys = allKeys.filter(key => langData.translations[key]).length;
+                const coverage = Math.round((translatedKeys / totalKeys) * 100);
+                
+                document.getElementById('total-keys').textContent = totalKeys;
+                document.getElementById('translated-keys').textContent = translatedKeys;
+                document.getElementById('coverage').textContent = coverage + '%';
+                
+                // Update visual indicators
+                document.querySelectorAll('.translated-text').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (langData.translations[key]) {
+                        element.classList.remove('missing');
+                        element.classList.add('success');
+                    } else {
+                        element.classList.add('missing');
+                        element.classList.remove('success');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语言系统简单测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-box { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        .error { color: red; }
+        .success { color: green; }
+        select { margin: 10px; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>语言系统测试</h1>
+    
+    <div class="test-box">
+        <h3>系统状态检查</h3>
+        <div id="status">检查中...</div>
+    </div>
+
+    <div class="test-box">
+        <h3>语言选择器</h3>
+        <select id="language-selector">
+            <option value="en">English</option>
+            <option value="zh">中文简体</option>
+            <option value="zh-tw">中文繁體</option>
+            <option value="ja">日本語</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="ko">한국어</option>
+        </select>
+        <p>测试向后兼容性: 
+            <button onclick="testOldAPI()">使用DROPSHARE_I18N.changeLanguage('zh')</button>
+        </p>
+    </div>
+
+    <div class="test-box">
+        <h3>翻译测试</h3>
+        <p>标题: <span data-i18n="hero_title">测试文本</span></p>
+        <p>按钮: <span data-i18n="btn_start_sharing">测试文本</span></p>
+        <p>导航: <span data-i18n="nav_images">测试文本</span></p>
+    </div>
+
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        console.log('=== 语言系统调试开始 ===');
+        
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            let html = '';
+            
+            html += '<p><strong>检查结果:</strong></p>';
+            html += `<p>window.LANGUAGES 存在: <span class="${window.LANGUAGES ? 'success' : 'error'}">${!!window.LANGUAGES}</span></p>`;
+            html += `<p>window.DROPSHARE_I18N 存在: <span class="${window.DROPSHARE_I18N ? 'success' : 'error'}">${!!window.DROPSHARE_I18N}</span></p>`;
+            
+            if (window.DROPSHARE_I18N) {
+                html += `<p>当前语言: <span class="success">${window.DROPSHARE_I18N.getCurrentLanguage()}</span></p>`;
+                
+                // 测试几个关键翻译
+                const testKeys = ['hero_title', 'btn_start_sharing', 'nav_images'];
+                html += '<p><strong>翻译测试:</strong></p>';
+                testKeys.forEach(key => {
+                    const translation = window.DROPSHARE_I18N.translate(key);
+                    html += `<p>- ${key}: "${translation}" <span class="${translation !== key ? 'success' : 'error'}">${translation !== key ? '✓' : '✗'}</span></p>`;
+                });
+            }
+            
+            statusDiv.innerHTML = html;
+        }
+
+        function updateTranslations() {
+            const elements = document.querySelectorAll('[data-i18n]');
+            console.log(`找到 ${elements.length} 个需要翻译的元素`);
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (window.LanguageManager) {
+                    const translation = window.LanguageManager.t(key);
+                    element.textContent = translation;
+                    console.log(`翻译 "${key}" -> "${translation}"`);
+                }
+            });
+        }
+
+        function setupLanguageSelector() {
+            const selector = document.getElementById('language-selector');
+            if (selector && window.LanguageManager) {
+                selector.value = window.LanguageManager.currentLanguage;
+                
+                selector.addEventListener('change', (e) => {
+                    console.log(`切换语言到: ${e.target.value}`);
+                    window.LanguageManager.setLanguage(e.target.value);
+                    updateTranslations();
+                    updateStatus();
+                });
+                
+                console.log('语言选择器设置完成');
+            }
+        }
+
+        // 等待LanguageManager加载
+        function waitForInit() {
+            if (window.LanguageManager) {
+                console.log('LanguageManager 已加载');
+                updateStatus();
+                updateTranslations();
+                setupLanguageSelector();
+            } else {
+                console.log('等待 LanguageManager 加载...');
+                setTimeout(waitForInit, 100);
+            }
+        }
+
+        // 测试旧API的兼容性
+        function testOldAPI() {
+            console.log('测试DROPSHARE_I18N.changeLanguage()');
+            if (window.DROPSHARE_I18N && window.DROPSHARE_I18N.changeLanguage) {
+                window.DROPSHARE_I18N.changeLanguage('zh');
+                document.getElementById('language-selector').value = 'zh';
+                updateStatus();
+            } else {
+                alert('DROPSHARE_I18N 不可用!');
+            }
+        }
+
+        // 页面加载完成后开始
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', waitForInit);
+        } else {
+            waitForInit();
+        }
+    </script>
+</body>
+</html>

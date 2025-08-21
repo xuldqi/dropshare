@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Language Debug - DropShare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .debug-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .debug-title {
+            color: #333;
+            border-bottom: 2px solid #3367d6;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .debug-item {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .debug-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .debug-value {
+            color: #333;
+            font-family: monospace;
+        }
+        .button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background: #2563eb;
+        }
+        .button.danger {
+            background: #ef4444;
+        }
+        .button.danger:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <h1>DropShare 语言调试工具</h1>
+    
+    <div class="debug-section">
+        <h2 class="debug-title">当前语言设置状态</h2>
+        <div class="debug-item">
+            <span class="debug-label">浏览器语言:</span>
+            <span class="debug-value" id="browserLang">-</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">localStorage 中保存的语言:</span>
+            <span class="debug-value" id="savedLang">-</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">当前使用的语言:</span>
+            <span class="debug-value" id="currentLang">-</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">检测到的语言代码:</span>
+            <span class="debug-value" id="detectedLang">-</span>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <h2 class="debug-title">问题诊断</h2>
+        <div id="diagnosis">正在分析...</div>
+    </div>
+
+    <div class="debug-section">
+        <h2 class="debug-title">解决方案</h2>
+        <button class="button danger" onclick="clearLanguageStorage()">清除语言设置 (重置为浏览器默认)</button>
+        <button class="button" onclick="setLanguage('zh')">设置为中文</button>
+        <button class="button" onclick="setLanguage('en')">设置为英文</button>
+        <button class="button" onclick="setLanguage('ja')">设置为日语</button>
+        <button class="button" onclick="refreshDebug()">刷新调试信息</button>
+    </div>
+
+    <div class="debug-section">
+        <h2 class="debug-title">操作结果</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function getBrowserLanguage() {
+            return navigator.language || navigator.userLanguage || 'unknown';
+        }
+
+        function getSavedLanguage() {
+            try {
+                return localStorage.getItem('dropshare_language') || 'none';
+            } catch (e) {
+                return 'error';
+            }
+        }
+
+        function detectLanguage() {
+            const browserLang = getBrowserLanguage();
+            const langCode = browserLang.toLowerCase();
+            
+            // 简化的语言检测逻辑
+            if (langCode.startsWith('zh')) {
+                if (langCode.includes('tw') || langCode.includes('hk')) {
+                    return 'zh-tw';
+                }
+                return 'zh';
+            }
+            if (langCode.startsWith('ja')) return 'ja';
+            if (langCode.startsWith('ko')) return 'ko';
+            if (langCode.startsWith('ar')) return 'ar';
+            if (langCode.startsWith('ru')) return 'ru';
+            if (langCode.startsWith('fr')) return 'fr';
+            if (langCode.startsWith('de')) return 'de';
+            if (langCode.startsWith('es')) return 'es';
+            if (langCode.startsWith('pt')) return 'pt';
+            
+            return 'en'; // 默认英文
+        }
+
+        function updateDebugInfo() {
+            const browserLang = getBrowserLanguage();
+            const savedLang = getSavedLanguage();
+            const detectedLang = detectLanguage();
+            const currentLang = savedLang !== 'none' ? savedLang : detectedLang;
+
+            document.getElementById('browserLang').textContent = browserLang;
+            document.getElementById('savedLang').textContent = savedLang;
+            document.getElementById('detectedLang').textContent = detectedLang;
+            document.getElementById('currentLang').textContent = currentLang;
+
+            // 诊断问题
+            let diagnosis = '';
+            if (savedLang === 'ja' && !browserLang.startsWith('ja')) {
+                diagnosis += '❌ 检测到问题: localStorage 中保存了日语设置，但您的浏览器语言不是日语。<br>';
+                diagnosis += '📝 建议: 点击"清除语言设置"按钮重置为浏览器默认语言。<br>';
+            } else if (savedLang === 'none') {
+                diagnosis += '✅ 没有保存的语言设置，将使用浏览器检测结果。<br>';
+            } else {
+                diagnosis += '📄 使用已保存的语言设置: ' + savedLang + '<br>';
+            }
+
+            if (browserLang.startsWith('zh')) {
+                diagnosis += '🌏 检测到中文浏览器，建议语言: 中文 (zh)<br>';
+            }
+
+            document.getElementById('diagnosis').innerHTML = diagnosis;
+        }
+
+        function clearLanguageStorage() {
+            try {
+                localStorage.removeItem('dropshare_language');
+                logResult('✅ 已清除语言设置，页面将使用浏览器默认语言');
+                updateDebugInfo();
+            } catch (e) {
+                logResult('❌ 清除失败: ' + e.message);
+            }
+        }
+
+        function setLanguage(lang) {
+            try {
+                localStorage.setItem('dropshare_language', lang);
+                logResult('✅ 已设置语言为: ' + lang);
+                updateDebugInfo();
+            } catch (e) {
+                logResult('❌ 设置失败: ' + e.message);
+            }
+        }
+
+        function refreshDebug() {
+            updateDebugInfo();
+            logResult('🔄 调试信息已刷新');
+        }
+
+        function logResult(message) {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            results.innerHTML = `[${timestamp}] ${message}<br>` + results.innerHTML;
+        }
+
+        // 页面加载时更新调试信息
+        updateDebugInfo();
+    </script>
+</body>
+</html>

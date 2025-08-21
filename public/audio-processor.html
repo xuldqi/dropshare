@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="page_title">音频处理器 - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #718096;
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
+        
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 80px 40px;
+            margin: 40px auto;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            max-width: 600px;
+        }
+        
+        .upload-area:hover {
+            border-color: #3182ce;
+            background: #f7fafc;
+        }
+        
+        .upload-area.dragover {
+            border-color: #3182ce;
+            background: #ebf8ff;
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #a0aec0;
+            margin-bottom: 24px;
+        }
+        
+        .upload-button {
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .upload-button:hover {
+            background: #2c5aa0;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        }
+        
+        .upload-text {
+            color: #718096;
+            font-size: 1rem;
+            margin-top: 16px;
+        }
+        
+        .processing-panel {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: left;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .file-icon {
+            font-size: 2rem;
+            margin-right: 16px;
+            color: #3182ce;
+        }
+        
+        .file-details h4 {
+            margin: 0 0 4px 0;
+            color: #2d3748;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .file-details p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        
+        .tool-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 24px 0;
+        }
+        
+        .tool-option {
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .tool-option:hover {
+            border-color: #3182ce;
+            background: #f7fafc;
+        }
+        
+        .tool-option.selected {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+        }
+        
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .tool-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .tool-desc {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        .process-button {
+            width: 100%;
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 24px;
+        }
+        
+        .process-button:hover:not(:disabled) {
+            background: #2c5aa0;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        }
+        
+        .process-button:disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .progress-section {
+            margin: 24px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3182ce;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.875rem;
+            color: #718096;
+            text-align: center;
+        }
+        
+        .results-section {
+            margin-top: 32px;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .result-info h4 {
+            margin: 0 0 4px 0;
+            color: #2d3748;
+            font-weight: 600;
+        }
+        
+        .result-info p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-button {
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .action-button.primary {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .footer-info {
+            max-width: 600px;
+            margin: 80px auto 40px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .footer-text {
+            color: #3182ce;
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+        }
+        
+        .rating-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .rating-text {
+            color: #718096;
+            font-size: 0.875rem;
+        }
+        
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stars {
+            color: #fbd38d;
+            font-size: 1.2rem;
+        }
+        
+        .rating-score {
+            color: #3182ce;
+            font-weight: 600;
+        }
+        
+        /* 工具参数设置样式 */
+        .tool-settings {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .setting-group {
+            margin-bottom: 16px;
+        }
+        
+        .setting-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+        
+        .setting-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .range-input {
+            width: 100%;
+            margin: 8px 0;
+        }
+        
+        .range-value {
+            display: inline-block;
+            width: 60px;
+            text-align: center;
+            font-weight: 600;
+            color: #3182ce;
+        }
+        
+        /* 设备选择弹窗样式 */
+        .device-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1200;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .device-modal.show {
+            display: flex;
+        }
+        
+        .device-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .device-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .device-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+        
+        .device-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .device-modal-close:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .device-list {
+            margin-bottom: 20px;
+        }
+        
+        .device-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .device-item:hover {
+            border-color: #ff9a9e;
+            background: #fff5f5;
+        }
+        
+        .device-item.selected {
+            border-color: #ff9a9e;
+            background: #ffe4e6;
+        }
+        
+        .device-checkbox {
+            margin-right: 12px;
+        }
+        
+        .device-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        
+        .device-info {
+            flex: 1;
+        }
+        
+        .device-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        
+        .device-type {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .no-devices {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .no-devices-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        
+        .device-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-btn-cancel {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .modal-btn-cancel:hover {
+            background: #e9ecef;
+        }
+        
+        .modal-btn-send {
+            background: #ff9a9e;
+            color: white;
+        }
+        
+        .modal-btn-send:hover {
+            background: #ff8a90;
+        }
+        
+        .modal-btn-send:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            background: #ffffff;
+        }
+        
+        .page-main-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: #3182ce;
+            text-decoration: none;
+            border: 1px solid #3182ce;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .back-button:hover {
+            background: #3182ce;
+            color: white;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .lang-selector select {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1 class="page-main-title">🎧 <span data-i18n="audio_processor_title">音频处理器</span></h1>
+        <div class="header-buttons">
+            <div class="control-buttons">
+                <div class="lang-selector">
+                    <select id="language-selector" title="选择语言" data-i18n="title_select_language">
+                        <option value="en">English</option>
+                        <option value="zh">中文简体</option>
+                        <option value="zh-tw">中文繁體</option>
+                        <option value="ja">日本語</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ar">العربية</option>
+                        <option value="ko">한국어</option>
+                    </select>
+                </div>
+            </div>
+            <a href="audio-tools.html" class="back-button">← <span data-i18n="back_to_audio_tools">音频工具</span></a>
+            <a href="index.html" class="back-button">🏠 <span data-i18n="btn_home">首页</span></a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title" data-i18n="audio_processor_subtitle">Professional Audio Processing</h1>
+        <p class="page-subtitle" data-i18n="audio_processor_description">Apply effects and process your audio files</p>
+        
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">🎵</div>
+            <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+                📤 <span data-i18n="btn_upload_from_pc">Upload from PC or Mobile</span>
+            </button>
+            <div class="upload-text" data-i18n="drop_files_here">or Drag files here</div>
+            <input type="file" id="fileInput" multiple accept="audio/*" style="display: none;">
+        </div>
+        
+        <div class="processing-panel" id="processingPanel" style="display: none;">
+            <div id="fileList"></div>
+            
+            <h3 data-i18n="label_select_tool">选择处理工具：</h3>
+            <div class="tool-selector" id="toolSelector">
+                <div class="tool-option" data-tool="trim">
+                    <div class="tool-icon">✂️</div>
+                    <div class="tool-name" data-i18n="tool_trim">裁剪音频</div>
+                    <div class="tool-desc" data-i18n="tool_trim_desc">剪切音频片段</div>
+                </div>
+                <div class="tool-option" data-tool="volume">
+                    <div class="tool-icon">🔊</div>
+                    <div class="tool-name" data-i18n="tool_volume">音量调节</div>
+                    <div class="tool-desc" data-i18n="tool_volume_desc">调整音频音量</div>
+                </div>
+                <div class="tool-option" data-tool="speed">
+                    <div class="tool-icon">⚡</div>
+                    <div class="tool-name" data-i18n="tool_speed">速度调节</div>
+                    <div class="tool-desc" data-i18n="tool_speed_desc">加速或减速音频</div>
+                </div>
+                <div class="tool-option" data-tool="fade">
+                    <div class="tool-icon">〰️</div>
+                    <div class="tool-name" data-i18n="tool_fade">淡入淡出</div>
+                    <div class="tool-desc" data-i18n="tool_fade_desc">添加淡入淡出效果</div>
+                </div>
+                <div class="tool-option" data-tool="normalize">
+                    <div class="tool-icon">📊</div>
+                    <div class="tool-name" data-i18n="tool_normalize">音频标准化</div>
+                    <div class="tool-desc" data-i18n="tool_normalize_desc">标准化音频电平</div>
+                </div>
+                <div class="tool-option" data-tool="reverse">
+                    <div class="tool-icon">🔄</div>
+                    <div class="tool-name" data-i18n="tool_reverse">反向播放</div>
+                    <div class="tool-desc" data-i18n="tool_reverse_desc">反转音频播放</div>
+                </div>
+            </div>
+            
+            <!-- 工具设置区域 -->
+            <div class="tool-settings" id="toolSettings">
+                <!-- 裁剪设置 -->
+                <div id="trimSettings" style="display: none;">
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="label_start_time">开始时间（秒）：</label>
+                        <input type="number" class="setting-input" id="trimStart" min="0" step="0.1" value="0">
+                    </div>
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="label_end_time">结束时间（秒）：</label>
+                        <input type="number" class="setting-input" id="trimEnd" min="0" step="0.1" value="10">
+                    </div>
+                </div>
+                
+                <!-- 音量设置 -->
+                <div id="volumeSettings" style="display: none;">
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="label_volume_adjust">音量调节：</label>
+                        <input type="range" class="range-input" id="volumeLevel" min="0" max="200" value="100">
+                        <span class="range-value"><span id="volumeValue">100</span>%</span>
+                    </div>
+                </div>
+                
+                <!-- 速度设置 -->
+                <div id="speedSettings" style="display: none;">
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="label_speed_adjust">速度调节：</label>
+                        <input type="range" class="range-input" id="speedLevel" min="50" max="200" value="100">
+                        <span class="range-value"><span id="speedValue">100</span>%</span>
+                    </div>
+                </div>
+                
+                <!-- 淡入淡出设置 -->
+                <div id="fadeSettings" style="display: none;">
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="label_fade_in_duration">淡入时长（秒）：</label>
+                        <input type="number" class="setting-input" id="fadeInDuration" min="0" max="10" step="0.1" value="2">
+                    </div>
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="label_fade_out_duration">淡出时长（秒）：</label>
+                        <input type="number" class="setting-input" id="fadeOutDuration" min="0" max="10" step="0.1" value="2">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="process-button" id="processBtn" disabled data-i18n="btn_process">开始处理</button>
+            
+            <div class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-text" id="progressText" data-i18n="status_processing">正在处理...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h3 data-i18n="label_processing_results">处理结果:</h3>
+                <div id="resultsList"></div>
+            </div>
+        </div>
+        
+        <div class="footer-info">
+            <div class="footer-text" data-i18n="footer_file_deletion_notice">Uploaded and generated files are deleted 1 hour after upload</div>
+            <div class="rating-section">
+                <div class="rating-text" data-i18n="rating_help_improve">Help Us Improve</div>
+                <div class="rating-display">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-score">4.8 (1703)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FFmpeg 懒加载管理器 -->
+    <script src="scripts/ffmpeg-loader.js"></script>
+    
+    <script>
+        class AudioProcessor {
+            constructor() {
+                this.ffmpeg = null;
+                this.selectedFiles = [];
+                this.selectedTool = '';
+                this.processedFiles = [];
+                this.ffmpegReady = false;
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+            }
+            
+            async ensureFFmpegReady() {
+                if (this.ffmpegReady && this.ffmpeg) {
+                    return this.ffmpeg;
+                }
+                
+                // 显示加载状态
+                this.showLoadingState();
+                
+                try {
+                    // 使用全局懒加载管理器获取 FFmpeg
+                    this.ffmpeg = await window.ffmpegLoader.getFFmpeg({
+                        onProgress: (percent, text) => {
+                            this.updateProgress(percent, text);
+                        },
+                        onStatusUpdate: (status) => {
+                            this.updateLoadingStatus(status);
+                        }
+                    });
+                    
+                    this.ffmpegReady = true;
+                    this.hideLoadingState();
+                    return this.ffmpeg;
+                    
+                } catch (error) {
+                    console.error('FFmpeg加载失败:', error);
+                    this.showLoadingError(error);
+                    throw error;
+                }
+            }
+            
+            showLoadingState() {
+                // 创建加载覆盖层
+                if (!document.getElementById('ffmpegLoadingOverlay')) {
+                    const overlay = document.createElement('div');
+                    overlay.id = 'ffmpegLoadingOverlay';
+                    overlay.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.8);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 1000;
+                        color: white;
+                    `;
+                    
+                    overlay.innerHTML = `
+                        <div style="text-align: center; background: white; color: #333; padding: 30px; border-radius: 12px; max-width: 400px;">
+                            <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
+                            <h3 id="loadingTitle">正在加载音频处理引擎...</h3>
+                            <p id="loadingStatus">首次使用需要下载约25MB的处理库，请稍候...</p>
+                            <div class="progress-bar" style="margin: 20px 0;">
+                                <div class="progress-fill" id="loadingProgressFill" style="width: 0%;"></div>
+                            </div>
+                            <div id="loadingProgressText">准备加载...</div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(overlay);
+                }
+            }
+            
+            hideLoadingState() {
+                const overlay = document.getElementById('ffmpegLoadingOverlay');
+                if (overlay) {
+                    overlay.remove();
+                }
+            }
+            
+            updateLoadingStatus(status) {
+                const statusElement = document.getElementById('loadingStatus');
+                if (statusElement) {
+                    statusElement.textContent = status;
+                }
+            }
+            
+            showLoadingError(error) {
+                const overlay = document.getElementById('ffmpegLoadingOverlay');
+                if (overlay) {
+                    overlay.innerHTML = `
+                        <div style="text-align: center; background: white; color: #333; padding: 30px; border-radius: 12px; max-width: 400px;">
+                            <div style="font-size: 2em; margin-bottom: 15px; color: #e53e3e;">❌</div>
+                            <h3 style="color: #e53e3e;">音频处理引擎加载失败</h3>
+                            <p>${error.message}</p>
+                            <p>请检查网络连接并重试</p>
+                            <div style="margin-top: 20px;">
+                                <button class="action-button primary" onclick="location.reload()">重新加载页面</button>
+                                <button class="action-button" onclick="document.getElementById('ffmpegLoadingOverlay').remove()">关闭</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            bindEvents() {
+                const uploadArea = document.getElementById('uploadArea');
+                const fileInput = document.getElementById('fileInput');
+                const toolOptions = document.querySelectorAll('.tool-option');
+                const processBtn = document.getElementById('processBtn');
+                
+                // 拖拽上传
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    this.handleFiles(e.dataTransfer.files);
+                });
+                
+                // 文件选择
+                fileInput.addEventListener('change', (e) => {
+                    this.handleFiles(e.target.files);
+                });
+                
+                // 工具选择
+                toolOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        toolOptions.forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                        this.selectedTool = option.dataset.tool;
+                        this.showToolSettings(this.selectedTool);
+                        processBtn.disabled = false;
+                    });
+                });
+                
+                // 处理按钮
+                processBtn.addEventListener('click', () => {
+                    this.startProcessing();
+                });
+                
+                // 音量滑块
+                const volumeLevel = document.getElementById('volumeLevel');
+                const volumeValue = document.getElementById('volumeValue');
+                volumeLevel.addEventListener('input', () => {
+                    volumeValue.textContent = volumeLevel.value;
+                });
+                
+                // 速度滑块
+                const speedLevel = document.getElementById('speedLevel');
+                const speedValue = document.getElementById('speedValue');
+                speedLevel.addEventListener('input', () => {
+                    speedValue.textContent = speedLevel.value;
+                });
+            }
+            
+            handleFiles(files) {
+                const audioFiles = Array.from(files).filter(file => file.type.startsWith('audio/'));
+                
+                if (audioFiles.length === 0) {
+                    alert('请选择音频文件！');
+                    return;
+                }
+                
+                this.selectedFiles = audioFiles;
+                this.showFileList();
+                document.getElementById('processingPanel').style.display = 'block';
+            }
+            
+            showFileList() {
+                const fileList = document.getElementById('fileList');
+                let html = '';
+                
+                this.selectedFiles.forEach((file, index) => {
+                    html += `
+                        <div class="file-item">
+                            <div class="file-icon">🎵</div>
+                            <div class="file-details">
+                                <h4>${file.name}</h4>
+                                <p>${this.formatFileSize(file.size)} • ${file.type}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                fileList.innerHTML = html;
+            }
+            
+            showToolSettings(tool) {
+                const toolSettings = document.getElementById('toolSettings');
+                const allSettings = toolSettings.querySelectorAll('[id$="Settings"]');
+                
+                // 隐藏所有设置
+                allSettings.forEach(setting => setting.style.display = 'none');
+                
+                // 显示选中工具的设置
+                const selectedSettings = document.getElementById(tool + 'Settings');
+                if (selectedSettings) {
+                    selectedSettings.style.display = 'block';
+                    toolSettings.style.display = 'block';
+                } else {
+                    toolSettings.style.display = 'none';
+                }
+            }
+            
+            async startProcessing() {
+                if (!this.selectedTool) {
+                    alert('请选择处理工具！');
+                    return;
+                }
+                
+                try {
+                    // 确保 FFmpeg 已加载（懒加载）
+                    await this.ensureFFmpegReady();
+                    
+                    document.getElementById('progressSection').style.display = 'block';
+                    document.getElementById('processBtn').disabled = true;
+                    
+                    this.processedFiles = [];
+                    
+                    for (let i = 0; i < this.selectedFiles.length; i++) {
+                        const file = this.selectedFiles[i];
+                        this.updateProgress(0, `准备处理: ${file.name}`);
+                        
+                        try {
+                            const processedFile = await this.processAudio(file);
+                            this.processedFiles.push(processedFile);
+                            
+                            const overallProgress = ((i + 1) / this.selectedFiles.length) * 100;
+                            this.updateProgress(overallProgress, `已完成 ${i + 1}/${this.selectedFiles.length} 个文件`);
+                        } catch (error) {
+                            console.error('处理失败:', error);
+                            alert(`处理失败 ${file.name}: ${error.message}`);
+                        }
+                    }
+                    
+                    setTimeout(() => {
+                        this.showResults();
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('FFmpeg 加载失败:', error);
+                    alert('音频处理引擎加载失败，请检查网络连接后重试');
+                    document.getElementById('processBtn').disabled = false;
+                }
+            }
+            
+            async processAudio(file) {
+                const inputFileName = `input_${Date.now()}.${this.getFileExtension(file.name)}`;
+                const outputFileName = `output_${Date.now()}.${this.getFileExtension(file.name)}`;
+                
+                // 将文件写入 FFmpeg 文件系统
+                await this.ffmpeg.writeFile(inputFileName, new Uint8Array(await file.arrayBuffer()));
+                
+                // 根据选择的工具构建命令
+                let args = ['-i', inputFileName];
+                
+                switch (this.selectedTool) {
+                    case 'trim':
+                        const trimStart = document.getElementById('trimStart').value;
+                        const trimEnd = document.getElementById('trimEnd').value;
+                        const duration = trimEnd - trimStart;
+                        args.push('-ss', trimStart, '-t', duration);
+                        break;
+                        
+                    case 'volume':
+                        const volumeLevel = document.getElementById('volumeLevel').value;
+                        const volumeRatio = volumeLevel / 100;
+                        args.push('-af', `volume=${volumeRatio}`);
+                        break;
+                        
+                    case 'speed':
+                        const speedLevel = document.getElementById('speedLevel').value;
+                        const speedRatio = speedLevel / 100;
+                        args.push('-filter:a', `atempo=${speedRatio}`);
+                        break;
+                        
+                    case 'fade':
+                        const fadeIn = document.getElementById('fadeInDuration').value;
+                        const fadeOut = document.getElementById('fadeOutDuration').value;
+                        args.push('-af', `afade=t=in:st=0:d=${fadeIn},afade=t=out:st=10:d=${fadeOut}`);
+                        break;
+                        
+                    case 'normalize':
+                        args.push('-af', 'loudnorm');
+                        break;
+                        
+                    case 'reverse':
+                        args.push('-af', 'areverse');
+                        break;
+                }
+                
+                args.push(outputFileName);
+                
+                // 执行处理
+                await this.ffmpeg.exec(args);
+                
+                // 读取处理后的文件
+                const data = await this.ffmpeg.readFile(outputFileName);
+                
+                // 清理临时文件
+                await this.ffmpeg.deleteFile(inputFileName);
+                await this.ffmpeg.deleteFile(outputFileName);
+                
+                // 创建新文件对象
+                const newFileName = this.getProcessedFileName(file.name);
+                
+                return new File([data], newFileName, { type: file.type });
+            }
+            
+            getProcessedFileName(originalName) {
+                const nameParts = originalName.split('.');
+                const extension = nameParts.pop();
+                const baseName = nameParts.join('.');
+                
+                const toolSuffix = {
+                    'trim': '_trimmed',
+                    'volume': '_volume',
+                    'speed': '_speed',
+                    'fade': '_fade',
+                    'normalize': '_normalized',
+                    'reverse': '_reversed'
+                };
+                
+                return `${baseName}${toolSuffix[this.selectedTool] || '_processed'}.${extension}`;
+            }
+            
+            showResults() {
+                const resultsList = document.getElementById('resultsList');
+                let html = '';
+                
+                this.processedFiles.forEach((file, index) => {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-info">
+                                <h4>${file.name}</h4>
+                                <p>${this.formatFileSize(file.size)} • ${file.type}</p>
+                            </div>
+                            <div class="result-actions">
+                                <button class="action-button" onclick="audioProcessor.downloadFile(${index})">
+                                    <span data-i18n="btn_download">下载</span>
+                                </button>
+                                <button class="action-button primary" onclick="audioProcessor.shareFile(${index})">
+                                    <span data-i18n="btn_share">分享</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsList.innerHTML = html;
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('processBtn').disabled = false;
+                
+                // 重新初始化i18n翻译
+                if (window.DROPSHARE_I18N && window.DROPSHARE_I18N.translateElements) {
+                    window.DROPSHARE_I18N.translateElements();
+                }
+            }
+            
+            downloadFile(index) {
+                const file = this.processedFiles[index];
+                const url = URL.createObjectURL(file);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = file.name;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            
+            shareFile(index) {
+                const file = this.processedFiles[index];
+                currentShareFile = file;
+                showDeviceModal();
+            }
+            
+            updateProgress(percent, text) {
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                if (progressFill) progressFill.style.width = percent + '%';
+                if (progressText) progressText.textContent = text;
+                
+                // 更新加载覆盖层中的进度条（如果存在）
+                const loadingProgressFill = document.getElementById('loadingProgressFill');
+                const loadingProgressText = document.getElementById('loadingProgressText');
+                if (loadingProgressFill) loadingProgressFill.style.width = percent + '%';
+                if (loadingProgressText) loadingProgressText.textContent = text;
+            }
+            
+            getFileExtension(fileName) {
+                return fileName.split('.').pop().toLowerCase();
+            }
+            
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+        
+        // 初始化
+        let audioProcessor;
+        document.addEventListener('DOMContentLoaded', () => {
+            audioProcessor = new AudioProcessor();
+        });
+        
+        // 设备传送功能变量
+        let selectedDevices = new Set();
+        let currentShareFile = null;
+        
+        // 显示设备选择弹窗
+        function showDeviceModal() {
+            const modal = document.getElementById('deviceModal');
+            const deviceList = document.getElementById('deviceList');
+            
+            selectedDevices.clear();
+            updateSendButton();
+            
+            const devices = getAvailableDevices();
+            
+            if (devices.length === 0) {
+                deviceList.innerHTML = `
+                    <div class="no-devices">
+                        <div class="no-devices-icon">📱</div>
+                        <p data-i18n="no_devices_found">未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="device_connection_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
+                    </div>
+                `;
+            } else {
+                deviceList.innerHTML = devices.map(device => `
+                    <div class="device-item" onclick="toggleDevice('${device.id}')">
+                        <input type="checkbox" class="device-checkbox" id="device-${device.id}">
+                        <div class="device-icon">${getDeviceIcon(device)}</div>
+                        <div class="device-info">
+                            <div class="device-name">${device.name}</div>
+                            <div class="device-type">${device.type}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        // 关闭设备选择弹窗
+        function closeDeviceModal() {
+            document.getElementById('deviceModal').classList.remove('show');
+            selectedDevices.clear();
+        }
+        
+        // 切换设备选择
+        function toggleDevice(deviceId) {
+            const checkbox = document.getElementById(`device-${deviceId}`);
+            const deviceItem = checkbox.closest('.device-item');
+            
+            if (selectedDevices.has(deviceId)) {
+                selectedDevices.delete(deviceId);
+                checkbox.checked = false;
+                deviceItem.classList.remove('selected');
+            } else {
+                selectedDevices.add(deviceId);
+                checkbox.checked = true;
+                deviceItem.classList.add('selected');
+            }
+            
+            updateSendButton();
+        }
+        
+        // 更新发送按钮
+        function updateSendButton() {
+            const sendBtn = document.getElementById('sendToDevicesBtn');
+            const count = selectedDevices.size;
+            
+            if (count === 0) {
+                sendBtn.disabled = true;
+                sendBtn.innerHTML = '<span data-i18n="btn_send_to_selected_devices">传送到选中设备</span>';
+            } else {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = `<span>${window.DROPSHARE_I18N?.t('btn_send_to_devices') || '传送到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}</span>`;
+            }
+            
+            // 重新初始化i18n翻译
+            if (window.DROPSHARE_I18N && window.DROPSHARE_I18N.translateElements) {
+                window.DROPSHARE_I18N.translateElements();
+            }
+        }
+        
+        // 传送到选中设备
+        function sendToSelectedDevices() {
+            if (selectedDevices.size === 0 || !currentShareFile) return;
+            
+            // 检查传输系统
+            if (window.Events && typeof window.Events.fire === 'function') {
+                selectedDevices.forEach(deviceId => {
+                    window.Events.fire('files-selected', {
+                        files: [currentShareFile],
+                        to: deviceId
+                    });
+                });
+                
+                alert(`文件已开始传送到 ${selectedDevices.size} 个设备！`);
+                closeDeviceModal();
+            } else {
+                // 如果没有传输系统，尝试添加到分享队列
+                if (window.ui && window.ui.filesQueue) {
+                    window.ui.filesQueue.push(currentShareFile);
+                    alert('文件已添加到分享列表！');
+                    closeDeviceModal();
+                } else {
+                    if (confirm('传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？')) {
+                        sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
+                            files: [{ name: currentShareFile.name, type: currentShareFile.type, size: currentShareFile.size }],
+                            timestamp: Date.now()
+                        }));
+                        window.location.href = 'share.html';
+                    }
+                }
+            }
+        }
+        
+        // 获取可用设备
+        function getAvailableDevices() {
+            const devices = [];
+            
+            // 检查现有设备
+            const peerElements = document.querySelectorAll('x-peer');
+            if (peerElements.length > 0) {
+                peerElements.forEach(peer => {
+                    devices.push({
+                        id: peer.id,
+                        name: peer.querySelector('.name')?.textContent || '未知设备',
+                        type: peer.querySelector('.device-name')?.textContent || '设备'
+                    });
+                });
+            }
+            
+            // 模拟设备（供测试）
+            if (devices.length === 0) {
+                devices.push(
+                    { id: 'demo1', name: 'iPhone 13', type: 'iOS 手机' },
+                    { id: 'demo2', name: 'MacBook Pro', type: 'macOS 笔记本' },
+                    { id: 'demo3', name: 'Windows PC', type: 'Windows 桌面' }
+                );
+            }
+            
+            return devices;
+        }
+        
+        // 获取设备图标
+        function getDeviceIcon(device) {
+            const type = device.type.toLowerCase();
+            if (type.includes('phone') || type.includes('mobile') || type.includes('ios')) return '📱';
+            if (type.includes('tablet') || type.includes('ipad')) return '📺';
+            if (type.includes('mac') || type.includes('apple') || type.includes('macos')) return '💻';
+            if (type.includes('windows') || type.includes('pc')) return '🖥️';
+            return '💻';
+        }
+    </script>
+    <!-- 设备选择弹窗 -->
+    <div class="device-modal" id="deviceModal">
+        <div class="device-modal-content">
+            <div class="device-modal-header">
+                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
+                <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
+            </div>
+            <div class="device-list" id="deviceList">
+                <!-- 设备列表将在这里动态生成 -->
+            </div>
+            <div class="device-modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">
+                    <span data-i18n="btn_cancel">取消</span>
+                </button>
+                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
+                    <span data-i18n="btn_send_to_selected_devices">传送到选中设备</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+        });
+    </script>
+</body>
+</html>

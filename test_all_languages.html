@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试所有语言 - DropShare</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 15px; border: 2px solid #ddd; border-radius: 8px; }
+        .lang-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 20px 0; }
+        .lang-btn { padding: 10px; border: 1px solid #ccc; background: #f5f5f5; cursor: pointer; text-align: center; border-radius: 4px; }
+        .lang-btn:hover { background: #e0e0e0; }
+        .lang-btn.active { background: #007bff; color: white; }
+        .test-text { background: #f0f8ff; padding: 15px; border-radius: 4px; margin: 10px 0; }
+        .status { background: #e8f5e8; padding: 10px; border-radius: 4px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>DropShare 完整语言测试</h1>
+    
+    <div class="test-section">
+        <h2>可用语言 (共11种)</h2>
+        <div class="lang-grid" id="language-buttons"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>实时翻译测试</h2>
+        <div class="test-text">
+            <p><strong>网站标题:</strong> <span data-i18n="hero_title">Fast Local File Sharing Across Devices on Your Network</span></p>
+            <p><strong>开始按钮:</strong> <span data-i18n="btn_start_sharing">Start Sharing Files</span></p>
+            <p><strong>导航-图片:</strong> <span data-i18n="nav_images">Images</span></p>
+            <p><strong>导航-音频:</strong> <span data-i18n="nav_audio">Audio</span></p>
+            <p><strong>导航-视频:</strong> <span data-i18n="nav_video">Video</span></p>
+            <p><strong>免费功能:</strong> <span data-i18n="feature_free_title">100% Free</span></p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>系统状态</h2>
+        <div class="status" id="status">正在加载...</div>
+    </div>
+
+    <script src="scripts/i18n/languages_complete_optimized.js"></script>
+    <script>
+        function createLanguageButtons() {
+            const container = document.getElementById('language-buttons');
+            
+            if (!window.LanguageManager) {
+                container.innerHTML = '<p style="color: red;">LanguageManager 未加载!</p>';
+                return;
+            }
+
+            const languages = window.LanguageManager.getAvailableLanguages();
+            
+            languages.forEach(lang => {
+                const btn = document.createElement('div');
+                btn.className = 'lang-btn';
+                btn.textContent = `${lang.name} (${lang.code})`;
+                btn.onclick = () => switchLanguage(lang.code);
+                btn.id = `lang-${lang.code}`;
+                container.appendChild(btn);
+            });
+
+            // 设置当前活动语言
+            updateActiveButton();
+        }
+
+        function switchLanguage(langCode) {
+            if (window.LanguageManager) {
+                window.LanguageManager.setLanguage(langCode);
+                updateTranslations();
+                updateActiveButton();
+                updateStatus();
+            }
+        }
+
+        function updateTranslations() {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (window.LanguageManager) {
+                    element.textContent = window.LanguageManager.t(key);
+                }
+            });
+        }
+
+        function updateActiveButton() {
+            // 移除所有活动状态
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 设置当前语言为活动状态
+            const currentLang = window.LanguageManager.currentLanguage;
+            const activeBtn = document.getElementById(`lang-${currentLang}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+        }
+
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            if (window.LanguageManager) {
+                const current = window.LanguageManager.getCurrentLanguage();
+                const available = window.LanguageManager.getAvailableLanguages();
+                statusDiv.innerHTML = `
+                    当前语言: ${current.name} (${current.code})<br>
+                    可用语言总数: ${available.length}<br>
+                    RTL支持: ${current.rtl ? '是' : '否'}<br>
+                    本地存储: ${localStorage.getItem('dropshare_language') || '无'}
+                `;
+            } else {
+                statusDiv.innerHTML = '<span style="color: red;">LanguageManager 未找到!</span>';
+            }
+        }
+
+        // 页面加载后初始化
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                createLanguageButtons();
+                updateTranslations();
+                updateStatus();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

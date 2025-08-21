@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Languages i18n Test - DropShare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .language-selector {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .translation-test {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        .warning { color: orange; }
+        .language-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .lang-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fff;
+        }
+        .lang-card h3 {
+            margin-top: 0;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        .coverage-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .coverage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.3s ease;
+        }
+        .missing-keys {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .key-list {
+            max-height: 100px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌍 All Languages i18n Test</h1>
+    <p>This page tests the translation completeness for all supported languages in DropShare.</p>
+    
+    <div class="language-selector">
+        <label for="lang-select"><strong>Test Language:</strong></label>
+        <select id="lang-select">
+            <option value="en">English</option>
+            <option value="zh">中文简体</option>
+            <option value="zh-tw">中文繁體</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+        </select>
+        <button onclick="testAllLanguages()" style="margin-left: 10px; padding: 5px 15px;">Test All Languages</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Current Language Test</h2>
+        <div class="translation-test">
+            <strong>Room Title:</strong> <span data-i18n="room_title">Multi-User Sharing Room</span>
+        </div>
+        <div class="translation-test">
+            <strong>Create Room Button:</strong> <span data-i18n="create_room_btn">Create Room</span>
+        </div>
+        <div class="translation-test">
+            <strong>Join Room Button:</strong> <span data-i18n="join_room_btn">Join Room</span>
+        </div>
+        <div class="translation-test">
+            <strong>Room Name Label:</strong> <span data-i18n="room_name_label">Room Name</span>
+        </div>
+        <div class="translation-test">
+            <strong>Upload Files to Room:</strong> <span data-i18n="upload_files_to_room">📤 Upload Files to Room</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Language Coverage Analysis</h2>
+        <div id="language-status" class="language-status">
+            <!-- Language status cards will be populated here -->
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>System Status</h2>
+        <div id="status"></div>
+    </div>
+
+    <!-- Load the language loader first -->
+    <script src="scripts/i18n/languages.js"></script>
+    
+    <script>
+        // 等待语言系统加载
+        function waitForLanguages() {
+            if (window.LANGUAGES && window.DROPSHARE_I18N) {
+                initializeTest();
+            } else {
+                setTimeout(waitForLanguages, 100);
+            }
+        }
+
+        function initializeTest() {
+            console.log('语言系统已加载');
+            
+            // 设置语言选择器
+            const langSelect = document.getElementById('lang-select');
+            langSelect.value = window.DROPSHARE_I18N.getCurrentLanguage();
+            
+            langSelect.addEventListener('change', function(e) {
+                const newLang = e.target.value;
+                console.log('切换语言到:', newLang);
+                window.DROPSHARE_I18N.changeLanguage(newLang);
+                applyTranslations();
+                updateStatus();
+            });
+
+            // 应用翻译
+            applyTranslations();
+            updateStatus();
+            
+            // 分析所有语言
+            analyzeAllLanguages();
+        }
+
+        function applyTranslations() {
+            const elements = document.querySelectorAll('[data-i18n]');
+            console.log(`找到 ${elements.length} 个需要翻译的元素`);
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.getText(key);
+                if (translation) {
+                    element.textContent = translation;
+                    console.log(`翻译 "${key}" -> "${translation}"`);
+                } else {
+                    console.warn(`未找到翻译键: ${key}`);
+                    element.style.color = 'red';
+                }
+            });
+        }
+
+        function analyzeAllLanguages() {
+            const statusDiv = document.getElementById('language-status');
+            const languages = window.LANGUAGES;
+            
+            let html = '';
+            
+            // 定义关键翻译键
+            const criticalKeys = [
+                'room_title', 'room_subtitle', 'create_room_btn', 'join_room_btn',
+                'room_name_label', 'room_password_label', 'max_members_label',
+                'confirm_create_room', 'cancel_create_room', 'join_room_title',
+                'room_code_label', 'join_password_label', 'confirm_join_room',
+                'copy_room_code', 'your_name_label', 'members_online',
+                'room_members_label', 'leave_room_btn', 'upload_files_to_room',
+                'drag_files_here', 'files_shared_to_all', 'select_files_upload',
+                'room_shared_files', 'files_count', 'no_shared_files', 'upload_hint'
+            ];
+            
+            Object.keys(languages).forEach(langCode => {
+                const lang = languages[langCode];
+                const translations = lang.translations;
+                
+                // 计算覆盖率
+                const totalKeys = Object.keys(translations).length;
+                const criticalKeysFound = criticalKeys.filter(key => translations[key]).length;
+                const criticalCoverage = (criticalKeysFound / criticalKeys.length) * 100;
+                const overallCoverage = (totalKeys / 200) * 100; // 假设总共有200个键
+                
+                // 找出缺失的关键键
+                const missingCriticalKeys = criticalKeys.filter(key => !translations[key]);
+                
+                html += `
+                    <div class="lang-card">
+                        <h3>${lang.name} (${langCode})</h3>
+                        <p><strong>总翻译键:</strong> ${totalKeys}</p>
+                        <p><strong>关键键覆盖率:</strong> ${criticalCoverage.toFixed(1)}%</p>
+                        <div class="coverage-bar">
+                            <div class="coverage-fill" style="width: ${criticalCoverage}%"></div>
+                        </div>
+                        <p><strong>整体覆盖率:</strong> ${overallCoverage.toFixed(1)}%</p>
+                        <div class="coverage-bar">
+                            <div class="coverage-fill" style="width: ${overallCoverage}%"></div>
+                        </div>
+                        ${missingCriticalKeys.length > 0 ? `
+                            <div class="missing-keys">
+                                <strong>缺失的关键键 (${missingCriticalKeys.length}):</strong>
+                                <div class="key-list">${missingCriticalKeys.slice(0, 10).join(', ')}${missingCriticalKeys.length > 10 ? '...' : ''}</div>
+                            </div>
+                        ` : '<p class="success">✅ 所有关键键都已翻译</p>'}
+                    </div>
+                `;
+            });
+            
+            statusDiv.innerHTML = html;
+        }
+
+        function testAllLanguages() {
+            const languages = window.LANGUAGES;
+            const results = {};
+            
+            // 定义关键翻译键
+            const criticalKeys = [
+                'room_title', 'room_subtitle', 'create_room_btn', 'join_room_btn',
+                'room_name_label', 'room_password_label', 'max_members_label',
+                'confirm_create_room', 'cancel_create_room', 'join_room_title',
+                'room_code_label', 'join_password_label', 'confirm_join_room',
+                'copy_room_code', 'your_name_label', 'members_online',
+                'room_members_label', 'leave_room_btn', 'upload_files_to_room',
+                'drag_files_here', 'files_shared_to_all', 'select_files_upload',
+                'room_shared_files', 'files_count', 'no_shared_files', 'upload_hint'
+            ];
+            
+            Object.keys(languages).forEach(langCode => {
+                const lang = languages[langCode];
+                const translations = lang.translations;
+                
+                const criticalKeysFound = criticalKeys.filter(key => translations[key]).length;
+                const criticalCoverage = (criticalKeysFound / criticalKeys.length) * 100;
+                
+                results[langCode] = {
+                    name: lang.name,
+                    criticalCoverage: criticalCoverage,
+                    totalKeys: Object.keys(translations).length,
+                    missingKeys: criticalKeys.filter(key => !translations[key])
+                };
+            });
+            
+            console.log('All Languages Test Results:', results);
+            
+            // 显示结果摘要
+            const statusDiv = document.getElementById('status');
+            let summary = '<h3>Test Results Summary:</h3>';
+            
+            Object.keys(results).forEach(langCode => {
+                const result = results[langCode];
+                const status = result.criticalCoverage === 100 ? '✅' : 
+                              result.criticalCoverage >= 80 ? '⚠️' : '❌';
+                
+                summary += `
+                    <p>${status} <strong>${result.name}</strong> (${langCode}): 
+                    ${result.criticalCoverage.toFixed(1)}% critical coverage, 
+                    ${result.totalKeys} total keys</p>
+                `;
+            });
+            
+            statusDiv.innerHTML = summary;
+        }
+
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+            const langInfo = window.LANGUAGES[currentLang];
+            
+            let html = '<p><strong>当前语言:</strong> ' + currentLang + '</p>';
+            html += '<p><strong>语言名称:</strong> ' + (langInfo ? langInfo.name : '未知') + '</p>';
+            html += '<p><strong>翻译键总数:</strong> ' + (langInfo ? Object.keys(langInfo.translations).length : 0) + '</p>';
+            
+            // 检查关键翻译键
+            const keyChecks = [
+                'room_title', 'room_subtitle', 'create_room_btn', 'join_room_btn',
+                'room_name_label', 'room_password_label', 'max_members_label'
+            ];
+            
+            html += '<p><strong>关键翻译键检查:</strong></p>';
+            keyChecks.forEach(key => {
+                const translation = window.DROPSHARE_I18N.getText(key);
+                const status = translation ? '✅' : '❌';
+                html += `<p>${status} ${key}: ${translation || '未找到'}</p>`;
+            });
+            
+            statusDiv.innerHTML = html;
+        }
+
+        // 启动测试
+        waitForLanguages();
+    </script>
+</body>
+</html>
+
+
+
+

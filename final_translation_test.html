@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropShare - Final Translation Test</title>
+    <link rel="stylesheet" type="text/css" href="public/styles.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .lang-controls {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 8px;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+        .status {
+            font-weight: bold;
+            color: #2196f3;
+        }
+        .current-lang {
+            color: #4caf50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>DropShare 最终翻译测试</h1>
+    
+    <div class="lang-controls">
+        <h3>语言切换测试</h3>
+        <label for="language-selector">选择语言: </label>
+        <select id="language-selector">
+            <option value="en">English</option>
+            <option value="zh">中文简体</option>
+            <option value="zh-tw">中文繁體</option>
+            <option value="ja">日本語</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+            <option value="pt">Português</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="ko">한국어</option>
+        </select>
+        <div>当前语言: <span class="current-lang" id="current-lang">-</span></div>
+    </div>
+
+    <div class="test-section">
+        <h3>基础翻译测试</h3>
+        <div class="test-item">
+            <strong>导航:</strong>
+            <span data-i18n="nav_transfer">传送</span> |
+            <span data-i18n="nav_images">图片</span> |
+            <span data-i18n="nav_audio">音频</span> |
+            <span data-i18n="nav_video">视频</span> |
+            <span data-i18n="nav_files">文件</span>
+        </div>
+        <div class="test-item">
+            <strong>按钮:</strong>
+            <button data-i18n="btn_select_file">选择文件</button>
+            <button data-i18n="btn_download">下载</button>
+            <button data-i18n="btn_share">分享</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>工具页面翻译测试</h3>
+        <div class="test-item">
+            <strong>工具标题:</strong>
+            <div data-i18n="tool_text_converter_title">文本转换器</div>
+            <div data-i18n="tool_data_converter_title">数据转换器</div>
+            <div data-i18n="tool_document_processor_title">文档处理器</div>
+        </div>
+        <div class="test-item">
+            <strong>工具描述:</strong>
+            <div data-i18n="tool_text_converter_desc">在TXT、HTML和Markdown格式之间转换，支持格式化选项</div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>JavaScript动态翻译测试</h3>
+        <div class="test-item">
+            <button onclick="testDynamicTranslation()">测试动态翻译</button>
+            <div id="dynamic-result"></div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>发现的问题页面</h3>
+        <div class="test-item">
+            <strong style="color: red;">需要修复的占位页面:</strong>
+            <ul>
+                <li>text-to-image.html - 图片文字添加器</li>
+                <li>image-filter.html - 图片滤镜器</li>
+                <li>background-remover.html - 背景移除器</li>
+                <li>analytics.html - 使用统计</li>
+            </ul>
+            <p>这些页面都是"即将推出"的占位页面，所有文字都是硬编码的中文。</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h3>测试结果总结</h3>
+        <div class="status" id="test-status">准备测试...</div>
+        <div id="test-results"></div>
+    </div>
+
+    <!-- Load i18n system -->
+    <script src="public/scripts/i18n/languages.js"></script>
+    <script>
+        let currentTestLang = 'zh';
+        
+        // 初始化国际化系统
+        function initI18n() {
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+                
+                const langSelector = document.getElementById('language-selector');
+                langSelector.value = getUserLanguage();
+                updateCurrentLangDisplay();
+                
+                langSelector.addEventListener('change', (e) => {
+                    currentTestLang = e.target.value;
+                    setLanguage(e.target.value);
+                    updateCurrentLangDisplay();
+                    updateTestStatus();
+                });
+                
+                updateTestStatus();
+            } else {
+                document.getElementById('test-status').textContent = 'i18n系统加载失败!';
+                document.getElementById('test-status').style.color = 'red';
+            }
+        }
+        
+        function updateCurrentLangDisplay() {
+            const langNames = {
+                'en': 'English',
+                'zh': '中文简体',
+                'zh-tw': '中文繁體', 
+                'ja': '日本語',
+                'fr': 'Français',
+                'es': 'Español',
+                'de': 'Deutsch',
+                'pt': 'Português',
+                'ru': 'Русский',
+                'ar': 'العربية',
+                'ko': '한국어'
+            };
+            document.getElementById('current-lang').textContent = langNames[currentTestLang] || currentTestLang;
+        }
+        
+        function updateTestStatus() {
+            const status = document.getElementById('test-status');
+            const results = document.getElementById('test-results');
+            
+            status.textContent = `当前测试语言: ${currentTestLang}`;
+            status.style.color = '#2196f3';
+            
+            // 检查翻译是否工作
+            const testElement = document.querySelector('[data-i18n="nav_transfer"]');
+            if (testElement && testElement.textContent !== '传送') {
+                results.innerHTML = '<div style="color: green;">✅ 翻译功能正常工作</div>';
+            } else {
+                results.innerHTML = '<div style="color: orange;">⚠️ 翻译可能仍显示中文默认值</div>';
+            }
+        }
+        
+        function testDynamicTranslation() {
+            const resultDiv = document.getElementById('dynamic-result');
+            
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.translate === 'function') {
+                const translatedText = window.DROPSHARE_I18N.translate('nav_transfer');
+                resultDiv.innerHTML = `<div style="color: green;">✅ 动态翻译成功: "${translatedText}"</div>`;
+            } else {
+                resultDiv.innerHTML = '<div style="color: red;">❌ 动态翻译功能不可用</div>';
+            }
+        }
+        
+        function getUserLanguage() {
+            return localStorage.getItem('language') || 
+                   navigator.language.split('-')[0] || 'zh';
+        }
+        
+        function setLanguage(lang) {
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.setLanguage === 'function') {
+                window.DROPSHARE_I18N.setLanguage(lang);
+            }
+            localStorage.setItem('language', lang);
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initI18n, 500); // 等待i18n系统加载
+        });
+    </script>
+</body>
+</html>

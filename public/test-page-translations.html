@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Translations Test - DropShare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .page-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .page-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fff;
+        }
+        .page-card h3 {
+            margin-top: 0;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        .coverage-bar {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .coverage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.3s ease;
+        }
+        .missing-items {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .item-list {
+            max-height: 100px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .success { color: green; }
+        .warning { color: orange; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>📄 Page Translations Test</h1>
+    <p>This page tests the translation completeness for all pages in DropShare.</p>
+    
+    <div class="test-section">
+        <h2>Page Translation Status</h2>
+        <div id="page-status" class="page-status">
+            <!-- Page status cards will be populated here -->
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Detailed Analysis</h2>
+        <div id="detailed-analysis"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>System Status</h2>
+        <div id="status"></div>
+    </div>
+
+    <!-- Load the language loader first -->
+    <script src="scripts/i18n/languages.js"></script>
+    
+    <script>
+        // 等待语言系统加载
+        function waitForLanguages() {
+            if (window.LANGUAGES && window.DROPSHARE_I18N) {
+                initializeTest();
+            } else {
+                setTimeout(waitForLanguages, 100);
+            }
+        }
+
+        function initializeTest() {
+            console.log('语言系统已加载');
+            
+            // 分析所有页面
+            analyzeAllPages();
+            updateStatus();
+        }
+
+        function analyzeAllPages() {
+            const statusDiv = document.getElementById('page-status');
+            const detailedDiv = document.getElementById('detailed-analysis');
+            
+            // 定义要检查的页面
+            const pages = [
+                {
+                    name: 'Homepage (index.html)',
+                    file: 'index.html',
+                    criticalElements: [
+                        'hero_title', 'hero_subtitle', 'btn_start_sharing', 'btn_create_room',
+                        'nav_transfer', 'nav_rooms', 'nav_images', 'nav_audio', 'nav_video', 'nav_files'
+                    ]
+                },
+                {
+                    name: 'Share/Room Page (share.html)',
+                    file: 'share.html',
+                    criticalElements: [
+                        'room_title', 'room_subtitle', 'create_room_btn', 'join_room_btn',
+                        'room_name_label', 'room_password_label', 'max_members_label'
+                    ]
+                },
+                {
+                    name: 'About Page (about.html)',
+                    file: 'about.html',
+                    criticalElements: [
+                        'about_header_title', 'about_what_is_title', 'about_how_it_works_title',
+                        'about_no_setup_title', 'about_privacy_focused_title'
+                    ]
+                },
+                {
+                    name: 'FAQ Page (faq.html)',
+                    file: 'faq.html',
+                    criticalElements: [
+                        'faq_header_title', 'faq_general_category', 'faq_technical_category',
+                        'faq_privacy_category', 'faq_troubleshooting_category'
+                    ]
+                },
+                {
+                    name: 'Privacy Page (privacy.html)',
+                    file: 'privacy.html',
+                    criticalElements: [
+                        'privacy_header_title', 'privacy_last_updated', 'privacy_intro',
+                        'privacy_section1_title', 'privacy_section2_title'
+                    ]
+                },
+                {
+                    name: 'Terms Page (terms.html)',
+                    file: 'terms.html',
+                    criticalElements: [
+                        'terms_header_title', 'terms_last_updated', 'terms_intro',
+                        'terms_section1_title', 'terms_section2_title'
+                    ]
+                }
+            ];
+            
+            let html = '';
+            let detailedHtml = '<h3>Detailed Page Analysis:</h3>';
+            
+            pages.forEach(page => {
+                const analysis = analyzePage(page);
+                
+                html += `
+                    <div class="page-card">
+                        <h3>${page.name}</h3>
+                        <p><strong>文件:</strong> ${page.file}</p>
+                        <p><strong>关键元素覆盖率:</strong> ${analysis.coverage.toFixed(1)}%</p>
+                        <div class="coverage-bar">
+                            <div class="coverage-fill" style="width: ${analysis.coverage}%"></div>
+                        </div>
+                        <p><strong>状态:</strong> ${getStatusIcon(analysis.coverage)} ${getStatusText(analysis.coverage)}</p>
+                        ${analysis.missing.length > 0 ? `
+                            <div class="missing-items">
+                                <strong>缺失的关键元素 (${analysis.missing.length}):</strong>
+                                <div class="item-list">${analysis.missing.slice(0, 5).join(', ')}${analysis.missing.length > 5 ? '...' : ''}</div>
+                            </div>
+                        ` : '<p class="success">✅ 所有关键元素都已翻译</p>'}
+                    </div>
+                `;
+                
+                detailedHtml += `
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                        <h4>${page.name}</h4>
+                        <p><strong>覆盖率:</strong> ${analysis.coverage.toFixed(1)}%</p>
+                        <p><strong>已翻译:</strong> ${analysis.translated.length}</p>
+                        <p><strong>缺失:</strong> ${analysis.missing.length}</p>
+                        ${analysis.missing.length > 0 ? `
+                            <p><strong>缺失的元素:</strong></p>
+                            <ul>
+                                ${analysis.missing.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            statusDiv.innerHTML = html;
+            detailedDiv.innerHTML = detailedHtml;
+        }
+
+        function analyzePage(page) {
+            const languages = window.LANGUAGES;
+            const enTranslations = languages['en'].translations;
+            
+            let translated = 0;
+            let missing = [];
+            
+            page.criticalElements.forEach(element => {
+                if (enTranslations[element]) {
+                    translated++;
+                } else {
+                    missing.push(element);
+                }
+            });
+            
+            const coverage = (translated / page.criticalElements.length) * 100;
+            
+            return {
+                coverage: coverage,
+                translated: translated,
+                missing: missing
+            };
+        }
+
+        function getStatusIcon(coverage) {
+            if (coverage === 100) return '✅';
+            if (coverage >= 80) return '⚠️';
+            if (coverage >= 50) return '🔄';
+            return '❌';
+        }
+
+        function getStatusText(coverage) {
+            if (coverage === 100) return 'Complete';
+            if (coverage >= 80) return 'Good';
+            if (coverage >= 50) return 'Partial';
+            return 'Poor';
+        }
+
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            const languages = window.LANGUAGES;
+            
+            let html = '<h3>Translation System Status:</h3>';
+            html += `<p><strong>支持的语言数量:</strong> ${Object.keys(languages).length}</p>`;
+            
+            // 统计各语言的翻译键数量
+            const langStats = [];
+            Object.keys(languages).forEach(langCode => {
+                const lang = languages[langCode];
+                langStats.push({
+                    code: langCode,
+                    name: lang.name,
+                    count: Object.keys(lang.translations).length
+                });
+            });
+            
+            // 按翻译键数量排序
+            langStats.sort((a, b) => b.count - a.count);
+            
+            html += '<p><strong>各语言翻译键数量:</strong></p>';
+            langStats.forEach(lang => {
+                const status = lang.count >= 200 ? '✅' : lang.count >= 150 ? '⚠️' : '❌';
+                html += `<p>${status} ${lang.name} (${lang.code}): ${lang.count} keys</p>`;
+            });
+            
+            statusDiv.innerHTML = html;
+        }
+
+        // 启动测试
+        waitForLanguages();
+    </script>
+</body>
+</html>
+
+
+
+

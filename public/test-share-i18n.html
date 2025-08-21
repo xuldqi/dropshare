@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Page i18n Test - DropShare</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .language-selector {
+            margin: 20px 0;
+        }
+        .translation-test {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Share Page i18n Test</h1>
+    
+                    <div class="language-selector">
+                    <label for="lang-select">选择语言:</label>
+                    <select id="lang-select">
+                        <option value="en">English</option>
+                        <option value="zh">中文简体</option>
+                        <option value="zh-tw">中文繁體</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="es">Español</option>
+                        <option value="pt">Português</option>
+                        <option value="ru">Русский</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                    </select>
+                </div>
+
+    <div class="test-section">
+        <h2>翻译测试</h2>
+        <div class="translation-test">
+            <strong>房间标题:</strong> <span data-i18n="room_title">多人共享房间</span>
+        </div>
+        <div class="translation-test">
+            <strong>房间副标题:</strong> <span data-i18n="room_subtitle">与同网络用户或通过房间码与远程用户快速共享文件</span>
+        </div>
+        <div class="translation-test">
+            <strong>创建房间按钮:</strong> <span data-i18n="create_room_btn">创建房间</span>
+        </div>
+        <div class="translation-test">
+            <strong>加入房间按钮:</strong> <span data-i18n="join_room_btn">加入房间</span>
+        </div>
+        <div class="translation-test">
+            <strong>房间名称标签:</strong> <span data-i18n="room_name_label">房间名称</span>
+        </div>
+        <div class="translation-test">
+            <strong>房间密码标签:</strong> <span data-i18n="room_password_label">房间密码 (可选)</span>
+        </div>
+        <div class="translation-test">
+            <strong>最大成员数标签:</strong> <span data-i18n="max_members_label">最大成员数</span>
+        </div>
+        <div class="translation-test">
+            <strong>确认创建房间:</strong> <span data-i18n="confirm_create_room">创建房间</span>
+        </div>
+        <div class="translation-test">
+            <strong>取消创建房间:</strong> <span data-i18n="cancel_create_room">取消</span>
+        </div>
+        <div class="translation-test">
+            <strong>加入房间标题:</strong> <span data-i18n="join_room_title">加入房间</span>
+        </div>
+        <div class="translation-test">
+            <strong>房间码标签:</strong> <span data-i18n="room_code_label">房间码</span>
+        </div>
+        <div class="translation-test">
+            <strong>加入密码标签:</strong> <span data-i18n="join_password_label">房间密码 (如果需要)</span>
+        </div>
+        <div class="translation-test">
+            <strong>确认加入房间:</strong> <span data-i18n="confirm_join_room">加入房间</span>
+        </div>
+        <div class="translation-test">
+            <strong>取消加入房间:</strong> <span data-i18n="cancel_join_room">取消</span>
+        </div>
+        <div class="translation-test">
+            <strong>复制房间码:</strong> <span data-i18n="copy_room_code">复制房间码</span>
+        </div>
+        <div class="translation-test">
+            <strong>您的名称标签:</strong> <span data-i18n="your_name_label">您的名称：</span>
+        </div>
+        <div class="translation-test">
+            <strong>成员在线:</strong> <span data-i18n="members_online">人在线</span>
+        </div>
+        <div class="translation-test">
+            <strong>房间成员标签:</strong> <span data-i18n="room_members_label">房间成员:</span>
+        </div>
+        <div class="translation-test">
+            <strong>退出房间按钮:</strong> <span data-i18n="leave_room_btn">退出房间</span>
+        </div>
+        <div class="translation-test">
+            <strong>上传文件到房间:</strong> <span data-i18n="upload_files_to_room">📤 上传文件到房间</span>
+        </div>
+        <div class="translation-test">
+            <strong>拖拽文件到这里:</strong> <span data-i18n="drag_files_here">拖拽文件到这里或点击上传</span>
+        </div>
+        <div class="translation-test">
+            <strong>文件共享给所有成员:</strong> <span data-i18n="files_shared_to_all">文件将共享给房间内的所有成员</span>
+        </div>
+        <div class="translation-test">
+            <strong>选择文件上传:</strong> <span data-i18n="select_files_upload">选择文件上传</span>
+        </div>
+        <div class="translation-test">
+            <strong>房间共享文件:</strong> <span data-i18n="room_shared_files">📁 房间共享文件</span>
+        </div>
+        <div class="translation-test">
+            <strong>文件数量:</strong> <span data-i18n="files_count">个文件</span>
+        </div>
+        <div class="translation-test">
+            <strong>暂无共享文件:</strong> <span data-i18n="no_shared_files">房间内暂无共享文件</span>
+        </div>
+        <div class="translation-test">
+            <strong>上传提示:</strong> <span data-i18n="upload_hint">上传文件后，房间内所有成员都可以下载</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>系统状态</h2>
+        <div id="status"></div>
+    </div>
+
+    <!-- Load the language loader first -->
+    <script src="scripts/i18n/languages.js"></script>
+    
+    <script>
+        // 等待语言系统加载
+        function waitForLanguages() {
+            if (window.LANGUAGES && window.DROPSHARE_I18N) {
+                initializeTest();
+            } else {
+                setTimeout(waitForLanguages, 100);
+            }
+        }
+
+        function initializeTest() {
+            console.log('语言系统已加载');
+            
+            // 设置语言选择器
+            const langSelect = document.getElementById('lang-select');
+            langSelect.value = window.DROPSHARE_I18N.getCurrentLanguage();
+            
+            langSelect.addEventListener('change', function(e) {
+                const newLang = e.target.value;
+                console.log('切换语言到:', newLang);
+                window.DROPSHARE_I18N.changeLanguage(newLang);
+                updateStatus();
+            });
+
+            // 应用翻译
+            applyTranslations();
+            updateStatus();
+        }
+
+        function applyTranslations() {
+            const elements = document.querySelectorAll('[data-i18n]');
+            console.log(`找到 ${elements.length} 个需要翻译的元素`);
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.getText(key);
+                if (translation) {
+                    element.textContent = translation;
+                    console.log(`翻译 "${key}" -> "${translation}"`);
+                } else {
+                    console.warn(`未找到翻译键: ${key}`);
+                    element.style.color = 'red';
+                }
+            });
+        }
+
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+            const langInfo = window.LANGUAGES[currentLang];
+            
+            let html = '<p><strong>当前语言:</strong> ' + currentLang + '</p>';
+            html += '<p><strong>语言名称:</strong> ' + (langInfo ? langInfo.name : '未知') + '</p>';
+            html += '<p><strong>翻译键总数:</strong> ' + (langInfo ? Object.keys(langInfo.translations).length : 0) + '</p>';
+            
+            // 检查关键翻译键
+            const keyChecks = [
+                'room_title', 'room_subtitle', 'create_room_btn', 'join_room_btn',
+                'room_name_label', 'room_password_label', 'max_members_label'
+            ];
+            
+            html += '<p><strong>关键翻译键检查:</strong></p>';
+            keyChecks.forEach(key => {
+                const translation = window.DROPSHARE_I18N.getText(key);
+                const status = translation ? '✅' : '❌';
+                html += `<p>${status} ${key}: ${translation || '未找到'}</p>`;
+            });
+            
+            statusDiv.innerHTML = html;
+        }
+
+        // 启动测试
+        waitForLanguages();
+    </script>
+</body>
+</html>

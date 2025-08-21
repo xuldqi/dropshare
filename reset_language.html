@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DropShare Language Tools</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        .tool { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { padding: 8px 16px; margin: 5px; background: #3367d6; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2c5aa0; }
+        .result { margin: 10px 0; padding: 10px; background: #f5f5f5; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>DropShare 语言设置工具</h1>
+    
+    <div class="tool">
+        <h3>🔧 重置语言设置</h3>
+        <p>清除本地存储的语言偏好，重新使用默认英语：</p>
+        <button onclick="resetLanguage()">重置为英语</button>
+        <div id="reset-result" class="result" style="display:none;"></div>
+    </div>
+    
+    <div class="tool">
+        <h3>🌍 快速切换语言</h3>
+        <p>直接切换到指定语言：</p>
+        <button onclick="setLanguage('en')">English</button>
+        <button onclick="setLanguage('zh')">简体中文</button>
+        <button onclick="setLanguage('zh-tw')">繁體中文</button>
+        <button onclick="setLanguage('ja')">日本語</button>
+        <button onclick="setLanguage('ko')">한국어</button>
+        <div id="switch-result" class="result" style="display:none;"></div>
+    </div>
+    
+    <div class="tool">
+        <h3>📋 当前设置</h3>
+        <p>查看当前语言设置：</p>
+        <button onclick="checkSettings()">查看设置</button>
+        <div id="settings-result" class="result" style="display:none;"></div>
+    </div>
+    
+    <div class="tool">
+        <h3>🧪 测试语言切换</h3>
+        <p>测试主页语言切换是否正常工作：</p>
+        <button onclick="testLanguageSwitch()">测试语言切换功能</button>
+        <div id="test-result" class="result" style="display:none;"></div>
+    </div>
+    
+    <div class="tool">
+        <h3>🚀 打开 DropShare</h3>
+        <p>应用设置后打开主页：</p>
+        <button onclick="openDropShare()">打开 DropShare</button>
+    </div>
+
+    <script>
+        function resetLanguage() {
+            localStorage.removeItem('preferred_language');
+            const result = document.getElementById('reset-result');
+            result.textContent = '✅ 语言设置已重置！刷新DropShare页面将显示英语界面。';
+            result.style.display = 'block';
+        }
+        
+        function setLanguage(lang) {
+            const langNames = {
+                'en': 'English',
+                'zh': '简体中文',
+                'zh-tw': '繁體中文',
+                'ja': '日本語',
+                'ko': '한국어'
+            };
+            
+            localStorage.setItem('preferred_language', lang);
+            const result = document.getElementById('switch-result');
+            result.textContent = `✅ 语言已设置为 ${langNames[lang]}！刷新DropShare页面将使用此语言。`;
+            result.style.display = 'block';
+        }
+        
+        function checkSettings() {
+            const savedLang = localStorage.getItem('preferred_language');
+            const browserLang = (navigator.language || navigator.userLanguage).split('-')[0];
+            
+            const result = document.getElementById('settings-result');
+            result.innerHTML = `
+                <strong>当前设置：</strong><br>
+                本地存储的语言: ${savedLang || '未设置 (将使用英语)'}<br>
+                浏览器语言: ${browserLang}<br>
+                最终使用语言: ${savedLang || 'en'}
+            `;
+            result.style.display = 'block';
+        }
+        
+        function openDropShare() {
+            window.open('http://localhost:8080', '_blank');
+        }
+        
+        function testLanguageSwitch() {
+            const result = document.getElementById('test-result');
+            
+            // 测试语言切换
+            localStorage.setItem('preferred_language', 'zh');
+            setTimeout(() => {
+                localStorage.setItem('preferred_language', 'en');
+                setTimeout(() => {
+                    localStorage.setItem('preferred_language', 'ja');
+                    result.innerHTML = `✅ 语言切换测试完成！<br>已测试: 简体中文 → 英语 → 日语<br><strong>请打开DropShare主页测试切换是否生效</strong>`;
+                    result.style.display = 'block';
+                }, 500);
+            }, 500);
+        }
+        
+        // 页面加载时显示当前设置
+        window.onload = checkSettings;
+    </script>
+</body>
+</html>

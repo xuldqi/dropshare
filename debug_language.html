@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Debug - DropShare</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 2px solid #ddd; border-radius: 8px; }
+        .lang-selector select { padding: 8px 12px; font-size: 16px; margin: 10px 0; }
+        #debug-log { background: #f0f0f0; padding: 10px; font-family: monospace; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
+        .test-text { background: #e3f2fd; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        .error { color: red; background: #ffebee; }
+        .success { color: green; background: #e8f5e8; }
+    </style>
+</head>
+<body>
+    <h1>DropShare 语言切换调试页面</h1>
+    
+    <div class="debug-section">
+        <h2>语言选择器</h2>
+        <div class="lang-selector">
+            <select id="language-selector" title="Select Language">
+                <option value="en">English</option>
+                <option value="zh">中文简体</option>
+                <option value="zh-tw">中文繁體</option>
+                <option value="ja">日本語</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="pt">Português</option>
+                <option value="ru">Русский</option>
+                <option value="ar">العربية</option>
+                <option value="ko">한국어</option>
+            </select>
+        </div>
+        <p>当前语言: <span id="current-lang">加载中...</span></p>
+        <p>localStorage: <span id="stored-lang">加载中...</span></p>
+    </div>
+
+    <div class="debug-section">
+        <h2>测试翻译内容</h2>
+        <div class="test-text">
+            <p><strong>英雄标题:</strong> <span data-i18n="hero_title">Fast Local File Sharing Across Devices on Your Network</span></p>
+            <p><strong>导航-传输:</strong> <span data-i18n="nav_transfer">Transfer</span></p>
+            <p><strong>导航-图片:</strong> <span data-i18n="nav_images">Images</span></p>
+            <p><strong>按钮-开始分享:</strong> <span data-i18n="btn_start_sharing">Start Sharing Files</span></p>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <h2>手动测试按钮</h2>
+        <button onclick="testLanguageChange('zh')">切换到中文</button>
+        <button onclick="testLanguageChange('en')">切换到英文</button>
+        <button onclick="testLanguageChange('ja')">切换到日文</button>
+        <button onclick="checkDebugInfo()">检查状态</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>调试日志</h2>
+        <div id="debug-log">等待初始化...</div>
+        <button onclick="clearLog()">清空日志</button>
+    </div>
+
+    <script src="scripts/i18n/languages_complete_optimized.js"></script>
+    <script>
+        // 重写 console.log 来显示在页面上
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logElement = document.getElementById('debug-log');
+        
+        function addLog(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            logElement.textContent += logEntry;
+            logElement.scrollTop = logElement.scrollHeight;
+            
+            // 也输出到原生控制台
+            if (type === 'error') {
+                originalError(message);
+            } else {
+                originalLog(message);
+            }
+        }
+
+        console.log = (...args) => {
+            addLog(args.join(' '), 'log');
+        };
+        
+        console.error = (...args) => {
+            addLog(args.join(' '), 'error');
+        };
+
+        function testLanguageChange(langCode) {
+            addLog(`手动测试: 切换到 ${langCode}`, 'test');
+            if (window.LanguageManager && window.LanguageManager.setLanguage) {
+                window.LanguageManager.setLanguage(langCode);
+                updateTranslations();
+            } else {
+                addLog('错误: LanguageManager 未找到!', 'error');
+            }
+            updateStatus();
+        }
+
+        function checkDebugInfo() {
+            addLog('=== 调试信息检查 ===', 'test');
+            addLog(`window.LanguageManager 存在: ${!!window.LanguageManager}`, 'test');
+            addLog(`window.LANGUAGES 存在: ${!!window.LANGUAGES}`, 'test');
+            
+            if (window.LanguageManager) {
+                addLog(`getCurrentLanguage: ${window.LanguageManager.currentLanguage}`, 'test');
+                const availableLanguages = window.LanguageManager.getAvailableLanguages();
+                addLog(`可用语言数量: ${availableLanguages.length}`, 'test');
+                addLog(`语言列表: ${availableLanguages.map(l => `${l.code}(${l.name})`).join(', ')}`, 'test');
+            }
+            
+            const selector = document.getElementById('language-selector');
+            addLog(`语言选择器存在: ${!!selector}`, 'test');
+            if (selector) {
+                addLog(`选择器值: ${selector.value}`, 'test');
+                addLog(`选择器选项数量: ${selector.options.length}`, 'test');
+            }
+            
+            const i18nElements = document.querySelectorAll('[data-i18n]');
+            addLog(`data-i18n 元素数量: ${i18nElements.length}`, 'test');
+            
+            updateStatus();
+        }
+
+        function updateStatus() {
+            document.getElementById('current-lang').textContent = window.LanguageManager ? window.LanguageManager.currentLanguage : '未知';
+            document.getElementById('stored-lang').textContent = localStorage.getItem('dropshare_language') || '无';
+        }
+
+        function updateTranslations() {
+            const i18nElements = document.querySelectorAll('[data-i18n]');
+            i18nElements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (window.LanguageManager) {
+                    const translation = window.LanguageManager.t(key);
+                    element.textContent = translation;
+                }
+            });
+        }
+
+        function clearLog() {
+            logElement.textContent = '';
+        }
+
+        // 页面加载完成后检查状态
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addLog('页面加载完成', 'info');
+                checkDebugInfo();
+                updateTranslations();
+                
+                // 设置语言选择器
+                const selector = document.getElementById('language-selector');
+                if (selector) {
+                    selector.addEventListener('change', (e) => {
+                        addLog(`语言选择器变更: ${e.target.value}`, 'event');
+                        testLanguageChange(e.target.value);
+                    });
+                    
+                    // 设置当前选中的语言
+                    if (window.LanguageManager) {
+                        selector.value = window.LanguageManager.currentLanguage;
+                    }
+                }
+            }, 500);
+        });
+
+        // 监听语言变更事件
+        document.addEventListener('language-changed', (e) => {
+            addLog(`语言变更事件: ${e.detail.language}`, 'event');
+            updateStatus();
+            updateTranslations();
+        });
+    </script>
+</body>
+</html>
