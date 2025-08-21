@@ -550,94 +550,7 @@
             background: #ccc;
             cursor: not-allowed;
         }
-        
-        /* Footer */
-        .site-footer {
-            background: #3c4043;
-            color: #e8eaed;
-            padding: 60px 40px 40px;
-            margin-top: 80px;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: #9aa0a6;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .footer-links a:hover {
-            color: #ffffff;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #5f6368;
-            padding-top: 30px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            color: #ff9a9e;
-        }
-
-        .footer-logo svg {
-            width: 24px;
-            height: 24px;
-            fill: #ff9a9e;
-        }
-
-        .footer-copyright {
-            font-size: 13px;
-            color: #9aa0a6;
-            line-height: 1.5;
-        }
-
-        /* Footer responsive */
-        @media (max-width: 768px) {
-            .site-footer {
-                padding: 40px 20px 30px;
-                margin-top: 60px;
+        /* Footer styles removed for cleaner tool page */
             }
 
             .footer-grid {
@@ -834,62 +747,16 @@
             </div>
         </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h3 data-i18n="footer_quick_links">快速链接</h3>
-                    <ul class="footer-links">
-                        <li><a href="index.html" data-i18n="nav_home">首页</a></li>
-                        <li><a href="share.html" data-i18n="nav_transfer">传送</a></li>
-                        <li><a href="image-tools.html" data-i18n="nav_images">图片工具</a></li>
-                        <li><a href="video-tools.html" data-i18n="nav_video">视频工具</a></li>
-                        <li><a href="document-tools.html" data-i18n="nav_files">文件工具</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3 data-i18n="footer_about">关于</h3>
-                    <ul class="footer-links">
-                        <li><a href="about.html" data-i18n="footer_about_us">关于我们</a></li>
-                        <li><a href="blog.html" data-i18n="footer_blog">博客</a></li>
-                        <li><a href="faq.html" data-i18n="footer_faq">常见问题</a></li>
-                        <li><a href="privacy.html" data-i18n="footer_privacy">隐私政策</a></li>
-                        <li><a href="terms.html" data-i18n="footer_terms">服务条款</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3 data-i18n="footer_support">支持</h3>
-                    <ul class="footer-links">
-                        <li><a href="#" data-i18n="footer_help_center">帮助中心</a></li>
-                        <li><a href="#" data-i18n="footer_contact">联系我们</a></li>
-                        <li><a href="#" data-i18n="footer_feedback">反馈</a></li>
-                        <li><a href="#" data-i18n="footer_status">服务状态</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3 data-i18n="footer_community">社区</h3>
-                    <ul class="footer-links">
-                        <li><a href="#" data-i18n="footer_github">GitHub</a></li>
-                        <li><a href="#" data-i18n="footer_discord">Discord</a></li>
-                        <li><a href="#" data-i18n="footer_twitter">Twitter</a></li>
-                        <li><a href="#" data-i18n="footer_reddit">Reddit</a></li>
-                    </ul>
-                </div>
+    <!-- Simplified Footer -->
+    <footer style="background: #f8f9fa; padding: 20px 0; margin-top: 40px; border-top: 1px solid #e9ecef;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" style="fill: #3367d6;">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <span style="font-size: 18px; font-weight: 600; color: #3367d6;">DropShare</span>
             </div>
-            <div class="footer-bottom">
-                <div class="footer-logo">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
-                    </svg>
-                    <span>DropShare</span>
-                </div>
-                <div class="footer-copyright">
-                    <p data-i18n="footer_copyright">© 2024 DropShare. 保留所有权利。</p>
-                    <p data-i18n="footer_made_with">用 ❤️ 制作，让文件分享更简单</p>
-                </div>
-            </div>
+            <p style="margin: 0; color: #6b7280; font-size: 14px;" data-i18n="footer_simple_copyright">© 2024 DropShare. 让文件分享更简单 ❤️</p>
         </div>
     </footer>
 
