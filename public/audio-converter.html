@@ -4,69 +4,169 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Converter - DropShare</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 1000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #2563eb;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 40px 20px;
-            text-align: center;
+            margin-top: 80px;
         }
         
         .page-title {
-            font-size: 2.5rem;
+            font-size: 32px;
             font-weight: 700;
-            color: #2d3748;
+            color: #1f2937;
             margin-bottom: 8px;
-            letter-spacing: -0.025em;
+            text-align: center;
         }
         
         .page-subtitle {
-            font-size: 1.1rem;
-            color: #718096;
-            margin-bottom: 60px;
-            font-weight: 400;
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
         }
         
-        .upload-area {
-            border: 2px dashed #cbd5e0;
-            border-radius: 12px;
-            padding: 80px 40px;
-            margin: 40px auto;
+
+        .converter-card {
             background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            max-width: 600px;
+            background: #f9fafb;
+            margin-bottom: 30px;
         }
         
-        .upload-area:hover {
-            border-color: #3182ce;
-            background: #f7fafc;
-        }
-        
+        .upload-area:hover,
         .upload-area.dragover {
-            border-color: #3182ce;
-            background: #ebf8ff;
-            transform: scale(1.02);
+            border-color: #3367d6;
+            background: #eff6ff;
         }
+        
         
         .upload-icon {
-            font-size: 3rem;
-            color: #a0aec0;
-            margin-bottom: 24px;
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
         }
         
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
         .upload-button {
-            background: #3182ce;
+            background: #3367d6;
             color: white;
             border: none;
             padding: 12px 24px;
@@ -82,26 +182,42 @@
         }
         
         .upload-button:hover {
-            background: #2c5aa0;
+            background: #2563eb;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
         }
         
-        .upload-text {
-            color: #718096;
-            font-size: 1rem;
-            margin-top: 16px;
-        }
         
-        .conversion-panel {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            text-align: left;
+        .conversion-controls {
+            display: none;
+            margin-bottom: 30px;
         }
+
+        .format-selection {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .format-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .format-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .format-desc {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
         
         .file-item {
             display: flex;
@@ -132,52 +248,61 @@
         }
         
         .format-selector {
+            margin-bottom: 20px;
+        }
+
+        .format-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 12px;
-            margin: 24px 0;
+            margin-bottom: 20px;
         }
         
         .format-option {
-            padding: 12px;
-            border: 2px solid #e2e8f0;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
             border-radius: 8px;
-            cursor: pointer;
             background: white;
-            text-align: center;
-            font-weight: 500;
+            cursor: pointer;
             transition: all 0.2s ease;
+            text-align: center;
         }
         
         .format-option:hover {
-            border-color: #3182ce;
-            background: #f7fafc;
+            border-color: #3367d6;
         }
         
         .format-option.selected {
-            background: #3182ce;
+            border-color: #3367d6;
+            background: #3367d6;
             color: white;
-            border-color: #3182ce;
         }
         
+
+        .workspace-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
         .convert-button {
-            width: 100%;
-            background: #3182ce;
+            background: #3367d6;
             color: white;
             border: none;
-            padding: 16px;
+            padding: 16px 32px;
             border-radius: 8px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            margin-top: 24px;
+            min-width: 200px;
         }
         
         .convert-button:hover:not(:disabled) {
-            background: #2c5aa0;
+            background: #2563eb;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
         }
         
         .convert-button:disabled {
@@ -195,16 +320,17 @@
         
         .progress-bar {
             width: 100%;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 3px;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
             overflow: hidden;
-            margin: 12px 0;
+            margin: 20px 0;
+            display: none;
         }
         
         .progress-fill {
             height: 100%;
-            background: #3182ce;
+            background: #3367d6;
             width: 0%;
             transition: width 0.3s ease;
         }
@@ -247,9 +373,59 @@
             gap: 12px;
         }
         
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
         .action-button {
             padding: 8px 16px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e5e7eb;
             border-radius: 6px;
             background: white;
             color: #4a5568;
@@ -261,9 +437,9 @@
         }
         
         .action-button.primary {
-            background: #3182ce;
+            background: #3367d6;
             color: white;
-            border-color: #3182ce;
+            border-color: #3367d6;
         }
         
         .action-button:hover {
@@ -271,47 +447,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
-        .footer-info {
-            max-width: 600px;
-            margin: 80px auto 40px;
-            text-align: center;
-            padding: 0 20px;
-        }
-        
-        .footer-text {
-            color: #3182ce;
-            font-size: 0.875rem;
-            margin-bottom: 24px;
-        }
-        
-        .rating-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .rating-text {
-            color: #718096;
-            font-size: 0.875rem;
-        }
-        
-        .rating-display {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .stars {
-            color: #fbd38d;
-            font-size: 1.2rem;
-        }
-        
-        .rating-score {
-            color: #3182ce;
-            font-weight: 600;
-        }
-        /* 设备选择弹窗样式 */
+        /* Device selection modal styles */
         .device-modal {
             display: none;
             position: fixed;
@@ -392,13 +528,13 @@
         }
         
         .device-item:hover {
-            border-color: #ff9a9e;
-            background: #fff5f5;
+            border-color: #3367d6;
+            background: #f3f4f6;
         }
         
         .device-item.selected {
-            border-color: #ff9a9e;
-            background: #ffe4e6;
+            border-color: #3367d6;
+            background: #e3f2fd;
         }
         
         .device-checkbox {
@@ -461,12 +597,12 @@
         }
         
         .modal-btn-send {
-            background: #ff9a9e;
+            background: #3367d6;
             color: white;
         }
         
         .modal-btn-send:hover {
-            background: #ff8a90;
+            background: #2563eb;
         }
         
         .modal-btn-send:disabled {
@@ -474,52 +610,6 @@
             cursor: not-allowed;
         }
 
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            border-bottom: 2px solid #e2e8f0;
-            background: #ffffff;
-        }
-        
-        .page-main-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2d3748;
-            margin: 0;
-        }
-        
-        .header-buttons {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            color: #3182ce;
-            text-decoration: none;
-            border: 1px solid #3182ce;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-        
-        .back-button:hover {
-            background: #3182ce;
-            color: white;
-        }
-
-        .control-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
 
         
 
@@ -528,60 +618,122 @@
         
 
         @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
+            .nav-links {
+                display: none;
             }
-            
-            
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .page-title {
+                font-size: 32px;
+            }
+
+            .page-subtitle {
+                font-size: 16px;
+                margin-bottom: 40px;
+            }
+
+            .converter-card {
+                padding: 24px;
+            }
+
+
+            .upload-area {
+                padding: 60px 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .format-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="page-header">
-        <h1 class="page-main-title">🎵 <span >音频转换器</span></h1>
-        <div class="header-buttons">
-            <div class="control-buttons">
-                
+    <!-- Header -->
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
             </div>
-            <a href="audio-tools.html" class="back-button">← <span >音频工具</span></a>
-            <a href="index.html" class="back-button">🏠 <span >首页</span></a>
+
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Rooms</a>
+                    <a href="image-tools.html">Images</a>
+                    <a href="audio-tools.html" class="active">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html">Files</a>
+                </nav>
+                <div class="control-buttons">
+
+                </div>
+            </div>
         </div>
-    </div>
+    </header>
 
     <div class="container">
-        <h1 class="page-title" id="pageTitle" >MP3 to WAV audio</h1>
-        <p class="page-subtitle" id="pageSubtitle" >Convert MP3 to WAV audio</p>
-        
-        <div class="upload-area" id="uploadArea">
-            <div class="upload-icon" id="uploadIcon">📄</div>
-            <button class="upload-button" onclick="document.getElementById('fileInput').click()" >
-                📤 Upload from PC or Mobile
-            </button>
-            <div class="upload-text" >or Drag files here</div>
-            <input type="file" id="fileInput" multiple accept="audio/*" style="display: none;">
-        </div>
-        
-        <div class="conversion-panel" id="conversionPanel" style="display: none;">
-            <div id="fileList"></div>
-            
-            <h3 id="formatSelectorTitle"><span >选择输出格式：</span></h3>
-            <div class="format-selector" id="formatSelector">
-                <div class="format-option" data-format="mp3"><span >MP3</span></div>
-                <div class="format-option" data-format="wav"><span >WAV</span></div>
-                <div class="format-option" data-format="aac"><span >AAC</span></div>
-                <div class="format-option" data-format="ogg"><span >OGG</span></div>
-                <div class="format-option" data-format="flac"><span >FLAC</span></div>
+        <h1 class="page-title" id="pageTitle">MP3 to WAV audio</h1>
+        <p class="page-subtitle" id="pageSubtitle">Convert MP3 to WAV audio</p>
+
+        <div class="converter-card">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon" id="uploadIcon">🎵</div>
+                <div class="upload-text">Click to select audio files or drag them here</div>
+                <div class="upload-hint">Supports MP3, WAV, AAC, OGG, FLAC formats, maximum 50MB</div>
+                <input type="file" id="fileInput" multiple accept="audio/*">
             </div>
-            
-            <!-- 高级设置 -->
-            <div class="advanced-settings" style="margin-top: 20px;">
-                <h4 >高级设置</h4>
-                <div style="display: flex; gap: 20px; margin-top: 10px;">
-                    <div style="flex: 1;">
-                        <label for="bitrateSelect" >比特率:</label>
-                        <select id="bitrateSelect" style="width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px;">
+
+            <!-- Progress Bar -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Format Selection -->
+            <div class="format-selection" id="formatSelection">
+                <div class="format-title" id="formatSelectorTitle">Select Output Format</div>
+                <div class="format-grid" id="formatSelector">
+                    <div class="format-option" data-format="mp3">
+                        <div class="format-name">MP3</div>
+                        <div class="format-desc">Most compatible</div>
+                    </div>
+                    <div class="format-option" data-format="wav">
+                        <div class="format-name">WAV</div>
+                        <div class="format-desc">Lossless quality</div>
+                    </div>
+                    <div class="format-option" data-format="aac">
+                        <div class="format-name">AAC</div>
+                        <div class="format-desc">Apple optimized</div>
+                    </div>
+                    <div class="format-option" data-format="ogg">
+                        <div class="format-name">OGG</div>
+                        <div class="format-desc">Open source</div>
+                    </div>
+                    <div class="format-option" data-format="flac">
+                        <div class="format-name">FLAC</div>
+                        <div class="format-desc">Lossless compression</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Settings -->
+            <div class="advanced-settings" id="advancedSettings" style="background: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+                <div class="format-title">Audio Quality Settings</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px;">
+                    <div>
+                        <label for="bitrateSelect" style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Bitrate:</label>
+                        <select id="bitrateSelect" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px;">
                             <option value="64k">64 kbps</option>
                             <option value="128k" selected>128 kbps</option>
                             <option value="192k">192 kbps</option>
@@ -589,9 +741,9 @@
                             <option value="320k">320 kbps</option>
                         </select>
                     </div>
-                    <div style="flex: 1;">
-                        <label for="sampleRateSelect" >采样率:</label>
-                        <select id="sampleRateSelect" style="width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px;">
+                    <div>
+                        <label for="sampleRateSelect" style="display: block; font-weight: 600; margin-bottom: 8px; color: #374151;">Sample Rate:</label>
+                        <select id="sampleRateSelect" style="width: 100%; padding: 10px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 14px;">
                             <option value="22050">22.05 kHz</option>
                             <option value="44100" selected>44.1 kHz</option>
                             <option value="48000">48 kHz</option>
@@ -600,43 +752,48 @@
                     </div>
                 </div>
             </div>
-            
-            <button class="convert-button" id="convertBtn" disabled><span >开始转换</span></button>
-            
-            <div class="progress-section" id="progressSection" style="display: none;">
-                <div class="progress-text" id="progressText"><span >准备转换...</span></div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
+
+            <!-- Audio Converter Controls -->
+            <div class="conversion-controls" id="conversionPanel" style="display: none;">
+                <!-- Audio Files List -->
+                <div class="audio-workspace" style="background: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                    <div class="workspace-title">🎧 Selected Audio Files</div>
+                    <div id="fileList"></div>
+                </div>
+
+                <!-- Progress Section -->
+                <div class="progress-section" id="progressSection" style="display: none; background: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+                    <div class="progress-text" id="progressText">Preparing conversion...</div>
+                </div>
+
+                <!-- Conversion Results -->
+                <div class="results-section" id="resultsSection" style="display: none;">
+                    <h4 style="margin-bottom: 16px;">Conversion Results:</h4>
+                    <div id="resultsList"></div>
                 </div>
             </div>
-            
-            <div class="results-section" id="resultsSection" style="display: none;">
-                <h3><span >转换结果:</span></h3>
-                <div id="resultsList"></div>
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button class="action-button" id="clearBtn" onclick="audioConverter.reset()">
-                        <span >清空所有</span>
-                    </button>
-                    <button class="action-button primary" id="shareAllBtn" onclick="audioConverter.shareAllFiles()">
-                        <span >分享所有文件</span>
-                    </button>
-                </div>
+
+            <!-- Convert Button -->
+            <div style="text-align: center; margin: 24px 0;">
+                <button class="convert-button" id="convertBtn" disabled>Start Conversion</button>
             </div>
-        </div>
-        
-        <div class="footer-info">
-            <div class="footer-text" >Uploaded and generated files are deleted 1 hour after upload</div>
-            <div class="rating-section">
-                <div class="rating-text" >Help Us Improve</div>
-                <div class="rating-display">
-                    <div class="stars">★★★★★</div>
-                    <div class="rating-score">4.8 (1703)</div>
-                </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-success" id="downloadAllBtn" style="display: none;">
+                    📥 Download All Files
+                </button>
+                <button class="btn btn-secondary" id="clearBtn">
+                    🔄 Clear All
+                </button>
+                <a href="audio-tools.html" class="btn btn-primary">
+                    ← Back to Audio Tools
+                </a>
             </div>
         </div>
     </div>
     
-    <!-- FFmpeg 懒加载管理器 -->
+    <!-- FFmpeg Lazy Loader Manager -->
     <script src="scripts/ffmpeg-loader.js"></script>
     
     <script>
@@ -663,12 +820,12 @@
                 this.presetFromFormat = urlParams.get('from');
                 this.presetToFormat = urlParams.get('to');
                 
-                console.log('预设转换:', this.presetFromFormat, '→', this.presetToFormat);
+                console.log('Preset conversion:', this.presetFromFormat, '→', this.presetToFormat);
             }
             
             updatePageForPreset() {
                 if (this.presetFromFormat && this.presetToFormat) {
-                    // 更新页面标题
+                    // Update page title
                     const pageTitle = document.getElementById('pageTitle');
                     const pageSubtitle = document.getElementById('pageSubtitle');
                     const fromFormatUpper = this.presetFromFormat.toUpperCase();
@@ -677,47 +834,26 @@
                     pageTitle.textContent = `${fromFormatUpper} to ${toFormatUpper} audio`;
                     pageSubtitle.textContent = `Convert ${fromFormatUpper} to ${toFormatUpper} audio`;
                     
-                    // 更新上传区域图标
+                    // Update upload area icon
                     const uploadIcon = document.getElementById('uploadIcon');
                     uploadIcon.textContent = '🎵';
                     
-                    // 更新文件输入类型
+                    // Update file input type
                     const fileInput = document.getElementById('fileInput');
                     fileInput.accept = `audio/${this.presetFromFormat}`;
                     
-                    // 预选输出格式
+                    // Preselect output format
                     this.selectedFormat = this.presetToFormat;
                     
-                    // 隐藏格式选择器并显示预设信息
+                    // Hide format selector and title for preset mode
                     const formatSelectorTitle = document.getElementById('formatSelectorTitle');
                     const formatSelector = document.getElementById('formatSelector');
+                    const formatSelection = document.getElementById('formatSelection');
                     
-                    formatSelectorTitle.textContent = `输出格式：${toFormatUpper}`;
-                    formatSelector.style.display = 'none';
+                    // Hide the entire format selection section since format is preset
+                    formatSelection.style.display = 'none';
                     
-                    // 添加格式说明
-                    const formatInfo = document.createElement('div');
-                    formatInfo.style.cssText = `
-                        background: #f7fafc;
-                        padding: 16px;
-                        border-radius: 8px;
-                        margin: 16px 0;
-                        border: 1px solid #e2e8f0;
-                    `;
-                    formatInfo.innerHTML = `
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="font-size: 1.5em;">🔄</span>
-                            <div>
-                                <div style="font-weight: 600; color: #2d3748; margin-bottom: 4px;">
-                                    ${fromFormatUpper} → ${toFormatUpper}
-                                </div>
-                                <div style="color: #718096; font-size: 0.875rem;">
-                                    ${this.getFormatDescription(this.presetFromFormat, this.presetToFormat)}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    formatSelector.parentNode.insertBefore(formatInfo, formatSelector);
+                    // 格式说明已经在标题中显示，不需要额外卡片
                 } else {
                     // 默认通用模式
                     const pageTitle = document.getElementById('pageTitle');
@@ -729,18 +865,18 @@
             
             getFormatDescription(from, to) {
                 const descriptions = {
-                    'mp3_wav': '将压缩的 MP3 转换为无损的 WAV 格式',
-                    'wav_mp3': '压缩 WAV 音频为 MP3 格式，减小文件大小',
-                    'flac_mp3': '将无损 FLAC 转换为便携的 MP3 格式',
-                    'wav_flac': '将 WAV 转换为 FLAC，保持无损音质并压缩大小',
-                    'mp3_aac': '转换为 AAC 格式，Apple 设备的优化音频格式',
-                    'aac_mp3': '将 AAC 转换为通用的 MP3 格式',
-                    'ogg_mp3': '将开源 OGG Vorbis 格式转换为 MP3',
-                    'wav_aac': '将无损 WAV 转换为移动设备优化的 AAC 格式'
+                    'mp3_wav': 'Convert compressed MP3 to lossless WAV format',
+                    'wav_mp3': 'Compress WAV audio to MP3 format, reduce file size',
+                    'flac_mp3': 'Convert lossless FLAC to portable MP3 format',
+                    'wav_flac': 'Convert WAV to FLAC, maintain lossless quality and compress size',
+                    'mp3_aac': 'Convert to AAC format, optimized audio format for Apple devices',
+                    'aac_mp3': 'Convert AAC to universal MP3 format',
+                    'ogg_mp3': 'Convert open-source OGG Vorbis format to MP3',
+                    'wav_aac': 'Convert lossless WAV to mobile device optimized AAC format'
                 };
                 
                 const key = `${from}_${to}`;
-                return descriptions[key] || `将 ${from.toUpperCase()} 格式转换为 ${to.toUpperCase()} 格式`;
+                return descriptions[key] || `Convert ${from.toUpperCase()} format to ${to.toUpperCase()} format`;
             }
             
             async ensureFFmpegReady() {
@@ -748,7 +884,7 @@
                     return this.ffmpeg;
                 }
                 
-                // 显示加载状态
+                // Show loading state
                 this.showLoadingState();
                 
                 try {
@@ -767,14 +903,14 @@
                     return this.ffmpeg;
                     
                 } catch (error) {
-                    console.error('FFmpeg加载失败:', error);
+                    console.error('FFmpeg loading failed:', error);
                     this.showLoadingError(error);
                     throw error;
                 }
             }
             
             showLoadingState() {
-                // 创建加载覆盖层
+                // Create loading overlay
                 if (!document.getElementById('ffmpegLoadingOverlay')) {
                     const overlay = document.createElement('div');
                     overlay.id = 'ffmpegLoadingOverlay';
@@ -795,12 +931,12 @@
                     overlay.innerHTML = `
                         <div style="text-align: center; background: var(--surface-color); padding: 30px; border-radius: 12px; max-width: 400px;">
                             <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
-                            <h3 id="loadingTitle">正在加载音频转换引擎...</h3>
-                            <p id="loadingStatus">首次使用需要下载约25MB的转换库，请稍候...</p>
+                            <h3 id="loadingTitle">Loading Audio Conversion Engine...</h3>
+                            <p id="loadingStatus">First-time use requires downloading ~25MB conversion library, please wait...</p>
                             <div class="progress-bar" style="margin: 20px 0;">
                                 <div class="progress-fill" id="loadingProgressFill" style="width: 0%;"></div>
                             </div>
-                            <div id="loadingProgressText">准备加载...</div>
+                            <div id="loadingProgressText">Preparing to load...</div>
                         </div>
                     `;
                     
@@ -828,12 +964,12 @@
                     overlay.innerHTML = `
                         <div style="text-align: center; background: var(--surface-color); padding: 30px; border-radius: 12px; max-width: 400px;">
                             <div style="font-size: 2em; margin-bottom: 15px; color: var(--error-color);">❌</div>
-                            <h3 style="color: var(--error-color);">音频转换引擎加载失败</h3>
+                            <h3 style="color: var(--error-color);">Audio Conversion Engine Loading Failed</h3>
                             <p>${error.message}</p>
-                            <p>请检查网络连接并重试</p>
+                            <p>Please check network connection and try again</p>
                             <div style="margin-top: 20px;">
-                                <button class="button primary" onclick="location.reload()">重新加载页面</button>
-                                <button class="button" onclick="document.getElementById('ffmpegLoadingOverlay').remove()">关闭</button>
+                                <button class="button primary" onclick="location.reload()">Reload Page</button>
+                                <button class="button" onclick="document.getElementById('ffmpegLoadingOverlay').remove()">Close</button>
                             </div>
                         </div>
                     `;
@@ -848,7 +984,10 @@
                 const clearBtn = document.getElementById('clearBtn');
                 const shareAllBtn = document.getElementById('shareAllBtn');
                 
-                // 拖拽上传
+                // Upload area click event
+                uploadArea.addEventListener('click', () => fileInput.click());
+                
+                // Drag and drop upload
                 uploadArea.addEventListener('dragover', (e) => {
                     e.preventDefault();
                     uploadArea.classList.add('dragover');
@@ -864,12 +1003,12 @@
                     this.handleFiles(e.dataTransfer.files);
                 });
                 
-                // 文件选择
+                // File selection
                 fileInput.addEventListener('change', (e) => {
                     this.handleFiles(e.target.files);
                 });
                 
-                // 格式选择
+                // Format selection
                 formatOptions.forEach(option => {
                     option.addEventListener('click', () => {
                         formatOptions.forEach(opt => opt.classList.remove('selected'));
@@ -879,17 +1018,17 @@
                     });
                 });
                 
-                // 转换按钮
+                // Convert button
                 convertBtn.addEventListener('click', () => {
                     this.startConversion();
                 });
                 
-                // 清空按钮
+                // Clear button
                 clearBtn.addEventListener('click', () => {
                     this.reset();
                 });
                 
-                // 分享按钮
+                // Share button
                 shareAllBtn.addEventListener('click', () => {
                     this.shareAllFiles();
                 });
@@ -903,7 +1042,7 @@
                     return;
                 }
                 
-                // 如果有预设的输入格式，验证文件格式
+                // If preset input format exists, validate file format
                 if (this.presetFromFormat) {
                     const expectedMimeTypes = this.getExpectedMimeTypes(this.presetFromFormat);
                     const validFiles = audioFiles.filter(file => {
@@ -912,13 +1051,13 @@
                     });
                     
                     if (validFiles.length === 0) {
-                        alert(`请选择 ${this.presetFromFormat.toUpperCase()} 格式的音频文件！`);
+                        alert(`Please select ${this.presetFromFormat.toUpperCase()} format audio files!`);
                         return;
                     }
                     
                     if (validFiles.length < audioFiles.length) {
                         const skipped = audioFiles.length - validFiles.length;
-                        alert(`已跳过 ${skipped} 个非 ${this.presetFromFormat.toUpperCase()} 格式的文件`);
+                        alert(`Skipped ${skipped} non-${this.presetFromFormat.toUpperCase()} format files`);
                     }
                     
                     audioFiles = validFiles;
@@ -928,7 +1067,7 @@
                 this.showFileList();
                 document.getElementById('conversionPanel').style.display = 'block';
                 
-                // 如果有预设格式，自动启用转换按钮
+                // If preset format exists, automatically enable convert button
                 if (this.presetToFormat) {
                     const convertBtn = document.getElementById('convertBtn');
                     convertBtn.disabled = false;
@@ -983,17 +1122,17 @@
                     
                     for (let i = 0; i < this.selectedFiles.length; i++) {
                         const file = this.selectedFiles[i];
-                        this.updateProgress(0, `${window.DROPSHARE_I18N?.t('status_preparing_conversion') || '准备转换'}: ${file.name}`);
+                        this.updateProgress(0, `${window.DROPSHARE_I18N?.t('status_preparing_conversion') || 'Preparing conversion'}: ${file.name}`);
                         
                         try {
                             const convertedFile = await this.convertAudio(file);
                             this.convertedFiles.push(convertedFile);
                             
                             const overallProgress = ((i + 1) / this.selectedFiles.length) * 100;
-                            this.updateProgress(overallProgress, `${window.DROPSHARE_I18N?.t('status_completed_files') || '已完成'} ${i + 1}/${this.selectedFiles.length} ${window.DROPSHARE_I18N?.t('label_files') || '个文件'}`);
+                            this.updateProgress(overallProgress, `${window.DROPSHARE_I18N?.t('status_completed_files') || 'Completed'} ${i + 1}/${this.selectedFiles.length} ${window.DROPSHARE_I18N?.t('label_files') || 'files'}`);
                         } catch (error) {
-                            console.error('转换失败:', error);
-                            alert(`${window.DROPSHARE_I18N?.t('alert_conversion_failed') || '转换失败'} ${file.name}: ${error.message}`);
+                            console.error('Conversion failed:', error);
+                            alert(`${window.DROPSHARE_I18N?.t('alert_conversion_failed') || 'Conversion failed'} ${file.name}: ${error.message}`);
                         }
                     }
                     
@@ -1002,8 +1141,8 @@
                     }, 500);
                     
                 } catch (error) {
-                    console.error('FFmpeg 加载失败:', error);
-                    alert(window.DROPSHARE_I18N?.t('alert_audio_engine_load_failed') || '音频转换引擎加载失败，请检查网络连接后重试');
+                    console.error('FFmpeg loading failed:', error);
+                    alert(window.DROPSHARE_I18N?.t('alert_audio_engine_load_failed') || 'Audio conversion engine loading failed, please check network connection and try again');
                     document.getElementById('convertBtn').disabled = false;
                 }
             }
@@ -1012,16 +1151,16 @@
                 const inputFileName = `input_${Date.now()}.${this.getFileExtension(file.name)}`;
                 const outputFileName = `output_${Date.now()}.${this.selectedFormat}`;
                 
-                // 将文件写入 FFmpeg 文件系统
+                // Write file to FFmpeg file system
                 await this.ffmpeg.writeFile(inputFileName, new Uint8Array(await file.arrayBuffer()));
                 
-                // 构建转换命令
+                // Build conversion command
                 const bitrate = document.getElementById('bitrateSelect').value;
                 const sampleRate = document.getElementById('sampleRateSelect').value;
                 
                 let args = ['-i', inputFileName];
                 
-                // 根据格式设置参数
+                // Set parameters based on format
                 switch (this.selectedFormat) {
                     case 'mp3':
                         args.push('-codec:a', 'libmp3lame', '-b:a', bitrate);
@@ -1042,17 +1181,17 @@
                 
                 args.push('-ar', sampleRate, outputFileName);
                 
-                // 执行转换
+                // Execute conversion
                 await this.ffmpeg.exec(args);
                 
-                // 读取转换后的文件
+                // Read converted file
                 const data = await this.ffmpeg.readFile(outputFileName);
                 
-                // 清理临时文件
+                // Clean up temporary files
                 await this.ffmpeg.deleteFile(inputFileName);
                 await this.ffmpeg.deleteFile(outputFileName);
                 
-                // 创建新文件对象
+                // Create new file object
                 const newFileName = this.changeFileExtension(file.name, this.selectedFormat);
                 const mimeType = this.getMimeType(this.selectedFormat);
                 
@@ -1072,10 +1211,10 @@
                             </div>
                             <div class="result-actions">
                                 <button class="action-button" onclick="audioConverter.downloadFile(${index})">
-                                    <span >下载</span>
+                                    <span >Download</span>
                                 </button>
                                 <button class="action-button primary" onclick="audioConverter.shareFile(${index})">
-                                    <span >分享</span>
+                                    <span >Share</span>
                                 </button>
                             </div>
                         </div>
@@ -1165,18 +1304,18 @@
             }
         }
         
-        // 初始化
+        // Initialize
         let audioConverter;
         document.addEventListener('DOMContentLoaded', () => {
             audioConverter = new AudioConverter();
         });
         
-        // 设备传送功能变量
+        // Device transfer function variables
         let selectedDevices = new Set();
         let currentShareFile = null;
         let currentShareFiles = null;
         
-        // 显示设备选择弹窗
+        // Show device selection modal
         function showDeviceModal() {
             const modal = document.getElementById('deviceModal');
             const deviceList = document.getElementById('deviceList');
@@ -1190,8 +1329,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p >未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;" >请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p >No available devices found</p>
+                        <p style="font-size: 14px; margin-top: 8px;" >Please ensure other devices have DropShare open and are connected to the same network</p>
                     </div>
                 `;
             } else {
@@ -1210,13 +1349,13 @@
             modal.classList.add('show');
         }
         
-        // 关闭设备选择弹窗
+        // Close device selection modal
         function closeDeviceModal() {
             document.getElementById('deviceModal').classList.remove('show');
             selectedDevices.clear();
         }
         
-        // 切换设备选择
+        // Toggle device selection
         function toggleDevice(deviceId) {
             const checkbox = document.getElementById(`device-${deviceId}`);
             const deviceItem = checkbox.closest('.device-item');
@@ -1234,7 +1373,7 @@
             updateSendButton();
         }
         
-        // 更新发送按钮
+        // Update send button
         function updateSendButton() {
             const sendBtn = document.getElementById('sendToDevicesBtn');
             const count = selectedDevices.size;
@@ -1248,7 +1387,7 @@
             }
         }
         
-        // 传送到选中设备
+        // Send to selected devices
         function sendToSelectedDevices() {
             if (selectedDevices.size === 0) return;
             
@@ -1267,7 +1406,7 @@
                     });
                 });
                 
-                alert(`${window.DROPSHARE_I18N?.t('alert_files_sending') || '文件已开始传送到'} ${selectedDevices.size} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}!`);
+                alert(`${window.DROPSHARE_I18N?.t('alert_files_sending') || 'Files have started transferring to'} ${selectedDevices.size} ${window.DROPSHARE_I18N?.t('label_devices') || 'devices'}!`);
                 closeDeviceModal();
             } else {
                 // 如果没有传输系统，尝试添加到分享队列
@@ -1275,10 +1414,10 @@
                     filesToSend.forEach(file => {
                         window.ui.filesQueue.push(file);
                     });
-                    alert(window.DROPSHARE_I18N?.t('alert_files_added_to_share_list') || '文件已添加到分享列表!');
+                    alert(window.DROPSHARE_I18N?.t('alert_files_added_to_share_list') || 'Files have been added to share list!');
                     closeDeviceModal();
                 } else {
-                    if (confirm('传输功能需要返回传送页面使用。\\n\\n是否现在跳转到传送页面？')) {
+                    if (confirm('Transfer function needs to return to the transfer page to use.\\n\\nJump to transfer page now?')) {
                         sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
                             files: filesToSend.map(f => ({ name: f.name, type: f.type, size: f.size })),
                             timestamp: Date.now()
@@ -1289,35 +1428,35 @@
             }
         }
         
-        // 获取可用设备
+        // Get available devices
         function getAvailableDevices() {
             const devices = [];
             
-            // 检查现有设备
+            // Check existing devices
             const peerElements = document.querySelectorAll('x-peer');
             if (peerElements.length > 0) {
                 peerElements.forEach(peer => {
                     devices.push({
                         id: peer.id,
-                        name: peer.querySelector('.name')?.textContent || '未知设备',
-                        type: peer.querySelector('.device-name')?.textContent || '设备'
+                        name: peer.querySelector('.name')?.textContent || 'Unknown Device',
+                        type: peer.querySelector('.device-name')?.textContent || 'Device'
                     });
                 });
             }
             
-            // 模拟设备（供测试）
+            // Demo devices (for testing)
             if (devices.length === 0) {
                 devices.push(
-                    { id: 'demo1', name: 'iPhone 13', type: 'iOS 手机' },
-                    { id: 'demo2', name: 'MacBook Pro', type: 'macOS 笔记本' },
-                    { id: 'demo3', name: 'Windows PC', type: 'Windows 桌面' }
+                    { id: 'demo1', name: 'iPhone 13', type: 'iOS Phone' },
+                    { id: 'demo2', name: 'MacBook Pro', type: 'macOS Laptop' },
+                    { id: 'demo3', name: 'Windows PC', type: 'Windows Desktop' }
                 );
             }
             
             return devices;
         }
         
-        // 获取设备图标
+        // Get device icon
         function getDeviceIcon(device) {
             const type = device.type.toLowerCase();
             if (type.includes('phone') || type.includes('mobile') || type.includes('ios')) return '📱';
@@ -1327,20 +1466,20 @@
             return '💻';
         }
     </script>
-    <!-- 设备选择弹窗 -->
+    <!-- Device Selection Modal -->
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title" >选择传送设备</h3>
+                <h3 class="device-modal-title" >Select Transfer Devices</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
-                <!-- 设备列表将在这里动态生成 -->
+                <!-- Device list will be dynamically generated here -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()"><span >取消</span></button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()"><span >Cancel</span></button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    <span >传送到选中设备</span>
+                    <span >Send to Selected Devices</span>
                 </button>
             </div>
         </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片滤镜特效 - DropShare</title>
+    <title>Image Filter Effects - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -456,49 +456,49 @@
     </header>
 
     <div class="container">
-        <h1 class="page-title">图片滤镜特效</h1>
-        <p class="page-subtitle">应用专业级滤镜效果，让图片更具艺术感</p>
+        <h1 class="page-title">Image Filter Effects</h1>
+        <p class="page-subtitle">Apply professional-grade filter effects to make images more artistic</p>
 
         <div class="filter-card">
-            <!-- 上传区域 -->
+            <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎨</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text">Click to select images or drag them here</div>
+                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
-            <!-- 进度条 -->
+            <!-- Progress Bar -->
             <div class="progress-bar" id="progressBar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
 
-            <!-- 滤镜控制 -->
+            <!-- Filter Controls -->
             <div class="filter-controls" id="filterControls">
                 <div class="controls-grid">
-                    <!-- 滤镜面板 -->
+                    <!-- Filter Panel -->
                     <div class="filter-panel">
-                        <div class="panel-title">🎛️ 滤镜控制</div>
+                        <div class="panel-title">🎛️ Filter Controls</div>
 
-                        <!-- 预设滤镜 -->
+                        <!-- Preset Filters -->
                         <div class="preset-filters">
-                            <div class="filter-title">🎭 预设滤镜</div>
+                            <div class="filter-title">🎭 Preset Filters</div>
                             <div class="preset-grid">
-                                <button class="preset-btn active" data-preset="none">原图</button>
-                                <button class="preset-btn" data-preset="vintage">复古</button>
-                                <button class="preset-btn" data-preset="bw">黑白</button>
-                                <button class="preset-btn" data-preset="sepia">怀旧</button>
-                                <button class="preset-btn" data-preset="warm">暖调</button>
-                                <button class="preset-btn" data-preset="cool">冷调</button>
-                                <button class="preset-btn" data-preset="dramatic">戏剧</button>
-                                <button class="preset-btn" data-preset="dreamy">梦幻</button>
+                                <button class="preset-btn active" data-preset="none">Original</button>
+                                <button class="preset-btn" data-preset="vintage">Vintage</button>
+                                <button class="preset-btn" data-preset="bw">B&W</button>
+                                <button class="preset-btn" data-preset="sepia">Sepia</button>
+                                <button class="preset-btn" data-preset="warm">Warm</button>
+                                <button class="preset-btn" data-preset="cool">Cool</button>
+                                <button class="preset-btn" data-preset="dramatic">Dramatic</button>
+                                <button class="preset-btn" data-preset="dreamy">Dreamy</button>
                             </div>
                         </div>
 
-                        <!-- 基础调整 -->
+                        <!-- Basic Adjustments -->
                         <div class="filter-group">
                             <div class="filter-title">
-                                💡 亮度
+                                💡 Brightness
                                 <span class="filter-value" id="brightnessValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="brightnessSlider" 
@@ -507,7 +507,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌗 对比度
+                                🌗 Contrast
                                 <span class="filter-value" id="contrastValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="contrastSlider" 
@@ -516,7 +516,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌈 饱和度
+                                🌈 Saturation
                                 <span class="filter-value" id="saturationValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="saturationSlider" 
@@ -525,17 +525,17 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌅 色相
+                                🌅 Hue
                                 <span class="filter-value" id="hueValue">0°</span>
                             </div>
                             <input type="range" class="filter-slider" id="hueSlider" 
                                    min="-180" max="180" value="0">
                         </div>
 
-                        <!-- 高级效果 -->
+                        <!-- Advanced Effects -->
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌫️ 模糊
+                                🌫️ Blur
                                 <span class="filter-value" id="blurValue">0px</span>
                             </div>
                             <input type="range" class="filter-slider" id="blurSlider" 
@@ -544,7 +544,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                ✨ 锐化
+                                ✨ Sharpen
                                 <span class="filter-value" id="sharpenValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="sharpenSlider" 
@@ -553,7 +553,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                ☀️ 曝光
+                                ☀️ Exposure
                                 <span class="filter-value" id="exposureValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="exposureSlider" 
@@ -562,45 +562,45 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🎯 渐晕
+                                🎯 Vignette
                                 <span class="filter-value" id="vignetteValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="vignetteSlider" 
                                    min="0" max="100" value="0">
                         </div>
 
-                        <!-- 快速操作 -->
+                        <!-- Quick Actions -->
                         <div class="quick-actions">
-                            <button class="quick-btn" id="resetFilters">🔄 重置</button>
-                            <button class="quick-btn" id="randomFilter">🎲 随机</button>
-                            <button class="quick-btn" id="toggleComparison">👁️ 对比</button>
+                            <button class="quick-btn" id="resetFilters">🔄 Reset</button>
+                            <button class="quick-btn" id="randomFilter">🎲 Random</button>
+                            <button class="quick-btn" id="toggleComparison">👁️ Compare</button>
                         </div>
                     </div>
 
-                    <!-- 图片工作区 -->
+                    <!-- Image Workspace -->
                     <div class="image-workspace">
-                        <div class="workspace-title">🖼️ 实时预览</div>
+                        <div class="workspace-title">🖼️ Live Preview</div>
                         <div class="image-container">
-                            <img id="workspaceImage" class="workspace-image" alt="滤镜预览">
+                            <img id="workspaceImage" class="workspace-image" alt="Filter Preview">
                         </div>
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="imageSize"></span></div>
-                            <div>文件大小: <span class="size" id="fileSize"></span></div>
+                            <div>Size: <span class="size" id="imageSize"></span></div>
+                            <div>File size: <span class="size" id="fileSize"></span></div>
                         </div>
 
-                        <!-- 对比模式 -->
+                        <!-- Comparison Mode -->
                         <div class="comparison-mode" id="comparisonMode">
                             <div class="comparison-container">
                                 <div class="comparison-item">
-                                    <h4>原图</h4>
+                                    <h4>Original</h4>
                                     <div class="image-container">
-                                        <img id="originalComparison" class="workspace-image" alt="原图">
+                                        <img id="originalComparison" class="workspace-image" alt="Original">
                                     </div>
                                 </div>
                                 <div class="comparison-item">
-                                    <h4>滤镜效果</h4>
+                                    <h4>Filter Effect</h4>
                                     <div class="image-container">
-                                        <img id="filteredComparison" class="workspace-image" alt="滤镜效果">
+                                        <img id="filteredComparison" class="workspace-image" alt="Filter Effect">
                                     </div>
                                 </div>
                             </div>
@@ -609,23 +609,23 @@
                 </div>
             </div>
 
-            <!-- 操作按钮 -->
+            <!-- Action Buttons -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 下载滤镜图片
+                    📥 Download Filtered Image
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 重新选择
+                    🔄 Select Again
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    ← 返回工具页
+                    ← Back to Tools
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // 全局变量
+        // Global variables
         let originalFile = null;
         let originalImage = null;
         let currentFilters = {
@@ -640,7 +640,7 @@
         };
         let isComparisonMode = false;
 
-        // 预设滤镜
+        // Preset filters
         const presets = {
             none: { brightness: 100, contrast: 100, saturation: 100, hue: 0, blur: 0, sharpen: 0, exposure: 0, vignette: 0 },
             vintage: { brightness: 95, contrast: 120, saturation: 85, hue: 15, blur: 0.2, sharpen: 0, exposure: 10, vignette: 20 },
@@ -652,7 +652,7 @@
             dreamy: { brightness: 115, contrast: 80, saturation: 120, hue: 5, blur: 1, sharpen: 0, exposure: 20, vignette: 15 }
         };
 
-        // DOM 元素
+        // DOM elements
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const filterControls = document.getElementById('filterControls');
@@ -665,7 +665,7 @@
         const progressBar = document.getElementById('progressBar');
         const progressFill = document.getElementById('progressFill');
 
-        // 滑块元素
+        // Slider elements
         const sliders = {
             brightness: document.getElementById('brightnessSlider'),
             contrast: document.getElementById('contrastSlider'),
@@ -677,7 +677,7 @@
             vignette: document.getElementById('vignetteSlider')
         };
 
-        // 值显示元素
+        // Value display elements
         const valueDisplays = {
             brightness: document.getElementById('brightnessValue'),
             contrast: document.getElementById('contrastValue'),
@@ -689,24 +689,24 @@
             vignette: document.getElementById('vignetteValue')
         };
 
-        // 事件监听器
+        // Event listeners
         uploadArea.addEventListener('click', () => fileInput.click());
         uploadArea.addEventListener('dragover', handleDragOver);
         uploadArea.addEventListener('drop', handleDrop);
         uploadArea.addEventListener('dragleave', handleDragLeave);
         fileInput.addEventListener('change', handleFileSelect);
 
-        // 滑块事件
+        // Slider events
         Object.keys(sliders).forEach(key => {
             sliders[key].addEventListener('input', (e) => handleSliderChange(key, e.target.value));
         });
 
-        // 预设按钮事件
+        // Preset button events
         document.querySelectorAll('.preset-btn').forEach(btn => {
             btn.addEventListener('click', (e) => applyPreset(e.target.dataset.preset));
         });
 
-        // 快速操作按钮
+        // Quick action buttons
         document.getElementById('resetFilters').addEventListener('click', resetFilters);
         document.getElementById('randomFilter').addEventListener('click', applyRandomFilter);
         document.getElementById('toggleComparison').addEventListener('click', toggleComparison);
@@ -714,7 +714,7 @@
         downloadBtn.addEventListener('click', downloadFilteredImage);
         resetBtn.addEventListener('click', resetFilter);
 
-        // 拖拽处理
+        // Drag handling
         function handleDragOver(e) {
             e.preventDefault();
             uploadArea.classList.add('dragover');
@@ -734,7 +734,7 @@
             }
         }
 
-        // 文件选择处理
+        // File selection handling
         function handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) {
@@ -742,15 +742,15 @@
             }
         }
 
-        // 处理文件
+        // Process file
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('请选择图片文件！');
+                alert('Please select an image file!');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert('文件大小不能超过 10MB！');
+                alert('File size cannot exceed 10MB!');
                 return;
             }
 
@@ -759,7 +759,7 @@
             loadImage(file);
         }
 
-        // 显示进度条
+        // Show progress bar
         function showProgress() {
             progressBar.style.display = 'block';
             let progress = 0;
@@ -776,7 +776,7 @@
             }, 50);
         }
 
-        // 加载图片
+        // Load image
         function loadImage(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -789,35 +789,35 @@
             reader.readAsDataURL(file);
         }
 
-        // 设置滤镜器
+        // Setup filter
         function setupFilter(img, file) {
             workspaceImage.src = img.src;
             originalComparison.src = img.src;
             filteredComparison.src = img.src;
             
-            // 显示图片信息
+            // Display image info
             document.getElementById('imageSize').textContent = `${img.width} × ${img.height}`;
             document.getElementById('fileSize').textContent = formatFileSize(file.size);
             
-            // 重置滤镜
+            // Reset filters
             resetFilters();
             
-            // 显示控制区域
+            // Show control area
             filterControls.style.display = 'block';
             downloadBtn.style.display = 'inline-flex';
         }
 
-        // 滑块变化处理
+        // Handle slider change
         function handleSliderChange(filterType, value) {
             currentFilters[filterType] = parseFloat(value);
             updateValueDisplay(filterType, value);
             applyFilters();
             
-            // 取消预设选择
+            // Cancel preset selection
             document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
         }
 
-        // 更新值显示
+        // Update value display
         function updateValueDisplay(filterType, value) {
             const display = valueDisplays[filterType];
             if (!display) return;
@@ -840,7 +840,7 @@
             }
         }
 
-        // 应用滤镜
+        // Apply filters
         function applyFilters() {
             const filters = [];
             
@@ -860,9 +860,9 @@
                 filters.push(`blur(${currentFilters.blur}px)`);
             }
             
-            // CSS滤镜不支持锐化、曝光和渐晕，这里用近似效果
+            // CSS filters don't support sharpening, exposure and vignette, using approximate effects here
             if (currentFilters.sharpen > 0) {
-                // 锐化可以通过增加对比度来模拟
+                // Sharpening can be simulated by increasing contrast
                 const sharpenContrast = 100 + currentFilters.sharpen * 0.5;
                 if (!filters.some(f => f.includes('contrast'))) {
                     filters.push(`contrast(${sharpenContrast}%)`);
@@ -870,7 +870,7 @@
             }
             
             if (currentFilters.exposure !== 0) {
-                // 曝光可以通过亮度来模拟
+                // Exposure can be simulated through brightness
                 const exposureBrightness = currentFilters.brightness + currentFilters.exposure;
                 if (!filters.some(f => f.includes('brightness'))) {
                     filters.push(`brightness(${exposureBrightness}%)`);
@@ -884,7 +884,7 @@
                 filteredComparison.style.filter = filterString;
             }
             
-            // 添加渐晕效果（使用CSS渐变叠加）
+            // Add vignette effect (using CSS gradient overlay)
             if (currentFilters.vignette > 0) {
                 const vignetteOpacity = currentFilters.vignette / 100 * 0.6;
                 const vignetteStyle = `radial-gradient(circle, transparent 30%, rgba(0,0,0,${vignetteOpacity}) 70%)`;
@@ -904,15 +904,15 @@
             }
         }
 
-        // 应用预设滤镜
+        // Apply preset filter
         function applyPreset(presetName) {
             const preset = presets[presetName];
             if (!preset) return;
             
-            // 更新当前滤镜值
+            // Update current filter values
             Object.assign(currentFilters, preset);
             
-            // 更新滑块和显示
+            // Update sliders and display
             Object.keys(preset).forEach(key => {
                 if (sliders[key]) {
                     sliders[key].value = preset[key];
@@ -920,39 +920,39 @@
                 }
             });
             
-            // 应用滤镜
+            // Apply filters
             applyFilters();
             
-            // 更新预设按钮状态
+            // Update preset button state
             document.querySelectorAll('.preset-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.preset === presetName);
             });
         }
 
-        // 重置滤镜
+        // Reset filters
         function resetFilters() {
             applyPreset('none');
         }
 
-        // 应用随机滤镜
+        // Apply random filter
         function applyRandomFilter() {
             const presetNames = Object.keys(presets).filter(name => name !== 'none');
             const randomPreset = presetNames[Math.floor(Math.random() * presetNames.length)];
             
-            // 在预设基础上添加一些随机变化
+            // Add some random variations to the preset base
             const preset = { ...presets[randomPreset] };
             preset.brightness += (Math.random() - 0.5) * 20;
             preset.contrast += (Math.random() - 0.5) * 20;
             preset.saturation += (Math.random() - 0.5) * 30;
             preset.hue += (Math.random() - 0.5) * 30;
             
-            // 限制范围
+            // Limit range
             preset.brightness = Math.max(50, Math.min(150, preset.brightness));
             preset.contrast = Math.max(50, Math.min(150, preset.contrast));
             preset.saturation = Math.max(0, Math.min(200, preset.saturation));
             preset.hue = Math.max(-180, Math.min(180, preset.hue));
             
-            // 应用随机滤镜
+            // Apply random filter
             Object.assign(currentFilters, preset);
             Object.keys(preset).forEach(key => {
                 if (sliders[key]) {
@@ -963,17 +963,17 @@
             
             applyFilters();
             
-            // 取消所有预设选择
+            // Cancel all preset selections
             document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
         }
 
-        // 切换对比模式
+        // Toggle comparison mode
         function toggleComparison() {
             isComparisonMode = !isComparisonMode;
             comparisonMode.style.display = isComparisonMode ? 'block' : 'none';
             
             const btn = document.getElementById('toggleComparison');
-            btn.textContent = isComparisonMode ? '🖼️ 单图' : '👁️ 对比';
+            btn.textContent = isComparisonMode ? '🖼️ Single' : '👁️ Compare';
             
             if (isComparisonMode) {
                 filteredComparison.style.filter = workspaceImage.style.filter;
@@ -982,7 +982,7 @@
             }
         }
 
-        // 下载滤镜图片
+        // Download filtered image
         function downloadFilteredImage() {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -990,7 +990,7 @@
             canvas.width = originalImage.width;
             canvas.height = originalImage.height;
             
-            // 应用滤镜到画布（需要使用复杂的图像处理，这里简化处理）
+            // Apply filters to canvas (requires complex image processing, simplified here)
             ctx.filter = workspaceImage.style.filter;
             ctx.drawImage(originalImage, 0, 0);
             
@@ -1009,7 +1009,7 @@
             }, format, quality);
         }
 
-        // 重置滤镜器
+        // Reset filter
         function resetFilter() {
             originalFile = null;
             originalImage = null;
@@ -1030,14 +1030,14 @@
             comparisonMode.style.display = 'none';
             fileInput.value = '';
             
-            // 重置UI
-            document.getElementById('toggleComparison').textContent = '👁️ 对比';
+            // Reset UI
+            document.getElementById('toggleComparison').textContent = '👁️ Compare';
             document.querySelectorAll('.preset-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.preset === 'none');
             });
         }
 
-        // 格式化文件大小
+        // Format file size
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;

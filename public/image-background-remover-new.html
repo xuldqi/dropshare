@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>背景移除器 - DropShare</title>
+    <title>Background Remover - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -445,58 +445,58 @@
     </header>
 
     <div class="container">
-        <h1 class="page-title">背景移除器</h1>
-        <p class="page-subtitle">智能移除图片背景，支持手动精确调整</p>
+        <h1 class="page-title">Background Remover</h1>
+        <p class="page-subtitle">Intelligently remove image backgrounds with manual precision editing support</p>
 
         <div class="remover-card">
-            <!-- 上传区域 -->
+            <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎭</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text">Click to select images or drag them here</div>
+                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
-            <!-- 进度条 -->
+            <!-- Progress Bar -->
             <div class="progress-bar" id="progressBar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
 
-            <!-- 移除工具 -->
+            <!-- Removal Tools -->
             <div class="removal-tools" id="removalTools">
                 <div class="instructions">
-                    <div class="instructions-title">📝 使用说明:</div>
-                    <div>1. 选择"魔术棒"工具点击背景区域自动选择相似颜色</div>
-                    <div>2. 调整"容差"来控制选择的颜色范围</div>
-                    <div>3. 使用"橡皮擦"手动移除不想要的区域</div>
-                    <div>4. 使用"还原刷"恢复误删的区域</div>
+                    <div class="instructions-title">📝 Instructions:</div>
+                    <div>1. Select the "Magic Wand" tool to click background areas and automatically select similar colors</div>
+                    <div>2. Adjust "Tolerance" to control the range of colors selected</div>
+                    <div>3. Use "Eraser" to manually remove unwanted areas</div>
+                    <div>4. Use "Restore Brush" to recover accidentally removed areas</div>
                 </div>
 
                 <div class="tools-panel">
                     <div class="tools-grid">
-                        <!-- 选择工具 -->
+                        <!-- Selection Tools -->
                         <div class="tool-section">
-                            <div class="tool-title">🪄 选择工具</div>
+                            <div class="tool-title">🪄 Selection Tools</div>
                             <div class="tool-buttons">
-                                <button class="tool-btn active" id="magicWand">魔术棒</button>
-                                <button class="tool-btn" id="eraser">橡皮擦</button>
-                                <button class="tool-btn" id="restoreBrush">还原刷</button>
+                                <button class="tool-btn active" id="magicWand">Magic Wand</button>
+                                <button class="tool-btn" id="eraser">Eraser</button>
+                                <button class="tool-btn" id="restoreBrush">Restore Brush</button>
                             </div>
                         </div>
 
-                        <!-- 自动选择 -->
+                        <!-- Auto Selection -->
                         <div class="tool-section">
-                            <div class="tool-title">⚡ 快速操作</div>
+                            <div class="tool-title">⚡ Quick Actions</div>
                             <div class="tool-buttons">
-                                <button class="tool-btn" id="autoRemove">智能移除</button>
-                                <button class="tool-btn" id="clearAll">清除全部</button>
-                                <button class="tool-btn" id="restoreAll">恢复全部</button>
+                                <button class="tool-btn" id="autoRemove">Smart Remove</button>
+                                <button class="tool-btn" id="clearAll">Clear All</button>
+                                <button class="tool-btn" id="restoreAll">Restore All</button>
                             </div>
                         </div>
 
-                        <!-- 容差设置 -->
+                        <!-- Tolerance Setting -->
                         <div class="tool-section">
-                            <div class="tool-title">🎯 容差设置</div>
+                            <div class="tool-title">🎯 Tolerance Setting</div>
                             <input type="range" class="tolerance-slider" id="toleranceSlider" 
                                    min="1" max="100" value="20">
                             <div style="text-align: center;">
@@ -504,9 +504,9 @@
                             </div>
                         </div>
 
-                        <!-- 画笔大小 -->
+                        <!-- Brush Size -->
                         <div class="tool-section">
-                            <div class="tool-title">🖌️ 画笔大小</div>
+                            <div class="tool-title">🖌️ Brush Size</div>
                             <input type="range" class="tolerance-slider" id="brushSizeSlider" 
                                    min="5" max="50" value="15">
                             <div style="text-align: center;">
@@ -517,60 +517,60 @@
                 </div>
             </div>
 
-            <!-- 编辑工作区 -->
+            <!-- Editor Workspace -->
             <div class="editor-workspace" id="editorWorkspace">
                 <div class="workspace-container">
                     <div class="workspace-item">
-                        <h3>原始图片</h3>
+                        <h3>Original Image</h3>
                         <div class="canvas-container">
                             <canvas id="originalCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="originalSize"></span></div>
-                            <div>文件大小: <span class="size" id="originalFileSize"></span></div>
+                            <div>Size: <span class="size" id="originalSize"></span></div>
+                            <div>File size: <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="workspace-item">
-                        <h3>背景移除预览</h3>
+                        <h3>Background Removal Preview</h3>
                         <div class="canvas-container">
                             <canvas id="previewCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>格式: <span class="size">PNG (透明背景)</span></div>
-                            <div>状态: <span class="size" id="editStatus">等待编辑</span></div>
+                            <div>Format: <span class="size">PNG (transparent background)</span></div>
+                            <div>Status: <span class="size" id="editStatus">Waiting for edit</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 状态信息 -->
+                <!-- Status Info -->
                 <div class="status-info" id="statusInfo">
-                    准备开始编辑...
+                    Ready to start editing...
                 </div>
             </div>
 
-            <!-- 操作按钮 -->
+            <!-- Action Buttons -->
             <div class="action-buttons">
                 <button class="btn btn-primary" id="processBtn" style="display: none;">
-                    🎭 应用移除效果
+                    🎭 Apply Removal Effect
                 </button>
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 下载透明图片
+                    📥 Download Transparent Image
                 </button>
                 <button class="btn btn-warning" id="undoBtn" style="display: none;">
-                    ↶ 撤销操作
+                    ↶ Undo Operation
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 重新选择
+                    🔄 Select Again
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    ← 返回工具页
+                    ← Back to Tools
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // 全局变量
+        // Global variables
         let originalFile = null;
         let originalImage = null;
         let originalCanvas = null;
@@ -583,7 +583,7 @@
         let editHistory = [];
         let hasEdits = false;
 
-        // DOM 元素
+        // DOM elements
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const removalTools = document.getElementById('removalTools');
@@ -603,7 +603,7 @@
         const progressFill = document.getElementById('progressFill');
         const statusInfo = document.getElementById('statusInfo');
 
-        // 事件监听器
+        // Event listeners
         uploadArea.addEventListener('click', () => fileInput.click());
         uploadArea.addEventListener('dragover', handleDragOver);
         uploadArea.addEventListener('drop', handleDrop);
@@ -613,7 +613,7 @@
         toleranceSlider.addEventListener('input', handleToleranceChange);
         brushSizeSlider.addEventListener('input', handleBrushSizeChange);
 
-        // 工具按钮事件
+        // Tool button events
         document.getElementById('magicWand').addEventListener('click', () => selectTool('magicWand'));
         document.getElementById('eraser').addEventListener('click', () => selectTool('eraser'));
         document.getElementById('restoreBrush').addEventListener('click', () => selectTool('restoreBrush'));
@@ -626,7 +626,7 @@
         undoBtn.addEventListener('click', undoLastAction);
         resetBtn.addEventListener('click', resetRemover);
 
-        // 拖拽处理
+        // Drag handling
         function handleDragOver(e) {
             e.preventDefault();
             uploadArea.classList.add('dragover');
@@ -646,7 +646,7 @@
             }
         }
 
-        // 文件选择处理
+        // File selection handling
         function handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) {
@@ -654,15 +654,15 @@
             }
         }
 
-        // 处理文件
+        // Process file
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('请选择图片文件！');
+                alert('Please select an image file!');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert('文件大小不能超过 10MB！');
+                alert('File size cannot exceed 10MB!');
                 return;
             }
 
@@ -671,7 +671,7 @@
             loadImage(file);
         }
 
-        // 显示进度条
+        // Show progress bar
         function showProgress() {
             progressBar.style.display = 'block';
             let progress = 0;
@@ -688,7 +688,7 @@
             }, 50);
         }
 
-        // 加载图片
+        // Load image
         function loadImage(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -701,43 +701,43 @@
             reader.readAsDataURL(file);
         }
 
-        // 设置编辑器
+        // Setup editor
         function setupEditor(img, file) {
-            // 显示原始图片信息
+            // Display original image info
             document.getElementById('originalSize').textContent = `${img.width} × ${img.height}`;
             document.getElementById('originalFileSize').textContent = formatFileSize(file.size);
             
-            // 设置画布
+            // Setup canvas
             setupCanvases(img);
             
-            // 显示控制区域和工作区
+            // Show control area and workspace
             removalTools.style.display = 'block';
             editorWorkspace.style.display = 'block';
             processBtn.style.display = 'inline-flex';
             undoBtn.style.display = 'inline-flex';
             
-            // 更新状态
-            updateStatus('ready', '点击背景区域开始移除...');
-            document.getElementById('editStatus').textContent = '准备编辑';
+            // Update status
+            updateStatus('ready', 'Click on background areas to start removal...');
+            document.getElementById('editStatus').textContent = 'Ready for editing';
         }
 
-        // 设置画布
+        // Setup canvas
         function setupCanvases(img) {
-            // 原始画布
+            // Original canvas
             originalCanvas = originalCanvasEl;
             const originalCtx = originalCanvas.getContext('2d');
             originalCanvas.width = img.width;
             originalCanvas.height = img.height;
             originalCtx.drawImage(img, 0, 0);
             
-            // 预览画布
+            // Preview canvas
             previewCanvas = previewCanvasEl;
             const previewCtx = previewCanvas.getContext('2d');
             previewCanvas.width = img.width;
             previewCanvas.height = img.height;
             previewCtx.drawImage(img, 0, 0);
             
-            // 遮罩画布（用于标记要移除的区域）
+            // Mask canvas (used to mark areas to be removed)
             maskCanvas = document.createElement('canvas');
             maskCanvas.width = img.width;
             maskCanvas.height = img.height;
@@ -745,11 +745,11 @@
             maskCtx.fillStyle = 'black';
             maskCtx.fillRect(0, 0, img.width, img.height);
             
-            // 添加画布事件监听器
+            // Add canvas event listeners
             setupCanvasEvents();
         }
 
-        // 设置画布事件
+        // Setup canvas events
         function setupCanvasEvents() {
             originalCanvas.addEventListener('mousedown', handleCanvasMouseDown);
             originalCanvas.addEventListener('mousemove', handleCanvasMouseMove);
@@ -757,30 +757,30 @@
             originalCanvas.addEventListener('click', handleCanvasClick);
         }
 
-        // 容差变化
+        // Tolerance change
         function handleToleranceChange(e) {
             tolerance = parseInt(e.target.value);
             toleranceValue.textContent = tolerance;
         }
 
-        // 画笔大小变化
+        // Brush size change
         function handleBrushSizeChange(e) {
             brushSize = parseInt(e.target.value);
             brushSizeValue.textContent = brushSize + 'px';
         }
 
-        // 选择工具
+        // Select tool
         function selectTool(tool) {
             currentTool = tool;
             toolBtns.forEach(btn => btn.classList.remove('active'));
             document.getElementById(tool).classList.add('active');
             
-            // 更新光标样式
+            // Update cursor style
             const cursor = tool === 'magicWand' ? 'crosshair' : 'pointer';
             originalCanvas.style.cursor = cursor;
         }
 
-        // 画布鼠标事件
+        // Canvas mouse events
         function handleCanvasMouseDown(e) {
             isMouseDown = true;
             if (currentTool === 'eraser' || currentTool === 'restoreBrush') {
@@ -804,7 +804,7 @@
             }
         }
 
-        // 魔术棒点击处理
+        // Magic wand click handling
         function handleMagicWandClick(e) {
             const rect = originalCanvas.getBoundingClientRect();
             const scaleX = originalCanvas.width / rect.width;
@@ -816,10 +816,10 @@
             magicWandSelect(x, y);
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = '已编辑';
+            document.getElementById('editStatus').textContent = 'Edited';
         }
 
-        // 画笔操作处理
+        // Brush action handling
         function handleBrushAction(e) {
             const rect = originalCanvas.getBoundingClientRect();
             const scaleX = originalCanvas.width / rect.width;
@@ -840,10 +840,10 @@
             
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = '已编辑';
+            document.getElementById('editStatus').textContent = 'Edited';
         }
 
-        // 魔术棒选择算法
+        // Magic wand selection algorithm
         function magicWandSelect(startX, startY) {
             const originalCtx = originalCanvas.getContext('2d');
             const maskCtx = maskCanvas.getContext('2d');
@@ -869,21 +869,21 @@
                 
                 visited.add(key);
                 
-                // 标记为要移除的区域（白色）
+                // Mark as area to be removed (white)
                 const index = (y * imageData.width + x) * 4;
                 maskData.data[index] = 255;     // R
                 maskData.data[index + 1] = 255; // G
                 maskData.data[index + 2] = 255; // B
                 maskData.data[index + 3] = 255; // A
                 
-                // 添加相邻像素到栈
+                // Add adjacent pixels to stack
                 stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
             }
             
             maskCtx.putImageData(maskData, 0, 0);
         }
 
-        // 获取像素颜色
+        // Get pixel color
         function getPixelColor(imageData, x, y) {
             const index = (y * imageData.width + x) * 4;
             return {
@@ -894,20 +894,20 @@
             };
         }
 
-        // 颜色匹配
+        // Color matching
         function colorMatch(color1, color2, tolerance) {
             const dr = Math.abs(color1.r - color2.r);
             const dg = Math.abs(color1.g - color2.g);
             const db = Math.abs(color1.b - color2.b);
             const distance = Math.sqrt(dr * dr + dg * dg + db * db);
-            return distance <= tolerance * 2.55; // 转换为0-255范围
+            return distance <= tolerance * 2.55; // Convert to 0-255 range
         }
 
-        // 自动移除背景
+        // Auto remove background
         function autoRemoveBackground() {
             saveToHistory();
             
-            // 简单的边缘检测背景移除
+            // Simple edge detection background removal
             const corners = [
                 [0, 0], [originalCanvas.width - 1, 0],
                 [0, originalCanvas.height - 1], [originalCanvas.width - 1, originalCanvas.height - 1]
@@ -919,11 +919,11 @@
             
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = '已编辑';
-            updateStatus('processed', '自动背景移除完成');
+            document.getElementById('editStatus').textContent = 'Edited';
+            updateStatus('processed', 'Auto background removal completed');
         }
 
-        // 清除所有遮罩
+        // Clear all mask
         function clearAllMask() {
             saveToHistory();
             const maskCtx = maskCanvas.getContext('2d');
@@ -931,10 +931,10 @@
             maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = '已编辑';
+            document.getElementById('editStatus').textContent = 'Edited';
         }
 
-        // 恢复所有遮罩
+        // Restore all mask
         function restoreAllMask() {
             saveToHistory();
             const maskCtx = maskCanvas.getContext('2d');
@@ -942,10 +942,10 @@
             maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = '已编辑';
+            document.getElementById('editStatus').textContent = 'Edited';
         }
 
-        // 更新预览
+        // Update preview
         function updatePreview() {
             const originalCtx = originalCanvas.getContext('2d');
             const previewCtx = previewCanvas.getContext('2d');
@@ -956,8 +956,8 @@
             
             for (let i = 0; i < originalData.data.length; i += 4) {
                 const maskIndex = i;
-                if (maskData.data[maskIndex] > 128) { // 白色区域 = 要移除的区域
-                    originalData.data[i + 3] = 0; // 设置为透明
+                if (maskData.data[maskIndex] > 128) { // White area = area to be removed
+                    originalData.data[i + 3] = 0; // Set to transparent
                 }
             }
             
@@ -965,26 +965,26 @@
             previewCtx.putImageData(originalData, 0, 0);
         }
 
-        // 应用移除效果
+        // Apply removal effect
         function applyRemovalEffect() {
             updatePreview();
             downloadBtn.style.display = 'inline-flex';
-            updateStatus('completed', '背景移除完成！可以下载结果图片');
+            updateStatus('completed', 'Background removal completed! You can download the result image');
         }
 
-        // 保存到历史记录
+        // Save to history
         function saveToHistory() {
             const maskCtx = maskCanvas.getContext('2d');
             const imageData = maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
             editHistory.push(imageData);
             
-            // 限制历史记录数量
+            // Limit history record count
             if (editHistory.length > 10) {
                 editHistory.shift();
             }
         }
 
-        // 撤销上一次操作
+        // Undo last action
         function undoLastAction() {
             if (editHistory.length > 0) {
                 const lastState = editHistory.pop();
@@ -994,12 +994,12 @@
                 
                 if (editHistory.length === 0) {
                     hasEdits = false;
-                    document.getElementById('editStatus').textContent = '准备编辑';
+                    document.getElementById('editStatus').textContent = 'Ready for editing';
                 }
             }
         }
 
-        // 下载结果
+        // Download result
         function downloadResult() {
             previewCanvas.toBlob(function(blob) {
                 const url = URL.createObjectURL(blob);
@@ -1013,7 +1013,7 @@
             }, 'image/png');
         }
 
-        // 更新状态
+        // Update status
         function updateStatus(type, message) {
             statusInfo.textContent = message;
             statusInfo.style.display = 'block';
@@ -1027,7 +1027,7 @@
             statusInfo.style.background = colors[type] || colors.ready;
         }
 
-        // 重置移除器
+        // Reset remover
         function resetRemover() {
             originalFile = null;
             originalImage = null;
@@ -1045,10 +1045,10 @@
             statusInfo.style.display = 'none';
             fileInput.value = '';
             
-            document.getElementById('editStatus').textContent = '等待编辑';
+            document.getElementById('editStatus').textContent = 'Waiting for edit';
         }
 
-        // 格式化文件大小
+        // Format file size
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;

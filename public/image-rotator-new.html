@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title >图片旋转器 - DropShare</title>
+    <title>Image Rotator - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -436,15 +436,15 @@
     </header>
 
     <div class="container">
-        <h1 class="page-title" >图片旋转器</h1>
-        <p class="page-subtitle" >支持任意角度旋转、翻转和精确角度调整</p>
+        <h1 class="page-title">Image Rotator</h1>
+        <p class="page-subtitle">Supports rotation at any angle, flipping and precise angle adjustment</p>
 
         <div class="rotator-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔄</div>
-                <div class="upload-text" >点击选择图片或拖拽到这里</div>
-                <div class="upload-hint" >支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text">Click to select images or drag them here</div>
+                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -458,43 +458,43 @@
                 <div class="controls-grid">
                     <!-- 快速旋转 -->
                     <div class="control-section">
-                        <div class="section-title" >⚡ 快速旋转</div>
+                        <div class="section-title">⚡ Quick Rotation</div>
                         
                         <div class="rotation-buttons">
                             <button class="rotation-btn" data-angle="90">
-                                <span >↻ 顺时针 90°</span>
+                                <span>↻ Clockwise 90°</span>
                             </button>
                             <button class="rotation-btn" data-angle="-90">
-                                <span >↺ 逆时针 90°</span>
+                                <span>↺ Counter-clockwise 90°</span>
                             </button>
                             <button class="rotation-btn" data-angle="180">
-                                <span >↻ 旋转 180°</span>
+                                <span>↻ Rotate 180°</span>
                             </button>
                             <button class="rotation-btn" data-angle="270">
-                                <span >↻ 旋转 270°</span>
+                                <span>↻ Rotate 270°</span>
                             </button>
                         </div>
 
                         <div class="flip-buttons">
                             <button class="rotation-btn" id="flipHorizontal">
-                                <span >↔ 水平翻转</span>
+                                <span>↔ Flip Horizontal</span>
                             </button>
                             <button class="rotation-btn" id="flipVertical">
-                                <span >↕ 垂直翻转</span>
+                                <span>↕ Flip Vertical</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- 精确角度 -->
                     <div class="control-section">
-                        <div class="section-title" >🎯 精确角度</div>
+                        <div class="section-title">🎯 Precise Angle</div>
                         
                         <div class="angle-input-container">
                             <input type="number" class="angle-input" id="angleInput" 
-                                   data-i18n-placeholder="placeholder_enter_angle" placeholder="输入角度" min="-360" max="360" step="0.1">
+                                   placeholder="Enter angle" min="-360" max="360" step="0.1">
                             <button class="btn btn-primary" id="applyAngleBtn" 
                                     style="padding: 8px 16px; font-size: 14px;">
-                                <span >应用</span>
+                                <span>Apply</span>
                             </button>
                         </div>
 
@@ -508,7 +508,7 @@
                         <div class="custom-rotation">
                             <button class="btn btn-secondary" id="resetRotation" 
                                     style="width: 100%; padding: 8px 16px; font-size: 14px;">
-                                <span >🔄 重置旋转</span>
+                                <span>🔄 Reset Rotation</span>
                             </button>
                         </div>
                     </div>
@@ -519,43 +519,43 @@
             <div class="image-workspace" id="imageWorkspace">
                 <div class="workspace-container">
                     <div class="workspace-item">
-                        <h3 >原始图片</h3>
+                        <h3>Original Image</h3>
                         <div class="image-container">
-                            <img id="originalImage" class="workspace-image" alt="原始图片">
+                            <img id="originalImage" class="workspace-image" alt="Original Image">
                         </div>
                         <div class="image-info">
-                            <div><span >尺寸:</span> <span class="size" id="originalSize"></span></div>
-                            <div><span >文件大小:</span> <span class="size" id="originalFileSize"></span></div>
+                            <div><span>Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="workspace-item">
-                        <h3 >旋转预览</h3>
+                        <h3>Rotation Preview</h3>
                         <div class="image-container">
                             <canvas id="rotatedImage" class="workspace-image"></canvas>
                         </div>
                         <div class="image-info">
-                            <div><span >尺寸:</span> <span class="size" id="rotatedSize"></span></div>
-                            <div><span >当前角度:</span> <span class="size" id="currentAngle">0°</span></div>
+                            <div><span>Size:</span> <span class="size" id="rotatedSize"></span></div>
+                            <div><span>Current angle:</span> <span class="size" id="currentAngle">0°</span></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 旋转信息 -->
                 <div class="rotation-info" id="rotationInfo">
-                    <span >当前旋转角度:</span> 0°
+                    <span>Current rotation angle:</span> 0°
                 </div>
             </div>
 
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    <span >📥 下载旋转图片</span>
+                    <span>📥 Download Rotated Image</span>
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span >🔄 重新选择</span>
+                    <span>🔄 Select Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    <span >← 返回工具页</span>
+                    <span>← Back to Tools</span>
                 </a>
             </div>
         </div>
@@ -645,12 +645,12 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || '请选择图片文件！');
+                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || 'Please select an image file!');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || '文件大小不能超过 10MB！');
+                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || 'File size cannot exceed 10MB!');
                 return;
             }
 
@@ -787,7 +787,7 @@
             angleDisplay.textContent = displayAngle + '°';
             document.getElementById('currentAngle').textContent = displayAngle + '°';
             document.getElementById('rotationInfo').textContent = 
-                `当前旋转角度: ${displayAngle}°${flipHorizontal ? ' | 水平翻转' : ''}${flipVertical ? ' | 垂直翻转' : ''}`;
+                `Current rotation angle: ${displayAngle}°${flipHorizontal ? ' | Horizontal flip' : ''}${flipVertical ? ' | Vertical flip' : ''}`;
         }
 
         // 更新旋转后的图片

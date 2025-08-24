@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title >图片水印工具 - DropShare</title>
+    <title>Image Watermark Tool - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -481,50 +481,50 @@
     </header>
 
     <div class="container">
-        <h1 class="page-title" >图片水印工具</h1>
-        <p class="page-subtitle" >为图片添加文字或图片水印，保护版权信息</p>
+        <h1 class="page-title">Image Watermark Tool</h1>
+        <p class="page-subtitle">Add text or image watermarks to protect copyright information</p>
 
         <div class="watermark-card">
-            <!-- 上传区域 -->
+            <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">💧</div>
-                <div class="upload-text" >点击选择图片或拖拽到这里</div>
-                <div class="upload-hint" >支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text">Click to select images or drag them here</div>
+                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
-            <!-- 进度条 -->
+            <!-- Progress Bar -->
             <div class="progress-bar" id="progressBar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
 
-            <!-- 水印控制 -->
+            <!-- Watermark Controls -->
             <div class="watermark-controls" id="watermarkControls">
                 <div class="controls-layout">
-                    <!-- 控制面板 -->
+                    <!-- Control Panel -->
                     <div class="control-panel">
-                        <div class="panel-title" >💧 水印设置</div>
+                        <div class="panel-title">💧 Watermark Settings</div>
 
-                        <!-- 水印类型标签 -->
+                        <!-- Watermark Type Tabs -->
                         <div class="watermark-tabs">
-                            <button class="tab-btn active" data-tab="text" >文字水印</button>
-                            <button class="tab-btn" data-tab="image" >图片水印</button>
+                            <button class="tab-btn active" data-tab="text">Text Watermark</button>
+                            <button class="tab-btn" data-tab="image">Image Watermark</button>
                         </div>
 
-                        <!-- 文字水印设置 -->
+                        <!-- Text Watermark Settings -->
                         <div class="tab-content active" id="textTab">
                             <div class="form-group">
-                                <label class="form-label">水印文字</label>
+                                <label class="form-label">Watermark Text</label>
                                 <input type="text" class="form-input" id="watermarkText" 
-                                       data-i18n-placeholder="watermark_text_placeholder" placeholder="输入水印文字" value="© DropShare">
+                                       placeholder="Enter watermark text" value="© DropShare">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">字体</label>
+                                <label class="form-label">Font</label>
                                 <select class="form-select" id="fontFamily">
                                     <option value="Arial">Arial</option>
-                                    <option value="'Microsoft YaHei'">微软雅黑</option>
-                                    <option value="'PingFang SC'">苹方</option>
+                                    <option value="'Microsoft YaHei'">Microsoft YaHei</option>
+                                    <option value="'PingFang SC'">PingFang SC</option>
                                     <option value="Georgia">Georgia</option>
                                     <option value="'Times New Roman'">Times New Roman</option>
                                     <option value="'Courier New'">Courier New</option>
@@ -533,112 +533,112 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">字体大小: <span class="range-display" id="fontSizeDisplay">24px</span></label>
+                                <label class="form-label">Font Size: <span class="range-display" id="fontSizeDisplay">24px</span></label>
                                 <input type="range" class="form-range" id="fontSize" 
                                        min="12" max="120" value="24">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">字体颜色</label>
+                                <label class="form-label">Font Color</label>
                                 <input type="color" class="color-input" id="textColor" value="#ffffff">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">字体样式</label>
+                                <label class="form-label">Font Style</label>
                                 <select class="form-select" id="fontStyle">
-                                    <option value="normal">普通</option>
-                                    <option value="bold">加粗</option>
-                                    <option value="italic">斜体</option>
-                                    <option value="bold italic">加粗斜体</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="bold">Bold</option>
+                                    <option value="italic">Italic</option>
+                                    <option value="bold italic">Bold Italic</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- 图片水印设置 -->
+                        <!-- Image Watermark Settings -->
                         <div class="tab-content" id="imageTab">
                             <div class="form-group">
-                                <label class="form-label">选择水印图片</label>
+                                <label class="form-label">Select Watermark Image</label>
                                 <div class="file-upload-btn" id="logoUploadBtn">
-                                    📁 点击选择图片
+                                    📁 Click to Select Image
                                 </div>
                                 <input type="file" id="logoInput" accept="image/*" style="display: none;">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">水印大小: <span class="range-display" id="logoSizeDisplay">100px</span></label>
+                                <label class="form-label">Watermark Size: <span class="range-display" id="logoSizeDisplay">100px</span></label>
                                 <input type="range" class="form-range" id="logoSize" 
                                        min="20" max="300" value="100">
                             </div>
                         </div>
 
-                        <!-- 位置设置 -->
+                        <!-- Position Settings -->
                         <div class="form-group">
-                            <label class="form-label">水印位置</label>
+                            <label class="form-label">Watermark Position</label>
                             <div class="position-grid">
-                                <button class="position-btn" data-position="top-left">左上</button>
-                                <button class="position-btn" data-position="top-center">上中</button>
-                                <button class="position-btn" data-position="top-right">右上</button>
-                                <button class="position-btn" data-position="middle-left">左中</button>
-                                <button class="position-btn active" data-position="center">中心</button>
-                                <button class="position-btn" data-position="middle-right">右中</button>
-                                <button class="position-btn" data-position="bottom-left">左下</button>
-                                <button class="position-btn" data-position="bottom-center">下中</button>
-                                <button class="position-btn" data-position="bottom-right">右下</button>
+                                <button class="position-btn" data-position="top-left">Top Left</button>
+                                <button class="position-btn" data-position="top-center">Top Center</button>
+                                <button class="position-btn" data-position="top-right">Top Right</button>
+                                <button class="position-btn" data-position="middle-left">Middle Left</button>
+                                <button class="position-btn active" data-position="center">Center</button>
+                                <button class="position-btn" data-position="middle-right">Middle Right</button>
+                                <button class="position-btn" data-position="bottom-left">Bottom Left</button>
+                                <button class="position-btn" data-position="bottom-center">Bottom Center</button>
+                                <button class="position-btn" data-position="bottom-right">Bottom Right</button>
                             </div>
                         </div>
 
-                        <!-- 透明度设置 -->
+                        <!-- Opacity Settings -->
                         <div class="form-group">
-                            <label class="form-label">透明度: <span class="range-display" id="opacityDisplay">70%</span></label>
+                            <label class="form-label">Opacity: <span class="range-display" id="opacityDisplay">70%</span></label>
                             <input type="range" class="form-range" id="opacity" 
                                    min="10" max="100" value="70">
                         </div>
 
-                        <!-- 偏移设置 -->
+                        <!-- Offset Settings -->
                         <div class="form-group">
-                            <label class="form-label">水平偏移: <span class="range-display" id="offsetXDisplay">0px</span></label>
+                            <label class="form-label">Horizontal Offset: <span class="range-display" id="offsetXDisplay">0px</span></label>
                             <input type="range" class="form-range" id="offsetX" 
                                    min="-100" max="100" value="0">
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">垂直偏移: <span class="range-display" id="offsetYDisplay">0px</span></label>
+                            <label class="form-label">Vertical Offset: <span class="range-display" id="offsetYDisplay">0px</span></label>
                             <input type="range" class="form-range" id="offsetY" 
                                    min="-100" max="100" value="0">
                         </div>
                     </div>
 
-                    <!-- 工作区 -->
+                    <!-- Workspace -->
                     <div class="watermark-workspace">
-                        <div class="workspace-title">🖼️ 水印预览</div>
+                        <div class="workspace-title">🖼️ Watermark Preview</div>
                         <div class="canvas-container">
                             <canvas id="workspaceCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="imageSize"></span></div>
-                            <div>文件大小: <span class="size" id="fileSize"></span></div>
+                            <div>Size: <span class="size" id="imageSize"></span></div>
+                            <div>File size: <span class="size" id="fileSize"></span></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 操作按钮 -->
+            <!-- Action Buttons -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 下载水印图片
+                    📥 Download Watermarked Image
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 重新选择
+                    🔄 Select Again
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    ← 返回工具页
+                    ← Back to Tools
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // 全局变量
+        // Global variables
         let originalFile = null;
         let originalImage = null;
         let logoImage = null;
@@ -647,7 +647,7 @@
         let currentPosition = 'center';
         let currentTab = 'text';
 
-        // 水印设置
+        // Watermark settings
         let watermarkSettings = {
             text: '© DropShare',
             fontFamily: 'Arial',
@@ -660,7 +660,7 @@
             offsetY: 0
         };
 
-        // DOM 元素
+        // DOM elements
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const watermarkControls = document.getElementById('watermarkControls');
@@ -670,49 +670,49 @@
         const progressBar = document.getElementById('progressBar');
         const progressFill = document.getElementById('progressFill');
 
-        // 控制元素
+        // Control elements
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
         const positionBtns = document.querySelectorAll('.position-btn');
         const logoUploadBtn = document.getElementById('logoUploadBtn');
         const logoInput = document.getElementById('logoInput');
 
-        // 事件监听器
+        // Event listeners
         uploadArea.addEventListener('click', () => fileInput.click());
         uploadArea.addEventListener('dragover', handleDragOver);
         uploadArea.addEventListener('drop', handleDrop);
         uploadArea.addEventListener('dragleave', handleDragLeave);
         fileInput.addEventListener('change', handleFileSelect);
 
-        // 标签切换
+        // Tab switching
         tabBtns.forEach(btn => {
             btn.addEventListener('click', (e) => switchTab(e.target.dataset.tab));
         });
 
-        // 位置按钮
+        // Position buttons
         positionBtns.forEach(btn => {
             btn.addEventListener('click', (e) => selectPosition(e.target.dataset.position));
         });
 
-        // Logo上传
+        // Logo upload
         logoUploadBtn.addEventListener('click', () => logoInput.click());
         logoInput.addEventListener('change', handleLogoSelect);
 
-        // 表单控件事件
+        // Form control events
         setupFormControls();
 
         downloadBtn.addEventListener('click', downloadWatermarkedImage);
         resetBtn.addEventListener('click', resetWatermark);
 
-        // 设置表单控件事件
+        // Setup form control events
         function setupFormControls() {
-            // 文字输入
+            // Text input
             document.getElementById('watermarkText').addEventListener('input', (e) => {
                 watermarkSettings.text = e.target.value;
                 updateWatermark();
             });
 
-            // 字体设置
+            // Font settings
             document.getElementById('fontFamily').addEventListener('change', (e) => {
                 watermarkSettings.fontFamily = e.target.value;
                 updateWatermark();
@@ -734,21 +734,21 @@
                 updateWatermark();
             });
 
-            // Logo大小
+            // Logo size
             document.getElementById('logoSize').addEventListener('input', (e) => {
                 watermarkSettings.logoSize = parseInt(e.target.value);
                 document.getElementById('logoSizeDisplay').textContent = e.target.value + 'px';
                 updateWatermark();
             });
 
-            // 透明度
+            // Opacity
             document.getElementById('opacity').addEventListener('input', (e) => {
                 watermarkSettings.opacity = parseInt(e.target.value) / 100;
                 document.getElementById('opacityDisplay').textContent = e.target.value + '%';
                 updateWatermark();
             });
 
-            // 偏移
+            // Offset
             document.getElementById('offsetX').addEventListener('input', (e) => {
                 watermarkSettings.offsetX = parseInt(e.target.value);
                 document.getElementById('offsetXDisplay').textContent = e.target.value + 'px';
@@ -762,7 +762,7 @@
             });
         }
 
-        // 拖拽处理
+        // Drag handling
         function handleDragOver(e) {
             e.preventDefault();
             uploadArea.classList.add('dragover');
@@ -782,7 +782,7 @@
             }
         }
 
-        // 文件选择处理
+        // File selection handling
         function handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) {
@@ -790,7 +790,7 @@
             }
         }
 
-        // Logo选择处理
+        // Logo selection handling
         function handleLogoSelect(e) {
             const file = e.target.files[0];
             if (file) {
@@ -798,15 +798,15 @@
             }
         }
 
-        // 处理文件
+        // Process file
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('请选择图片文件！');
+                alert('Please select an image file!');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert('文件大小不能超过 10MB！');
+                alert('File size cannot exceed 10MB!');
                 return;
             }
 
@@ -815,7 +815,7 @@
             loadImage(file);
         }
 
-        // 显示进度条
+        // Show progress bar
         function showProgress() {
             progressBar.style.display = 'block';
             let progress = 0;
@@ -832,7 +832,7 @@
             }, 50);
         }
 
-        // 加载图片
+        // Load image
         function loadImage(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -845,13 +845,13 @@
             reader.readAsDataURL(file);
         }
 
-        // 加载Logo图片
+        // Load logo image
         function loadLogoImage(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 logoImage = new Image();
                 logoImage.onload = function() {
-                    logoUploadBtn.textContent = '✅ Logo已加载';
+                    logoUploadBtn.textContent = '✅ Logo Loaded';
                     logoUploadBtn.style.borderColor = '#10b981';
                     logoUploadBtn.style.color = '#10b981';
                     updateWatermark();
@@ -861,27 +861,27 @@
             reader.readAsDataURL(file);
         }
 
-        // 设置水印器
+        // Setup watermark
         function setupWatermark(img, file) {
-            // 显示图片信息
+            // Display image info
             document.getElementById('imageSize').textContent = `${img.width} × ${img.height}`;
             document.getElementById('fileSize').textContent = formatFileSize(file.size);
             
-            // 设置画布
+            // Setup canvas
             canvas = workspaceCanvas;
             ctx = canvas.getContext('2d');
             canvas.width = img.width;
             canvas.height = img.height;
             
-            // 显示控制区域
+            // Show control area
             watermarkControls.style.display = 'block';
             downloadBtn.style.display = 'inline-flex';
             
-            // 初始化水印
+            // Initialize watermark
             updateWatermark();
         }
 
-        // 切换标签
+        // Switch tab
         function switchTab(tab) {
             currentTab = tab;
             
@@ -896,7 +896,7 @@
             updateWatermark();
         }
 
-        // 选择位置
+        // Select position
         function selectPosition(position) {
             currentPosition = position;
             
@@ -907,17 +907,17 @@
             updateWatermark();
         }
 
-        // 更新水印
+        // Update watermark
         function updateWatermark() {
             if (!originalImage || !canvas) return;
             
-            // 清除画布
+            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // 绘制原图
+            // Draw original image
             ctx.drawImage(originalImage, 0, 0);
             
-            // 设置透明度
+            // Set opacity
             ctx.globalAlpha = watermarkSettings.opacity;
             
             if (currentTab === 'text') {
@@ -926,15 +926,15 @@
                 drawImageWatermark();
             }
             
-            // 重置透明度
+            // Reset opacity
             ctx.globalAlpha = 1;
         }
 
-        // 绘制文字水印
+        // Draw text watermark
         function drawTextWatermark() {
             if (!watermarkSettings.text) return;
             
-            // 设置字体
+            // Set font
             const fontWeight = watermarkSettings.fontStyle.includes('bold') ? 'bold' : 'normal';
             const fontStyle = watermarkSettings.fontStyle.includes('italic') ? 'italic' : 'normal';
             ctx.font = `${fontStyle} ${fontWeight} ${watermarkSettings.fontSize}px ${watermarkSettings.fontFamily}`;
@@ -942,29 +942,29 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
-            // 添加描边效果
+            // Add stroke effect
             ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
             ctx.lineWidth = 1;
             
-            // 计算位置
+            // Calculate position
             const position = calculateWatermarkPosition(watermarkSettings.fontSize, watermarkSettings.fontSize);
             
-            // 绘制文字
+            // Draw text
             ctx.strokeText(watermarkSettings.text, position.x, position.y);
             ctx.fillText(watermarkSettings.text, position.x, position.y);
         }
 
-        // 绘制图片水印
+        // Draw image watermark
         function drawImageWatermark() {
             if (!logoImage) return;
             
             const logoWidth = watermarkSettings.logoSize;
             const logoHeight = (logoImage.height / logoImage.width) * logoWidth;
             
-            // 计算位置
+            // Calculate position
             const position = calculateWatermarkPosition(logoWidth, logoHeight);
             
-            // 绘制Logo
+            // Draw logo
             ctx.drawImage(logoImage, 
                 position.x - logoWidth / 2, 
                 position.y - logoHeight / 2, 
@@ -972,7 +972,7 @@
                 logoHeight);
         }
 
-        // 计算水印位置
+        // Calculate watermark position
         function calculateWatermarkPosition(width, height) {
             let x, y;
             
@@ -1025,7 +1025,7 @@
             return { x, y };
         }
 
-        // 下载水印图片
+        // Download watermarked image
         function downloadWatermarkedImage() {
             if (!canvas) return;
             
@@ -1044,7 +1044,7 @@
             }, format, quality);
         }
 
-        // 重置水印工具
+        // Reset watermark tool
         function resetWatermark() {
             originalFile = null;
             originalImage = null;
@@ -1054,7 +1054,7 @@
             currentPosition = 'center';
             currentTab = 'text';
             
-            // 重置水印设置
+            // Reset watermark settings
             watermarkSettings = {
                 text: '© DropShare',
                 fontFamily: 'Arial',
@@ -1072,7 +1072,7 @@
             fileInput.value = '';
             logoInput.value = '';
             
-            // 重置UI
+            // Reset UI
             document.getElementById('watermarkText').value = '© DropShare';
             document.getElementById('fontFamily').value = 'Arial';
             document.getElementById('fontSize').value = 24;
@@ -1083,24 +1083,24 @@
             document.getElementById('offsetX').value = 0;
             document.getElementById('offsetY').value = 0;
             
-            // 重置显示
+            // Reset display
             document.getElementById('fontSizeDisplay').textContent = '24px';
             document.getElementById('logoSizeDisplay').textContent = '100px';
             document.getElementById('opacityDisplay').textContent = '70%';
             document.getElementById('offsetXDisplay').textContent = '0px';
             document.getElementById('offsetYDisplay').textContent = '0px';
             
-            // 重置标签和位置
+            // Reset tabs and position
             switchTab('text');
             selectPosition('center');
             
-            // 重置Logo按钮
-            logoUploadBtn.textContent = '📁 点击选择图片';
+            // Reset logo button
+            logoUploadBtn.textContent = '📁 Click to Select Image';
             logoUploadBtn.style.borderColor = '#d1d5db';
             logoUploadBtn.style.color = '#6b7280';
         }
 
-        // 格式化文件大小
+        // Format file size
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;

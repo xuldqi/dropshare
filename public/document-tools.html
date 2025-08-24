@@ -391,7 +391,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             z-index: 1200;
@@ -542,19 +542,7 @@
             cursor: not-allowed;
         }
 
-        /* 工具模态窗口样式 */
-        .tool-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1100;
-        }
+        /* 工具模态窗口样式 removed duplicate - keeping only first definition */
 
         .modal-content {
             background: white;
@@ -820,6 +808,34 @@
         </div>
 
         <div class="tools-grid" id="toolsGrid">
+            <!-- Document Processor -->
+            <div class="tool-card" data-keywords="pdf docx merge split extract convert" onclick="window.location.href='document-processor.html'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-merger">📄</div>
+                    <div class="tool-category">Advanced</div>
+                </div>
+                <h3 class="tool-title">Document Processor</h3>
+                <p class="tool-description">Advanced PDF and document processing - merge, split, extract text, PDF to Word</p>
+                <div class="tool-stats">
+                    <span>📄 PDF to Word</span>
+                    <span>⚙️ Multi-tool</span>
+                </div>
+            </div>
+
+            <!-- PDF to Word -->
+            <div class="tool-card" data-keywords="pdf word docx convert document" onclick="window.location.href='pdf-to-word.html'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-convert">📄➡️📝</div>
+                    <div class="tool-category">Popular</div>
+                </div>
+                <h3 class="tool-title">PDF to Word</h3>
+                <p class="tool-description">Convert PDF documents to editable Word format (.docx) quickly and easily</p>
+                <div class="tool-stats">
+                    <span>📄 PDF input</span>
+                    <span>📝 DOCX output</span>
+                </div>
+            </div>
+
             <!-- Text Converter -->
             <div class="tool-card" data-keywords="txt html markdown convert text document web format" onclick="openTextConverter()">
                 <div class="tool-card-header">
@@ -834,19 +850,6 @@
                 </div>
             </div>
 
-            <!-- Data Converter -->
-            <div class="tool-card" data-keywords="json csv yaml xml convert data api config" onclick="openDataConverter()">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-data">📊</div>
-                    <div class="tool-category">Popular</div>
-                </div>
-                <h3 class="tool-title">Data Converter</h3>
-                <p class="tool-description">Convert between JSON, CSV, YAML, and XML data formats</p>
-                <div class="tool-stats">
-                    <span>📈 5 formats</span>
-                    <span>🔧 API ready</span>
-                </div>
-            </div>
 
             <!-- DOCX to HTML -->
             <div class="tool-card" data-keywords="docx html word document convert" onclick="window.location.href='docx-to-html.html'">
@@ -904,89 +907,10 @@
                 </div>
             </div>
 
-            <!-- URL Encoder/Decoder -->
-            <div class="tool-card" data-keywords="url encode decode web link" onclick="openUrlTool()">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-web">🌐</div>
-                    <div class="tool-category">Web</div>
-                </div>
-                <h3 class="tool-title">URL Encoder/Decoder</h3>
-                <p class="tool-description">Encode and decode URLs for web applications</p>
-                <div class="tool-stats">
-                    <span>🔐 Auto detect</span>
-                    <span>🌐 Web safe</span>
-                </div>
-            </div>
 
-            <!-- Word Counter -->
-            <div class="tool-card" data-keywords="count words characters lines text analysis" onclick="openWordCounter()">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-editor">📊</div>
-                    <div class="tool-category">Text Tools</div>
-                </div>
-                <h3 class="tool-title">Word Counter</h3>
-                <p class="tool-description">Count words, characters, lines and analyze text statistics</p>
-                <div class="tool-stats">
-                    <span>📊 Real-time</span>
-                    <span>📈 5 metrics</span>
-                </div>
-            </div>
 
-            <!-- Base64 Encoder/Decoder -->
-            <div class="tool-card" data-keywords="base64 encode decode text convert" onclick="openBase64Tool()">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-compress">🔐</div>
-                    <div class="tool-category">Encoding</div>
-                </div>
-                <h3 class="tool-title">Base64 Encoder/Decoder</h3>
-                <p class="tool-description">Encode and decode text to/from Base64 format</p>
-                <div class="tool-stats">
-                    <span>🔄 Bi-directional</span>
-                    <span>🛡️ Safe encoding</span>
-                </div>
-            </div>
 
-            <!-- QR Code Generator -->
-            <div class="tool-card" data-keywords="qr code generate barcode scanner" onclick="openQRGenerator()">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-ocr">📱</div>
-                    <div class="tool-category">Utilities</div>
-                </div>
-                <h3 class="tool-title">QR Code Generator</h3>
-                <p class="tool-description">Generate QR codes for text, URLs, and sharing</p>
-                <div class="tool-stats">
-                    <span>📱 256x256px</span>
-                    <span>💾 Download PNG</span>
-                </div>
-            </div>
 
-            <!-- Hash Generator -->
-            <div class="tool-card" data-keywords="hash md5 sha1 sha256 checksum" onclick="openHashTool()">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-splitter">🔒</div>
-                    <div class="tool-category">Security</div>
-                </div>
-                <h3 class="tool-title">Hash Generator</h3>
-                <p class="tool-description">Generate MD5, SHA1, SHA256 hashes for text verification</p>
-                <div class="tool-stats">
-                    <span>🔒 3 algorithms</span>
-                    <span>📋 Copy ready</span>
-                </div>
-            </div>
-
-            <!-- Document Processor -->
-            <div class="tool-card" data-keywords="pdf docx merge split extract convert" onclick="window.location.href='document-processor.html'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-merger">📄</div>
-                    <div class="tool-category">Advanced</div>
-                </div>
-                <h3 class="tool-title">Document Processor</h3>
-                <p class="tool-description">Advanced PDF and document processing - merge, split, extract text</p>
-                <div class="tool-stats">
-                    <span>📄 PDF support</span>
-                    <span>⚙️ Multi-tool</span>
-                </div>
-            </div>
         </div>
     </main>
 
@@ -1532,46 +1456,6 @@
             showToolInterface(textConverterTitle, content);
         }
 
-        function openDataConverter() {
-            const convertText = '🔄 转换';
-            const clearText = '🧹 清空';
-            const downloadText = '💾 下载';
-            const shareText = '📤 传送';
-
-            const content = `
-                <div class="tool-interface">
-                    <div class="input-section">
-                        <label>选择转换类型：</label>
-                        <select id="dataConvertType" style="margin-bottom: 10px; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; width: 100%;">
-                            <option value="json-to-csv">JSON → CSV</option>
-                            <option value="csv-to-json">CSV → JSON</option>
-                            <option value="json-to-yaml">JSON → YAML</option>
-                            <option value="yaml-to-json">YAML → JSON</option>
-                            <option value="xml-format">XML 格式化</option>
-                        </select>
-                        <label for="dataInput">输入数据：</label>
-                        <textarea id="dataInput" rows="8" placeholder="请在此处输入或粘贴您的数据..."></textarea>
-                    </div>
-                    <div class="button-section">
-                        <button onclick="performDataConversion()" class="action-btn">${convertText}</button>
-                        <button onclick="clearDataConverter()" class="action-btn">${clearText}</button>
-                        <button onclick="downloadDataResult()" class="action-btn">${downloadText}</button>
-                        <button onclick="shareDataResult()" class="action-btn">${shareText}</button>
-                    </div>
-                    <div class="output-section">
-                        <label for="dataOutput">转换结果：</label>
-                        <textarea id="dataOutput" rows="8" readonly></textarea>
-                    </div>
-                </div>
-            `;
-            const dataConverterTitle = '数据转换器';
-            showToolInterface(dataConverterTitle, content);
-        }
-
-        function openUrlTool() {
-            showConverterInterface('URL Encoder/Decoder', null, processUrl);
-        }
-
         // 转换函数实现
         async function performTextConversion() {
             const type = document.getElementById('textConvertType').value;
@@ -1602,44 +1486,10 @@
             }
         }
 
-        async function performDataConversion() {
-            const type = document.getElementById('dataConvertType').value;
-            const input = document.getElementById('dataInput').value;
-            const output = document.getElementById('dataOutput');
-
-            if (!input.trim()) {
-                const enterDataText = '请输入数据！';
-                alert(enterDataText);
-                return;
-            }
-
-            try {
-                let result;
-                switch (type) {
-                    case 'json-to-csv': result = convertJsonToCsv(input); break;
-                    case 'csv-to-json': result = convertCsvToJson(input); break;
-                    case 'json-to-yaml': result = convertJsonToYaml(input); break;
-                    case 'yaml-to-json': result = convertYamlToJson(input); break;
-                    case 'xml-format': result = formatXml(input); break;
-                }
-                output.value = result;
-                window.lastDataResult = result;
-            } catch (error) {
-                const failedText = '转换失败：';
-                alert(failedText + error.message);
-            }
-        }
-
         function clearTextConverter() {
             document.getElementById('textInput').value = '';
             document.getElementById('textOutput').value = '';
             window.lastTextResult = null;
-        }
-
-        function clearDataConverter() {
-            document.getElementById('dataInput').value = '';
-            document.getElementById('dataOutput').value = '';
-            window.lastDataResult = null;
         }
 
         function downloadTextResult() {
@@ -1665,35 +1515,6 @@
             downloadFile(result, `text_converted_${Date.now()}.${fileExt}`, mimeType);
         }
 
-        function downloadDataResult() {
-            const result = window.lastDataResult;
-            if (!result) {
-                const noResultText = '没有转换结果可下载！';
-                alert(noResultText);
-                return;
-            }
-
-            const type = document.getElementById('dataConvertType').value;
-            let fileExt = 'txt';
-            let mimeType = 'text/plain';
-
-            if (type.includes('csv')) {
-                fileExt = 'csv';
-                mimeType = 'text/csv';
-            } else if (type.includes('json')) {
-                fileExt = 'json';
-                mimeType = 'application/json';
-            } else if (type.includes('yaml')) {
-                fileExt = 'yaml';
-                mimeType = 'text/yaml';
-            } else if (type.includes('xml')) {
-                fileExt = 'xml';
-                mimeType = 'application/xml';
-            }
-
-            downloadFile(result, `data_converted_${Date.now()}.${fileExt}`, mimeType);
-        }
-
         function downloadFile(content, filename, mimeType) {
             const blob = new Blob([content], { type: mimeType });
             const url = URL.createObjectURL(blob);
@@ -1706,270 +1527,6 @@
             URL.revokeObjectURL(url);
         }
 
-        // 工具功能实现
-        function openWordCounter() {
-            const wordCounterTitle = '字数统计';
-            showToolInterface(wordCounterTitle, `
-                <div class="tool-interface">
-                    <div class="input-section">
-                        <label for="textInput">输入文本：</label>
-                        <textarea id="textInput" rows="10" placeholder="请在此处输入或粘贴您的文本..."></textarea>
-                    </div>
-                    <div class="stats-section">
-                        <div class="stat-item">
-                            <span class="stat-label">字数：</span>
-                            <span class="stat-value" id="charCount">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">字数（不含空格）：</span>
-                            <span class="stat-value" id="charCountNoSpaces">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">单词数：</span>
-                            <span class="stat-value" id="wordCount">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">行数：</span>
-                            <span class="stat-value" id="lineCount">0</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">段落数：</span>
-                            <span class="stat-value" id="paragraphCount">0</span>
-                        </div>
-                    </div>
-                </div>
-            `);
-
-            const textInput = document.getElementById('textInput');
-            textInput.addEventListener('input', updateWordCount);
-        }
-
-        function updateWordCount() {
-            const text = document.getElementById('textInput').value;
-
-            document.getElementById('charCount').textContent = text.length;
-            document.getElementById('charCountNoSpaces').textContent = text.replace(/\s/g, '').length;
-            document.getElementById('wordCount').textContent = text.trim() ? text.trim().split(/\s+/).length : 0;
-            document.getElementById('lineCount').textContent = text.split('\n').length;
-            document.getElementById('paragraphCount').textContent = text.split(/\n\s*\n/).filter(p => p.trim()).length;
-        }
-
-        function openBase64Tool() {
-            const encodeText = '🔐 编码';
-            const decodeText = '🔓 解码';
-            const clearText = '🌉 清空';
-
-            const base64ToolTitle = 'Base64编码/解码';
-            showToolInterface(base64ToolTitle, `
-                <div class="tool-interface">
-                    <div class="input-section">
-                        <label for="base64Input">输入文本：</label>
-                        <textarea id="base64Input" rows="5" placeholder="请输入要编码或解码的文本..."></textarea>
-                    </div>
-                    <div class="button-section">
-                        <button onclick="encodeBase64()" class="action-btn">${encodeText}</button>
-                        <button onclick="decodeBase64()" class="action-btn">${decodeText}</button>
-                        <button onclick="clearBase64()" class="action-btn">${clearText}</button>
-                    </div>
-                    <div class="output-section">
-                        <label for="base64Output">输出结果：</label>
-                        <textarea id="base64Output" rows="5" readonly></textarea>
-                    </div>
-                </div>
-            `);
-        }
-
-        function encodeBase64() {
-            const input = document.getElementById('base64Input').value;
-            try {
-                const encoded = btoa(unescape(encodeURIComponent(input)));
-                document.getElementById('base64Output').value = encoded;
-            } catch (error) {
-                const encodingFailedText = '编码失败：';
-                alert(encodingFailedText + error.message);
-            }
-        }
-
-        function decodeBase64() {
-            const input = document.getElementById('base64Input').value;
-            try {
-                const decoded = decodeURIComponent(escape(atob(input)));
-                document.getElementById('base64Output').value = decoded;
-            } catch (error) {
-                const decodingFailedText = '解码失败：请检查输入是否为有效的Base64编码';
-                alert(decodingFailedText);
-            }
-        }
-
-        function clearBase64() {
-            document.getElementById('base64Input').value = '';
-            document.getElementById('base64Output').value = '';
-        }
-
-        function openQRGenerator() {
-            const generateQRText = '📱 生成QR码';
-            const downloadImageText = '💾 下载图片';
-
-            const qrGeneratorTitle = 'QR码生成器';
-            showToolInterface(qrGeneratorTitle, `
-                <div class="tool-interface">
-                    <div class="input-section">
-                        <label for="qrInput">输入文本或URL：</label>
-                        <textarea id="qrInput" rows="4" placeholder="请输入要生成QR码的文本或URL..."></textarea>
-                    </div>
-                    <div class="button-section">
-                        <button onclick="generateQR()" class="action-btn">${generateQRText}</button>
-                        <button onclick="downloadQR()" class="action-btn">${downloadImageText}</button>
-                    </div>
-                    <div class="qr-output">
-                        <canvas id="qrCanvas" style="display: none;"></canvas>
-                        <div id="qrPlaceholder" class="qr-placeholder">
-                            <div class="qr-icon">📱</div>
-                            <p>输入文本后点击生成QR码</p>
-                        </div>
-                    </div>
-                </div>
-            `);
-        }
-
-        function generateQR() {
-            const text = document.getElementById('qrInput').value.trim();
-            if (!text) {
-                const enterQRContentText = '请输入要生成QR码的内容';
-                alert(enterQRContentText);
-                return;
-            }
-
-            // 简单的QR码生成（使用第三方API）
-            const canvas = document.getElementById('qrCanvas');
-            const placeholder = document.getElementById('qrPlaceholder');
-            const ctx = canvas.getContext('2d');
-
-            // 设置canvas尺寸
-            canvas.width = 256;
-            canvas.height = 256;
-
-            // 使用公共QR码API生成
-            const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(text)}`;
-
-            const img = new Image();
-            img.crossOrigin = 'anonymous';
-            img.onload = function() {
-                ctx.drawImage(img, 0, 0);
-                canvas.style.display = 'block';
-                placeholder.style.display = 'none';
-            };
-            img.onerror = function() {
-                const qrGenerationFailedText = 'QR码生成失败，请检查网络连接';
-                alert(qrGenerationFailedText);
-            };
-            img.src = qrURL;
-        }
-
-        function downloadQR() {
-            const canvas = document.getElementById('qrCanvas');
-            if (canvas.style.display === 'none') {
-                const generateQRFirstText = '请先生成QR码';
-                alert(generateQRFirstText);
-                return;
-            }
-
-            const link = document.createElement('a');
-            link.download = 'qrcode.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
-
-        function openHashTool() {
-            const generateHashesText = '🔒 生成散列值';
-            const clearText = '🌉 清空';
-
-            const hashGeneratorTitle = '散列值生成器';
-            showToolInterface(hashGeneratorTitle, `
-                <div class="tool-interface">
-                    <div class="input-section">
-                        <label for="hashInput">输入文本：</label>
-                        <textarea id="hashInput" rows="5" placeholder="请输入要生成散列值的文本..."></textarea>
-                    </div>
-                    <div class="button-section">
-                        <button onclick="generateHashes()" class="action-btn">${generateHashesText}</button>
-                        <button onclick="clearHashes()" class="action-btn">${clearText}</button>
-                    </div>
-                    <div class="hash-results">
-                        <div class="hash-item">
-                            <label>MD5:</label>
-                            <input type="text" id="md5Result" readonly>
-                            <button onclick="copyToClipboard('md5Result')" class="copy-btn">📋</button>
-                        </div>
-                        <div class="hash-item">
-                            <label>SHA-1:</label>
-                            <input type="text" id="sha1Result" readonly>
-                            <button onclick="copyToClipboard('sha1Result')" class="copy-btn">📋</button>
-                        </div>
-                        <div class="hash-item">
-                            <label>SHA-256:</label>
-                            <input type="text" id="sha256Result" readonly>
-                            <button onclick="copyToClipboard('sha256Result')" class="copy-btn">📋</button>
-                        </div>
-                    </div>
-                </div>
-            `);
-        }
-
-        async function generateHashes() {
-            const text = document.getElementById('hashInput').value;
-            if (!text) {
-                const enterHashTextText = '请输入要生成散列值的文本';
-                alert(enterHashTextText);
-                return;
-            }
-
-            const encoder = new TextEncoder();
-            const data = encoder.encode(text);
-
-            try {
-                // SHA-1
-                const sha1Buffer = await crypto.subtle.digest('SHA-1', data);
-                const sha1Array = Array.from(new Uint8Array(sha1Buffer));
-                const sha1Hex = sha1Array.map(b => b.toString(16).padStart(2, '0')).join('');
-                document.getElementById('sha1Result').value = sha1Hex;
-
-                // SHA-256
-                const sha256Buffer = await crypto.subtle.digest('SHA-256', data);
-                const sha256Array = Array.from(new Uint8Array(sha256Buffer));
-                const sha256Hex = sha256Array.map(b => b.toString(16).padStart(2, '0')).join('');
-                document.getElementById('sha256Result').value = sha256Hex;
-
-                // MD5 (简单实现)
-                const md5SupportText = 'MD5需要额外的库支持';
-                document.getElementById('md5Result').value = md5SupportText;
-
-            } catch (error) {
-                const hashGenerationFailedText = '生成散列值失败：';
-                alert(hashGenerationFailedText + error.message);
-            }
-        }
-
-        function clearHashes() {
-            document.getElementById('hashInput').value = '';
-            document.getElementById('md5Result').value = '';
-            document.getElementById('sha1Result').value = '';
-            document.getElementById('sha256Result').value = '';
-        }
-
-        function copyToClipboard(elementId) {
-            const element = document.getElementById(elementId);
-            element.select();
-            document.execCommand('copy');
-
-            // 短暂显示复制成功
-            const button = element.nextElementSibling;
-            const originalText = button.textContent;
-            button.textContent = '✓';
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 1000);
-        }
 
         function showToolInterface(title, content) {
             // 创建模态窗口

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title >图片裁剪器 - DropShare</title>
+    <title>Image Cropper - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -414,15 +414,15 @@
     </header>
 
     <div class="container">
-        <h1 class="page-title" >图片裁剪器</h1>
-        <p class="page-subtitle" >精确裁剪图片，支持多种长宽比和自由选择</p>
+        <h1 class="page-title">Image Cropper</h1>
+        <p class="page-subtitle">Precisely crop images with multiple aspect ratios and free selection</p>
 
         <div class="cropper-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">✂️</div>
-                <div class="upload-text" >点击选择图片或拖拽到这里</div>
-                <div class="upload-hint" >支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text">Click to select images or drag them here</div>
+                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -431,9 +431,9 @@
                 <!-- 裁剪控制 -->
                 <div class="crop-controls">
                     <div class="control-group">
-                        <label class="control-label" >预设比例:</label>
+                        <label class="control-label">Preset Ratios:</label>
                         <div class="aspect-ratios">
-                            <button class="aspect-btn" data-ratio="free" >自由</button>
+                            <button class="aspect-btn" data-ratio="free">Free</button>
                             <button class="aspect-btn active" data-ratio="1:1">1:1</button>
                             <button class="aspect-btn" data-ratio="4:3">4:3</button>
                             <button class="aspect-btn" data-ratio="16:9">16:9</button>
@@ -441,13 +441,13 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" >自定义尺寸:</label>
+                        <label class="control-label">Custom Size:</label>
                         <div class="dimension-inputs">
-                            <input type="number" class="dimension-input" id="cropWidth" data-i18n-placeholder="placeholder_width" placeholder="宽度">
+                            <input type="number" class="dimension-input" id="cropWidth" placeholder="Width">
                             <span>×</span>
-                            <input type="number" class="dimension-input" id="cropHeight" data-i18n-placeholder="placeholder_height" placeholder="高度">
+                            <input type="number" class="dimension-input" id="cropHeight" placeholder="Height">
                             <button class="btn btn-primary" id="applySizeBtn" style="padding: 8px 16px; font-size: 14px;">
-                                <span >应用</span>
+                                <span>Apply</span>
                             </button>
                         </div>
                     </div>
@@ -455,7 +455,7 @@
 
                 <!-- 图片容器 -->
                 <div class="crop-container" id="cropContainer">
-                    <img id="cropImage" class="crop-image" alt="待裁剪图片">
+                    <img id="cropImage" class="crop-image" alt="Image to crop">
                     <div class="crop-overlay">
                         <div class="crop-selection" id="cropSelection">
                             <div class="crop-handle nw"></div>
@@ -472,7 +472,7 @@
 
                 <!-- 裁剪信息 -->
                 <div class="crop-info" id="cropInfo">
-                    <span >选择区域:</span> 0 × 0 <span >像素</span> | <span >位置:</span> (0, 0)
+                    <span>Selection area:</span> 0 × 0 <span>pixels</span> | <span>Position:</span> (0, 0)
                 </div>
             </div>
 
@@ -480,19 +480,19 @@
             <div class="preview-section" id="previewSection">
                 <div class="preview-container">
                     <div class="preview-item">
-                        <h3 >原始图片</h3>
-                        <img id="originalPreview" class="preview-image" alt="原始图片">
+                        <h3>Original Image</h3>
+                        <img id="originalPreview" class="preview-image" alt="Original Image">
                         <div class="image-info">
-                            <div><span >尺寸:</span> <span class="size" id="originalSize"></span></div>
-                            <div><span >文件大小:</span> <span class="size" id="originalFileSize"></span></div>
+                            <div><span>Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="preview-item">
-                        <h3 >裁剪预览</h3>
+                        <h3>Crop Preview</h3>
                         <canvas id="croppedPreview" class="preview-image"></canvas>
                         <div class="image-info">
-                            <div><span >尺寸:</span> <span class="size" id="croppedSize"></span></div>
-                            <div><span >预估大小:</span> <span class="size" id="croppedFileSize"></span></div>
+                            <div><span>Size:</span> <span class="size" id="croppedSize"></span></div>
+                            <div><span>Estimated size:</span> <span class="size" id="croppedFileSize"></span></div>
                         </div>
                     </div>
                 </div>
@@ -501,16 +501,16 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-primary" id="cropBtn" disabled>
-                    <span >✂️ 开始裁剪</span>
+                    <span>✂️ Start Cropping</span>
                 </button>
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    <span >📥 下载裁剪图片</span>
+                    <span>📥 Download Cropped Image</span>
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span >🔄 重新选择</span>
+                    <span>🔄 Select Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    <span >← 返回工具页</span>
+                    <span>← Back to Tools</span>
                 </a>
             </div>
         </div>
@@ -591,12 +591,12 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || '请选择图片文件！');
+                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || 'Please select an image file!');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || '文件大小不能超过 10MB！');
+                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || 'File size cannot exceed 10MB!');
                 return;
             }
 
@@ -668,7 +668,7 @@
             const realX = Math.round((cropData.x - getImageLeftOffset()) * scale);
             const realY = Math.round((cropData.y - getImageTopOffset()) * scale);
             
-            cropInfo.textContent = `选择区域: ${realWidth} × ${realHeight} 像素 | 位置: (${realX}, ${realY})`;
+            cropInfo.textContent = `Selection area: ${realWidth} × ${realHeight} pixels | Position: (${realX}, ${realY})`;
             
             // 更新输入框
             cropWidthInput.value = realWidth;
@@ -855,7 +855,7 @@
             const height = parseInt(cropHeightInput.value);
             
             if (!width || !height || width <= 0 || height <= 0) {
-                alert(window.DROPSHARE_I18N?.t('alert_enter_valid_dimensions') || '请输入有效的宽度和高度！');
+                alert(window.DROPSHARE_I18N?.t('alert_enter_valid_dimensions') || 'Please enter valid width and height!');
                 return;
             }
             
@@ -924,7 +924,7 @@
             updatePreview();
             previewSection.style.display = 'block';
             downloadBtn.style.display = 'inline-flex';
-            cropBtn.textContent = '✂️ 重新裁剪';
+            cropBtn.textContent = '✂️ Crop Again';
         }
 
         // 下载裁剪图片
@@ -949,7 +949,7 @@
             previewSection.style.display = 'none';
             downloadBtn.style.display = 'none';
             cropBtn.disabled = true;
-            cropBtn.textContent = '✂️ 开始裁剪';
+            cropBtn.textContent = '✂️ Start Cropping';
             fileInput.value = '';
         }
 
