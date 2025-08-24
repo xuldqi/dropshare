@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="image_tools_page_title">Image Tools - DropShare</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">    
+    <title>Image Tools - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
     <style>
@@ -21,6 +21,8 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
         }
 
         /* 背景装饰几何图形 */
@@ -115,7 +117,7 @@
             display: flex;
             gap: 16px;
         }
-        
+
         .nav-links a {
             color: #6b7280;
             text-decoration: none;
@@ -125,12 +127,12 @@
             border-radius: 6px;
             transition: all 0.2s ease;
         }
-        
+
         .nav-links a:hover {
             color: #3367d6;
             background: #f3f4f6;
         }
-        
+
         .nav-links a.active {
             color: #3367d6;
             background: #e3f2fd;
@@ -142,35 +144,15 @@
             align-items: center;
         }
 
-        .lang-selector select {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #374151;
-            font-size: 14px;
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-        .lang-selector select:hover {
-            border-color: #3367d6;
-        }
-
-        .lang-selector select:focus {
-            outline: none;
-            border-color: #3367d6;
-            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
-        }
-
         /* 主要内容 */
         .main-content {
             position: relative;
             z-index: 10;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px 60px;
-            margin-top: 140px; /* 精确定位到标题位置 */
+            padding: 0 20px 40px;
+            margin-top: 120px; /* 调整定位 */
+            min-height: calc(100vh - 200px); /* 确保最小高度 */
         }
 
         .page-header {
@@ -198,7 +180,6 @@
             font-weight: 400;
             text-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
 
         /* 工具网格 */
         .tools-grid {
@@ -357,14 +338,15 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
+
             .nav-links a {
                 font-size: 12px;
                 padding: 4px 8px;
             }
 
             .main-content {
-                padding: 30px 15px;
+                padding: 20px 15px 40px;
+                margin-top: 100px;
             }
 
             .page-title {
@@ -387,7 +369,7 @@
                 grid-template-columns: repeat(4, 1fr);
             }
         }
-        
+
         /* 设备选择弹窗样式 */
         .device-modal {
             display: none;
@@ -401,11 +383,11 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .device-modal.show {
             display: flex;
         }
-        
+
         .device-modal-content {
             background: white;
             border-radius: 12px;
@@ -416,7 +398,7 @@
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        
+
         .device-modal-header {
             display: flex;
             justify-content: space-between;
@@ -425,14 +407,14 @@
             padding-bottom: 12px;
             border-bottom: 1px solid #e9ecef;
         }
-        
+
         .device-modal-title {
             font-size: 18px;
             font-weight: 600;
             color: #333;
             margin: 0;
         }
-        
+
         .device-modal-close {
             background: none;
             border: none;
@@ -447,16 +429,16 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .device-modal-close:hover {
             background: #f5f5f5;
             color: #333;
         }
-        
+
         .device-list {
             margin-bottom: 20px;
         }
-        
+
         .device-item {
             display: flex;
             align-items: center;
@@ -467,58 +449,58 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         .device-item:hover {
             border-color: #667eea;
             background: #f8f9ff;
         }
-        
+
         .device-item.selected {
             border-color: #667eea;
             background: #e3f2fd;
         }
-        
+
         .device-checkbox {
             margin-right: 12px;
         }
-        
+
         .device-icon {
             font-size: 24px;
             margin-right: 12px;
         }
-        
+
         .device-info {
             flex: 1;
         }
-        
+
         .device-name {
             font-weight: 600;
             color: #333;
             margin-bottom: 2px;
         }
-        
+
         .device-type {
             font-size: 14px;
             color: #666;
         }
-        
+
         .no-devices {
             text-align: center;
             padding: 40px 20px;
             color: #666;
         }
-        
+
         .no-devices-icon {
             font-size: 48px;
             margin-bottom: 12px;
         }
-        
+
         .device-modal-actions {
             display: flex;
             gap: 12px;
             justify-content: flex-end;
         }
-        
+
         .modal-btn {
             padding: 8px 16px;
             border: none;
@@ -527,25 +509,25 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         .modal-btn-cancel {
             background: #f5f5f5;
             color: #333;
         }
-        
+
         .modal-btn-cancel:hover {
             background: #e9ecef;
         }
-        
+
         .modal-btn-send {
             background: #667eea;
             color: white;
         }
-        
+
         .modal-btn-send:hover {
             background: #5a67d8;
         }
-        
+
         .modal-btn-send:disabled {
             background: #ccc;
             cursor: not-allowed;
@@ -584,30 +566,16 @@
 
             <div class="header-controls">
                 <nav class="nav-links">
-                    <a href="share.html" data-i18n="nav_transfer">传送</a>
-                    <a href="/share.html#rooms" data-i18n="nav_rooms">多人房间</a>
-                    <a href="image-tools.html" class="active" data-i18n="nav_images">图片</a>
-                    <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
-                    <a href="video-tools.html" data-i18n="nav_video">视频</a>
-                    <a href="document-tools.html" data-i18n="nav_files">文件</a>
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Rooms</a>
+                    <a href="image-tools.html" class="active">Images</a>
+                    <a href="audio-tools.html">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html">Files</a>
                 </nav>
 
                 <div class="control-buttons">
-                    <div class="lang-selector">
-                        <select id="language-selector" title="选择语言" data-i18n="title_select_language">
-                            <option value="en">English</option>
-                            <option value="zh">中文简体</option>
-                            <option value="zh-tw">中文繁體</option>
-                            <option value="ja">日本語</option>
-                            <option value="fr">Français</option>
-                            <option value="es">Español</option>
-                            <option value="de">Deutsch</option>
-                            <option value="pt">Português</option>
-                            <option value="ru">Русский</option>
-                            <option value="ar">العربية</option>
-                            <option value="ko">한국어</option>
-                        </select>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -616,8 +584,8 @@
     <!-- 主要内容 -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title" data-i18n="image_tools_title">Image Tools</h1>
-            <p class="page-subtitle" data-i18n="image_tools_subtitle">Free Online Image Processing Tools</p>
+            <h1 class="page-title">Image Tools</h1>
+            <p class="page-subtitle">Free Online Image Processing Tools</p>
         </div>
 
         <div class="tools-grid" id="toolsGrid">
@@ -625,13 +593,13 @@
             <div class="tool-card" data-keywords="compress optimize reduce size quality" onclick="window.location.href='image-compressor-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">🗜️</div>
-                    <div class="tool-category" data-i18n="category_popular">Popular</div>
+                    <div class="tool-category">Popular</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_image_compressor_title">Image Compressor</h3>
-                <p class="tool-description" data-i18n="tool_image_compressor_desc">Reduce image file size while maintaining quality for web and storage optimization</p>
+                <h3 class="tool-title">Image Compressor</h3>
+                <p class="tool-description">Reduce image file size while maintaining quality for web and storage optimization</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_compression_rate">📦 Up to 90% compression</span>
-                    <span data-i18n="tool_instant">⚡ Instant</span>
+                    <span>📦 Up to 90% compression</span>
+                    <span>⚡ Instant</span>
                 </div>
             </div>
 
@@ -639,13 +607,13 @@
             <div class="tool-card" data-keywords="convert format jpg png webp gif bmp tiff" onclick="window.location.href='image-converter-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🔄</div>
-                    <div class="tool-category" data-i18n="category_essential">Essential</div>
+                    <div class="tool-category">Essential</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_format_converter_title">Format Converter</h3>
-                <p class="tool-description" data-i18n="tool_format_converter_desc">Convert images between different formats like JPG, PNG, WebP, GIF, and more</p>
+                <h3 class="tool-title">Format Converter</h3>
+                <p class="tool-description">Convert images between different formats like JPG, PNG, WebP, GIF, and more</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_formats_count">📂 6+ formats</span>
-                    <span data-i18n="tool_batch_convert">🔄 Batch convert</span>
+                    <span>📂 6+ formats</span>
+                    <span>🔄 Batch convert</span>
                 </div>
             </div>
 
@@ -653,13 +621,13 @@
             <div class="tool-card" data-keywords="resize scale dimensions width height pixels" onclick="window.location.href='image-resizer-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-resize">📏</div>
-                    <div class="tool-category" data-i18n="category_popular">Popular</div>
+                    <div class="tool-category">Popular</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_image_resizer_title">Image Resizer</h3>
-                <p class="tool-description" data-i18n="tool_image_resizer_desc">Resize images to specific dimensions while preserving aspect ratio or custom sizing</p>
+                <h3 class="tool-title">Image Resizer</h3>
+                <p class="tool-description">Resize images to specific dimensions while preserving aspect ratio or custom sizing</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_precise_control">📐 Precise control</span>
-                    <span data-i18n="tool_aspect_ratio_lock">🎯 Aspect ratio lock</span>
+                    <span>📐 Precise control</span>
+                    <span>🎯 Aspect ratio lock</span>
                 </div>
             </div>
 
@@ -667,13 +635,13 @@
             <div class="tool-card" data-keywords="rotate flip mirror orientation degrees" onclick="window.location.href='image-rotator-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-rotate">🔄</div>
-                    <div class="tool-category" data-i18n="category_essential">Essential</div>
+                    <div class="tool-category">Essential</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_image_rotator_title">Image Rotator</h3>
-                <p class="tool-description" data-i18n="tool_image_rotator_desc">Rotate images by any angle, flip horizontally or vertically with precision</p>
+                <h3 class="tool-title">Image Rotator</h3>
+                <p class="tool-description">Rotate images by any angle, flip horizontally or vertically with precision</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_any_angle">🎛️ Any angle</span>
-                    <span data-i18n="tool_flip_mirror">🔄 Flip & mirror</span>
+                    <span>🎛️ Any angle</span>
+                    <span>🔄 Flip & mirror</span>
                 </div>
             </div>
 
@@ -681,13 +649,13 @@
             <div class="tool-card" data-keywords="crop trim cut area selection" onclick="window.location.href='image-cropper-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-crop">✂️</div>
-                    <div class="tool-category" data-i18n="category_essential">Essential</div>
+                    <div class="tool-category">Essential</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_image_cropper_title">Image Cropper</h3>
-                <p class="tool-description" data-i18n="tool_image_cropper_desc">Crop images to specific areas with precise selection and aspect ratio control</p>
+                <h3 class="tool-title">Image Cropper</h3>
+                <p class="tool-description">Crop images to specific areas with precise selection and aspect ratio control</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_precise_crop">✂️ Precise crop</span>
-                    <span data-i18n="tool_ratio_presets">📐 Ratio presets</span>
+                    <span>✂️ Precise crop</span>
+                    <span>📐 Ratio presets</span>
                 </div>
             </div>
 
@@ -695,13 +663,13 @@
             <div class="tool-card" data-keywords="watermark text logo brand copyright protection" onclick="window.location.href='image-watermark-tool-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-watermark">💧</div>
-                    <div class="tool-category" data-i18n="category_pro">Pro</div>
+                    <div class="tool-category">Pro</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_watermark_title">Watermark Tool</h3>
-                <p class="tool-description" data-i18n="tool_watermark_desc">Add text or logo watermarks to protect your images with customizable positioning</p>
+                <h3 class="tool-title">Watermark Tool</h3>
+                <p class="tool-description">Add text or logo watermarks to protect your images with customizable positioning</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_custom_design">🎨 Custom design</span>
-                    <span data-i18n="tool_brand_protection">🔒 Brand protection</span>
+                    <span>🎨 Custom design</span>
+                    <span>🔒 Brand protection</span>
                 </div>
             </div>
 
@@ -709,13 +677,13 @@
             <div class="tool-card" data-keywords="background remove transparent png ai" onclick="window.location.href='image-background-remover-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-background">🎭</div>
-                    <div class="tool-category" data-i18n="category_ai_powered">AI-Powered</div>
+                    <div class="tool-category">AI-Powered</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_background_remover_title">Background Remover</h3>
-                <p class="tool-description" data-i18n="tool_background_remover_desc">Remove backgrounds from images automatically or manually with precision tools</p>
+                <h3 class="tool-title">Background Remover</h3>
+                <p class="tool-description">Remove backgrounds from images automatically or manually with precision tools</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_ai_powered">🤖 AI-powered</span>
-                    <span data-i18n="tool_one_click">✨ One-click</span>
+                    <span>🤖 AI-powered</span>
+                    <span>✨ One-click</span>
                 </div>
             </div>
 
@@ -723,13 +691,13 @@
             <div class="tool-card" data-keywords="filter effects brightness contrast saturation vintage" onclick="window.location.href='image-filter-effects-new.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-filter">🎨</div>
-                    <div class="tool-category" data-i18n="category_creative">Creative</div>
+                    <div class="tool-category">Creative</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_filter_effects_title">Filter Effects</h3>
-                <p class="tool-description" data-i18n="tool_filter_effects_desc">Apply various filters and effects like vintage, black & white, sepia, and artistic styles</p>
+                <h3 class="tool-title">Filter Effects</h3>
+                <p class="tool-description">Apply various filters and effects like vintage, black & white, sepia, and artistic styles</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_20_effects">🎭 20+ effects</span>
-                    <span data-i18n="tool_live_preview">🎨 Live preview</span>
+                    <span>🎭 20+ effects</span>
+                    <span>🎨 Live preview</span>
                 </div>
             </div>
 
@@ -737,18 +705,17 @@
             <div class="tool-card" data-keywords="color palette extract colors dominant scheme">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-palette">🎨</div>
-                    <div class="tool-category" data-i18n="category_creative">Creative</div>
+                    <div class="tool-category">Creative</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_color_palette_title">Color Palette</h3>
-                <p class="tool-description" data-i18n="tool_color_palette_desc">Extract color palettes from images and generate color schemes for design projects</p>
+                <h3 class="tool-title">Color Palette</h3>
+                <p class="tool-description">Extract color palettes from images and generate color schemes for design projects</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_color_extraction">🌈 Color extraction</span>
-                    <span data-i18n="tool_design_ready">🎯 Design ready</span>
+                    <span>🌈 Color extraction</span>
+                    <span>🎯 Design ready</span>
                 </div>
             </div>
         </div>
     </main>
-
 
     <script>
         // 生成背景装饰图形
@@ -756,41 +723,40 @@
             const shapesContainer = document.querySelector('.bg-shapes');
             const shapes = ['triangle', 'circle', 'square', 'diamond'];
             const colors = ['#ffa726', '#e91e63', '#42a5f5', '#66bb6a', '#ab47bc', '#ff7043'];
-            
+
             for (let i = 0; i < 20; i++) {
                 const shape = document.createElement('div');
                 const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
                 shape.className = `shape ${shapeType}`;
-                
+
                 // 随机位置
                 shape.style.left = Math.random() * 100 + '%';
                 shape.style.top = Math.random() * 100 + '%';
-                
+
                 // 随机颜色（对于非CSS定义的形状）
                 if (shapeType === 'square' || shapeType === 'diamond') {
                     const color = colors[Math.floor(Math.random() * colors.length)];
                     shape.style.background = color;
                 }
-                
+
                 shapesContainer.appendChild(shape);
             }
         }
-
 
         // 工具卡片点击事件（除了已有onclick的）
         document.querySelectorAll('.tool-card:not([onclick])').forEach(card => {
             card.addEventListener('click', function() {
                 const title = this.querySelector('.tool-title').textContent;
-                
+
                 // 特殊处理yasuopic工具，如果可以集成的话
-                if (title.includes('Compressor') || title.includes('Resizer') || 
+                if (title.includes('Compressor') || title.includes('Resizer') ||
                     title.includes('Rotator') || title.includes('Merger') ||
                     title.includes('Watermark') || title.includes('EXIF') ||
                     title.includes('Renamer')) {
-                    const yasuopicText = getI18nText('alert_yasuopic_integration_available') || 'Yasuopic integration available!\n\nThis tool can be integrated from your existing yasuopic project.';
+                    const yasuopicText =  || 'Yasuopic integration available!\n\nThis tool can be integrated from your existing yasuopic project.';
                     alert(`${title}\n\n${yasuopicText}`);
                 } else {
-                    const comingSoonText = getI18nText('alert_tool_coming_soon') || 'Coming Soon!\n\nThis tool is under development. Please check back later.';
+                    const comingSoonText =  || 'Coming Soon!\n\nThis tool is under development. Please check back later.';
                     alert(`${title} - ${comingSoonText}`);
                 }
             });
@@ -799,23 +765,23 @@
         // 设备传送功能变量
         let selectedDevices = new Set();
         let currentShareFiles = [];
-        
+
         // 显示设备选择弹窗
         function showDeviceModal() {
             const modal = document.getElementById('deviceModal');
             const deviceList = document.getElementById('deviceList');
-            
+
             selectedDevices.clear();
             updateSendButton();
-            
+
             const devices = getAvailableDevices();
-            
+
                             if (devices.length === 0) {
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p data-i18n="no_devices_found">未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="ensure_devices_connected">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p>No available devices found</p>
+                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -830,21 +796,21 @@
                     </div>
                 `).join('');
             }
-            
+
             modal.classList.add('show');
         }
-        
+
         // 关闭设备选择弹窗
         function closeDeviceModal() {
             document.getElementById('deviceModal').classList.remove('show');
             selectedDevices.clear();
         }
-        
+
         // 切换设备选择
         function toggleDevice(deviceId) {
             const checkbox = document.getElementById(`device-${deviceId}`);
             const deviceItem = checkbox.closest('.device-item');
-            
+
             if (selectedDevices.has(deviceId)) {
                 selectedDevices.delete(deviceId);
                 checkbox.checked = false;
@@ -854,28 +820,28 @@
                 checkbox.checked = true;
                 deviceItem.classList.add('selected');
             }
-            
+
             updateSendButton();
         }
-        
+
         // 更新发送按钮
         function updateSendButton() {
             const sendBtn = document.getElementById('sendToDevicesBtn');
             const count = selectedDevices.size;
-            
+
             if (count === 0) {
                 sendBtn.disabled = true;
-                sendBtn.textContent = getI18nText('btn_send_to_devices');
+                sendBtn.textContent = ;
             } else {
                 sendBtn.disabled = false;
-                sendBtn.textContent = getI18nText('btn_send_to_count_devices').replace('{count}', count);
+                sendBtn.textContent = .replace('{count}', count);
             }
         }
-        
+
         // 传送到选中设备
         function sendToSelectedDevices() {
             if (selectedDevices.size === 0 || currentShareFiles.length === 0) return;
-            
+
             // 检查传输系统
             if (window.Events && typeof window.Events.fire === 'function') {
                 selectedDevices.forEach(deviceId => {
@@ -884,8 +850,8 @@
                         to: deviceId
                     });
                 });
-                
-                alert(getI18nText('files_sending_to_devices').replace('{count}', selectedDevices.size));
+
+                alert(.replace('{count}', selectedDevices.size));
                 closeDeviceModal();
             } else {
                 // 如果没有传输系统，尝试添加到分享队列
@@ -893,10 +859,10 @@
                     currentShareFiles.forEach(file => {
                         window.ui.filesQueue.push(file);
                     });
-                    alert(getI18nText('files_added_to_share_list'));
+                    alert();
                     closeDeviceModal();
                 } else {
-                    if (confirm(getI18nText('transfer_function_redirect_confirm'))) {
+                    if (confirm()) {
                         sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
                             files: currentShareFiles.map(f => ({ name: f.name, type: f.type, size: f.size })),
                             timestamp: Date.now()
@@ -906,35 +872,35 @@
                 }
             }
         }
-        
+
         // 获取可用设备
         function getAvailableDevices() {
             const devices = [];
-            
+
             // 检查现有设备
             const peerElements = document.querySelectorAll('x-peer');
             if (peerElements.length > 0) {
                 peerElements.forEach(peer => {
                     devices.push({
                         id: peer.id,
-                        name: peer.querySelector('.name')?.textContent || getI18nText('unknown_device'),
-                        type: peer.querySelector('.device-name')?.textContent || getI18nText('device')
+                        name: peer.querySelector('.name')?.textContent || ,
+                        type: peer.querySelector('.device-name')?.textContent ||
                     });
                 });
             }
-            
+
             // 模拟设备（供测试）
             if (devices.length === 0) {
                 devices.push(
-                    { id: 'demo1', name: 'iPhone 13', type: getI18nText('ios_phone') },
-                    { id: 'demo2', name: 'MacBook Pro', type: getI18nText('macos_laptop') },
-                    { id: 'demo3', name: 'Windows PC', type: getI18nText('windows_desktop') }
+                    { id: 'demo1', name: 'iPhone 13', type:  },
+                    { id: 'demo2', name: 'MacBook Pro', type:  },
+                    { id: 'demo3', name: 'Windows PC', type:  }
                 );
             }
-            
+
             return devices;
         }
-        
+
         // 获取设备图标
         function getDeviceIcon(device) {
             const type = device.type.toLowerCase();
@@ -948,7 +914,7 @@
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             createBackgroundShapes();
-            
+
             // 弹窗背景点击关闭
             document.getElementById('deviceModal').addEventListener('click', function(e) {
                 if (e.target === this) {
@@ -957,46 +923,44 @@
             });
         });
     </script>
-    
+
+    <!-- Simplified Footer -->
+    <footer style="background: #f8f9fa; padding: 20px 0; margin-top: 40px; border-top: 1px solid #e9ecef;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" style="fill: #3367d6;">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <span style="font-size: 18px; font-weight: 600; color: #3367d6;">DropShare</span>
+            </div>
+            <p style="margin: 0; color: #6b7280; font-size: 14px;">© 2024 DropShare. Making file sharing easier ❤️</p>
+        </div>
+    </footer>
+
     <!-- 设备选择弹窗 -->
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
+                <h3 class="device-modal-title">选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    <span data-i18n="btn_send_to_devices">传送到选中设备</span>
+                    <span>Send to Devices</span>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>    
+
     <!-- Mobile Navigation and Touch Optimization -->
-    <script src="scripts/mobile-navigation.js"></script>
-    <script>
-        // Helper function to get i18n text
-        function getI18nText(key) {
-            if (window.DROPSHARE_I18N && window.DROPSHARE_I18N.translate) {
-                return window.DROPSHARE_I18N.translate(key);
-            }
-            return key;
-        }
-        
-        // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
-            }
-        });
+
     </script>
+
 </body>
 </html>

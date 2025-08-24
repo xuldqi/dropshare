@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="document_tools_page_title">文档工具 - DropShare</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">    
+    <title>Document Tools - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
     <style>
@@ -21,6 +21,8 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
         }
 
         /* 背景装饰几何图形 */
@@ -116,7 +118,7 @@
             display: flex;
             gap: 16px;
         }
-        
+
         .nav-links a {
             color: #6b7280;
             text-decoration: none;
@@ -126,12 +128,12 @@
             border-radius: 6px;
             transition: all 0.2s ease;
         }
-        
+
         .nav-links a:hover {
             color: #3367d6;
             background: #f3f4f6;
         }
-        
+
         .nav-links a.active {
             color: #3367d6;
             background: #e3f2fd;
@@ -143,35 +145,15 @@
             align-items: center;
         }
 
-        .lang-selector select {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #374151;
-            font-size: 14px;
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-        .lang-selector select:hover {
-            border-color: #3367d6;
-        }
-
-        .lang-selector select:focus {
-            outline: none;
-            border-color: #3367d6;
-            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
-        }
-
         /* 主要内容 */
         .main-content {
             position: relative;
             z-index: 10;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px 60px;
-            margin-top: 140px; /* 精确定位到标题位置 */
+            padding: 0 20px 40px;
+            margin-top: 120px; /* 调整定位 */
+            min-height: calc(100vh - 200px); /* 确保最小高度 */
         }
 
         .page-header {
@@ -199,7 +181,6 @@
             font-weight: 400;
             text-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
 
         /* 工具网格 */
         .tools-grid {
@@ -315,7 +296,7 @@
             line-height: 1.5;
             margin-bottom: 12px;
         }
-        
+
         .tool-stats {
             display: flex;
             gap: 12px;
@@ -323,7 +304,7 @@
             color: #718096;
             margin-top: auto;
         }
-        
+
         .tool-stats span {
             background: rgba(102, 126, 234, 0.1);
             padding: 4px 8px;
@@ -352,14 +333,15 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
+
             .nav-links a {
                 font-size: 12px;
                 padding: 4px 8px;
             }
 
             .main-content {
-                padding: 30px 15px;
+                padding: 20px 15px 40px;
+                margin-top: 100px;
             }
 
             .page-title {
@@ -382,7 +364,7 @@
                 grid-template-columns: repeat(4, 1fr);
             }
         }
-        
+
         /* 设备选择弹窗样式 */
         .device-modal {
             display: none;
@@ -396,11 +378,25 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         .device-modal.show {
             display: flex;
         }
-        
+
+        /* Tool Modal Styles */
+        .tool-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1200;
+        }
+
         .device-modal-content {
             background: white;
             border-radius: 12px;
@@ -411,7 +407,7 @@
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        
+
         .device-modal-header {
             display: flex;
             justify-content: space-between;
@@ -420,14 +416,14 @@
             padding-bottom: 12px;
             border-bottom: 1px solid #e9ecef;
         }
-        
+
         .device-modal-title {
             font-size: 18px;
             font-weight: 600;
             color: #333;
             margin: 0;
         }
-        
+
         .device-modal-close {
             background: none;
             border: none;
@@ -442,16 +438,16 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .device-modal-close:hover {
             background: #f5f5f5;
             color: #333;
         }
-        
+
         .device-list {
             margin-bottom: 20px;
         }
-        
+
         .device-item {
             display: flex;
             align-items: center;
@@ -462,58 +458,58 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         .device-item:hover {
             border-color: #667eea;
             background: #f8f9ff;
         }
-        
+
         .device-item.selected {
             border-color: #667eea;
             background: #e3f2fd;
         }
-        
+
         .device-checkbox {
             margin-right: 12px;
         }
-        
+
         .device-icon {
             font-size: 24px;
             margin-right: 12px;
         }
-        
+
         .device-info {
             flex: 1;
         }
-        
+
         .device-name {
             font-weight: 600;
             color: #333;
             margin-bottom: 2px;
         }
-        
+
         .device-type {
             font-size: 14px;
             color: #666;
         }
-        
+
         .no-devices {
             text-align: center;
             padding: 40px 20px;
             color: #666;
         }
-        
+
         .no-devices-icon {
             font-size: 48px;
             margin-bottom: 12px;
         }
-        
+
         .device-modal-actions {
             display: flex;
             gap: 12px;
             justify-content: flex-end;
         }
-        
+
         .modal-btn {
             padding: 8px 16px;
             border: none;
@@ -522,30 +518,30 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         .modal-btn-cancel {
             background: #f5f5f5;
             color: #333;
         }
-        
+
         .modal-btn-cancel:hover {
             background: #e9ecef;
         }
-        
+
         .modal-btn-send {
             background: #667eea;
             color: white;
         }
-        
+
         .modal-btn-send:hover {
             background: #5a67d8;
         }
-        
+
         .modal-btn-send:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
-        
+
         /* 工具模态窗口样式 */
         .tool-modal {
             position: fixed;
@@ -559,7 +555,7 @@
             align-items: center;
             z-index: 1100;
         }
-        
+
         .modal-content {
             background: white;
             border-radius: 12px;
@@ -569,7 +565,7 @@
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        
+
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -577,12 +573,12 @@
             padding: 20px;
             border-bottom: 1px solid #e9ecef;
         }
-        
+
         .modal-header h2 {
             margin: 0;
             color: #333;
         }
-        
+
         .modal-close {
             background: none;
             border: none;
@@ -596,32 +592,32 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .modal-close:hover {
             color: #333;
         }
-        
+
         .modal-body {
             padding: 20px;
         }
-        
+
         .tool-interface {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-        
+
         .input-section, .output-section {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-        
+
         .input-section label, .output-section label {
             font-weight: 600;
             color: #333;
         }
-        
+
         .input-section textarea, .output-section textarea {
             width: 100%;
             padding: 12px;
@@ -632,18 +628,18 @@
             resize: vertical;
             min-height: 100px;
         }
-        
+
         .input-section textarea:focus, .output-section textarea:focus {
             outline: none;
             border-color: #007bff;
         }
-        
+
         .button-section {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
         }
-        
+
         .action-btn {
             padding: 10px 20px;
             background: #007bff;
@@ -654,11 +650,11 @@
             font-weight: 500;
             transition: background 0.2s;
         }
-        
+
         .action-btn:hover {
             background: #0056b3;
         }
-        
+
         .stats-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -667,25 +663,25 @@
             background: #f8f9fa;
             border-radius: 8px;
         }
-        
+
         .stat-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 8px 0;
         }
-        
+
         .stat-label {
             font-weight: 500;
             color: #666;
         }
-        
+
         .stat-value {
             font-weight: 700;
             color: #007bff;
             font-size: 1.1em;
         }
-        
+
         .qr-output {
             display: flex;
             justify-content: center;
@@ -695,35 +691,35 @@
             border-radius: 8px;
             background: #f8f9fa;
         }
-        
+
         .qr-placeholder {
             text-align: center;
             color: #666;
         }
-        
+
         .qr-icon {
             font-size: 3em;
             margin-bottom: 10px;
         }
-        
+
         .hash-results {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
-        
+
         .hash-item {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        
+
         .hash-item label {
             min-width: 80px;
             font-weight: 600;
             color: #333;
         }
-        
+
         .hash-item input {
             flex: 1;
             padding: 8px 12px;
@@ -733,7 +729,7 @@
             font-size: 12px;
             background: #f8f9fa;
         }
-        
+
         .copy-btn {
             padding: 8px 12px;
             background: #28a745;
@@ -743,26 +739,26 @@
             cursor: pointer;
             font-size: 12px;
         }
-        
+
         .copy-btn:hover {
             background: #218838;
         }
-        
+
         @media (max-width: 768px) {
             .modal-content {
                 width: 95%;
                 margin: 20px;
             }
-            
+
             .stats-section {
                 grid-template-columns: 1fr;
             }
-            
+
             .hash-item {
                 flex-direction: column;
                 align-items: stretch;
             }
-            
+
             .hash-item label {
                 min-width: auto;
                 margin-bottom: 4px;
@@ -802,29 +798,15 @@
 
             <div class="header-controls">
                 <nav class="nav-links">
-                    <a href="share.html" data-i18n="nav_transfer">传送</a>
-                    <a href="/share.html#rooms" data-i18n="nav_rooms">多人房间</a>
-                    <a href="image-tools.html" data-i18n="nav_images">图片</a>
-                    <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
-                    <a href="video-tools.html" data-i18n="nav_video">视频</a>
-                    <a href="document-tools.html" class="active" data-i18n="nav_files">文件</a>
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Rooms</a>
+                    <a href="image-tools.html">Images</a>
+                    <a href="audio-tools.html">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html" class="active">Files</a>
                 </nav>
                 <div class="control-buttons">
-                    <div class="lang-selector">
-                        <select id="language-selector" title="选择语言" data-i18n="title_select_language">
-                            <option value="en">English</option>
-                            <option value="zh">中文简体</option>
-                            <option value="zh-tw">中文繁體</option>
-                            <option value="ja">日本語</option>
-                            <option value="fr">Français</option>
-                            <option value="es">Español</option>
-                            <option value="de">Deutsch</option>
-                            <option value="pt">Português</option>
-                            <option value="ru">Русский</option>
-                            <option value="ar">العربية</option>
-                            <option value="ko">한국어</option>
-                        </select>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -833,8 +815,8 @@
     <!-- 主要内容 -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title" data-i18n="document_tools_title">Document Tools</h1>
-            <p class="page-subtitle" data-i18n="document_tools_subtitle">Free Online Document Tools</p>
+            <h1 class="page-title">Document Tools</h1>
+            <p class="page-subtitle">Free Online Document Tools</p>
         </div>
 
         <div class="tools-grid" id="toolsGrid">
@@ -842,13 +824,13 @@
             <div class="tool-card" data-keywords="txt html markdown convert text document web format" onclick="openTextConverter()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📝</div>
-                    <div class="tool-category" data-i18n="category_popular">Popular</div>
+                    <div class="tool-category">Popular</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_text_converter_title">Text Converter</h3>
-                <p class="tool-description" data-i18n="tool_text_converter_desc">Convert between TXT, HTML, and Markdown formats with formatting options</p>
+                <h3 class="tool-title">Text Converter</h3>
+                <p class="tool-description">Convert between TXT, HTML, and Markdown formats with formatting options</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_6_formats">🔄 6 formats</span>
-                    <span data-i18n="tool_instant">⚡ Instant</span>
+                    <span>🔄 6 formats</span>
+                    <span>⚡ Instant</span>
                 </div>
             </div>
 
@@ -856,13 +838,13 @@
             <div class="tool-card" data-keywords="json csv yaml xml convert data api config" onclick="openDataConverter()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-data">📊</div>
-                    <div class="tool-category" data-i18n="category_popular">Popular</div>
+                    <div class="tool-category">Popular</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_data_converter_title">Data Converter</h3>
-                <p class="tool-description" data-i18n="tool_data_converter_desc">Convert between JSON, CSV, YAML, and XML data formats</p>
+                <h3 class="tool-title">Data Converter</h3>
+                <p class="tool-description">Convert between JSON, CSV, YAML, and XML data formats</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_5_formats">📈 5 formats</span>
-                    <span data-i18n="tool_api_ready">🔧 API ready</span>
+                    <span>📈 5 formats</span>
+                    <span>🔧 API ready</span>
                 </div>
             </div>
 
@@ -870,13 +852,13 @@
             <div class="tool-card" data-keywords="docx html word document convert" onclick="window.location.href='docx-to-html.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📝</div>
-                    <div class="tool-category" data-i18n="category_office">Office</div>
+                    <div class="tool-category">Office</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_docx_to_html_title">DOCX to HTML</h3>
-                <p class="tool-description" data-i18n="tool_docx_to_html_desc">Convert Word documents to HTML format for web display</p>
+                <h3 class="tool-title">DOCX to HTML</h3>
+                <p class="tool-description">Convert Word documents to HTML format for web display</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_word_docs">📄 Word docs</span>
-                    <span data-i18n="tool_web_ready">🌐 Web ready</span>
+                    <span>📄 Word docs</span>
+                    <span>🌐 Web ready</span>
                 </div>
             </div>
 
@@ -884,13 +866,13 @@
             <div class="tool-card" data-keywords="docx txt word text convert" onclick="window.location.href='docx-to-txt.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📃</div>
-                    <div class="tool-category" data-i18n="category_office">Office</div>
+                    <div class="tool-category">Office</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_docx_to_text_title">DOCX to Text</h3>
-                <p class="tool-description" data-i18n="tool_docx_to_text_desc">Extract plain text from Word documents</p>
+                <h3 class="tool-title">DOCX to Text</h3>
+                <p class="tool-description">Extract plain text from Word documents</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_extract_text">📄 Extract text</span>
-                    <span data-i18n="tool_plain_format">📝 Plain format</span>
+                    <span>📄 Extract text</span>
+                    <span>📝 Plain format</span>
                 </div>
             </div>
 
@@ -898,13 +880,13 @@
             <div class="tool-card" data-keywords="xlsx csv excel spreadsheet convert" onclick="window.location.href='xlsx-to-csv.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📊</div>
-                    <div class="tool-category" data-i18n="category_office">Office</div>
+                    <div class="tool-category">Office</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_xlsx_to_csv_title">XLSX to CSV</h3>
-                <p class="tool-description" data-i18n="tool_xlsx_to_csv_desc">Convert Excel spreadsheets to CSV format for data processing</p>
+                <h3 class="tool-title">XLSX to CSV</h3>
+                <p class="tool-description">Convert Excel spreadsheets to CSV format for data processing</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_excel_files">📈 Excel files</span>
-                    <span data-i18n="tool_csv_export">📋 CSV export</span>
+                    <span>📈 Excel files</span>
+                    <span>📋 CSV export</span>
                 </div>
             </div>
 
@@ -912,13 +894,13 @@
             <div class="tool-card" data-keywords="csv xlsx excel convert spreadsheet" onclick="window.location.href='csv-to-xlsx.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-converter">📋</div>
-                    <div class="tool-category" data-i18n="category_office">Office</div>
+                    <div class="tool-category">Office</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_csv_to_xlsx_title">CSV to XLSX</h3>
-                <p class="tool-description" data-i18n="tool_csv_to_xlsx_desc">Convert CSV data to Excel spreadsheet format</p>
+                <h3 class="tool-title">CSV to XLSX</h3>
+                <p class="tool-description">Convert CSV data to Excel spreadsheet format</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_csv_import">📋 CSV import</span>
-                    <span data-i18n="tool_excel_format">📊 Excel format</span>
+                    <span>📋 CSV import</span>
+                    <span>📊 Excel format</span>
                 </div>
             </div>
 
@@ -926,13 +908,13 @@
             <div class="tool-card" data-keywords="url encode decode web link" onclick="openUrlTool()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-web">🌐</div>
-                    <div class="tool-category" data-i18n="category_web">Web</div>
+                    <div class="tool-category">Web</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_url_encoder_decoder_title">URL Encoder/Decoder</h3>
-                <p class="tool-description" data-i18n="tool_url_encoder_decoder_desc">Encode and decode URLs for web applications</p>
+                <h3 class="tool-title">URL Encoder/Decoder</h3>
+                <p class="tool-description">Encode and decode URLs for web applications</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_auto_detect">🔐 Auto detect</span>
-                    <span data-i18n="tool_web_safe">🌐 Web safe</span>
+                    <span>🔐 Auto detect</span>
+                    <span>🌐 Web safe</span>
                 </div>
             </div>
 
@@ -940,13 +922,13 @@
             <div class="tool-card" data-keywords="count words characters lines text analysis" onclick="openWordCounter()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-editor">📊</div>
-                    <div class="tool-category" data-i18n="category_text_tools">Text Tools</div>
+                    <div class="tool-category">Text Tools</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_word_counter_title">Word Counter</h3>
-                <p class="tool-description" data-i18n="tool_word_counter_desc">Count words, characters, lines and analyze text statistics</p>
+                <h3 class="tool-title">Word Counter</h3>
+                <p class="tool-description">Count words, characters, lines and analyze text statistics</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_real_time">📊 Real-time</span>
-                    <span data-i18n="tool_5_metrics">📈 5 metrics</span>
+                    <span>📊 Real-time</span>
+                    <span>📈 5 metrics</span>
                 </div>
             </div>
 
@@ -954,13 +936,13 @@
             <div class="tool-card" data-keywords="base64 encode decode text convert" onclick="openBase64Tool()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">🔐</div>
-                    <div class="tool-category" data-i18n="category_encoding">Encoding</div>
+                    <div class="tool-category">Encoding</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_base64_encoder_decoder_title">Base64 Encoder/Decoder</h3>
-                <p class="tool-description" data-i18n="tool_base64_encoder_decoder_desc">Encode and decode text to/from Base64 format</p>
+                <h3 class="tool-title">Base64 Encoder/Decoder</h3>
+                <p class="tool-description">Encode and decode text to/from Base64 format</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_bi_directional">🔄 Bi-directional</span>
-                    <span data-i18n="tool_safe_encoding">🛡️ Safe encoding</span>
+                    <span>🔄 Bi-directional</span>
+                    <span>🛡️ Safe encoding</span>
                 </div>
             </div>
 
@@ -968,13 +950,13 @@
             <div class="tool-card" data-keywords="qr code generate barcode scanner" onclick="openQRGenerator()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-ocr">📱</div>
-                    <div class="tool-category" data-i18n="category_utilities">Utilities</div>
+                    <div class="tool-category">Utilities</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_qr_code_generator_title">QR Code Generator</h3>
-                <p class="tool-description" data-i18n="tool_qr_code_generator_desc">Generate QR codes for text, URLs, and sharing</p>
+                <h3 class="tool-title">QR Code Generator</h3>
+                <p class="tool-description">Generate QR codes for text, URLs, and sharing</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_256_pixels">📱 256x256px</span>
-                    <span data-i18n="tool_download_png">💾 Download PNG</span>
+                    <span>📱 256x256px</span>
+                    <span>💾 Download PNG</span>
                 </div>
             </div>
 
@@ -982,13 +964,13 @@
             <div class="tool-card" data-keywords="hash md5 sha1 sha256 checksum" onclick="openHashTool()">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-splitter">🔒</div>
-                    <div class="tool-category" data-i18n="category_security">Security</div>
+                    <div class="tool-category">Security</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_hash_generator_title">Hash Generator</h3>
-                <p class="tool-description" data-i18n="tool_hash_generator_desc">Generate MD5, SHA1, SHA256 hashes for text verification</p>
+                <h3 class="tool-title">Hash Generator</h3>
+                <p class="tool-description">Generate MD5, SHA1, SHA256 hashes for text verification</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_3_algorithms">🔒 3 algorithms</span>
-                    <span data-i18n="tool_copy_ready">📋 Copy ready</span>
+                    <span>🔒 3 algorithms</span>
+                    <span>📋 Copy ready</span>
                 </div>
             </div>
 
@@ -996,33 +978,45 @@
             <div class="tool-card" data-keywords="pdf docx merge split extract convert" onclick="window.location.href='document-processor.html'">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-merger">📄</div>
-                    <div class="tool-category" data-i18n="category_advanced">Advanced</div>
+                    <div class="tool-category">Advanced</div>
                 </div>
-                <h3 class="tool-title" data-i18n="tool_document_processor_title">Document Processor</h3>
-                <p class="tool-description" data-i18n="tool_document_processor_desc">Advanced PDF and document processing - merge, split, extract text</p>
+                <h3 class="tool-title">Document Processor</h3>
+                <p class="tool-description">Advanced PDF and document processing - merge, split, extract text</p>
                 <div class="tool-stats">
-                    <span data-i18n="tool_pdf_support">📄 PDF support</span>
-                    <span data-i18n="tool_multi_tool">⚙️ Multi-tool</span>
+                    <span>📄 PDF support</span>
+                    <span>⚙️ Multi-tool</span>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Simplified Footer -->
+    <footer style="background: #f8f9fa; padding: 20px 0; margin-top: 40px; border-top: 1px solid #e9ecef;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" style="fill: #3367d6;">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <span style="font-size: 18px; font-weight: 600; color: #3367d6;">DropShare</span>
+            </div>
+            <p style="margin: 0; color: #6b7280; font-size: 14px;">© 2024 DropShare. Making file sharing easier ❤️</p>
+        </div>
+    </footer>
 
     <!-- 设备选择弹窗 -->
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
+                <h3 class="device-modal-title">选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    <span data-i18n="btn_send_to_devices">传送到选中设备</span>
+                    <span>Send to Devices</span>
                 </button>
             </div>
         </div>
@@ -1030,10 +1024,7 @@
 
     <script>
         // 国际化辅助函数
-        function getI18nText(key) {
-            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.translate === 'function') {
-                return window.DROPSHARE_I18N.translate(key);
-            }
+
             return null;
         }
 
@@ -1042,44 +1033,44 @@
             const shapesContainer = document.querySelector('.bg-shapes');
             const shapes = ['triangle', 'circle', 'square', 'diamond'];
             const colors = ['#ffa726', '#e91e63', '#42a5f5', '#66bb6a', '#ab47bc', '#ff7043'];
-            
+
             for (let i = 0; i < 20; i++) {
                 const shape = document.createElement('div');
                 const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
                 shape.className = `shape ${shapeType}`;
-                
+
                 // 随机位置
                 shape.style.left = Math.random() * 100 + '%';
                 shape.style.top = Math.random() * 100 + '%';
-                
+
                 // 随机颜色（对于非CSS定义的形状）
                 if (shapeType === 'square' || shapeType === 'diamond') {
                     const color = colors[Math.floor(Math.random() * colors.length)];
                     shape.style.background = color;
                 }
-                
+
                 shapesContainer.appendChild(shape);
             }
         }
-        
+
         // 库加载管理器
         const LibraryLoader = {
             mammoth: null,
             sheetjs: null,
-            
+
             async loadMammoth() {
                 if (this.mammoth) return this.mammoth;
-                
+
                 try {
                     const script = document.createElement('script');
                     script.src = 'https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js';
-                    
+
                     await new Promise((resolve, reject) => {
                         script.onload = resolve;
                         script.onerror = reject;
                         document.head.appendChild(script);
                     });
-                    
+
                     this.mammoth = window.mammoth;
                     return this.mammoth;
                 } catch (error) {
@@ -1087,20 +1078,20 @@
                     throw new Error('无法加载DOCX转换库，请检查网络连接');
                 }
             },
-            
+
             async loadSheetJS() {
                 if (this.sheetjs) return this.sheetjs;
-                
+
                 try {
                     const script = document.createElement('script');
                     script.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
-                    
+
                     await new Promise((resolve, reject) => {
                         script.onload = resolve;
                         script.onerror = reject;
                         document.head.appendChild(script);
                     });
-                    
+
                     this.sheetjs = window.XLSX;
                     return this.sheetjs;
                 } catch (error) {
@@ -1110,19 +1101,18 @@
             }
         };
 
-
         // 转换工具通用界面
         function showConverterInterface(title, acceptFiles, conversionFunction) {
-            const selectFileText = getI18nText('btn_select_file') || '📁 选择文件';
-            const convertText = getI18nText('btn_convert') || '🔄 转换';
-            const clearText = getI18nText('btn_clear') || '🧹 清空';
-            const downloadText = getI18nText('btn_download') || '💾 下载';
-            
+            const selectFileText = '📁 选择文件';
+            const convertText = '🔄 转换';
+            const clearText = '🧹 清空';
+            const downloadText = '💾 下载';
+
             const content = `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="converterInput" data-i18n="label_input_content">输入内容：</label>
-                        <textarea id="converterInput" rows="8" data-i18n="placeholder_enter_content" placeholder="请在此处输入或粘贴您的内容..."></textarea>
+                        <label for="converterInput">输入内容：</label>
+                        <textarea id="converterInput" rows="8" placeholder="请在此处输入或粘贴您的内容..."></textarea>
                         ${acceptFiles ? `<div style="margin-top: 10px;"><input type="file" id="fileInput" accept="${acceptFiles}" style="display: none;"><button onclick="document.getElementById('fileInput').click()" class="action-btn">${selectFileText}</button></div>` : ''}
                     </div>
                     <div class="button-section">
@@ -1131,83 +1121,83 @@
                         <button onclick="downloadResult()" class="action-btn">${downloadText}</button>
                     </div>
                     <div class="output-section">
-                        <label for="converterOutput" data-i18n="label_conversion_result">转换结果：</label>
+                        <label for="converterOutput">转换结果：</label>
                         <textarea id="converterOutput" rows="8" readonly></textarea>
                     </div>
                 </div>
             `;
-            
+
             window.currentConversionFunction = conversionFunction;
             showToolInterface(title, content);
-            
+
             if (acceptFiles) {
                 const fileInput = document.getElementById('fileInput');
                 fileInput.addEventListener('change', handleFileSelection);
             }
         }
-        
+
         function handleFileSelection(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             const fileExt = file.name.split('.').pop().toLowerCase();
-            
+
             reader.onload = function(e) {
                 if (['docx', 'xlsx'].includes(fileExt)) {
                     window.currentFileContent = e.target.result;
-                    const fileSelectedText = getI18nText('text_file_selected') || '已选择文件';
-                    const fileSizeText = getI18nText('text_file_size') || '文件大小';
-                    const clickConvertText = getI18nText('text_click_convert_to_process') || '请点击转换按钮处理文件。';
+                    const fileSelectedText = '已选择文件';
+                    const fileSizeText = '文件大小';
+                    const clickConvertText = '请点击转换按钮处理文件。';
                     document.getElementById('converterInput').value = `${fileSelectedText}: ${file.name}\n${fileSizeText}: ${formatFileSize(file.size)}\n${clickConvertText}`;
                 } else {
                     document.getElementById('converterInput').value = e.target.result;
                 }
             };
-            
+
             if (['docx', 'xlsx'].includes(fileExt)) {
                 reader.readAsArrayBuffer(file);
             } else {
                 reader.readAsText(file);
             }
         }
-        
+
         async function performConversion() {
             const input = document.getElementById('converterInput').value;
             const outputElement = document.getElementById('converterOutput');
-            
+
             if (!input.trim() && !window.currentFileContent) {
-                const alertText = getI18nText('alert_enter_content') || '请输入内容或选择文件！';
+                const alertText = '请输入内容或选择文件！';
                 alert(alertText);
                 return;
             }
-            
+
             try {
                 const actualInput = window.currentFileContent || input;
                 const result = await window.currentConversionFunction(actualInput);
                 outputElement.value = result;
                 window.lastConversionResult = result;
             } catch (error) {
-                const failedText = getI18nText('alert_conversion_failed') || '转换失败：';
+                const failedText = '转换失败：';
                 alert(failedText + error.message);
                 console.error('转换错误:', error);
             }
         }
-        
+
         function clearConverter() {
             document.getElementById('converterInput').value = '';
             document.getElementById('converterOutput').value = '';
             window.currentFileContent = null;
             window.lastConversionResult = null;
         }
-        
+
         function downloadResult() {
             if (!window.lastConversionResult) {
-                const noResultText = getI18nText('alert_no_result') || '没有转换结果可下载！';
+                const noResultText = '没有转换结果可下载！';
                 alert(noResultText);
                 return;
             }
-            
+
             // 处理Excel文件的特殊下载
             if (window.generatedExcelFile) {
                 const blob = new Blob([window.generatedExcelFile], {
@@ -1221,15 +1211,15 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                
+
                 delete window.generatedExcelFile;
                 return;
             }
-            
+
             // 普通文本文件下载
             let fileExtension = 'txt';
             let mimeType = 'text/plain';
-            
+
             // 根据转换类型决定文件格式
             const title = document.querySelector('.modal-header h2')?.textContent || '';
             if (title.includes('HTML')) {
@@ -1251,7 +1241,7 @@
                 fileExtension = 'xml';
                 mimeType = 'application/xml';
             }
-            
+
             const blob = new Blob([window.lastConversionResult], { type: mimeType });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1262,7 +1252,7 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-        
+
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 B';
             const k = 1024;
@@ -1270,7 +1260,7 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
-        
+
         // 转换函数实现
         function convertTxtToHtml(txt) {
             return txt
@@ -1282,30 +1272,30 @@
                 .replace(/^/, '<p>')
                 .replace(/$/, '</p>');
         }
-        
+
         function convertHtmlToTxt(html) {
             const div = document.createElement('div');
             div.innerHTML = html;
             return div.textContent || div.innerText || '';
         }
-        
+
         function convertJsonToCsv(json) {
             const data = JSON.parse(json);
-            
+
             if (!Array.isArray(data)) {
-                const jsonArrayFormatError = getI18nText('error_json_must_be_array') || 'JSON必须是数组格式';
+                const jsonArrayFormatError = 'JSON必须是数组格式';
                 throw new Error(jsonArrayFormatError);
             }
-            
+
             if (data.length === 0) {
                 return '';
             }
-            
+
             const keys = Object.keys(data[0]);
             const csvRows = [];
-            
+
             csvRows.push(keys.join(','));
-            
+
             data.forEach(row => {
                 const values = keys.map(key => {
                     const value = row[key] || '';
@@ -1313,29 +1303,29 @@
                 });
                 csvRows.push(values.join(','));
             });
-            
+
             return csvRows.join('\n');
         }
-        
+
         function convertCsvToJson(csv) {
             const lines = csv.trim().split('\n');
             const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
             const result = [];
-            
+
             for (let i = 1; i < lines.length; i++) {
                 const obj = {};
                 const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
-                
+
                 headers.forEach((header, index) => {
                     obj[header] = values[index] || '';
                 });
-                
+
                 result.push(obj);
             }
-            
+
             return JSON.stringify(result, null, 2);
         }
-        
+
         function convertMarkdownToHtml(md) {
             return md
                 .replace(/^# (.*$)/gm, '<h1>$1</h1>')
@@ -1348,7 +1338,7 @@
                 .replace(/^(?!<[h|p])(.+)/gm, '<p>$1</p>')
                 .replace(/\n/g, '<br>');
         }
-        
+
         function convertHtmlToMarkdown(html) {
             return html
                 .replace(/<h1>(.*?)<\/h1>/g, '# $1\n')
@@ -1361,10 +1351,10 @@
                 .replace(/<br\s*\/?>/g, '\n')
                 .replace(/<[^>]*>/g, '');
         }
-        
+
         function convertTxtToMarkdown(txt) {
             let markdown = txt;
-            
+
             markdown = markdown
                 .replace(/^([A-Z][^\n]*?)\s*$/gm, '# $1')
                 .replace(/\n\n/g, '\n\n')
@@ -1373,14 +1363,14 @@
                 .replace(/\b([A-Z]{2,})\b/g, '**$1**')
                 .replace(/^    (.+)$/gm, '    $1')
                 .replace(/(https?:\/\/[^\s]+)/g, '[$1]($1)');
-            
-            const markdownFormatTitle = getI18nText('text_markdown_format_conversion') || 'Markdown 格式转换';
+
+            const markdownFormatTitle = 'Markdown 格式转换';
             return markdownFormatTitle + '\n' + '='.repeat(20) + '\n\n' + markdown;
         }
-        
+
         function convertMarkdownToTxt(md) {
             let text = md;
-            
+
             text = text
                 .replace(/^#{1,6}\s+/gm, '')
                 .replace(/\*\*(.*?)\*\*/g, '$1')
@@ -1392,16 +1382,16 @@
                 .replace(/^>\s+/gm, '')
                 .replace(/^[-*_]{3,}$/gm, '')
                 .replace(/\n\s*\n\s*\n/g, '\n\n');
-            
-            const plainTextFormatTitle = getI18nText('text_plain_text_format') || '纯文本格式';
+
+            const plainTextFormatTitle = '纯文本格式';
             return plainTextFormatTitle + '\n' + '='.repeat(15) + '\n\n' + text;
         }
-        
+
         function convertYamlToJson(yaml) {
             try {
                 const lines = yaml.split('\n');
                 const result = {};
-                
+
                 lines.forEach(line => {
                     const trimmed = line.trim();
                     if (trimmed && !trimmed.startsWith('#')) {
@@ -1413,22 +1403,22 @@
                         }
                     }
                 });
-                
+
                 return JSON.stringify(result, null, 2);
             } catch (error) {
-                const yamlParseError = getI18nText('error_yaml_parse_failed') || 'YAML格式解析失败';
+                const yamlParseError = 'YAML格式解析失败';
                 throw new Error(yamlParseError);
             }
         }
-        
+
         function convertJsonToYaml(json) {
             try {
                 const data = JSON.parse(json);
                 let yaml = '';
-                
+
                 function convertValue(value, indent = 0) {
                     const spaces = ' '.repeat(indent);
-                    
+
                     if (value === null) {
                         return 'null';
                     } else if (typeof value === 'boolean') {
@@ -1457,7 +1447,7 @@
                     }
                     return String(value);
                 }
-                
+
                 if (typeof data === 'object' && !Array.isArray(data)) {
                     Object.entries(data).forEach(([key, value]) => {
                         yaml += `${key}: ${convertValue(value)}\n`;
@@ -1465,22 +1455,22 @@
                 } else {
                     yaml = convertValue(data);
                 }
-                
-                const yamlFormatTitle = getI18nText('text_yaml_format') || 'YAML 格式';
+
+                const yamlFormatTitle = 'YAML 格式';
                 return yamlFormatTitle + '\n' + '='.repeat(12) + '\n\n' + yaml;
-                
+
             } catch (error) {
-                const jsonFormatError = getI18nText('error_json_format') || 'JSON格式错误：';
+                const jsonFormatError = 'JSON格式错误：';
                 throw new Error(jsonFormatError + error.message);
             }
         }
-        
+
         function formatXml(xml) {
             const formatted = xml.replace(/(>)(<)(\/*)/g, '$1\n$2$3');
             const pad = 0;
             const indent = '  ';
             let result = '';
-            
+
             formatted.split('\n').forEach(line => {
                 let indentLevel = 0;
                 if (line.match(/.+<\/\w[^>]*>$/)) {
@@ -1492,53 +1482,52 @@
                 } else {
                     indentLevel = 0;
                 }
-                
+
                 result += indent.repeat(Math.max(0, pad + indentLevel)) + line + '\n';
             });
-            
+
             return result.trim();
         }
-        
+
         function processUrl(input) {
             if (input.includes('%') && input.match(/%[0-9A-Fa-f]{2}/)) {
                 try {
                     const decoded = decodeURIComponent(input);
-                    const urlDecodeResultTitle = getI18nText('text_url_decode_result') || 'URL 解码结果';
+                    const urlDecodeResultTitle = 'URL 解码结果';
                     return urlDecodeResultTitle + '\n' + '='.repeat(15) + '\n\n' + decoded;
                 } catch (error) {
                     const encoded = encodeURIComponent(input);
-                    const urlEncodeResultTitle = getI18nText('text_url_encode_result') || 'URL 编码结果';
+                    const urlEncodeResultTitle = 'URL 编码结果';
                     return urlEncodeResultTitle + '\n' + '='.repeat(15) + '\n\n' + encoded;
                 }
             } else {
                 const encoded = encodeURIComponent(input);
-                const urlEncodeResultTitle2 = getI18nText('text_url_encode_result') || 'URL 编码结果';
+                const urlEncodeResultTitle2 = 'URL 编码结果';
                 return urlEncodeResultTitle2 + '\n' + '='.repeat(15) + '\n\n' + encoded;
             }
         }
-        
-        
+
         // 合并转换器功能
         function openTextConverter() {
-            const convertText = getI18nText('btn_convert') || '🔄 转换';
-            const clearText = getI18nText('btn_clear') || '🧹 清空';
-            const downloadText = getI18nText('btn_download') || '💾 下载';
-            const shareText = getI18nText('btn_share') || '📤 传送';
-            
+            const convertText = '🔄 转换';
+            const clearText = '🧹 清空';
+            const downloadText = '💾 下载';
+            const shareText = '📤 传送';
+
             const content = `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label data-i18n="label_select_conversion_type">选择转换类型：</label>
+                        <label>选择转换类型：</label>
                         <select id="textConvertType" style="margin-bottom: 10px; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; width: 100%;">
-                            <option value="txt-to-html" data-i18n="option_txt_to_html">TXT → HTML</option>
-                            <option value="html-to-txt" data-i18n="option_html_to_txt">HTML → TXT</option>
-                            <option value="txt-to-markdown" data-i18n="option_txt_to_markdown">TXT → Markdown</option>
-                            <option value="markdown-to-txt" data-i18n="option_markdown_to_txt">Markdown → TXT</option>
-                            <option value="markdown-to-html" data-i18n="option_markdown_to_html">Markdown → HTML</option>
-                            <option value="html-to-markdown" data-i18n="option_html_to_markdown">HTML → Markdown</option>
+                            <option value="txt-to-html">TXT → HTML</option>
+                            <option value="html-to-txt">HTML → TXT</option>
+                            <option value="txt-to-markdown">TXT → Markdown</option>
+                            <option value="markdown-to-txt">Markdown → TXT</option>
+                            <option value="markdown-to-html">Markdown → HTML</option>
+                            <option value="html-to-markdown">HTML → Markdown</option>
                         </select>
-                        <label for="textInput" data-i18n="label_input_content">输入内容：</label>
-                        <textarea id="textInput" rows="8" data-i18n="placeholder_enter_content" placeholder="请在此处输入或粘贴您的内容..."></textarea>
+                        <label for="textInput">输入内容：</label>
+                        <textarea id="textInput" rows="8" placeholder="请在此处输入或粘贴您的内容..."></textarea>
                     </div>
                     <div class="button-section">
                         <button onclick="performTextConversion()" class="action-btn">${convertText}</button>
@@ -1547,34 +1536,34 @@
                         <button onclick="shareTextResult()" class="action-btn">${shareText}</button>
                     </div>
                     <div class="output-section">
-                        <label for="textOutput" data-i18n="label_conversion_result">转换结果：</label>
+                        <label for="textOutput">转换结果：</label>
                         <textarea id="textOutput" rows="8" readonly></textarea>
                     </div>
                 </div>
             `;
-            const textConverterTitle = getI18nText('tool_text_converter_title') || '文本转换器';
+            const textConverterTitle = '文本转换器';
             showToolInterface(textConverterTitle, content);
         }
-        
+
         function openDataConverter() {
-            const convertText = getI18nText('btn_convert') || '🔄 转换';
-            const clearText = getI18nText('btn_clear') || '🧹 清空';
-            const downloadText = getI18nText('btn_download') || '💾 下载';
-            const shareText = getI18nText('btn_share') || '📤 传送';
-            
+            const convertText = '🔄 转换';
+            const clearText = '🧹 清空';
+            const downloadText = '💾 下载';
+            const shareText = '📤 传送';
+
             const content = `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label data-i18n="label_select_conversion_type">选择转换类型：</label>
+                        <label>选择转换类型：</label>
                         <select id="dataConvertType" style="margin-bottom: 10px; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; width: 100%;">
-                            <option value="json-to-csv" data-i18n="option_json_to_csv">JSON → CSV</option>
-                            <option value="csv-to-json" data-i18n="option_csv_to_json">CSV → JSON</option>
-                            <option value="json-to-yaml" data-i18n="option_json_to_yaml">JSON → YAML</option>
-                            <option value="yaml-to-json" data-i18n="option_yaml_to_json">YAML → JSON</option>
-                            <option value="xml-format" data-i18n="option_xml_format">XML 格式化</option>
+                            <option value="json-to-csv">JSON → CSV</option>
+                            <option value="csv-to-json">CSV → JSON</option>
+                            <option value="json-to-yaml">JSON → YAML</option>
+                            <option value="yaml-to-json">YAML → JSON</option>
+                            <option value="xml-format">XML 格式化</option>
                         </select>
-                        <label for="dataInput" data-i18n="label_input_data">输入数据：</label>
-                        <textarea id="dataInput" rows="8" data-i18n="placeholder_enter_data" placeholder="请在此处输入或粘贴您的数据..."></textarea>
+                        <label for="dataInput">输入数据：</label>
+                        <textarea id="dataInput" rows="8" placeholder="请在此处输入或粘贴您的数据..."></textarea>
                     </div>
                     <div class="button-section">
                         <button onclick="performDataConversion()" class="action-btn">${convertText}</button>
@@ -1583,32 +1572,31 @@
                         <button onclick="shareDataResult()" class="action-btn">${shareText}</button>
                     </div>
                     <div class="output-section">
-                        <label for="dataOutput" data-i18n="label_conversion_result">转换结果：</label>
+                        <label for="dataOutput">转换结果：</label>
                         <textarea id="dataOutput" rows="8" readonly></textarea>
                     </div>
                 </div>
             `;
-            const dataConverterTitle = getI18nText('tool_data_converter_title') || '数据转换器';
+            const dataConverterTitle = '数据转换器';
             showToolInterface(dataConverterTitle, content);
         }
-        
-        
+
         function openUrlTool() {
             showConverterInterface('URL Encoder/Decoder', null, processUrl);
         }
-        
+
         // 转换函数实现
         async function performTextConversion() {
             const type = document.getElementById('textConvertType').value;
             const input = document.getElementById('textInput').value;
             const output = document.getElementById('textOutput');
-            
+
             if (!input.trim()) {
-                const enterContentText = getI18nText('alert_enter_content_simple') || '请输入内容！';
+                const enterContentText = '请输入内容！';
                 alert(enterContentText);
                 return;
             }
-            
+
             try {
                 let result;
                 switch (type) {
@@ -1622,22 +1610,22 @@
                 output.value = result;
                 window.lastTextResult = result;
             } catch (error) {
-                const failedText = getI18nText('alert_conversion_failed') || '转换失败：';
+                const failedText = '转换失败：';
                 alert(failedText + error.message);
             }
         }
-        
+
         async function performDataConversion() {
             const type = document.getElementById('dataConvertType').value;
             const input = document.getElementById('dataInput').value;
             const output = document.getElementById('dataOutput');
-            
+
             if (!input.trim()) {
-                const enterDataText = getI18nText('alert_enter_data') || '请输入数据！';
+                const enterDataText = '请输入数据！';
                 alert(enterDataText);
                 return;
             }
-            
+
             try {
                 let result;
                 switch (type) {
@@ -1650,36 +1638,35 @@
                 output.value = result;
                 window.lastDataResult = result;
             } catch (error) {
-                const failedText = getI18nText('alert_conversion_failed') || '转换失败：';
+                const failedText = '转换失败：';
                 alert(failedText + error.message);
             }
         }
-        
+
         function clearTextConverter() {
             document.getElementById('textInput').value = '';
             document.getElementById('textOutput').value = '';
             window.lastTextResult = null;
         }
-        
+
         function clearDataConverter() {
             document.getElementById('dataInput').value = '';
             document.getElementById('dataOutput').value = '';
             window.lastDataResult = null;
         }
-        
-        
+
         function downloadTextResult() {
             const result = window.lastTextResult;
             if (!result) {
-                const noResultText = getI18nText('alert_no_result') || '没有转换结果可下载！';
+                const noResultText = '没有转换结果可下载！';
                 alert(noResultText);
                 return;
             }
-            
+
             const type = document.getElementById('textConvertType').value;
             let fileExt = 'txt';
             let mimeType = 'text/plain';
-            
+
             if (type.includes('html')) {
                 fileExt = 'html';
                 mimeType = 'text/html';
@@ -1687,22 +1674,22 @@
                 fileExt = 'md';
                 mimeType = 'text/markdown';
             }
-            
+
             downloadFile(result, `text_converted_${Date.now()}.${fileExt}`, mimeType);
         }
-        
+
         function downloadDataResult() {
             const result = window.lastDataResult;
             if (!result) {
-                const noResultText = getI18nText('alert_no_result') || '没有转换结果可下载！';
+                const noResultText = '没有转换结果可下载！';
                 alert(noResultText);
                 return;
             }
-            
+
             const type = document.getElementById('dataConvertType').value;
             let fileExt = 'txt';
             let mimeType = 'text/plain';
-            
+
             if (type.includes('csv')) {
                 fileExt = 'csv';
                 mimeType = 'text/csv';
@@ -1716,10 +1703,10 @@
                 fileExt = 'xml';
                 mimeType = 'application/xml';
             }
-            
+
             downloadFile(result, `data_converted_${Date.now()}.${fileExt}`, mimeType);
         }
-        
+
         function downloadFile(content, filename, mimeType) {
             const blob = new Blob([content], { type: mimeType });
             const url = URL.createObjectURL(blob);
@@ -1731,66 +1718,66 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-        
+
         // 工具功能实现
         function openWordCounter() {
-            const wordCounterTitle = getI18nText('tool_word_counter_title') || '字数统计';
+            const wordCounterTitle = '字数统计';
             showToolInterface(wordCounterTitle, `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="textInput" data-i18n="label_input_text">输入文本：</label>
-                        <textarea id="textInput" rows="10" data-i18n="placeholder_enter_text" placeholder="请在此处输入或粘贴您的文本..."></textarea>
+                        <label for="textInput">输入文本：</label>
+                        <textarea id="textInput" rows="10" placeholder="请在此处输入或粘贴您的文本..."></textarea>
                     </div>
                     <div class="stats-section">
                         <div class="stat-item">
-                            <span class="stat-label" data-i18n="label_character_count">字数：</span>
+                            <span class="stat-label">字数：</span>
                             <span class="stat-value" id="charCount">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label" data-i18n="label_character_count_no_spaces">字数（不含空格）：</span>
+                            <span class="stat-label">字数（不含空格）：</span>
                             <span class="stat-value" id="charCountNoSpaces">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label" data-i18n="label_word_count">单词数：</span>
+                            <span class="stat-label">单词数：</span>
                             <span class="stat-value" id="wordCount">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label" data-i18n="label_line_count">行数：</span>
+                            <span class="stat-label">行数：</span>
                             <span class="stat-value" id="lineCount">0</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label" data-i18n="label_paragraph_count">段落数：</span>
+                            <span class="stat-label">段落数：</span>
                             <span class="stat-value" id="paragraphCount">0</span>
                         </div>
                     </div>
                 </div>
             `);
-            
+
             const textInput = document.getElementById('textInput');
             textInput.addEventListener('input', updateWordCount);
         }
-        
+
         function updateWordCount() {
             const text = document.getElementById('textInput').value;
-            
+
             document.getElementById('charCount').textContent = text.length;
             document.getElementById('charCountNoSpaces').textContent = text.replace(/\s/g, '').length;
             document.getElementById('wordCount').textContent = text.trim() ? text.trim().split(/\s+/).length : 0;
             document.getElementById('lineCount').textContent = text.split('\n').length;
             document.getElementById('paragraphCount').textContent = text.split(/\n\s*\n/).filter(p => p.trim()).length;
         }
-        
+
         function openBase64Tool() {
-            const encodeText = getI18nText('btn_encode') || '🔐 编码';
-            const decodeText = getI18nText('btn_decode') || '🔓 解码';
-            const clearText = getI18nText('btn_clear') || '🌉 清空';
-            
-            const base64ToolTitle = getI18nText('tool_base64_encoder_decoder_title') || 'Base64编码/解码';
+            const encodeText = '🔐 编码';
+            const decodeText = '🔓 解码';
+            const clearText = '🌉 清空';
+
+            const base64ToolTitle = 'Base64编码/解码';
             showToolInterface(base64ToolTitle, `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="base64Input" data-i18n="label_input_text">输入文本：</label>
-                        <textarea id="base64Input" rows="5" data-i18n="placeholder_enter_base64_text" placeholder="请输入要编码或解码的文本..."></textarea>
+                        <label for="base64Input">输入文本：</label>
+                        <textarea id="base64Input" rows="5" placeholder="请输入要编码或解码的文本..."></textarea>
                     </div>
                     <div class="button-section">
                         <button onclick="encodeBase64()" class="action-btn">${encodeText}</button>
@@ -1798,50 +1785,50 @@
                         <button onclick="clearBase64()" class="action-btn">${clearText}</button>
                     </div>
                     <div class="output-section">
-                        <label for="base64Output" data-i18n="label_output_result">输出结果：</label>
+                        <label for="base64Output">输出结果：</label>
                         <textarea id="base64Output" rows="5" readonly></textarea>
                     </div>
                 </div>
             `);
         }
-        
+
         function encodeBase64() {
             const input = document.getElementById('base64Input').value;
             try {
                 const encoded = btoa(unescape(encodeURIComponent(input)));
                 document.getElementById('base64Output').value = encoded;
             } catch (error) {
-                const encodingFailedText = getI18nText('alert_encoding_failed') || '编码失败：';
+                const encodingFailedText = '编码失败：';
                 alert(encodingFailedText + error.message);
             }
         }
-        
+
         function decodeBase64() {
             const input = document.getElementById('base64Input').value;
             try {
                 const decoded = decodeURIComponent(escape(atob(input)));
                 document.getElementById('base64Output').value = decoded;
             } catch (error) {
-                const decodingFailedText = getI18nText('alert_decoding_failed') || '解码失败：请检查输入是否为有效的Base64编码';
+                const decodingFailedText = '解码失败：请检查输入是否为有效的Base64编码';
                 alert(decodingFailedText);
             }
         }
-        
+
         function clearBase64() {
             document.getElementById('base64Input').value = '';
             document.getElementById('base64Output').value = '';
         }
-        
+
         function openQRGenerator() {
-            const generateQRText = getI18nText('btn_generate_qr') || '📱 生成QR码';
-            const downloadImageText = getI18nText('btn_download_image') || '💾 下载图片';
-            
-            const qrGeneratorTitle = getI18nText('tool_qr_code_generator_title') || 'QR码生成器';
+            const generateQRText = '📱 生成QR码';
+            const downloadImageText = '💾 下载图片';
+
+            const qrGeneratorTitle = 'QR码生成器';
             showToolInterface(qrGeneratorTitle, `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="qrInput" data-i18n="label_input_text_or_url">输入文本或URL：</label>
-                        <textarea id="qrInput" rows="4" data-i18n="placeholder_enter_qr_text" placeholder="请输入要生成QR码的文本或URL..."></textarea>
+                        <label for="qrInput">输入文本或URL：</label>
+                        <textarea id="qrInput" rows="4" placeholder="请输入要生成QR码的文本或URL..."></textarea>
                     </div>
                     <div class="button-section">
                         <button onclick="generateQR()" class="action-btn">${generateQRText}</button>
@@ -1851,33 +1838,33 @@
                         <canvas id="qrCanvas" style="display: none;"></canvas>
                         <div id="qrPlaceholder" class="qr-placeholder">
                             <div class="qr-icon">📱</div>
-                            <p data-i18n="text_enter_text_then_generate_qr">输入文本后点击生成QR码</p>
+                            <p>输入文本后点击生成QR码</p>
                         </div>
                     </div>
                 </div>
             `);
         }
-        
+
         function generateQR() {
             const text = document.getElementById('qrInput').value.trim();
             if (!text) {
-                const enterQRContentText = getI18nText('alert_enter_qr_content') || '请输入要生成QR码的内容';
+                const enterQRContentText = '请输入要生成QR码的内容';
                 alert(enterQRContentText);
                 return;
             }
-            
+
             // 简单的QR码生成（使用第三方API）
             const canvas = document.getElementById('qrCanvas');
             const placeholder = document.getElementById('qrPlaceholder');
             const ctx = canvas.getContext('2d');
-            
+
             // 设置canvas尺寸
             canvas.width = 256;
             canvas.height = 256;
-            
+
             // 使用公共QR码API生成
             const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(text)}`;
-            
+
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.onload = function() {
@@ -1886,36 +1873,36 @@
                 placeholder.style.display = 'none';
             };
             img.onerror = function() {
-                const qrGenerationFailedText = getI18nText('alert_qr_generation_failed') || 'QR码生成失败，请检查网络连接';
+                const qrGenerationFailedText = 'QR码生成失败，请检查网络连接';
                 alert(qrGenerationFailedText);
             };
             img.src = qrURL;
         }
-        
+
         function downloadQR() {
             const canvas = document.getElementById('qrCanvas');
             if (canvas.style.display === 'none') {
-                const generateQRFirstText = getI18nText('alert_generate_qr_first') || '请先生成QR码';
+                const generateQRFirstText = '请先生成QR码';
                 alert(generateQRFirstText);
                 return;
             }
-            
+
             const link = document.createElement('a');
             link.download = 'qrcode.png';
             link.href = canvas.toDataURL();
             link.click();
         }
-        
+
         function openHashTool() {
-            const generateHashesText = getI18nText('btn_generate_hashes') || '🔒 生成散列值';
-            const clearText = getI18nText('btn_clear') || '🌉 清空';
-            
-            const hashGeneratorTitle = getI18nText('tool_hash_generator_title') || '散列值生成器';
+            const generateHashesText = '🔒 生成散列值';
+            const clearText = '🌉 清空';
+
+            const hashGeneratorTitle = '散列值生成器';
             showToolInterface(hashGeneratorTitle, `
                 <div class="tool-interface">
                     <div class="input-section">
-                        <label for="hashInput" data-i18n="label_input_text">输入文本：</label>
-                        <textarea id="hashInput" rows="5" data-i18n="placeholder_enter_hash_text" placeholder="请输入要生成散列值的文本..."></textarea>
+                        <label for="hashInput">输入文本：</label>
+                        <textarea id="hashInput" rows="5" placeholder="请输入要生成散列值的文本..."></textarea>
                     </div>
                     <div class="button-section">
                         <button onclick="generateHashes()" class="action-btn">${generateHashesText}</button>
@@ -1941,53 +1928,53 @@
                 </div>
             `);
         }
-        
+
         async function generateHashes() {
             const text = document.getElementById('hashInput').value;
             if (!text) {
-                const enterHashTextText = getI18nText('alert_enter_hash_text') || '请输入要生成散列值的文本';
+                const enterHashTextText = '请输入要生成散列值的文本';
                 alert(enterHashTextText);
                 return;
             }
-            
+
             const encoder = new TextEncoder();
             const data = encoder.encode(text);
-            
+
             try {
                 // SHA-1
                 const sha1Buffer = await crypto.subtle.digest('SHA-1', data);
                 const sha1Array = Array.from(new Uint8Array(sha1Buffer));
                 const sha1Hex = sha1Array.map(b => b.toString(16).padStart(2, '0')).join('');
                 document.getElementById('sha1Result').value = sha1Hex;
-                
+
                 // SHA-256
                 const sha256Buffer = await crypto.subtle.digest('SHA-256', data);
                 const sha256Array = Array.from(new Uint8Array(sha256Buffer));
                 const sha256Hex = sha256Array.map(b => b.toString(16).padStart(2, '0')).join('');
                 document.getElementById('sha256Result').value = sha256Hex;
-                
+
                 // MD5 (简单实现)
-                const md5SupportText = getI18nText('text_md5_needs_library') || 'MD5需要额外的库支持';
+                const md5SupportText = 'MD5需要额外的库支持';
                 document.getElementById('md5Result').value = md5SupportText;
-                
+
             } catch (error) {
-                const hashGenerationFailedText = getI18nText('alert_hash_generation_failed') || '生成散列值失败：';
+                const hashGenerationFailedText = '生成散列值失败：';
                 alert(hashGenerationFailedText + error.message);
             }
         }
-        
+
         function clearHashes() {
             document.getElementById('hashInput').value = '';
             document.getElementById('md5Result').value = '';
             document.getElementById('sha1Result').value = '';
             document.getElementById('sha256Result').value = '';
         }
-        
+
         function copyToClipboard(elementId) {
             const element = document.getElementById(elementId);
             element.select();
             document.execCommand('copy');
-            
+
             // 短暂显示复制成功
             const button = element.nextElementSibling;
             const originalText = button.textContent;
@@ -1996,7 +1983,7 @@
                 button.textContent = originalText;
             }, 1000);
         }
-        
+
         function showToolInterface(title, content) {
             // 创建模态窗口
             const modal = document.createElement('div');
@@ -2012,25 +1999,25 @@
                     </div>
                 </div>
             `;
-            
+
             document.body.appendChild(modal);
             modal.style.display = 'flex';
         }
-        
+
         function closeToolModal() {
             const modal = document.querySelector('.tool-modal');
             if (modal) {
                 modal.remove();
             }
         }
-        
+
         // 点击模态窗口外部关闭
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('tool-modal')) {
                 closeToolModal();
             }
         });
-        
+
         // ESC键关闭模态窗口
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -2042,25 +2029,25 @@
         let selectedDevices = new Set();
         let currentShareContent = null;
         let currentShareFilename = null;
-        
+
         function shareTextResult() {
             shareConverterResult(window.lastTextResult, 'text', 'text_converted');
         }
-        
+
         function shareDataResult() {
             shareConverterResult(window.lastDataResult, 'data', 'data_converted');
         }
-        
+
         function shareConverterResult(result, type, filenamePrefix) {
             if (!result) {
-                const noResultToShareText = getI18nText('alert_no_result_to_share') || '没有转换结果可传送！';
+                const noResultToShareText = '没有转换结果可传送！';
                 alert(noResultToShareText);
                 return;
             }
-            
+
             let fileExt = 'txt';
             let mimeType = 'text/plain';
-            
+
             // 根据类型决定文件格式
             if (type === 'text') {
                 const textType = document.getElementById('textConvertType')?.value;
@@ -2087,33 +2074,33 @@
                     mimeType = 'application/xml';
                 }
             }
-            
+
             const filename = `${filenamePrefix}_${Date.now()}.${fileExt}`;
             shareFileResult(result, filename, mimeType);
         }
-        
+
         function shareFileResult(content, filename, mimeType) {
             currentShareContent = content;
             currentShareFilename = filename;
             showDeviceModal();
         }
-        
+
         // 显示设备选择弹窗
         function showDeviceModal() {
             const modal = document.getElementById('deviceModal');
             const deviceList = document.getElementById('deviceList');
-            
+
             selectedDevices.clear();
             updateSendButton();
-            
+
             const devices = getAvailableDevices();
-            
+
             if (devices.length === 0) {
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p data-i18n="no_devices_found">未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="no_devices_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p>No available devices found</p>
+                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -2128,21 +2115,21 @@
                     </div>
                 `).join('');
             }
-            
+
             modal.classList.add('show');
         }
-        
+
         // 关闭设备选择弹窗
         function closeDeviceModal() {
             document.getElementById('deviceModal').classList.remove('show');
             selectedDevices.clear();
         }
-        
+
         // 切换设备选择
         function toggleDevice(deviceId) {
             const checkbox = document.getElementById(`device-${deviceId}`);
             const deviceItem = checkbox.closest('.device-item');
-            
+
             if (selectedDevices.has(deviceId)) {
                 selectedDevices.delete(deviceId);
                 checkbox.checked = false;
@@ -2152,38 +2139,38 @@
                 checkbox.checked = true;
                 deviceItem.classList.add('selected');
             }
-            
+
             updateSendButton();
         }
-        
+
         // 更新发送按钮
         function updateSendButton() {
             const sendBtn = document.getElementById('sendToDevicesBtn');
             const count = selectedDevices.size;
-            
+
             if (count === 0) {
                 sendBtn.disabled = true;
-                const sendToSelectedText = getI18nText('btn_send_to_devices') || '传送到选中设备';
+                const sendToSelectedText = '传送到选中设备';
                 sendBtn.textContent = sendToSelectedText;
             } else {
                 sendBtn.disabled = false;
                 sendBtn.textContent = `传送到 ${count} 个设备`;
             }
         }
-        
+
         // 传送到选中设备
         function sendToSelectedDevices() {
             if (!currentShareContent || selectedDevices.size === 0) return;
-            
+
             let file;
             if (currentShareContent instanceof ArrayBuffer) {
-                file = new File([currentShareContent], currentShareFilename, { 
-                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+                file = new File([currentShareContent], currentShareFilename, {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 });
             } else {
                 file = new File([currentShareContent], currentShareFilename, { type: 'text/plain' });
             }
-            
+
             // 检查传输系统
             if (window.Events && typeof window.Events.fire === 'function') {
                 selectedDevices.forEach(deviceId => {
@@ -2192,8 +2179,8 @@
                         to: deviceId
                     });
                 });
-                
-                const filesSentText = getI18nText('alert_files_sent_to_devices') || '文件已开始传送到 {count} 个设备！';
+
+                const filesSentText = '文件已开始传送到 {count} 个设备！';
                 alert(filesSentText.replace('{count}', selectedDevices.size));
                 closeDeviceModal();
             } else {
@@ -2203,7 +2190,7 @@
                     alert(`文件已添加到分享列表！`);
                     closeDeviceModal();
                 } else {
-                    const confirmTransferText = getI18nText('confirm_jump_to_transfer_page') || '传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？';
+                    const confirmTransferText = '传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？';
                     if (confirm(confirmTransferText)) {
                         sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
                             name: currentShareFilename,
@@ -2216,11 +2203,11 @@
                 }
             }
         }
-        
+
         // 获取可用设备
         function getAvailableDevices() {
             const devices = [];
-            
+
             // 检查现有设备
             const peerElements = document.querySelectorAll('x-peer');
             if (peerElements.length > 0) {
@@ -2232,7 +2219,7 @@
                     });
                 });
             }
-            
+
             // 模拟设备（供测试）
             if (devices.length === 0) {
                 devices.push(
@@ -2241,10 +2228,10 @@
                     { id: 'demo3', name: 'Windows PC', type: 'Windows 桌面' }
                 );
             }
-            
+
             return devices;
         }
-        
+
         // 获取设备图标
         function getDeviceIcon(device) {
             const type = device.type.toLowerCase();
@@ -2254,11 +2241,11 @@
             if (type.includes('windows') || type.includes('pc')) return '🖥️';
             return '💻';
         }
-        
+
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             createBackgroundShapes();
-            
+
             // 弹窗背景点击关闭
             document.getElementById('deviceModal').addEventListener('click', function(e) {
                 if (e.target === this) {
@@ -2267,19 +2254,10 @@
             });
         });
     </script>
-    
+
     <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>    
+
     <!-- Mobile Navigation and Touch Optimization -->
-    <script src="scripts/mobile-navigation.js"></script>
-    <script>
-        // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
-            }
-        });
-    </script>
+
 </body>
 </html>
