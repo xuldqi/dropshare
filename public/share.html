@@ -1514,9 +1514,14 @@
                         } else {
                             this.showPeerContainer();
                         }
+                        // 更新导航活跃状态
+                        this.updateNavigationActiveState();
                     });
                     this.hashChangeListenerAdded = true;
                 }
+
+                // 初始更新导航状态
+                this.updateNavigationActiveState();
             }
 
             // 显示房间容器
@@ -3095,6 +3100,29 @@
                 };
 
                 setTimeout(attemptReconnect, 500);
+            }
+
+            // 更新导航栏活跃状态
+            updateNavigationActiveState() {
+                const transferLink = document.querySelector('a[href="/share.html"]');
+                const roomsLink = document.querySelector('a[href="/share.html#rooms"]');
+
+                if (!transferLink || !roomsLink) {
+                    console.log('Navigation links not found');
+                    return;
+                }
+
+                if (window.location.hash === '#rooms') {
+                    // 房间模式：激活Rooms链接，取消激活Transfer链接
+                    transferLink.classList.remove('active');
+                    roomsLink.classList.add('active');
+                    console.log('Navigation updated: Rooms active');
+                } else {
+                    // 传输模式：激活Transfer链接，取消激活Rooms链接
+                    transferLink.classList.add('active');
+                    roomsLink.classList.remove('active');
+                    console.log('Navigation updated: Transfer active');
+                }
             }
         }
 

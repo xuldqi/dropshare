@@ -164,6 +164,7 @@
         .page-title {
             font-size: 52px;
             font-weight: 800;
+            line-height: 1.2;
             background: linear-gradient(135deg, white, #f8f9ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -328,10 +329,14 @@
         .icon-watermark { background: linear-gradient(135deg, #ff6b6b, #ff8e8e); }
         .icon-audio-extract { background: linear-gradient(135deg, #4facfe, #00f2fe); }
         .icon-info { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .icon-legacy { background: linear-gradient(135deg, #ffd93d, #ff6b6b); }
+        .icon-web { background: linear-gradient(135deg, #84fab0, #8fd3f4); }
+        .icon-apple { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+        .icon-modern { background: linear-gradient(135deg, #a8caba, #5d4e75); }
 
         /* 响应式设计 */
         @media (max-width: 768px) {
-            .nav-container {
+            .header-container {
                 padding: 0 15px;
                 flex-direction: column;
                 gap: 12px;
@@ -592,118 +597,6 @@
         </div>
 
         <div class="tools-grid" id="toolsGrid">
-            <!-- AVI 转 MP4 -->
-            <div class="tool-card" data-keywords="avi mp4 convert legacy" onclick="window.location.href='video-converter.html?from=avi&to=mp4'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-convert">🎬</div>
-                    <div class="tool-category">Popular</div>
-                </div>
-                <h3 class="tool-title">AVI to MP4</h3>
-                <p class="tool-description">Convert legacy AVI videos to modern universal MP4 format</p>
-                <div class="tool-stats">
-                    <span>📺 <span>Classic Format</span></span>
-                    <span>⚡ <span>Fast Convert</span></span>
-                </div>
-            </div>
-
-            <!-- MOV 转 MP4 -->
-            <div class="tool-card" data-keywords="mov mp4 convert quicktime apple" onclick="window.location.href='video-converter.html?from=mov&to=mp4'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-convert">🍎</div>
-                    <div class="tool-category">Popular</div>
-                </div>
-                <h3 class="tool-title">MOV to MP4</h3>
-                <p class="tool-description">Convert Apple QuickTime format to universal MP4 format</p>
-                <div class="tool-stats">
-                    <span>🍎 <span>Apple Format</span></span>
-                    <span>🌐 <span>Universal Compatible</span></span>
-                </div>
-            </div>
-
-            <!-- WebM 转 MP4 -->
-            <div class="tool-card" data-keywords="webm mp4 convert web" onclick="window.location.href='video-converter.html?from=webm&to=mp4'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-convert">🌐</div>
-                    <div class="tool-category">Web</div>
-                </div>
-                <h3 class="tool-title">WebM to MP4</h3>
-                <p class="tool-description">Convert web-optimized WebM format to MP4 format</p>
-                <div class="tool-stats">
-                    <span>🌐 <span>Web Format</span></span>
-                    <span>📱 <span>Mobile Friendly</span></span>
-                </div>
-            </div>
-
-            <!-- MP4 转 WebM -->
-            <div class="tool-card" data-keywords="mp4 webm convert web optimize" onclick="window.location.href='video-converter.html?from=mp4&to=webm'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-compress">🗜️</div>
-                    <div class="tool-category">Web</div>
-                </div>
-                <h3 class="tool-title">MP4 to WebM</h3>
-                <p class="tool-description">Convert MP4 to web-optimized WebM format, reduce file size</p>
-                <div class="tool-stats">
-                    <span>🌐 <span>Web Optimized</span></span>
-                    <span>📉 <span>High Compression</span></span>
-                </div>
-            </div>
-
-            <!-- AVI 转 WebM -->
-            <div class="tool-card" data-keywords="avi webm convert modern" onclick="window.location.href='video-converter.html?from=avi&to=webm'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-convert">💎</div>
-                    <div class="tool-category">Modern</div>
-                </div>
-                <h3 class="tool-title">AVI to WebM</h3>
-                <p class="tool-description">Upgrade legacy AVI format to modern WebM web format</p>
-                <div class="tool-stats">
-                    <span>⬆️ <span>Format Upgrade</span></span>
-                    <span>🌐 <span>Modern Standard</span></span>
-                </div>
-            </div>
-
-            <!-- MOV 转 WebM -->
-            <div class="tool-card" data-keywords="mov webm convert apple web" onclick="window.location.href='video-converter.html?from=mov&to=webm'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-convert">🔓</div>
-                    <div class="tool-category">Open Source</div>
-                </div>
-                <h3 class="tool-title">MOV to WebM</h3>
-                <p class="tool-description">Convert Apple MOV format to open source WebM format</p>
-                <div class="tool-stats">
-                    <span>🔓 <span>Open Source Format</span></span>
-                    <span>🌐 <span>Web Standard</span></span>
-                </div>
-            </div>
-
-            <!-- MP4 转 AVI -->
-            <div class="tool-card" data-keywords="mp4 avi convert compatibility" onclick="window.location.href='video-converter.html?from=mp4&to=avi'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-convert">📼</div>
-                    <div class="tool-category">Legacy</div>
-                </div>
-                <h3 class="tool-title">MP4 to AVI</h3>
-                <p class="tool-description">Convert MP4 to AVI format, improve legacy device compatibility</p>
-                <div class="tool-stats">
-                    <span>📼 <span>Compatibility</span></span>
-                    <span>🔧 <span>Legacy Support</span></span>
-                </div>
-            </div>
-
-            <!-- MP4 转 MOV -->
-            <div class="tool-card" data-keywords="mp4 mov convert apple quicktime" onclick="window.location.href='video-converter.html?from=mp4&to=mov'">
-                <div class="tool-card-header">
-                    <div class="tool-icon icon-convert">🎭</div>
-                    <div class="tool-category">Apple</div>
-                </div>
-                <h3 class="tool-title">MP4 to MOV</h3>
-                <p class="tool-description">Convert MP4 to Apple QuickTime MOV format</p>
-                <div class="tool-stats">
-                    <span>🍎 <span>Apple Ecosystem</span></span>
-                    <span>🎬 <span>Professional Editing</span></span>
-                </div>
-            </div>
-
             <!-- 通用视频转换器 -->
             <div class="tool-card" data-keywords="convert format mp4 avi mov webm mkv universal advanced" onclick="window.location.href='video-converter.html'">
                 <div class="tool-card-header">
@@ -712,24 +605,97 @@
                 </div>
                 <h3 class="tool-title">Universal Video Converter</h3>
                 <p class="tool-description">Support free conversion between all formats, including advanced encoding and quality settings</p>
-                <div class="tool-stats">
-                    <span>🔄 <span>All Format Support</span></span>
-                    <span>⚙️ <span>Advanced Settings</span></span>
-                </div>
             </div>
+
+            <!-- AVI 转 MP4 -->
+            <div class="tool-card" data-keywords="avi mp4 convert legacy" onclick="window.location.href='video-converter.html?from=avi&to=mp4'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-legacy">🎬</div>
+                    <div class="tool-category">Popular</div>
+                </div>
+                <h3 class="tool-title">AVI to MP4</h3>
+                <p class="tool-description">Convert legacy AVI videos to modern universal MP4 format</p>
+            </div>
+
+            <!-- MOV 转 MP4 -->
+            <div class="tool-card" data-keywords="mov mp4 convert quicktime apple" onclick="window.location.href='video-converter.html?from=mov&to=mp4'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-apple">🍎</div>
+                    <div class="tool-category">Popular</div>
+                </div>
+                <h3 class="tool-title">MOV to MP4</h3>
+                <p class="tool-description">Convert Apple QuickTime format to universal MP4 format</p>
+            </div>
+
+            <!-- WebM 转 MP4 -->
+            <div class="tool-card" data-keywords="webm mp4 convert web" onclick="window.location.href='video-converter.html?from=webm&to=mp4'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-web">🌐</div>
+                    <div class="tool-category">Web</div>
+                </div>
+                <h3 class="tool-title">WebM to MP4</h3>
+                <p class="tool-description">Convert web-optimized WebM format to MP4 format</p>
+            </div>
+
+            <!-- MP4 转 WebM -->
+            <div class="tool-card" data-keywords="mp4 webm convert web optimize" onclick="window.location.href='video-converter.html?from=mp4&to=webm'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-web">🗜️</div>
+                    <div class="tool-category">Web</div>
+                </div>
+                <h3 class="tool-title">MP4 to WebM</h3>
+                <p class="tool-description">Convert MP4 to web-optimized WebM format, reduce file size</p>
+            </div>
+
+            <!-- AVI 转 WebM -->
+            <div class="tool-card" data-keywords="avi webm convert modern" onclick="window.location.href='video-converter.html?from=avi&to=webm'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-modern">💎</div>
+                    <div class="tool-category">Modern</div>
+                </div>
+                <h3 class="tool-title">AVI to WebM</h3>
+                <p class="tool-description">Upgrade legacy AVI format to modern WebM web format</p>
+            </div>
+
+            <!-- MOV 转 WebM -->
+            <div class="tool-card" data-keywords="mov webm convert apple web" onclick="window.location.href='video-converter.html?from=mov&to=webm'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-web">🔓</div>
+                    <div class="tool-category">Open Source</div>
+                </div>
+                <h3 class="tool-title">MOV to WebM</h3>
+                <p class="tool-description">Convert Apple MOV format to open source WebM format</p>
+            </div>
+
+            <!-- MP4 转 AVI -->
+            <div class="tool-card" data-keywords="mp4 avi convert compatibility" onclick="window.location.href='video-converter.html?from=mp4&to=avi'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-legacy">📼</div>
+                    <div class="tool-category">Legacy</div>
+                </div>
+                <h3 class="tool-title">MP4 to AVI</h3>
+                <p class="tool-description">Convert MP4 to AVI format, improve legacy device compatibility</p>
+            </div>
+
+            <!-- MP4 转 MOV -->
+            <div class="tool-card" data-keywords="mp4 mov convert apple quicktime" onclick="window.location.href='video-converter.html?from=mp4&to=mov'">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-apple">🎭</div>
+                    <div class="tool-category">Apple</div>
+                </div>
+                <h3 class="tool-title">MP4 to MOV</h3>
+                <p class="tool-description">Convert MP4 to Apple QuickTime MOV format</p>
+            </div>
+
 
             <!-- 视频信息查看器 -->
             <div class="tool-card" data-keywords="video info metadata duration resolution codec analysis" onclick="window.location.href='video-info.html'">
                 <div class="tool-card-header">
-                    <div class="tool-icon icon-info">🎬</div>
+                    <div class="tool-icon icon-info">📊</div>
                     <div class="tool-category">Analysis</div>
                 </div>
                 <h3 class="tool-title">Video Info Viewer</h3>
                 <p class="tool-description">View detailed information of video files, including codec, resolution, duration etc</p>
-                <div class="tool-stats">
-                    <span>📊 <span>Detailed Analysis</span></span>
-                    <span>⚡ <span>Instant Results</span></span>
-                </div>
             </div>
         </div>
     </main>
