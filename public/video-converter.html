@@ -4,141 +4,179 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Converter - DropShare</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            color: #333;
+            line-height: 1.6;
         }
-        
-        .container {
-            max-width: 800px;
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 8px;
-            letter-spacing: -0.025em;
-        }
-        
-        .page-subtitle {
-            font-size: 1.1rem;
-            color: #718096;
-            margin-bottom: 60px;
-            font-weight: 400;
-        }
-        
-        .upload-area {
-            border: 2px dashed #cbd5e0;
-            border-radius: 12px;
-            padding: 80px 40px;
-            margin: 40px auto;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            max-width: 600px;
-        }
-        
-        .upload-area:hover {
-            border-color: #3182ce;
-            background: #f7fafc;
-        }
-        
-        .upload-area.dragover {
-            border-color: #3182ce;
-            background: #ebf8ff;
-            transform: scale(1.02);
-        }
-        
-        .upload-icon {
-            font-size: 3rem;
-            color: #a0aec0;
-            margin-bottom: 24px;
-        }
-        
-        .upload-button {
-            background: #3182ce;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 16px;
-            display: inline-flex;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
         }
-        
-        .upload-button:hover {
-            background: #2c5aa0;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
-        }
-        
-        .upload-text {
-            color: #718096;
-            font-size: 1rem;
-            margin-top: 16px;
-        }
-        
-        .conversion-panel {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            text-align: left;
-        }
-        
-        .file-item {
+
+        .logo {
             display: flex;
             align-items: center;
-            padding: 16px;
-            background: #f7fafc;
-            border-radius: 8px;
-            margin-bottom: 16px;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
         }
-        
-        .file-icon {
-            font-size: 2rem;
-            margin-right: 16px;
-            color: #3182ce;
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
         }
-        
-        .file-details h4 {
-            margin: 0 0 4px 0;
-            color: #2d3748;
-            font-size: 1rem;
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
             font-weight: 600;
         }
-        
-        .file-details p {
-            margin: 0;
-            font-size: 0.875rem;
-            color: #718096;
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
-        
-        .format-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-info {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .file-details {
+            display: flex;
+            align-items: center;
             gap: 12px;
-            margin: 24px 0;
+            padding: 8px 0;
         }
-        
+
+        .file-icon {
+            font-size: 24px;
+        }
+
+        .format-options {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
         .format-option {
             padding: 12px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e5e7eb;
             border-radius: 8px;
             cursor: pointer;
             background: white;
@@ -146,1217 +184,467 @@
             font-weight: 500;
             transition: all 0.2s ease;
         }
-        
+
         .format-option:hover {
-            border-color: #3182ce;
+            border-color: #3367d6;
             background: #f7fafc;
         }
-        
+
         .format-option.selected {
-            background: #3182ce;
+            background: #3367d6;
             color: white;
-            border-color: #3182ce;
+            border-color: #3367d6;
         }
-        
-        .convert-button {
-            width: 100%;
-            background: #3182ce;
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 24px;
+
+        .conversion-progress {
+            display: none;
+            text-align: center;
+            margin-bottom: 30px;
         }
-        
-        .convert-button:hover:not(:disabled) {
-            background: #2c5aa0;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
-        }
-        
-        .convert-button:disabled {
-            background: #e2e8f0;
-            color: #a0aec0;
-            cursor: not-allowed;
-        }
-        
-        .progress-section {
-            margin: 24px 0;
-            padding: 20px;
-            background: #f7fafc;
-            border-radius: 8px;
-        }
-        
+
         .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 3px;
+            background: #f3f4f6;
+            border-radius: 20px;
+            height: 8px;
+            margin: 15px 0;
             overflow: hidden;
-            margin: 12px 0;
         }
-        
+
         .progress-fill {
+            background: #3367d6;
             height: 100%;
-            background: #3182ce;
             width: 0%;
             transition: width 0.3s ease;
         }
-        
-        .progress-text {
-            font-size: 0.875rem;
-            color: #718096;
-            text-align: center;
-        }
-        
-        .results-section {
-            margin-top: 32px;
-        }
-        
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: #f7fafc;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .result-info h4 {
-            margin: 0 0 4px 0;
-            color: #2d3748;
-            font-weight: 600;
-        }
-        
-        .result-info p {
-            margin: 0;
-            font-size: 0.875rem;
-            color: #718096;
-        }
-        
-        .result-actions {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .action-button {
-            padding: 8px 16px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            background: white;
-            color: #4a5568;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .action-button.primary {
-            background: #3182ce;
-            color: white;
-            border-color: #3182ce;
-        }
-        
-        .action-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .video-preview {
-            max-width: 200px;
-            max-height: 150px;
-            margin-top: 8px;
-            border-radius: 6px;
-        }
-        
-        .footer-info {
-            max-width: 600px;
-            margin: 80px auto 40px;
-            text-align: center;
-            padding: 0 20px;
-        }
-        
-        .footer-text {
-            color: #3182ce;
-            font-size: 0.875rem;
-            margin-bottom: 24px;
-        }
-        
-        .rating-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .rating-text {
-            color: #718096;
-            font-size: 0.875rem;
-        }
-        
-        .rating-display {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .stars {
-            color: #fbd38d;
-            font-size: 1.2rem;
-        }
-        
-        .rating-score {
-            color: #3182ce;
-            font-weight: 600;
-        }
-        
-        /* 设备选择弹窗样式 */
-        .device-modal {
+
+        .conversion-result {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1200;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .device-modal.show {
-            display: flex;
-        }
-        
-        .device-modal-content {
-            background: white;
+            background: #f9fafb;
             border-radius: 12px;
-            padding: 24px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .device-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .device-modal-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin: 0;
-        }
-        
-        .device-modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-            padding: 0;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .device-modal-close:hover {
-            background: #f5f5f5;
-            color: #333;
-        }
-        
-        .device-list {
-            margin-bottom: 20px;
-        }
-        
-        .device-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .device-item:hover {
-            border-color: #3182ce;
-            background: #f7fafc;
-        }
-        
-        .device-item.selected {
-            border-color: #3182ce;
-            background: #ebf8ff;
-        }
-        
-        .device-checkbox {
-            margin-right: 12px;
-        }
-        
-        .device-icon {
-            font-size: 24px;
-            margin-right: 12px;
-        }
-        
-        .device-info {
-            flex: 1;
-        }
-        
-        .device-name {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 2px;
-        }
-        
-        .device-type {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .no-devices {
+            padding: 30px;
             text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
-        
-        .no-devices-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-        }
-        
-        .device-modal-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
-        
-        .modal-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .modal-btn-cancel {
-            background: #f5f5f5;
-            color: #333;
-        }
-        
-        .modal-btn-cancel:hover {
-            background: #e9ecef;
-        }
-        
-        .modal-btn-send {
-            background: #3182ce;
-            color: white;
-        }
-        
-        .modal-btn-send:hover {
-            background: #2c5aa0;
-        }
-        
-        .modal-btn-send:disabled {
-            background: #ccc;
-            cursor: not-allowed;
         }
 
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
+        .result-preview {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
             padding: 20px;
-            border-bottom: 2px solid #e2e8f0;
-            background: #ffffff;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
         }
-        
-        .page-main-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2d3748;
-            margin: 0;
-        }
-        
-        .header-buttons {
+
+        .action-buttons {
             display: flex;
-            gap: 12px;
-            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
         }
-        
-        .back-button {
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
-            color: #3182ce;
-            text-decoration: none;
-            border: 1px solid #3182ce;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 14px;
         }
-        
-        .back-button:hover {
-            background: #3182ce;
+
+        .btn-primary {
+            background: #3367d6;
             color: white;
         }
 
-        .control-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
         }
 
-        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
 
-        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
 
-        
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
+            .nav-links {
+                display: none;
             }
-            
-            
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .format-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
-    </style>    
+    </style>
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
-
 </head>
+
 <body>
-    <div class="page-header">
-        <h1 class="page-main-title" >🎥 视频转换器</h1>
-        <div class="header-buttons">
-            <div class="control-buttons">
-                
-            </div>
-            <a href="video-tools.html" class="back-button" >← 视频工具</a>
-            <a href="index.html" class="back-button" >🏠 首页</a>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🎥 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html" class="active">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
         </div>
-    </div>
+    </header>
 
     <div class="container">
-        <h1 class="page-title" id="pageTitle" >AVI to MP4 video</h1>
-        <p class="page-subtitle" id="pageSubtitle" >Convert AVI to MP4 video</p>
-        
-        <div class="upload-area" id="uploadArea">
-            <div class="upload-icon" id="uploadIcon">📄</div>
-            <button class="upload-button" onclick="document.getElementById('fileInput').click()" >
-                📤 Upload from PC or Mobile
-            </button>
-            <div class="upload-text" >or Drag files here</div>
-            <input type="file" id="fileInput" multiple accept="video/*" style="display: none;">
-        </div>
-        
-        <div class="conversion-panel" id="conversionPanel" style="display: none;">
-            <div id="fileList"></div>
-            
-            <h3 id="formatSelectorTitle" >选择输出格式：</h3>
-            <div class="format-selector" id="formatSelector">
-                <div class="format-option" data-format="mp4" >MP4</div>
-                <div class="format-option" data-format="webm" >WebM</div>
-                <div class="format-option" data-format="avi" >AVI</div>
-                <div class="format-option" data-format="mov" >MOV</div>
+        <h1 class="page-title">Video Converter</h1>
+        <p class="page-subtitle">Convert videos between different formats with high quality</p>
+
+        <div class="converter-card">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎬</div>
+                <div class="upload-text">Click to select video files or drag them here</div>
+                <div class="upload-hint">Supports MP4, AVI, MOV, WebM formats, maximum 100MB each</div>
+                <input type="file" id="fileInput" accept="video/*" multiple>
             </div>
-            
-            <button class="convert-button" id="convertBtn" disabled >开始转换</button>
-            
-            <div class="progress-section" id="progressSection" style="display: none;">
-                <div class="progress-text" id="progressText" >准备转换...</div>
+
+            <!-- File Info -->
+            <div class="file-info" id="fileInfo">
+                <h3>Selected Files:</h3>
+                <div id="fileDetails"></div>
+            </div>
+
+            <!-- Format Options -->
+            <div class="format-options" id="formatOptions">
+                <h3>Select Output Format:</h3>
+                <div class="format-grid" id="formatGrid">
+                    <div class="format-option" data-format="mp4">MP4</div>
+                    <div class="format-option" data-format="avi">AVI</div>
+                    <div class="format-option" data-format="mov">MOV</div>
+                    <div class="format-option" data-format="webm">WebM</div>
+                </div>
+            </div>
+
+            <!-- Conversion Progress -->
+            <div class="conversion-progress" id="conversionProgress">
+                <h4>Conversion Progress:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
+                <div id="progressText">0%</div>
             </div>
-            
-            <div class="results-section" id="resultsSection" style="display: none;">
-                <h3 >转换结果:</h3>
-                <div id="resultsList"></div>
-            </div>
-        </div>
-        
-        <div class="footer-info">
-            <div class="footer-text" >Uploaded and generated files are deleted 1 hour after upload</div>
-            <div class="rating-section">
-                <div class="rating-text" >Help Us Improve</div>
-                <div class="rating-display">
-                    <div class="stars">★★★★★</div>
-                    <div class="rating-score">4.8 (1703)</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- FFmpeg 懒加载管理器 -->
-    <script src="scripts/ffmpeg-loader.js"></script>
-    
-    <script>
-        class VideoConverter {
-            constructor() {
-                this.ffmpeg = null;
-                this.selectedFiles = [];
-                this.selectedFormat = '';
-                this.convertedFiles = [];
-                this.ffmpegReady = false;
-                this.presetFromFormat = null;
-                this.presetToFormat = null;
-                this.init();
-            }
-            
-            init() {
-                this.parseUrlParams();
-                this.updatePageForPreset();
-                this.bindEvents();
-            }
-            
-            parseUrlParams() {
-                const urlParams = new URLSearchParams(window.location.search);
-                this.presetFromFormat = urlParams.get('from');
-                this.presetToFormat = urlParams.get('to');
-                
-                console.log('预设转换:', this.presetFromFormat, '→', this.presetToFormat);
-            }
-            
-            updatePageForPreset() {
-                if (this.presetFromFormat && this.presetToFormat) {
-                    // 更新页面标题
-                    const pageTitle = document.getElementById('pageTitle');
-                    const pageSubtitle = document.getElementById('pageSubtitle');
-                    const fromFormatUpper = this.presetFromFormat.toUpperCase();
-                    const toFormatUpper = this.presetToFormat.toUpperCase();
-                    
-                    pageTitle.textContent = `${fromFormatUpper} to ${toFormatUpper} video`;
-                    pageSubtitle.textContent = `Convert ${fromFormatUpper} to ${toFormatUpper} video`;
-                    
-                    // 更新上传区域图标
-                    const uploadIcon = document.getElementById('uploadIcon');
-                    uploadIcon.textContent = '🎥';
-                    
-                    // 更新文件输入类型
-                    const fileInput = document.getElementById('fileInput');
-                    fileInput.accept = `video/${this.presetFromFormat}`;
-                    
-                    // 预选输出格式
-                    this.selectedFormat = this.presetToFormat;
-                    
-                    // 隐藏格式选择器并显示预设信息
-                    const formatSelectorTitle = document.getElementById('formatSelectorTitle');
-                    const formatSelector = document.getElementById('formatSelector');
-                    
-                    formatSelectorTitle.innerHTML = `<span >输出格式</span>：${toFormatUpper}`;
-                    formatSelector.style.display = 'none';
-                    
-                    // 添加格式说明
-                    const formatInfo = document.createElement('div');
-                    formatInfo.style.cssText = `
-                        background: #f7fafc;
-                        padding: 16px;
-                        border-radius: 8px;
-                        margin: 16px 0;
-                        border: 1px solid #e2e8f0;
-                    `;
-                    formatInfo.innerHTML = `
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="font-size: 1.5em;">🔄</span>
-                            <div>
-                                <div style="font-weight: 600; color: #2d3748; margin-bottom: 4px;">
-                                    ${fromFormatUpper} → ${toFormatUpper}
-                                </div>
-                                <div style="color: #718096; font-size: 0.875rem;">
-                                    ${this.getFormatDescription(this.presetFromFormat, this.presetToFormat)}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    formatSelector.parentNode.insertBefore(formatInfo, formatSelector);
-                } else {
-                    // 默认通用模式
-                    const pageTitle = document.getElementById('pageTitle');
-                    const pageSubtitle = document.getElementById('pageSubtitle');
-                    pageTitle.textContent = 'Video Converter';
-                    pageSubtitle.textContent = 'Convert video between different formats';
-                }
-            }
-            
-            getFormatDescription(from, to) {
-                const key = `${from}_${to}`;
-                // Use i18n key if available
-                const i18nKey = `format_desc_${key}`;
-                if (window.DROPSHARE_I18N?.t(i18nKey) !== i18nKey) {
-                    return window.DROPSHARE_I18N.t(i18nKey);
-                }
-                
-                // Default fallback
-                const fromFormat = from.toUpperCase();
-                const toFormat = to.toUpperCase();
-                return window.DROPSHARE_I18N?.t('format_desc_default', { from: fromFormat, to: toFormat }) || 
-                       `将 ${fromFormat} 格式转换为 ${toFormat} 格式`;
-            }
-            
-            async ensureFFmpegReady() {
-                if (this.ffmpegReady && this.ffmpeg) {
-                    return this.ffmpeg;
-                }
-                
-                // 显示加载状态
-                this.showLoadingState();
-                
-                try {
-                    // 使用全局懒加载管理器获取 FFmpeg
-                    this.ffmpeg = await window.ffmpegLoader.getFFmpeg({
-                        onProgress: (percent, text) => {
-                            this.updateProgress(percent, text);
-                        },
-                        onStatusUpdate: (status) => {
-                            this.updateLoadingStatus(status);
-                        }
-                    });
-                    
-                    this.ffmpegReady = true;
-                    this.hideLoadingState();
-                    return this.ffmpeg;
-                    
-                } catch (error) {
-                    console.error('FFmpeg加载失败:', error);
-                    this.showLoadingError(error);
-                    throw error;
-                }
-            }
-            
-            showLoadingState() {
-                // 创建加载覆盖层
-                if (!document.getElementById('ffmpegLoadingOverlay')) {
-                    const overlay = document.createElement('div');
-                    overlay.id = 'ffmpegLoadingOverlay';
-                    overlay.style.cssText = `
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(0, 0, 0, 0.8);
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        z-index: 1000;
-                        color: white;
-                    `;
-                    
-                    overlay.innerHTML = `
-                        <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
-                            <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
-                            <h3 id="loadingTitle" >正在加载视频转换引擎...</h3>
-                            <p id="loadingStatus" >首次使用需要下载约25MB的转换库，请稍候...</p>
-                            <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 20px 0;">
-                                <div id="loadingProgressFill" style="height: 100%; background: #3182ce; width: 0%; transition: width 0.3s ease;"></div>
-                            </div>
-                            <div id="loadingProgressText" >准备加载...</div>
-                        </div>
-                    `;
-                    
-                    document.body.appendChild(overlay);
-                }
-            }
-            
-            hideLoadingState() {
-                const overlay = document.getElementById('ffmpegLoadingOverlay');
-                if (overlay) {
-                    overlay.remove();
-                }
-            }
-            
-            updateLoadingStatus(status) {
-                const statusElement = document.getElementById('loadingStatus');
-                if (statusElement) {
-                    statusElement.textContent = status;
-                }
-            }
-            
-            showLoadingError(error) {
-                const overlay = document.getElementById('ffmpegLoadingOverlay');
-                if (overlay) {
-                    overlay.innerHTML = `
-                        <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
-                            <div style="font-size: 2em; margin-bottom: 15px; color: #ef4444;">❌</div>
-                            <h3 style="color: #ef4444;" >视频转换引擎加载失败</h3>
-                            <p>${error.message}</p>
-                            <p >请检查网络连接并重试</p>
-                            <div style="margin-top: 20px;">
-                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;" >重新加载页面</button>
-                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;" >关闭</button>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-            
-            bindEvents() {
-                const uploadArea = document.getElementById('uploadArea');
-                const fileInput = document.getElementById('fileInput');
-                const formatOptions = document.querySelectorAll('.format-option');
-                const convertBtn = document.getElementById('convertBtn');
-                // clearBtn 和 shareAllBtn 在简化版本中不存在
-                
-                // 拖拽上传
-                uploadArea.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.add('dragover');
-                });
-                
-                uploadArea.addEventListener('dragleave', () => {
-                    uploadArea.classList.remove('dragover');
-                });
-                
-                uploadArea.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.remove('dragover');
-                    this.handleFiles(e.dataTransfer.files);
-                });
-                
-                // 文件选择
-                fileInput.addEventListener('change', (e) => {
-                    this.handleFiles(e.target.files);
-                });
-                
-                // 格式选择
-                formatOptions.forEach(option => {
-                    option.addEventListener('click', () => {
-                        formatOptions.forEach(opt => opt.classList.remove('selected'));
-                        option.classList.add('selected');
-                        this.selectedFormat = option.dataset.format;
-                        convertBtn.disabled = false;
-                    });
-                });
-                
-                // 转换按钮
-                convertBtn.addEventListener('click', () => {
-                    this.startConversion();
-                });
-                
-                // 在简化版本中，这些按钮不存在
-            }
-            
-            handleFiles(files) {
-                let videoFiles = Array.from(files).filter(file => file.type.startsWith('video/'));
-                
-                if (videoFiles.length === 0) {
-                    alert(window.DROPSHARE_I18N?.t('alert_select_video_files') || '请选择视频文件！');
-                    return;
-                }
-                
-                // 如果有预设的输入格式，验证文件格式
-                if (this.presetFromFormat) {
-                    const expectedMimeTypes = this.getExpectedMimeTypes(this.presetFromFormat);
-                    const validFiles = videoFiles.filter(file => {
-                        return expectedMimeTypes.some(mimeType => file.type === mimeType) ||
-                               file.name.toLowerCase().endsWith('.' + this.presetFromFormat);
-                    });
-                    
-                    if (validFiles.length === 0) {
-                        alert(window.DROPSHARE_I18N?.t('alert_select_format_file', { format: this.presetFromFormat.toUpperCase() }) || `请选择 ${this.presetFromFormat.toUpperCase()} 格式的视频文件！`);
-                        return;
-                    }
-                    
-                    if (validFiles.length < videoFiles.length) {
-                        const skipped = videoFiles.length - validFiles.length;
-                        alert(window.DROPSHARE_I18N?.t('alert_skipped_files', { count: skipped, format: this.presetFromFormat.toUpperCase() }) || `已跳过 ${skipped} 个非 ${this.presetFromFormat.toUpperCase()} 格式的文件`);
-                    }
-                    
-                    videoFiles = validFiles;
-                }
-                
-                this.selectedFiles = videoFiles;
-                this.showFileList();
-                const conversionPanel = document.getElementById('conversionPanel');
-                if (conversionPanel) {
-                    conversionPanel.style.display = 'block';
-                }
-                
-                // 如果有预设格式，自动启用转换按钮
-                if (this.presetToFormat) {
-                    const convertBtn = document.getElementById('convertBtn');
-                    if (convertBtn) {
-                        convertBtn.disabled = false;
-                    }
-                }
-            }
-            
-            getExpectedMimeTypes(format) {
-                const mimeTypeMap = {
-                    'mp4': ['video/mp4'],
-                    'avi': ['video/avi', 'video/x-msvideo'],
-                    'mov': ['video/quicktime', 'video/mov'],
-                    'webm': ['video/webm']
-                };
-                
-                return mimeTypeMap[format] || [];
-            }
-            
-            showFileList() {
-                const fileList = document.getElementById('fileList');
-                let html = '';
-                
-                this.selectedFiles.forEach((file, index) => {
-                    html += `
-                        <div class="file-item">
-                            <div class="file-icon">🎥</div>
-                            <div class="file-details">
-                                <h4>${file.name}</h4>
-                                <p>${this.formatFileSize(file.size)} • ${file.type}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                fileList.innerHTML = html;
-            }
-            
-            // 简化版本，不需要复杂的编解码器选择
-            updateCodecOptions() {
-                // 在简化版本中，我们使用默认的编解码器设置
-                // 不需要用户手动选择编解码器
-            }
-            
-            async startConversion() {
-                if (!this.selectedFormat) {
-                    alert(window.DROPSHARE_I18N?.t('alert_select_output_format') || '请选择输出格式！');
-                    return;
-                }
-                
-                if (!this.selectedFiles || this.selectedFiles.length === 0) {
-                    alert(window.DROPSHARE_I18N?.t('alert_select_video_files_first') || '请先选择要转换的视频文件！');
-                    return;
-                }
-                
-                try {
-                    // 确保 FFmpeg 已加载（懒加载）
-                    await this.ensureFFmpegReady();
-                    
-                    const progressSection = document.getElementById('progressSection');
-                    const convertBtn = document.getElementById('convertBtn');
-                    
-                    if (progressSection) progressSection.style.display = 'block';
-                    if (convertBtn) convertBtn.disabled = true;
-                    
-                    this.convertedFiles = [];
-                    
-                    for (let i = 0; i < this.selectedFiles.length; i++) {
-                        const file = this.selectedFiles[i];
-                        this.updateProgress(0, `${window.DROPSHARE_I18N?.t('status_preparing_conversion') || '准备转换'}: ${file.name}`);
-                        
-                        try {
-                            const convertedFile = await this.convertVideo(file);
-                            this.convertedFiles.push(convertedFile);
-                            
-                            const overallProgress = ((i + 1) / this.selectedFiles.length) * 100;
-                            this.updateProgress(overallProgress, `${window.DROPSHARE_I18N?.t('status_completed_videos') || '已完成'} ${i + 1}/${this.selectedFiles.length} ${window.DROPSHARE_I18N?.t('label_videos') || '个视频'}`);
-                        } catch (error) {
-                            console.error('转换失败:', error);
-                            alert(`${window.DROPSHARE_I18N?.t('alert_conversion_failed') || '转换失败'} ${file.name}: ${error.message}`);
-                        }
-                    }
-                    
-                    setTimeout(() => {
-                        this.showResults();
-                    }, 500);
-                    
-                } catch (error) {
-                    console.error('FFmpeg 加载失败:', error);
-                    alert(window.DROPSHARE_I18N?.t('alert_video_engine_load_failed') || '视频转换引擎加载失败，请检查网络连接后重试');
-                    const convertBtn = document.getElementById('convertBtn');
-                    if (convertBtn) convertBtn.disabled = false;
-                    
-                    // 隐藏进度条
-                    const progressSection = document.getElementById('progressSection');
-                    if (progressSection) progressSection.style.display = 'none';
-                }
-            }
-            
-            async convertVideo(file) {
-                const inputFileName = `input_${Date.now()}.${this.getFileExtension(file.name)}`;
-                const outputFileName = `output_${Date.now()}.${this.selectedFormat}`;
-                
-                // 将文件写入 FFmpeg 文件系统
-                await this.ffmpeg.writeFile(inputFileName, new Uint8Array(await file.arrayBuffer()));
-                
-                // 构建转换命令 - 简化版本使用默认设置
-                let args = ['-i', inputFileName];
-                
-                // 根据目标格式设置默认的编解码器
-                switch (this.selectedFormat) {
-                    case 'mp4':
-                        args.push('-c:v', 'libx264', '-crf', '23', '-c:a', 'aac');
-                        break;
-                    case 'webm':
-                        args.push('-c:v', 'libvpx-vp9', '-crf', '30', '-c:a', 'libvorbis');
-                        break;
-                    case 'avi':
-                        args.push('-c:v', 'libx264', '-crf', '23', '-c:a', 'aac');
-                        break;
-                    case 'mov':
-                        args.push('-c:v', 'libx264', '-crf', '23', '-c:a', 'aac');
-                        break;
-                    default:
-                        args.push('-c:v', 'libx264', '-crf', '23', '-c:a', 'aac');
-                }
-                
-                // 输出文件
-                args.push(outputFileName);
-                
-                // 执行转换
-                await this.ffmpeg.exec(args);
-                
-                // 读取转换后的文件
-                const data = await this.ffmpeg.readFile(outputFileName);
-                
-                // 清理临时文件
-                await this.ffmpeg.deleteFile(inputFileName);
-                await this.ffmpeg.deleteFile(outputFileName);
-                
-                // 创建新文件对象
-                const newFileName = this.changeFileExtension(file.name, this.selectedFormat);
-                const mimeType = this.getMimeType(this.selectedFormat);
-                
-                return new File([data], newFileName, { type: mimeType });
-            }
-            
-            showResults() {
-                const resultsList = document.getElementById('resultsList');
-                let html = '';
-                
-                this.convertedFiles.forEach((file, index) => {
-                    html += `
-                        <div class="result-item">
-                            <div class="result-info">
-                                <h4>${file.name}</h4>
-                                <p>${this.formatFileSize(file.size)} • ${file.type}</p>
-                            </div>
-                            <div class="result-actions">
-                                <button class="action-button" onclick="videoConverter.downloadFile(${index})" >下载</button>
-                                <button class="action-button primary" onclick="videoConverter.shareFile(${index})" >分享</button>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                resultsList.innerHTML = html;
-                const resultsSection = document.getElementById('resultsSection');
-                const convertBtn = document.getElementById('convertBtn');
-                
-                if (resultsSection) resultsSection.style.display = 'block';
-                if (convertBtn) convertBtn.disabled = false;
-            }
-            
-            downloadFile(index) {
-                const file = this.convertedFiles[index];
-                const url = URL.createObjectURL(file);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = file.name;
-                a.click();
-                URL.revokeObjectURL(url);
-            }
-            
-            shareFile(index) {
-                const file = this.convertedFiles[index];
-                currentShareFile = file;
-                showDeviceModal();
-            }
-            
-            shareAllFiles() {
-                if (!this.convertedFiles || this.convertedFiles.length === 0) {
-                    alert(window.DROPSHARE_I18N?.t('alert_no_files_to_share') || '没有可分享的文件');
-                    return;
-                }
-                currentShareFiles = this.convertedFiles;
-                showDeviceModal();
-            }
-            
-            updateProgress(percent, text) {
-                // 更新主进度条
-                const progressFill = document.getElementById('progressFill');
-                const progressText = document.getElementById('progressText');
-                if (progressFill) progressFill.style.width = percent + '%';
-                if (progressText) progressText.textContent = text;
-                
-                // 更新加载覆盖层中的进度条（如果存在）
-                const loadingProgressFill = document.getElementById('loadingProgressFill');
-                const loadingProgressText = document.getElementById('loadingProgressText');
-                if (loadingProgressFill) loadingProgressFill.style.width = percent + '%';
-                if (loadingProgressText) loadingProgressText.textContent = text;
-            }
-            
-            reset() {
-                this.selectedFiles = [];
-                this.selectedFormat = '';
-                this.convertedFiles = [];
-                
-                const fileInput = document.getElementById('fileInput');
-                const conversionPanel = document.getElementById('conversionPanel');
-                const progressSection = document.getElementById('progressSection');
-                const resultsSection = document.getElementById('resultsSection');
-                
-                if (fileInput) fileInput.value = '';
-                if (conversionPanel) conversionPanel.style.display = 'none';
-                if (progressSection) progressSection.style.display = 'none';
-                if (resultsSection) resultsSection.style.display = 'none';
-                
-                document.querySelectorAll('.format-option').forEach(opt => opt.classList.remove('selected'));
-            }
-            
-            getFileExtension(fileName) {
-                return fileName.split('.').pop().toLowerCase();
-            }
-            
-            getMimeType(format) {
-                const types = {
-                    'mp4': 'video/mp4',
-                    'webm': 'video/webm',
-                    'avi': 'video/x-msvideo',
-                    'mov': 'video/quicktime'
-                };
-                return types[format] || 'video/mp4';
-            }
-            
-            changeFileExtension(fileName, newExt) {
-                return fileName.replace(/\.[^/.]+$/, '') + '.' + newExt;
-            }
-            
-            formatFileSize(bytes) {
-                if (bytes === 0) return '0 B';
-                const k = 1024;
-                const sizes = ['B', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-        }
-        
-        // 初始化
-        let videoConverter;
-        document.addEventListener('DOMContentLoaded', () => {
-            videoConverter = new VideoConverter();
-        });
-        
-        // 设备传送功能变量
-        let selectedDevices = new Set();
-        let currentShareFile = null;
-        let currentShareFiles = null;
-        
-        // 显示设备选择弹窗
-        function showDeviceModal() {
-            const modal = document.getElementById('deviceModal');
-            const deviceList = document.getElementById('deviceList');
-            
-            selectedDevices.clear();
-            updateSendButton();
-            
-            const devices = getAvailableDevices();
-            
-            if (devices.length === 0) {
-                deviceList.innerHTML = `
-                    <div class="no-devices">
-                        <div class="no-devices-icon">📱</div>
-                        <p >未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;" >请确保其他设备已打开DropShare并连接到同一网络</p>
-                    </div>
-                `;
-            } else {
-                deviceList.innerHTML = devices.map(device => `
-                    <div class="device-item" onclick="toggleDevice('${device.id}')">
-                        <input type="checkbox" class="device-checkbox" id="device-${device.id}">
-                        <div class="device-icon">${getDeviceIcon(device)}</div>
-                        <div class="device-info">
-                            <div class="device-name">${device.name}</div>
-                            <div class="device-type">${device.type}</div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            modal.classList.add('show');
-        }
-        
-        // 关闭设备选择弹窗
-        function closeDeviceModal() {
-            document.getElementById('deviceModal').classList.remove('show');
-            selectedDevices.clear();
-        }
-        
-        // 切换设备选择
-        function toggleDevice(deviceId) {
-            const checkbox = document.getElementById(`device-${deviceId}`);
-            const deviceItem = checkbox.closest('.device-item');
-            
-            if (selectedDevices.has(deviceId)) {
-                selectedDevices.delete(deviceId);
-                checkbox.checked = false;
-                deviceItem.classList.remove('selected');
-            } else {
-                selectedDevices.add(deviceId);
-                checkbox.checked = true;
-                deviceItem.classList.add('selected');
-            }
-            
-            updateSendButton();
-        }
-        
-        // 更新发送按钮
-        function updateSendButton() {
-            const sendBtn = document.getElementById('sendToDevicesBtn');
-            const count = selectedDevices.size;
-            
-            if (count === 0) {
-                sendBtn.disabled = true;
-                sendBtn.textContent = window.DROPSHARE_I18N?.t('btn_send_to_selected_devices') || '传送到选中设备';
-            } else {
-                sendBtn.disabled = false;
-                sendBtn.textContent = `${window.DROPSHARE_I18N?.t('btn_send_to_devices') || '传送到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
-            }
-        }
-        
-        // 传送到选中设备
-        function sendToSelectedDevices() {
-            if (selectedDevices.size === 0) return;
-            
-            const filesToSend = currentShareFiles || (currentShareFile ? [currentShareFile] : []);
-            if (filesToSend.length === 0) {
-                alert(window.DROPSHARE_I18N?.t('alert_no_files_to_send') || '没有可传送的文件！');
-                return;
-            }
-            
-            // 检查传输系统
-            if (window.Events && typeof window.Events.fire === 'function') {
-                selectedDevices.forEach(deviceId => {
-                    window.Events.fire('files-selected', {
-                        files: filesToSend,
-                        to: deviceId
-                    });
-                });
-                
-                alert(`${window.DROPSHARE_I18N?.t('alert_files_sending') || '文件已开始传送到'} ${selectedDevices.size} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}!`);
-                closeDeviceModal();
-            } else {
-                // 如果没有传输系统，尝试添加到分享队列
-                if (window.ui && window.ui.filesQueue) {
-                    filesToSend.forEach(file => {
-                        window.ui.filesQueue.push(file);
-                    });
-                    alert(window.DROPSHARE_I18N?.t('alert_files_added_to_share_list') || '文件已添加到分享列表!');
-                    closeDeviceModal();
-                } else {
-                    if (confirm(window.DROPSHARE_I18N?.t('confirm_go_to_transfer_page') || '传输功能需要返回传送页面使用。\n\n是否现在跳转到传送页面？')) {
-                        sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
-                            files: filesToSend.map(f => ({ name: f.name, type: f.type, size: f.size })),
-                            timestamp: Date.now()
-                        }));
-                        window.location.href = 'share.html';
-                    }
-                }
-            }
-        }
-        
-        // 获取可用设备
-        function getAvailableDevices() {
-            const devices = [];
-            
-            // 检查现有设备
-            const peerElements = document.querySelectorAll('x-peer');
-            if (peerElements.length > 0) {
-                peerElements.forEach(peer => {
-                    devices.push({
-                        id: peer.id,
-                        name: peer.querySelector('.name')?.textContent || '未知设备',
-                        type: peer.querySelector('.device-name')?.textContent || '设备'
-                    });
-                });
-            }
-            
-            // 模拟设备（供测试）
-            if (devices.length === 0) {
-                devices.push(
-                    { id: 'demo1', name: 'iPhone 13', type: 'iOS 手机' },
-                    { id: 'demo2', name: 'MacBook Pro', type: 'macOS 笔记本' },
-                    { id: 'demo3', name: 'Windows PC', type: 'Windows 桌面' }
-                );
-            }
-            
-            return devices;
-        }
-        
-        // 获取设备图标
-        function getDeviceIcon(device) {
-            const type = device.type.toLowerCase();
-            if (type.includes('phone') || type.includes('mobile') || type.includes('ios')) return '📱';
-            if (type.includes('tablet') || type.includes('ipad')) return '📺';
-            if (type.includes('mac') || type.includes('apple') || type.includes('macos')) return '💻';
-            if (type.includes('windows') || type.includes('pc')) return '🖥️';
-            return '💻';
-        }
-    </script>
-    
-    <!-- 设备选择弹窗 -->
-    <div class="device-modal" id="deviceModal">
-        <div class="device-modal-content">
-            <div class="device-modal-header">
-                <h3 class="device-modal-title" >选择传送设备</h3>
-                <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
-            </div>
-            <div class="device-list" id="deviceList">
-                <!-- 设备列表将在这里动态生成 -->
-            </div>
-            <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" >取消</button>
-                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled >
-                    传送到选中设备
+
+            <!-- Action Buttons -->
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-primary" id="convertBtn" disabled>
+                    🔄 Start Conversion
                 </button>
+                <button class="btn btn-secondary" id="clearBtn" style="margin-left: 10px;">
+                    🗑️ Clear Files
+                </button>
+            </div>
+        </div>
+
+        <!-- Conversion Results -->
+        <div class="conversion-result" id="conversionResult">
+            <h3>🎉 Conversion Complete!</h3>
+            <div class="result-preview" id="resultPreview">
+                <!-- Video preview will be shown here -->
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-success" id="downloadBtn">
+                    📥 Download Videos
+                </button>
+                <button class="btn btn-secondary" id="shareBtn">
+                    📤 Share Files
+                </button>
+                <button class="btn btn-secondary" id="newConversionBtn">
+                    🔄 New Conversion
+                </button>
+                <a href="video-tools.html" class="btn btn-primary">
+                    ← Back to Video Tools
+                </a>
             </div>
         </div>
     </div>
 
-        <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
-    
-    <!-- Firebase Analytics Configuration -->
-    <script src="scripts/firebase-analytics.js"></script>
-    <script src="scripts/analytics-enhanced.js"></script>
-    <script src="scripts/tools-analytics.js"></script>
+    <script>
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileDetails = document.getElementById('fileDetails');
+        const formatOptions = document.getElementById('formatOptions');
+        const formatGrid = document.getElementById('formatGrid');
+        const convertBtn = document.getElementById('convertBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const conversionProgress = document.getElementById('conversionProgress');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const conversionResult = document.getElementById('conversionResult');
+        const resultPreview = document.getElementById('resultPreview');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const newConversionBtn = document.getElementById('newConversionBtn');
+        
+        let selectedFiles = [];
+        let selectedFormat = '';
+        let convertedFiles = [];
+
+        // Parse URL parameters for preset conversion
+        const urlParams = new URLSearchParams(window.location.search);
+        const presetFrom = urlParams.get('from');
+        const presetTo = urlParams.get('to');
+
+        if (presetFrom && presetTo) {
+            document.querySelector('.page-title').textContent = `${presetFrom.toUpperCase()} to ${presetTo.toUpperCase()} Converter`;
+            document.querySelector('.page-subtitle').textContent = `Convert ${presetFrom.toUpperCase()} videos to ${presetTo.toUpperCase()} format`;
+            
+            // Pre-select format and hide selector
+            selectedFormat = presetTo;
+            formatOptions.innerHTML = `<h3>Output Format: ${presetTo.toUpperCase()}</h3>`;
+        }
+
+        // File drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files).filter(file => 
+                file.type.startsWith('video/')
+            );
+            if (files.length > 0) {
+                handleFiles(files);
+            }
+        });
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFiles(Array.from(e.target.files));
+            }
+        });
+
+        function handleFiles(files) {
+            selectedFiles = files;
+            displayFileInfo();
+            fileInfo.style.display = 'block';
+            
+            if (!presetTo) {
+                formatOptions.style.display = 'block';
+            } else {
+                convertBtn.disabled = false;
+            }
+        }
+
+        function displayFileInfo() {
+            fileDetails.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'file-details';
+                fileDiv.innerHTML = `
+                    <div class="file-icon">🎬</div>
+                    <div>
+                        <div style="font-weight: 500;">${file.name}</div>
+                        <div style="color: #6b7280; font-size: 0.9em;">
+                            ${formatFileSize(file.size)} • ${file.type}
+                        </div>
+                    </div>
+                `;
+                fileDetails.appendChild(fileDiv);
+            });
+        }
+
+        // Format selection
+        formatGrid.addEventListener('click', (e) => {
+            if (e.target.classList.contains('format-option')) {
+                document.querySelectorAll('.format-option').forEach(opt => 
+                    opt.classList.remove('selected')
+                );
+                e.target.classList.add('selected');
+                selectedFormat = e.target.dataset.format;
+                convertBtn.disabled = false;
+            }
+        });
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Conversion functionality
+        convertBtn.addEventListener('click', startConversion);
+        clearBtn.addEventListener('click', clearFiles);
+        newConversionBtn.addEventListener('click', clearFiles);
+
+        async function startConversion() {
+            if (!selectedFormat) {
+                alert('Please select an output format!');
+                return;
+            }
+
+            conversionProgress.style.display = 'block';
+            convertBtn.disabled = true;
+            
+            convertedFiles = [];
+            
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                
+                // Update progress
+                const progress = Math.round(((i + 1) / selectedFiles.length) * 100);
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `${progress}% - Converting ${file.name}`;
+                
+                // Simulate conversion process
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Create converted file info
+                const convertedFile = {
+                    originalFile: file,
+                    filename: file.name.replace(/\.[^/.]+$/, '') + '.' + selectedFormat,
+                    size: Math.floor(file.size * 0.8), // Simulate compression
+                    format: selectedFormat
+                };
+                convertedFiles.push(convertedFile);
+            }
+            
+            progressText.textContent = 'Conversion Complete!';
+            
+            setTimeout(() => {
+                conversionProgress.style.display = 'none';
+                showConversionResult();
+            }, 500);
+        }
+
+        function showConversionResult() {
+            conversionResult.style.display = 'block';
+            
+            let previewHTML = '<h4>Converted Videos:</h4>';
+            convertedFiles.forEach((file, index) => {
+                previewHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 6px; margin-bottom: 8px;">
+                        <div>
+                            <div style="font-weight: 500;">${file.filename}</div>
+                            <div style="color: #6b7280; font-size: 0.9em;">
+                                ${formatFileSize(file.size)} • ${file.format.toUpperCase()}
+                            </div>
+                        </div>
+                        <div style="font-size: 24px;">🎬</div>
+                    </div>
+                `;
+            });
+            
+            resultPreview.innerHTML = previewHTML;
+            
+            // Scroll to result area
+            conversionResult.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearFiles() {
+            selectedFiles = [];
+            convertedFiles = [];
+            selectedFormat = '';
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+            if (!presetTo) {
+                formatOptions.style.display = 'none';
+            }
+            conversionProgress.style.display = 'none';
+            conversionResult.style.display = 'none';
+            convertBtn.disabled = true;
+            progressFill.style.width = '0%';
+            progressText.textContent = '0%';
+            
+            document.querySelectorAll('.format-option').forEach(opt => 
+                opt.classList.remove('selected')
+            );
+        }
+
+        // Download functionality
+        downloadBtn.addEventListener('click', () => {
+            if (convertedFiles.length === 0) return;
+            
+            convertedFiles.forEach((fileData, index) => {
+                setTimeout(() => {
+                    // Simulate file download
+                    const simulatedContent = `Video file content for ${fileData.filename}`;
+                    const blob = new Blob([simulatedContent], { type: 'video/' + fileData.format });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileData.filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, index * 100);
+            });
+        });
+
+        // Share functionality
+        shareBtn.addEventListener('click', () => {
+            if (convertedFiles.length === 0) return;
+            alert(`Share functionality would be integrated here for ${convertedFiles.length} video files`);
+        });
+    </script>
     
     <!-- Load i18n system -->
     <script src="scripts/i18n/languages.js"></script>    
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
-    <script>
-        // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
-            }
-        });
-    </script>
 </body>
 </html>

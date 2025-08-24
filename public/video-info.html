@@ -4,760 +4,637 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Info Viewer - DropShare</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            color: #333;
+            line-height: 1.6;
         }
-        
-        .container {
-            max-width: 800px;
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 8px;
-            letter-spacing: -0.025em;
-        }
-        
-        .page-subtitle {
-            font-size: 1.1rem;
-            color: #718096;
-            margin-bottom: 60px;
-            font-weight: 400;
-        }
-        
-        .upload-area {
-            border: 2px dashed #cbd5e0;
-            border-radius: 12px;
-            padding: 80px 40px;
-            margin: 40px auto;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            max-width: 600px;
-        }
-        
-        .upload-area:hover {
-            border-color: #3182ce;
-            background: #f7fafc;
-        }
-        
-        .upload-area.dragover {
-            border-color: #3182ce;
-            background: #ebf8ff;
-            transform: scale(1.02);
-        }
-        
-        .upload-icon {
-            font-size: 3rem;
-            color: #a0aec0;
-            margin-bottom: 24px;
-        }
-        
-        .upload-button {
-            background: #3182ce;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 16px;
-            display: inline-flex;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
         }
-        
-        .upload-button:hover {
-            background: #2c5aa0;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
-        }
-        
-        .upload-text {
-            color: #718096;
-            font-size: 1rem;
-            margin-top: 16px;
-        }
-        
-        .info-panel {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            text-align: left;
-        }
-        
-        .file-item {
+
+        .logo {
             display: flex;
             align-items: center;
-            padding: 16px;
-            background: #f7fafc;
-            border-radius: 8px;
-            margin-bottom: 16px;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
         }
-        
-        .file-icon {
-            font-size: 2rem;
-            margin-right: 16px;
-            color: #3182ce;
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
         }
-        
-        .file-details h4 {
-            margin: 0 0 4px 0;
-            color: #2d3748;
-            font-size: 1rem;
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
             font-weight: 600;
         }
-        
-        .file-details p {
-            margin: 0;
-            font-size: 0.875rem;
-            color: #718096;
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
-        
-        .video-preview {
-            max-width: 100%;
-            height: auto;
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-info {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
             border-radius: 8px;
-            margin: 16px 0;
+            padding: 16px;
+            margin-bottom: 24px;
         }
-        
-        .info-grid {
+
+        .file-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .file-icon {
+            font-size: 24px;
+        }
+
+        .analysis-progress {
+            display: none;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            background: #f3f4f6;
+            border-radius: 20px;
+            height: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #3367d6;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .analysis-result {
+            display: none;
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .video-info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
-            margin: 24px 0;
+            margin: 20px 0;
         }
-        
-        .info-card {
-            background: #f7fafc;
+
+        .info-item {
+            background: white;
             padding: 16px;
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e5e7eb;
         }
-        
+
         .info-label {
             font-weight: 600;
             color: #4a5568;
             font-size: 0.875rem;
             margin-bottom: 4px;
         }
-        
+
         .info-value {
             color: #2d3748;
             font-size: 1rem;
             font-weight: 500;
         }
-        
-        .progress-section {
-            margin: 24px 0;
-            padding: 20px;
-            background: #f7fafc;
+
+        .video-preview {
+            max-width: 100%;
             border-radius: 8px;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 3px;
-            overflow: hidden;
-            margin: 12px 0;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: #3182ce;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        .progress-text {
-            font-size: 0.875rem;
-            color: #718096;
-            text-align: center;
-        }
-        
-        .footer-info {
-            max-width: 600px;
-            margin: 80px auto 40px;
-            text-align: center;
-            padding: 0 20px;
-        }
-        
-        .footer-text {
-            color: #3182ce;
-            font-size: 0.875rem;
-            margin-bottom: 24px;
-        }
-        
-        .rating-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .rating-text {
-            color: #718096;
-            font-size: 0.875rem;
-        }
-        
-        .rating-display {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .stars {
-            color: #fbd38d;
-            font-size: 1.2rem;
-        }
-        
-        .rating-score {
-            color: #3182ce;
-            font-weight: 600;
+            margin: 16px 0;
         }
 
-        .page-header {
+        .action-buttons {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            border-bottom: 2px solid #e2e8f0;
-            background: #ffffff;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
         }
-        
-        .page-main-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2d3748;
-            margin: 0;
-        }
-        
-        .header-buttons {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        
-        .back-button {
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
-            color: #3182ce;
-            text-decoration: none;
-            border: 1px solid #3182ce;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 14px;
         }
-        
-        .back-button:hover {
-            background: #3182ce;
+
+        .btn-primary {
+            background: #3367d6;
             color: white;
         }
 
-        .control-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
         }
 
-        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
 
-        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
 
-        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
+            .nav-links {
+                display: none;
             }
-            
-            
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .video-info-grid {
+                grid-template-columns: 1fr;
+            }
         }
-    </style>    
+    </style>
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
-
 </head>
+
 <body>
-    <div class="page-header">
-        <h1 class="page-main-title">🎬 <span >视频信息查看器</span></h1>
-        <div class="header-buttons">
-            <div class="control-buttons">
-                
-            </div>
-            <a href="video-tools.html" class="back-button">← <span >视频工具</span></a>
-            <a href="index.html" class="back-button">🏠 <span >首页</span></a>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🎬 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html" class="active">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
         </div>
-    </div>
+    </header>
 
     <div class="container">
-        <h1 class="page-title" >Video Information Viewer</h1>
-        <p class="page-subtitle" >Get detailed information about your video files</p>
-        
-        <div class="upload-area" id="uploadArea">
-            <div class="upload-icon">🎬</div>
-            <button class="upload-button" onclick="document.getElementById('fileInput').click()">
-                📤 <span >Upload from PC or Mobile</span>
-            </button>
-            <div class="upload-text" >or Drag files here</div>
-            <input type="file" id="fileInput" multiple accept="video/*" style="display: none;">
-        </div>
-        
-        <div class="info-panel" id="infoPanel" style="display: none;">
-            <div id="fileList"></div>
-            
-            <div class="progress-section" id="progressSection" style="display: none;">
-                <div class="progress-text" id="progressText" >正在分析视频信息...</div>
+        <h1 class="page-title">Video Info Viewer</h1>
+        <p class="page-subtitle">Get detailed information about your video files</p>
+
+        <div class="info-card">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎬</div>
+                <div class="upload-text">Click to select video files or drag them here</div>
+                <div class="upload-hint">Supports MP4, AVI, MOV, WebM formats, maximum 100MB each</div>
+                <input type="file" id="fileInput" accept="video/*" multiple>
+            </div>
+
+            <!-- File Info -->
+            <div class="file-info" id="fileInfo">
+                <h3>Selected Files:</h3>
+                <div id="fileDetails"></div>
+            </div>
+
+            <!-- Analysis Progress -->
+            <div class="analysis-progress" id="analysisProgress">
+                <h4>Analyzing Video Information:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
+                <div id="progressText">0%</div>
             </div>
-            
-            <div id="videoInfoResults" style="display: none;">
-                <!-- Video info will be displayed here -->
+
+            <!-- Action Buttons -->
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn btn-primary" id="analyzeBtn" disabled>
+                    📊 Analyze Videos
+                </button>
+                <button class="btn btn-secondary" id="clearBtn" style="margin-left: 10px;">
+                    🗑️ Clear Files
+                </button>
             </div>
         </div>
-        
-        <div class="footer-info">
-            <div class="footer-text" >Uploaded and generated files are deleted 1 hour after upload</div>
-            <div class="rating-section">
-                <div class="rating-text" >Help Us Improve</div>
-                <div class="rating-display">
-                    <div class="stars">★★★★★</div>
-                    <div class="rating-score">4.8 (1703)</div>
-                </div>
+
+        <!-- Analysis Results -->
+        <div class="analysis-result" id="analysisResult">
+            <h3>📊 Video Analysis Complete!</h3>
+            <div id="videoInfoResults"></div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="newAnalysisBtn">
+                    🔄 New Analysis
+                </button>
+                <a href="video-tools.html" class="btn btn-primary">
+                    ← Back to Video Tools
+                </a>
             </div>
         </div>
     </div>
-    
-    <!-- FFmpeg 懒加载管理器 -->
-    <script src="scripts/ffmpeg-loader.js"></script>
-    
+
     <script>
-        class VideoInfoViewer {
-            constructor() {
-                this.ffmpeg = null;
-                this.selectedFiles = [];
-                this.ffmpegReady = false;
-                this.init();
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileDetails = document.getElementById('fileDetails');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const analysisProgress = document.getElementById('analysisProgress');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const analysisResult = document.getElementById('analysisResult');
+        const videoInfoResults = document.getElementById('videoInfoResults');
+        const newAnalysisBtn = document.getElementById('newAnalysisBtn');
+        
+        let selectedFiles = [];
+        let analysisResults = [];
+
+        // File drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files).filter(file => 
+                file.type.startsWith('video/')
+            );
+            if (files.length > 0) {
+                handleFiles(files);
+            }
+        });
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFiles(Array.from(e.target.files));
+            }
+        });
+
+        function handleFiles(files) {
+            selectedFiles = files;
+            displayFileInfo();
+            fileInfo.style.display = 'block';
+            analyzeBtn.disabled = false;
+        }
+
+        function displayFileInfo() {
+            fileDetails.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'file-details';
+                fileDiv.innerHTML = `
+                    <div class="file-icon">🎬</div>
+                    <div>
+                        <div style="font-weight: 500;">${file.name}</div>
+                        <div style="color: #6b7280; font-size: 0.9em;">
+                            ${formatFileSize(file.size)} • ${file.type}
+                        </div>
+                    </div>
+                `;
+                fileDetails.appendChild(fileDiv);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Analysis functionality
+        analyzeBtn.addEventListener('click', startAnalysis);
+        clearBtn.addEventListener('click', clearFiles);
+        newAnalysisBtn.addEventListener('click', clearFiles);
+
+        async function startAnalysis() {
+            analysisProgress.style.display = 'block';
+            analyzeBtn.disabled = true;
+            
+            analysisResults = [];
+            
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                
+                // Update progress
+                const progress = Math.round(((i + 1) / selectedFiles.length) * 100);
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `${progress}% - Analyzing ${file.name}`;
+                
+                // Simulate analysis process
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Get video info (simulated)
+                const videoInfo = await analyzeVideoFile(file);
+                analysisResults.push({
+                    file: file,
+                    info: videoInfo
+                });
             }
             
-            init() {
-                this.bindEvents();
-            }
+            progressText.textContent = 'Analysis Complete!';
             
-            async ensureFFmpegReady() {
-                if (this.ffmpegReady && this.ffmpeg) {
-                    return this.ffmpeg;
-                }
+            setTimeout(() => {
+                analysisProgress.style.display = 'none';
+                showAnalysisResult();
+            }, 500);
+        }
+
+        async function analyzeVideoFile(file) {
+            // Create video element to extract basic info
+            return new Promise((resolve) => {
+                const video = document.createElement('video');
+                video.preload = 'metadata';
                 
-                this.showLoadingState();
+                video.onloadedmetadata = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    
+                    video.currentTime = 1; // Seek to 1 second for thumbnail
+                    
+                    video.onseeked = function() {
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const thumbnail = canvas.toDataURL('image/jpeg');
+                        
+                        resolve({
+                            duration: formatDuration(video.duration),
+                            durationSeconds: video.duration,
+                            width: video.videoWidth,
+                            height: video.videoHeight,
+                            resolution: `${video.videoWidth}x${video.videoHeight}`,
+                            aspectRatio: (video.videoWidth / video.videoHeight).toFixed(2),
+                            thumbnail: thumbnail,
+                            fileSize: formatFileSize(file.size),
+                            fileName: file.name,
+                            fileType: file.type
+                        });
+                    };
+                };
                 
-                try {
-                    this.ffmpeg = await window.ffmpegLoader.getFFmpeg({
-                        onProgress: (percent, text) => {
-                            this.updateProgress(percent, text);
-                        },
-                        onStatusUpdate: (status) => {
-                            this.updateLoadingStatus(status);
-                        }
+                video.onerror = function() {
+                    resolve({
+                        fileName: file.name,
+                        fileSize: formatFileSize(file.size),
+                        fileType: file.type,
+                        error: 'Could not analyze video file'
                     });
-                    
-                    this.ffmpegReady = true;
-                    this.hideLoadingState();
-                    return this.ffmpeg;
-                    
-                } catch (error) {
-                    console.error('FFmpeg加载失败:', error);
-                    this.showLoadingError(error);
-                    throw error;
-                }
-            }
+                };
+                
+                video.src = URL.createObjectURL(file);
+            });
+        }
+
+        function formatDuration(seconds) {
+            if (isNaN(seconds)) return 'Unknown';
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
             
-            showLoadingState() {
-                if (!document.getElementById('ffmpegLoadingOverlay')) {
-                    const overlay = document.createElement('div');
-                    overlay.id = 'ffmpegLoadingOverlay';
-                    overlay.style.cssText = `
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(0, 0, 0, 0.8);
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        z-index: 1000;
-                        color: white;
-                    `;
-                    
-                    overlay.innerHTML = `
-                        <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
-                            <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
-                            <h3 id="loadingTitle" >正在加载视频分析引擎...</h3>
-                            <p id="loadingStatus" >首次使用需要下载约25MB的分析库，请稍候...</p>
-                            <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 20px 0;">
-                                <div id="loadingProgressFill" style="height: 100%; background: #3182ce; width: 0%; transition: width 0.3s ease;"></div>
-                            </div>
-                            <div id="loadingProgressText" >准备加载...</div>
+            if (hours > 0) {
+                return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            } else {
+                return `${minutes}:${secs.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function showAnalysisResult() {
+            analysisResult.style.display = 'block';
+            
+            let resultsHTML = '';
+            analysisResults.forEach((result, index) => {
+                const { file, info } = result;
+                
+                if (info.error) {
+                    resultsHTML += `
+                        <div style="margin-bottom: 32px; padding: 20px; border: 1px solid #ef4444; border-radius: 12px; background: #fef2f2;">
+                            <h3 style="margin-bottom: 16px; color: #dc2626;">${info.fileName}</h3>
+                            <p style="color: #dc2626;">Analysis failed: ${info.error}</p>
                         </div>
                     `;
-                    
-                    document.body.appendChild(overlay);
-                }
-            }
-            
-            hideLoadingState() {
-                const overlay = document.getElementById('ffmpegLoadingOverlay');
-                if (overlay) {
-                    overlay.remove();
-                }
-            }
-            
-            updateLoadingStatus(status) {
-                const statusElement = document.getElementById('loadingStatus');
-                if (statusElement) {
-                    statusElement.textContent = status;
-                }
-            }
-            
-            showLoadingError(error) {
-                const overlay = document.getElementById('ffmpegLoadingOverlay');
-                if (overlay) {
-                    overlay.innerHTML = `
-                        <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
-                            <div style="font-size: 2em; margin-bottom: 15px; color: #ef4444;">❌</div>
-                            <h3 style="color: #ef4444;" >视频分析引擎加载失败</h3>
-                            <p>${error.message}</p>
-                            <p >请检查网络连接并重试</p>
-                            <div style="margin-top: 20px;">
-                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;" >重新加载页面</button>
-                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;" >关闭</button>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-            
-            bindEvents() {
-                const uploadArea = document.getElementById('uploadArea');
-                const fileInput = document.getElementById('fileInput');
-                
-                // 拖拽上传
-                uploadArea.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.add('dragover');
-                });
-                
-                uploadArea.addEventListener('dragleave', () => {
-                    uploadArea.classList.remove('dragover');
-                });
-                
-                uploadArea.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    uploadArea.classList.remove('dragover');
-                    this.handleFiles(e.dataTransfer.files);
-                });
-                
-                // 文件选择
-                fileInput.addEventListener('change', (e) => {
-                    this.handleFiles(e.target.files);
-                });
-            }
-            
-            handleFiles(files) {
-                const videoFiles = Array.from(files).filter(file => file.type.startsWith('video/'));
-                
-                if (videoFiles.length === 0) {
-                    alert(window.DROPSHARE_I18N?.t('alert_select_video_files') || '请选择视频文件！');
                     return;
                 }
                 
-                this.selectedFiles = videoFiles;
-                this.showFileList();
-                this.analyzeVideos();
-            }
-            
-            showFileList() {
-                const fileList = document.getElementById('fileList');
-                let html = '';
-                
-                this.selectedFiles.forEach((file, index) => {
-                    html += `
-                        <div class="file-item">
-                            <div class="file-icon">🎬</div>
-                            <div class="file-details">
-                                <h4>${file.name}</h4>
-                                <p>${this.formatFileSize(file.size)} • ${file.type}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                fileList.innerHTML = html;
-                document.getElementById('infoPanel').style.display = 'block';
-            }
-            
-            async analyzeVideos() {
-                try {
-                    await this.ensureFFmpegReady();
-                    
-                    document.getElementById('progressSection').style.display = 'block';
-                    
-                    const results = [];
-                    
-                    for (let i = 0; i < this.selectedFiles.length; i++) {
-                        const file = this.selectedFiles[i];
-                        this.updateProgress((i / this.selectedFiles.length) * 100, 
-                            window.DROPSHARE_I18N?.t('status_analyzing_file', { name: file.name }) || `正在分析: ${file.name}`);
+                resultsHTML += `
+                    <div style="margin-bottom: 32px; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; background: white;">
+                        <h3 style="margin-bottom: 16px; color: #2d3748;">${info.fileName}</h3>
                         
-                        try {
-                            const info = await this.getVideoInfo(file);
-                            results.push({ file, info });
-                        } catch (error) {
-                            console.error('视频分析失败:', error);
-                            results.push({ file, error: error.message });
-                        }
-                    }
-                    
-                    this.updateProgress(100, window.DROPSHARE_I18N?.t('status_analysis_complete') || '分析完成');
-                    setTimeout(() => {
-                        this.showResults(results);
-                    }, 500);
-                    
-                } catch (error) {
-                    console.error('FFmpeg 加载失败:', error);
-                    alert(window.DROPSHARE_I18N?.t('alert_video_analysis_engine_load_failed') || '视频分析引擎加载失败，请检查网络连接后重试');
-                }
-            }
-            
-            async getVideoInfo(file) {
-                const inputFileName = `input_${Date.now()}.${this.getFileExtension(file.name)}`;
-                
-                // 将文件写入 FFmpeg 文件系统
-                await this.ffmpeg.writeFile(inputFileName, new Uint8Array(await file.arrayBuffer()));
-                
-                // 使用 ffprobe 获取视频信息
-                const { stderr } = await this.ffmpeg.exec(['-i', inputFileName, '-f', 'null', '-']);
-                
-                // 清理临时文件
-                await this.ffmpeg.deleteFile(inputFileName);
-                
-                // 解析 ffmpeg 输出
-                return this.parseVideoInfo(stderr);
-            }
-            
-            parseVideoInfo(stderr) {
-                const info = {};
-                
-                // 解析时长
-                const durationMatch = stderr.match(/Duration: (\d{2}):(\d{2}):(\d{2}\.\d{2})/);
-                if (durationMatch) {
-                    const hours = parseInt(durationMatch[1]);
-                    const minutes = parseInt(durationMatch[2]);
-                    const seconds = parseFloat(durationMatch[3]);
-                    info.duration = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toFixed(2).padStart(5, '0')}`;
-                    info.durationSeconds = hours * 3600 + minutes * 60 + seconds;
-                }
-                
-                // 解析视频流信息
-                const videoMatch = stderr.match(/Video: ([^,]+), ([^,]+), (\d+x\d+).*?(\d+(?:\.\d+)?) fps/);
-                if (videoMatch) {
-                    info.codec = videoMatch[1];
-                    info.pixelFormat = videoMatch[2];
-                    info.resolution = videoMatch[3];
-                    info.fps = parseFloat(videoMatch[4]);
-                }
-                
-                // 解析音频流信息
-                const audioMatch = stderr.match(/Audio: ([^,]+), (\d+) Hz, ([^,]+)/);
-                if (audioMatch) {
-                    info.audioCodec = audioMatch[1];
-                    info.sampleRate = audioMatch[2];
-                    info.channels = audioMatch[3];
-                }
-                
-                // 解析比特率
-                const bitrateMatch = stderr.match(/bitrate: (\d+) kb\/s/);
-                if (bitrateMatch) {
-                    info.bitrate = bitrateMatch[1] + ' kb/s';
-                }
-                
-                return info;
-            }
-            
-            showResults(results) {
-                const resultsContainer = document.getElementById('videoInfoResults');
-                let html = '';
-                
-                results.forEach(({ file, info, error }) => {
-                    if (error) {
-                        html += `
-                            <div class="info-card" style="border-color: #ef4444; background: #fef2f2;">
-                                <h3 style="color: #ef4444; margin-bottom: 12px;">${file.name}</h3>
-                                <p style="color: #dc2626;" >分析失败: ${error}</p>
-                            </div>
-                        `;
-                        return;
-                    }
-                    
-                    html += `
-                        <div style="margin-bottom: 32px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background: white;">
-                            <h3 style="margin-bottom: 16px; color: #2d3748;">${file.name}</h3>
-                            
-                            <div class="info-grid">
-                                <div class="info-card">
-                                    <div class="info-label" >文件大小</div>
-                                    <div class="info-value">${this.formatFileSize(file.size)}</div>
-                                </div>
-                                
-                                ${info.duration ? `
-                                <div class="info-card">
-                                    <div class="info-label" >时长</div>
-                                    <div class="info-value">${info.duration}</div>
-                                </div>
-                                ` : ''}
-                                
-                                ${info.resolution ? `
-                                <div class="info-card">
-                                    <div class="info-label" >分辨率</div>
-                                    <div class="info-value">${info.resolution}</div>
-                                </div>
-                                ` : ''}
-                                
-                                ${info.fps ? `
-                                <div class="info-card">
-                                    <div class="info-label" >帧率</div>
-                                    <div class="info-value">${info.fps} fps</div>
-                                </div>
-                                ` : ''}
-                                
-                                ${info.codec ? `
-                                <div class="info-card">
-                                    <div class="info-label" >视频编码</div>
-                                    <div class="info-value">${info.codec}</div>
-                                </div>
-                                ` : ''}
-                                
-                                ${info.audioCodec ? `
-                                <div class="info-card">
-                                    <div class="info-label" >音频编码</div>
-                                    <div class="info-value">${info.audioCodec}</div>
-                                </div>
-                                ` : ''}
-                                
-                                ${info.bitrate ? `
-                                <div class="info-card">
-                                    <div class="info-label" >比特率</div>
-                                    <div class="info-value">${info.bitrate}</div>
-                                </div>
-                                ` : ''}
-                                
-                                ${info.sampleRate ? `
-                                <div class="info-card">
-                                    <div class="info-label" >采样率</div>
-                                    <div class="info-value">${info.sampleRate} Hz</div>
-                                </div>
-                                ` : ''}
-                                
-                                ${info.channels ? `
-                                <div class="info-card">
-                                    <div class="info-label" >音频声道</div>
-                                    <div class="info-value">${info.channels}</div>
-                                </div>
-                                ` : ''}
-                            </div>
+                        ${info.thumbnail ? `
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img src="${info.thumbnail}" alt="Video thumbnail" style="max-width: 300px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         </div>
-                    `;
-                });
-                
-                resultsContainer.innerHTML = html;
-                resultsContainer.style.display = 'block';
-                document.getElementById('progressSection').style.display = 'none';
-                
-                // 重新初始化i18n翻译
-                if (window.DROPSHARE_I18N && window.DROPSHARE_I18N.translateElements) {
-                    window.DROPSHARE_I18N.translateElements();
-                }
-            }
+                        ` : ''}
+                        
+                        <div class="video-info-grid">
+                            <div class="info-item">
+                                <div class="info-label">File Size</div>
+                                <div class="info-value">${info.fileSize}</div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-label">File Type</div>
+                                <div class="info-value">${info.fileType}</div>
+                            </div>
+                            
+                            ${info.duration ? `
+                            <div class="info-item">
+                                <div class="info-label">Duration</div>
+                                <div class="info-value">${info.duration}</div>
+                            </div>
+                            ` : ''}
+                            
+                            ${info.resolution ? `
+                            <div class="info-item">
+                                <div class="info-label">Resolution</div>
+                                <div class="info-value">${info.resolution}</div>
+                            </div>
+                            ` : ''}
+                            
+                            ${info.aspectRatio ? `
+                            <div class="info-item">
+                                <div class="info-label">Aspect Ratio</div>
+                                <div class="info-value">${info.aspectRatio}:1</div>
+                            </div>
+                            ` : ''}
+                            
+                            ${info.width && info.height ? `
+                            <div class="info-item">
+                                <div class="info-label">Dimensions</div>
+                                <div class="info-value">${info.width} × ${info.height}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
             
-            updateProgress(percent, text) {
-                const progressFill = document.getElementById('progressFill');
-                const progressText = document.getElementById('progressText');
-                if (progressFill) progressFill.style.width = percent + '%';
-                if (progressText) progressText.textContent = text;
-                
-                // 更新加载覆盖层中的进度条（如果存在）
-                const loadingProgressFill = document.getElementById('loadingProgressFill');
-                const loadingProgressText = document.getElementById('loadingProgressText');
-                if (loadingProgressFill) loadingProgressFill.style.width = percent + '%';
-                if (loadingProgressText) loadingProgressText.textContent = text;
-            }
+            videoInfoResults.innerHTML = resultsHTML;
             
-            getFileExtension(fileName) {
-                return fileName.split('.').pop().toLowerCase();
-            }
-            
-            formatFileSize(bytes) {
-                if (bytes === 0) return '0 B';
-                const k = 1024;
-                const sizes = ['B', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
+            // Scroll to result area
+            analysisResult.scrollIntoView({ behavior: 'smooth' });
         }
-        
-        // 初始化
-        let videoInfoViewer;
-        document.addEventListener('DOMContentLoaded', () => {
-            videoInfoViewer = new VideoInfoViewer();
-        });
-    </script>
 
-        <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
-    
-    <!-- Firebase Analytics Configuration -->
-    <script src="scripts/firebase-analytics.js"></script>
-    <script src="scripts/analytics-enhanced.js"></script>
-    <script src="scripts/tools-analytics.js"></script>
+        function clearFiles() {
+            selectedFiles = [];
+            analysisResults = [];
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+            analysisProgress.style.display = 'none';
+            analysisResult.style.display = 'none';
+            analyzeBtn.disabled = true;
+            progressFill.style.width = '0%';
+            progressText.textContent = '0%';
+        }
+    </script>
     
     <!-- Load i18n system -->
     <script src="scripts/i18n/languages.js"></script>    
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
-    <script>
-        // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
-            }
-        });
-    </script>
 </body>
 </html>
