@@ -61,22 +61,41 @@
             fill: #2563eb;
         }
 
-        .back-button {
-            display: inline-flex;
+        .header-controls {
+            display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            color: #667eea;
-            text-decoration: none;
-            border: 1px solid #667eea;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 14px;
+            gap: 16px;
         }
 
-        .back-button:hover {
-            background: #667eea;
-            color: white;
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         /* Main Content */
@@ -327,6 +346,23 @@
         }
 
         @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links {
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
             .main-content {
                 padding: 20px 15px 40px;
                 margin-top: 100px;
@@ -369,9 +405,19 @@
                 <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
             </div>
 
-            <a href="document-tools.html" class="back-button">
-                ← Back to Files
-            </a>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Rooms</a>
+                    <a href="image-tools.html">Images</a>
+                    <a href="audio-tools.html">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html" class="active">Files</a>
+                </nav>
+                <div class="control-buttons">
+
+                </div>
+            </div>
         </div>
     </header>
 
@@ -552,24 +598,195 @@
             downloadBtn.download = fileName;
         }
 
-        function createSimulatedWordContent() {
-            // This is a placeholder - in real implementation, you would use proper PDF parsing
-            // and Word document generation libraries
-            const content = `Converted Word Document
-            
-This document was converted from PDF: ${selectedFile.name}
+        async function createSimulatedWordContent() {
+            try {
+                // 加载必要的库
+                await loadLibraries();
+
+                // 读取PDF文件
+                const arrayBuffer = await selectedFile.arrayBuffer();
+                const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                
+                let fullText = '';
+                
+                // 提取所有页面的文本
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += pageText + '\n\n';
+                }
+
+                // 使用docx库创建真正的Word文档
+                const doc = new window.docx.Document({
+                    sections: [{
+                        properties: {},
+                        children: [
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: `Converted from PDF: ${selectedFile.name}`,
+                                        bold: true,
+                                        size: 28,
+                                    }),
+                                ],
+                                heading: window.docx.HeadingLevel.TITLE,
+                            }),
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: `Conversion Date: ${new Date().toLocaleString()}`,
+                                        italics: true,
+                                    }),
+                                ],
+                            }),
+                            new window.docx.Paragraph({
+                                children: [new window.docx.TextRun({ text: "" })],
+                            }),
+                            ...fullText.split('\n').filter(line => line.trim()).map(paragraph => 
+                                new window.docx.Paragraph({
+                                    children: [
+                                        new window.docx.TextRun({
+                                            text: paragraph.trim(),
+                                        }),
+                                    ],
+                                })
+                            ),
+                        ],
+                    }],
+                });
+
+                // 生成DOCX文件
+                const buffer = await window.docx.Packer.toBlob(doc);
+                return buffer;
+                
+            } catch (error) {
+                console.error('PDF parsing failed:', error);
+                // 回退到基本文本DOCX
+                return await createBasicDocx();
+            }
+        }
+
+        async function loadLibraries() {
+            // 加载PDF.js
+            if (!window.pdfjsLib) {
+                const pdfScript = document.createElement('script');
+                pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js';
+                document.head.appendChild(pdfScript);
+                await new Promise((resolve, reject) => {
+                    pdfScript.onload = resolve;
+                    pdfScript.onerror = reject;
+                });
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+            }
+
+            // 加载docx库
+            if (!window.docx) {
+                const docxScript = document.createElement('script');
+                docxScript.src = 'https://unpkg.com/docx@7.8.2/build/index.js';
+                document.head.appendChild(docxScript);
+                await new Promise((resolve, reject) => {
+                    docxScript.onload = resolve;
+                    docxScript.onerror = reject;
+                });
+            }
+        }
+
+        async function createBasicDocx() {
+            try {
+                if (!window.docx) {
+                    await loadLibraries();
+                }
+
+                const doc = new window.docx.Document({
+                    sections: [{
+                        properties: {},
+                        children: [
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: `Converted Document from: ${selectedFile.name}`,
+                                        bold: true,
+                                        size: 24,
+                                    }),
+                                ],
+                                heading: window.docx.HeadingLevel.TITLE,
+                            }),
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: `Conversion completed on: ${new Date().toLocaleString()}`,
+                                        italics: true,
+                                    }),
+                                ],
+                            }),
+                            new window.docx.Paragraph({
+                                children: [new window.docx.TextRun({ text: "" })],
+                            }),
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: "Note: Unable to extract text from this PDF. This may be due to:",
+                                    }),
+                                ],
+                            }),
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: "• The PDF contains scanned images rather than text",
+                                    }),
+                                ],
+                                bullet: {
+                                    level: 0,
+                                },
+                            }),
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: "• The PDF is password protected or encrypted",
+                                    }),
+                                ],
+                                bullet: {
+                                    level: 0,
+                                },
+                            }),
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: "• The PDF uses non-standard encoding",
+                                    }),
+                                ],
+                                bullet: {
+                                    level: 0,
+                                },
+                            }),
+                            new window.docx.Paragraph({
+                                children: [new window.docx.TextRun({ text: "" })],
+                            }),
+                            new window.docx.Paragraph({
+                                children: [
+                                    new window.docx.TextRun({
+                                        text: "For best results, please use PDFs with selectable text content.",
+                                        italics: true,
+                                    }),
+                                ],
+                            }),
+                        ],
+                    }],
+                });
+
+                return await window.docx.Packer.toBlob(doc);
+            } catch (error) {
+                console.error('Failed to create basic DOCX:', error);
+                // 最终回退到纯文本
+                const content = `Converted Document from: ${selectedFile.name}
+                
 Conversion completed on: ${new Date().toLocaleString()}
 
-Content would appear here after proper PDF parsing and Word document generation.
-
-Note: This is a simulated conversion for demonstration purposes.
-In a real implementation, you would use libraries like:
-- PDF.js for parsing PDF content
-- docx.js for generating Word documents
-- Or server-side conversion services
-            `;
-            
-            return new Blob([content], { type: 'text/plain' });
+Note: Unable to process this PDF file. Please try a different PDF or contact support.`;
+                
+                return new Blob([content], { type: 'text/plain' });
+            }
         }
 
         function clearFile() {

@@ -2,12 +2,29 @@
 
 /* ===== CSS 变量定义 ===== */
 :root {
-  /* 颜色系统 */
+  /* 基础颜色系统 */
+  --primary-color: #667eea;
+  --primary-color-dark: #5a67d8;
+  --primary-color-light: #a5b4fc;
   --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --error-color: #ef4444;
   --info-color: #3b82f6;
+  
+  /* 背景颜色 */
+  --bg-color: #ffffff;
+  --bg-color-secondary: #f8fafc;
+  --surface-color: #ffffff;
+  --surface-hover: #f9fafb;
+  
+  /* 文本颜色 */
+  --text-color: #1a202c;
+  --text-color-secondary: #718096;
+  --text-muted: #6b7280;
+  
+  /* 边框颜色 */
+  --border-color: #e2e8f0;
   
   /* 默认背景遮罩 - 确保在所有情况下都有值 */
   --backdrop-color: rgba(0, 0, 0, 0.61);
@@ -49,19 +66,27 @@
 /* 深色主题变量 */
 [data-theme="dark"],
 body.dark-theme {
+  --bg-color: #1a202c;
+  --bg-color-secondary: #2d3748;
   --surface-color: #1f2937;
   --surface-hover: #374151;
   --border-color: #374151;
+  --text-color: #ffffff;
+  --text-color-secondary: #e2e8f0;
   --text-muted: #9ca3af;
   --backdrop-color: rgba(0, 0, 0, 0.8);
 }
 
-/* 浅色主题变量 */
+/* 浅色主题变量 (默认值已在 :root 中定义，这里可以覆盖特定值) */
 [data-theme="light"],
 body.light-theme {
+  --bg-color: #ffffff;
+  --bg-color-secondary: #f8fafc;
   --surface-color: #ffffff;
   --surface-hover: #f9fafb;
-  --border-color: #e5e7eb;
+  --border-color: #e2e8f0;
+  --text-color: #1a202c;
+  --text-color-secondary: #718096;
   --text-muted: #6b7280;
   --backdrop-color: rgba(0, 0, 0, 0.5);
 }

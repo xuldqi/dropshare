@@ -312,13 +312,17 @@
             font-weight: 500;
         }
 
-        /* 不同工具的图标颜色 */
-        .icon-converter { background: #f57c00; }
-        .icon-editor { background: #7b1fa2; }
-        .icon-merger { background: #388e3c; }
-        .icon-splitter { background: #d32f2f; }
-        .icon-ocr { background: #1976d2; }
-        .icon-compress { background: #f06292; }
+        /* 不同工具的图标颜色 - 现代化渐变 */
+        .icon-converter { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .icon-convert { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .icon-editor { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .icon-merger { background: linear-gradient(135deg, #a8e6cf, #7fcdcd); }
+        .icon-splitter { background: linear-gradient(135deg, #ffd93d, #ff6b6b); }
+        .icon-ocr { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .icon-compress { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+        .icon-office { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .icon-spreadsheet { background: linear-gradient(135deg, #ff8a80, #ff80ab); }
+        .icon-document { background: linear-gradient(135deg, #84fab0, #8fd3f4); }
 
         /* 响应式设计 */
         @media (max-width: 768px) {
@@ -817,8 +821,8 @@
                 <h3 class="tool-title">Document Processor</h3>
                 <p class="tool-description">Advanced PDF and document processing - merge, split, extract text, PDF to Word</p>
                 <div class="tool-stats">
-                    <span>📄 PDF to Word</span>
-                    <span>⚙️ Multi-tool</span>
+                    <span>📄 <span>PDF to Word</span></span>
+                    <span>⚙️ <span>Multi-tool</span></span>
                 </div>
             </div>
 
@@ -831,8 +835,8 @@
                 <h3 class="tool-title">PDF to Word</h3>
                 <p class="tool-description">Convert PDF documents to editable Word format (.docx) quickly and easily</p>
                 <div class="tool-stats">
-                    <span>📄 PDF input</span>
-                    <span>📝 DOCX output</span>
+                    <span>📄 <span>PDF input</span></span>
+                    <span>📝 <span>DOCX output</span></span>
                 </div>
             </div>
 
@@ -845,8 +849,8 @@
                 <h3 class="tool-title">Text Converter</h3>
                 <p class="tool-description">Convert between TXT, HTML, and Markdown formats with formatting options</p>
                 <div class="tool-stats">
-                    <span>🔄 6 formats</span>
-                    <span>⚡ Instant</span>
+                    <span>🔄 <span>6 formats</span></span>
+                    <span>⚡ <span>Instant</span></span>
                 </div>
             </div>
 
@@ -854,56 +858,56 @@
             <!-- DOCX to HTML -->
             <div class="tool-card" data-keywords="docx html word document convert" onclick="window.location.href='docx-to-html.html'">
                 <div class="tool-card-header">
-                    <div class="tool-icon icon-converter">📝</div>
+                    <div class="tool-icon icon-office">📝</div>
                     <div class="tool-category">Office</div>
                 </div>
                 <h3 class="tool-title">DOCX to HTML</h3>
                 <p class="tool-description">Convert Word documents to HTML format for web display</p>
                 <div class="tool-stats">
-                    <span>📄 Word docs</span>
-                    <span>🌐 Web ready</span>
+                    <span>📄 <span>Word docs</span></span>
+                    <span>🌐 <span>Web ready</span></span>
                 </div>
             </div>
 
             <!-- DOCX to Text -->
             <div class="tool-card" data-keywords="docx txt word text convert" onclick="window.location.href='docx-to-txt.html'">
                 <div class="tool-card-header">
-                    <div class="tool-icon icon-converter">📃</div>
+                    <div class="tool-icon icon-document">📃</div>
                     <div class="tool-category">Office</div>
                 </div>
                 <h3 class="tool-title">DOCX to Text</h3>
                 <p class="tool-description">Extract plain text from Word documents</p>
                 <div class="tool-stats">
-                    <span>📄 Extract text</span>
-                    <span>📝 Plain format</span>
+                    <span>📄 <span>Extract text</span></span>
+                    <span>📝 <span>Plain format</span></span>
                 </div>
             </div>
 
             <!-- XLSX to CSV -->
             <div class="tool-card" data-keywords="xlsx csv excel spreadsheet convert" onclick="window.location.href='xlsx-to-csv.html'">
                 <div class="tool-card-header">
-                    <div class="tool-icon icon-converter">📊</div>
+                    <div class="tool-icon icon-spreadsheet">📊</div>
                     <div class="tool-category">Office</div>
                 </div>
                 <h3 class="tool-title">XLSX to CSV</h3>
                 <p class="tool-description">Convert Excel spreadsheets to CSV format for data processing</p>
                 <div class="tool-stats">
-                    <span>📈 Excel files</span>
-                    <span>📋 CSV export</span>
+                    <span>📈 <span>Excel files</span></span>
+                    <span>📋 <span>CSV export</span></span>
                 </div>
             </div>
 
             <!-- CSV to XLSX -->
             <div class="tool-card" data-keywords="csv xlsx excel convert spreadsheet" onclick="window.location.href='csv-to-xlsx.html'">
                 <div class="tool-card-header">
-                    <div class="tool-icon icon-converter">📋</div>
+                    <div class="tool-icon icon-spreadsheet">📋</div>
                     <div class="tool-category">Office</div>
                 </div>
                 <h3 class="tool-title">CSV to XLSX</h3>
                 <p class="tool-description">Convert CSV data to Excel spreadsheet format</p>
                 <div class="tool-stats">
-                    <span>📋 CSV import</span>
-                    <span>📊 Excel format</span>
+                    <span>📋 <span>CSV import</span></span>
+                    <span>📊 <span>Excel format</span></span>
                 </div>
             </div>
 
@@ -1426,10 +1430,10 @@
             const shareText = '📤 传送';
 
             const content = `
-                <div class="tool-interface">
-                    <div class="input-section">
-                        <label>选择转换类型：</label>
-                        <select id="textConvertType" style="margin-bottom: 10px; padding: 8px; border: 2px solid #e9ecef; border-radius: 6px; width: 100%;">
+                <div class="tool-interface" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="input-section" style="display: flex; flex-direction: column; gap: 8px;">
+                        <label style="font-weight: 600; color: #333;">选择转换类型：</label>
+                        <select id="textConvertType" style="margin-bottom: 10px; padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; width: 100%; font-family: inherit; font-size: 14px;">
                             <option value="txt-to-html">TXT → HTML</option>
                             <option value="html-to-txt">HTML → TXT</option>
                             <option value="txt-to-markdown">TXT → Markdown</option>
@@ -1437,18 +1441,18 @@
                             <option value="markdown-to-html">Markdown → HTML</option>
                             <option value="html-to-markdown">HTML → Markdown</option>
                         </select>
-                        <label for="textInput">输入内容：</label>
-                        <textarea id="textInput" rows="8" placeholder="请在此处输入或粘贴您的内容..."></textarea>
+                        <label for="textInput" style="font-weight: 600; color: #333;">输入内容：</label>
+                        <textarea id="textInput" rows="8" placeholder="请在此处输入或粘贴您的内容..." style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; font-family: monospace; font-size: 14px; resize: vertical; min-height: 100px;"></textarea>
                     </div>
-                    <div class="button-section">
-                        <button onclick="performTextConversion()" class="action-btn">${convertText}</button>
-                        <button onclick="clearTextConverter()" class="action-btn">${clearText}</button>
-                        <button onclick="downloadTextResult()" class="action-btn">${downloadText}</button>
-                        <button onclick="shareTextResult()" class="action-btn">${shareText}</button>
+                    <div class="button-section" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button onclick="performTextConversion()" class="action-btn" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='#5a67d8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#667eea'; this.style.transform='translateY(0)'">${convertText}</button>
+                        <button onclick="clearTextConverter()" class="action-btn" style="padding: 10px 20px; background: #f56565; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='#e53e3e'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#f56565'; this.style.transform='translateY(0)'">${clearText}</button>
+                        <button onclick="downloadTextResult()" class="action-btn" style="padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='#059669'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#10b981'; this.style.transform='translateY(0)'">${downloadText}</button>
+                        <button onclick="shareTextResult()" class="action-btn" style="padding: 10px 20px; background: #f59e0b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s;" onmouseover="this.style.background='#d97706'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#f59e0b'; this.style.transform='translateY(0)'">${shareText}</button>
                     </div>
-                    <div class="output-section">
-                        <label for="textOutput">转换结果：</label>
-                        <textarea id="textOutput" rows="8" readonly></textarea>
+                    <div class="output-section" style="display: flex; flex-direction: column; gap: 8px;">
+                        <label for="textOutput" style="font-weight: 600; color: #333;">转换结果：</label>
+                        <textarea id="textOutput" rows="8" readonly style="width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 8px; font-family: monospace; font-size: 14px; resize: vertical; min-height: 100px; background: #f8f9fa;"></textarea>
                     </div>
                 </div>
             `;
@@ -1529,23 +1533,44 @@
 
 
         function showToolInterface(title, content) {
+            // 清除之前的模态窗口
+            const existingModal = document.querySelector('.tool-modal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
             // 创建模态窗口
             const modal = document.createElement('div');
             modal.className = 'tool-modal';
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.zIndex = '1200';
+            
             modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>${title}</h2>
-                        <button class="modal-close" onclick="closeToolModal()">&times;</button>
+                <div class="modal-content" style="background: white; border-radius: 12px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
+                    <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid #e9ecef;">
+                        <h2 style="margin: 0; color: #333;">${title}</h2>
+                        <button class="modal-close" onclick="closeToolModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666; padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">&times;</button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="padding: 20px;">
                         ${content}
                     </div>
                 </div>
             `;
 
             document.body.appendChild(modal);
-            modal.style.display = 'flex';
+            
+            // 确保模态窗口显示
+            requestAnimationFrame(() => {
+                modal.style.display = 'flex';
+            });
         }
 
         function closeToolModal() {
