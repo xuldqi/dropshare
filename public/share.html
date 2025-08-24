@@ -44,7 +44,7 @@
             min-height: 100vh !important;
             overflow-y: auto !important;
         }
-        
+
         /* Main page container */
         .page-container {
             display: flex;
@@ -54,7 +54,7 @@
             position: relative;
             padding-top: 80px;
         }
-        
+
         /* Message area in the center */
         .center-message {
             width: 100%;
@@ -62,7 +62,7 @@
             margin: 0 auto;
             padding: 40px 24px;
         }
-        
+
         /* User info at bottom */
         .user-info-bottom {
             position: fixed;
@@ -72,7 +72,7 @@
             text-align: center;
             z-index: 100;
         }
-        
+
         /* Style the peer area */
         x-peers {
             display: flex !important;
@@ -81,12 +81,12 @@
             justify-content: center;
             margin: 20px 0;
         }
-        
+
         /* Center the no-peers message */
         x-no-peers {
             margin: 20px 0;
         }
-        
+
         /* Center footer content */
         footer {
             position: static !important;
@@ -94,17 +94,17 @@
             padding: 20px;
             text-align: center;
         }
-        
+
         /* Hide instructions container that interferes */
         .instructions-container {
             display: none;
         }
-        
+
         /* 隐藏返回首页按钮 */
         .back-home-btn {
             display: none !important;
         }
-        
+
         /* 房间功能样式 */
         .room-container {
             display: none;
@@ -115,23 +115,23 @@
             margin: 0 auto;
             padding: 24px;
         }
-        
+
         .room-container.active {
             display: flex !important;
         }
-        
+
         .room-header {
             text-align: center;
             margin-bottom: 32px;
         }
-        
+
         .room-title {
             font-size: 2.5rem;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 12px;
         }
-        
+
         .room-subtitle {
             font-size: 1.125rem;
             color: #64748b;
@@ -140,14 +140,14 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         .room-options {
             display: flex !important;
             justify-content: center;
             gap: 20px;
             margin-bottom: 20px;
         }
-        
+
         .room-forms-container {
             display: flex;
             justify-content: center;
@@ -157,7 +157,7 @@
             padding: 0 20px; /* 增加左右内边距，确保在小屏幕上也有间距 */
             box-sizing: border-box;
         }
-        
+
         .room-btn {
             padding: 14px 28px;
             background: #3367d6;
@@ -169,23 +169,23 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
+
         .room-btn:hover {
             background: #2563eb;
             transform: translateY(-2px);
         }
-        
+
         .room-btn.secondary {
             background: transparent;
             color: #3367d6;
             border: 2px solid #3367d6;
         }
-        
+
         .room-btn.secondary:hover {
             background: #3367d6;
             color: white;
         }
-        
+
         .room-form {
             display: none;
             background: white;
@@ -199,28 +199,28 @@
             z-index: 1050; /* 确保在导航栏之上 */
             box-sizing: border-box; /* 确保padding包含在width内 */
         }
-        
+
         .room-form.active {
             display: block;
         }
-        
+
         .room-form h3 {
             margin-bottom: 20px;
             color: #333;
             text-align: center;
         }
-        
+
         .form-group {
             margin-bottom: 16px;
         }
-        
+
         .form-label {
             display: block;
             margin-bottom: 8px;
             color: #555;
             font-weight: 500;
         }
-        
+
         .form-input {
             width: 100%;
             padding: 12px;
@@ -230,18 +230,18 @@
             transition: border-color 0.3s ease;
             box-sizing: border-box; /* 确保padding和border包含在width内 */
         }
-        
+
         .form-input:focus {
             outline: none;
             border-color: #3367d6;
         }
-        
+
         .form-actions {
             display: flex;
             gap: 12px;
             margin-top: 24px;
         }
-        
+
         .form-actions button {
             flex: 1;
             padding: 12px;
@@ -253,25 +253,25 @@
             transition: all 0.3s ease;
             box-sizing: border-box; /* 确保padding包含在width内 */
         }
-        
+
         .btn-primary {
             background: #3367d6;
             color: white;
         }
-        
+
         .btn-primary:hover {
             background: #2563eb;
         }
-        
+
         .btn-cancel {
             background: #f3f4f6;
             color: #6b7280;
         }
-        
+
         .btn-cancel:hover {
             background: #e5e7eb;
         }
-        
+
         .room-info {
             display: none;
             background: #f0f9ff;
@@ -285,11 +285,11 @@
             margin-right: auto;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        
+
         .room-info.active {
             display: block;
         }
-        
+
         .room-info-header {
             padding: 16px 20px;
             background: #f8fafc;
@@ -300,37 +300,37 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
-        
+
         .room-info-header:hover {
             background: #f1f5f9;
         }
-        
+
         .room-summary {
             display: flex;
             flex-direction: column;
             gap: 4px;
             align-items: flex-start;
         }
-        
+
         .room-name-display {
             font-weight: 600;
             color: #1e293b;
             font-size: 16px;
         }
-        
+
         .room-code-row {
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
+
         .room-code-display {
             font-family: monospace;
             color: #3367d6;
             font-weight: 600;
             font-size: 14px;
         }
-        
+
         .copy-btn-small {
             background: transparent;
             border: none;
@@ -340,28 +340,28 @@
             font-size: 12px;
             transition: background 0.2s;
         }
-        
+
         .copy-btn-small:hover {
             background: #f1f5f9;
         }
-        
+
         .member-count {
             font-size: 12px;
             color: #64748b;
         }
-        
+
         .current-user-info {
             display: flex;
             align-items: center;
             gap: 4px;
             margin: 4px 0;
         }
-        
+
         .current-user-label {
             font-size: 12px;
             color: #64748b;
         }
-        
+
         .current-user-name {
             font-size: 12px;
             color: #3367d6;
@@ -371,7 +371,7 @@
             border-radius: 4px;
             border: 1px solid #bfdbfe;
         }
-        
+
         .toggle-details-btn {
             background: none;
             border: none;
@@ -383,49 +383,49 @@
             justify-content: center;
             transition: all 0.2s;
         }
-        
+
         .toggle-details-btn:hover {
             background: #e2e8f0;
         }
-        
+
         .toggle-icon {
             transition: transform 0.2s;
             color: #64748b;
         }
-        
+
         .toggle-icon.rotated {
             transform: rotate(180deg);
         }
-        
+
         .room-details {
             padding: 0 20px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out, padding 0.3s ease-out;
         }
-        
+
         .room-details.expanded {
             max-height: 200px;
             padding: 16px 20px;
         }
-        
+
         .room-members-section {
             font-size: 14px;
         }
-        
+
         .room-members-section strong {
             display: block;
             margin-bottom: 12px;
             color: #374151;
         }
-        
+
         .room-actions {
             padding: 16px 20px;
             border-top: 1px solid #e2e8f0;
             background: #f8fafc;
             text-align: center;
         }
-        
+
         .btn-leave-room {
             background: #ef4444;
             color: white;
@@ -437,11 +437,11 @@
             font-weight: 500;
             transition: background 0.2s;
         }
-        
+
         .btn-leave-room:hover {
             background: #dc2626;
         }
-        
+
         /* 房间警告提示样式 */
         .room-warning {
             display: none;
@@ -454,50 +454,50 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         .room-warning.active {
             display: block;
         }
-        
+
         .warning-content {
             display: flex;
             align-items: flex-start;
             gap: 12px;
         }
-        
+
         .warning-icon {
             font-size: 20px;
             flex-shrink: 0;
         }
-        
+
         .warning-text {
             flex: 1;
         }
-        
+
         .warning-title {
             font-weight: 600;
             color: #92400e;
             margin-bottom: 4px;
             font-size: 14px;
         }
-        
+
         .warning-message {
             color: #92400e;
             font-size: 13px;
             line-height: 1.4;
         }
-        
+
         .room-members {
             margin-top: 20px;
         }
-        
+
         .member-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
             align-items: stretch;
         }
-        
+
         .member-item {
             display: flex;
             justify-content: space-between;
@@ -507,11 +507,11 @@
             border-radius: 6px;
             border: 1px solid #e5e7eb;
         }
-        
+
         .member-name {
             font-weight: 500;
         }
-        
+
         .member-role {
             font-size: 12px;
             color: #6b7280;
@@ -519,7 +519,7 @@
             padding: 4px 8px;
             border-radius: 12px;
         }
-        
+
         .error-message {
             color: #ef4444;
             background: #fef2f2;
@@ -528,31 +528,31 @@
             margin-top: 12px;
             text-align: center;
         }
-        
+
         /* 房间文件共享区域样式 */
         .file-transfer-area {
             display: none;
             width: 100%;
             margin-top: 24px;
         }
-        
+
         .room-file-sharing {
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
-        
+
         .file-section {
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-        
+
         .file-transfer-area.active {
             display: block;
         }
-        
+
         .upload-section {
             background: white;
             border-radius: 12px;
@@ -560,7 +560,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border: 1px solid #e5e7eb;
         }
-        
+
         .shared-files-section {
             background: white;
             border-radius: 12px;
@@ -568,7 +568,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             border: 1px solid #e5e7eb;
         }
-        
+
         .upload-section h3, .shared-files-section h3 {
             margin: 0 0 16px 0;
             color: #374151;
@@ -578,14 +578,14 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .shared-files-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
         }
-        
+
         .file-count {
             color: #6b7280;
             font-size: 14px;
@@ -593,13 +593,13 @@
             padding: 4px 12px;
             border-radius: 12px;
         }
-        
+
         .upload-hint {
             color: #6b7280;
             font-size: 14px;
             margin: 4px 0 12px 0;
         }
-        
+
         .drop-zone {
             border: 2px dashed #d1d5db;
             border-radius: 8px;
@@ -609,30 +609,30 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        
+
         .drop-zone:hover, .drop-zone.dragover {
             border-color: #3367d6;
             background: #f0f9ff;
         }
-        
+
         .drop-zone-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
         }
-        
+
         .upload-icon {
             color: #9ca3af;
             margin-bottom: 8px;
         }
-        
+
         .drop-zone p {
             color: #6b7280;
             margin: 0;
             font-size: 16px;
         }
-        
+
         .select-files-btn {
             background: #3367d6;
             color: white;
@@ -643,32 +643,32 @@
             font-weight: 600;
             transition: background 0.3s;
         }
-        
+
         .select-files-btn:hover {
             background: #2563eb;
         }
-        
+
         .shared-files-list {
             min-height: 200px;
             max-height: 400px;
             overflow-y: auto;
         }
-        
+
         .no-shared-files {
             text-align: center;
             color: #9ca3af;
             padding: 40px 20px;
         }
-        
+
         .no-shared-files p {
             margin: 8px 0;
         }
-        
+
         .no-shared-files .hint {
             font-size: 14px;
             color: #6b7280;
         }
-        
+
         .shared-file-item {
             display: flex;
             justify-content: space-between;
@@ -680,16 +680,16 @@
             background: #fafafa;
             transition: all 0.2s;
         }
-        
+
         .shared-file-item:hover {
             background: #f0f9ff;
             border-color: #3367d6;
         }
-        
+
         .shared-file-info {
             flex: 1;
         }
-        
+
         .shared-file-name {
             font-weight: 600;
             color: #374151;
@@ -698,62 +698,62 @@
             align-items: center;
             gap: 8px;
         }
-        
+
         .file-icon {
             font-size: 16px;
         }
-        
+
         .shared-file-details {
             font-size: 14px;
             color: #6b7280;
             display: flex;
             gap: 16px;
         }
-        
+
         .shared-file-uploader {
             color: #3367d6;
             font-weight: 500;
         }
-        
+
         .restored-tag {
             color: #f59e0b;
             font-size: 12px;
             font-weight: normal;
         }
-        
+
         .unavailable-hint {
             color: #ef4444;
             font-size: 12px;
             font-style: italic;
         }
-        
+
         .action-btn:disabled {
             background: #e5e7eb;
             color: #9ca3af;
             cursor: not-allowed;
         }
-        
+
         /* 文件状态样式 */
         .shared-file-item.file-offline {
             opacity: 0.6;
             background: #f8f9fa;
             border-color: #e9ecef;
         }
-        
+
         .shared-file-item.file-offline .shared-file-name {
             color: #6c757d;
         }
-        
+
         .shared-file-item.file-unavailable {
             opacity: 0.7;
             background: #fdf2f2;
             border-color: #fecaca;
         }
-        
+
         .shared-file-item.file-unavailable .shared-file-name {
             color: #991b1b;
         }
-        
+
         .file-status-indicator {
             display: inline-block;
             width: 8px;
@@ -762,24 +762,24 @@
             margin-left: 8px;
             vertical-align: middle;
         }
-        
+
         .status-online {
             background: #10b981;
         }
-        
+
         .status-offline {
             background: #ef4444;
         }
-        
+
         .status-unavailable {
             background: #f59e0b;
         }
-        
+
         .shared-file-actions {
             display: flex;
             gap: 8px;
         }
-        
+
         .transfer-item, .file-item {
             display: flex;
             justify-content: space-between;
@@ -790,22 +790,22 @@
             margin-bottom: 8px;
             background: #fafafa;
         }
-        
+
         .transfer-info, .file-info {
             flex: 1;
         }
-        
+
         .transfer-name, .file-name {
             font-weight: 500;
             color: #374151;
             margin-bottom: 4px;
         }
-        
+
         .transfer-details, .file-details {
             font-size: 12px;
             color: #6b7280;
         }
-        
+
         .progress-bar {
             width: 100%;
             height: 4px;
@@ -814,19 +814,19 @@
             margin: 8px 0;
             overflow: hidden;
         }
-        
+
         .progress-fill {
             height: 100%;
             background: #3367d6;
             border-radius: 2px;
             transition: width 0.3s ease;
         }
-        
+
         .transfer-actions, .file-actions {
             display: flex;
             gap: 8px;
         }
-        
+
         .action-btn {
             padding: 6px 12px;
             border: none;
@@ -836,45 +836,45 @@
             font-weight: 500;
             transition: background 0.2s;
         }
-        
+
         .btn-download {
             background: #10b981;
             color: white;
         }
-        
+
         .btn-download:hover {
             background: #059669;
         }
-        
+
         .btn-cancel {
             background: #ef4444;
             color: white;
         }
-        
+
         .btn-cancel:hover {
             background: #dc2626;
         }
-        
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             .room-file-sharing {
                 gap: 16px;
             }
-            
+
             .upload-section, .shared-files-section {
                 padding: 20px;
             }
-            
+
             .room-container {
                 max-width: 800px;
                 padding: 20px;
             }
-            
+
             .room-info {
                 max-width: 100%;
             }
         }
-        
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             .back-home-btn {
@@ -883,71 +883,71 @@
                 padding: 10px 16px;
                 font-size: 14px;
             }
-            
+
             .room-container {
                 max-width: 100%;
                 padding: 16px;
                 gap: 20px;
             }
-            
+
             .room-options {
                 flex-direction: column;
                 gap: 12px;
             }
-            
+
             .room-btn {
                 width: 100%;
                 padding: 16px;
             }
-            
+
             .room-form {
                 padding: 20px;
             }
-            
+
             .shared-file-item {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 12px;
             }
-            
+
             .shared-file-actions {
                 justify-content: center;
             }
-            
+
             .drop-zone {
                 padding: 30px 20px;
             }
-            
-            .upload-section h3, 
-            .transfer-list-section h3, 
+
+            .upload-section h3,
+            .transfer-list-section h3,
             .received-files-section h3 {
                 font-size: 16px;
             }
-            
+
             .room-title {
                 font-size: 1.875rem;
             }
-            
+
             .room-subtitle {
                 font-size: 1rem;
             }
-            
+
             .room-header {
                 margin-bottom: 24px;
             }
         }
-        
+
         /* 大屏幕优化 */
         @media (min-width: 1400px) {
             .room-container {
                 max-width: 1400px;
             }
-            
+
             .file-transfer-grid {
                 gap: 32px;
             }
         }
-        
+
         /* 顶部导航栏样式 */
         .top-navbar {
             background: #fff;
@@ -960,7 +960,7 @@
             z-index: 1000;
             height: 60px;
         }
-        
+
         .navbar-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -970,7 +970,7 @@
             height: 100%;
             padding: 0 20px;
         }
-        
+
         .navbar-brand {
             display: flex;
             align-items: center;
@@ -979,14 +979,14 @@
             font-size: 24px;
             font-weight: 600;
         }
-        
+
         .navbar-brand .brand-icon {
             width: 32px;
             height: 32px;
             margin-right: 12px;
             fill: currentColor;
         }
-        
+
         .navbar-nav {
             display: flex;
             align-items: center;
@@ -995,11 +995,11 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .nav-item {
             margin: 0;
         }
-        
+
         .nav-link {
             padding: 8px 16px;
             text-decoration: none;
@@ -1009,7 +1009,7 @@
             border-radius: 6px;
             transition: all 0.2s ease;
         }
-        
+
         .nav-link:hover {
             color: #3367d6;
             background: #f3f4f6;
@@ -1020,61 +1020,42 @@
             background: #e3f2fd;
             font-weight: 600;
         }
-        
-        .language-selector {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .language-selector select {
-            padding: 6px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            background: white;
-            color: #374151;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        
+
+
         /* 调整页面内容，为固定导航栏留出空间 */
         body {
             padding-top: 60px !important;
         }
-        
+
         .page-container {
             padding-top: 20px; /* 减少原有的top padding */
         }
-        
+
         /* 响应式导航栏 */
         @media (max-width: 768px) {
             .navbar-container {
                 padding: 0 16px;
             }
-            
+
             .navbar-brand {
                 font-size: 20px;
             }
-            
+
             .navbar-brand .brand-icon {
                 width: 28px;
                 height: 28px;
                 margin-right: 8px;
             }
-            
+
             .navbar-nav {
                 gap: 4px;
             }
-            
+
             .nav-link {
                 padding: 6px 12px;
                 font-size: 13px;
             }
-            
-            .language-selector select {
-                padding: 4px 8px;
-                font-size: 13px;
-            }
+
         }
     </style>
 </head>
@@ -1090,51 +1071,36 @@
                 </svg>
                 DropShare
             </a>
-            
+
             <!-- 导航菜单 -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="/share.html" class="nav-link active" data-i18n="nav_transfer">传送</a>
+                    <a href="/share.html" class="nav-link active">Transfer</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/share.html#rooms" class="nav-link" data-i18n="nav_rooms">多人房间</a>
+                    <a href="/share.html#rooms" class="nav-link">Rooms</a>
                 </li>
                 <li class="nav-item">
-                    <a href="image-tools.html" class="nav-link" data-i18n="nav_images">图片</a>
+                    <a href="image-tools.html" class="nav-link">Images</a>
                 </li>
                 <li class="nav-item">
-                    <a href="audio-tools.html" class="nav-link" data-i18n="nav_audio">音频</a>
+                    <a href="audio-tools.html" class="nav-link">Audio</a>
                 </li>
                 <li class="nav-item">
-                    <a href="video-tools.html" class="nav-link" data-i18n="nav_video">视频</a>
+                    <a href="video-tools.html" class="nav-link">Video</a>
                 </li>
                 <li class="nav-item">
-                    <a href="document-tools.html" class="nav-link" data-i18n="nav_files">文件</a>
-                </li>
-                <li class="nav-item language-selector">
-                    <select id="navbar-language-selector" title="选择语言">
-                        <option value="en">English</option>
-                        <option value="zh">中文简体</option>
-                        <option value="zh-tw">中文繁體</option>
-                        <option value="ja">日本語</option>
-                        <option value="fr">Français</option>
-                        <option value="es">Español</option>
-                        <option value="de">Deutsch</option>
-                        <option value="pt">Português</option>
-                        <option value="ru">Русский</option>
-                        <option value="ar">العربية</option>
-                        <option value="ko">한국어</option>
-                    </select>
+                    <a href="document-tools.html" class="nav-link">Files</a>
                 </li>
             </ul>
         </div>
     </nav>
-    
+
     <!-- 添加背景动画 -->
     <div class="background-animation"></div>
-    
+
     <!-- 返回首页按钮已隐藏 -->
-    
+
     <header class="row-reverse">
         <a href="#about" class="icon-button" title="About DropShare" style="display: none;">
             <svg class="icon">
@@ -1156,23 +1122,9 @@
                 <use xlink:href="#homescreen" />
             </svg>
         </a>
-        <div class="lang-selector">
-            <select id="language-selector" title="选择语言">
-                <option value="en">English</option>
-                <option value="zh">中文简体</option>
-                <option value="zh-tw">中文繁體</option>
-                <option value="ja">日本語</option>
-                <option value="fr">Français</option>
-                <option value="es">Español</option>
-                <option value="de">Deutsch</option>
-                <option value="pt">Português</option>
-                <option value="ru">Русский</option>
-                <option value="ar">العربية</option>
-                <option value="ko">한국어</option>
-            </select>
-        </div>
+
     </header>
-    
+
     <!-- Main page container -->
     <div class="page-container">
         <!-- Center message area -->
@@ -1180,63 +1132,63 @@
             <!-- 房间功能容器 -->
             <div id="roomContainer" class="room-container">
                 <div class="room-header">
-                    <h1 class="room-title" data-i18n="room_title">多人共享房间</h1>
-                    <p class="room-subtitle" data-i18n="room_subtitle">与同网络用户或通过房间码与远程用户快速共享文件</p>
+                    <h1 class="room-title">Multi-user Sharing Rooms</h1>
+                    <p class="room-subtitle">Quickly share files with local network users or remote users through room codes</p>
                 </div>
-                
+
                 <!-- 房间选项按钮 -->
                 <div class="room-options">
-                    <button id="createRoomBtn" class="room-btn" data-i18n="create_room_btn">创建房间</button>
-                    <button id="joinRoomBtn" class="room-btn secondary" data-i18n="join_room_btn">加入房间</button>
+                    <button id="createRoomBtn" class="room-btn">Create Room</button>
+                    <button id="joinRoomBtn" class="room-btn secondary">Join Room</button>
                 </div>
-                
+
                 <!-- 表单容器，用于居中 -->
                 <div class="room-forms-container">
                     <!-- 创建房间表单 -->
                     <div id="createRoomForm" class="room-form">
-                        <h3 data-i18n="create_new_room">创建新房间</h3>
+                        <h3>Create New Room</h3>
                         <form autocomplete="off">
                             <div class="form-group">
-                                <label class="form-label" data-i18n="room_name_label">房间名称</label>
-                                <input type="text" id="roomName" name="room-name" class="form-input" data-i18n-placeholder="room_name_placeholder" placeholder="输入房间名称" maxlength="20" autocomplete="off">
+                                <label class="form-label">Room Name</label>
+                                <input type="text" id="roomName" name="room-name" class="form-input" placeholder="Enter room name" maxlength="20" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" data-i18n="room_password_label">房间密码 (可选)</label>
-                                <input type="password" id="roomPassword" name="room-password" class="form-input" data-i18n-placeholder="room_password_placeholder" placeholder="设置房间密码" maxlength="16" autocomplete="new-password">
+                                <label class="form-label">Room Password (Optional)</label>
+                                <input type="password" id="roomPassword" name="room-password" class="form-input" placeholder="Set room password" maxlength="16" autocomplete="new-password">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" data-i18n="max_members_label">最大成员数</label>
+                                <label class="form-label">Max Members</label>
                                 <input type="number" id="maxMembers" name="max-members" class="form-input" value="10" min="2" max="50" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmCreateRoom" class="btn-primary" data-i18n="confirm_create_room">创建房间</button>
-                                <button type="button" id="cancelCreateRoom" class="btn-cancel" data-i18n="cancel_create_room">取消</button>
+                                <button type="button" id="confirmCreateRoom" class="btn-primary">Create Room</button>
+                                <button type="button" id="cancelCreateRoom" class="btn-cancel">Cancel</button>
                             </div>
                         </form>
                         <div id="createRoomError" class="error-message" style="display: none;"></div>
                     </div>
-                    
+
                     <!-- 加入房间表单 -->
                     <div id="joinRoomForm" class="room-form">
-                        <h3 data-i18n="join_room_title">加入房间</h3>
+                        <h3>Join Room</h3>
                         <form autocomplete="off">
                             <div class="form-group">
-                                <label class="form-label" data-i18n="room_code_label">房间码</label>
-                                <input type="text" id="roomCode" name="room-code" class="form-input" data-i18n-placeholder="room_code_placeholder" placeholder="输入房间码" maxlength="10" style="text-transform: uppercase;" autocomplete="off">
+                                <label class="form-label">Room Code</label>
+                                <input type="text" id="roomCode" name="room-code" class="form-input" placeholder="Enter room code" maxlength="10" style="text-transform: uppercase;" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" data-i18n="join_password_label">房间密码 (如果需要)</label>
-                                <input type="password" id="joinRoomPassword" name="join-password" class="form-input" data-i18n-placeholder="join_password_placeholder" placeholder="输入房间密码" autocomplete="off">
+                                <label class="form-label">Room Password (If Required)</label>
+                                <input type="password" id="joinRoomPassword" name="join-password" class="form-input" placeholder="Enter room password" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmJoinRoom" class="btn-primary" data-i18n="confirm_join_room">加入房间</button>
-                                <button type="button" id="cancelJoinRoom" class="btn-cancel" data-i18n="cancel_join_room">取消</button>
+                                <button type="button" id="confirmJoinRoom" class="btn-primary">Join Room</button>
+                                <button type="button" id="cancelJoinRoom" class="btn-cancel">Cancel</button>
                             </div>
                         </form>
                         <div id="joinRoomError" class="error-message" style="display: none;"></div>
                     </div>
                 </div>
-                
+
                 <!-- 房间信息显示 -->
                 <div id="roomInfo" class="room-info">
                     <!-- 房间信息头部（始终显示） -->
@@ -1245,13 +1197,13 @@
                             <span class="room-name-display" id="roomNameDisplay"></span>
                             <div class="room-code-row">
                                 <span class="room-code-display" id="roomCodeDisplay"></span>
-                                <button id="copyRoomCode" class="copy-btn-small" data-i18n-title="copy_room_code" title="复制房间码">📋</button>
+                                <button id="copyRoomCode" class="copy-btn-small" title="Copy room code">📋</button>
                             </div>
                             <div class="current-user-info">
-                                <span class="current-user-label" data-i18n="your_name_label">您的名称：</span>
+                                <span class="current-user-label">Your name:</span>
                                 <span class="current-user-name" id="currentUserName"></span>
                             </div>
-                            <span class="member-count" id="memberCount"><span id="memberCountNumber">2</span><span data-i18n="members_online">人在线</span></span>
+                            <span class="member-count" id="memberCount"><span id="memberCountNumber">2</span><span> online</span></span>
                         </div>
                         <button class="toggle-details-btn" id="toggleDetailsBtn">
                             <svg class="toggle-icon" viewBox="0 0 24 24" width="16" height="16">
@@ -1259,21 +1211,21 @@
                             </svg>
                         </button>
                     </div>
-                    
+
                     <!-- 房间详细信息（可折叠） -->
                     <div class="room-details" id="roomDetails">
                         <div class="room-members-section">
-                            <strong data-i18n="room_members_label">房间成员:</strong>
+                            <strong>Room Members:</strong>
                             <div id="memberList" class="member-list"></div>
                         </div>
                     </div>
-                    
+
                     <!-- 操作按钮 -->
                     <div class="room-actions">
-                        <button id="leaveRoomBtn" class="btn-leave-room" data-i18n="leave_room_btn">退出房间</button>
+                        <button id="leaveRoomBtn" class="btn-leave-room">Leave Room</button>
                     </div>
                 </div>
-                
+
                 <!-- 房间警告提示 -->
                 <div id="roomWarning" class="room-warning">
                     <div class="warning-content">
@@ -1284,52 +1236,52 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- 房间文件共享区域 -->
                 <div id="fileTransferArea" class="file-transfer-area">
                     <div class="room-file-sharing">
                         <!-- 文件上传区域 -->
                         <div class="upload-section">
-                            <h3 data-i18n="upload_files_to_room">📤 上传文件到房间</h3>
+                            <h3>📤 Upload Files to Room</h3>
                             <div id="dropZone" class="drop-zone">
                                 <div class="drop-zone-content">
                                     <svg class="upload-icon" viewBox="0 0 24 24" width="48" height="48">
                                         <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                                     </svg>
-                                    <p data-i18n="drag_files_here">拖拽文件到这里或点击上传</p>
-                                    <p class="upload-hint" data-i18n="files_shared_to_all">文件将共享给房间内的所有成员</p>
+                                    <p>Drag files here or click to upload</p>
+                                    <p class="upload-hint">Files will be shared with all members in the room</p>
                                     <input type="file" id="fileInput" multiple hidden>
-                                    <button id="selectFilesBtn" class="select-files-btn" data-i18n="select_files_upload">选择文件上传</button>
+                                    <button id="selectFilesBtn" class="select-files-btn">Select Files to Upload</button>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- 房间共享文件列表 -->
                         <div class="shared-files-section">
                             <div class="shared-files-header">
-                                <h3 data-i18n="room_shared_files">📁 房间共享文件</h3>
-                                <span class="file-count" id="fileCount">0 <span data-i18n="files_count">个文件</span></span>
+                                <h3>📁 Room Shared Files</h3>
+                                <span class="file-count" id="fileCount">0 <span>files</span></span>
                             </div>
                             <div id="sharedFilesList" class="shared-files-list">
                                 <div class="no-shared-files">
-                                    <p data-i18n="no_shared_files">房间内暂无共享文件</p>
-                                    <p class="hint" data-i18n="upload_hint">上传文件后，房间内所有成员都可以下载</p>
+                                    <p>No shared files in the room yet</p>
+                                    <p class="hint">After uploading files, all members in the room can download them</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- 原有的设备发现界面 -->
             <div id="peerContainer" style="display: block;">
                 <x-peers class="center"></x-peers>
                 <x-no-peers>
-                    <h2 data-i18n="open_snapdrop">在其他设备上打开DropShare以发送文件</h2>
+                    <h2>Open DropShare on other devices to send files</h2>
                 </x-no-peers>
             </div>
         </div>
-        
+
         <!-- User info at bottom -->
         <div class="user-info-bottom">
             <footer>
@@ -1340,7 +1292,7 @@
                 </div>
                 <div class="text-container">
                     <div id="displayName" class="text-line"></div>
-                    <div class="font-body2 text-line" data-i18n="you_discovered">您可被此网络上的所有人发现</div>
+                    <div class="font-body2 text-line">You are discoverable by everyone on this network</div>
                 </div>
             </footer>
         </div>
@@ -1349,19 +1301,19 @@
     <x-dialog id="receiveDialog">
         <x-background class="full center">
             <x-paper shadow="2">
-                <h3 data-i18n="file_received">File Received</h3>
-                <div class="font-subheading" id="fileName" data-i18n=""></div>
+                <h3>File Received</h3>
+                <div class="font-subheading" id="fileName"></div>
                 <div class="font-body2" id="fileSize"></div>
                 <div class='preview' style="visibility: hidden;">
                     <img id='img-preview' src="">
                 </div>
                 <div class="row">
-                    <label for="autoDownload" class="grow" data-i18n="ask_save_files">Ask to save each file before downloading</label>
+                    <label for="autoDownload" class="grow">Ask to save each file before downloading</label>
                     <input type="checkbox" id="autoDownload" checked="">
                 </div>
                 <div class="row-reverse">
-                    <a class="button" close id="download" title="Download File" autofocus data-i18n="save">Save</a>
-                    <button class="button" close data-i18n="ignore">Ignore</button>
+                    <a class="button" close id="download" title="Download File" autofocus>Save</a>
+                    <button class="button" close>Ignore</button>
                 </div>
             </x-paper>
         </x-background>
@@ -1371,11 +1323,11 @@
         <form action="#">
             <x-background class="full center">
                 <x-paper shadow="2">
-                    <h3 data-i18n="send_message">Send a Message</h3>
+                    <h3>Send a Message</h3>
                     <div id="textInput" class="textarea" role="textbox" data-placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
                     <div class="row-reverse">
-                        <button class="button" type="submit" close data-i18n="send">Send</button>
-                        <a class="button" close data-i18n="cancel">Cancel</a>
+                        <button class="button" type="submit" close>Send</button>
+                        <a class="button" close>Cancel</a>
                     </div>
                 </x-paper>
             </x-background>
@@ -1385,11 +1337,11 @@
     <x-dialog id="receiveTextDialog">
         <x-background class="full center">
             <x-paper shadow="2">
-                <h3 data-i18n="message_received">Message Received</h3>
+                <h3>Message Received</h3>
                 <div class="font-subheading" id="text"></div>
                 <div class="row-reverse">
-                    <button class="button" id="copy" close autofocus data-i18n="copy">Copy</button>
-                    <button class="button" close data-i18n="close">Close</button>
+                    <button class="button" id="copy" close autofocus>Copy</button>
+                    <button class="button" close>Close</button>
                 </div>
             </x-paper>
         </x-background>
@@ -1397,7 +1349,7 @@
     <!-- Toast -->
     <div class="toast-container full center">
         <x-toast class="row" shadow="1" id="toast">
-            <span id="toast-text" data-i18n="file_transfer_completed">File Transfer Completed</span>
+            <span id="toast-text">File Transfer Completed</span>
         </x-toast>
     </div>
     <!-- About Page -->
@@ -1414,7 +1366,7 @@
                 <use xlink:href="#wifi-tethering" />
             </svg>
             <h1>DropShare</h1>
-            <div class="font-subheading"><span data-i18n="easiest_way">The easiest way to transfer files across devices</span><div style="font-size:10px;"><span data-i18n="modified_by">Modified version by</span> <a href="#" target="_blank">YourNameHere</a></div></div>
+            <div class="font-subheading"><span>The easiest way to transfer files across devices</span><div style="font-size:10px;"><span>Modified version by</span> <a href="#" target="_blank">YourNameHere</a></div></div>
             <div class="row">
                 <a class="icon-button" target="_blank" href="#" title="DropShare on Github" rel="noreferrer">
                     <svg class="icon">
@@ -1489,13 +1441,13 @@
             <path d="M0 0h24v24H0V0z" fill="none" />
         </symbol>
         <symbol id="icon-theme" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></symbol>
-        
+
         <!-- Add the sun icon for light mode -->
         <symbol id="icon-sun" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0 c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2 c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1 S11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0 s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06 c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41 c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36 c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z" /></symbol>
     </svg>
     <!-- Scripts -->
     <!-- Load the language loader first -->
-    <script src="scripts/i18n/languages.js"></script>
+
     <!-- Load other scripts -->
     <script src="scripts/network.js"></script>
     <script src="scripts/ui.js"></script>
@@ -1513,38 +1465,38 @@
                 this.members = new Map();
                 this.ws = null;
                 this.fileStorage = null;
-                
+
                 console.log('RoomManager构造函数开始');
-                
+
                 // 初始化文件存储
                 this.initFileStorage();
-                
+
                 // 立即初始化UI
                 this.initializeRoomUI();
-                
+
                 // 立即检查房间模式
                 this.checkForRoomsMode();
-                
+
                 // 设置文件事件
                 this.setupFileEvents();
-                
+
                 console.log('RoomManager构造函数完成');
             }
-            
+
             // 检查是否是房间模式
             checkForRoomsMode() {
                 console.log('checkForRoomsMode - 当前URL hash:', window.location.hash);
-                
+
                 // 立即检查并显示
                 const roomContainer = document.getElementById('roomContainer');
                 const peerContainer = document.getElementById('peerContainer');
-                
+
                 if (!roomContainer || !peerContainer) {
                     console.log('DOM元素未找到，稍后重试');
                     setTimeout(() => this.checkForRoomsMode(), 100);
                     return;
                 }
-                
+
                 if (window.location.hash === '#rooms') {
                     console.log('房间模式 - 立即显示房间容器');
                     this.showRoomContainer();
@@ -1552,7 +1504,7 @@
                     console.log('普通模式 - 显示设备发现容器');
                     this.showPeerContainer();
                 }
-                
+
                 // 只添加一次事件监听器
                 if (!this.hashChangeListenerAdded) {
                     window.addEventListener('hashchange', () => {
@@ -1566,201 +1518,201 @@
                     this.hashChangeListenerAdded = true;
                 }
             }
-            
+
             // 显示房间容器
             showRoomContainer() {
                 console.log('showRoomContainer 开始执行');
-                
+
                 const roomContainer = document.getElementById('roomContainer');
                 const peerContainer = document.getElementById('peerContainer');
-                
+
                 if (!roomContainer || !peerContainer) {
                     console.error('找不到容器元素');
                     return;
                 }
-                
+
                 // 立即显示房间容器
                 roomContainer.classList.add('active');
                 roomContainer.style.display = 'flex';
                 roomContainer.style.visibility = 'visible';
                 roomContainer.style.opacity = '1';
-                
+
                 // 隐藏设备容器
                 peerContainer.style.display = 'none';
-                
+
                 // 隐藏底部用户信息区域（设备发现信息）
                 this.hideBottomUserInfo();
-                
+
                 console.log('房间容器已设置为显示');
-                
+
                 // 根据房间状态决定显示什么
                 setTimeout(() => {
                     if (!this.isInRoom) {
                         this.ensureRoomOptionsVisible();
                     }
                 }, 10);
-                
+
                 // 延迟检查重连
                 setTimeout(() => {
                     this.checkAndReconnectRoom();
                 }, 2000);
             }
-            
+
             // 显示设备发现容器
             showPeerContainer() {
                 const roomContainer = document.getElementById('roomContainer');
                 const peerContainer = document.getElementById('peerContainer');
-                
+
                 if (roomContainer && peerContainer) {
                     roomContainer.classList.remove('active');
                     roomContainer.style.display = 'none';
                     roomContainer.style.visibility = 'hidden';
                     roomContainer.style.opacity = '0';
                     peerContainer.style.display = 'block';
-                    
+
                     // 显示底部用户信息区域
                     this.showBottomUserInfo();
-                    
+
                     console.log('切换到设备发现模式 - 设备容器显示');
                 } else {
                     console.error('找不到房间容器或设备容器');
                 }
             }
-            
+
             // 初始化房间UI事件
             initializeRoomUI() {
                 // 等待DOM完全加载后再绑定事件
                 const bindEvents = () => {
                     const createBtn = document.getElementById('createRoomBtn');
                     const joinBtn = document.getElementById('joinRoomBtn');
-                    
+
                     if (!createBtn || !joinBtn) {
                         console.log('房间按钮未找到，等待DOM加载...');
                         setTimeout(bindEvents, 100);
                         return;
                     }
-                    
+
                     // 创建房间按钮
                     createBtn.addEventListener('click', () => {
                         this.showCreateRoomForm();
                     });
-                
+
                     // 加入房间按钮
                     joinBtn.addEventListener('click', () => {
                         this.showJoinRoomForm();
                     });
-                    
+
                     // 确认创建房间
                     document.getElementById('confirmCreateRoom').addEventListener('click', () => {
                         this.createRoom();
                     });
-                    
+
                     // 取消创建房间
                     document.getElementById('cancelCreateRoom').addEventListener('click', () => {
                         this.hideAllForms();
                     });
-                    
+
                     // 确认加入房间
                     document.getElementById('confirmJoinRoom').addEventListener('click', () => {
                         this.joinRoom();
                     });
-                    
+
                     // 取消加入房间
                     document.getElementById('cancelJoinRoom').addEventListener('click', () => {
                         this.hideAllForms();
                     });
-                    
+
                     // 退出房间
                     document.getElementById('leaveRoomBtn').addEventListener('click', () => {
                         this.leaveRoom();
                     });
-                    
+
                     // 房间码输入自动转大写
                     document.getElementById('roomCode').addEventListener('input', (e) => {
                         e.target.value = e.target.value.toUpperCase();
                     });
-                    
+
                     // 房间信息展开/收起
                     document.getElementById('toggleDetailsBtn').addEventListener('click', () => {
                         this.toggleRoomDetails();
                     });
-                    
+
                     // 复制房间码
                     document.getElementById('copyRoomCode').addEventListener('click', () => {
                         this.copyRoomCode();
                     });
-                    
+
                     // 文件选择和拖拽
                     this.initializeFileTransfer();
-                    
+
                     console.log('房间UI事件绑定完成');
                 };
-                
+
                 bindEvents();
             }
-            
+
             // 初始化文件传输功能
             initializeFileTransfer() {
                 const dropZone = document.getElementById('dropZone');
                 const fileInput = document.getElementById('fileInput');
                 const selectFilesBtn = document.getElementById('selectFilesBtn');
-                
+
                 if (!dropZone || !fileInput || !selectFilesBtn) {
                     console.log('文件传输元素未找到，延迟初始化...');
                     setTimeout(() => this.initializeFileTransfer(), 100);
                     return;
                 }
-                
+
                 // 点击选择文件
                 selectFilesBtn.addEventListener('click', () => {
                     fileInput.click();
                 });
-                
+
                 dropZone.addEventListener('click', () => {
                     fileInput.click();
                 });
-                
+
                 // 文件选择
                 fileInput.addEventListener('change', (e) => {
                     this.handleFileSelection(e.target.files);
                     // 清空文件输入，允许重复上传同一文件
                     e.target.value = '';
                 });
-                
+
                 // 拖拽功能
                 dropZone.addEventListener('dragover', (e) => {
                     e.preventDefault();
                     dropZone.classList.add('dragover');
                 });
-                
+
                 dropZone.addEventListener('dragleave', () => {
                     dropZone.classList.remove('dragover');
                 });
-                
+
                 dropZone.addEventListener('drop', (e) => {
                     e.preventDefault();
                     dropZone.classList.remove('dragover');
                     this.handleFileSelection(e.dataTransfer.files);
                 });
             }
-            
+
             // 处理文件选择
             handleFileSelection(files) {
                 if (!this.isInRoom) {
-                    alert('请先加入房间才能上传文件');
+                    alert('Please join a room first to upload files');
                     return;
                 }
-                
+
                 if (files.length === 0) return;
-                
+
                 // 直接上传文件到房间
                 this.uploadFilesToRoom(files);
             }
-            
+
             // 上传文件到房间
             async uploadFilesToRoom(files) {
                 console.log('上传文件到房间:', files);
-                
+
                 for (const file of files) {
                     // 创建文件信息
                     const fileInfo = {
@@ -1774,20 +1726,20 @@
                         file: file, // 保存文件对象用于下载
                         isAvailable: true // 文件可用状态
                     };
-                    
+
                     // 存储到 IndexedDB
                     await this.storeFileToIndexedDB(fileInfo);
-                    
+
                     // 添加到本地共享列表
                     this.addFileToSharedList(fileInfo);
-                    
+
                     // 广播给房间内其他成员
                     this.broadcastFileToRoom(fileInfo);
-                    
-                    this.showToast(`文件 "${file.name}" 已上传到房间`);
+
+                    this.showToast(`File "${file.name}" uploaded to room`);
                 }
             }
-            
+
             // 获取当前用户显示名称
             getCurrentUserDisplayName() {
                 const displayNameEl = document.getElementById('displayName');
@@ -1799,30 +1751,30 @@
                 }
                 return '匠名用户';
             }
-            
+
             // 添加文件到共享列表
             addFileToSharedList(fileInfo) {
                 const sharedFilesList = document.getElementById('sharedFilesList');
                 const noFiles = sharedFilesList.querySelector('.no-shared-files');
-                
+
                 if (noFiles) {
                     noFiles.style.display = 'none';
                 }
-                
+
                 const fileItem = document.createElement('div');
                 fileItem.dataset.fileId = fileInfo.id;
-                
+
                 // 使用统一的显示方法
                 this.updateFileItemDisplay(fileItem, fileInfo);
-                
+
                 sharedFilesList.appendChild(fileItem);
                 this.updateFileCount();
             }
-            
+
             // 获取文件图标
             getFileIcon(fileType) {
                 if (!fileType) return '📄';
-                
+
                 if (fileType.startsWith('image/')) return '🖼️';
                 if (fileType.startsWith('video/')) return '🎥';
                 if (fileType.startsWith('audio/')) return '🎧';
@@ -1833,43 +1785,43 @@
                 if (fileType.includes('zip') || fileType.includes('rar') || fileType.includes('archive')) return '🗄️';
                 return '📁';
             }
-            
+
             // 更新文件计数
             updateFileCount() {
                 const fileCount = document.getElementById('fileCount');
                 const fileItems = document.querySelectorAll('.shared-file-item');
                 const count = fileItems.length;
-                
+
                 if (fileCount) {
-                    fileCount.textContent = `${count} 个文件`;
+                    fileCount.textContent = `${count} files`;
                 }
             }
-            
+
             // 下载共享文件
             downloadSharedFile(fileId) {
                 const fileItem = document.querySelector(`[data-file-id="${fileId}"]`);
                 if (!fileItem || !fileItem._fileData) {
-                    this.showToast('文件不存在');
+                    this.showToast('File does not exist');
                     return;
                 }
-                
+
                 const fileData = fileItem._fileData;
-                
+
                 // 检查文件是否可用
                 if (!fileData.file) {
                     if (fileData.isRemote) {
-                        this.showToast('无法下载：需要上传者在线');
+                        this.showToast('Unable to download: uploader needs to be online');
                     } else {
-                        this.showToast('文件不可用，上传者可能已离线');
+                        this.showToast('File unavailable, uploader may be offline');
                     }
                     return;
                 }
-                
+
                 if (fileData.isAvailable === false) {
-                    this.showToast('文件暂时不可用');
+                    this.showToast('File temporarily unavailable');
                     return;
                 }
-                
+
                 try {
                     const url = URL.createObjectURL(fileData.file);
                     const a = document.createElement('a');
@@ -1879,34 +1831,34 @@
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
-                    
-                    this.showToast(`正在下载: ${fileData.name}`);
+
+                    this.showToast(`Downloading: ${fileData.name}`);
                 } catch (error) {
                     console.error('下载文件失败:', error);
-                    this.showToast('下载失败，请重试');
+                    this.showToast('Download failed, please try again');
                 }
             }
-            
+
             // 移除共享文件
             async removeSharedFile(fileId) {
-                if (!confirm('确认要删除这个文件吗？')) {
+                if (!confirm('Are you sure you want to delete this file?')) {
                     return;
                 }
-                
+
                 const fileItem = document.querySelector(`[data-file-id="${fileId}"]`);
                 if (fileItem) {
                     fileItem.remove();
                     this.updateFileCount();
-                    
+
                     // 从 IndexedDB 删除
                     await this.deleteFileFromIndexedDB(fileId);
-                    
+
                     // 广播删除消息给房间内其他成员
                     this.broadcastFileRemoval(fileId);
-                    
-                    this.showToast('文件已删除');
+
+                    this.showToast('File deleted');
                 }
-                
+
                 // 检查是否需要显示空状态
                 const sharedFilesList = document.getElementById('sharedFilesList');
                 const remainingFiles = sharedFilesList.querySelectorAll('.shared-file-item');
@@ -1917,15 +1869,15 @@
                     }
                 }
             }
-            
+
             // 广播文件到房间内其他成员
             async broadcastFileToRoom(fileInfo) {
                 console.log('广播文件到房间:', fileInfo.name);
-                
+
                 try {
                     // 将文件转换为可传输的格式
                     const fileData = await this.fileToBase64(fileInfo.file);
-                    
+
                     // 广播文件信息和数据给房间内其他成员
                     this.sendMessage({
                         type: 'room-file-shared',
@@ -1959,7 +1911,7 @@
                     });
                 }
             }
-            
+
             // 将文件转换为Base64格式用于传输
             async fileToBase64(file) {
                 // 限制文件大小，避免传输过大的文件
@@ -1967,7 +1919,7 @@
                 if (file.size > maxSize) {
                     throw new Error('文件太大，无法分发');
                 }
-                
+
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.onload = () => resolve(reader.result);
@@ -1975,7 +1927,7 @@
                     reader.readAsDataURL(file);
                 });
             }
-            
+
             // 从Base64恢复文件
             base64ToFile(dataUrl, fileName, fileType) {
                 const arr = dataUrl.split(',');
@@ -1988,7 +1940,7 @@
                 }
                 return new File([u8arr], fileName, { type: fileType });
             }
-            
+
             // 广播文件删除
             broadcastFileRemoval(fileId) {
                 this.sendMessage({
@@ -1997,7 +1949,7 @@
                     fileId: fileId
                 });
             }
-            
+
             // 初始化文件存储（IndexedDB）
             async initFileStorage() {
                 try {
@@ -2008,15 +1960,15 @@
                     this.fileStorage = null;
                 }
             }
-            
+
             // 打开IndexedDB
             openIndexedDB() {
                 return new Promise((resolve, reject) => {
                     const request = indexedDB.open('DropShareRoomFiles', 1);
-                    
+
                     request.onerror = () => reject(request.error);
                     request.onsuccess = () => resolve(request.result);
-                    
+
                     request.onupgradeneeded = (event) => {
                         const db = event.target.result;
                         if (!db.objectStoreNames.contains('files')) {
@@ -2026,15 +1978,15 @@
                     };
                 });
             }
-            
+
             // 存储文件到IndexedDB
             async storeFileToIndexedDB(fileInfo) {
                 if (!this.fileStorage) return;
-                
+
                 try {
                     const transaction = this.fileStorage.transaction(['files'], 'readwrite');
                     const store = transaction.objectStore('files');
-                    
+
                     const fileData = {
                         id: fileInfo.id,
                         roomCode: this.currentRoom,
@@ -2046,24 +1998,24 @@
                         uploadTime: fileInfo.uploadTime,
                         file: fileInfo.file // 存储实际文件
                     };
-                    
+
                     await store.put(fileData);
                     console.log('文件已存储到IndexedDB:', fileInfo.name);
                 } catch (error) {
                     console.error('存储文件失败:', error);
                 }
             }
-            
+
             // 从 IndexedDB 加载房间文件
             async loadRoomFilesFromIndexedDB(roomCode) {
                 if (!this.fileStorage) return [];
-                
+
                 try {
                     const transaction = this.fileStorage.transaction(['files'], 'readonly');
                     const store = transaction.objectStore('files');
                     const index = store.index('roomCode');
                     const request = index.getAll(roomCode);
-                    
+
                     return new Promise((resolve, reject) => {
                         request.onsuccess = () => resolve(request.result || []);
                         request.onerror = () => reject(request.error);
@@ -2073,11 +2025,11 @@
                     return [];
                 }
             }
-            
+
             // 从 IndexedDB 删除文件
             async deleteFileFromIndexedDB(fileId) {
                 if (!this.fileStorage) return;
-                
+
                 try {
                     const transaction = this.fileStorage.transaction(['files'], 'readwrite');
                     const store = transaction.objectStore('files');
@@ -2087,17 +2039,17 @@
                     console.error('删除文件失败:', error);
                 }
             }
-            
+
             // 清空房间文件（离开房间时）
             async clearRoomFilesFromIndexedDB(roomCode) {
                 if (!this.fileStorage) return;
-                
+
                 try {
                     const transaction = this.fileStorage.transaction(['files'], 'readwrite');
                     const store = transaction.objectStore('files');
                     const index = store.index('roomCode');
                     const request = index.getAllKeys(roomCode);
-                    
+
                     request.onsuccess = () => {
                         const keys = request.result;
                         keys.forEach(key => store.delete(key));
@@ -2107,7 +2059,7 @@
                     console.error('清空房间文件失败:', error);
                 }
             }
-            
+
             // 格式化文件大小
             formatFileSize(bytes) {
                 if (bytes === 0) return '0 Bytes';
@@ -2116,7 +2068,7 @@
                 const i = Math.floor(Math.log(bytes) / Math.log(k));
                 return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
             }
-            
+
             // 获取当前用户ID
             getCurrentUserId() {
                 // 从显示名称元素获取当前用户ID，这个ID是在网络连接时设置的
@@ -2130,12 +2082,12 @@
                 }
                 return null;
             }
-            
+
             // 切换房间详情显示
             toggleRoomDetails() {
                 const roomDetails = document.getElementById('roomDetails');
                 const toggleIcon = document.querySelector('.toggle-icon');
-                
+
                 if (roomDetails.classList.contains('expanded')) {
                     roomDetails.classList.remove('expanded');
                     toggleIcon.classList.remove('rotated');
@@ -2144,16 +2096,16 @@
                     toggleIcon.classList.add('rotated');
                 }
             }
-            
+
             // 复制房间码
             copyRoomCode() {
                 const roomCodeText = document.getElementById('roomCodeDisplay').textContent;
-                // 提取房间码部分（去掉"房间码: "前缀）
-                const roomCode = roomCodeText.replace('房间码: ', '');
-                
+                // 提取房间码部分（去掉"Room Code: "前缀）
+                const roomCode = roomCodeText.replace('Room Code: ', '');
+
                 if (navigator.clipboard && window.isSecureContext) {
                     navigator.clipboard.writeText(roomCode).then(() => {
-                        this.showToast('房间码已复制到剪贴板');
+                        this.showToast('Room code copied to clipboard');
                     }).catch(err => {
                         console.error('复制失败:', err);
                         this.fallbackCopyRoomCode(roomCode);
@@ -2162,7 +2114,7 @@
                     this.fallbackCopyRoomCode(roomCode);
                 }
             }
-            
+
             // 备用复制方法
             fallbackCopyRoomCode(roomCode) {
                 const textArea = document.createElement('textarea');
@@ -2172,14 +2124,14 @@
                 textArea.select();
                 try {
                     document.execCommand('copy');
-                    this.showToast('房间码已复制到剪贴板');
+                    this.showToast('Room code copied to clipboard');
                 } catch (err) {
                     console.error('复制失败:', err);
-                    alert('复制失败，房间码：' + roomCode);
+                    alert('Copy failed, room code: ' + roomCode);
                 }
                 document.body.removeChild(textArea);
             }
-            
+
             // 显示提示信息
             showToast(message) {
                 // 创建临时提示元素
@@ -2198,35 +2150,35 @@
                 `;
                 toast.textContent = message;
                 document.body.appendChild(toast);
-                
+
                 setTimeout(() => {
                     document.body.removeChild(toast);
                 }, 2000);
             }
-            
+
             // 显示创建房间表单
             showCreateRoomForm() {
                 this.hideAllForms();
                 document.getElementById('createRoomForm').classList.add('active');
             }
-            
+
             // 显示加入房间表单
             showJoinRoomForm() {
                 this.hideAllForms();
                 document.getElementById('joinRoomForm').classList.add('active');
             }
-            
+
             // 隐藏所有表单
             hideAllForms() {
                 document.getElementById('createRoomForm').classList.remove('active');
                 document.getElementById('joinRoomForm').classList.remove('active');
                 document.getElementById('createRoomError').style.display = 'none';
                 document.getElementById('joinRoomError').style.display = 'none';
-                
+
                 // 清空表单内容，防止浏览器自动填充
                 this.clearFormFields();
             }
-            
+
             // 清空表单字段
             clearFormFields() {
                 document.getElementById('roomName').value = '';
@@ -2235,23 +2187,23 @@
                 document.getElementById('roomCode').value = '';
                 document.getElementById('joinRoomPassword').value = '';
             }
-            
+
             // 生成房间码
             generateRoomCode() {
                 return Math.random().toString(36).substring(2, 8).toUpperCase();
             }
-            
+
             // 创建房间
             createRoom() {
                 const roomName = document.getElementById('roomName').value.trim();
                 const roomPassword = document.getElementById('roomPassword').value;
                 const maxMembers = parseInt(document.getElementById('maxMembers').value);
-                
+
                 if (!roomName) {
-                    this.showError('createRoomError', '请输入房间名称');
+                    this.showError('createRoomError', 'Please enter room name');
                     return;
                 }
-                
+
                 const roomCode = this.generateRoomCode();
                 const roomSettings = {
                     code: roomCode,
@@ -2260,24 +2212,24 @@
                     maxMembers: maxMembers,
                     isPrivate: !!roomPassword
                 };
-                
+
                 // 发送创建房间请求到后端
                 this.sendMessage({
                     type: 'create-room',
                     roomSettings: roomSettings
                 });
             }
-            
+
             // 加入房间
             joinRoom() {
                 const roomCode = document.getElementById('roomCode').value.trim();
                 const password = document.getElementById('joinRoomPassword').value;
-                
+
                 if (!roomCode) {
-                    this.showError('joinRoomError', '请输入房间码');
+                    this.showError('joinRoomError', 'Please enter room code');
                     return;
                 }
-                
+
                 // 发送加入房间请求到后端
                 this.sendMessage({
                     type: 'join-room',
@@ -2285,7 +2237,7 @@
                     password: password
                 });
             }
-            
+
             // 退出房间
             leaveRoom() {
                 if (this.currentRoom) {
@@ -2295,26 +2247,26 @@
                     });
                 }
             }
-            
+
             // 显示错误信息
             showError(elementId, message) {
                 const errorElement = document.getElementById(elementId);
                 errorElement.textContent = message;
                 errorElement.style.display = 'block';
             }
-            
+
             // 发送消息到WebSocket
             sendMessage(message) {
                 // 检查网络连接是否可用
                 if (window.network && window.network.send && window.network.isConnected()) {
                     window.network.send(message);
                 } else {
-                    console.warn('网络连接不可用，消息发送失败:', message);
+                    console.warn('Network connection unavailable, message send failed:', message);
                     // 可以在这里添加重试逻辑或者错误提示
-                    this.showError('createRoomError', '网络连接不可用，请稍后重试');
+                    this.showError('createRoomError', 'Network connection unavailable, please try again later');
                 }
             }
-            
+
             // 处理房间相关的WebSocket消息
             handleRoomMessage(message) {
                 switch (message.type) {
@@ -2347,13 +2299,13 @@
                         break;
                 }
             }
-            
+
             // 房间创建成功
             async onRoomCreated(message) {
                 this.currentRoom = message.room.code;
                 this.isInRoom = true;
                 this.isHost = true;
-                
+
                 // 保存房间状态到本地存储
                 this.saveRoomState({
                     roomCode: message.room.code,
@@ -2361,34 +2313,34 @@
                     isHost: true,
                     password: message.room.password || ''
                 });
-                
+
                 this.hideAllForms();
                 this.hideRoomOptions();
                 this.showRoomInfo(message.room);
-                
+
                 // 初始化成员列表
                 this.members.clear();
                 this.members.set(message.hostInfo.id, message.hostInfo);
                 this.updateMemberList([message.hostInfo]);
-                
+
                 this.showFileTransferArea();
                 this.showRoomWarning();
                 this.hideBottomUserInfo();
                 this.setupBeforeUnloadHandler();
-                
+
                 // 加载之前的文件（如果有）
                 await this.loadPreviousRoomFiles();
-                
+
                 // 重新分发我的文件给其他成员（创建房间后稍等一下）
                 setTimeout(() => this.redistributeMyFiles(), 1000);
             }
-            
+
             // 加入房间成功
             async onRoomJoined(message) {
                 this.currentRoom = message.room.code;
                 this.isInRoom = true;
                 this.isHost = false;
-                
+
                 // 保存房间状态到本地存储
                 this.saveRoomState({
                     roomCode: message.room.code,
@@ -2396,50 +2348,50 @@
                     isHost: false,
                     password: '' // 加入时不保存密码
                 });
-                
+
                 this.hideAllForms();
                 this.hideRoomOptions();
                 this.showRoomInfo(message.room);
-                
+
                 // 初始化成员列表
                 this.members.clear();
                 message.members.forEach(member => {
                     this.members.set(member.id, member);
                 });
                 this.updateMemberList(message.members);
-                
+
                 this.showFileTransferArea();
                 this.showRoomWarning();
                 this.hideBottomUserInfo();
                 this.setupBeforeUnloadHandler();
-                
+
                 // 加载之前的文件（如果有）
                 await this.loadPreviousRoomFiles();
-                
+
                 // 重新分发我的文件给其他成员（加入房间后稍等一下）
                 setTimeout(() => this.redistributeMyFiles(), 1000);
             }
-            
+
             // 离开房间
             async onRoomLeft(message) {
                 const roomCode = this.currentRoom;
-                
+
                 this.currentRoom = null;
                 this.isInRoom = false;
                 this.isHost = false;
                 this.members.clear();
-                
+
                 // 清除本地存储的房间状态
                 this.clearRoomState();
-                
+
                 // 清空共享文件列表
                 this.clearSharedFilesList();
-                
+
                 // 清空 IndexedDB 中的房间文件
                 if (roomCode) {
                     await this.clearRoomFilesFromIndexedDB(roomCode);
                 }
-                
+
                 document.getElementById('roomInfo').classList.remove('active');
                 this.hideAllForms();
                 this.showRoomOptions();
@@ -2448,7 +2400,7 @@
                 this.showBottomUserInfo();
                 this.removeBeforeUnloadHandler();
             }
-            
+
             // 隐藏底部用户信息区域
             hideBottomUserInfo() {
                 const userInfoBottom = document.querySelector('.user-info-bottom');
@@ -2456,7 +2408,7 @@
                     userInfoBottom.style.display = 'none';
                 }
             }
-            
+
             // 显示底部用户信息区域
             showBottomUserInfo() {
                 const userInfoBottom = document.querySelector('.user-info-bottom');
@@ -2464,7 +2416,7 @@
                     userInfoBottom.style.display = 'block';
                 }
             }
-            
+
             // 房间错误
             onRoomError(message) {
                 const activeForm = document.querySelector('.room-form.active');
@@ -2474,7 +2426,7 @@
                 } else {
                     // 如果是重连失败，显示房间选项
                     console.log('房间重连失败:', message.error);
-                    this.showToast('房间连接失败: ' + message.error);
+                    this.showToast('Room connection failed: ' + message.error);
                     this.showRoomOptions();
                     this.hideRoomInfo();
                     this.hideFileTransferArea();
@@ -2484,51 +2436,51 @@
                     this.clearRoomState();
                 }
             }
-            
+
             // 新成员加入
             async onMemberJoined(message) {
                 const memberId = message.member.id;
                 const isMyself = memberId === this.getCurrentUserId();
                 const isReconnect = message.isReconnect || false;
-                
+
                 // 检查是否已经存在，避免重复添加
                 const wasAlreadyMember = this.members.has(memberId);
-                
+
                 // 如果是重复的成员加入事件且不是重连，直接忽略
                 if (wasAlreadyMember && !isReconnect) {
                     console.log(`忽略重复的成员加入事件: ${message.member.displayName} (${memberId})`);
                     return;
                 }
-                
+
                 if (isReconnect) {
                     console.log(`成员重连: ${message.member.displayName} (${memberId})`);
                 } else {
                     console.log(`新成员加入: ${message.member.displayName} (${memberId})`);
                 }
-                
+
                 this.members.set(memberId, message.member);
                 this.updateMemberList(Array.from(this.members.values()));
-                
+
                 // 更新该成员上传的文件状态为在线可用
                 this.updateUploaderStatus(memberId, true);
-                
+
                 // 如果是我自己重新加入或重连，重新分发文件
                 if (isMyself) {
                     console.log('检测到自己重新加入/重连房间，重新分发文件');
                     await this.redistributeMyFiles();
                 }
             }
-            
+
             // 重新分发我的文件给房间内其他成员
             async redistributeMyFiles() {
                 try {
                     const myFiles = await this.loadRoomFilesFromIndexedDB(this.currentRoom);
                     const myUploads = myFiles.filter(file => file.uploaderId === this.getCurrentUserId());
-                    
+
                     for (const fileData of myUploads) {
                         if (fileData.file) {
                             console.log('重新分发文件:', fileData.name);
-                            
+
                             // 重新广播文件
                             const fileInfo = {
                                 id: fileData.id,
@@ -2540,32 +2492,32 @@
                                 uploadTime: fileData.uploadTime,
                                 file: fileData.file
                             };
-                            
+
                             await this.broadcastFileToRoom(fileInfo);
                         }
                     }
-                    
+
                     if (myUploads.length > 0) {
-                        this.showToast(`已重新分发 ${myUploads.length} 个文件给房间成员`);
+                        this.showToast(`Redistributed ${myUploads.length} files to room members`);
                     }
                 } catch (error) {
                     console.error('重新分发文件失败:', error);
                 }
             }
-            
+
             // 成员离开
             onMemberLeft(message) {
                 console.log(`成员离开: ${message.memberId}, 原因: ${message.reason || 'unknown'}`);
-                
+
                 this.members.delete(message.memberId);
                 this.updateMemberList(Array.from(this.members.values()));
-                
+
                 // 如果是因为连接断开，我们设置文件为离线状态但保持其可恢复性
                 // 如果是明确退出，则设置为不可用
                 const isDisconnected = message.reason === 'disconnected';
                 this.updateUploaderStatus(message.memberId, false, isDisconnected);
             }
-            
+
             // 更新上传者状态
             updateUploaderStatus(uploaderId, isOnline, isDisconnected = false) {
                 const fileItems = document.querySelectorAll('.shared-file-item');
@@ -2574,7 +2526,7 @@
                     if (fileData && fileData.uploaderId === uploaderId) {
                         // 更新文件数据
                         fileData.uploaderOnline = isOnline;
-                        
+
                         if (!isOnline) {
                             if (fileData.isRemote) {
                                 fileData.isAvailable = false;
@@ -2585,13 +2537,13 @@
                             fileData.isAvailable = true;
                             fileData.canReconnect = false;
                         }
-                        
+
                         // 重新渲染这个文件项
                         this.updateFileItemDisplay(item, fileData);
                     }
                 });
             }
-            
+
             // 更新单个文件项的显示
             updateFileItemDisplay(fileItem, fileData) {
                 const fileIcon = this.getFileIcon(fileData.type);
@@ -2599,26 +2551,26 @@
                 const isRestored = fileData.isRestored ? ' <span class="restored-tag">(恢复)</span>' : '';
                 const canDownload = fileData.file && fileData.isAvailable !== false;
                 const isOwner = fileData.uploaderId === this.getCurrentUserId();
-                
+
                 // 确定文件状态显示
                 let statusHint = '';
                 let itemClass = 'shared-file-item';
-                
+
                 if (!canDownload && !isOwner) {
                     if (fileData.isRemote) {
                         if (fileData.uploaderOnline === false) {
-                            statusHint = '<span class="unavailable-hint">上传者离线，无法下载</span>';
+                            statusHint = '<span class="unavailable-hint">Uploader offline, cannot download</span>';
                             itemClass += ' file-offline';
                         } else if (!fileData.file) {
-                            statusHint = '<span class="unavailable-hint">文件太大，无法下载</span>';
+                            statusHint = '<span class="unavailable-hint">File too large, cannot download</span>';
                             itemClass += ' file-unavailable';
                         }
                     } else {
-                        statusHint = '<span class="unavailable-hint">文件不可用</span>';
+                        statusHint = '<span class="unavailable-hint">File unavailable</span>';
                         itemClass += ' file-unavailable';
                     }
                 }
-                
+
                 fileItem.className = itemClass;
                 fileItem.innerHTML = `
                     <div class="shared-file-info">
@@ -2628,69 +2580,69 @@
                         </div>
                         <div class="shared-file-details">
                             <span>${this.formatFileSize(fileData.size)}</span>
-                            <span>上传者: <span class="shared-file-uploader">${fileData.uploader}</span></span>
+                            <span>Uploader: <span class="shared-file-uploader">${fileData.uploader}</span></span>
                             <span>${uploadTime}</span>
                             ${statusHint}
                         </div>
                     </div>
                     <div class="shared-file-actions">
-                        <button class="action-btn btn-download" onclick="roomManager.downloadSharedFile('${fileData.id}')" ${!canDownload ? 'disabled' : ''}>下载</button>
-                        ${isOwner ? `<button class="action-btn btn-cancel" onclick="roomManager.removeSharedFile('${fileData.id}')">删除</button>` : ''}
+                        <button class="action-btn btn-download" onclick="roomManager.downloadSharedFile('${fileData.id}')" ${!canDownload ? 'disabled' : ''}>Download</button>
+                        ${isOwner ? `<button class="action-btn btn-cancel" onclick="roomManager.removeSharedFile('${fileData.id}')">Delete</button>` : ''}
                     </div>
                 `;
-                
+
                 // 更新文件数据引用
                 fileItem._fileData = fileData;
             }
-            
+
             // 房间解散
             onRoomDisbanded(message) {
                 // 清除本地存储的房间状态
                 this.clearRoomState();
                 // 清空共享文件列表
                 this.clearSharedFilesList();
-                alert('房间已解散: ' + message.reason);
+                alert('Room disbanded: ' + message.reason);
                 this.onRoomLeft();
             }
-            
+
             // 显示房间信息
             showRoomInfo(room) {
                 // 更新房间信息头部
                 document.getElementById('roomNameDisplay').textContent = room.name;
-                document.getElementById('roomCodeDisplay').textContent = `房间码: ${room.code}`;
-                
+                document.getElementById('roomCodeDisplay').textContent = `Room Code: ${room.code}`;
+
                 // 更新当前用户名称
                 const currentUserName = this.getCurrentUserDisplayName();
                 const currentUserNameEl = document.getElementById('currentUserName');
                 if (currentUserNameEl) {
                     currentUserNameEl.textContent = currentUserName;
                 }
-                
+
                 document.getElementById('roomInfo').classList.add('active');
             }
-            
+
             // 更新成员列表
             updateMemberList(members) {
                 const memberList = document.getElementById('memberList');
                 const memberCount = document.getElementById('memberCount');
-                
+
                 memberList.innerHTML = '';
-                
+
                 members.forEach(member => {
                     const memberItem = document.createElement('div');
                     memberItem.className = 'member-item';
                     memberItem.innerHTML = `
                         <span class="member-name">${member.displayName}</span>
-                        <span class="member-role">${member.isHost ? '房主' : '成员'}</span>
+                        <span class="member-role">${member.isHost ? 'Host' : 'Member'}</span>
                     `;
                     memberList.appendChild(memberItem);
                     this.members.set(member.id, member);
                 });
-                
+
                 // 更新成员计数
-                memberCount.textContent = `${members.length}人在线`;
+                memberCount.textContent = `${members.length} online`;
             }
-            
+
             // 隐藏房间选项按钮
             hideRoomOptions() {
                 const roomOptions = document.querySelector('.room-options');
@@ -2698,7 +2650,7 @@
                     roomOptions.style.display = 'none';
                 }
             }
-            
+
             // 隐藏房间信息
             hideRoomInfo() {
                 const roomInfo = document.getElementById('roomInfo');
@@ -2706,7 +2658,7 @@
                     roomInfo.classList.remove('active');
                 }
             }
-            
+
             // 显示房间选项按钮
             showRoomOptions() {
                 const roomOptions = document.querySelector('.room-options');
@@ -2714,34 +2666,34 @@
                     roomOptions.style.display = 'flex';
                 }
             }
-            
+
             // 确保房间选项可见（仅在不在房间时）
             ensureRoomOptionsVisible() {
                 console.log('=== 确保房间选项可见 ===');
-                
+
                 // 如果已经在房间中，不应该显示创建/加入按钮
                 if (this.isInRoom) {
                     console.log('已在房间中，不显示创建/加入按钮');
                     return;
                 }
-                
+
                 // 隐藏所有表单
                 this.hideAllForms();
-                
+
                 // 隐藏房间信息和传输区域
                 this.hideRoomInfo();
                 this.hideFileTransferArea();
                 this.hideRoomWarning();
-                
+
                 // 清空共享文件列表
                 this.clearSharedFilesList();
-                
+
                 // 显示创建/加入按钮
                 const roomOptions = document.querySelector('.room-options');
                 if (roomOptions) {
                     roomOptions.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important;';
                     console.log('房间选项按钮已显示');
-                    
+
                     // 检查按钮是否存在
                     const createBtn = document.getElementById('createRoomBtn');
                     const joinBtn = document.getElementById('joinRoomBtn');
@@ -2749,11 +2701,11 @@
                 } else {
                     console.error('找不到.room-options元素');
                 }
-                
+
                 // 显示底部用户信息区域
                 this.showBottomUserInfo();
             }
-            
+
             // 显示文件传输区域
             showFileTransferArea() {
                 const fileTransferArea = document.getElementById('fileTransferArea');
@@ -2761,7 +2713,7 @@
                     fileTransferArea.classList.add('active');
                 }
             }
-            
+
             // 隐藏文件传输区域
             hideFileTransferArea() {
                 const fileTransferArea = document.getElementById('fileTransferArea');
@@ -2769,11 +2721,11 @@
                     fileTransferArea.classList.remove('active');
                 }
             }
-            
+
             // 处理房间文件共享消息
             async onFileSharedToRoom(message) {
                 if (message.roomCode !== this.currentRoom) return;
-                
+
                 const fileInfo = message.fileInfo;
                 // 只添加不是自己上传的文件
                 if (fileInfo.uploaderId !== this.getCurrentUserId()) {
@@ -2784,21 +2736,21 @@
                             fileInfo.isAvailable = true;
                             fileInfo.isRemote = true;
                             fileInfo.uploaderOnline = true;
-                            
+
                             // 将接收到的文件也存储到IndexedDB
                             await this.storeFileToIndexedDB(fileInfo);
-                            
-                            this.showToast(`${fileInfo.uploader} 分享了文件: ${fileInfo.name}`);
+
+                            this.showToast(`${fileInfo.uploader} shared file: ${fileInfo.name}`);
                         } else {
                             // 没有文件数据，可能文件太大或上传者离线
                             fileInfo.file = null;
                             fileInfo.isAvailable = false;
                             fileInfo.isRemote = true;
                             fileInfo.uploaderOnline = true; // 假设在线，但文件不可用
-                            
-                            this.showToast(`${fileInfo.uploader} 分享了文件: ${fileInfo.name} (文件太大或暂不可下载)`);
+
+                            this.showToast(`${fileInfo.uploader} shared file: ${fileInfo.name} (file too large or temporarily unavailable)`);
                         }
-                        
+
                         this.addFileToSharedList(fileInfo);
                     } catch (error) {
                         console.error('处理接收文件失败:', error);
@@ -2807,22 +2759,22 @@
                         fileInfo.isAvailable = false;
                         fileInfo.isRemote = true;
                         fileInfo.uploaderOnline = true;
-                        
+
                         this.addFileToSharedList(fileInfo);
-                        this.showToast(`接收 ${fileInfo.uploader} 的文件时出错`);
+                        this.showToast(`Error receiving file from ${fileInfo.uploader}`);
                     }
                 }
             }
-            
+
             // 处理房间文件删除消息
             onFileRemovedFromRoom(message) {
                 if (message.roomCode !== this.currentRoom) return;
-                
+
                 const fileItem = document.querySelector(`[data-file-id="${message.fileId}"]`);
                 if (fileItem) {
                     fileItem.remove();
                     this.updateFileCount();
-                    
+
                     // 检查是否需要显示空状态
                     const sharedFilesList = document.getElementById('sharedFilesList');
                     const remainingFiles = sharedFilesList.querySelectorAll('.shared-file-item');
@@ -2834,7 +2786,7 @@
                     }
                 }
             }
-            
+
             // 清空共享文件列表
             clearSharedFilesList() {
                 const sharedFilesList = document.getElementById('sharedFilesList');
@@ -2842,25 +2794,25 @@
                     // 移除所有文件项
                     const fileItems = sharedFilesList.querySelectorAll('.shared-file-item');
                     fileItems.forEach(item => item.remove());
-                    
+
                     // 显示空状态
                     const noFiles = sharedFilesList.querySelector('.no-shared-files');
                     if (noFiles) {
                         noFiles.style.display = 'block';
                     }
-                    
+
                     this.updateFileCount();
                 }
             }
-            
+
             // 加载之前的房间文件
             async loadPreviousRoomFiles() {
                 if (!this.currentRoom) return;
-                
+
                 try {
                     const files = await this.loadRoomFilesFromIndexedDB(this.currentRoom);
                     console.log(`从 IndexedDB 加载到 ${files.length} 个文件`);
-                    
+
                     files.forEach(fileData => {
                         const fileInfo = {
                             id: fileData.id,
@@ -2874,37 +2826,37 @@
                             isRestored: true, // 标记为恢复的文件
                             isAvailable: fileData.file ? true : false // 根据文件是否存在设置可用性
                         };
-                        
+
                         this.addFileToSharedList(fileInfo);
                     });
-                    
+
                     if (files.length > 0) {
-                        this.showToast(`已恢复 ${files.length} 个之前的文件`);
+                        this.showToast(`Restored ${files.length} previous files`);
                     }
                 } catch (error) {
                     console.error('加载之前的文件失败:', error);
                 }
             }
-            
+
             // 显示房间警告提示
             showRoomWarning() {
                 const roomWarning = document.getElementById('roomWarning');
                 const warningTitle = document.getElementById('warningTitle');
                 const warningMessage = document.getElementById('warningMessage');
-                
+
                 if (!roomWarning || !warningTitle || !warningMessage) return;
-                
+
                 if (this.isHost) {
-                    warningTitle.textContent = '房主提醒';
-                    warningMessage.textContent = '您是房主，刷新页面会自动重新连接房间。只有点击"退出房间"或关闭浏览器标签页才会解散房间。';
+                    warningTitle.textContent = 'Host Notice';
+                    warningMessage.textContent = 'As the host, refreshing the page will automatically reconnect to the room. Only clicking "Leave Room" or closing the browser tab will disband the room.';
                 } else {
-                    warningTitle.textContent = '成员提醒';
-                    warningMessage.textContent = '刷新页面会自动重新连接房间。只有点击"退出房间"或关闭浏览器标签页才会退出房间。';
+                    warningTitle.textContent = 'Member Notice';  
+                    warningMessage.textContent = 'Refreshing the page will automatically reconnect to the room. Only clicking "Leave Room" or closing the browser tab will exit the room.';
                 }
-                
+
                 roomWarning.classList.add('active');
             }
-            
+
             // 隐藏房间警告提示
             hideRoomWarning() {
                 const roomWarning = document.getElementById('roomWarning');
@@ -2912,26 +2864,26 @@
                     roomWarning.classList.remove('active');
                 }
             }
-            
+
             // 设置页面刷新前确认
             setupBeforeUnloadHandler() {
                 this.beforeUnloadHandler = (e) => {
                     if (this.isInRoom) {
                         // 检查是否是刷新操作（这个检查不是100%准确，但可以尝试）
                         // 如果用户明确要关闭标签页/窗口，还是应该警告
-                        const message = this.isHost 
-                            ? '关闭标签页将解散房间！确定要离开吗？' 
+                        const message = this.isHost
+                            ? '关闭标签页将解散房间！确定要离开吗？'
                             : '关闭标签页将退出房间！确定要离开吗？';
-                        
+
                         e.preventDefault();
                         e.returnValue = message;
                         return message;
                     }
                 };
-                
+
                 window.addEventListener('beforeunload', this.beforeUnloadHandler);
             }
-            
+
             // 移除页面刷新前确认
             removeBeforeUnloadHandler() {
                 if (this.beforeUnloadHandler) {
@@ -2939,7 +2891,7 @@
                     this.beforeUnloadHandler = null;
                 }
             }
-            
+
             // 保存房间状态到本地存储
             saveRoomState(roomData) {
                 try {
@@ -2953,7 +2905,7 @@
                     console.error('保存房间状态失败:', error);
                 }
             }
-            
+
             // 加载房间状态
             loadRoomState() {
                 try {
@@ -2963,7 +2915,7 @@
                         // 检查状态是否过期（24小时）
                         const now = Date.now();
                         const maxAge = 24 * 60 * 60 * 1000; // 24小时
-                        
+
                         if (now - roomState.timestamp < maxAge) {
                             console.log('找到保存的房间状态:', roomState);
                             return roomState;
@@ -2978,7 +2930,7 @@
                 }
                 return null;
             }
-            
+
             // 清除房间状态
             clearRoomState() {
                 try {
@@ -2988,7 +2940,7 @@
                     console.error('清除房间状态失败:', error);
                 }
             }
-            
+
             // 设置文件传输事件监听
             setupFileEvents() {
                 // 等待Events系统就绪
@@ -2997,53 +2949,53 @@
                         setTimeout(setupEvents, 100);
                         return;
                     }
-                    
+
                     // 监听文件接收事件
                     window.Events.on('file-received', (e) => {
                         this.handleFileReceived(e.detail);
                     });
-                    
+
                     // 监听文件传输进度事件
                     window.Events.on('file-progress', (e) => {
                         this.handleFileProgress(e.detail);
                     });
-                    
+
                     console.log('房间文件传输事件监听器已设置');
                 };
-                
+
                 setupEvents();
             }
-            
+
             // 处理文件接收
             handleFileReceived(fileData) {
                 if (!this.isInRoom) return;
-                
+
                 console.log('房间内接收到文件:', fileData);
-                
+
                 // 添加到接收文件列表
                 this.addToReceivedFilesList(fileData);
-                
+
                 // 显示通知
-                this.showToast(`接收到文件: ${fileData.name}`);
+                this.showToast(`Received file: ${fileData.name}`);
             }
-            
+
             // 处理文件传输进度
             handleFileProgress(progressData) {
                 if (!this.isInRoom) return;
-                
+
                 // 更新传输列表中的进度条
                 this.updateTransferProgress(progressData.sender, progressData.progress);
             }
-            
+
             // 添加到接收文件列表
             addToReceivedFilesList(fileData) {
                 const receivedFilesList = document.getElementById('receivedFilesList');
                 const noFiles = receivedFilesList.querySelector('.no-files');
-                
+
                 if (noFiles) {
                     noFiles.style.display = 'none';
                 }
-                
+
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
                 fileItem.innerHTML = `
@@ -3054,21 +3006,21 @@
                         </div>
                     </div>
                     <div class="file-actions">
-                        <button class="action-btn btn-download" onclick="roomManager.downloadFile('${fileData.name}', this)">下载</button>
+                        <button class="action-btn btn-download" onclick="roomManager.downloadFile('${fileData.name}', this)">Download</button>
                     </div>
                 `;
-                
+
                 // 存储文件数据用于下载
                 fileItem._fileData = fileData;
-                
+
                 receivedFilesList.appendChild(fileItem);
             }
-            
+
             // 下载文件
             downloadFile(fileName, buttonElement) {
                 const fileItem = buttonElement.closest('.file-item');
                 const fileData = fileItem._fileData;
-                
+
                 if (fileData && fileData.blob) {
                     const url = URL.createObjectURL(fileData.blob);
                     const a = document.createElement('a');
@@ -3078,13 +3030,13 @@
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
-                    
-                    this.showToast('文件下载已开始');
+
+                    this.showToast('File download started');
                 } else {
-                    this.showToast('文件下载失败');
+                    this.showToast('File download failed');
                 }
             }
-            
+
             // 更新传输进度
             updateTransferProgress(senderId, progress) {
                 const transferItems = document.querySelectorAll('.transfer-item');
@@ -3095,22 +3047,22 @@
                     }
                 });
             }
-            
+
             // 检查并重新连接房间
             checkAndReconnectRoom() {
                 // 只有在房间模式下才尝试重连
                 if (window.location.hash !== '#rooms') {
                     return;
                 }
-                
+
                 const roomState = this.loadRoomState();
                 if (!roomState) {
                     console.log('没有保存的房间状态，保持显示房间选项');
                     return; // 不做任何操作，保持当前状态
                 }
-                
+
                 console.log('找到保存的房间状态，尝试重连:', roomState.roomCode);
-                
+
                 // 等待网络连接就绪
                 const attemptReconnect = () => {
                     if (!window.network || !window.network.isConnected()) {
@@ -3118,10 +3070,10 @@
                         setTimeout(attemptReconnect, 300);
                         return;
                     }
-                    
+
                     console.log('网络就绪，开始重连房间:', roomState.roomCode);
-                    this.showToast('正在重新连接房间...');
-                    
+                    this.showToast('Reconnecting to room...');
+
                     if (roomState.isHost) {
                         this.sendMessage({
                             type: 'create-room',
@@ -3141,44 +3093,44 @@
                         });
                     }
                 };
-                
+
                 setTimeout(attemptReconnect, 500);
             }
         }
-        
+
         // 初始化房间管理器
         let roomManager;
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             // 初始化多语言支持
             if (window.DROPSHARE_I18N) {
                 window.DROPSHARE_I18N.init();
             }
-            
+
             // 立即初始化房间管理器，不等待网络
             const initRoomManager = () => {
                 console.log('初始化房间管理器...');
-                
+
                 // 检查DOM元素是否存在
                 const roomContainer = document.getElementById('roomContainer');
                 const peerContainer = document.getElementById('peerContainer');
-                
+
                 if (!roomContainer || !peerContainer) {
                     console.log('DOM元素未就绪，等待重试...');
                     setTimeout(initRoomManager, 50);
                     return;
                 }
-                
+
                 console.log('DOM元素就绪，创建房间管理器');
                 roomManager = new RoomManager();
                 window.roomManager = roomManager;
                 console.log('房间管理器初始化完成');
             };
-            
+
             // 立即初始化
             initRoomManager();
         });
-        
+
         // 页面完全加载后的补充检查
         window.addEventListener('load', function() {
             console.log('页面完全加载，检查房间状态');
@@ -3190,48 +3142,12 @@
                     }
                 }, 100);
             }
-            
+
             // 初始化顶部导航栏语言选择器
-            initNavbarLanguageSelector();
         });
-        
+
         // 初始化顶部导航栏语言选择器
-        function initNavbarLanguageSelector() {
-            const navbarLangSelector = document.getElementById('navbar-language-selector');
-            const headerLangSelector = document.getElementById('language-selector');
-            
-            if (navbarLangSelector && headerLangSelector) {
-                // 同步两个选择器的值
-                const savedLang = localStorage.getItem('preferred_language') || 'en';
-                navbarLangSelector.value = savedLang;
-                headerLangSelector.value = savedLang;
-                
-                // 监听顶部导航栏的语言选择变化
-                navbarLangSelector.addEventListener('change', function() {
-                    const selectedLang = this.value;
-                    // 同步到header的语言选择器
-                    headerLangSelector.value = selectedLang;
-                    
-                    // 保存语言偏好
-                    localStorage.setItem('preferred_language', selectedLang);
-                    
-                    // 触发语言切换
-                    if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.changeLanguage === 'function') {
-                        window.DROPSHARE_I18N.changeLanguage(selectedLang);
-                        console.log('Language changed to:', selectedLang);
-                    }
-                });
-                
-                // 监听header语言选择器的变化，同步到顶部导航栏
-                headerLangSelector.addEventListener('change', function() {
-                    navbarLangSelector.value = this.value;
-                });
-            }
-            
-            // 初始化导航栏功能链接
-            initNavbarFunctionLinks();
-        }
-        
+
         // 初始化导航栏功能链接
         function initNavbarFunctionLinks() {
             // 多人房间链接
@@ -3243,7 +3159,7 @@
                     console.log('切换到多人房间模式');
                 });
             }
-            
+
             // 传送链接（回到主页）
             const transferLink = document.querySelector('a[href="/"]');
             if (transferLink) {
@@ -3253,13 +3169,13 @@
                     console.log('切换到传送模式');
                 });
             }
-            
+
             // 添加文件类型过滤功能入口
             const imageLink = document.querySelector('a[href="#images"]');
-            const audioLink = document.querySelector('a[href="#audio"]'); 
+            const audioLink = document.querySelector('a[href="#audio"]');
             const videoLink = document.querySelector('a[href="#video"]');
             const filesLink = document.querySelector('a[href="#files"]');
-            
+
             [imageLink, audioLink, videoLink, filesLink].forEach(link => {
                 if (link) {
                     link.addEventListener('click', function(e) {
@@ -3270,31 +3186,31 @@
                 }
             });
         }
-        
+
         // 显示文件类型过滤（暂时显示提示，以后可以扩展功能）
         function showFileTypeFilter(type) {
             const typeNames = {
                 'images': '图片',
-                'audio': '音频', 
+                'audio': '音频',
                 'video': '视频',
                 'files': '文件'
             };
-            
+
             if (window.roomManager) {
-                window.roomManager.showToast(`${typeNames[type]}功能正在开发中`);
+                window.roomManager.showToast(`${typeNames[type]} feature is under development`);
             } else {
-                alert(`${typeNames[type]}功能正在开发中`);
+                alert(`${typeNames[type]} feature is under development`);
             }
-            
+
             console.log(`切换到${typeNames[type]}模式`);
         }
     </script>
-    
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics-compat.js"></script>
     <script src="scripts/firebase-analytics.js"></script>
-    
+
     <!-- Sounds -->
     <audio id="blop" autobuffer="true">
         <source src="/sounds/blop.mp3" type="audio/mpeg">
@@ -3303,8 +3219,8 @@
     <!-- no script -->
     <noscript>
         <x-noscript class="full center column">
-            <h1 data-i18n="enable_js">Enable JavaScript</h1>
-            <h3 data-i18n="snapdrop_js_only">DropShare works only with JavaScript</h3>
+            <h1>Enable JavaScript</h1>
+            <h3>DropShare works only with JavaScript</h3>
         </x-noscript>
         <style>
         x-noscript {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>视频转换器 - DropShare</title>
+    <title>Video Converter - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -527,26 +527,11 @@
             align-items: center;
         }
 
-        .lang-selector select {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #374151;
-            font-size: 14px;
-            font-family: inherit;
-            cursor: pointer;
-        }
+        
 
-        .lang-selector select:hover {
-            border-color: #3367d6;
-        }
+        
 
-        .lang-selector select:focus {
-            outline: none;
-            border-color: #3367d6;
-            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
-        }
+        
 
         @media (max-width: 768px) {
             .page-header {
@@ -555,10 +540,7 @@
                 text-align: center;
             }
             
-            .lang-selector select {
-                padding: 6px 10px;
-                font-size: 13px;
-            }
+            
         }
     </style>    
     <!-- Mobile Responsive Styles -->
@@ -567,73 +549,59 @@
 </head>
 <body>
     <div class="page-header">
-        <h1 class="page-main-title" data-i18n="video_converter_title">🎥 视频转换器</h1>
+        <h1 class="page-main-title" >🎥 视频转换器</h1>
         <div class="header-buttons">
             <div class="control-buttons">
-                <div class="lang-selector">
-                    <select id="language-selector" title="选择语言" data-i18n="title_select_language">
-                        <option value="en">English</option>
-                        <option value="zh">中文简体</option>
-                        <option value="zh-tw">中文繁體</option>
-                        <option value="ja">日本語</option>
-                        <option value="fr">Français</option>
-                        <option value="es">Español</option>
-                        <option value="de">Deutsch</option>
-                        <option value="pt">Português</option>
-                        <option value="ru">Русский</option>
-                        <option value="ar">العربية</option>
-                        <option value="ko">한국어</option>
-                    </select>
-                </div>
+                
             </div>
-            <a href="video-tools.html" class="back-button" data-i18n="back_to_video_tools">← 视频工具</a>
-            <a href="index.html" class="back-button" data-i18n="btn_home">🏠 首页</a>
+            <a href="video-tools.html" class="back-button" >← 视频工具</a>
+            <a href="index.html" class="back-button" >🏠 首页</a>
         </div>
     </div>
 
     <div class="container">
-        <h1 class="page-title" id="pageTitle" data-i18n="video_converter_subtitle">AVI to MP4 video</h1>
-        <p class="page-subtitle" id="pageSubtitle" data-i18n="video_converter_description">Convert AVI to MP4 video</p>
+        <h1 class="page-title" id="pageTitle" >AVI to MP4 video</h1>
+        <p class="page-subtitle" id="pageSubtitle" >Convert AVI to MP4 video</p>
         
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon" id="uploadIcon">📄</div>
-            <button class="upload-button" onclick="document.getElementById('fileInput').click()" data-i18n="btn_upload_from_pc">
+            <button class="upload-button" onclick="document.getElementById('fileInput').click()" >
                 📤 Upload from PC or Mobile
             </button>
-            <div class="upload-text" data-i18n="drop_files_here">or Drag files here</div>
+            <div class="upload-text" >or Drag files here</div>
             <input type="file" id="fileInput" multiple accept="video/*" style="display: none;">
         </div>
         
         <div class="conversion-panel" id="conversionPanel" style="display: none;">
             <div id="fileList"></div>
             
-            <h3 id="formatSelectorTitle" data-i18n="label_output_format">选择输出格式：</h3>
+            <h3 id="formatSelectorTitle" >选择输出格式：</h3>
             <div class="format-selector" id="formatSelector">
-                <div class="format-option" data-format="mp4" data-i18n="format_mp4">MP4</div>
-                <div class="format-option" data-format="webm" data-i18n="format_webm">WebM</div>
-                <div class="format-option" data-format="avi" data-i18n="format_avi">AVI</div>
-                <div class="format-option" data-format="mov" data-i18n="format_mov">MOV</div>
+                <div class="format-option" data-format="mp4" >MP4</div>
+                <div class="format-option" data-format="webm" >WebM</div>
+                <div class="format-option" data-format="avi" >AVI</div>
+                <div class="format-option" data-format="mov" >MOV</div>
             </div>
             
-            <button class="convert-button" id="convertBtn" disabled data-i18n="btn_convert">开始转换</button>
+            <button class="convert-button" id="convertBtn" disabled >开始转换</button>
             
             <div class="progress-section" id="progressSection" style="display: none;">
-                <div class="progress-text" id="progressText" data-i18n="status_preparing">准备转换...</div>
+                <div class="progress-text" id="progressText" >准备转换...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
             
             <div class="results-section" id="resultsSection" style="display: none;">
-                <h3 data-i18n="label_conversion_results">转换结果:</h3>
+                <h3 >转换结果:</h3>
                 <div id="resultsList"></div>
             </div>
         </div>
         
         <div class="footer-info">
-            <div class="footer-text" data-i18n="footer_file_deletion_notice">Uploaded and generated files are deleted 1 hour after upload</div>
+            <div class="footer-text" >Uploaded and generated files are deleted 1 hour after upload</div>
             <div class="rating-section">
-                <div class="rating-text" data-i18n="rating_help_improve">Help Us Improve</div>
+                <div class="rating-text" >Help Us Improve</div>
                 <div class="rating-display">
                     <div class="stars">★★★★★</div>
                     <div class="rating-score">4.8 (1703)</div>
@@ -698,7 +666,7 @@
                     const formatSelectorTitle = document.getElementById('formatSelectorTitle');
                     const formatSelector = document.getElementById('formatSelector');
                     
-                    formatSelectorTitle.innerHTML = `<span data-i18n="label_output_format">输出格式</span>：${toFormatUpper}`;
+                    formatSelectorTitle.innerHTML = `<span >输出格式</span>：${toFormatUpper}`;
                     formatSelector.style.display = 'none';
                     
                     // 添加格式说明
@@ -800,12 +768,12 @@
                     overlay.innerHTML = `
                         <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
                             <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
-                            <h3 id="loadingTitle" data-i18n="loading_video_engine">正在加载视频转换引擎...</h3>
-                            <p id="loadingStatus" data-i18n="loading_engine_message">首次使用需要下载约25MB的转换库，请稍候...</p>
+                            <h3 id="loadingTitle" >正在加载视频转换引擎...</h3>
+                            <p id="loadingStatus" >首次使用需要下载约25MB的转换库，请稍候...</p>
                             <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 20px 0;">
                                 <div id="loadingProgressFill" style="height: 100%; background: #3182ce; width: 0%; transition: width 0.3s ease;"></div>
                             </div>
-                            <div id="loadingProgressText" data-i18n="status_preparing_load">准备加载...</div>
+                            <div id="loadingProgressText" >准备加载...</div>
                         </div>
                     `;
                     
@@ -833,12 +801,12 @@
                     overlay.innerHTML = `
                         <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
                             <div style="font-size: 2em; margin-bottom: 15px; color: #ef4444;">❌</div>
-                            <h3 style="color: #ef4444;" data-i18n="error_video_engine_load_failed">视频转换引擎加载失败</h3>
+                            <h3 style="color: #ef4444;" >视频转换引擎加载失败</h3>
                             <p>${error.message}</p>
-                            <p data-i18n="error_check_network">请检查网络连接并重试</p>
+                            <p >请检查网络连接并重试</p>
                             <div style="margin-top: 20px;">
-                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;" data-i18n="btn_reload_page">重新加载页面</button>
-                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;" data-i18n="btn_close">关闭</button>
+                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;" >重新加载页面</button>
+                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;" >关闭</button>
                             </div>
                         </div>
                     `;
@@ -1087,8 +1055,8 @@
                                 <p>${this.formatFileSize(file.size)} • ${file.type}</p>
                             </div>
                             <div class="result-actions">
-                                <button class="action-button" onclick="videoConverter.downloadFile(${index})" data-i18n="btn_download">下载</button>
-                                <button class="action-button primary" onclick="videoConverter.shareFile(${index})" data-i18n="btn_share">分享</button>
+                                <button class="action-button" onclick="videoConverter.downloadFile(${index})" >下载</button>
+                                <button class="action-button primary" onclick="videoConverter.shareFile(${index})" >分享</button>
                             </div>
                         </div>
                     `;
@@ -1211,8 +1179,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p data-i18n="no_devices_found">未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="device_connection_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p >未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" >请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -1353,15 +1321,15 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
+                <h3 class="device-modal-title" >选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
-                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled data-i18n="btn_send_to_devices">
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" >取消</button>
+                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled >
                     传送到选中设备
                 </button>
             </div>

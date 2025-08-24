@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title data-i18n="about_page_title">About DropShare - Easy File Sharing</title>
+    <title>About DropShare - Easy File Sharing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#3367d6">
     <meta name="color-scheme" content="dark light">
@@ -21,13 +21,13 @@
             --bg-color: #121212;
             --bg-color-secondary: #333;
         }
-        
+
         html[data-theme="light"] {
             --text-color: #333;
             --bg-color: #fafafa;
             --bg-color-secondary: #f1f3f4;
         }
-        
+
         body {
             padding: 0;
             margin: 0;
@@ -48,10 +48,10 @@
             right: 0;
             height: 56px;
             z-index: 100;
-            background-color: var(--bg-color);
-            border-bottom: 1px solid var(--bg-color-secondary);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         header {
@@ -64,7 +64,6 @@
             margin: 0 auto;
             width: 100%;
         }
-        
 
         header .icon-button {
             margin-right: 16px;
@@ -81,19 +80,19 @@
             font-size: 20px;
             color: #4285f4;
         }
-        
+
         .header-nav-links {
             display: flex;
             gap: 16px;
             align-items: center;
         }
-        
+
         .header-nav-links {
             display: flex;
             gap: 16px;
             align-items: center;
         }
-        
+
         .header-nav-links a {
             color: #6b7280;
             text-decoration: none;
@@ -103,43 +102,22 @@
             border-radius: 6px;
             transition: all 0.2s ease;
         }
-        
+
         .header-nav-links a:hover {
             color: #3367d6;
             background: #f3f4f6;
         }
-        
+
         .header-controls {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-        
+
         .control-buttons {
             display: flex;
             align-items: center;
             gap: 12px;
-        }
-        
-        .lang-selector select {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #374151;
-            font-size: 14px;
-            font-family: inherit;
-            cursor: pointer;
-        }
-        
-        .lang-selector select:hover {
-            border-color: #3367d6;
-        }
-        
-        .lang-selector select:focus {
-            outline: none;
-            border-color: #3367d6;
-            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
         }
 
         .content-wrapper {
@@ -211,18 +189,18 @@
             border-top: 1px solid var(--bg-color-secondary);
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
-        
+
         footer .logo-container {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        
+
         footer .icon.logo {
             width: 40px;
             height: 40px;
         }
-        
+
         footer .text-container {
             display: none;
         }
@@ -243,29 +221,24 @@
             .feature-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .header-nav-links {
                 gap: 8px;
             }
-            
+
             .header-nav-links a {
                 font-size: 12px;
                 padding: 4px 8px;
             }
-            
+
             .header-controls {
                 gap: 8px;
             }
-            
-            .lang-selector select {
-                font-size: 12px;
-                padding: 6px 8px;
-            }
-            
+
             header {
                 padding: 0 12px;
             }
-            
+
             .header-nav h1 {
                 font-size: 18px;
             }
@@ -274,7 +247,7 @@
 </head>
 <body>
     <div class="background-animation"></div>
-    
+
     <div class="header-wrapper">
         <header>
             <div class="header-nav">
@@ -283,97 +256,83 @@
                         <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
                     </svg>
                 </a>
-                <h1 data-i18n="about_header_title">About DropShare</h1>
+                <h1>About DropShare</h1>
             </div>
-            
+
             <!-- 统一导航菜单和控制按钮 -->
             <div class="header-controls">
                 <nav class="header-nav-links">
-                    <a href="share.html" data-i18n="nav_transfer">传送</a>
-                    <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
-                    <a href="image-tools.html" data-i18n="nav_images">图片</a>
-                    <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
-                    <a href="video-tools.html" data-i18n="nav_video">视频</a>
-                    <a href="document-tools.html" data-i18n="nav_files">文件</a>
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Rooms</a>
+                    <a href="image-tools.html">Images</a>
+                    <a href="audio-tools.html">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html">Files</a>
                 </nav>
                 <div class="control-buttons">
-                    <div class="lang-selector">
-                        <select id="language-selector" title="选择语言">
-                            <option value="en">English</option>
-                            <option value="zh">中文简体</option>
-                            <option value="zh-tw">中文繁體</option>
-                            <option value="ja">日本語</option>
-                            <option value="fr">Français</option>
-                            <option value="es">Español</option>
-                            <option value="de">Deutsch</option>
-                            <option value="pt">Português</option>
-                            <option value="ru">Русский</option>
-                            <option value="ar">العربية</option>
-                            <option value="ko">한국어</option>
-                        </select>
-                    </div>
+
                 </div>
             </div>
         </header>
     </div>
-    
+
     <div class="content-wrapper">
         <div class="container">
             <section>
-                <h2 data-i18n="about_what_is_title">What is DropShare?</h2>
-                <p data-i18n="about_what_is_p1">DropShare is a modern web application that allows you to easily share files between devices on the same network. No setup, no signup, no cloud storage needed - just instant peer-to-peer file sharing.</p>
-                
+                <h2>What is DropShare?</h2>
+                <p>DropShare is a modern web application that allows you to easily share files between devices on the same network. No setup, no signup, no cloud storage needed - just instant peer-to-peer file sharing.</p>
+
                 <div class="feature-box">
-                    <h3 data-i18n="about_how_it_works_title">How It Works</h3>
-                    <p data-i18n="about_how_it_works_p1">DropShare uses WebRTC technology to establish a direct connection between devices. Your files are transferred directly from one device to another without going through a server, ensuring privacy and speed.</p>
+                    <h3>How It Works</h3>
+                    <p>DropShare uses WebRTC technology to establish a direct connection between devices. Your files are transferred directly from one device to another without going through a server, ensuring privacy and speed.</p>
                 </div>
             </section>
-            
+
             <section>
                 <div class="feature-grid">
                     <div class="feature-box">
-                        <h3 data-i18n="about_no_setup_title">No Setup Required</h3>
-                        <p data-i18n="about_no_setup_p1">Just open DropShare in your browser and start sharing files immediately. No account creation or software installation needed.</p>
+                        <h3>No Setup Required</h3>
+                        <p>Just open DropShare in your browser and start sharing files immediately. No account creation or software installation needed.</p>
                     </div>
                     <div class="feature-box">
-                        <h3 data-i18n="about_privacy_focused_title">Privacy Focused</h3>
-                        <p data-i18n="about_privacy_focused_p1">All transfers are peer-to-peer, meaning your files are never stored on our servers. Your data remains private and secure.</p>
+                        <h3>Privacy Focused</h3>
+                        <p>All transfers are peer-to-peer, meaning your files are never stored on our servers. Your data remains private and secure.</p>
                     </div>
                     <div class="feature-box">
-                        <h3 data-i18n="about_cross_platform_title">Cross-Platform</h3>
-                        <p data-i18n="about_cross_platform_p1">Works on all modern devices and browsers including smartphones, tablets, and computers running Windows, macOS, Linux, iOS, or Android.</p>
+                        <h3>Cross-Platform</h3>
+                        <p>Works on all modern devices and browsers including smartphones, tablets, and computers running Windows, macOS, Linux, iOS, or Android.</p>
                     </div>
                     <div class="feature-box">
-                        <h3 data-i18n="about_fast_transfers_title">Fast Transfers</h3>
-                        <p data-i18n="about_fast_transfers_p1">Direct device-to-device connection means faster transfer speeds than cloud-based services.</p>
+                        <h3>Fast Transfers</h3>
+                        <p>Direct device-to-device connection means faster transfer speeds than cloud-based services.</p>
                     </div>
                 </div>
             </section>
-            
+
             <section>
-                <h2 data-i18n="about_how_to_use_title">How to Use DropShare</h2>
+                <h2>How to Use DropShare</h2>
                 <div class="feature-box">
-                    <h3 data-i18n="about_step1_title">Step 1: Connect Devices</h3>
-                    <p data-i18n="about_step1_p1">Make sure all devices are connected to the same Wi-Fi network or local area network.</p>
+                    <h3>Step 1: Connect Devices</h3>
+                    <p>Make sure all devices are connected to the same Wi-Fi network or local area network.</p>
                 </div>
                 <div class="feature-box">
-                    <h3 data-i18n="about_step2_title">Step 2: Open DropShare</h3>
-                    <p data-i18n="about_step2_p1">Open DropShare on all devices you want to share files between. Just visit the website in your browser.</p>
+                    <h3>Step 2: Open DropShare</h3>
+                    <p>Open DropShare on all devices you want to share files between. Just visit the website in your browser.</p>
                 </div>
                 <div class="feature-box">
-                    <h3 data-i18n="about_step3_title">Step 3: Select Device</h3>
-                    <p data-i18n="about_step3_p1">You'll see all available devices on the network. Click on the device you want to send files to.</p>
+                    <h3>Step 3: Select Device</h3>
+                    <p>You'll see all available devices on the network. Click on the device you want to send files to.</p>
                 </div>
                 <div class="feature-box">
-                    <h3 data-i18n="about_step4_title">Step 4: Send Files</h3>
-                    <p data-i18n="about_step4_p1">Select the files you want to share. The recipient will get a notification and can accept the transfer.</p>
+                    <h3>Step 4: Send Files</h3>
+                    <p>Select the files you want to share. The recipient will get a notification and can accept the transfer.</p>
                 </div>
             </section>
-            
-            <a href="/" class="back-button" data-i18n="about_back_button">Back to DropShare</a>
+
+            <a href="/" class="back-button">Back to DropShare</a>
         </div>
     </div>
-    
+
     <footer>
         <div class="logo-container">
             <svg class="icon logo">
@@ -385,7 +344,7 @@
             <div class="font-body2 text-line">The easiest way to share files across devices</div>
         </div>
     </footer>
-    
+
     <script>
         // Import necessary SVG icons
         const iconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -397,17 +356,10 @@
         `;
         document.body.appendChild(iconSvg);
     </script>
-    
+
     <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>
+
     <script>
-        // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
-            }
-        });
-    </script>
+
 </body>
 </html>

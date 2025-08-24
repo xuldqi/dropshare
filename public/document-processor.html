@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="document_processor_title">文档处理器 - DropShare</title>
+    <title >文档处理器 - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -425,48 +425,34 @@
 </head>
 <body>
     <div class="page-header">
-        <h1 data-i18n="document_processor_heading">📄 文档处理器</h1>
+        <h1 >📄 文档处理器</h1>
         <div class="header-buttons">
             <div class="control-buttons">
-                <div class="lang-selector">
-                    <select id="language-selector" title="选择语言" data-i18n="title_select_language">
-                        <option value="en">English</option>
-                        <option value="zh">中文简体</option>
-                        <option value="zh-tw">中文繁體</option>
-                        <option value="ja">日本語</option>
-                        <option value="fr">Français</option>
-                        <option value="es">Español</option>
-                        <option value="de">Deutsch</option>
-                        <option value="pt">Português</option>
-                        <option value="ru">Русский</option>
-                        <option value="ar">العربية</option>
-                        <option value="ko">한국어</option>
-                    </select>
-                </div>
+                
             </div>
-            <a href="document-tools.html" class="back-button" data-i18n="back_to_document_tools">← 文档工具</a>
-            <a href="index.html" class="back-button" data-i18n="btn_home">🏠 首页</a>
+            <a href="document-tools.html" class="back-button" >← 文档工具</a>
+            <a href="index.html" class="back-button" >🏠 首页</a>
         </div>
     </div>
     
     <div class="processor-container">
         <div class="upload-area" id="uploadArea">
             <div style="font-size: 3em; margin-bottom: 15px;">📄</div>
-            <h3 data-i18n="drop_documents_here">拖拽文档文件到这里或点击选择</h3>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;" data-i18n="supported_formats_document">支持 PDF, DOCX, TXT, RTF, HTML 等格式</p>
+            <h3 >拖拽文档文件到这里或点击选择</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;" >支持 PDF, DOCX, TXT, RTF, HTML 等格式</p>
             <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.rtf,.html,.doc" style="display: none;">
-            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()" data-i18n="btn_select_document">选择文档文件</button>
+            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()" >选择文档文件</button>
         </div>
         
         <div class="processing-workspace" id="processingWorkspace">
             <div class="document-preview">
                 <div class="preview-header">
                     <div class="document-info">
-                        <h4 id="documentFileName" data-i18n="text_no_file_selected">未选择文件</h4>
+                        <h4 id="documentFileName" >未选择文件</h4>
                         <p id="documentFileInfo">-</p>
                     </div>
                     <div class="document-actions">
-                        <span id="documentPageInfo" data-i18n="text_page_info">页面: - / -</span>
+                        <span id="documentPageInfo" >页面: - / -</span>
                     </div>
                 </div>
                 <div class="preview-controls">
@@ -484,15 +470,15 @@
                     </div>
                 </div>
                 <div class="preview-area" id="previewArea">
-                    <p style="text-align: center; color: var(--text-secondary); margin: 40px 0;" data-i18n="select_file_to_preview">请选择文档文件来预览</p>
+                    <p style="text-align: center; color: var(--text-secondary); margin: 40px 0;" >请选择文档文件来预览</p>
                 </div>
             </div>
             
             <div class="tabs">
-                <button class="tab active" data-tab="extract" data-i18n="tab_extract">文本提取</button>
-                <button class="tab" data-tab="split" data-i18n="tab_split">文档拆分</button>
-                <button class="tab" data-tab="merge" data-i18n="tab_merge">文档合并</button>
-                <button class="tab" data-tab="convert" data-i18n="tab_convert">格式转换</button>
+                <button class="tab active" data-tab="extract" >文本提取</button>
+                <button class="tab" data-tab="split" >文档拆分</button>
+                <button class="tab" data-tab="merge" >文档合并</button>
+                <button class="tab" data-tab="convert" >格式转换</button>
             </div>
             
             <!-- 文本提取 -->
@@ -500,33 +486,33 @@
                 <div class="tool-group">
                     <h4>📝 文本提取设置</h4>
                     <div class="page-range">
-                        <label data-i18n="label_extract_pages">提取页面:</label>
-                        <input type="number" id="extractStartPage" data-i18n="placeholder_start_page" placeholder="起始页" min="1" value="1">
-                        <span data-i18n="text_to">到</span>
-                        <input type="number" id="extractEndPage" data-i18n="placeholder_end_page" placeholder="结束页" min="1">
-                        <button class="page-btn" id="extractAllPagesBtn" data-i18n="btn_all_pages">全部页面</button>
+                        <label >提取页面:</label>
+                        <input type="number" id="extractStartPage"  placeholder="起始页" min="1" value="1">
+                        <span >到</span>
+                        <input type="number" id="extractEndPage"  placeholder="结束页" min="1">
+                        <button class="page-btn" id="extractAllPagesBtn" >全部页面</button>
                     </div>
                     
                     <div class="checkbox-group">
                         <div class="checkbox-item">
                             <input type="checkbox" id="preserveFormatting" checked>
-                            <label for="preserveFormatting" data-i18n="label_preserve_formatting">保持格式</label>
+                            <label for="preserveFormatting" >保持格式</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="extractImages">
-                            <label for="extractImages" data-i18n="label_extract_image_links">提取图片链接</label>
+                            <label for="extractImages" >提取图片链接</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="removeBlankLines">
-                            <label for="removeBlankLines" data-i18n="label_remove_blank_lines">移除空行</label>
+                            <label for="removeBlankLines" >移除空行</label>
                         </div>
                     </div>
                 </div>
                 
                 <div id="extractedTextArea" class="text-extraction-result" style="display: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <strong data-i18n="label_extracted_text">提取的文本:</strong>
-                        <button class="page-btn" id="copyTextBtn" data-i18n="btn_copy_text">复制文本</button>
+                        <strong >提取的文本:</strong>
+                        <button class="page-btn" id="copyTextBtn" >复制文本</button>
                     </div>
                     <div id="extractedText"></div>
                 </div>
@@ -535,26 +521,26 @@
             <!-- 文档拆分 -->
             <div class="tab-content" id="splitTab">
                 <div class="tool-group">
-                    <h4 data-i18n="split_settings">✂️ 文档拆分设置</h4>
+                    <h4 >✂️ 文档拆分设置</h4>
                     <div class="settings-panel">
                         <div class="setting-item">
-                            <label data-i18n="split_method_label">拆分方式:</label>
+                            <label >拆分方式:</label>
                             <select id="splitMethod">
-                                <option value="pages" data-i18n="split_by_range">按页面范围</option>
-                                <option value="interval" data-i18n="split_by_pages">按间隔页数</option>
-                                <option value="bookmarks" data-i18n="split_by_bookmarks">按书签</option>
+                                <option value="pages" >按页面范围</option>
+                                <option value="interval" >按间隔页数</option>
+                                <option value="bookmarks" >按书签</option>
                             </select>
                         </div>
                         
                         <div class="setting-item" id="intervalSetting">
-                            <label data-i18n="pages_per_file">每个文件页数:</label>
+                            <label >每个文件页数:</label>
                             <input type="number" id="splitInterval" value="10" min="1">
                         </div>
                     </div>
                     
                     <div id="pageRangesSetting" style="display: none;">
-                        <label data-i18n="page_range">页面范围 (用逗号分隔, 如: 1-5, 10-15, 20):</label>
-                        <input type="text" id="pageRanges" data-i18n="placeholder_page_ranges" placeholder="1-5, 10-15, 20" style="width: 100%; margin-top: 8px;">
+                        <label >页面范围 (用逗号分隔, 如: 1-5, 10-15, 20):</label>
+                        <input type="text" id="pageRanges"  placeholder="1-5, 10-15, 20" style="width: 100%; margin-top: 8px;">
                     </div>
                 </div>
             </div>
@@ -564,13 +550,13 @@
                 <div class="tool-group">
                     <h4>🔗 文档合并设置</h4>
                     <p style="margin-bottom: 15px; color: var(--text-secondary);">
-                        <span data-i18n="text_merge_multiple_pdfs">将多个PDF文档合并为一个文档。请上传多个文件。</span>
+                        <span >将多个PDF文档合并为一个文档。请上传多个文件。</span>
                     </p>
                     
                     <div style="margin: 15px 0;">
                         <input type="file" id="mergeFilesInput" accept=".pdf" multiple style="display: none;">
                         <button class="btn btn-secondary" onclick="document.getElementById('mergeFilesInput').click()">
-                            <span data-i18n="btn_select_documents_to_merge">选择要合并的文档</span>
+                            <span >选择要合并的文档</span>
                         </button>
                     </div>
                     
@@ -578,7 +564,7 @@
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="addBookmarks" checked>
-                        <label for="addBookmarks" data-i18n="label_add_bookmarks_for_each_document">为每个文档添加书签</label>
+                        <label for="addBookmarks" >为每个文档添加书签</label>
                     </div>
                 </div>
             </div>
@@ -589,19 +575,19 @@
                     <h4>🔄 格式转换设置</h4>
                     <div class="settings-panel">
                         <div class="setting-item">
-                            <label data-i18n="label_output_format">输出格式:</label>
+                            <label >输出格式:</label>
                             <select id="outputFormat">
                                 <option value="pdf">PDF</option>
-                                <option value="docx" data-i18n="option_word_document">Word 文档 (.docx)</option>
-                                <option value="txt" data-i18n="option_plain_text">纯文本 (.txt)</option>
-                                <option value="html" data-i18n="option_html_webpage">HTML 网页</option>
-                                <option value="rtf" data-i18n="option_rtf_document">RTF 文档</option>
-                                <option value="images" data-i18n="option_images">图片 (JPG/PNG)</option>
+                                <option value="docx" >Word 文档 (.docx)</option>
+                                <option value="txt" >纯文本 (.txt)</option>
+                                <option value="html" >HTML 网页</option>
+                                <option value="rtf" >RTF 文档</option>
+                                <option value="images" >图片 (JPG/PNG)</option>
                             </select>
                         </div>
                         
                         <div class="setting-item" id="imageQualitySetting" style="display: none;">
-                            <label data-i18n="label_image_quality">图片质量:</label>
+                            <label >图片质量:</label>
                             <div class="range-input">
                                 <input type="range" id="imageQuality" min="50" max="100" value="90">
                                 <span class="range-value" id="imageQualityValue">90%</span>
@@ -609,12 +595,12 @@
                         </div>
                         
                         <div class="setting-item" id="imageDpiSetting" style="display: none;">
-                            <label data-i18n="label_image_dpi">图片DPI:</label>
+                            <label >图片DPI:</label>
                             <select id="imageDpi">
-                                <option value="72" data-i18n="option_72_dpi_web">72 DPI (网页)</option>
-                                <option value="150" selected data-i18n="option_150_dpi_standard">150 DPI (标准)</option>
-                                <option value="300" data-i18n="option_300_dpi_high_quality">300 DPI (高质量)</option>
-                                <option value="600" data-i18n="option_600_dpi_print">600 DPI (打印)</option>
+                                <option value="72" >72 DPI (网页)</option>
+                                <option value="150" selected >150 DPI (标准)</option>
+                                <option value="300" >300 DPI (高质量)</option>
+                                <option value="600" >600 DPI (打印)</option>
                             </select>
                         </div>
                     </div>
@@ -622,37 +608,37 @@
             </div>
             
             <div class="process-actions">
-                <button class="btn btn-primary" id="processBtn" disabled data-i18n="btn_start_processing">开始处理</button>
-                <button class="btn btn-secondary" id="resetBtn" data-i18n="btn_reset_settings">重置设置</button>
-                <button class="btn btn-secondary" id="newFileBtn" data-i18n="btn_select_new_document">选择新文档</button>
+                <button class="btn btn-primary" id="processBtn" disabled >开始处理</button>
+                <button class="btn btn-secondary" id="resetBtn" >重置设置</button>
+                <button class="btn btn-secondary" id="newFileBtn" >选择新文档</button>
             </div>
             
             <div class="progress-section" id="progressSection">
-                <h4 data-i18n="heading_processing_progress">处理进度:</h4>
+                <h4 >处理进度:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div id="progressText" data-i18n="text_ready_to_process">准备处理...</div>
+                <div id="progressText" >准备处理...</div>
             </div>
             
             <div class="result-section" id="resultSection">
-                <h3 data-i18n="heading_processing_results">处理结果</h3>
+                <h3 >处理结果</h3>
                 
                 <div class="result-stats">
                     <div class="stat-item">
-                        <span class="stat-label" data-i18n="label_original_size">原始大小</span>
+                        <span class="stat-label" >原始大小</span>
                         <span class="stat-value" id="originalFileSize">-</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label" data-i18n="label_processed_size">处理后大小</span>
+                        <span class="stat-label" >处理后大小</span>
                         <span class="stat-value" id="resultFileSize">-</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label" data-i18n="label_page_count">页面数量</span>
+                        <span class="stat-label" >页面数量</span>
                         <span class="stat-value" id="pageCount">-</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label" data-i18n="label_processing_time">处理时间</span>
+                        <span class="stat-label" >处理时间</span>
                         <span class="stat-value" id="processingTime">-</span>
                     </div>
                 </div>
@@ -660,9 +646,9 @@
                 <div id="resultFilesList"></div>
                 
                 <div class="process-actions">
-                    <button class="btn btn-primary" id="downloadAllBtn" data-i18n="btn_download_all_files">下载所有文件</button>
-                    <button class="btn btn-primary" id="shareAllBtn" data-i18n="btn_share_all_files">分享所有文件</button>
-                    <button class="btn btn-secondary" id="processAnotherBtn" data-i18n="btn_process_another_document">处理其他文档</button>
+                    <button class="btn btn-primary" id="downloadAllBtn" >下载所有文件</button>
+                    <button class="btn btn-primary" id="shareAllBtn" >分享所有文件</button>
+                    <button class="btn btn-secondary" id="processAnotherBtn" >处理其他文档</button>
                 </div>
             </div>
         </div>
@@ -1399,8 +1385,8 @@
                             <small style="color: var(--text-secondary);">${this.formatFileSize(file.size)} • ${file.type}</small>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button onclick="documentProcessor.downloadFile(${index})" class="page-btn" data-i18n="btn_download">下载</button>
-                            <button onclick="documentProcessor.shareFile(${index})" class="page-btn" data-i18n="btn_share">分享</button>
+                            <button onclick="documentProcessor.downloadFile(${index})" class="page-btn" >下载</button>
+                            <button onclick="documentProcessor.shareFile(${index})" class="page-btn" >分享</button>
                         </div>
                     `;
                     list.appendChild(item);

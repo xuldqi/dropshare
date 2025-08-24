@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title data-i18n="terms_page_title">Terms of Service - DropShare</title>
+    <title>Terms of Service - DropShare</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#3367d6">
     <meta name="color-scheme" content="dark light">
@@ -46,9 +46,10 @@
             right: 0;
             height: 56px;
             z-index: 100;
-            background-color: #212121;
-            border-bottom: 1px solid #333;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         header {
@@ -61,12 +62,11 @@
             margin: 0 auto;
             width: 100%;
         }
-        
+
         .header-nav {
             display: flex;
             align-items: center;
         }
-        
 
         header .icon-button {
             margin-right: 16px;
@@ -77,13 +77,13 @@
             font-size: 20px;
             color: #4285f4;
         }
-        
+
         .header-nav-links {
             display: flex;
             gap: 16px;
             align-items: center;
         }
-        
+
         .header-nav-links a {
             color: #6b7280;
             text-decoration: none;
@@ -93,43 +93,22 @@
             border-radius: 6px;
             transition: all 0.2s ease;
         }
-        
+
         .header-nav-links a:hover {
             color: #3367d6;
             background: #f3f4f6;
         }
-        
+
         .header-controls {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-        
+
         .control-buttons {
             display: flex;
             align-items: center;
             gap: 12px;
-        }
-        
-        .lang-selector select {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #374151;
-            font-size: 14px;
-            font-family: inherit;
-            cursor: pointer;
-        }
-        
-        .lang-selector select:hover {
-            border-color: #3367d6;
-        }
-        
-        .lang-selector select:focus {
-            outline: none;
-            border-color: #3367d6;
-            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
         }
 
         .content-wrapper {
@@ -191,18 +170,18 @@
             background-color: #212121;
             border-top: 1px solid #333;
         }
-        
+
         footer .logo-container {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        
+
         footer .icon.logo {
             width: 40px;
             height: 40px;
         }
-        
+
         footer .text-container {
             display: none;
         }
@@ -212,42 +191,37 @@
             background-color: transparent;
             border: none;
         }
-        
+
         section h2 {
             position: relative;
             z-index: 1;
             background-color: transparent;
         }
-        
+
         /* 修正在RTL中图标方向 */
         [dir="rtl"] .icon-button svg path {
             transform: scale(-1, 1);
             transform-origin: center;
         }
-        
+
         @media (max-width: 768px) {
             .header-nav-links {
                 gap: 8px;
             }
-            
+
             .header-nav-links a {
                 font-size: 12px;
                 padding: 4px 8px;
             }
-            
+
             .header-controls {
                 gap: 8px;
             }
-            
-            .lang-selector select {
-                font-size: 12px;
-                padding: 6px 8px;
-            }
-            
+
             header {
                 padding: 0 12px;
             }
-            
+
             .header-nav h1 {
                 font-size: 18px;
             }
@@ -256,7 +230,7 @@
 </head>
 <body>
     <div class="background-animation"></div>
-    
+
     <div class="header-wrapper">
         <header>
             <div class="header-nav">
@@ -265,54 +239,40 @@
                         <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
                     </svg>
                 </a>
-                <h1 data-i18n="terms_header_title">Terms of Service</h1>
+                <h1>Terms of Service</h1>
             </div>
-            
+
             <!-- 统一导航菜单和控制按钮 -->
             <div class="header-controls">
                 <nav class="header-nav-links">
-                    <a href="share.html" data-i18n="nav_transfer">传送</a>
-                    <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
-                    <a href="image-tools.html" data-i18n="nav_images">图片</a>
-                    <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
-                    <a href="video-tools.html" data-i18n="nav_video">视频</a>
-                    <a href="document-tools.html" data-i18n="nav_files">文件</a>
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Rooms</a>
+                    <a href="image-tools.html">Images</a>
+                    <a href="audio-tools.html">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html">Files</a>
                 </nav>
                 <div class="control-buttons">
-                    <div class="lang-selector">
-                        <select id="language-selector" title="选择语言">
-                            <option value="en">English</option>
-                            <option value="zh">中文简体</option>
-                            <option value="zh-tw">中文繁體</option>
-                            <option value="ja">日本語</option>
-                            <option value="fr">Français</option>
-                            <option value="es">Español</option>
-                            <option value="de">Deutsch</option>
-                            <option value="pt">Português</option>
-                            <option value="ru">Русский</option>
-                            <option value="ar">العربية</option>
-                            <option value="ko">한국어</option>
-                        </select>
-                    </div>
+
                 </div>
             </div>
         </header>
     </div>
-    
+
     <div class="content-wrapper">
         <div class="container">
-            <p class="last-updated"><span data-i18n="terms_last_updated">Last Updated:</span> June 2023</p>
-            
+            <p class="last-updated"><span>Last Updated:</span> June 2023</p>
+
             <section class="terms-section">
-                <h2 data-i18n="terms_section1_title">1. Acceptance of Terms</h2>
-                <p data-i18n="terms_section1_content">By accessing or using DropShare, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this service.</p>
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing or using DropShare, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this service.</p>
             </section>
-            
+
             <section class="terms-section">
                 <h2>2. Description of Service</h2>
                 <p>DropShare is a file sharing service that allows users to transfer files between devices connected to the same network. The service is provided "as is" and "as available" without any warranties of any kind.</p>
             </section>
-            
+
             <section class="terms-section">
                 <h2>3. User Responsibilities</h2>
                 <p>As a user of DropShare, you agree to:</p>
@@ -325,13 +285,13 @@
                     <li>Accept full responsibility for all files you share through the service.</li>
                 </ol>
             </section>
-            
+
             <section class="terms-section">
                 <h2>4. Intellectual Property Rights</h2>
                 <p>You retain all ownership rights to the files you share through DropShare. However, by using the service, you grant us the right to facilitate the transfer of your files between devices as requested by you.</p>
                 <p>The DropShare name, logo, and all related names, logos, product and service names, designs, and slogans are trademarks of DropShare or its affiliates. You must not use such marks without the prior written permission of DropShare.</p>
             </section>
-            
+
             <section class="terms-section">
                 <h2>5. Disclaimer of Warranties</h2>
                 <p>THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. DROPSHARE MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
@@ -343,7 +303,7 @@
                     <li>THE RESULTS OF USING THE SERVICE WILL MEET YOUR REQUIREMENTS.</li>
                 </ol>
             </section>
-            
+
             <section class="terms-section">
                 <h2>6. Limitation of Liability</h2>
                 <p>IN NO EVENT SHALL DROPSHARE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM:</p>
@@ -354,32 +314,32 @@
                     <li>UNAUTHORIZED ACCESS, USE, OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT.</li>
                 </ol>
             </section>
-            
+
             <section class="terms-section">
                 <h2>7. Indemnification</h2>
                 <p>You agree to defend, indemnify, and hold harmless DropShare and its licensees and licensors, and their employees, contractors, agents, officers, and directors, from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses (including but not limited to attorney's fees) arising from your use of and access to the Service.</p>
             </section>
-            
+
             <section class="terms-section">
                 <h2>8. Termination</h2>
                 <p>We may terminate or suspend your access to the Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
             </section>
-            
+
             <section class="terms-section">
-                <h2 data-i18n="terms_section5_title">9. Changes to Terms</h2>
-                <p data-i18n="terms_section5_content">We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
+                <h2>9. Changes to Terms</h2>
+                <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
             </section>
-            
+
             <section class="terms-section">
-                <h2 data-i18n="terms_section6_title">10. Contact Us</h2>
-                <p data-i18n="terms_section6_content">If you have any questions about these Terms, please contact us at:</p>
-                <p data-i18n="terms_section6_email">Email: support@dropshare.example.com</p>
+                <h2>10. Contact Us</h2>
+                <p>If you have any questions about these Terms, please contact us at:</p>
+                <p>Email: support@dropshare.example.com</p>
             </section>
-            
+
             <a href="/" class="back-button">Back to DropShare</a>
         </div>
     </div>
-    
+
     <footer>
         <div class="logo-container">
             <svg class="icon logo">
@@ -391,7 +351,7 @@
             <div class="font-body2 text-line">The easiest way to share files across devices</div>
         </div>
     </footer>
-    
+
     <script>
         // Import necessary SVG icons
         const iconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -403,17 +363,10 @@
         `;
         document.body.appendChild(iconSvg);
     </script>
-    
+
     <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>
+
     <script>
-        // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
-            }
-        });
-    </script>
+
 </body>
-</html> 
+</html>

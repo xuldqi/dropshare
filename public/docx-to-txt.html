@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="docx_to_txt_title">DOCX to TXT Converter - DropShare</title>
+    <title >DOCX to TXT Converter - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" type="text/css" href="styles/file-converter.css">
     <link rel="stylesheet" type="text/css" href="styles/ui-ux-enhancements.css">
@@ -338,64 +338,64 @@
 <body>
     <div class="page-content">
         <div class="page-header">
-            <h1><span data-i18n="docx_to_txt_header">📄 DOCX to TXT Converter</span></h1>
+            <h1><span >📄 DOCX to TXT Converter</span></h1>
             <a href="document-tools.html" class="back-button">
-                <span data-i18n="back_to_document_tools">← Back to Document Tools</span>
+                <span >← Back to Document Tools</span>
             </a>
         </div>
         
         <div class="converter-container">
             <div class="tool-header">
                 <div class="tool-icon">📄</div>
-                <h2 data-i18n="docx_to_txt_title_main">Convert DOCX to TXT</h2>
-                <p data-i18n="docx_to_txt_subtitle">Extract plain text content from Microsoft Word documents</p>
+                <h2 >Convert DOCX to TXT</h2>
+                <p >Extract plain text content from Microsoft Word documents</p>
             </div>
             
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📁</div>
-                <h3 data-i18n="upload_docx_files">Select or drag DOCX files here</h3>
+                <h3 >Select or drag DOCX files here</h3>
                 <p style="color: var(--text-muted); margin-top: 10px;">
-                    <span data-i18n="supported_docx_formats">Supports .docx, .doc files</span>
+                    <span >Supports .docx, .doc files</span>
                 </p>
                 <input type="file" id="fileInput" style="display: none;" multiple accept=".docx,.doc">
                 <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()" style="margin-top: 15px;">
-                    <span data-i18n="btn_select_files">Select Files</span>
+                    <span >Select Files</span>
                 </button>
             </div>
             
             <!-- File Info -->
             <div class="file-info" id="fileInfo">
-                <h3 data-i18n="selected_files">Selected Files:</h3>
+                <h3 >Selected Files:</h3>
                 <div id="fileDetails"></div>
             </div>
             
             <!-- Conversion Options -->
             <div class="conversion-options" id="conversionOptions">
-                <h3 data-i18n="conversion_options">Conversion Options:</h3>
+                <h3 >Conversion Options:</h3>
                 <div class="options-grid">
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="preserveFormatting" checked>
-                            <span data-i18n="preserve_formatting_txt">Preserve basic formatting</span>
+                            <span >Preserve basic formatting</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="includeLineBreaks" checked>
-                            <span data-i18n="include_line_breaks">Preserve line breaks</span>
+                            <span >Preserve line breaks</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="removeExtraSpaces">
-                            <span data-i18n="remove_extra_spaces">Remove extra spaces</span>
+                            <span >Remove extra spaces</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="addMetadata">
-                            <span data-i18n="add_metadata">Include document metadata</span>
+                            <span >Include document metadata</span>
                         </label>
                     </div>
                 </div>
@@ -403,7 +403,7 @@
             
             <!-- Conversion Progress -->
             <div class="conversion-progress" id="conversionProgress">
-                <h4 data-i18n="convert_progress">Conversion Progress:</h4>
+                <h4 >Conversion Progress:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -413,56 +413,56 @@
             <!-- Action Buttons -->
             <div style="text-align: center; margin-top: 30px;">
                 <button class="btn btn-primary" id="convertBtn" disabled>
-                    <span data-i18n="btn_start_convert">Start Conversion</span>
+                    <span >Start Conversion</span>
                 </button>
                 <button class="btn btn-secondary" id="clearBtn" style="margin-left: 10px;">
-                    <span data-i18n="btn_clear_files">Clear Files</span>
+                    <span >Clear Files</span>
                 </button>
             </div>
         </div>
         
         <!-- Conversion Results -->
         <div class="conversion-result" id="conversionResult">
-            <h3>🎉 <span data-i18n="conversion_complete">Conversion Complete!</span></h3>
+            <h3>🎉 <span >Conversion Complete!</span></h3>
             <div class="result-preview" id="resultPreview">
                 <!-- HTML preview will be shown here -->
             </div>
             <div class="action-buttons">
                 <button class="btn btn-primary" id="downloadBtn">
-                    📥 <span data-i18n="btn_download_txt">Download TXT</span>
+                    📥 <span >Download TXT</span>
                 </button>
                 <button class="btn btn-secondary" id="shareBtn">
-                    📤 <span data-i18n="btn_share">Share File</span>
+                    📤 <span >Share File</span>
                 </button>
                 <button class="btn btn-secondary" id="newConversionBtn">
-                    🔄 <span data-i18n="btn_new_conversion">New Conversion</span>
+                    🔄 <span >New Conversion</span>
                 </button>
             </div>
         </div>
         
         <!-- Features Info -->
         <div class="features-info">
-            <h3><span data-i18n="features_title">🚀 Features</span></h3>
+            <h3><span >🚀 Features</span></h3>
             <div class="features-grid">
                 <div class="feature-item">
                     <div class="feature-icon">🎨</div>
-                    <h4 data-i18n="feature_preserve_formatting">Preserve Formatting</h4>
-                    <p data-i18n="feature_preserve_formatting_desc">Maintains original document styles and layout</p>
+                    <h4 >Preserve Formatting</h4>
+                    <p >Maintains original document styles and layout</p>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">🖼️</div>
-                    <h4 data-i18n="feature_image_support">Image Support</h4>
-                    <p data-i18n="feature_image_support_desc">Converts embedded images to web formats</p>
+                    <h4 >Image Support</h4>
+                    <p >Converts embedded images to web formats</p>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">📱</div>
-                    <h4 data-i18n="feature_responsive">Responsive Design</h4>
-                    <p data-i18n="feature_responsive_desc">Mobile-friendly HTML output</p>
+                    <h4 >Responsive Design</h4>
+                    <p >Mobile-friendly HTML output</p>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">🔒</div>
-                    <h4 data-i18n="feature_secure">Secure Processing</h4>
-                    <p data-i18n="feature_secure_desc">All processing happens locally</p>
+                    <h4 >Secure Processing</h4>
+                    <p >All processing happens locally</p>
                 </div>
             </div>
         </div>
@@ -472,16 +472,16 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title" data-i18n="modal_select_devices">Select Transfer Devices</h3>
+                <h3 class="device-modal-title" >Select Transfer Devices</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- Device list will be populated here -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">Cancel</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" >Cancel</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    <span data-i18n="btn_send_to_devices">Send to Selected Devices</span>
+                    <span >Send to Selected Devices</span>
                 </button>
             </div>
         </div>

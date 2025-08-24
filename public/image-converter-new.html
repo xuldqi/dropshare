@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="image_converter_new_title">图片格式转换器 - DropShare</title>
+    <title >图片格式转换器 - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -619,63 +619,63 @@
                 🔄 DropShare
             </a>
             <nav class="nav-links">
-                <a href="share.html" data-i18n="nav_transfer">传送</a>
-                <a href="share.html#rooms" data-i18n="nav_rooms">多人房间</a>
-                <a href="image-tools.html" class="active" data-i18n="nav_images">图片</a>
-                <a href="audio-tools.html" data-i18n="nav_audio">音频</a>
-                <a href="video-tools.html" data-i18n="nav_video">视频</a>
-                <a href="document-tools.html" data-i18n="nav_files">文件</a>
+                <a href="share.html" >Transfer</a>
+                <a href="share.html#rooms" >Rooms</a>
+                <a href="image-tools.html" class="active" >Images</a>
+                <a href="audio-tools.html" >Audio</a>
+                <a href="video-tools.html" >Video</a>
+                <a href="document-tools.html" >Files</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title" data-i18n="image_converter_new_page_title">图片格式转换器</h1>
-        <p class="page-subtitle" data-i18n="image_converter_new_page_subtitle">支持多种图片格式互相转换，保持最佳质量</p>
+        <h1 class="page-title" >图片格式转换器</h1>
+        <p class="page-subtitle" >支持多种图片格式互相转换，保持最佳质量</p>
 
         <div class="converter-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🖼️</div>
-                <div class="upload-text" data-i18n="image_converter_upload_text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint" data-i18n="image_converter_upload_hint">支持 JPG, PNG, GIF, BMP, TIFF, WebP 格式，可选择多个文件</div>
+                <div class="upload-text" >点击选择图片或拖拽到这里</div>
+                <div class="upload-hint" >支持 JPG, PNG, GIF, BMP, TIFF, WebP 格式，可选择多个文件</div>
                 <input type="file" id="fileInput" accept="image/*" multiple>
             </div>
 
             <!-- 格式选择 -->
             <div class="format-selection">
-                <div class="format-title" data-i18n="image_converter_select_format">选择输出格式</div>
+                <div class="format-title" >选择输出格式</div>
                 <div class="format-grid">
                     <div class="format-option selected" data-format="jpeg">
                         <div class="format-name">JPEG</div>
-                        <div class="format-desc" data-i18n="format_jpeg_desc">高压缩比</div>
+                        <div class="format-desc" >高压缩比</div>
                     </div>
                     <div class="format-option" data-format="png">
                         <div class="format-name">PNG</div>
-                        <div class="format-desc" data-i18n="format_png_desc">无损压缩</div>
+                        <div class="format-desc" >无损压缩</div>
                     </div>
                     <div class="format-option" data-format="webp">
                         <div class="format-name">WebP</div>
-                        <div class="format-desc" data-i18n="format_webp_desc">现代格式</div>
+                        <div class="format-desc" >现代格式</div>
                     </div>
                     <div class="format-option" data-format="gif">
                         <div class="format-name">GIF</div>
-                        <div class="format-desc" data-i18n="format_gif_desc">动图支持</div>
+                        <div class="format-desc" >动图支持</div>
                     </div>
                     <div class="format-option" data-format="bmp">
                         <div class="format-name">BMP</div>
-                        <div class="format-desc" data-i18n="format_bmp_desc">位图格式</div>
+                        <div class="format-desc" >位图格式</div>
                     </div>
                     <div class="format-option" data-format="tiff">
                         <div class="format-name">TIFF</div>
-                        <div class="format-desc" data-i18n="format_tiff_desc">专业格式</div>
+                        <div class="format-desc" >专业格式</div>
                     </div>
                 </div>
 
                 <!-- 质量设置 -->
                 <div class="quality-settings" id="qualitySettings">
                     <label class="quality-label">
-                        <span data-i18n="image_converter_quality_label">图片质量:</span> <span class="quality-value" id="qualityValue">90%</span>
+                        <span >图片质量:</span> <span class="quality-value" id="qualityValue">90%</span>
                     </label>
                     <input type="range" class="quality-slider" id="qualitySlider" 
                            min="10" max="100" value="90">
@@ -687,7 +687,7 @@
 
             <!-- 转换按钮 -->
             <button class="convert-button" id="convertButton" disabled>
-                <span data-i18n="btn_start_convert">🔄 开始转换</span>
+                <span >🔄 开始转换</span>
             </button>
 
             <!-- 进度条 -->
@@ -701,10 +701,10 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span data-i18n="btn_reselect">🔄 重新选择</span>
+                    <span >🔄 重新选择</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    <span data-i18n="btn_back_to_tools">← 返回工具页</span>
+                    <span >← 返回工具页</span>
                 </a>
             </div>
         </div>
@@ -714,16 +714,16 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
+                <h3 class="device-modal-title" >选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="btn_cancel">取消</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" >取消</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    <span data-i18n="btn_send_to_devices">传送到选中设备</span>
+                    <span >传送到选中设备</span>
                 </button>
             </div>
         </div>
@@ -835,7 +835,7 @@
                             </div>
                         </div>
                         <div class="file-status status-ready" id="status-${index}">
-                            <span data-i18n="status_pending_convert">待转换</span>
+                            <span >待转换</span>
                         </div>
                     `;
                 };
@@ -945,25 +945,25 @@
         function showDownloadSection() {
             downloadSection.style.display = 'block';
             downloadSection.innerHTML = `
-                <h3 style="margin-bottom: 20px; color: #374151;"><span data-i18n="conversion_complete_title">🎉 转换完成！</span></h3>
+                <h3 style="margin-bottom: 20px; color: #374151;"><span >🎉 转换完成！</span></h3>
                 <div style="margin-bottom: 20px;">
                     ${convertedFiles.map((file, index) => `
                         <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;">
                             <button class="download-button" onclick="downloadFile(${index})">
-                                <span data-i18n="btn_download_file">📥 下载</span> ${file.newName}
+                                <span >📥 下载</span> ${file.newName}
                             </button>
                             <button class="download-button" onclick="shareFile(${index})" style="background: #10b981;">
-                                <span data-i18n="btn_send_file">📤 传送</span> ${file.newName}
+                                <span >📤 传送</span> ${file.newName}
                             </button>
                         </div>
                     `).join('')}
                 </div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
                     <button class="download-button" onclick="downloadAllFiles()" style="background: #7c3aed;">
-                        <span data-i18n="btn_download_all_zip">📦 下载全部文件 (ZIP)</span>
+                        <span >📦 下载全部文件 (ZIP)</span>
                     </button>
                     <button class="download-button" onclick="shareAllFiles()" style="background: #f59e0b;">
-                        <span data-i18n="btn_send_all_files">📤 传送全部文件</span>
+                        <span >📤 传送全部文件</span>
                     </button>
                 </div>
             `;
@@ -1038,8 +1038,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p data-i18n="no_devices_found">未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="device_connection_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p >未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" >请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {

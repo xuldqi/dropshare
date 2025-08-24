@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="page_title">音频处理器 - DropShare</title>
+    <title >音频处理器 - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -575,26 +575,11 @@
             align-items: center;
         }
 
-        .lang-selector select {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #374151;
-            font-size: 14px;
-            font-family: inherit;
-            cursor: pointer;
-        }
+        
 
-        .lang-selector select:hover {
-            border-color: #3367d6;
-        }
+        
 
-        .lang-selector select:focus {
-            outline: none;
-            border-color: #3367d6;
-            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
-        }
+        
 
         @media (max-width: 768px) {
             .page-header {
@@ -603,10 +588,7 @@
                 text-align: center;
             }
             
-            .lang-selector select {
-                padding: 6px 10px;
-                font-size: 13px;
-            }
+            
         }
     </style>    
     <!-- Mobile Responsive Styles -->
@@ -615,77 +597,63 @@
 </head>
 <body>
     <div class="page-header">
-        <h1 class="page-main-title">🎧 <span data-i18n="audio_processor_title">音频处理器</span></h1>
+        <h1 class="page-main-title">🎧 <span >音频处理器</span></h1>
         <div class="header-buttons">
             <div class="control-buttons">
-                <div class="lang-selector">
-                    <select id="language-selector" title="选择语言" data-i18n="title_select_language">
-                        <option value="en">English</option>
-                        <option value="zh">中文简体</option>
-                        <option value="zh-tw">中文繁體</option>
-                        <option value="ja">日本語</option>
-                        <option value="fr">Français</option>
-                        <option value="es">Español</option>
-                        <option value="de">Deutsch</option>
-                        <option value="pt">Português</option>
-                        <option value="ru">Русский</option>
-                        <option value="ar">العربية</option>
-                        <option value="ko">한국어</option>
-                    </select>
-                </div>
+                
             </div>
-            <a href="audio-tools.html" class="back-button">← <span data-i18n="back_to_audio_tools">音频工具</span></a>
-            <a href="index.html" class="back-button">🏠 <span data-i18n="btn_home">首页</span></a>
+            <a href="audio-tools.html" class="back-button">← <span >音频工具</span></a>
+            <a href="index.html" class="back-button">🏠 <span >首页</span></a>
         </div>
     </div>
 
     <div class="container">
-        <h1 class="page-title" data-i18n="audio_processor_subtitle">Professional Audio Processing</h1>
-        <p class="page-subtitle" data-i18n="audio_processor_description">Apply effects and process your audio files</p>
+        <h1 class="page-title" >Professional Audio Processing</h1>
+        <p class="page-subtitle" >Apply effects and process your audio files</p>
         
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon">🎵</div>
             <button class="upload-button" onclick="document.getElementById('fileInput').click()">
-                📤 <span data-i18n="btn_upload_from_pc">Upload from PC or Mobile</span>
+                📤 <span >Upload from PC or Mobile</span>
             </button>
-            <div class="upload-text" data-i18n="drop_files_here">or Drag files here</div>
+            <div class="upload-text" >or Drag files here</div>
             <input type="file" id="fileInput" multiple accept="audio/*" style="display: none;">
         </div>
         
         <div class="processing-panel" id="processingPanel" style="display: none;">
             <div id="fileList"></div>
             
-            <h3 data-i18n="label_select_tool">选择处理工具：</h3>
+            <h3 >选择处理工具：</h3>
             <div class="tool-selector" id="toolSelector">
                 <div class="tool-option" data-tool="trim">
                     <div class="tool-icon">✂️</div>
-                    <div class="tool-name" data-i18n="tool_trim">裁剪音频</div>
-                    <div class="tool-desc" data-i18n="tool_trim_desc">剪切音频片段</div>
+                    <div class="tool-name" >裁剪音频</div>
+                    <div class="tool-desc" >剪切音频片段</div>
                 </div>
                 <div class="tool-option" data-tool="volume">
                     <div class="tool-icon">🔊</div>
-                    <div class="tool-name" data-i18n="tool_volume">音量调节</div>
-                    <div class="tool-desc" data-i18n="tool_volume_desc">调整音频音量</div>
+                    <div class="tool-name" >音量调节</div>
+                    <div class="tool-desc" >调整音频音量</div>
                 </div>
                 <div class="tool-option" data-tool="speed">
                     <div class="tool-icon">⚡</div>
-                    <div class="tool-name" data-i18n="tool_speed">速度调节</div>
-                    <div class="tool-desc" data-i18n="tool_speed_desc">加速或减速音频</div>
+                    <div class="tool-name" >速度调节</div>
+                    <div class="tool-desc" >加速或减速音频</div>
                 </div>
                 <div class="tool-option" data-tool="fade">
                     <div class="tool-icon">〰️</div>
-                    <div class="tool-name" data-i18n="tool_fade">淡入淡出</div>
-                    <div class="tool-desc" data-i18n="tool_fade_desc">添加淡入淡出效果</div>
+                    <div class="tool-name" >淡入淡出</div>
+                    <div class="tool-desc" >添加淡入淡出效果</div>
                 </div>
                 <div class="tool-option" data-tool="normalize">
                     <div class="tool-icon">📊</div>
-                    <div class="tool-name" data-i18n="tool_normalize">音频标准化</div>
-                    <div class="tool-desc" data-i18n="tool_normalize_desc">标准化音频电平</div>
+                    <div class="tool-name" >音频标准化</div>
+                    <div class="tool-desc" >标准化音频电平</div>
                 </div>
                 <div class="tool-option" data-tool="reverse">
                     <div class="tool-icon">🔄</div>
-                    <div class="tool-name" data-i18n="tool_reverse">反向播放</div>
-                    <div class="tool-desc" data-i18n="tool_reverse_desc">反转音频播放</div>
+                    <div class="tool-name" >反向播放</div>
+                    <div class="tool-desc" >反转音频播放</div>
                 </div>
             </div>
             
@@ -694,11 +662,11 @@
                 <!-- 裁剪设置 -->
                 <div id="trimSettings" style="display: none;">
                     <div class="setting-group">
-                        <label class="setting-label" data-i18n="label_start_time">开始时间（秒）：</label>
+                        <label class="setting-label" >开始时间（秒）：</label>
                         <input type="number" class="setting-input" id="trimStart" min="0" step="0.1" value="0">
                     </div>
                     <div class="setting-group">
-                        <label class="setting-label" data-i18n="label_end_time">结束时间（秒）：</label>
+                        <label class="setting-label" >结束时间（秒）：</label>
                         <input type="number" class="setting-input" id="trimEnd" min="0" step="0.1" value="10">
                     </div>
                 </div>
@@ -706,7 +674,7 @@
                 <!-- 音量设置 -->
                 <div id="volumeSettings" style="display: none;">
                     <div class="setting-group">
-                        <label class="setting-label" data-i18n="label_volume_adjust">音量调节：</label>
+                        <label class="setting-label" >音量调节：</label>
                         <input type="range" class="range-input" id="volumeLevel" min="0" max="200" value="100">
                         <span class="range-value"><span id="volumeValue">100</span>%</span>
                     </div>
@@ -715,7 +683,7 @@
                 <!-- 速度设置 -->
                 <div id="speedSettings" style="display: none;">
                     <div class="setting-group">
-                        <label class="setting-label" data-i18n="label_speed_adjust">速度调节：</label>
+                        <label class="setting-label" >速度调节：</label>
                         <input type="range" class="range-input" id="speedLevel" min="50" max="200" value="100">
                         <span class="range-value"><span id="speedValue">100</span>%</span>
                     </div>
@@ -724,35 +692,35 @@
                 <!-- 淡入淡出设置 -->
                 <div id="fadeSettings" style="display: none;">
                     <div class="setting-group">
-                        <label class="setting-label" data-i18n="label_fade_in_duration">淡入时长（秒）：</label>
+                        <label class="setting-label" >淡入时长（秒）：</label>
                         <input type="number" class="setting-input" id="fadeInDuration" min="0" max="10" step="0.1" value="2">
                     </div>
                     <div class="setting-group">
-                        <label class="setting-label" data-i18n="label_fade_out_duration">淡出时长（秒）：</label>
+                        <label class="setting-label" >淡出时长（秒）：</label>
                         <input type="number" class="setting-input" id="fadeOutDuration" min="0" max="10" step="0.1" value="2">
                     </div>
                 </div>
             </div>
             
-            <button class="process-button" id="processBtn" disabled data-i18n="btn_process">开始处理</button>
+            <button class="process-button" id="processBtn" disabled >开始处理</button>
             
             <div class="progress-section" id="progressSection" style="display: none;">
-                <div class="progress-text" id="progressText" data-i18n="status_processing">正在处理...</div>
+                <div class="progress-text" id="progressText" >正在处理...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
             
             <div class="results-section" id="resultsSection" style="display: none;">
-                <h3 data-i18n="label_processing_results">处理结果:</h3>
+                <h3 >处理结果:</h3>
                 <div id="resultsList"></div>
             </div>
         </div>
         
         <div class="footer-info">
-            <div class="footer-text" data-i18n="footer_file_deletion_notice">Uploaded and generated files are deleted 1 hour after upload</div>
+            <div class="footer-text" >Uploaded and generated files are deleted 1 hour after upload</div>
             <div class="rating-section">
-                <div class="rating-text" data-i18n="rating_help_improve">Help Us Improve</div>
+                <div class="rating-text" >Help Us Improve</div>
                 <div class="rating-display">
                     <div class="stars">★★★★★</div>
                     <div class="rating-score">4.8 (1703)</div>
@@ -1118,10 +1086,10 @@
                             </div>
                             <div class="result-actions">
                                 <button class="action-button" onclick="audioProcessor.downloadFile(${index})">
-                                    <span data-i18n="btn_download">下载</span>
+                                    <span >下载</span>
                                 </button>
                                 <button class="action-button primary" onclick="audioProcessor.shareFile(${index})">
-                                    <span data-i18n="btn_share">分享</span>
+                                    <span >分享</span>
                                 </button>
                             </div>
                         </div>
@@ -1204,8 +1172,8 @@
                 deviceList.innerHTML = `
                     <div class="no-devices">
                         <div class="no-devices-icon">📱</div>
-                        <p data-i18n="no_devices_found">未发现可用设备</p>
-                        <p style="font-size: 14px; margin-top: 8px;" data-i18n="device_connection_instruction">请确保其他设备已打开DropShare并连接到同一网络</p>
+                        <p >未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;" >请确保其他设备已打开DropShare并连接到同一网络</p>
                     </div>
                 `;
             } else {
@@ -1255,7 +1223,7 @@
             
             if (count === 0) {
                 sendBtn.disabled = true;
-                sendBtn.innerHTML = '<span data-i18n="btn_send_to_selected_devices">传送到选中设备</span>';
+                sendBtn.innerHTML = '<span >传送到选中设备</span>';
             } else {
                 sendBtn.disabled = false;
                 sendBtn.innerHTML = `<span>${window.DROPSHARE_I18N?.t('btn_send_to_devices') || '传送到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}</span>`;
@@ -1342,7 +1310,7 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title" data-i18n="modal_select_devices">选择传送设备</h3>
+                <h3 class="device-modal-title" >选择传送设备</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
@@ -1350,10 +1318,10 @@
             </div>
             <div class="device-modal-actions">
                 <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">
-                    <span data-i18n="btn_cancel">取消</span>
+                    <span >取消</span>
                 </button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    <span data-i18n="btn_send_to_selected_devices">传送到选中设备</span>
+                    <span >传送到选中设备</span>
                 </button>
             </div>
         </div>

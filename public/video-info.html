@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="page_title">视频信息查看器 - DropShare</title>
+    <title>Video Info Viewer - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -280,26 +280,11 @@
             align-items: center;
         }
 
-        .lang-selector select {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #374151;
-            font-size: 14px;
-            font-family: inherit;
-            cursor: pointer;
-        }
+        
 
-        .lang-selector select:hover {
-            border-color: #3367d6;
-        }
+        
 
-        .lang-selector select:focus {
-            outline: none;
-            border-color: #3367d6;
-            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
-        }
+        
 
         @media (max-width: 768px) {
             .page-header {
@@ -308,10 +293,7 @@
                 text-align: center;
             }
             
-            .lang-selector select {
-                padding: 6px 10px;
-                font-size: 13px;
-            }
+            
         }
     </style>    
     <!-- Mobile Responsive Styles -->
@@ -320,40 +302,26 @@
 </head>
 <body>
     <div class="page-header">
-        <h1 class="page-main-title">🎬 <span data-i18n="video_info_title">视频信息查看器</span></h1>
+        <h1 class="page-main-title">🎬 <span >视频信息查看器</span></h1>
         <div class="header-buttons">
             <div class="control-buttons">
-                <div class="lang-selector">
-                    <select id="language-selector" title="选择语言" data-i18n="title_select_language">
-                        <option value="en">English</option>
-                        <option value="zh">中文简体</option>
-                        <option value="zh-tw">中文繁體</option>
-                        <option value="ja">日本語</option>
-                        <option value="fr">Français</option>
-                        <option value="es">Español</option>
-                        <option value="de">Deutsch</option>
-                        <option value="pt">Português</option>
-                        <option value="ru">Русский</option>
-                        <option value="ar">العربية</option>
-                        <option value="ko">한국어</option>
-                    </select>
-                </div>
+                
             </div>
-            <a href="video-tools.html" class="back-button">← <span data-i18n="back_to_video_tools">视频工具</span></a>
-            <a href="index.html" class="back-button">🏠 <span data-i18n="btn_home">首页</span></a>
+            <a href="video-tools.html" class="back-button">← <span >视频工具</span></a>
+            <a href="index.html" class="back-button">🏠 <span >首页</span></a>
         </div>
     </div>
 
     <div class="container">
-        <h1 class="page-title" data-i18n="video_info_subtitle">Video Information Viewer</h1>
-        <p class="page-subtitle" data-i18n="video_info_description">Get detailed information about your video files</p>
+        <h1 class="page-title" >Video Information Viewer</h1>
+        <p class="page-subtitle" >Get detailed information about your video files</p>
         
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon">🎬</div>
             <button class="upload-button" onclick="document.getElementById('fileInput').click()">
-                📤 <span data-i18n="btn_upload_from_pc">Upload from PC or Mobile</span>
+                📤 <span >Upload from PC or Mobile</span>
             </button>
-            <div class="upload-text" data-i18n="drop_files_here">or Drag files here</div>
+            <div class="upload-text" >or Drag files here</div>
             <input type="file" id="fileInput" multiple accept="video/*" style="display: none;">
         </div>
         
@@ -361,7 +329,7 @@
             <div id="fileList"></div>
             
             <div class="progress-section" id="progressSection" style="display: none;">
-                <div class="progress-text" id="progressText" data-i18n="status_analyzing">正在分析视频信息...</div>
+                <div class="progress-text" id="progressText" >正在分析视频信息...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -373,9 +341,9 @@
         </div>
         
         <div class="footer-info">
-            <div class="footer-text" data-i18n="footer_file_deletion_notice">Uploaded and generated files are deleted 1 hour after upload</div>
+            <div class="footer-text" >Uploaded and generated files are deleted 1 hour after upload</div>
             <div class="rating-section">
-                <div class="rating-text" data-i18n="rating_help_improve">Help Us Improve</div>
+                <div class="rating-text" >Help Us Improve</div>
                 <div class="rating-display">
                     <div class="stars">★★★★★</div>
                     <div class="rating-score">4.8 (1703)</div>
@@ -449,12 +417,12 @@
                     overlay.innerHTML = `
                         <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
                             <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
-                            <h3 id="loadingTitle" data-i18n="loading_video_analysis_engine">正在加载视频分析引擎...</h3>
-                            <p id="loadingStatus" data-i18n="loading_engine_message">首次使用需要下载约25MB的分析库，请稍候...</p>
+                            <h3 id="loadingTitle" >正在加载视频分析引擎...</h3>
+                            <p id="loadingStatus" >首次使用需要下载约25MB的分析库，请稍候...</p>
                             <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 20px 0;">
                                 <div id="loadingProgressFill" style="height: 100%; background: #3182ce; width: 0%; transition: width 0.3s ease;"></div>
                             </div>
-                            <div id="loadingProgressText" data-i18n="status_preparing_load">准备加载...</div>
+                            <div id="loadingProgressText" >准备加载...</div>
                         </div>
                     `;
                     
@@ -482,12 +450,12 @@
                     overlay.innerHTML = `
                         <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
                             <div style="font-size: 2em; margin-bottom: 15px; color: #ef4444;">❌</div>
-                            <h3 style="color: #ef4444;" data-i18n="error_video_analysis_engine_failed">视频分析引擎加载失败</h3>
+                            <h3 style="color: #ef4444;" >视频分析引擎加载失败</h3>
                             <p>${error.message}</p>
-                            <p data-i18n="error_check_network">请检查网络连接并重试</p>
+                            <p >请检查网络连接并重试</p>
                             <div style="margin-top: 20px;">
-                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;" data-i18n="btn_reload_page">重新加载页面</button>
-                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;" data-i18n="btn_close">关闭</button>
+                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;" >重新加载页面</button>
+                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;" >关闭</button>
                             </div>
                         </div>
                     `;
@@ -650,7 +618,7 @@
                         html += `
                             <div class="info-card" style="border-color: #ef4444; background: #fef2f2;">
                                 <h3 style="color: #ef4444; margin-bottom: 12px;">${file.name}</h3>
-                                <p style="color: #dc2626;" data-i18n="error_analysis_failed">分析失败: ${error}</p>
+                                <p style="color: #dc2626;" >分析失败: ${error}</p>
                             </div>
                         `;
                         return;
@@ -662,62 +630,62 @@
                             
                             <div class="info-grid">
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_file_size">文件大小</div>
+                                    <div class="info-label" >文件大小</div>
                                     <div class="info-value">${this.formatFileSize(file.size)}</div>
                                 </div>
                                 
                                 ${info.duration ? `
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_duration">时长</div>
+                                    <div class="info-label" >时长</div>
                                     <div class="info-value">${info.duration}</div>
                                 </div>
                                 ` : ''}
                                 
                                 ${info.resolution ? `
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_resolution">分辨率</div>
+                                    <div class="info-label" >分辨率</div>
                                     <div class="info-value">${info.resolution}</div>
                                 </div>
                                 ` : ''}
                                 
                                 ${info.fps ? `
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_frame_rate">帧率</div>
+                                    <div class="info-label" >帧率</div>
                                     <div class="info-value">${info.fps} fps</div>
                                 </div>
                                 ` : ''}
                                 
                                 ${info.codec ? `
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_video_codec">视频编码</div>
+                                    <div class="info-label" >视频编码</div>
                                     <div class="info-value">${info.codec}</div>
                                 </div>
                                 ` : ''}
                                 
                                 ${info.audioCodec ? `
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_audio_codec">音频编码</div>
+                                    <div class="info-label" >音频编码</div>
                                     <div class="info-value">${info.audioCodec}</div>
                                 </div>
                                 ` : ''}
                                 
                                 ${info.bitrate ? `
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_bitrate">比特率</div>
+                                    <div class="info-label" >比特率</div>
                                     <div class="info-value">${info.bitrate}</div>
                                 </div>
                                 ` : ''}
                                 
                                 ${info.sampleRate ? `
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_sample_rate">采样率</div>
+                                    <div class="info-label" >采样率</div>
                                     <div class="info-value">${info.sampleRate} Hz</div>
                                 </div>
                                 ` : ''}
                                 
                                 ${info.channels ? `
                                 <div class="info-card">
-                                    <div class="info-label" data-i18n="label_audio_channels">音频声道</div>
+                                    <div class="info-label" >音频声道</div>
                                     <div class="info-value">${info.channels}</div>
                                 </div>
                                 ` : ''}
