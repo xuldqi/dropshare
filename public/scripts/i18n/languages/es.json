@@ -1,60 +1,60 @@
 {
   "meta": {
-    "name": "English",
-    "nativeName": "English",
+    "name": "Spanish",
+    "nativeName": "Español",
     "direction": "ltr",
-    "dateFormat": "MM/DD/YYYY"
+    "dateFormat": "DD/MM/YYYY"
   },
   "common": {
-    "loading": "Loading...",
+    "loading": "Cargando...",
     "error": "Error",
-    "success": "Success",
-    "cancel": "Cancel",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "submit": "Submit",
-    "upload": "Upload",
-    "download": "Download",
-    "copy": "Copy",
-    "paste": "Paste",
-    "select": "Select",
-    "choose": "Choose",
-    "search": "Search",
-    "filter": "Filter",
-    "sort": "Sort",
-    "refresh": "Refresh",
-    "settings": "Settings",
-    "help": "Help",
-    "about": "About",
-    "contact": "Contact",
-    "privacy": "Privacy",
-    "terms": "Terms",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "upload": "Subir",
+    "download": "Descargar",
+    "copy": "Copiar",
+    "paste": "Pegar",
+    "select": "Seleccionar",
+    "choose": "Elegir",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "refresh": "Actualizar",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "privacy": "Privacidad",
+    "terms": "Términos",
     "faq": "FAQ"
   },
   "navigation": {
-    "home": "Home",
-    "tools": "Tools",
-    "transfer": "Transfer",
-    "rooms": "Rooms",
-    "images": "Images",
+    "home": "Inicio",
+    "tools": "Herramientas",
+    "transfer": "Transferir",
+    "rooms": "Salas",
+    "images": "Imágenes",
     "audio": "Audio",
     "video": "Video",
-    "files": "Files",
+    "files": "Archivos",
     "blog": "Blog",
-    "language": "Language"
+    "language": "Idioma"
   },
   "homepage": {
     "hero": {
-      "title": "Free Online File Tools & Sharing",
-      "subtitle": "Convert, edit, and share files instantly",
-      "description": "Professional file processing tools for images, audio, video, and documents. No registration required.",
-      "cta_button": "Get Started",
-      "learn_more": "Learn More"
+      "title": "Herramientas de archivos en línea gratuitas y compartir",
+      "subtitle": "Convierte, edita y comparte archivos al instante",
+      "description": "Herramientas profesionales de procesamiento de archivos para imágenes, audio, video y documentos. No se requiere registro.",
+      "cta_button": "Comenzar",
+      "learn_more": "Saber más"
     },
     "features": {
       "title": "Why Choose DropShare?",
@@ -77,31 +77,31 @@
       }
     },
     "categories": {
-      "title": "Choose Your Tool Category",
-      "subtitle": "Select from our comprehensive collection of tools organized by category",
+      "title": "Elige tu categoría de herramientas",
+      "subtitle": "Selecciona de nuestra colección completa de herramientas organizadas por categoría",
       "image_tools": {
-        "title": "Image Tools",
-        "description": "Edit, convert, and optimize images",
-        "tools": ["Format Converter", "Image Cropper", "Background Remover"],
-        "cta": "View Tools"
+        "title": "Herramientas de imagen",
+        "description": "Editar, convertir y optimizar imágenes",
+        "tools": ["Convertidor de formato", "Recortador de imagen", "Eliminador de fondo"],
+        "cta": "Ver herramientas"
       },
       "audio_tools": {
-        "title": "Audio Tools",
-        "description": "Convert audio between different formats",
-        "tools": ["Format Converter", "MP3, WAV, AAC, OGG, FLAC", "High Quality Output"],
-        "cta": "View Tools"
+        "title": "Herramientas de audio",
+        "description": "Convertir audio entre diferentes formatos",
+        "tools": ["Convertidor de formato", "MP3, WAV, AAC, OGG, FLAC", "Salida de alta calidad"],
+        "cta": "Ver herramientas"
       },
       "video_tools": {
-        "title": "Video Tools",
-        "description": "Convert videos between different formats",
-        "tools": ["Video Converter", "MP4, AVI, MOV, WebM, MKV", "Professional Quality"],
-        "cta": "View Tools"
+        "title": "Herramientas de video",
+        "description": "Convertir videos entre diferentes formatos",
+        "tools": ["Convertidor de video", "MP4, AVI, MOV, WebM, MKV", "Calidad profesional"],
+        "cta": "Ver herramientas"
       },
       "document_tools": {
-        "title": "Document Tools",
-        "description": "Convert, merge, split, and extract text",
-        "tools": ["PDF Processor", "Text Extractor", "Document Merger"],
-        "cta": "View Tools"
+        "title": "Herramientas de documento",
+        "description": "Convertir, fusionar, dividir y extraer texto",
+        "tools": ["Procesador PDF", "Extractor de texto", "Fusionador de documentos"],
+        "cta": "Ver herramientas"
       }
     },
     "stats": {

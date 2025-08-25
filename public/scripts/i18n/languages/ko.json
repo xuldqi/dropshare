@@ -1,60 +1,60 @@
 {
   "meta": {
-    "name": "English",
-    "nativeName": "English",
+    "name": "Korean",
+    "nativeName": "한국어",
     "direction": "ltr",
-    "dateFormat": "MM/DD/YYYY"
+    "dateFormat": "YYYY/MM/DD"
   },
   "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "success": "Success",
-    "cancel": "Cancel",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "submit": "Submit",
-    "upload": "Upload",
-    "download": "Download",
-    "copy": "Copy",
-    "paste": "Paste",
-    "select": "Select",
-    "choose": "Choose",
-    "search": "Search",
-    "filter": "Filter",
-    "sort": "Sort",
-    "refresh": "Refresh",
-    "settings": "Settings",
-    "help": "Help",
-    "about": "About",
-    "contact": "Contact",
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "faq": "FAQ"
+    "loading": "로딩 중...",
+    "error": "오류",
+    "success": "성공",
+    "cancel": "취소",
+    "save": "저장",
+    "delete": "삭제",
+    "edit": "편집",
+    "close": "닫기",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "submit": "제출",
+    "upload": "업로드",
+    "download": "다운로드",
+    "copy": "복사",
+    "paste": "붙여넣기",
+    "select": "선택",
+    "choose": "선택",
+    "search": "검색",
+    "filter": "필터",
+    "sort": "정렬",
+    "refresh": "새로고침",
+    "settings": "설정",
+    "help": "도움말",
+    "about": "정보",
+    "contact": "연락처",
+    "privacy": "개인정보",
+    "terms": "이용약관",
+    "faq": "자주 묻는 질문"
   },
   "navigation": {
-    "home": "Home",
-    "tools": "Tools",
-    "transfer": "Transfer",
-    "rooms": "Rooms",
-    "images": "Images",
-    "audio": "Audio",
-    "video": "Video",
-    "files": "Files",
-    "blog": "Blog",
-    "language": "Language"
+    "home": "홈",
+    "tools": "도구",
+    "transfer": "전송",
+    "rooms": "방",
+    "images": "이미지",
+    "audio": "오디오",
+    "video": "비디오",
+    "files": "파일",
+    "blog": "블로그",
+    "language": "언어"
   },
   "homepage": {
     "hero": {
-      "title": "Free Online File Tools & Sharing",
-      "subtitle": "Convert, edit, and share files instantly",
-      "description": "Professional file processing tools for images, audio, video, and documents. No registration required.",
-      "cta_button": "Get Started",
-      "learn_more": "Learn More"
+      "title": "무료 온라인 파일 도구 및 공유",
+      "subtitle": "파일을 즉시 변환, 편집 및 공유",
+      "description": "이미지, 오디오, 비디오 및 문서용 전문 파일 처리 도구. 등록 불필요.",
+      "cta_button": "시작하기",
+      "learn_more": "자세히 보기"
     },
     "features": {
       "title": "Why Choose DropShare?",
@@ -77,31 +77,31 @@
       }
     },
     "categories": {
-      "title": "Choose Your Tool Category",
-      "subtitle": "Select from our comprehensive collection of tools organized by category",
+      "title": "도구 카테고리 선택",
+      "subtitle": "카테고리별로 구성된 포괄적인 도구 컬렉션에서 선택",
       "image_tools": {
-        "title": "Image Tools",
-        "description": "Edit, convert, and optimize images",
-        "tools": ["Format Converter", "Image Cropper", "Background Remover"],
-        "cta": "View Tools"
+        "title": "이미지 도구",
+        "description": "이미지 편집, 변환 및 최적화",
+        "tools": ["형식 변환기", "이미지 크로퍼", "배경 제거기"],
+        "cta": "도구 보기"
       },
       "audio_tools": {
-        "title": "Audio Tools",
-        "description": "Convert audio between different formats",
-        "tools": ["Format Converter", "MP3, WAV, AAC, OGG, FLAC", "High Quality Output"],
-        "cta": "View Tools"
+        "title": "오디오 도구",
+        "description": "다양한 형식 간 오디오 변환",
+        "tools": ["형식 변환기", "MP3, WAV, AAC, OGG, FLAC", "고품질 출력"],
+        "cta": "도구 보기"
       },
       "video_tools": {
-        "title": "Video Tools",
-        "description": "Convert videos between different formats",
-        "tools": ["Video Converter", "MP4, AVI, MOV, WebM, MKV", "Professional Quality"],
-        "cta": "View Tools"
+        "title": "비디오 도구",
+        "description": "다양한 형식 간 비디오 변환",
+        "tools": ["비디오 변환기", "MP4, AVI, MOV, WebM, MKV", "전문 품질"],
+        "cta": "도구 보기"
       },
       "document_tools": {
-        "title": "Document Tools",
-        "description": "Convert, merge, split, and extract text",
-        "tools": ["PDF Processor", "Text Extractor", "Document Merger"],
-        "cta": "View Tools"
+        "title": "문서 도구",
+        "description": "변환, 병합, 분할 및 텍스트 추출",
+        "tools": ["PDF 프로세서", "텍스트 추출기", "문서 병합기"],
+        "cta": "도구 보기"
       }
     },
     "stats": {
