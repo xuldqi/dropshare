@@ -222,19 +222,38 @@
       "button": "Choose Files"
     },
     "rooms": {
-      "title": "Private Rooms",
-      "subtitle": "Create secure rooms for file sharing",
-      "create_room": "Create Room",
-      "join_room": "Join Room",
-      "room_name": "Room Name",
-      "room_password": "Room Password",
-      "room_name_placeholder": "Enter room name",
-      "room_password_placeholder": "Enter password (optional)"
+      "title": "マルチユーザー共有ルーム",
+      "subtitle": "ルームコードを通じてローカルネットワークユーザーやリモートユーザーとファイルを素早く共有",
+      "create_room": "ルームを作成",
+      "join_room": "ルームに参加",
+      "room_name": "ルーム名",
+      "room_password": "ルームパスワード（任意）",
+      "room_name_placeholder": "ルーム名を入力",
+      "room_password_placeholder": "ルームパスワードを設定",
+      "room_code": "ルームコード",
+      "room_code_placeholder": "ルームコードを入力",
+      "join_room_password": "ルームパスワード（必要な場合）",
+      "join_room_password_placeholder": "ルームパスワードを入力",
+      "max_members": "最大メンバー数",
+      "your_name": "あなたの名前：",
+      "online": " オンライン",
+      "room_members": "ルームメンバー：",
+      "leave_room": "ルームを退出",
+      "upload_files": "📤 ルームにファイルをアップロード",
+      "drag_files_here": "ファイルをここにドラッグするか、クリックしてアップロード",
+      "files_shared_hint": "ファイルはルーム内のすべてのメンバーと共有されます",
+      "select_files": "アップロードするファイルを選択",
+      "room_shared_files": "📁 ルーム共有ファイル",
+      "files": "ファイル",
+      "no_shared_files": "ルーム内にまだ共有ファイルがありません",
+      "download_hint": "ファイルをアップロード後、ルーム内のすべてのメンバーがダウンロードできます"
     },
+    "no_peers_message": "他のデバイスでDropShareを開いてファイルを送信",
+    "discoverable_message": "このネットワーク上のすべての人に表示されています",
     "history": {
-      "title": "Transfer History",
-      "clear_history": "Clear History",
-      "no_history": "No transfer history yet"
+      "title": "転送履歴",
+      "clear_history": "履歴をクリア",
+      "no_history": "まだ転送履歴がありません"
     }
   },
   "footer": {

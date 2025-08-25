@@ -222,19 +222,38 @@
       "button": "Choose Files"
     },
     "rooms": {
-      "title": "Private Rooms",
-      "subtitle": "Create secure rooms for file sharing",
-      "create_room": "Create Room",
-      "join_room": "Join Room",
-      "room_name": "Room Name",
-      "room_password": "Room Password",
-      "room_name_placeholder": "Enter room name",
-      "room_password_placeholder": "Enter password (optional)"
+      "title": "Salas de compartir multi-usuario",
+      "subtitle": "Comparte archivos rápidamente con usuarios de red local o remotos a través de códigos de sala",
+      "create_room": "Crear sala",
+      "join_room": "Unirse a sala",
+      "room_name": "Nombre de la sala",
+      "room_password": "Contraseña de la sala (opcional)",
+      "room_name_placeholder": "Ingresa el nombre de la sala",
+      "room_password_placeholder": "Establecer contraseña de la sala",
+      "room_code": "Código de la sala",
+      "room_code_placeholder": "Ingresa el código de la sala",
+      "join_room_password": "Contraseña de la sala (si es requerida)",
+      "join_room_password_placeholder": "Ingresa la contraseña de la sala",
+      "max_members": "Máximo de miembros",
+      "your_name": "Tu nombre:",
+      "online": " en línea",
+      "room_members": "Miembros de la sala:",
+      "leave_room": "Salir de la sala",
+      "upload_files": "📤 Subir archivos a la sala",
+      "drag_files_here": "Arrastra archivos aquí o haz clic para subir",
+      "files_shared_hint": "Los archivos se compartirán con todos los miembros de la sala",
+      "select_files": "Seleccionar archivos para subir",
+      "room_shared_files": "📁 Archivos compartidos de la sala",
+      "files": "archivos",
+      "no_shared_files": "Aún no hay archivos compartidos en la sala",
+      "download_hint": "Después de subir archivos, todos los miembros de la sala pueden descargarlos"
     },
+    "no_peers_message": "Abre DropShare en otros dispositivos para enviar archivos",
+    "discoverable_message": "Eres visible para todos en esta red",
     "history": {
-      "title": "Transfer History",
-      "clear_history": "Clear History",
-      "no_history": "No transfer history yet"
+      "title": "Historial de transferencias",
+      "clear_history": "Limpiar historial",
+      "no_history": "Aún no hay historial de transferencias"
     }
   },
   "footer": {
