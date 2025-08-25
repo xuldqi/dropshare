@@ -66,7 +66,6 @@ class LanguageSelector {
         this.container.innerHTML = `
             <div class="language-selector ${this.options.theme}">
                 <button class="language-selector__trigger" aria-label="Select language">
-                    <span class="language-selector__flag">${currentLang?.flag || '🌐'}</span>
                     <span class="language-selector__name">${this.getDisplayName(currentLang)}</span>
                     <span class="language-selector__arrow">▼</span>
                 </button>
@@ -96,7 +95,6 @@ class LanguageSelector {
                     <button class="language-selector__option ${isActive ? 'active' : ''}" 
                             data-lang="${code}" 
                             aria-label="Switch to ${lang.nativeName}">
-                        <span class="language-selector__flag">${lang.flag}</span>
                         <span class="language-selector__name">${displayName}</span>
                         ${isActive ? '<span class="language-selector__check">✓</span>' : ''}
                     </button>
