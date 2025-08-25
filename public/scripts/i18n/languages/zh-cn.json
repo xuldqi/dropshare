@@ -60,20 +60,16 @@
       "title": "为什么选择 DropShare？",
       "subtitle": "为每个人提供的专业工具",
       "feature1": {
-        "title": "无需注册",
-        "description": "无需创建账户即可使用所有工具"
+        "title": "100% 免费",
+        "description": "所有工具完全免费使用，无隐藏费用或订阅要求。"
       },
       "feature2": {
-        "title": "快速处理",
-        "description": "闪电般的文件转换和编辑速度"
+        "title": "快速简单",
+        "description": "无需注册。只需上传文件，几秒钟内即可获得结果。"
       },
       "feature3": {
-        "title": "隐私优先",
-        "description": "您的文件在本地处理，永不上传"
-      },
-      "feature4": {
-        "title": "多种格式",
-        "description": "支持数百种文件格式"
+        "title": "安全私密",
+        "description": "您的文件在本地安全处理。不会在我们的服务器上存储任何数据。"
       }
     },
     "categories": {

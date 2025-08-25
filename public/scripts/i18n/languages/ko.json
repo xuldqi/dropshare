@@ -60,20 +60,16 @@
       "title": "Why Choose DropShare?",
       "subtitle": "Professional tools for everyone",
       "feature1": {
-        "title": "No Registration",
-        "description": "Use all tools without creating an account"
+        "title": "100% 무료",
+        "description": "모든 도구는 완전히 무료로 사용할 수 있으며 숨겨진 요금이나 구독이 필요하지 않습니다."
       },
       "feature2": {
-        "title": "Fast Processing",
-        "description": "Lightning-fast file conversion and editing"
+        "title": "빠르고 쉬움",
+        "description": "등록 불필요. 파일을 업로드하기만 하면 몇 초 만에 결과를 얻을 수 있습니다."
       },
       "feature3": {
-        "title": "Privacy First",
-        "description": "Your files are processed locally and never uploaded"
-      },
-      "feature4": {
-        "title": "Multiple Formats",
-        "description": "Support for hundreds of file formats"
+        "title": "안전하고 개인적",
+        "description": "파일은 로컬에서 안전하게 처리됩니다. 서버에 데이터가 저장되지 않습니다."
       }
     },
     "categories": {

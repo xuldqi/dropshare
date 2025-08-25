@@ -60,20 +60,16 @@
       "title": "Why Choose DropShare?",
       "subtitle": "Professional tools for everyone",
       "feature1": {
-        "title": "No Registration",
-        "description": "Use all tools without creating an account"
+        "title": "100% Gratuit",
+        "description": "Tous les outils sont complètement gratuits à utiliser sans frais cachés ou abonnements requis."
       },
       "feature2": {
-        "title": "Fast Processing",
-        "description": "Lightning-fast file conversion and editing"
+        "title": "Rapide et Facile",
+        "description": "Aucune inscription requise. Téléchargez simplement votre fichier et obtenez des résultats en quelques secondes."
       },
       "feature3": {
-        "title": "Privacy First",
-        "description": "Your files are processed locally and never uploaded"
-      },
-      "feature4": {
-        "title": "Multiple Formats",
-        "description": "Support for hundreds of file formats"
+        "title": "Sécurisé et Privé",
+        "description": "Vos fichiers sont traités localement et en toute sécurité. Aucune donnée n'est stockée sur nos serveurs."
       }
     },
     "categories": {
