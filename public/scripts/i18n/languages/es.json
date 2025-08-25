@@ -246,12 +246,12 @@
       "contact": "Contact"
     },
     "tools": {
-      "title": "Tools",
-      "image_tools": "🖼️ Image Tools",
-      "audio_tools": "🎵 Audio Tools",
-      "video_tools": "🎬 Video Tools",
-      "document_tools": "📄 Document Tools",
-      "file_transfer": "📤 File Transfer"
+      "title": "Herramientas",
+      "image_tools": "Herramientas de imagen",
+      "audio_tools": "Herramientas de audio",
+      "video_tools": "Herramientas de video",
+      "document_tools": "Herramientas de documento",
+      "file_transfer": "Transferencia de archivos"
     },
     "features": {
       "title": "Features",

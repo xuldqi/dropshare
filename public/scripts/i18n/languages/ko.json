@@ -246,12 +246,12 @@
       "contact": "Contact"
     },
     "tools": {
-      "title": "Tools",
-      "image_tools": "🖼️ Image Tools",
-      "audio_tools": "🎵 Audio Tools",
-      "video_tools": "🎬 Video Tools",
-      "document_tools": "📄 Document Tools",
-      "file_transfer": "📤 File Transfer"
+      "title": "도구",
+      "image_tools": "이미지 도구",
+      "audio_tools": "오디오 도구",
+      "video_tools": "비디오 도구",
+      "document_tools": "문서 도구",
+      "file_transfer": "파일 전송"
     },
     "features": {
       "title": "Features",

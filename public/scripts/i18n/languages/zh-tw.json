@@ -238,6 +238,9 @@
     }
   },
   "footer": {
+    "navigate": {
+      "title": "導航"
+    },
     "company": {
       "title": "公司",
       "about": "关于我们",
@@ -247,11 +250,11 @@
     },
     "tools": {
       "title": "工具",
-      "image_tools": "🖼️ 图片工具",
-      "audio_tools": "🎵 音频工具",
-      "video_tools": "🎬 视频工具",
-      "document_tools": "📄 文档工具",
-      "file_transfer": "📤 文件传输"
+      "image_tools": "圖片工具",
+      "audio_tools": "音訊工具",
+      "video_tools": "影片工具",
+      "document_tools": "文件工具",
+      "file_transfer": "檔案傳輸"
     },
     "features": {
       "title": "功能",
@@ -260,6 +263,9 @@
       "image_processing": "图片处理",
       "video_conversion": "视频转换",
       "document_tools": "文档工具"
+    },
+    "links": {
+      "title": "連結"
     },
     "support": {
       "title": "支持",

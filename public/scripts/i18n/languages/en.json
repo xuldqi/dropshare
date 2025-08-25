@@ -238,6 +238,9 @@
     }
   },
   "footer": {
+    "navigate": {
+      "title": "Navigate"
+    },
     "company": {
       "title": "Company",
       "about": "About Us",
@@ -247,11 +250,11 @@
     },
     "tools": {
       "title": "Tools",
-      "image_tools": "🖼️ Image Tools",
-      "audio_tools": "🎵 Audio Tools",
-      "video_tools": "🎬 Video Tools",
-      "document_tools": "📄 Document Tools",
-      "file_transfer": "📤 File Transfer"
+      "image_tools": "Image Tools",
+      "audio_tools": "Audio Tools",
+      "video_tools": "Video Tools",
+      "document_tools": "Document Tools",
+      "file_transfer": "File Transfer"
     },
     "features": {
       "title": "Features",
@@ -260,6 +263,9 @@
       "image_processing": "Image Processing",
       "video_conversion": "Video Conversion",
       "document_tools": "Document Tools"
+    },
+    "links": {
+      "title": "LINKS"
     },
     "support": {
       "title": "Support",
