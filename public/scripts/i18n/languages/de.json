@@ -38,7 +38,7 @@
   },
   "navigation": {
     "home": "Startseite",
-    "tools": "Tools",
+    "tools": "Werkzeuge",
     "transfer": "Übertragung",
     "rooms": "Räume",
     "images": "Bilder",
@@ -57,23 +57,23 @@
       "learn_more": "Mehr erfahren"
     },
     "features": {
-      "title": "Why Choose DropShare?",
-      "subtitle": "Professional tools for everyone",
+      "title": "Warum DropShare wählen?",
+      "subtitle": "Professionelle Tools für alle",
       "feature1": {
-        "title": "No Registration",
-        "description": "Use all tools without creating an account"
+        "title": "Keine Registrierung",
+        "description": "Verwenden Sie alle Tools ohne Konto zu erstellen"
       },
       "feature2": {
-        "title": "Fast Processing",
-        "description": "Lightning-fast file conversion and editing"
+        "title": "Schnelle Verarbeitung",
+        "description": "Blitzschnelle Dateikonvertierung und -bearbeitung"
       },
       "feature3": {
-        "title": "Privacy First",
-        "description": "Your files are processed locally and never uploaded"
+        "title": "Datenschutz zuerst",
+        "description": "Ihre Dateien werden lokal verarbeitet und nie hochgeladen"
       },
       "feature4": {
-        "title": "Multiple Formats",
-        "description": "Support for hundreds of file formats"
+        "title": "Mehrere Formate",
+        "description": "Unterstützung für Hunderte von Dateiformaten"
       }
     },
     "categories": {
@@ -83,204 +83,204 @@
         "title": "Bild-Tools",
         "description": "Bilder bearbeiten, konvertieren und optimieren",
         "tools": ["Format-Konverter", "Bild-Zuschneider", "Hintergrund-Entferner"],
-        "cta": "Tools anzeigen"
+        "cta": "Werkzeuge anzeigen"
       },
       "audio_tools": {
         "title": "Audio-Tools",
         "description": "Audio zwischen verschiedenen Formaten konvertieren",
         "tools": ["Format-Konverter", "MP3, WAV, AAC, OGG, FLAC", "Hochwertige Ausgabe"],
-        "cta": "Tools anzeigen"
+        "cta": "Werkzeuge anzeigen"
       },
       "video_tools": {
         "title": "Video-Tools",
         "description": "Videos zwischen verschiedenen Formaten konvertieren",
         "tools": ["Video-Konverter", "MP4, AVI, MOV, WebM, MKV", "Professionelle Qualität"],
-        "cta": "Tools anzeigen"
+        "cta": "Werkzeuge anzeigen"
       },
       "document_tools": {
         "title": "Dokument-Tools",
         "description": "Konvertieren, zusammenführen, aufteilen und Text extrahieren",
         "tools": ["PDF-Prozessor", "Text-Extraktor", "Dokument-Zusammenführer"],
-        "cta": "Tools anzeigen"
+        "cta": "Werkzeuge anzeigen"
       }
     },
     "stats": {
-      "title": "Trusted by Millions",
-      "users": "Active Users",
-      "files": "Files Processed",
-      "countries": "Countries"
+      "title": "Vertraut von Millionen",
+      "users": "Aktive Benutzer",
+      "files": "Verarbeitete Dateien",
+      "countries": "Länder"
     }
   },
   "tools": {
     "image": {
-      "title": "Image Tools",
-      "subtitle": "Professional image editing and conversion tools",
+      "title": "Bild-Tools",
+      "subtitle": "Professionelle Bildbearbeitungs- und Konvertierungstools",
       "converter": {
-        "title": "Image Converter",
-        "description": "Convert images between different formats"
+        "title": "Bild-Konverter",
+        "description": "Bilder zwischen verschiedenen Formaten konvertieren"
       },
       "cropper": {
-        "title": "Image Cropper",
-        "description": "Crop and resize images easily"
+        "title": "Bild-Zuschneider",
+        "description": "Bilder einfach zuschneiden und in der Größe ändern"
       },
       "compressor": {
-        "title": "Image Compressor",
-        "description": "Reduce image file size while maintaining quality"
+        "title": "Bild-Kompressor",
+        "description": "Bilddateigröße reduzieren und dabei die Qualität beibehalten"
       },
       "background_remover": {
-        "title": "Background Remover",
-        "description": "Remove backgrounds from images automatically"
+        "title": "Hintergrund-Entferner",
+        "description": "Hintergründe automatisch aus Bildern entfernen"
       },
       "resizer": {
-        "title": "Image Resizer",
-        "description": "Resize images to any dimension"
+        "title": "Bild-Größenänderer",
+        "description": "Bilder auf beliebige Dimensionen ändern"
       },
       "rotator": {
-        "title": "Image Rotator",
-        "description": "Rotate and flip images"
+        "title": "Bild-Rotator",
+        "description": "Bilder drehen und spiegeln"
       },
       "watermark": {
-        "title": "Watermark Tool",
-        "description": "Add watermarks to your images"
+        "title": "Wasserzeichen-Tool",
+        "description": "Wasserzeichen zu Ihren Bildern hinzufügen"
       },
       "filter_effects": {
-        "title": "Filter Effects",
-        "description": "Apply beautiful filters and effects"
+        "title": "Filter-Effekte",
+        "description": "Schöne Filter und Effekte anwenden"
       }
     },
     "audio": {
-      "title": "Audio Tools",
-      "subtitle": "Convert and edit audio files",
+      "title": "Audio-Tools",
+      "subtitle": "Audio-Dateien konvertieren und bearbeiten",
       "converter": {
-        "title": "Audio Converter",
-        "description": "Convert between audio formats"
+        "title": "Audio-Konverter",
+        "description": "Zwischen Audio-Formaten konvertieren"
       },
       "processor": {
-        "title": "Audio Processor",
-        "description": "Advanced audio editing tools"
+        "title": "Audio-Prozessor",
+        "description": "Erweiterte Audio-Bearbeitungstools"
       }
     },
     "video": {
-      "title": "Video Tools",
-      "subtitle": "Professional video conversion tools",
+      "title": "Video-Tools",
+      "subtitle": "Professionelle Video-Konvertierungstools",
       "converter": {
-        "title": "Video Converter",
-        "description": "Convert videos between formats"
+        "title": "Video-Konverter",
+        "description": "Videos zwischen Formaten konvertieren"
       },
       "info": {
-        "title": "Video Info",
-        "description": "Get detailed information about video files"
+        "title": "Video-Info",
+        "description": "Detaillierte Informationen über Video-Dateien erhalten"
       }
     },
     "document": {
-      "title": "Document Tools",
-      "subtitle": "Process and convert documents",
+      "title": "Dokument-Tools",
+      "subtitle": "Dokumente verarbeiten und konvertieren",
       "processor": {
-        "title": "Document Processor",
-        "description": "Convert and process documents"
+        "title": "Dokument-Prozessor",
+        "description": "Dokumente konvertieren und verarbeiten"
       },
       "pdf_to_word": {
-        "title": "PDF to Word",
-        "description": "Convert PDF files to Word documents"
+        "title": "PDF zu Word",
+        "description": "PDF-Dateien in Word-Dokumente konvertieren"
       },
       "docx_to_html": {
-        "title": "DOCX to HTML",
-        "description": "Convert Word documents to HTML"
+        "title": "DOCX zu HTML",
+        "description": "Word-Dokumente in HTML konvertieren"
       },
       "docx_to_txt": {
-        "title": "DOCX to TXT",
-        "description": "Convert Word documents to plain text"
+        "title": "DOCX zu TXT",
+        "description": "Word-Dokumente in Klartext konvertieren"
       },
       "xlsx_to_csv": {
-        "title": "XLSX to CSV",
-        "description": "Convert Excel files to CSV"
+        "title": "XLSX zu CSV",
+        "description": "Excel-Dateien in CSV konvertieren"
       },
       "csv_to_xlsx": {
-        "title": "CSV to XLSX",
-        "description": "Convert CSV files to Excel"
+        "title": "CSV zu XLSX",
+        "description": "CSV-Dateien in Excel konvertieren"
       }
     }
   },
   "transfer": {
-    "title": "File Transfer",
-    "subtitle": "Share files instantly with devices on the same network",
+    "title": "Dateiübertragung",
+    "subtitle": "Dateien sofort mit Geräten im selben Netzwerk teilen",
     "upload_area": {
-      "title": "Drop files here or click to upload",
-      "subtitle": "Drag and drop files to start sharing",
-      "button": "Choose Files"
+      "title": "Dateien hier ablegen oder klicken zum Hochladen",
+      "subtitle": "Dateien ziehen und ablegen, um das Teilen zu starten",
+      "button": "Dateien auswählen"
     },
     "rooms": {
-      "title": "Private Rooms",
-      "subtitle": "Create secure rooms for file sharing",
-      "create_room": "Create Room",
-      "join_room": "Join Room",
-      "room_name": "Room Name",
-      "room_password": "Room Password",
-      "room_name_placeholder": "Enter room name",
-      "room_password_placeholder": "Enter password (optional)"
+      "title": "Private Räume",
+      "subtitle": "Sichere Räume für die Dateifreigabe erstellen",
+      "create_room": "Raum erstellen",
+      "join_room": "Raum beitreten",
+      "room_name": "Raumname",
+      "room_password": "Raumpasswort",
+      "room_name_placeholder": "Raumname eingeben",
+      "room_password_placeholder": "Passwort eingeben (optional)"
     },
     "history": {
-      "title": "Transfer History",
-      "clear_history": "Clear History",
-      "no_history": "No transfer history yet"
+      "title": "Übertragungsverlauf",
+      "clear_history": "Verlauf löschen",
+      "no_history": "Noch kein Übertragungsverlauf"
     }
   },
   "footer": {
     "company": {
-      "title": "Company",
-      "about": "About Us",
+      "title": "Unternehmen",
+      "about": "Über uns",
       "blog": "Blog",
-      "careers": "Careers",
-      "contact": "Contact"
+      "careers": "Karriere",
+      "contact": "Kontakt"
     },
     "tools": {
       "title": "Tools",
-      "image_tools": "🖼️ Image Tools",
-      "audio_tools": "🎵 Audio Tools",
-      "video_tools": "🎬 Video Tools",
-      "document_tools": "📄 Document Tools",
-      "file_transfer": "📤 File Transfer"
+      "image_tools": "🖼️ Bild-Tools",
+      "audio_tools": "🎵 Audio-Tools",
+      "video_tools": "🎬 Video-Tools",
+      "document_tools": "📄 Dokument-Tools",
+      "file_transfer": "📤 Dateiübertragung"
     },
     "features": {
-      "title": "Features",
-      "p2p_sharing": "P2P File Sharing",
-      "multi_user_rooms": "Multi-user Rooms",
-      "image_processing": "Image Processing",
-      "video_conversion": "Video Conversion",
-      "document_tools": "Document Tools"
+      "title": "Funktionen",
+      "p2p_sharing": "P2P-Dateifreigabe",
+      "multi_user_rooms": "Multi-User-Räume",
+      "image_processing": "Bildverarbeitung",
+      "video_conversion": "Video-Konvertierung",
+      "document_tools": "Dokument-Tools"
     },
     "support": {
       "title": "Support",
-      "help_center": "Help Center",
+      "help_center": "Hilfecenter",
       "faq": "FAQ",
-      "contact": "Contact Support",
+      "contact": "Support kontaktieren",
       "feedback": "Feedback"
     },
     "legal": {
-      "title": "Legal",
-      "privacy_policy": "Privacy Policy",
-      "terms_of_service": "Terms of Service",
-      "cookie_policy": "Cookie Policy",
+      "title": "Rechtliches",
+      "privacy_policy": "Datenschutzrichtlinie",
+      "terms_of_service": "Nutzungsbedingungen",
+      "cookie_policy": "Cookie-Richtlinie",
       "dmca": "DMCA"
     },
-    "copyright": "© 2024 DropShare. All rights reserved.",
-    "made_with": "Made with ❤️ for the community"
+    "copyright": "© 2024 DropShare. Alle Rechte vorbehalten.",
+    "made_with": "Gemacht mit ❤️ für die Community"
   },
   "errors": {
-    "file_too_large": "File is too large",
-    "unsupported_format": "Unsupported file format",
-    "upload_failed": "Upload failed",
-    "conversion_failed": "Conversion failed",
-    "network_error": "Network error",
-    "server_error": "Server error",
-    "unknown_error": "An unknown error occurred"
+    "file_too_large": "Datei ist zu groß",
+    "unsupported_format": "Nicht unterstütztes Dateiformat",
+    "upload_failed": "Upload fehlgeschlagen",
+    "conversion_failed": "Konvertierung fehlgeschlagen",
+    "network_error": "Netzwerkfehler",
+    "server_error": "Serverfehler",
+    "unknown_error": "Ein unbekannter Fehler ist aufgetreten"
   },
   "messages": {
-    "file_uploaded": "File uploaded successfully",
-    "file_converted": "File converted successfully",
-    "file_downloaded": "File downloaded successfully",
-    "room_created": "Room created successfully",
-    "room_joined": "Joined room successfully",
-    "settings_saved": "Settings saved successfully"
+    "file_uploaded": "Datei erfolgreich hochgeladen",
+    "file_converted": "Datei erfolgreich konvertiert",
+    "file_downloaded": "Datei erfolgreich heruntergeladen",
+    "room_created": "Raum erfolgreich erstellt",
+    "room_joined": "Erfolgreich dem Raum beigetreten",
+    "settings_saved": "Einstellungen erfolgreich gespeichert"
   }
 }
