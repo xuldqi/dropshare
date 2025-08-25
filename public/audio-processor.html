@@ -551,17 +551,30 @@
                 progressFill.style.width = progress + '%';
                 progressText.textContent = `${progress}% - Processing ${file.name}`;
                 
-                // Simulate processing process
-                await new Promise(resolve => setTimeout(resolve, 2500));
-                
-                // Create processed file info
-                const processedFile = {
-                    originalFile: file,
-                    filename: file.name.replace(/\.[^/.]+$/, '') + '_processed' + getFileExtension(file.name),
-                    size: Math.floor(file.size * 1.1), // Simulate size change
-                    options: options
-                };
-                processedFiles.push(processedFile);
+                // Real audio processing using Web Audio API
+                try {
+                    const processedBlob = await processAudioFile(file, options);
+                    const processedFile = {
+                        originalFile: file,
+                        filename: file.name.replace(/\.[^/.]+$/, '') + '_processed' + getFileExtension(file.name),
+                        size: processedBlob.size,
+                        blob: processedBlob,
+                        options: options
+                    };
+                    processedFiles.push(processedFile);
+                } catch (error) {
+                    console.error('Audio processing failed:', error);
+                    // Create fallback processed file
+                    const processedFile = {
+                        originalFile: file,
+                        filename: file.name.replace(/\.[^/.]+$/, '') + '_processed' + getFileExtension(file.name),
+                        size: file.size,
+                        blob: file, // Use original file as fallback
+                        options: options,
+                        error: error.message
+                    };
+                    processedFiles.push(processedFile);
+                }
             }
             
             progressText.textContent = 'Processing Complete!';
@@ -575,6 +588,219 @@
         function getFileExtension(filename) {
             const ext = filename.split('.').pop();
             return '.' + ext;
+        }
+
+        async function processAudioFile(file, options) {
+            try {
+                // Create audio context
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Read file as array buffer
+                const arrayBuffer = await file.arrayBuffer();
+                
+                // Decode audio data
+                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                
+                // Apply processing effects
+                let processedBuffer = audioBuffer;
+                
+                // Volume normalization
+                if (options.normalizeVolume) {
+                    processedBuffer = normalizeVolume(processedBuffer, audioContext);
+                }
+                
+                // Noise reduction (simple high-pass filter)
+                if (options.removeNoise) {
+                    processedBuffer = await applyHighPassFilter(processedBuffer, audioContext);
+                }
+                
+                // Bass enhancement (low-pass emphasis)
+                if (options.enhanceBass) {
+                    processedBuffer = await applyBassBoost(processedBuffer, audioContext);
+                }
+                
+                // Compression (simple dynamic range compression)
+                if (options.compressor) {
+                    processedBuffer = applyCompression(processedBuffer, audioContext);
+                }
+                
+                // Convert processed buffer back to blob
+                const processedBlob = await audioBufferToBlob(processedBuffer, audioContext);
+                
+                // Close audio context to free resources
+                await audioContext.close();
+                
+                return processedBlob;
+                
+            } catch (error) {
+                console.error('Audio processing error:', error);
+                throw new Error('Failed to process audio: ' + error.message);
+            }
+        }
+        
+        function normalizeVolume(audioBuffer, audioContext) {
+            const numberOfChannels = audioBuffer.numberOfChannels;
+            const length = audioBuffer.length;
+            const sampleRate = audioBuffer.sampleRate;
+            
+            // Create new buffer
+            const normalizedBuffer = audioContext.createBuffer(numberOfChannels, length, sampleRate);
+            
+            for (let channel = 0; channel < numberOfChannels; channel++) {
+                const inputData = audioBuffer.getChannelData(channel);
+                const outputData = normalizedBuffer.getChannelData(channel);
+                
+                // Find peak amplitude
+                let peak = 0;
+                for (let i = 0; i < length; i++) {
+                    const sample = Math.abs(inputData[i]);
+                    if (sample > peak) peak = sample;
+                }
+                
+                // Normalize to 0.95 to avoid clipping
+                const scale = peak > 0 ? 0.95 / peak : 1;
+                for (let i = 0; i < length; i++) {
+                    outputData[i] = inputData[i] * scale;
+                }
+            }
+            
+            return normalizedBuffer;
+        }
+        
+        async function applyHighPassFilter(audioBuffer, audioContext) {
+            const offline = new OfflineAudioContext(
+                audioBuffer.numberOfChannels, 
+                audioBuffer.length, 
+                audioBuffer.sampleRate
+            );
+            
+            const source = offline.createBufferSource();
+            const filter = offline.createBiquadFilter();
+            
+            source.buffer = audioBuffer;
+            filter.type = 'highpass';
+            filter.frequency.value = 300; // Remove frequencies below 300Hz
+            
+            source.connect(filter);
+            filter.connect(offline.destination);
+            source.start(0);
+            
+            return await offline.startRendering();
+        }
+        
+        async function applyBassBoost(audioBuffer, audioContext) {
+            const offline = new OfflineAudioContext(
+                audioBuffer.numberOfChannels, 
+                audioBuffer.length, 
+                audioBuffer.sampleRate
+            );
+            
+            const source = offline.createBufferSource();
+            const filter = offline.createBiquadFilter();
+            
+            source.buffer = audioBuffer;
+            filter.type = 'lowshelf';
+            filter.frequency.value = 200;
+            filter.gain.value = 6; // Boost bass by 6dB
+            
+            source.connect(filter);
+            filter.connect(offline.destination);
+            source.start(0);
+            
+            return await offline.startRendering();
+        }
+        
+        function applyCompression(audioBuffer, audioContext) {
+            const numberOfChannels = audioBuffer.numberOfChannels;
+            const length = audioBuffer.length;
+            const sampleRate = audioBuffer.sampleRate;
+            
+            // Create new buffer
+            const compressedBuffer = audioContext.createBuffer(numberOfChannels, length, sampleRate);
+            
+            const threshold = 0.7;
+            const ratio = 4;
+            
+            for (let channel = 0; channel < numberOfChannels; channel++) {
+                const inputData = audioBuffer.getChannelData(channel);
+                const outputData = compressedBuffer.getChannelData(channel);
+                
+                for (let i = 0; i < length; i++) {
+                    const sample = inputData[i];
+                    const absample = Math.abs(sample);
+                    
+                    if (absample > threshold) {
+                        const excess = absample - threshold;
+                        const compressedExcess = excess / ratio;
+                        const newAbs = threshold + compressedExcess;
+                        outputData[i] = sample >= 0 ? newAbs : -newAbs;
+                    } else {
+                        outputData[i] = sample;
+                    }
+                }
+            }
+            
+            return compressedBuffer;
+        }
+        
+        async function audioBufferToBlob(audioBuffer, audioContext) {
+            const offline = new OfflineAudioContext(
+                audioBuffer.numberOfChannels,
+                audioBuffer.length,
+                audioBuffer.sampleRate
+            );
+            
+            const source = offline.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(offline.destination);
+            source.start(0);
+            
+            const renderedBuffer = await offline.startRendering();
+            
+            // Convert to WAV format
+            const wavBlob = audioBufferToWav(renderedBuffer);
+            return wavBlob;
+        }
+        
+        function audioBufferToWav(buffer) {
+            const length = buffer.length;
+            const numberOfChannels = buffer.numberOfChannels;
+            const sampleRate = buffer.sampleRate;
+            const arrayBuffer = new ArrayBuffer(44 + length * numberOfChannels * 2);
+            const view = new DataView(arrayBuffer);
+            
+            // WAV header
+            const writeString = (offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+            
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + length * numberOfChannels * 2, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numberOfChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * numberOfChannels * 2, true);
+            view.setUint16(32, numberOfChannels * 2, true);
+            view.setUint16(34, 16, true);
+            writeString(36, 'data');
+            view.setUint32(40, length * numberOfChannels * 2, true);
+            
+            // PCM data
+            let offset = 44;
+            for (let i = 0; i < length; i++) {
+                for (let channel = 0; channel < numberOfChannels; channel++) {
+                    const sample = Math.max(-1, Math.min(1, buffer.getChannelData(channel)[i]));
+                    view.setInt16(offset, sample * 0x7FFF, true);
+                    offset += 2;
+                }
+            }
+            
+            return new Blob([arrayBuffer], { type: 'audio/wav' });
         }
 
         function showProcessingResult() {
@@ -615,14 +841,13 @@
                 
                 // Add each processed file to share system
                 processedFiles.forEach((fileData, index) => {
-                    // Create a blob for the processed file (simulated for demo)
-                    const simulatedContent = `Processed audio file content for ${fileData.filename}`;
-                    const blob = new Blob([simulatedContent], { type: 'audio/mpeg' });
+                    // Use the real processed blob or fallback to original
+                    const blob = fileData.blob || fileData.originalFile;
                     
                     window.ToolHelpers.addProcessedFileToShare(
                         blob,
                         fileData.filename,
-                        'audio/mpeg',
+                        blob.type || 'audio/mpeg',
                         index === 0 // Clear previous only for first file
                     );
                 });

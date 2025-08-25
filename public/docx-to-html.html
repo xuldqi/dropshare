@@ -540,16 +540,25 @@
                 document.getElementById('progressFillInner').style.width = progress + '%';
                 progressText.textContent = `${progress}% - Converting ${file.name}`;
                 
-                // 模拟转换过程
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // 模拟转换结果
-                const htmlContent = await convertDocxToHtml(file);
-                convertedFiles.push({
-                    originalFile: file,
-                    htmlContent: htmlContent,
-                    filename: file.name.replace(/\.(docx?|doc)$/i, '.html')
-                });
+                // 真实的DOCX转HTML转换
+                try {
+                    const htmlContent = await convertDocxToHtml(file);
+                    convertedFiles.push({
+                        originalFile: file,
+                        htmlContent: htmlContent,
+                        filename: file.name.replace(/\.(docx?|doc)$/i, '.html')
+                    });
+                } catch (error) {
+                    console.error('DOCX conversion failed:', error);
+                    // 创建错误提示HTML
+                    const errorHtml = createErrorHtml(file.name, error.message);
+                    convertedFiles.push({
+                        originalFile: file,
+                        htmlContent: errorHtml,
+                        filename: file.name.replace(/\.(docx?|doc)$/i, '_error.html'),
+                        hasError: true
+                    });
+                }
             }
             
             progressText.textContent = 'Conversion Complete!';
@@ -561,33 +570,163 @@
         }
 
         async function convertDocxToHtml(file) {
-            // 这里是模拟的转换逻辑
-            // 实际项目中需要使用真实的DOCX转换库
+            // 真实的DOCX转HTML转换使用Mammoth.js
             const preserveStyles = document.getElementById('preserveStyles').checked;
             const includeImages = document.getElementById('includeImages').checked;
             const cleanHtml = document.getElementById('cleanHtml').checked;
             const responsiveLayout = document.getElementById('responsiveLayout').checked;
             
+            try {
+                // 确保Mammoth.js库已加载
+                if (!window.mammoth) {
+                    await loadMammothLibrary();
+                }
+                
+                // 读取文件为ArrayBuffer
+                const arrayBuffer = await file.arrayBuffer();
+                
+                // Mammoth转换选项
+                const options = {
+                    convertImage: includeImages ? mammoth.images.imgElement(function(image) {
+                        return image.read("base64").then(function(imageBuffer) {
+                            return {
+                                src: "data:" + image.contentType + ";base64," + imageBuffer
+                            };
+                        });
+                    }) : undefined,
+                    includeDefaultStyleMap: preserveStyles,
+                    includeEmbeddedStyleMap: preserveStyles
+                };
+                
+                // 执行转换
+                const result = await mammoth.convertToHtml(arrayBuffer, options);
+                
+                // 构建完整的HTML文档
+                let htmlContent = result.value;
+                
+                // 如果需要清理HTML
+                if (cleanHtml) {
+                    htmlContent = cleanHtmlContent(htmlContent);
+                }
+                
+                // 构建完整的HTML文档
+                const fullHtml = createFullHtmlDocument(file.name, htmlContent, responsiveLayout, preserveStyles);
+                
+                // 如果有警告消息，记录到控制台
+                if (result.messages && result.messages.length > 0) {
+                    console.warn('DOCX conversion warnings:', result.messages);
+                }
+                
+                return fullHtml;
+                
+            } catch (error) {
+                console.error('DOCX to HTML conversion failed:', error);
+                throw new Error('Failed to convert DOCX to HTML: ' + error.message);
+            }
+        }
+        
+        async function loadMammothLibrary() {
+            return new Promise((resolve, reject) => {
+                if (window.mammoth) {
+                    resolve();
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = 'https://unpkg.com/mammoth@1.6.0/mammoth.browser.min.js';
+                script.onload = resolve;
+                script.onerror = () => reject(new Error('Failed to load Mammoth.js library'));
+                document.head.appendChild(script);
+            });
+        }
+        
+        function cleanHtmlContent(html) {
+            // 移除空段落和多余空白
+            return html
+                .replace(/<p>\s*<\/p>/g, '')
+                .replace(/<p>\s*&nbsp;\s*<\/p>/g, '')
+                .replace(/\s+/g, ' ')
+                .replace(/>\s+</g, '><')
+                .trim();
+        }
+        
+        function createFullHtmlDocument(filename, content, responsive, preserveStyles) {
+            const responsiveCSS = responsive ? `
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body { max-width: 100%; overflow-x: auto; }
+            img { max-width: 100%; height: auto; }
+            table { width: 100%; table-layout: auto; }
+            @media (max-width: 768px) {
+                body { font-size: 14px; padding: 10px; }
+                table { font-size: 12px; }
+            }
+        </style>` : '';
+            
+            const styleCSS = preserveStyles ? `
+        <style>
+            body { font-family: 'Times New Roman', serif; line-height: 1.6; margin: 40px; }
+            h1, h2, h3, h4, h5, h6 { color: #333; margin-top: 24px; margin-bottom: 16px; }
+            p { margin-bottom: 16px; }
+            table { border-collapse: collapse; margin: 16px 0; }
+            td, th { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f5f5f5; font-weight: bold; }
+        </style>` : `
+        <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; color: #333; }
+            h1, h2, h3, h4, h5, h6 { margin-top: 24px; margin-bottom: 16px; }
+            p { margin-bottom: 16px; }
+        </style>`;
+            
+            return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    ${responsiveCSS}
+    <title>${filename.replace(/\.(docx?|doc)$/i, '')}</title>
+    ${styleCSS}
+</head>
+<body>
+    <header style="border-bottom: 2px solid #eee; margin-bottom: 30px; padding-bottom: 20px;">
+        <h1 style="color: #2563eb; margin-bottom: 10px;">${filename.replace(/\.(docx?|doc)$/i, '')}</h1>
+        <p style="color: #666; margin: 0;">Converted from DOCX on ${new Date().toLocaleString()}</p>
+    </header>
+    <main>
+        ${content}
+    </main>
+    <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 12px;">
+        <p>Generated by DropShare DOCX to HTML Converter</p>
+    </footer>
+</body>
+</html>`;
+        }
+        
+        function createErrorHtml(filename, errorMessage) {
             return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${file.name.replace(/\.(docx?|doc)$/i, '')}</title>
-    ${responsiveLayout ? '<style>body{max-width:800px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;line-height:1.6;}</style>' : ''}
+    <title>Conversion Error - ${filename}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; color: #333; }
+        .error-container { background: #fee; border: 1px solid #fcc; padding: 20px; border-radius: 8px; }
+        .error-title { color: #c33; margin-bottom: 16px; }
+    </style>
 </head>
 <body>
-    <h1>${file.name.replace(/\.(docx?|doc)$/i, '')}</h1>
-    <p>This is a converted HTML document from ${file.name}.</p>
-    <p><strong>Conversion Options Applied:</strong></p>
-    <ul>
-        <li>Preserve Styles: ${preserveStyles ? 'Yes' : 'No'}</li>
-        <li>Include Images: ${includeImages ? 'Yes' : 'No'}</li>
-        <li>Clean HTML: ${cleanHtml ? 'Yes' : 'No'}</li>
-        <li>Responsive Layout: ${responsiveLayout ? 'Yes' : 'No'}</li>
-    </ul>
-    <p>File size: ${formatFileSize(file.size)}</p>
-    <p>Converted on: ${new Date().toLocaleString()}</p>
+    <div class="error-container">
+        <h1 class="error-title">❌ Conversion Error</h1>
+        <p><strong>File:</strong> ${filename}</p>
+        <p><strong>Error:</strong> ${errorMessage}</p>
+        <p>This file could not be converted to HTML. Please ensure:</p>
+        <ul>
+            <li>The file is a valid DOCX document</li>
+            <li>The file is not password protected</li>
+            <li>The file is not corrupted</li>
+        </ul>
+        <p><em>Generated on ${new Date().toLocaleString()}</em></p>
+    </div>
 </body>
 </html>`;
         }
