@@ -250,6 +250,7 @@
     },
     "no_peers_message": "在其他設備上打開DropShare以發送文件",
     "discoverable_message": "您對網絡上的所有人都可見",
+    "you_are_known_as": "您的顯示名稱為"
     "history": {
       "title": "傳輸歷史",
       "clear_history": "清除歷史",

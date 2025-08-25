@@ -250,6 +250,7 @@
     },
     "no_peers_message": "Open DropShare on other devices to send files",
     "discoverable_message": "You are discoverable by everyone on this network",
+    "you_are_known_as": "You are known as"
     "history": {
       "title": "Transfer History",
       "clear_history": "Clear History",

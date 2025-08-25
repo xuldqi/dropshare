@@ -250,6 +250,7 @@
     },
     "no_peers_message": "他のデバイスでDropShareを開いてファイルを送信",
     "discoverable_message": "このネットワーク上のすべての人に表示されています",
+    "you_are_known_as": "あなたは次の名前で知られています："
     "history": {
       "title": "転送履歴",
       "clear_history": "履歴をクリア",

@@ -250,6 +250,7 @@
     },
     "no_peers_message": "다른 기기에서 DropShare를 열어 파일을 보내세요",
     "discoverable_message": "이 네트워크의 모든 사람에게 보입니다",
+    "you_are_known_as": "당신은 다음 이름으로 알려져 있습니다:"
     "history": {
       "title": "전송 기록",
       "clear_history": "기록 지우기",
