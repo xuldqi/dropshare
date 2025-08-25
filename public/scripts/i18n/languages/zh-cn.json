@@ -1,0 +1,286 @@
+{
+  "meta": {
+    "name": "Simplified Chinese",
+    "nativeName": "简体中文",
+    "direction": "ltr",
+    "dateFormat": "YYYY/MM/DD"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "submit": "提交",
+    "upload": "上传",
+    "download": "下载",
+    "copy": "复制",
+    "paste": "粘贴",
+    "select": "选择",
+    "choose": "选择",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "refresh": "刷新",
+    "settings": "设置",
+    "help": "帮助",
+    "about": "关于",
+    "contact": "联系",
+    "privacy": "隐私",
+    "terms": "条款",
+    "faq": "常见问题"
+  },
+  "navigation": {
+    "home": "首页",
+    "tools": "工具",
+    "transfer": "传输",
+    "rooms": "房间",
+    "images": "图片",
+    "audio": "音频",
+    "video": "视频",
+    "files": "文件",
+    "blog": "博客",
+    "language": "语言"
+  },
+  "homepage": {
+    "hero": {
+      "title": "免费在线文件工具与分享",
+      "subtitle": "即时转换、编辑和分享文件",
+      "description": "专业的图片、音频、视频和文档处理工具。无需注册。",
+      "cta_button": "开始使用",
+      "learn_more": "了解更多"
+    },
+    "features": {
+      "title": "为什么选择 DropShare？",
+      "subtitle": "为每个人提供的专业工具",
+      "feature1": {
+        "title": "无需注册",
+        "description": "无需创建账户即可使用所有工具"
+      },
+      "feature2": {
+        "title": "快速处理",
+        "description": "闪电般的文件转换和编辑速度"
+      },
+      "feature3": {
+        "title": "隐私优先",
+        "description": "您的文件在本地处理，永不上传"
+      },
+      "feature4": {
+        "title": "多种格式",
+        "description": "支持数百种文件格式"
+      }
+    },
+    "categories": {
+      "title": "选择您的工具类别",
+      "subtitle": "从我们按类别组织的综合工具集合中选择",
+      "image_tools": {
+        "title": "图片工具",
+        "description": "编辑、转换和优化图片",
+        "tools": ["格式转换器", "图片裁剪器", "背景移除器"],
+        "cta": "查看工具"
+      },
+      "audio_tools": {
+        "title": "音频工具",
+        "description": "在不同格式之间转换音频",
+        "tools": ["格式转换器", "MP3、WAV、AAC、OGG、FLAC", "高质量输出"],
+        "cta": "查看工具"
+      },
+      "video_tools": {
+        "title": "视频工具",
+        "description": "在不同格式之间转换视频",
+        "tools": ["视频转换器", "MP4、AVI、MOV、WebM、MKV", "专业质量"],
+        "cta": "查看工具"
+      },
+      "document_tools": {
+        "title": "文档工具",
+        "description": "转换、合并、分割和提取文本",
+        "tools": ["PDF处理器", "文本提取器", "文档合并器"],
+        "cta": "查看工具"
+      }
+    },
+    "stats": {
+      "title": "数百万用户信赖",
+      "users": "活跃用户",
+      "files": "处理文件",
+      "countries": "国家"
+    }
+  },
+  "tools": {
+    "image": {
+      "title": "图片工具",
+      "subtitle": "专业的图片编辑和转换工具",
+      "converter": {
+        "title": "图片转换器",
+        "description": "在不同格式之间转换图片"
+      },
+      "cropper": {
+        "title": "图片裁剪器",
+        "description": "轻松裁剪和调整图片大小"
+      },
+      "compressor": {
+        "title": "图片压缩器",
+        "description": "在保持质量的同时减小图片文件大小"
+      },
+      "background_remover": {
+        "title": "背景移除器",
+        "description": "自动从图片中移除背景"
+      },
+      "resizer": {
+        "title": "图片调整器",
+        "description": "将图片调整为任意尺寸"
+      },
+      "rotator": {
+        "title": "图片旋转器",
+        "description": "旋转和翻转图片"
+      },
+      "watermark": {
+        "title": "水印工具",
+        "description": "为您的图片添加水印"
+      },
+      "filter_effects": {
+        "title": "滤镜效果",
+        "description": "应用美丽的滤镜和效果"
+      }
+    },
+    "audio": {
+      "title": "音频工具",
+      "subtitle": "转换和编辑音频文件",
+      "converter": {
+        "title": "音频转换器",
+        "description": "在音频格式之间转换"
+      },
+      "processor": {
+        "title": "音频处理器",
+        "description": "高级音频编辑工具"
+      }
+    },
+    "video": {
+      "title": "视频工具",
+      "subtitle": "专业的视频转换工具",
+      "converter": {
+        "title": "视频转换器",
+        "description": "在格式之间转换视频"
+      },
+      "info": {
+        "title": "视频信息",
+        "description": "获取视频文件的详细信息"
+      }
+    },
+    "document": {
+      "title": "文档工具",
+      "subtitle": "处理和转换文档",
+      "processor": {
+        "title": "文档处理器",
+        "description": "转换和处理文档"
+      },
+      "pdf_to_word": {
+        "title": "PDF转Word",
+        "description": "将PDF文件转换为Word文档"
+      },
+      "docx_to_html": {
+        "title": "DOCX转HTML",
+        "description": "将Word文档转换为HTML"
+      },
+      "docx_to_txt": {
+        "title": "DOCX转TXT",
+        "description": "将Word文档转换为纯文本"
+      },
+      "xlsx_to_csv": {
+        "title": "XLSX转CSV",
+        "description": "将Excel文件转换为CSV"
+      },
+      "csv_to_xlsx": {
+        "title": "CSV转XLSX",
+        "description": "将CSV文件转换为Excel"
+      }
+    }
+  },
+  "transfer": {
+    "title": "文件传输",
+    "subtitle": "与同一网络上的设备即时分享文件",
+    "upload_area": {
+      "title": "拖放文件到此处或点击上传",
+      "subtitle": "拖放文件开始分享",
+      "button": "选择文件"
+    },
+    "rooms": {
+      "title": "私人房间",
+      "subtitle": "创建安全的文件分享房间",
+      "create_room": "创建房间",
+      "join_room": "加入房间",
+      "room_name": "房间名称",
+      "room_password": "房间密码",
+      "room_name_placeholder": "输入房间名称",
+      "room_password_placeholder": "输入密码（可选）"
+    },
+    "history": {
+      "title": "传输历史",
+      "clear_history": "清除历史",
+      "no_history": "暂无传输历史"
+    }
+  },
+  "footer": {
+    "company": {
+      "title": "公司",
+      "about": "关于我们",
+      "blog": "博客",
+      "careers": "招聘",
+      "contact": "联系"
+    },
+    "tools": {
+      "title": "工具",
+      "image_tools": "🖼️ 图片工具",
+      "audio_tools": "🎵 音频工具",
+      "video_tools": "🎬 视频工具",
+      "document_tools": "📄 文档工具",
+      "file_transfer": "📤 文件传输"
+    },
+    "features": {
+      "title": "功能",
+      "p2p_sharing": "P2P文件分享",
+      "multi_user_rooms": "多用户房间",
+      "image_processing": "图片处理",
+      "video_conversion": "视频转换",
+      "document_tools": "文档工具"
+    },
+    "support": {
+      "title": "支持",
+      "help_center": "帮助中心",
+      "faq": "常见问题",
+      "contact": "联系支持",
+      "feedback": "反馈"
+    },
+    "legal": {
+      "title": "法律",
+      "privacy_policy": "隐私政策",
+      "terms_of_service": "服务条款",
+      "cookie_policy": "Cookie政策",
+      "dmca": "DMCA"
+    },
+    "copyright": "© 2024 DropShare。保留所有权利。",
+    "made_with": "用 ❤️ 为社区制作"
+  },
+  "errors": {
+    "file_too_large": "文件太大",
+    "unsupported_format": "不支持的文件格式",
+    "upload_failed": "上传失败",
+    "conversion_failed": "转换失败",
+    "network_error": "网络错误",
+    "server_error": "服务器错误",
+    "unknown_error": "发生未知错误"
+  },
+  "messages": {
+    "file_uploaded": "文件上传成功",
+    "file_converted": "文件转换成功",
+    "file_downloaded": "文件下载成功",
+    "room_created": "房间创建成功",
+    "room_joined": "成功加入房间",
+    "settings_saved": "设置保存成功"
+  }
+}

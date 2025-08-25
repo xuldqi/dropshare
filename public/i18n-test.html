@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I18N Test - DropShare</title>
+    <meta name="description" content="Test page for DropShare multi-language system">
+
+    <!-- I18N System -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .test-section h2 {
+            color: #495057;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .language-selector-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .test-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .test-item strong {
+            color: #007bff;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .test-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .test-card h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+
+        .test-button:hover {
+            background: #0056b3;
+        }
+
+        .test-button.secondary {
+            background: #6c757d;
+        }
+
+        .test-button.secondary:hover {
+            background: #545b62;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌍 DropShare 多语言系统测试</h1>
+        <p>测试多语言系统的各项功能</p>
+        
+        <!-- Language Selector -->
+        <div class="language-selector-container">
+            <div data-i18n-selector></div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📊 系统状态</h2>
+        <div id="system-status" class="status info">
+            正在初始化多语言系统...
+        </div>
+        <div id="current-language" class="test-item">
+            <strong>当前语言:</strong> <span id="lang-display">检测中...</span>
+        </div>
+        <div id="supported-languages" class="test-item">
+            <strong>支持的语言:</strong> <span id="langs-display">加载中...</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 功能测试</h2>
+        <div class="test-grid">
+            <div class="test-card">
+                <h3>语言切换测试</h3>
+                <p>测试不同语言之间的切换功能</p>
+                <button class="test-button" onclick="testLanguageSwitch('en')">English</button>
+                <button class="test-button" onclick="testLanguageSwitch('zh-cn')">简体中文</button>
+                <button class="test-button" onclick="testLanguageSwitch('zh-tw')">繁體中文</button>
+                <button class="test-button" onclick="testLanguageSwitch('fr')">Français</button>
+                <button class="test-button" onclick="testLanguageSwitch('de')">Deutsch</button>
+                <button class="test-button" onclick="testLanguageSwitch('es')">Español</button>
+                <button class="test-button" onclick="testLanguageSwitch('pt')">Português</button>
+                <button class="test-button" onclick="testLanguageSwitch('ja')">日本語</button>
+                <button class="test-button" onclick="testLanguageSwitch('ko')">한국어</button>
+            </div>
+
+            <div class="test-card">
+                <h3>翻译功能测试</h3>
+                <p>测试各种翻译键的显示</p>
+                <div class="test-item">
+                    <strong>导航:</strong> <span data-i18n="navigation.home">Home</span>
+                </div>
+                <div class="test-item">
+                    <strong>工具:</strong> <span data-i18n="navigation.tools">Tools</span>
+                </div>
+                <div class="test-item">
+                    <strong>关于:</strong> <span data-i18n="navigation.about">About</span>
+                </div>
+                <div class="test-item">
+                    <strong>联系:</strong> <span data-i18n="navigation.contact">Contact</span>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <h3>首页内容测试</h3>
+                <p>测试首页相关翻译</p>
+                <div class="test-item">
+                    <strong>标题:</strong> <span data-i18n="homepage.hero.title">Hero Title</span>
+                </div>
+                <div class="test-item">
+                    <strong>副标题:</strong> <span data-i18n="homepage.hero.subtitle">Hero Subtitle</span>
+                </div>
+                <div class="test-item">
+                    <strong>按钮:</strong> <span data-i18n="homepage.hero.cta_button">CTA Button</span>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <h3>工具类别测试</h3>
+                <p>测试工具类别翻译</p>
+                <div class="test-item">
+                    <strong>图片工具:</strong> <span data-i18n="homepage.categories.image_tools.title">Image Tools</span>
+                </div>
+                <div class="test-item">
+                    <strong>音频工具:</strong> <span data-i18n="homepage.categories.audio_tools.title">Audio Tools</span>
+                </div>
+                <div class="test-item">
+                    <strong>视频工具:</strong> <span data-i18n="homepage.categories.video_tools.title">Video Tools</span>
+                </div>
+                <div class="test-item">
+                    <strong>文档工具:</strong> <span data-i18n="homepage.categories.document_tools.title">Document Tools</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 工具函数测试</h2>
+        <div class="test-grid">
+            <div class="test-card">
+                <h3>翻译函数</h3>
+                <p>测试 i18nUtils.t() 函数</p>
+                <button class="test-button" onclick="testTranslationFunction()">测试翻译函数</button>
+                <div id="translation-result" class="test-item" style="display: none;">
+                    <strong>结果:</strong> <span id="translation-text"></span>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <h3>日期格式化</h3>
+                <p>测试日期格式化功能</p>
+                <button class="test-button" onclick="testDateFormatting()">测试日期格式化</button>
+                <div id="date-result" class="test-item" style="display: none;">
+                    <strong>结果:</strong> <span id="date-text"></span>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <h3>数字格式化</h3>
+                <p>测试数字格式化功能</p>
+                <button class="test-button" onclick="testNumberFormatting()">测试数字格式化</button>
+                <div id="number-result" class="test-item" style="display: none;">
+                    <strong>结果:</strong> <span id="number-text"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>📝 测试日志</h2>
+        <div id="test-log" class="test-item" style="max-height: 200px; overflow-y: auto; background: #f8f9fa; font-family: monospace; font-size: 12px;">
+            <div>等待测试开始...</div>
+        </div>
+        <button class="test-button secondary" onclick="clearLog()">清除日志</button>
+        <button class="test-button secondary" onclick="runAllTests()">运行所有测试</button>
+    </div>
+
+    <script>
+        // 测试日志函数
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('test-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.style.color = type === 'error' ? '#dc3545' : type === 'success' ? '#28a745' : '#007bff';
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('test-log').innerHTML = '<div>日志已清除...</div>';
+        }
+
+        // 更新系统状态
+        function updateSystemStatus() {
+            const statusElement = document.getElementById('system-status');
+            const langElement = document.getElementById('lang-display');
+            const langsElement = document.getElementById('langs-display');
+
+            if (window.DropshareI18N && window.DropshareI18N.isInitialized) {
+                statusElement.className = 'status success';
+                statusElement.textContent = '✅ 多语言系统已初始化';
+                
+                const currentLang = window.DropshareI18N.getCurrentLanguage();
+                const supportedLangs = window.DropshareI18N.getSupportedLanguages();
+                
+                langElement.textContent = `${currentLang} (${supportedLangs[currentLang]?.nativeName || currentLang})`;
+                langsElement.textContent = Object.keys(supportedLangs).join(', ');
+                
+                log('系统状态更新完成', 'success');
+            } else {
+                statusElement.className = 'status error';
+                statusElement.textContent = '❌ 多语言系统未初始化';
+                langElement.textContent = '未知';
+                langsElement.textContent = '未知';
+            }
+        }
+
+        // 语言切换测试
+        async function testLanguageSwitch(language) {
+            log(`开始测试语言切换到: ${language}`, 'info');
+            
+            try {
+                if (window.i18nUtils) {
+                    const success = await window.i18nUtils.setLanguage(language);
+                    if (success) {
+                        log(`✅ 成功切换到 ${language}`, 'success');
+                        updateSystemStatus();
+                    } else {
+                        log(`❌ 切换到 ${language} 失败`, 'error');
+                    }
+                } else {
+                    log('❌ i18nUtils 未找到', 'error');
+                }
+            } catch (error) {
+                log(`❌ 语言切换错误: ${error.message}`, 'error');
+            }
+        }
+
+        // 翻译函数测试
+        function testTranslationFunction() {
+            log('测试翻译函数', 'info');
+            
+            if (window.i18nUtils) {
+                const testKey = 'navigation.home';
+                const result = window.i18nUtils.t(testKey);
+                
+                document.getElementById('translation-result').style.display = 'block';
+                document.getElementById('translation-text').textContent = result;
+                
+                log(`翻译结果: ${testKey} = ${result}`, 'success');
+            } else {
+                log('❌ i18nUtils 未找到', 'error');
+            }
+        }
+
+        // 日期格式化测试
+        function testDateFormatting() {
+            log('测试日期格式化', 'info');
+            
+            if (window.i18nUtils) {
+                const date = new Date();
+                const result = window.i18nUtils.formatDate(date);
+                
+                document.getElementById('date-result').style.display = 'block';
+                document.getElementById('date-text').textContent = result;
+                
+                log(`日期格式化结果: ${result}`, 'success');
+            } else {
+                log('❌ i18nUtils 未找到', 'error');
+            }
+        }
+
+        // 数字格式化测试
+        function testNumberFormatting() {
+            log('测试数字格式化', 'info');
+            
+            if (window.i18nUtils) {
+                const number = 1234567.89;
+                const result = window.i18nUtils.formatNumber(number);
+                
+                document.getElementById('number-result').style.display = 'block';
+                document.getElementById('number-text').textContent = result;
+                
+                log(`数字格式化结果: ${result}`, 'success');
+            } else {
+                log('❌ i18nUtils 未找到', 'error');
+            }
+        }
+
+        // 运行所有测试
+        function runAllTests() {
+            log('开始运行所有测试...', 'info');
+            
+            // 测试翻译函数
+            setTimeout(() => testTranslationFunction(), 500);
+            
+            // 测试日期格式化
+            setTimeout(() => testDateFormatting(), 1000);
+            
+            // 测试数字格式化
+            setTimeout(() => testNumberFormatting(), 1500);
+            
+            // 更新系统状态
+            setTimeout(() => updateSystemStatus(), 2000);
+            
+            log('所有测试已安排执行', 'success');
+        }
+
+        // 监听I18N初始化事件
+        document.addEventListener('i18n:initialized', function(event) {
+            log(`I18N系统初始化完成，当前语言: ${event.detail.language}`, 'success');
+            updateSystemStatus();
+        });
+
+        // 监听语言变化事件
+        document.addEventListener('i18n:languageChanged', function(event) {
+            log(`语言已切换: ${event.detail.previousLanguage} → ${event.detail.language}`, 'success');
+            updateSystemStatus();
+        });
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('页面加载完成，等待I18N系统初始化...', 'info');
+            
+            // 定期检查系统状态
+            const checkInterval = setInterval(() => {
+                if (window.DropshareI18N && window.DropshareI18N.isInitialized) {
+                    updateSystemStatus();
+                    clearInterval(checkInterval);
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>

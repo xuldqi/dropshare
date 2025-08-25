@@ -1,0 +1,286 @@
+{
+  "meta": {
+    "name": "English",
+    "nativeName": "English",
+    "direction": "ltr",
+    "dateFormat": "MM/DD/YYYY"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "upload": "Upload",
+    "download": "Download",
+    "copy": "Copy",
+    "paste": "Paste",
+    "select": "Select",
+    "choose": "Choose",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "refresh": "Refresh",
+    "settings": "Settings",
+    "help": "Help",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "faq": "FAQ"
+  },
+  "navigation": {
+    "home": "Home",
+    "tools": "Tools",
+    "transfer": "Transfer",
+    "rooms": "Rooms",
+    "images": "Images",
+    "audio": "Audio",
+    "video": "Video",
+    "files": "Files",
+    "blog": "Blog",
+    "language": "Language"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Free Online File Tools & Sharing",
+      "subtitle": "Convert, edit, and share files instantly",
+      "description": "Professional file processing tools for images, audio, video, and documents. No registration required.",
+      "cta_button": "Get Started",
+      "learn_more": "Learn More"
+    },
+    "features": {
+      "title": "Why Choose DropShare?",
+      "subtitle": "Professional tools for everyone",
+      "feature1": {
+        "title": "No Registration",
+        "description": "Use all tools without creating an account"
+      },
+      "feature2": {
+        "title": "Fast Processing",
+        "description": "Lightning-fast file conversion and editing"
+      },
+      "feature3": {
+        "title": "Privacy First",
+        "description": "Your files are processed locally and never uploaded"
+      },
+      "feature4": {
+        "title": "Multiple Formats",
+        "description": "Support for hundreds of file formats"
+      }
+    },
+    "categories": {
+      "title": "Choose Your Tool Category",
+      "subtitle": "Select from our comprehensive collection of tools organized by category",
+      "image_tools": {
+        "title": "Image Tools",
+        "description": "Edit, convert, and optimize images",
+        "tools": ["Format Converter", "Image Cropper", "Background Remover"],
+        "cta": "View Tools"
+      },
+      "audio_tools": {
+        "title": "Audio Tools",
+        "description": "Convert audio between different formats",
+        "tools": ["Format Converter", "MP3, WAV, AAC, OGG, FLAC", "High Quality Output"],
+        "cta": "View Tools"
+      },
+      "video_tools": {
+        "title": "Video Tools",
+        "description": "Convert videos between different formats",
+        "tools": ["Video Converter", "MP4, AVI, MOV, WebM, MKV", "Professional Quality"],
+        "cta": "View Tools"
+      },
+      "document_tools": {
+        "title": "Document Tools",
+        "description": "Convert, merge, split, and extract text",
+        "tools": ["PDF Processor", "Text Extractor", "Document Merger"],
+        "cta": "View Tools"
+      }
+    },
+    "stats": {
+      "title": "Trusted by Millions",
+      "users": "Active Users",
+      "files": "Files Processed",
+      "countries": "Countries"
+    }
+  },
+  "tools": {
+    "image": {
+      "title": "Image Tools",
+      "subtitle": "Professional image editing and conversion tools",
+      "converter": {
+        "title": "Image Converter",
+        "description": "Convert images between different formats"
+      },
+      "cropper": {
+        "title": "Image Cropper",
+        "description": "Crop and resize images easily"
+      },
+      "compressor": {
+        "title": "Image Compressor",
+        "description": "Reduce image file size while maintaining quality"
+      },
+      "background_remover": {
+        "title": "Background Remover",
+        "description": "Remove backgrounds from images automatically"
+      },
+      "resizer": {
+        "title": "Image Resizer",
+        "description": "Resize images to any dimension"
+      },
+      "rotator": {
+        "title": "Image Rotator",
+        "description": "Rotate and flip images"
+      },
+      "watermark": {
+        "title": "Watermark Tool",
+        "description": "Add watermarks to your images"
+      },
+      "filter_effects": {
+        "title": "Filter Effects",
+        "description": "Apply beautiful filters and effects"
+      }
+    },
+    "audio": {
+      "title": "Audio Tools",
+      "subtitle": "Convert and edit audio files",
+      "converter": {
+        "title": "Audio Converter",
+        "description": "Convert between audio formats"
+      },
+      "processor": {
+        "title": "Audio Processor",
+        "description": "Advanced audio editing tools"
+      }
+    },
+    "video": {
+      "title": "Video Tools",
+      "subtitle": "Professional video conversion tools",
+      "converter": {
+        "title": "Video Converter",
+        "description": "Convert videos between formats"
+      },
+      "info": {
+        "title": "Video Info",
+        "description": "Get detailed information about video files"
+      }
+    },
+    "document": {
+      "title": "Document Tools",
+      "subtitle": "Process and convert documents",
+      "processor": {
+        "title": "Document Processor",
+        "description": "Convert and process documents"
+      },
+      "pdf_to_word": {
+        "title": "PDF to Word",
+        "description": "Convert PDF files to Word documents"
+      },
+      "docx_to_html": {
+        "title": "DOCX to HTML",
+        "description": "Convert Word documents to HTML"
+      },
+      "docx_to_txt": {
+        "title": "DOCX to TXT",
+        "description": "Convert Word documents to plain text"
+      },
+      "xlsx_to_csv": {
+        "title": "XLSX to CSV",
+        "description": "Convert Excel files to CSV"
+      },
+      "csv_to_xlsx": {
+        "title": "CSV to XLSX",
+        "description": "Convert CSV files to Excel"
+      }
+    }
+  },
+  "transfer": {
+    "title": "File Transfer",
+    "subtitle": "Share files instantly with devices on the same network",
+    "upload_area": {
+      "title": "Drop files here or click to upload",
+      "subtitle": "Drag and drop files to start sharing",
+      "button": "Choose Files"
+    },
+    "rooms": {
+      "title": "Private Rooms",
+      "subtitle": "Create secure rooms for file sharing",
+      "create_room": "Create Room",
+      "join_room": "Join Room",
+      "room_name": "Room Name",
+      "room_password": "Room Password",
+      "room_name_placeholder": "Enter room name",
+      "room_password_placeholder": "Enter password (optional)"
+    },
+    "history": {
+      "title": "Transfer History",
+      "clear_history": "Clear History",
+      "no_history": "No transfer history yet"
+    }
+  },
+  "footer": {
+    "company": {
+      "title": "Company",
+      "about": "About Us",
+      "blog": "Blog",
+      "careers": "Careers",
+      "contact": "Contact"
+    },
+    "tools": {
+      "title": "Tools",
+      "image_tools": "🖼️ Image Tools",
+      "audio_tools": "🎵 Audio Tools",
+      "video_tools": "🎬 Video Tools",
+      "document_tools": "📄 Document Tools",
+      "file_transfer": "📤 File Transfer"
+    },
+    "features": {
+      "title": "Features",
+      "p2p_sharing": "P2P File Sharing",
+      "multi_user_rooms": "Multi-user Rooms",
+      "image_processing": "Image Processing",
+      "video_conversion": "Video Conversion",
+      "document_tools": "Document Tools"
+    },
+    "support": {
+      "title": "Support",
+      "help_center": "Help Center",
+      "faq": "FAQ",
+      "contact": "Contact Support",
+      "feedback": "Feedback"
+    },
+    "legal": {
+      "title": "Legal",
+      "privacy_policy": "Privacy Policy",
+      "terms_of_service": "Terms of Service",
+      "cookie_policy": "Cookie Policy",
+      "dmca": "DMCA"
+    },
+    "copyright": "© 2024 DropShare. All rights reserved.",
+    "made_with": "Made with ❤️ for the community"
+  },
+  "errors": {
+    "file_too_large": "File is too large",
+    "unsupported_format": "Unsupported file format",
+    "upload_failed": "Upload failed",
+    "conversion_failed": "Conversion failed",
+    "network_error": "Network error",
+    "server_error": "Server error",
+    "unknown_error": "An unknown error occurred"
+  },
+  "messages": {
+    "file_uploaded": "File uploaded successfully",
+    "file_converted": "File converted successfully",
+    "file_downloaded": "File downloaded successfully",
+    "room_created": "Room created successfully",
+    "room_joined": "Joined room successfully",
+    "settings_saved": "Settings saved successfully"
+  }
+}
