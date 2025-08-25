@@ -238,6 +238,9 @@
     }
   },
   "footer": {
+    "navigate": {
+      "title": "ナビゲート"
+    },
     "company": {
       "title": "Company",
       "about": "About Us",
@@ -260,6 +263,9 @@
       "image_processing": "Image Processing",
       "video_conversion": "Video Conversion",
       "document_tools": "Document Tools"
+    },
+    "links": {
+      "title": "リンク"
     },
     "support": {
       "title": "Support",
