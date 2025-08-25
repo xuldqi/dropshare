@@ -74,7 +74,7 @@
     },
     "categories": {
       "title": "選擇您的工具類別",
-      "subtitle": "從我們按類別組織的綜合工具集合中選擇",
+      "subtitle": "處理和轉換您的檔案、圖片、音訊或影片，然後輕鬆與他人分享",
       "image_tools": {
         "title": "圖片工具",
         "description": "編輯、轉換和優化圖片",
@@ -222,39 +222,19 @@
       "button": "选择文件"
     },
     "rooms": {
-      "title": "多用戶分享房間",
-      "subtitle": "通過房間代碼與本地網絡用戶或遠程用戶快速分享文件",
-      "create_room": "創建房間",
-      "join_room": "加入房間",
-      "room_name": "房間名稱",
-      "room_password": "房間密碼（可選）",
-      "room_name_placeholder": "輸入房間名稱",
-      "room_password_placeholder": "設置房間密碼",
-      "room_code": "房間代碼",
-      "room_code_placeholder": "輸入房間代碼",
-      "join_room_password": "房間密碼（如需要）",
-      "join_room_password_placeholder": "輸入房間密碼",
-      "max_members": "最大成員數",
-      "your_name": "您的姓名：",
-      "online": " 在線",
-      "room_members": "房間成員：",
-      "leave_room": "離開房間",
-      "upload_files": "📤 上傳文件到房間",
-      "drag_files_here": "拖放文件到此處或點擊上傳",
-      "files_shared_hint": "文件將與房間內的所有成員分享",
-      "select_files": "選擇要上傳的文件",
-      "room_shared_files": "📁 房間共享文件",
-      "files": "個文件",
-      "no_shared_files": "房間中還沒有共享文件",
-      "download_hint": "上傳文件後，房間內的所有成員都可以下載它們"
+      "title": "私人房间",
+      "subtitle": "创建安全的文件分享房间",
+      "create_room": "创建房间",
+      "join_room": "加入房间",
+      "room_name": "房间名称",
+      "room_password": "房间密码",
+      "room_name_placeholder": "输入房间名称",
+      "room_password_placeholder": "输入密码（可选）"
     },
-    "no_peers_message": "在其他設備上打開DropShare以發送文件",
-    "discoverable_message": "您對網絡上的所有人都可見",
-    "you_are_known_as": "您的顯示名稱為"
     "history": {
-      "title": "傳輸歷史",
-      "clear_history": "清除歷史",
-      "no_history": "暫無傳輸歷史"
+      "title": "传输历史",
+      "clear_history": "清除历史",
+      "no_history": "暂无传输历史"
     }
   },
   "footer": {

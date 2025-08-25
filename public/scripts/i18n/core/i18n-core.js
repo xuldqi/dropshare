@@ -170,43 +170,29 @@ class DropshareI18N {
             // 检查缓存
             if (this.translationCache.has(language)) {
                 this.translations = this.translationCache.get(language);
-                console.log(`📚 Using cached translations for ${language}`);
                 return;
             }
 
             // 加载翻译文件
-            const url = `/scripts/i18n/languages/${language}.json`;
-            console.log(`📚 Loading translations from: ${url}`);
-            
-            const response = await fetch(url);
+            const response = await fetch(`/scripts/i18n/languages/${language}.json`);
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: Failed to load translations for ${language}`);
+                throw new Error(`Failed to load translations for ${language}`);
             }
 
             const translations = await response.json();
-            
-            // 验证翻译文件结构
-            if (!translations || typeof translations !== 'object') {
-                throw new Error(`Invalid translation file structure for ${language}`);
-            }
             
             // 缓存翻译
             this.translationCache.set(language, translations);
             this.translations = translations;
             
-            console.log(`📚 Successfully loaded translations for ${language}`, translations);
+            console.log(`📚 Loaded translations for ${language}`);
             
         } catch (error) {
             console.error(`❌ Failed to load translations for ${language}:`, error);
             
             // 回退到默认语言
             if (language !== this.fallbackLanguage) {
-                console.log(`🔄 Falling back to ${this.fallbackLanguage}`);
                 await this.loadTranslations(this.fallbackLanguage);
-            } else {
-                // 如果默认语言也失败，使用空翻译
-                console.warn(`⚠️ Using empty translations for ${language}`);
-                this.translations = {};
             }
         }
     }
@@ -269,6 +255,7 @@ class DropshareI18N {
             // 加载新语言翻译
             await this.loadTranslations(language);
             
+            const previousLanguage = this.currentLanguage;
             // 更新当前语言
             this.currentLanguage = language;
             
@@ -285,7 +272,7 @@ class DropshareI18N {
             // 触发语言切换事件
             this.notifyObservers('languageChanged', { 
                 language: language,
-                previousLanguage: this.currentLanguage 
+                previousLanguage
             });
             
             console.log(`🔄 Language switched to: ${language}`);
@@ -301,19 +288,12 @@ class DropshareI18N {
      * 更新页面内容
      */
     updatePageContent() {
-        console.log('🔄 Updating page content...');
-        console.log('📚 Current translations:', this.translations);
-        
         // 更新所有带有 data-i18n 属性的元素
-        const elements = document.querySelectorAll('[data-i18n]');
-        console.log(`📝 Found ${elements.length} elements with data-i18n attributes`);
-        
-        elements.forEach(element => {
+        document.querySelectorAll('[data-i18n]').forEach(element => {
             const key = element.getAttribute('data-i18n');
             const params = this.parseI18nParams(element);
             
             const translation = this.t(key, params);
-            console.log(`🔤 Translating "${key}" → "${translation}"`);
             
             // 根据元素类型更新内容
             if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
@@ -327,8 +307,6 @@ class DropshareI18N {
 
         // 更新动态内容
         this.updateDynamicContent();
-        
-        console.log('✅ Page content update completed');
     }
 
     /**

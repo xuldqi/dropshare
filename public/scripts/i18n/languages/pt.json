@@ -74,7 +74,7 @@
     },
     "categories": {
       "title": "Escolha sua categoria de ferramentas",
-      "subtitle": "Selecione de nossa coleção completa de ferramentas organizadas por categoria",
+      "subtitle": "Processe e converta seus arquivos, imagens, áudios ou vídeos e, em seguida, compartilhe-os facilmente com outras pessoas",
       "image_tools": {
         "title": "Ferramentas de imagem",
         "description": "Editar, converter e otimizar imagens",
@@ -222,39 +222,19 @@
       "button": "Choose Files"
     },
     "rooms": {
-      "title": "Salas de compartilhamento multi-usuário",
-      "subtitle": "Compartilhe arquivos rapidamente com usuários de rede local ou remotos através de códigos de sala",
-      "create_room": "Criar sala",
-      "join_room": "Entrar na sala",
-      "room_name": "Nome da sala",
-      "room_password": "Senha da sala (opcional)",
-      "room_name_placeholder": "Digite o nome da sala",
-      "room_password_placeholder": "Definir senha da sala",
-      "room_code": "Código da sala",
-      "room_code_placeholder": "Digite o código da sala",
-      "join_room_password": "Senha da sala (se necessário)",
-      "join_room_password_placeholder": "Digite a senha da sala",
-      "max_members": "Máximo de membros",
-      "your_name": "Seu nome:",
-      "online": " online",
-      "room_members": "Membros da sala:",
-      "leave_room": "Sair da sala",
-      "upload_files": "📤 Enviar arquivos para a sala",
-      "drag_files_here": "Arraste arquivos aqui ou clique para enviar",
-      "files_shared_hint": "Os arquivos serão compartilhados com todos os membros da sala",
-      "select_files": "Selecionar arquivos para enviar",
-      "room_shared_files": "📁 Arquivos compartilhados da sala",
-      "files": "arquivos",
-      "no_shared_files": "Ainda não há arquivos compartilhados na sala",
-      "download_hint": "Após enviar arquivos, todos os membros da sala podem baixá-los"
+      "title": "Private Rooms",
+      "subtitle": "Create secure rooms for file sharing",
+      "create_room": "Create Room",
+      "join_room": "Join Room",
+      "room_name": "Room Name",
+      "room_password": "Room Password",
+      "room_name_placeholder": "Enter room name",
+      "room_password_placeholder": "Enter password (optional)"
     },
-    "no_peers_message": "Abra o DropShare em outros dispositivos para enviar arquivos",
-    "discoverable_message": "Você está visível para todos nesta rede",
-    "you_are_known_as": "Você é conhecido como"
     "history": {
-      "title": "Histórico de transferências",
-      "clear_history": "Limpar histórico",
-      "no_history": "Ainda não há histórico de transferências"
+      "title": "Transfer History",
+      "clear_history": "Clear History",
+      "no_history": "No transfer history yet"
     }
   },
   "footer": {

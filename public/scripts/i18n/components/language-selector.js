@@ -245,13 +245,13 @@ class LanguageSelector {
     updateCurrentLanguage(langCode) {
         const currentLang = this.supportedLanguages[langCode];
         const trigger = this.container.querySelector('.language-selector__trigger');
-        const flag = trigger.querySelector('.language-selector__flag');
         const name = trigger.querySelector('.language-selector__name');
         const options = this.container.querySelectorAll('.language-selector__option');
 
         // 更新触发按钮
-        flag.textContent = currentLang?.flag || '🌐';
-        name.textContent = this.getDisplayName(currentLang);
+        if (name) {
+            name.textContent = this.getDisplayName(currentLang);
+        }
 
         // 更新选项状态
         options.forEach(option => {
