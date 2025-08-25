@@ -419,6 +419,8 @@
         </div>
     </div>
 
+    <!-- SheetJS Library for Excel processing -->
+    <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Sharing integration scripts -->
     <script src="scripts/tool-share-integration.js"></script>
     <script src="scripts/tool-helpers.js"></script>
@@ -526,10 +528,7 @@
                 progressFill.style.width = progress + '%';
                 progressText.textContent = `${progress}% - Converting ${file.name}`;
                 
-                // Simulate conversion process
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // Simulate conversion result
+                // Real conversion process
                 const xlsxInfo = await convertCsvToXlsx(file);
                 convertedFiles.push({
                     originalFile: file,
@@ -547,33 +546,138 @@
         }
 
         async function convertCsvToXlsx(file) {
-            // Simulated conversion logic
-            // In a real implementation, you would use a library like SheetJS
+            // Real conversion using SheetJS library
             const detectDataTypes = document.getElementById('detectDataTypes').checked;
             const formatHeaders = document.getElementById('formatHeaders').checked;
             const customDelimiter = document.getElementById('customDelimiter').checked;
             const createWorksheets = document.getElementById('createWorksheets').checked;
             
-            // Read CSV content
-            const csvText = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => resolve(e.target.result);
-                reader.readAsText(file);
-            });
+            try {
+                // Read CSV content
+                const csvText = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = (e) => reject(e);
+                    reader.readAsText(file);
+                });
 
-            const delimiter = customDelimiter ? ';' : ',';
-            const lines = csvText.split('\n');
-            const headers = lines[0].split(delimiter);
-            const data = lines.slice(1).filter(line => line.trim());
-
-            return {
-                worksheetName: createWorksheets ? file.name.replace('.csv', '') : 'Sheet1',
-                headers: formatHeaders ? headers.map(h => h.trim().toUpperCase()) : headers,
-                rows: data.length,
-                columns: headers.length,
-                dataTypes: detectDataTypes ? ['Text', 'Number', 'Date', 'Text', 'Number'] : ['Text'],
-                preview: lines.slice(0, 6).join('\n')
-            };
+                const delimiter = customDelimiter ? ';' : ',';
+                
+                // Parse CSV using simple split (SheetJS can handle more complex parsing)
+                const lines = csvText.split('\n').filter(line => line.trim());
+                if (lines.length === 0) {
+                    throw new Error('CSV file is empty');
+                }
+                
+                // Parse CSV data
+                const csvData = lines.map(line => {
+                    // Basic CSV parsing - handle quoted values
+                    const result = [];
+                    let current = '';
+                    let inQuotes = false;
+                    
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === delimiter && !inQuotes) {
+                            result.push(current.trim());
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    result.push(current.trim());
+                    return result;
+                });
+                
+                let headers = csvData[0] || [];
+                const dataRows = csvData.slice(1);
+                
+                // Format headers if requested
+                if (formatHeaders) {
+                    headers = headers.map(h => h.replace(/^"|"$/g, '').trim().toUpperCase());
+                }
+                
+                // Auto-detect data types if requested
+                const columnTypes = [];
+                if (detectDataTypes && dataRows.length > 0) {
+                    for (let colIndex = 0; colIndex < headers.length; colIndex++) {
+                        const values = dataRows.slice(0, 10).map(row => row[colIndex] || '').filter(v => v.trim());
+                        if (values.length === 0) {
+                            columnTypes.push('Text');
+                            continue;
+                        }
+                        
+                        const isAllNumbers = values.every(v => !isNaN(parseFloat(v)) && isFinite(v));
+                        const isAllDates = values.every(v => !isNaN(Date.parse(v)));
+                        
+                        if (isAllNumbers) {
+                            columnTypes.push('Number');
+                        } else if (isAllDates) {
+                            columnTypes.push('Date');
+                        } else {
+                            columnTypes.push('Text');
+                        }
+                    }
+                } else {
+                    columnTypes.fill('Text', 0, headers.length);
+                }
+                
+                // Create workbook
+                const workbook = XLSX.utils.book_new();
+                const worksheetName = createWorksheets ? file.name.replace(/\.csv$/i, '') : 'Sheet1';
+                
+                // Prepare data for worksheet
+                const wsData = [headers, ...dataRows];
+                const worksheet = XLSX.utils.aoa_to_sheet(wsData);
+                
+                // Apply formatting if data types are detected
+                if (detectDataTypes) {
+                    const range = XLSX.utils.decode_range(worksheet['!ref']);
+                    for (let colIndex = 0; colIndex <= range.e.c; colIndex++) {
+                        const colType = columnTypes[colIndex];
+                        for (let rowIndex = 1; rowIndex <= range.e.r; rowIndex++) { // Skip header row
+                            const cellAddress = XLSX.utils.encode_cell({r: rowIndex, c: colIndex});
+                            if (worksheet[cellAddress]) {
+                                const cellValue = worksheet[cellAddress].v;
+                                if (colType === 'Number' && !isNaN(parseFloat(cellValue))) {
+                                    worksheet[cellAddress].t = 'n';
+                                    worksheet[cellAddress].v = parseFloat(cellValue);
+                                } else if (colType === 'Date' && !isNaN(Date.parse(cellValue))) {
+                                    const dateValue = new Date(cellValue);
+                                    worksheet[cellAddress].t = 'd';
+                                    worksheet[cellAddress].v = dateValue;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Add worksheet to workbook
+                XLSX.utils.book_append_sheet(workbook, worksheet, worksheetName);
+                
+                // Generate Excel file blob
+                const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+                const excelBlob = new Blob([excelBuffer], { 
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+                });
+                
+                return {
+                    worksheetName: worksheetName,
+                    headers: headers,
+                    rows: dataRows.length,
+                    columns: headers.length,
+                    dataTypes: columnTypes,
+                    preview: lines.slice(0, 6).join('\n'),
+                    excelBlob: excelBlob,
+                    excelBuffer: excelBuffer
+                };
+                
+            } catch (error) {
+                console.error('CSV conversion error:', error);
+                throw new Error(`Failed to convert CSV: ${error.message}`);
+            }
         }
 
         function showConversionResult() {
@@ -598,10 +702,7 @@
                 window.ToolHelpers.hideShareButton();
                 
                 convertedFiles.forEach((fileData, index) => {
-                    const simulatedContent = `Excel file content for ${fileData.filename}`;
-                    const blob = new Blob([simulatedContent], { 
-                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-                    });
+                    const blob = fileData.xlsxInfo.excelBlob;
                     
                     window.ToolHelpers.addProcessedFileToShare(
                         blob,
@@ -638,13 +739,10 @@
         downloadBtn.addEventListener('click', () => {
             if (convertedFiles.length === 0) return;
             
-            // Simulate file download
+            // Real file download
             convertedFiles.forEach((fileData, index) => {
                 setTimeout(() => {
-                    const simulatedContent = `Excel file content for ${fileData.filename}`;
-                    const blob = new Blob([simulatedContent], { 
-                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-                    });
+                    const blob = fileData.xlsxInfo.excelBlob;
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;

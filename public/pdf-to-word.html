@@ -461,6 +461,13 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
+        function updateConversionProgress(percent, text) {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            if (progressFill) progressFill.style.width = percent + '%';
+            if (progressText) progressText.textContent = text;
+        }
+
         async function convertPDFToWord() {
             if (!selectedFile) {
                 alert('Please select a PDF file first');
@@ -471,33 +478,16 @@
             progressSection.style.display = 'block';
             convertBtn.disabled = true;
 
-            // Simulate conversion progress
+            // Real conversion progress tracking
             const progressFill = document.getElementById('progressFill');
             const progressText = document.getElementById('progressText');
             
-            progressText.textContent = 'Analyzing PDF...';
-            progressFill.style.width = '20%';
-            
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            progressText.textContent = 'Extracting text and formatting...';
-            progressFill.style.width = '50%';
-            
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            progressText.textContent = 'Generating Word document...';
-            progressFill.style.width = '80%';
-            
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            progressText.textContent = 'Finalizing...';
-            progressFill.style.width = '100%';
-            
-            await new Promise(resolve => setTimeout(resolve, 500));
+            progressText.textContent = 'Loading PDF processing libraries...';
+            progressFill.style.width = '10%';
 
-            // Create simulated Word document
+            // Create real Word document
             try {
-                const wordContent = await createSimulatedWordContent();
+                const wordContent = await createWordContent();
                 const fileName = selectedFile.name.replace('.pdf', '.docx');
                 convertedFile = new File([wordContent], fileName, {
                     type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -533,14 +523,16 @@
             }
         }
 
-        async function createSimulatedWordContent() {
+        async function createWordContent() {
             try {
                 // Load necessary libraries
                 await loadLibraries();
+                updateConversionProgress(20, 'Libraries loaded. Reading PDF file...');
 
                 // Read PDF file
                 const arrayBuffer = await selectedFile.arrayBuffer();
                 const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                updateConversionProgress(40, 'PDF loaded. Extracting text content...');
                 
                 let fullText = '';
                 
@@ -550,7 +542,13 @@
                     const textContent = await page.getTextContent();
                     const pageText = textContent.items.map(item => item.str).join(' ');
                     fullText += pageText + '\n\n';
+                    
+                    // Update progress for text extraction
+                    const extractProgress = 40 + (i / pdf.numPages) * 30;
+                    updateConversionProgress(extractProgress, `Extracting text from page ${i} of ${pdf.numPages}...`);
                 }
+                
+                updateConversionProgress(70, 'Text extraction complete. Generating Word document...');
 
                 // Use docx library to create real Word document
                 const doc = new window.docx.Document({
@@ -591,8 +589,12 @@
                     }],
                 });
 
+                updateConversionProgress(90, 'Document structure created. Generating DOCX file...');
+                
                 // Generate DOCX file
                 const buffer = await window.docx.Packer.toBlob(doc);
+                
+                updateConversionProgress(100, 'Conversion complete!');
                 return buffer;
                 
             } catch (error) {

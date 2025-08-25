@@ -433,6 +433,8 @@
     </div>
 
     <!-- Sharing integration scripts -->
+    <!-- Mammoth.js library for real DOCX text extraction -->
+    <script src="https://unpkg.com/mammoth@1.6.0/mammoth.browser.min.js"></script>
     <script src="scripts/tool-share-integration.js"></script>
     <script src="scripts/tool-helpers.js"></script>
     
@@ -548,10 +550,7 @@
                 document.getElementById('progressFillInner').style.width = progress + '%';
                 progressText.textContent = `${progress}% - Extracting ${file.name}`;
                 
-                // 模拟提取过程
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                // 模拟提取结果
+                // 真实的DOCX文本提取
                 const textContent = await extractTextFromDocx(file);
                 extractedTexts.push({
                     originalFile: file,
@@ -569,55 +568,123 @@
         }
 
         async function extractTextFromDocx(file) {
-            // 这里是模拟的提取逻辑
-            // 实际项目中需要使用真实的DOCX文本提取库
+            // Real DOCX text extraction using Mammoth.js
             const preserveLineBreaks = document.getElementById('preserveLineBreaks').checked;
             const removeExtraSpaces = document.getElementById('removeExtraSpaces').checked;
             const addPageMarkers = document.getElementById('addPageMarkers').checked;
             const includeHeaders = document.getElementById('includeHeaders').checked;
             
-            let extractedText = `Document: ${file.name}\nExtracted on: ${new Date().toLocaleString()}\n\n`;
-            
-            if (addPageMarkers) {
-                extractedText += "=== PAGE 1 ===\n";
+            try {
+                // Read file as array buffer
+                const arrayBuffer = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = (e) => reject(e);
+                    reader.readAsArrayBuffer(file);
+                });
+                
+                // Extract text using Mammoth.js
+                const options = {
+                    includeEmbeddedStyleMap: true,
+                    includeDefaultStyleMap: true
+                };
+                
+                const result = await mammoth.extractRawText(arrayBuffer, options);
+                
+                if (!result.value || result.value.trim() === '') {
+                    throw new Error('No text content found in the document or document is corrupted');
+                }
+                
+                let extractedText = `Document: ${file.name}\nExtracted on: ${new Date().toLocaleString()}\nFile size: ${formatFileSize(file.size)}\n\n`;
+                
+                // Add warnings if any
+                if (result.messages && result.messages.length > 0) {
+                    const warnings = result.messages.filter(msg => msg.type === 'warning');
+                    if (warnings.length > 0) {
+                        extractedText += `⚠️ Extraction warnings: ${warnings.length} items may not be fully preserved\n\n`;
+                    }
+                }
+                
+                if (addPageMarkers) {
+                    // Simple page marker simulation (mammoth doesn't provide page info)
+                    const paragraphs = result.value.split('\n\n');
+                    const paragraphsPerPage = Math.max(1, Math.floor(paragraphs.length / Math.ceil(paragraphs.length / 5)));
+                    
+                    let pageContent = '';
+                    paragraphs.forEach((paragraph, index) => {
+                        if (index > 0 && index % paragraphsPerPage === 0) {
+                            pageContent += `\n=== PAGE ${Math.floor(index / paragraphsPerPage) + 1} ===\n\n`;
+                        }
+                        pageContent += paragraph + '\n\n';
+                    });
+                    
+                    extractedText += pageContent;
+                } else {
+                    extractedText += result.value;
+                }
+                
+                // Process headers if requested (mammoth doesn't separate headers easily, so this is a simulation)
+                if (includeHeaders) {
+                    const lines = extractedText.split('\n');
+                    const processedLines = lines.map(line => {
+                        // Simple header detection based on short lines at start of paragraphs
+                        if (line.length < 50 && line.length > 5 && line.trim() && 
+                            !line.includes('.') && !line.includes(',')) {
+                            return `[HEADER: ${line.trim()}]`;
+                        }
+                        return line;
+                    });
+                    extractedText = processedLines.join('\n');
+                }
+                
+                // Apply text processing options
+                if (removeExtraSpaces) {
+                    extractedText = extractedText.replace(/[ \t]+/g, ' ');
+                    extractedText = extractedText.replace(/\n\s+/g, '\n');
+                    extractedText = extractedText.replace(/\s+\n/g, '\n');
+                }
+                
+                if (!preserveLineBreaks) {
+                    extractedText = extractedText.replace(/([^\n])\n([^\n=])/g, '$1 $2');
+                }
+                
+                // Add extraction statistics
+                const stats = getTextStatistics(result.value);
+                extractedText += `\n\n=== EXTRACTION STATISTICS ===\n`;
+                extractedText += `Characters: ${stats.characters}\n`;
+                extractedText += `Words: ${stats.words}\n`;
+                extractedText += `Lines: ${stats.lines}\n`;
+                extractedText += `Paragraphs: ${stats.paragraphs}\n`;
+                
+                extractedText += `\nExtraction Options Applied:\n`;
+                extractedText += `- Preserve Line Breaks: ${preserveLineBreaks ? 'Yes' : 'No'}\n`;
+                extractedText += `- Remove Extra Spaces: ${removeExtraSpaces ? 'Yes' : 'No'}\n`;
+                extractedText += `- Add Page Markers: ${addPageMarkers ? 'Yes' : 'No'}\n`;
+                extractedText += `- Include Headers/Footers: ${includeHeaders ? 'Yes' : 'No'}\n`;
+                
+                return extractedText;
+                
+            } catch (error) {
+                console.error('DOCX extraction error:', error);
+                throw new Error(`Failed to extract text from DOCX: ${error.message}`);
             }
-            
-            extractedText += `This is sample text extracted from ${file.name}.\n\n`;
-            extractedText += "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n";
-            
-            if (includeHeaders) {
-                extractedText += "[HEADER: Sample Document Header]\n\n";
-            }
-            
-            extractedText += "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n";
-            
-            if (addPageMarkers) {
-                extractedText += "=== PAGE 2 ===\n";
-            }
-            
-            extractedText += "Section 1: Introduction\nThis section contains the main content of the document.\n\n";
-            extractedText += "Section 2: Details\nHere are the detailed explanations and examples.\n\n";
-            
-            if (includeHeaders) {
-                extractedText += "[FOOTER: Page 2 of Sample Document]\n\n";
-            }
-            
-            extractedText += `\nExtraction Options Applied:\n`;
-            extractedText += `- Preserve Line Breaks: ${preserveLineBreaks ? 'Yes' : 'No'}\n`;
-            extractedText += `- Remove Extra Spaces: ${removeExtraSpaces ? 'Yes' : 'No'}\n`;
-            extractedText += `- Add Page Markers: ${addPageMarkers ? 'Yes' : 'No'}\n`;
-            extractedText += `- Include Headers/Footers: ${includeHeaders ? 'Yes' : 'No'}\n`;
-            
-            // 应用选项
-            if (removeExtraSpaces) {
-                extractedText = extractedText.replace(/[ \t]+/g, ' ');
-            }
-            
-            if (!preserveLineBreaks) {
-                extractedText = extractedText.replace(/\n+/g, ' ');
-            }
-            
-            return extractedText;
+        }
+        
+        function getTextStatistics(text) {
+            return {
+                characters: text.length,
+                words: text.trim().split(/\s+/).filter(word => word.length > 0).length,
+                lines: text.split('\n').length,
+                paragraphs: text.split('\n\n').filter(para => para.trim().length > 0).length
+            };
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
         function showExtractionResult() {

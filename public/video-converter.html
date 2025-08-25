@@ -407,6 +407,9 @@
         </div>
     </div>
 
+    <!-- FFmpeg.wasm for real video conversion -->
+    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/index.min.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/index.min.js"></script>
     <!-- Sharing integration scripts -->
     <script src="scripts/tool-share-integration.js"></script>
     <script src="scripts/tool-helpers.js"></script>
@@ -433,6 +436,8 @@
         let selectedFiles = [];
         let selectedFormat = '';
         let convertedFiles = [];
+        let ffmpeg = null;
+        let isFFmpegLoaded = false;
 
         // Parse URL parameters for preset conversion
         const urlParams = new URLSearchParams(window.location.search);
@@ -532,6 +537,109 @@
         clearBtn.addEventListener('click', clearFiles);
         newConversionBtn.addEventListener('click', clearFiles);
 
+        async function initializeFFmpeg() {
+            if (isFFmpegLoaded) return true;
+            
+            try {
+                progressText.textContent = 'Loading FFmpeg...';
+                const { FFmpeg } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
+                
+                ffmpeg = new FFmpeg();
+                
+                // Load FFmpeg with progress tracking
+                await ffmpeg.load({
+                    coreURL: await toBlobURL('https://unpkg.com/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js', 'text/javascript'),
+                    wasmURL: await toBlobURL('https://unpkg.com/@ffmpeg/core@0.12.6/dist/ffmpeg-core.wasm', 'application/wasm'),
+                });
+                
+                isFFmpegLoaded = true;
+                return true;
+            } catch (error) {
+                console.error('FFmpeg loading failed:', error);
+                return false;
+            }
+        }
+        
+        async function convertVideoFile(file, targetFormat, progressCallback) {
+            const inputFileName = `input.${file.name.split('.').pop()}`;
+            const outputFileName = `output.${targetFormat}`;
+            
+            try {
+                // Write input file to FFmpeg filesystem
+                const fileData = new Uint8Array(await file.arrayBuffer());
+                await ffmpeg.writeFile(inputFileName, fileData);
+                
+                // Set up progress tracking
+                ffmpeg.on('progress', ({ progress }) => {
+                    if (progressCallback) {
+                        progressCallback(progress);
+                    }
+                });
+                
+                // Prepare FFmpeg command based on target format
+                let ffmpegArgs = ['-i', inputFileName];
+                
+                switch (targetFormat.toLowerCase()) {
+                    case 'mp4':
+                        ffmpegArgs.push('-c:v', 'libx264', '-c:a', 'aac', '-preset', 'fast');
+                        break;
+                    case 'webm':
+                        ffmpegArgs.push('-c:v', 'libvpx-vp9', '-c:a', 'libopus');
+                        break;
+                    case 'avi':
+                        ffmpegArgs.push('-c:v', 'libx264', '-c:a', 'mp3');
+                        break;
+                    case 'mov':
+                        ffmpegArgs.push('-c:v', 'libx264', '-c:a', 'aac');
+                        break;
+                    case 'mkv':
+                        ffmpegArgs.push('-c:v', 'libx264', '-c:a', 'aac');
+                        break;
+                    case 'flv':
+                        ffmpegArgs.push('-c:v', 'libx264', '-c:a', 'aac', '-ar', '44100');
+                        break;
+                    case '3gp':
+                        ffmpegArgs.push('-c:v', 'libx264', '-c:a', 'aac', '-s', '176x144');
+                        break;
+                    default:
+                        ffmpegArgs.push('-c:v', 'libx264', '-c:a', 'aac');
+                }
+                
+                ffmpegArgs.push(outputFileName);
+                
+                // Execute FFmpeg conversion
+                await ffmpeg.exec(ffmpegArgs);
+                
+                // Read the output file
+                const outputData = await ffmpeg.readFile(outputFileName);
+                
+                // Clean up
+                await ffmpeg.deleteFile(inputFileName);
+                await ffmpeg.deleteFile(outputFileName);
+                
+                // Create and return blob
+                const mimeType = getMimeTypeForFormat(targetFormat);
+                return new Blob([outputData.buffer], { type: mimeType });
+                
+            } catch (error) {
+                throw new Error(`Video conversion failed: ${error.message}`);
+            }
+        }
+        
+        function getMimeTypeForFormat(format) {
+            const mimeTypes = {
+                'mp4': 'video/mp4',
+                'webm': 'video/webm',
+                'avi': 'video/x-msvideo',
+                'mov': 'video/quicktime',
+                'mkv': 'video/x-matroska',
+                'flv': 'video/x-flv',
+                '3gp': 'video/3gpp'
+            };
+            return mimeTypes[format.toLowerCase()] || 'video/mp4';
+        }
+
         async function startConversion() {
             if (!selectedFormat) {
                 alert('Please select an output format!');
@@ -541,6 +649,16 @@
             conversionProgress.style.display = 'block';
             convertBtn.disabled = true;
             
+            // Initialize FFmpeg
+            const ffmpegReady = await initializeFFmpeg();
+            if (!ffmpegReady) {
+                alert('Failed to load FFmpeg. Please try again.');
+                convertBtn.disabled = false;
+                conversionProgress.style.display = 'none';
+                return;
+            }
+            
+            progressText.textContent = 'FFmpeg loaded, starting conversion...';
             convertedFiles = [];
             
             for (let i = 0; i < selectedFiles.length; i++) {
@@ -551,17 +669,28 @@
                 progressFill.style.width = progress + '%';
                 progressText.textContent = `${progress}% - Converting ${file.name}`;
                 
-                // Simulate conversion process
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Create converted file info
-                const convertedFile = {
-                    originalFile: file,
-                    filename: file.name.replace(/\.[^/.]+$/, '') + '.' + selectedFormat,
-                    size: Math.floor(file.size * 0.8), // Simulate compression
-                    format: selectedFormat
-                };
-                convertedFiles.push(convertedFile);
+                try {
+                    // Real video conversion using FFmpeg
+                    const convertedBlob = await convertVideoFile(file, selectedFormat, (progress) => {
+                        const fileProgress = Math.round((i / selectedFiles.length + progress / selectedFiles.length) * 100);
+                        progressFill.style.width = fileProgress + '%';
+                        progressText.textContent = `${fileProgress}% - Converting ${file.name}`;
+                    });
+                    
+                    // Create converted file info with real blob
+                    const convertedFile = {
+                        originalFile: file,
+                        filename: file.name.replace(/\.[^/.]+$/, '') + '.' + selectedFormat,
+                        size: convertedBlob.size,
+                        format: selectedFormat,
+                        blob: convertedBlob
+                    };
+                    convertedFiles.push(convertedFile);
+                    
+                } catch (error) {
+                    console.error(`Failed to convert ${file.name}:`, error);
+                    alert(`Failed to convert ${file.name}: ${error.message}`);
+                }
             }
             
             progressText.textContent = 'Conversion Complete!';
@@ -599,14 +728,12 @@
                 
                 // Add each converted file to share system
                 convertedFiles.forEach((fileData, index) => {
-                    // Create a blob for the file (simulated for demo)
-                    const simulatedContent = `Video file content for ${fileData.filename}`;
-                    const blob = new Blob([simulatedContent], { type: 'video/' + fileData.format });
+                    const blob = fileData.blob || new Blob([], { type: 'video/' + fileData.format });
                     
                     window.ToolHelpers.addProcessedFileToShare(
                         blob,
                         fileData.filename,
-                        'video/' + fileData.format,
+                        getMimeTypeForFormat(fileData.format),
                         index === 0 // Clear previous only for first file
                     );
                 });
@@ -647,9 +774,8 @@
             
             convertedFiles.forEach((fileData, index) => {
                 setTimeout(() => {
-                    // Simulate file download
-                    const simulatedContent = `Video file content for ${fileData.filename}`;
-                    const blob = new Blob([simulatedContent], { type: 'video/' + fileData.format });
+                    // Real file download with converted video
+                    const blob = fileData.blob || new Blob([], { type: 'video/' + fileData.format });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;

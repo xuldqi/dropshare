@@ -420,6 +420,8 @@
     </div>
 
     <!-- Sharing integration scripts -->
+    <!-- SheetJS Library for Excel processing -->
+    <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="scripts/tool-share-integration.js"></script>
     <script src="scripts/tool-helpers.js"></script>
     
@@ -526,10 +528,7 @@
                 progressFill.style.width = progress + '%';
                 progressText.textContent = `${progress}% - Converting ${file.name}`;
                 
-                // Simulate conversion process
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // Simulate conversion result
+                // Real conversion process
                 const csvContent = await convertXlsxToCsv(file);
                 convertedFiles.push({
                     originalFile: file,
@@ -547,55 +546,136 @@
         }
 
         async function convertXlsxToCsv(file) {
-            // Simulated conversion logic
-            // In a real implementation, you would use a library like SheetJS
+            // Real conversion using SheetJS library
             const includeHeaders = document.getElementById('includeHeaders').checked;
             const preserveFormulas = document.getElementById('preserveFormulas').checked;
             const useCustomDelimiter = document.getElementById('useCustomDelimiter').checked;
             const selectAllSheets = document.getElementById('selectAllSheets').checked;
             
-            let csvContent = '';
-            
-            // Simulate Excel spreadsheet data
-            const delimiter = useCustomDelimiter ? ';' : ',';
-            
-            if (includeHeaders) {
-                csvContent += `Name${delimiter}Age${delimiter}City${delimiter}Salary${delimiter}Department\n`;
+            try {
+                // Read Excel file as array buffer
+                const arrayBuffer = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = (e) => reject(e);
+                    reader.readAsArrayBuffer(file);
+                });
+                
+                // Parse workbook
+                const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+                
+                if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+                    throw new Error('Excel file contains no worksheets');
+                }
+                
+                const delimiter = useCustomDelimiter ? ';' : ',';
+                let allCsvContent = '';
+                const csvBlobs = [];
+                
+                // Process sheets
+                const sheetsToProcess = selectAllSheets ? workbook.SheetNames : [workbook.SheetNames[0]];
+                
+                for (let sheetIndex = 0; sheetIndex < sheetsToProcess.length; sheetIndex++) {
+                    const sheetName = sheetsToProcess[sheetIndex];
+                    const worksheet = workbook.Sheets[sheetName];
+                    
+                    if (!worksheet) continue;
+                    
+                    let csvContent = '';
+                    
+                    // Convert worksheet to array of arrays
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
+                        header: 1, 
+                        defval: '',
+                        raw: !preserveFormulas
+                    });
+                    
+                    if (jsonData.length === 0) {
+                        continue;
+                    }
+                    
+                    // Add sheet header for multi-sheet files
+                    if (selectAllSheets && sheetsToProcess.length > 1) {
+                        csvContent += `# Sheet: ${sheetName}\n`;
+                    }
+                    
+                    // Process rows
+                    jsonData.forEach((row, rowIndex) => {
+                        // Skip headers if not requested and it's the first row
+                        if (!includeHeaders && rowIndex === 0) {
+                            return;
+                        }
+                        
+                        // Handle formulas
+                        if (preserveFormulas) {
+                            const processedRow = row.map((cell, colIndex) => {
+                                const cellAddress = XLSX.utils.encode_cell({ r: rowIndex, c: colIndex });
+                                const cellObj = worksheet[cellAddress];
+                                
+                                if (cellObj && cellObj.f) {
+                                    // Preserve formula
+                                    return `=${cellObj.f}`;
+                                }
+                                
+                                return String(cell || '');
+                            });
+                            csvContent += processedRow.join(delimiter) + '\n';
+                        } else {
+                            // Convert all values to strings and handle commas in text
+                            const processedRow = row.map(cell => {
+                                const cellStr = String(cell || '');
+                                // Escape values containing delimiter or quotes
+                                if (cellStr.includes(delimiter) || cellStr.includes('"') || cellStr.includes('\n')) {
+                                    return `"${cellStr.replace(/"/g, '""')}"`;
+                                }
+                                return cellStr;
+                            });
+                            csvContent += processedRow.join(delimiter) + '\n';
+                        }
+                    });
+                    
+                    if (selectAllSheets && sheetsToProcess.length > 1) {
+                        csvContent += '\n';
+                    }
+                    
+                    allCsvContent += csvContent;
+                    
+                    // Create individual CSV blobs for each sheet
+                    const csvBlob = new Blob([csvContent], { type: 'text/csv; charset=utf-8;' });
+                    csvBlobs.push({
+                        name: sheetName,
+                        blob: csvBlob,
+                        content: csvContent
+                    });
+                }
+                
+                return {
+                    content: allCsvContent,
+                    sheets: csvBlobs,
+                    sheetCount: sheetsToProcess.length,
+                    rowCount: allCsvContent.split('\n').length - 1
+                };
+                
+            } catch (error) {
+                console.error('Excel to CSV conversion error:', error);
+                throw new Error(`Failed to convert Excel file: ${error.message}`);
             }
-            
-            // Simulate data rows
-            const sampleData = [
-                ['John Doe', '30', 'New York', '75000', 'Engineering'],
-                ['Jane Smith', '28', 'San Francisco', '80000', 'Marketing'],
-                ['Mike Johnson', '35', 'Chicago', '90000', 'Sales'],
-                ['Sarah Wilson', '32', 'Boston', '85000', 'HR'],
-                ['David Brown', '29', 'Seattle', '78000', 'Engineering']
-            ];
-            
-            sampleData.forEach(row => {
-                csvContent += row.join(delimiter) + '\n';
-            });
-            
-            if (preserveFormulas) {
-                csvContent += `\n# Formulas preserved as text:\n`;
-                csvContent += `=SUM(D2:D6)${delimiter}${delimiter}${delimiter}${delimiter}\n`;
-                csvContent += `=AVERAGE(D2:D6)${delimiter}${delimiter}${delimiter}${delimiter}\n`;
-            }
-            
-            if (selectAllSheets) {
-                csvContent += `\n# Sheet: Summary\n`;
-                csvContent += `Total Employees${delimiter}5\n`;
-                csvContent += `Average Salary${delimiter}81600\n`;
-            }
-            
-            return csvContent;
         }
 
         function showConversionResult() {
             conversionResult.style.display = 'block';
             
             if (convertedFiles.length > 0) {
-                resultPreview.innerHTML = `<pre style="white-space: pre-wrap; font-family: monospace; font-size: 12px;">${convertedFiles[0].csvContent}</pre>`;
+                const csvData = convertedFiles[0].csvContent;
+                resultPreview.innerHTML = `
+                    <h4>CSV Conversion Results:</h4>
+                    <div style="margin: 15px 0;">
+                        <strong>Sheets processed:</strong> ${csvData.sheetCount}<br>
+                        <strong>Total rows:</strong> ${csvData.rowCount}
+                    </div>
+                    <h5>CSV Preview:</h5>
+                    <pre style="white-space: pre-wrap; font-family: monospace; font-size: 12px; background: #f5f5f5; padding: 10px; border-radius: 4px; max-height: 300px; overflow-y: auto;">${csvData.content.slice(0, 1000)}${csvData.content.length > 1000 ? '...\n[Content truncated for preview]' : ''}</pre>
+                `;
             }
             
             // Add converted files to sharing system
@@ -603,13 +683,12 @@
                 window.ToolHelpers.hideShareButton();
                 
                 convertedFiles.forEach((fileData, index) => {
-                    const simulatedContent = `Processed file content for ${fileData.filename}`;
-                    const blob = new Blob([simulatedContent], { type: 'application/octet-stream' });
+                    const csvBlob = new Blob([fileData.csvContent.content], { type: 'text/csv; charset=utf-8;' });
                     
                     window.ToolHelpers.addProcessedFileToShare(
-                        blob,
+                        csvBlob,
                         fileData.filename,
-                        'application/octet-stream',
+                        'text/csv',
                         index === 0
                     );
                 });
@@ -644,7 +723,7 @@
         });
 
         function downloadSingleFile(fileData) {
-            const blob = new Blob([fileData.csvContent], { type: 'text/csv' });
+            const blob = new Blob([fileData.csvContent.content], { type: 'text/csv; charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
