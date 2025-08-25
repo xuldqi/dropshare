@@ -82,25 +82,41 @@
       "image_tools": {
         "title": "Image Tools",
         "description": "Edit, convert, and optimize images",
-        "tools": ["Format Converter", "Image Cropper", "Background Remover"],
+        "tools": {
+          "0": "Format Converter",
+          "1": "Image Cropper",
+          "2": "Background Remover"
+        },
         "cta": "View Tools"
       },
       "audio_tools": {
         "title": "Audio Tools",
         "description": "Convert audio between different formats",
-        "tools": ["Format Converter", "MP3, WAV, AAC, OGG, FLAC", "High Quality Output"],
+        "tools": {
+          "0": "Format Converter",
+          "1": "MP3, WAV, AAC, OGG, FLAC",
+          "2": "High Quality Output"
+        },
         "cta": "View Tools"
       },
       "video_tools": {
         "title": "Video Tools",
         "description": "Convert videos between different formats",
-        "tools": ["Video Converter", "MP4, AVI, MOV, WebM, MKV", "Professional Quality"],
+        "tools": {
+          "0": "Video Converter",
+          "1": "MP4, AVI, MOV, WebM, MKV",
+          "2": "Professional Quality"
+        },
         "cta": "View Tools"
       },
       "document_tools": {
         "title": "Document Tools",
         "description": "Convert, merge, split, and extract text",
-        "tools": ["PDF Processor", "Text Extractor", "Document Merger"],
+        "tools": {
+          "0": "PDF Processor",
+          "1": "Text Extractor",
+          "2": "Document Merger"
+        },
         "cta": "View Tools"
       }
     },

@@ -82,25 +82,41 @@
       "image_tools": {
         "title": "Bild-Tools",
         "description": "Bilder bearbeiten, konvertieren und optimieren",
-        "tools": ["Format-Konverter", "Bild-Zuschneider", "Hintergrund-Entferner"],
+        "tools": {
+          "0": "Format-Konverter",
+          "1": "Bild-Zuschneider",
+          "2": "Hintergrund-Entferner"
+        },
         "cta": "Werkzeuge anzeigen"
       },
       "audio_tools": {
         "title": "Audio-Tools",
         "description": "Audio zwischen verschiedenen Formaten konvertieren",
-        "tools": ["Format-Konverter", "MP3, WAV, AAC, OGG, FLAC", "Hochwertige Ausgabe"],
+        "tools": {
+          "0": "Format-Konverter",
+          "1": "MP3, WAV, AAC, OGG, FLAC",
+          "2": "Hochwertige Ausgabe"
+        },
         "cta": "Werkzeuge anzeigen"
       },
       "video_tools": {
         "title": "Video-Tools",
         "description": "Videos zwischen verschiedenen Formaten konvertieren",
-        "tools": ["Video-Konverter", "MP4, AVI, MOV, WebM, MKV", "Professionelle Qualität"],
+        "tools": {
+          "0": "Video-Konverter",
+          "1": "MP4, AVI, MOV, WebM, MKV",
+          "2": "Professionelle Qualität"
+        },
         "cta": "Werkzeuge anzeigen"
       },
       "document_tools": {
         "title": "Dokument-Tools",
         "description": "Konvertieren, zusammenführen, aufteilen und Text extrahieren",
-        "tools": ["PDF-Prozessor", "Text-Extraktor", "Dokument-Zusammenführer"],
+        "tools": {
+          "0": "PDF-Prozessor",
+          "1": "Text-Extraktor",
+          "2": "Dokument-Zusammenführer"
+        },
         "cta": "Werkzeuge anzeigen"
       }
     },

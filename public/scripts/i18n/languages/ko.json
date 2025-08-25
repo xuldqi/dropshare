@@ -82,25 +82,41 @@
       "image_tools": {
         "title": "이미지 도구",
         "description": "이미지 편집, 변환 및 최적화",
-        "tools": ["형식 변환기", "이미지 크로퍼", "배경 제거기"],
+        "tools": {
+          "0": "형식 변환기",
+          "1": "이미지 크로퍼",
+          "2": "배경 제거기"
+        },
         "cta": "도구 보기"
       },
       "audio_tools": {
         "title": "오디오 도구",
         "description": "다양한 형식 간 오디오 변환",
-        "tools": ["형식 변환기", "MP3, WAV, AAC, OGG, FLAC", "고품질 출력"],
+        "tools": {
+          "0": "형식 변환기",
+          "1": "MP3, WAV, AAC, OGG, FLAC",
+          "2": "고품질 출력"
+        },
         "cta": "도구 보기"
       },
       "video_tools": {
         "title": "비디오 도구",
         "description": "다양한 형식 간 비디오 변환",
-        "tools": ["비디오 변환기", "MP4, AVI, MOV, WebM, MKV", "전문 품질"],
+        "tools": {
+          "0": "비디오 변환기",
+          "1": "MP4, AVI, MOV, WebM, MKV",
+          "2": "전문 품질"
+        },
         "cta": "도구 보기"
       },
       "document_tools": {
         "title": "문서 도구",
         "description": "변환, 병합, 분할 및 텍스트 추출",
-        "tools": ["PDF 프로세서", "텍스트 추출기", "문서 병합기"],
+        "tools": {
+          "0": "PDF 프로세서",
+          "1": "텍스트 추출기",
+          "2": "문서 병합기"
+        },
         "cta": "도구 보기"
       }
     },

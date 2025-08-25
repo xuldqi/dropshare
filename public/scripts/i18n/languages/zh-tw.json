@@ -82,25 +82,41 @@
       "image_tools": {
         "title": "圖片工具",
         "description": "編輯、轉換和優化圖片",
-        "tools": ["格式轉換器", "圖片裁剪器", "背景移除器"],
+        "tools": {
+          "0": "格式轉換器",
+          "1": "圖片裁剪器",
+          "2": "背景移除器"
+        },
         "cta": "查看工具"
       },
       "audio_tools": {
         "title": "音訊工具",
         "description": "在不同格式之間轉換音訊",
-        "tools": ["格式轉換器", "MP3、WAV、AAC、OGG、FLAC", "高品質輸出"],
+        "tools": {
+          "0": "格式轉換器",
+          "1": "MP3、WAV、AAC、OGG、FLAC",
+          "2": "高品質輸出"
+        },
         "cta": "查看工具"
       },
       "video_tools": {
         "title": "影片工具",
         "description": "在不同格式之間轉換影片",
-        "tools": ["影片轉換器", "MP4、AVI、MOV、WebM、MKV", "專業品質"],
+        "tools": {
+          "0": "影片轉換器",
+          "1": "MP4、AVI、MOV、WebM、MKV",
+          "2": "專業品質"
+        },
         "cta": "查看工具"
       },
       "document_tools": {
         "title": "文件工具",
         "description": "轉換、合併、分割和提取文字",
-        "tools": ["PDF處理器", "文字提取器", "文件合併器"],
+        "tools": {
+          "0": "PDF處理器",
+          "1": "文字提取器",
+          "2": "文件合併器"
+        },
         "cta": "查看工具"
       }
     },

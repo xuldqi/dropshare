@@ -82,25 +82,41 @@
       "image_tools": {
         "title": "Ferramentas de imagem",
         "description": "Editar, converter e otimizar imagens",
-        "tools": ["Conversor de formato", "Cortador de imagem", "Removedor de fundo"],
+        "tools": {
+          "0": "Conversor de formato",
+          "1": "Cortador de imagem",
+          "2": "Removedor de fundo"
+        },
         "cta": "Ver ferramentas"
       },
       "audio_tools": {
         "title": "Ferramentas de áudio",
         "description": "Converter áudio entre diferentes formatos",
-        "tools": ["Conversor de formato", "MP3, WAV, AAC, OGG, FLAC", "Saída de alta qualidade"],
+        "tools": {
+          "0": "Conversor de formato",
+          "1": "MP3, WAV, AAC, OGG, FLAC",
+          "2": "Saída de alta qualidade"
+        },
         "cta": "Ver ferramentas"
       },
       "video_tools": {
         "title": "Ferramentas de vídeo",
         "description": "Converter vídeos entre diferentes formatos",
-        "tools": ["Conversor de vídeo", "MP4, AVI, MOV, WebM, MKV", "Qualidade profissional"],
+        "tools": {
+          "0": "Conversor de vídeo",
+          "1": "MP4, AVI, MOV, WebM, MKV",
+          "2": "Qualidade profissional"
+        },
         "cta": "Ver ferramentas"
       },
       "document_tools": {
         "title": "Ferramentas de documento",
         "description": "Converter, mesclar, dividir e extrair texto",
-        "tools": ["Processador PDF", "Extrator de texto", "Mesclador de documentos"],
+        "tools": {
+          "0": "Processador PDF",
+          "1": "Extrator de texto",
+          "2": "Mesclador de documentos"
+        },
         "cta": "Ver ferramentas"
       }
     },

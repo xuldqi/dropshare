@@ -82,25 +82,41 @@
       "image_tools": {
         "title": "Herramientas de imagen",
         "description": "Editar, convertir y optimizar imágenes",
-        "tools": ["Convertidor de formato", "Recortador de imagen", "Eliminador de fondo"],
+        "tools": {
+          "0": "Convertidor de formato",
+          "1": "Recortador de imagen",
+          "2": "Eliminador de fondo"
+        },
         "cta": "Ver herramientas"
       },
       "audio_tools": {
         "title": "Herramientas de audio",
         "description": "Convertir audio entre diferentes formatos",
-        "tools": ["Convertidor de formato", "MP3, WAV, AAC, OGG, FLAC", "Salida de alta calidad"],
+        "tools": {
+          "0": "Convertidor de formato",
+          "1": "MP3, WAV, AAC, OGG, FLAC",
+          "2": "Salida de alta calidad"
+        },
         "cta": "Ver herramientas"
       },
       "video_tools": {
         "title": "Herramientas de video",
         "description": "Convertir videos entre diferentes formatos",
-        "tools": ["Convertidor de video", "MP4, AVI, MOV, WebM, MKV", "Calidad profesional"],
+        "tools": {
+          "0": "Convertidor de video",
+          "1": "MP4, AVI, MOV, WebM, MKV",
+          "2": "Calidad profesional"
+        },
         "cta": "Ver herramientas"
       },
       "document_tools": {
         "title": "Herramientas de documento",
         "description": "Convertir, fusionar, dividir y extraer texto",
-        "tools": ["Procesador PDF", "Extractor de texto", "Fusionador de documentos"],
+        "tools": {
+          "0": "Procesador PDF",
+          "1": "Extractor de texto",
+          "2": "Fusionador de documentos"
+        },
         "cta": "Ver herramientas"
       }
     },

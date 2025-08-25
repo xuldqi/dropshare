@@ -82,25 +82,41 @@
       "image_tools": {
         "title": "Outils d'image",
         "description": "Éditer, convertir et optimiser les images",
-        "tools": ["Convertisseur de format", "Recadreur d'image", "Suppresseur d'arrière-plan"],
+        "tools": {
+          "0": "Convertisseur de format",
+          "1": "Recadreur d'image",
+          "2": "Suppresseur d'arrière-plan"
+        },
         "cta": "Voir les outils"
       },
       "audio_tools": {
         "title": "Outils audio",
         "description": "Convertir l'audio entre différents formats",
-        "tools": ["Convertisseur de format", "MP3, WAV, AAC, OGG, FLAC", "Sortie haute qualité"],
+        "tools": {
+          "0": "Convertisseur de format",
+          "1": "MP3, WAV, AAC, OGG, FLAC",
+          "2": "Sortie haute qualité"
+        },
         "cta": "Voir les outils"
       },
       "video_tools": {
         "title": "Outils vidéo",
         "description": "Convertir les vidéos entre différents formats",
-        "tools": ["Convertisseur vidéo", "MP4, AVI, MOV, WebM, MKV", "Qualité professionnelle"],
+        "tools": {
+          "0": "Convertisseur vidéo",
+          "1": "MP4, AVI, MOV, WebM, MKV",
+          "2": "Qualité professionnelle"
+        },
         "cta": "Voir les outils"
       },
       "document_tools": {
         "title": "Outils de document",
         "description": "Convertir, fusionner, diviser et extraire du texte",
-        "tools": ["Processeur PDF", "Extracteur de texte", "Fusionneur de documents"],
+        "tools": {
+          "0": "Processeur PDF",
+          "1": "Extracteur de texte",
+          "2": "Fusionneur de documents"
+        },
         "cta": "Voir les outils"
       }
     },
