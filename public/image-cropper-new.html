@@ -506,6 +506,9 @@
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
                     <span>📥 Download Cropped Image</span>
                 </button>
+                <button class="btn btn-secondary" id="shareBtn" style="display: none;">
+                        <span>📤 Share Image</span>
+                    </button>
                 <button class="btn btn-secondary" id="resetBtn">
                     <span>🔄 Select Again</span>
                 </button>
@@ -515,6 +518,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
 
     <script>
         // 全局变量
@@ -558,6 +565,8 @@
         applySizeBtn.addEventListener('click', applyCustomSize);
         cropBtn.addEventListener('click', performCrop);
         downloadBtn.addEventListener('click', downloadCroppedImage);
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', shareImage);
         resetBtn.addEventListener('click', resetCropper);
 
         // 拖拽处理
@@ -924,6 +933,7 @@
             updatePreview();
             previewSection.style.display = 'block';
             downloadBtn.style.display = 'inline-flex';
+            shareBtn.style.display = 'inline-flex';
             cropBtn.textContent = '✂️ Crop Again';
         }
 
@@ -942,16 +952,31 @@
             });
         }
 
+                // 分享图片
+        function shareImage() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Sharing functionality is not available');
+            }
+        }
+
         // 重置裁剪器
         function resetCropper() {
             originalImage = null;
             cropWorkspace.style.display = 'none';
             previewSection.style.display = 'none';
             downloadBtn.style.display = 'none';
+            shareBtn.style.display = 'none';
             cropBtn.disabled = true;
             cropBtn.textContent = '✂️ Start Cropping';
             fileInput.value = '';
-        }
+        
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }}
 
         // 格式化文件大小
         function formatFileSize(bytes) {

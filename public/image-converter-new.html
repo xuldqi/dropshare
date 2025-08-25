@@ -729,6 +729,10 @@
         </div>
     </div>
 
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
+
     <script>
         // 全局变量
         let selectedFiles = [];
@@ -1183,6 +1187,15 @@
             if (type.includes('mac') || type.includes('apple')) return '💻';
             if (type.includes('windows') || type.includes('pc')) return '🖥️';
             return '💻'; // 默认电脑图标
+        }
+
+                // 分享图片
+        function shareImage() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Sharing functionality is not available');
+            }
         }
 
         // 重置转换器

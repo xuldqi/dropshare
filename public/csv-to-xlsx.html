@@ -408,9 +408,7 @@
                 <button class="btn btn-success" id="downloadBtn">
                     📥 Download XLSX Files
                 </button>
-                <button class="btn btn-secondary" id="shareBtn">
-                    📤 Share Files
-                </button>
+                <div id="shareButtonContainer" style="display: none;"></div>
                 <button class="btn btn-secondary" id="newConversionBtn">
                     🔄 New Conversion
                 </button>
@@ -421,6 +419,10 @@
         </div>
     </div>
 
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
+    
     <script>
         // DOM elements
         const uploadArea = document.getElementById('uploadArea');
@@ -591,6 +593,25 @@
                 `;
             }
             
+            // Add converted files to sharing system
+            if (window.ToolHelpers && convertedFiles.length > 0) {
+                window.ToolHelpers.hideShareButton();
+                
+                convertedFiles.forEach((fileData, index) => {
+                    const simulatedContent = `Excel file content for ${fileData.filename}`;
+                    const blob = new Blob([simulatedContent], { 
+                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+                    });
+                    
+                    window.ToolHelpers.addProcessedFileToShare(
+                        blob,
+                        fileData.filename,
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        index === 0
+                    );
+                });
+            }
+            
             // Scroll to result area
             conversionResult.scrollIntoView({ behavior: 'smooth' });
         }
@@ -606,6 +627,11 @@
             convertBtn.disabled = true;
             progressFill.style.width = '0%';
             progressText.textContent = '0%';
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }
         }
 
         // Download functionality
@@ -631,10 +657,14 @@
             });
         });
 
-        // Share functionality
-        shareBtn.addEventListener('click', () => {
-            if (convertedFiles.length === 0) return;
-            alert(`Share functionality would be integrated here for ${convertedFiles.length} XLSX files`);
+        // Initialize sharing system
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.initializeToolSharing({
+                    shareButtonText: 'Share XLSX Files',
+                    shareButtonContainer: '#shareButtonContainer'
+                });
+            }
         });
     </script>
     

@@ -432,6 +432,10 @@
         </div>
     </div>
 
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
+    
     <script>
         // 国际化辅助函数
         function getI18nText(key) {
@@ -624,6 +628,22 @@
                 textPreview.textContent = extractedTexts[0].textContent;
             }
             
+            // Add extracted files to sharing system
+            if (window.ToolHelpers && extractedTexts.length > 0) {
+                window.ToolHelpers.hideShareButton();
+                
+                extractedTexts.forEach((textData, index) => {
+                    const blob = new Blob([textData.textContent], { type: 'text/plain' });
+                    
+                    window.ToolHelpers.addProcessedFileToShare(
+                        blob,
+                        textData.filename,
+                        'text/plain',
+                        index === 0
+                    );
+                });
+            }
+            
             // 滚动到结果区域
             extractionResult.scrollIntoView({ behavior: 'smooth' });
         }
@@ -639,6 +659,11 @@
             extractBtn.disabled = true;
             document.getElementById('progressFillInner').style.width = '0%';
             progressText.textContent = '0%';
+        
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }
         }
 
         // 下载功能
@@ -688,7 +713,13 @@
         // 分享功能
         shareBtn.addEventListener('click', () => {
             if (extractedTexts.length === 0) return;
-            alert('Share functionality would be integrated here');
+            
+            if (window.ToolHelpers) {
+                // Files are already added to sharing system in showExtractionResult()
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Share functionality would be integrated here');
+            }
         });
     </script>
     

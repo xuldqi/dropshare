@@ -559,6 +559,9 @@
                 <button class="btn btn-warning" id="undoBtn" style="display: none;">
                     ↶ Undo Operation
                 </button>
+                <button class="btn btn-secondary" id="shareBtn" style="display: none;">
+                        <span>📤 Share Image</span>
+                    </button>
                 <button class="btn btn-secondary" id="resetBtn">
                     🔄 Select Again
                 </button>
@@ -568,6 +571,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
 
     <script>
         // Global variables
@@ -623,6 +630,8 @@
 
         processBtn.addEventListener('click', applyRemovalEffect);
         downloadBtn.addEventListener('click', downloadResult);
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', shareImage);
         undoBtn.addEventListener('click', undoLastAction);
         resetBtn.addEventListener('click', resetRemover);
 
@@ -969,6 +978,18 @@
         function applyRemovalEffect() {
             updatePreview();
             downloadBtn.style.display = 'inline-flex';
+            
+            // Show share button and add to sharing system
+            if (window.ToolHelpers && previewCanvas && originalFile) {
+                previewCanvas.toBlob(function(blob) {
+                    const filename = `bg_removed_${originalFile.name.split('.')[0]}.png`;
+                    
+                    window.ToolHelpers.hideShareButton();
+                    window.ToolHelpers.addProcessedFileToShare(blob, filename, 'image/png', true);
+                    shareBtn.style.display = 'inline-flex';
+                }, 'image/png');
+            }
+            
             updateStatus('completed', 'Background removal completed! You can download the result image');
         }
 
@@ -1013,6 +1034,15 @@
             }, 'image/png');
         }
 
+        // 分享图片
+        function shareImage() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Sharing functionality is not available');
+            }
+        }
+
         // Update status
         function updateStatus(type, message) {
             statusInfo.textContent = message;
@@ -1025,6 +1055,15 @@
             };
             
             statusInfo.style.background = colors[type] || colors.ready;
+        }
+
+                // 分享图片
+        function shareImage() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Sharing functionality is not available');
+            }
         }
 
         // Reset remover
@@ -1041,9 +1080,15 @@
             editorWorkspace.style.display = 'none';
             processBtn.style.display = 'none';
             downloadBtn.style.display = 'none';
+            shareBtn.style.display = 'none';
             undoBtn.style.display = 'none';
             statusInfo.style.display = 'none';
             fileInput.value = '';
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }
             
             document.getElementById('editStatus').textContent = 'Waiting for edit';
         }

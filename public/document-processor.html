@@ -721,6 +721,10 @@
 
     <!-- PDF.js Library -->
     <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
+    
     <script>
         // PDF.js worker setup
         if (typeof pdfjsLib !== 'undefined') {
@@ -1130,6 +1134,21 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
                 document.getElementById('resultSection').style.display = 'block';
                 document.getElementById('downloadAllBtn').style.display = 'inline-flex';
                 document.getElementById('shareAllBtn').style.display = 'inline-flex';
+                
+                // Add processed files to sharing system
+                if (window.ToolHelpers && this.processedFiles.length > 0) {
+                    window.ToolHelpers.hideShareButton();
+                    
+                    this.processedFiles.forEach((file, index) => {
+                        window.ToolHelpers.addProcessedFileToShare(
+                            file,
+                            file.name,
+                            file.type,
+                            index === 0
+                        );
+                    });
+                }
+                
                 document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
             }
 
@@ -1165,8 +1184,19 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
             }
 
             shareFile(index) {
-                const file = this.processedFiles[index];
-                alert(`Share functionality would be integrated here for ${file.name}`);
+                if (window.ToolHelpers && this.processedFiles[index]) {
+                    const file = this.processedFiles[index];
+                    window.ToolHelpers.addProcessedFileToShare(
+                        file,
+                        file.name,
+                        file.type,
+                        true
+                    );
+                    window.ToolHelpers.showShareButton();
+                } else {
+                    const file = this.processedFiles[index];
+                    alert(`Share functionality would be integrated here for ${file.name}`);
+                }
             }
 
             downloadAllFiles() {
@@ -1176,7 +1206,12 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
             }
 
             shareAllFiles() {
-                alert(`Share functionality would be integrated here for ${this.processedFiles.length} files`);
+                if (window.ToolHelpers && this.processedFiles.length > 0) {
+                    // Files are already added to sharing system in showResults()
+                    window.ToolHelpers.showShareButton();
+                } else {
+                    alert(`Share functionality would be integrated here for ${this.processedFiles.length} files`);
+                }
             }
 
             copyExtractedText() {

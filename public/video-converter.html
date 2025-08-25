@@ -396,9 +396,7 @@
                 <button class="btn btn-success" id="downloadBtn">
                     📥 Download Videos
                 </button>
-                <button class="btn btn-secondary" id="shareBtn">
-                    📤 Share Files
-                </button>
+                <div id="shareButtonContainer" style="display: none;"></div>
                 <button class="btn btn-secondary" id="newConversionBtn">
                     🔄 New Conversion
                 </button>
@@ -409,6 +407,10 @@
         </div>
     </div>
 
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
+    
     <script>
         // DOM elements
         const uploadArea = document.getElementById('uploadArea');
@@ -590,6 +592,26 @@
             
             resultPreview.innerHTML = previewHTML;
             
+            // Add converted files to sharing system
+            if (window.ToolHelpers && convertedFiles.length > 0) {
+                // Clear previous files first
+                window.ToolHelpers.hideShareButton();
+                
+                // Add each converted file to share system
+                convertedFiles.forEach((fileData, index) => {
+                    // Create a blob for the file (simulated for demo)
+                    const simulatedContent = `Video file content for ${fileData.filename}`;
+                    const blob = new Blob([simulatedContent], { type: 'video/' + fileData.format });
+                    
+                    window.ToolHelpers.addProcessedFileToShare(
+                        blob,
+                        fileData.filename,
+                        'video/' + fileData.format,
+                        index === 0 // Clear previous only for first file
+                    );
+                });
+            }
+            
             // Scroll to result area
             conversionResult.scrollIntoView({ behavior: 'smooth' });
         }
@@ -612,6 +634,11 @@
             document.querySelectorAll('.format-option').forEach(opt => 
                 opt.classList.remove('selected')
             );
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }
         }
 
         // Download functionality
@@ -635,10 +662,14 @@
             });
         });
 
-        // Share functionality
-        shareBtn.addEventListener('click', () => {
-            if (convertedFiles.length === 0) return;
-            alert(`Share functionality would be integrated here for ${convertedFiles.length} video files`);
+        // Initialize sharing system
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.initializeToolSharing({
+                    shareButtonText: 'Share Converted Videos',
+                    shareButtonContainer: '#shareButtonContainer'
+                });
+            }
         });
     </script>
     

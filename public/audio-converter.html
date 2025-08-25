@@ -783,6 +783,9 @@
                 <button class="btn btn-success" id="downloadAllBtn" style="display: none;">
                     📥 Download All Files
                 </button>
+                <button class="btn btn-secondary" id="shareAllBtn" style="display: none;">
+                    📤 Share All Files
+                </button>
                 <button class="btn btn-secondary" id="clearBtn">
                     🔄 Clear All
                 </button>
@@ -792,6 +795,10 @@
             </div>
         </div>
     </div>
+    
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
     
     <!-- FFmpeg Lazy Loader Manager -->
     <script src="scripts/ffmpeg-loader.js"></script>
@@ -1224,6 +1231,24 @@
                 resultsList.innerHTML = html;
                 document.getElementById('resultsSection').style.display = 'block';
                 document.getElementById('convertBtn').disabled = false;
+                
+                // Add converted files to sharing system
+                if (window.ToolHelpers && this.convertedFiles.length > 0) {
+                    window.ToolHelpers.hideShareButton();
+                    
+                    this.convertedFiles.forEach((file, index) => {
+                        window.ToolHelpers.addProcessedFileToShare(
+                            file.blob,
+                            file.name,
+                            file.type,
+                            index === 0
+                        );
+                    });
+                    
+                    // Show share buttons
+                    document.getElementById('downloadAllBtn').style.display = 'inline-flex';
+                    document.getElementById('shareAllBtn').style.display = 'inline-flex';
+                }
             }
             
             downloadFile(index) {
@@ -1237,9 +1262,25 @@
             }
             
             shareFile(index) {
-                const file = this.convertedFiles[index];
-                currentShareFile = file;
-                showDeviceModal();
+                if (window.ToolHelpers && this.convertedFiles[index]) {
+                    const file = this.convertedFiles[index];
+                    window.ToolHelpers.addProcessedFileToShare(
+                        file.blob,
+                        file.name,
+                        file.type,
+                        true
+                    );
+                    window.ToolHelpers.showShareButton();
+                } else {
+                    // Fallback to old sharing system
+                    const file = this.convertedFiles[index];
+                    if (typeof showDeviceModal === 'function') {
+                        currentShareFile = file;
+                        showDeviceModal();
+                    } else {
+                        alert('Sharing functionality is not available');
+                    }
+                }
             }
             
             shareAllFiles() {
@@ -1247,8 +1288,19 @@
                     alert(window.DROPSHARE_I18N?.t('alert_no_files_to_share') || '没有可分享的文件！');
                     return;
                 }
-                currentShareFiles = this.convertedFiles;
-                showDeviceModal();
+                
+                if (window.ToolHelpers) {
+                    // Files are already added to sharing system in showResults()
+                    window.ToolHelpers.showShareButton();
+                } else {
+                    // Fallback to old sharing system if available
+                    currentShareFiles = this.convertedFiles;
+                    if (typeof showDeviceModal === 'function') {
+                        showDeviceModal();
+                    } else {
+                        alert('Sharing functionality is not available');
+                    }
+                }
             }
             
             updateProgress(percent, text) {
@@ -1273,7 +1325,14 @@
                 document.getElementById('conversionPanel').style.display = 'none';
                 document.getElementById('progressSection').style.display = 'none';
                 document.getElementById('resultsSection').style.display = 'none';
+                document.getElementById('downloadAllBtn').style.display = 'none';
+                document.getElementById('shareAllBtn').style.display = 'none';
                 document.querySelectorAll('.format-option').forEach(opt => opt.classList.remove('selected'));
+                
+                // Clear sharing system
+                if (window.ToolHelpers) {
+                    window.ToolHelpers.hideShareButton();
+                }
             }
             
             getFileExtension(fileName) {

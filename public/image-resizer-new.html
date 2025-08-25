@@ -522,6 +522,9 @@
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
                     <span>📥 Download Resized Image</span>
                 </button>
+                <button class="btn btn-secondary" id="shareBtn" style="display: none;">
+                        <span>📤 Share Image</span>
+                    </button>
                 <button class="btn btn-secondary" id="resetBtn">
                     <span>🔄 Select Again</span>
                 </button>
@@ -531,6 +534,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
 
     <script>
         // 全局变量
@@ -577,6 +584,8 @@
 
         resizeBtn.addEventListener('click', performResize);
         downloadBtn.addEventListener('click', downloadResizedImage);
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', shareImage);
         resetBtn.addEventListener('click', resetResizer);
 
         // 拖拽处理
@@ -817,6 +826,7 @@
             // 显示预览区域和下载按钮
             imagePreview.style.display = 'block';
             downloadBtn.style.display = 'inline-flex';
+            shareBtn.style.display = 'inline-flex';
         }
 
         // 下载调整后的图片
@@ -838,6 +848,15 @@
             }, format, quality);
         }
 
+                // 分享图片
+        function shareImage() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Sharing functionality is not available');
+            }
+        }
+
         // 重置调整器
         function resetResizer() {
             originalFile = null;
@@ -848,6 +867,7 @@
             resizeControls.style.display = 'none';
             imagePreview.style.display = 'none';
             downloadBtn.style.display = 'none';
+            shareBtn.style.display = 'none';
             fileInput.value = '';
             
             // 重置输入框
@@ -860,7 +880,12 @@
             presetBtns.forEach(btn => btn.classList.remove('active'));
             
             document.getElementById('sizeComparison').style.display = 'none';
-        }
+        
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }}
 
         // 格式化文件大小
         function formatFileSize(bytes) {

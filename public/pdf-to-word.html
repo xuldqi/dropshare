@@ -371,6 +371,10 @@
         </div>
     </div>
 
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
+    
     <script>
         let selectedFile = null;
         let convertedFile = null;
@@ -503,6 +507,18 @@
                 progressSection.style.display = 'none';
                 downloadSection.style.display = 'block';
                 shareBtn.style.display = 'inline-flex';
+                
+                // Add converted file to sharing system
+                if (window.ToolHelpers && convertedFile) {
+                    window.ToolHelpers.hideShareButton();
+                    
+                    window.ToolHelpers.addProcessedFileToShare(
+                        convertedFile,
+                        convertedFile.name,
+                        convertedFile.type,
+                        true
+                    );
+                }
                 
                 // Setup download
                 const downloadBtn = document.getElementById('downloadBtn');
@@ -729,6 +745,11 @@ Note: Unable to process this PDF file. Please try a different PDF or contact sup
             if (downloadBtn.href && downloadBtn.href.startsWith('blob:')) {
                 URL.revokeObjectURL(downloadBtn.href);
             }
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }
         }
 
         function shareFile() {
@@ -736,7 +757,13 @@ Note: Unable to process this PDF file. Please try a different PDF or contact sup
                 alert('No file to share');
                 return;
             }
-            alert('Share functionality would be integrated here for: ' + convertedFile.name);
+            
+            if (window.ToolHelpers) {
+                // File is already added to sharing system in conversion complete
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Share functionality would be integrated here for: ' + convertedFile.name);
+            }
         }
     </script>
     

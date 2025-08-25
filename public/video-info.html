@@ -356,6 +356,7 @@
             <h3>📊 Video Analysis Complete!</h3>
             <div id="videoInfoResults"></div>
             <div class="action-buttons">
+                <div id="shareButtonContainer" style="display: none;"></div>
                 <button class="btn btn-secondary" id="newAnalysisBtn">
                     🔄 New Analysis
                 </button>
@@ -366,6 +367,10 @@
         </div>
     </div>
 
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
+    
     <script>
         // DOM elements
         const uploadArea = document.getElementById('uploadArea');
@@ -615,6 +620,30 @@
             
             videoInfoResults.innerHTML = resultsHTML;
             
+            // Add video analysis results to sharing system
+            if (window.ToolHelpers && analysisResults.length > 0) {
+                // Clear previous files first
+                window.ToolHelpers.hideShareButton();
+                
+                // Add each thumbnail to share system
+                analysisResults.forEach((result, index) => {
+                    const { file, info } = result;
+                    if (!info.error && info.thumbnail) {
+                        // Convert thumbnail data URL to blob
+                        const dataUrl = info.thumbnail;
+                        const blob = window.ToolHelpers.dataURLToBlob(dataUrl);
+                        const thumbnailName = `${file.name.replace(/\.[^/.]+$/, '')}_thumbnail.jpg`;
+                        
+                        window.ToolHelpers.addProcessedFileToShare(
+                            blob,
+                            thumbnailName,
+                            'image/jpeg',
+                            index === 0 // Clear previous only for first file
+                        );
+                    }
+                });
+            }
+            
             // Scroll to result area
             analysisResult.scrollIntoView({ behavior: 'smooth' });
         }
@@ -629,7 +658,22 @@
             analyzeBtn.disabled = true;
             progressFill.style.width = '0%';
             progressText.textContent = '0%';
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }
         }
+        
+        // Initialize sharing system
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.initializeToolSharing({
+                    shareButtonText: 'Share Video Thumbnails',
+                    shareButtonContainer: '#shareButtonContainer'
+                });
+            }
+        });
     </script>
     
     <!-- Load i18n system -->

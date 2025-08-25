@@ -461,6 +461,9 @@
                     <button class="btn btn-success" id="downloadBtn">
                         <span>📥 Download Compressed Image</span>
                     </button>
+                    <button class="btn btn-secondary" id="shareBtn" style="display: none;">
+                        <span>📤 Share Image</span>
+                    </button>
                     <button class="btn btn-secondary" id="resetBtn">
                         <span>🔄 Reset</span>
                     </button>
@@ -471,6 +474,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
 
     <script>
         // 全局变量
@@ -503,6 +510,8 @@
             option.addEventListener('click', handleFormatChange);
         });
         downloadBtn.addEventListener('click', downloadCompressedImage);
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', shareCompressedImage);
         resetBtn.addEventListener('click', resetCompressor);
 
         // 拖拽处理
@@ -671,15 +680,34 @@
             const mimeType = `image/${format}`;
             
             compressedCanvas.toBlob(function(blob) {
+                const filename = `compressed_${originalFile.name.split('.')[0]}.${format}`;
+                
+                // Add to sharing system
+                if (window.ToolHelpers) {
+                    window.ToolHelpers.hideShareButton();
+                    window.ToolHelpers.addProcessedFileToShare(blob, filename, mimeType, true);
+                    shareBtn.style.display = 'inline-flex';
+                }
+                
+                // Download file
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `compressed_${originalFile.name.split('.')[0]}.${format}`;
+                a.download = filename;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             }, mimeType, quality);
+        }
+
+        // 分享压缩图片
+        function shareCompressedImage() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Sharing functionality is not available');
+            }
         }
 
         // 重置压缩器
@@ -690,6 +718,12 @@
             imagePreview.style.display = 'none';
             fileInput.value = '';
             document.getElementById('sizeReduction').style.display = 'none';
+            shareBtn.style.display = 'none';
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }
         }
 
         // 格式化文件大小

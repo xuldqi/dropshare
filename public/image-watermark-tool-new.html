@@ -627,6 +627,9 @@
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
                     📥 Download Watermarked Image
                 </button>
+                <button class="btn btn-secondary" id="shareBtn" style="display: none;">
+                        <span>📤 Share Image</span>
+                    </button>
                 <button class="btn btn-secondary" id="resetBtn">
                     🔄 Select Again
                 </button>
@@ -636,6 +639,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
 
     <script>
         // Global variables
@@ -702,6 +709,8 @@
         setupFormControls();
 
         downloadBtn.addEventListener('click', downloadWatermarkedImage);
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', shareImage);
         resetBtn.addEventListener('click', resetWatermark);
 
         // Setup form control events
@@ -876,6 +885,7 @@
             // Show control area
             watermarkControls.style.display = 'block';
             downloadBtn.style.display = 'inline-flex';
+            shareBtn.style.display = 'inline-flex';
             
             // Initialize watermark
             updateWatermark();
@@ -926,7 +936,16 @@
                 drawImageWatermark();
             }
             
-            // Reset opacity
+                    // 分享图片
+        function shareImage() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Sharing functionality is not available');
+            }
+        }
+
+        // Reset opacity
             ctx.globalAlpha = 1;
         }
 
@@ -1069,6 +1088,7 @@
             
             watermarkControls.style.display = 'none';
             downloadBtn.style.display = 'none';
+            shareBtn.style.display = 'none';
             fileInput.value = '';
             logoInput.value = '';
             
@@ -1098,7 +1118,12 @@
             logoUploadBtn.textContent = '📁 Click to Select Image';
             logoUploadBtn.style.borderColor = '#d1d5db';
             logoUploadBtn.style.color = '#6b7280';
-        }
+        
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }}
 
         // Format file size
         function formatFileSize(bytes) {

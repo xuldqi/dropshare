@@ -614,6 +614,9 @@
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
                     📥 Download Filtered Image
                 </button>
+                <button class="btn btn-secondary" id="shareBtn" style="display: none;">
+                        <span>📤 Share Image</span>
+                    </button>
                 <button class="btn btn-secondary" id="resetBtn">
                     🔄 Select Again
                 </button>
@@ -623,6 +626,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Sharing integration scripts -->
+    <script src="scripts/tool-share-integration.js"></script>
+    <script src="scripts/tool-helpers.js"></script>
 
     <script>
         // Global variables
@@ -712,6 +719,8 @@
         document.getElementById('toggleComparison').addEventListener('click', toggleComparison);
 
         downloadBtn.addEventListener('click', downloadFilteredImage);
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', shareImage);
         resetBtn.addEventListener('click', resetFilter);
 
         // Drag handling
@@ -799,12 +808,22 @@
             document.getElementById('imageSize').textContent = `${img.width} × ${img.height}`;
             document.getElementById('fileSize').textContent = formatFileSize(file.size);
             
-            // Reset filters
+                    // 分享图片
+        function shareImage() {
+            if (window.ToolHelpers) {
+                window.ToolHelpers.showShareButton();
+            } else {
+                alert('Sharing functionality is not available');
+            }
+        }
+
+        // Reset filters
             resetFilters();
             
             // Show control area
             filterControls.style.display = 'block';
             downloadBtn.style.display = 'inline-flex';
+            shareBtn.style.display = 'inline-flex';
         }
 
         // Handle slider change
@@ -932,7 +951,12 @@
         // Reset filters
         function resetFilters() {
             applyPreset('none');
-        }
+        
+            
+            // Clear sharing system
+            if (window.ToolHelpers) {
+                window.ToolHelpers.hideShareButton();
+            }}
 
         // Apply random filter
         function applyRandomFilter() {
@@ -1027,6 +1051,7 @@
             
             filterControls.style.display = 'none';
             downloadBtn.style.display = 'none';
+            shareBtn.style.display = 'none';
             comparisonMode.style.display = 'none';
             fileInput.value = '';
             
