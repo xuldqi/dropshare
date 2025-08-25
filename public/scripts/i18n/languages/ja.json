@@ -34,7 +34,8 @@
     "contact": "お問い合わせ",
     "privacy": "プライバシー",
     "terms": "利用規約",
-    "faq": "よくある質問"
+    "faq": "よくある質問",
+    "files": "個のファイル"
   },
   "navigation": {
     "home": "ホーム",
@@ -222,14 +223,36 @@
       "button": "Choose Files"
     },
     "rooms": {
-      "title": "Private Rooms",
-      "subtitle": "Create secure rooms for file sharing",
-      "create_room": "Create Room",
-      "join_room": "Join Room",
-      "room_name": "Room Name",
-      "room_password": "Room Password",
-      "room_name_placeholder": "Enter room name",
-      "room_password_placeholder": "Enter password (optional)"
+      "title": "マルチユーザールーム",
+      "subtitle": "ルームコードでローカルまたはリモートのユーザーと素早くファイル共有",
+      "create_room": "ルーム作成",
+      "join_room": "ルームに参加",
+      "room_name": "ルーム名",
+      "room_password": "ルームパスワード",
+      "max_members": "最大メンバー数",
+      "room_code": "ルームコード",
+      "room_name_placeholder": "ルーム名を入力",
+      "room_password_placeholder": "パスワードを入力（任意）",
+      "room_code_placeholder": "ルームコードを入力",
+      "upload_files": "ルームにファイルをアップロード",
+      "drag_files_hint": "ファイルをここにドラッグまたはクリックしてアップロード",
+      "select_files": "アップロードするファイルを選択",
+      "shared_files": "ルーム共有ファイル",
+      "no_shared_files": "ルームにはまだ共有ファイルがありません",
+      "upload_hint": "ファイルはルーム内の全メンバーと共有されます",
+      "download_hint": "ファイルをアップロード後、ルーム内の全メンバーがダウンロードできます",
+      "host_notice": "ホスト通知",
+      "host_notice_message": "ホストとして、ページを更新すると自動的にルームに再接続されます。「ルームを退出」をクリックするか、ブラウザタブを閉じた場合のみルームが解散されます。",
+      "member_notice": "メンバー通知",
+      "member_notice_message": "ページを更新すると自動的にルームに再接続されます。「ルームを退出」をクリックするか、ブラウザタブを閉じた場合のみルームから退出されます。"
+    },
+    "status": {
+      "open_on_other_devices": "他のデバイスでDropShareを開いてファイルを送信",
+      "discoverable": "このネットワーク上のすべての人から見つけられます",
+      "known_as": "あなたの名前：",
+      "online": "オンライン",
+      "room_members": "ルームメンバー：",
+      "leave_room": "ルームを退出"
     },
     "history": {
       "title": "Transfer History",
@@ -284,6 +307,14 @@
     "copyright": "© 2024 DropShare. All rights reserved.",
     "made_with": "Made with ❤️ for the community"
   },
+  "dialogs": {
+    "file_received": "ファイルを受信しました",
+    "ask_save_before_download": "ダウンロード前に各ファイルの保存を確認する",
+    "ignore": "無視",
+    "send_message": "メッセージを送信",
+    "send": "送信",
+    "message_received": "メッセージを受信しました"
+  },
   "errors": {
     "file_too_large": "File is too large",
     "unsupported_format": "Unsupported file format",
@@ -291,7 +322,16 @@
     "conversion_failed": "Conversion failed",
     "network_error": "Network error",
     "server_error": "Server error",
-    "unknown_error": "An unknown error occurred"
+    "unknown_error": "不明なエラーが発生しました",
+    "file_not_exist": "ファイルが存在しません",
+    "download_failed": "ダウンロードに失敗しました、もう一度お試しください",
+    "copy_failed": "コピーに失敗しました、ルームコード：",
+    "file_download_failed": "ファイルのダウンロードに失敗しました",
+    "room_connection_failed": "ルーム接続に失敗しました：",
+    "receiving_file_error": "{username}からファイルを受信中にエラーが発生しました",
+    "enter_room_name": "ルーム名を入力してください",
+    "enter_room_code": "ルームコードを入力してください",
+    "network_unavailable": "ネットワーク接続が利用できません、後でもう一度お試しください"
   },
   "messages": {
     "file_uploaded": "File uploaded successfully",
@@ -299,6 +339,24 @@
     "file_downloaded": "File downloaded successfully",
     "room_created": "Room created successfully",
     "room_joined": "Joined room successfully",
-    "settings_saved": "Settings saved successfully"
+    "settings_saved": "設定が正常に保存されました",
+    "room_code_copied": "ルームコードがクリップボードにコピーされました",
+    "file_deleted": "ファイルが削除されました",
+    "file_download_started": "ファイルのダウンロードが開始されました",
+    "reconnecting": "ルームに再接続中...",
+    "join_room_first": "ファイルをアップロードする前にまずルームに参加してください",
+    "confirm_delete_file": "このファイルを削除してもよろしいですか？",
+    "room_disbanded": "ルームが解散されました：",
+    "feature_under_development": "{feature}機能は開発中です",
+    "uploader_offline": "ダウンロードできません：アップローダーがオンラインである必要があります",
+    "file_unavailable": "ファイルが利用できません、アップローダーがオフラインの可能性があります",
+    "file_temporarily_unavailable": "ファイルが一時的に利用できません",
+    "file_uploaded_to_room": "ファイル\"{filename}\"がルームにアップロードされました",
+    "downloading_file": "ダウンロード中：{filename}",
+    "files_redistributed": "{count}個のファイルをルームメンバーに再配布しました",
+    "user_shared_file": "{username}がファイルを共有しました：{filename}",
+    "user_shared_file_unavailable": "{username}がファイルを共有しました：{filename}（ファイルが大きすぎるか一時的に利用できません）",
+    "files_restored": "{count}個の以前のファイルを復元しました",
+    "received_file": "ファイルを受信しました：{filename}"
   }
 }

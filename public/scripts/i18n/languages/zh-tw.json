@@ -34,7 +34,8 @@
     "contact": "聯絡",
     "privacy": "隱私",
     "terms": "條款",
-    "faq": "常見問題"
+    "faq": "常見問題",
+    "files": "個檔案"
   },
   "navigation": {
     "home": "首頁",
@@ -222,14 +223,36 @@
       "button": "选择文件"
     },
     "rooms": {
-      "title": "私人房间",
-      "subtitle": "创建安全的文件分享房间",
-      "create_room": "创建房间",
-      "join_room": "加入房间",
-      "room_name": "房间名称",
-      "room_password": "房间密码",
-      "room_name_placeholder": "输入房间名称",
-      "room_password_placeholder": "输入密码（可选）"
+      "title": "多人房間",
+      "subtitle": "通過房間碼與同一網路或遠端用戶快速分享檔案",
+      "create_room": "創建房間",
+      "join_room": "加入房間",
+      "room_name": "房間名稱",
+      "room_password": "房間密碼",
+      "max_members": "最大成員數",
+      "room_code": "房間碼",
+      "room_name_placeholder": "輸入房間名稱",
+      "room_password_placeholder": "輸入密碼（可選）",
+      "room_code_placeholder": "輸入房間碼",
+      "upload_files": "上傳檔案到房間",
+      "drag_files_hint": "拖放檔案到此處或點擊上傳",
+      "select_files": "選擇檔案上傳",
+      "shared_files": "房間共享檔案",
+      "no_shared_files": "房間內暫無共享檔案",
+      "upload_hint": "檔案將與房間中的所有成員分享",
+      "download_hint": "上傳檔案後，房間中的所有成員都可以下載",
+      "host_notice": "主持人通知",
+      "host_notice_message": "作為主持人，刷新頁面將自動重連房間。只有點擊「離開房間」或關閉瀏覽器標籤頁才會解散房間。",
+      "member_notice": "成員通知",
+      "member_notice_message": "刷新頁面將自動重連房間。只有點擊「離開房間」或關閉瀏覽器標籤頁才會退出房間。"
+    },
+    "status": {
+      "open_on_other_devices": "在其他裝置上開啟 DropShare 以傳送檔案",
+      "discoverable": "同一網路中的所有人都可以發現你",
+      "known_as": "你的名稱：",
+      "online": "線上",
+      "room_members": "房間成員：",
+      "leave_room": "離開房間"
     },
     "history": {
       "title": "传输历史",
@@ -284,6 +307,14 @@
     "copyright": "© 2024 DropShare。保留所有权利。",
     "made_with": "用 ❤️ 为社区制作"
   },
+  "dialogs": {
+    "file_received": "收到檔案",
+    "ask_save_before_download": "下載前詢問每個檔案的儲存位置",
+    "ignore": "忽略",
+    "send_message": "發送訊息",
+    "send": "發送",
+    "message_received": "收到訊息"
+  },
   "errors": {
     "file_too_large": "文件太大",
     "unsupported_format": "不支持的文件格式",
@@ -291,7 +322,16 @@
     "conversion_failed": "转换失败",
     "network_error": "网络错误",
     "server_error": "服务器错误",
-    "unknown_error": "发生未知错误"
+    "unknown_error": "發生未知錯誤",
+    "file_not_exist": "檔案不存在",
+    "download_failed": "下載失敗，請重試",
+    "copy_failed": "複製失敗，房間代碼：",
+    "file_download_failed": "檔案下載失敗",
+    "room_connection_failed": "房間連接失敗：",
+    "receiving_file_error": "從{username}接收檔案時出錯",
+    "enter_room_name": "請輸入房間名稱",
+    "enter_room_code": "請輸入房間代碼",
+    "network_unavailable": "網路連接不可用，請稍後重試"
   },
   "messages": {
     "file_uploaded": "文件上传成功",
@@ -299,6 +339,24 @@
     "file_downloaded": "文件下载成功",
     "room_created": "房间创建成功",
     "room_joined": "成功加入房间",
-    "settings_saved": "设置保存成功"
+    "settings_saved": "設置保存成功",
+    "room_code_copied": "房間碼已複製到剪貼簿",
+    "file_deleted": "檔案已刪除",
+    "file_download_started": "檔案開始下載",
+    "reconnecting": "正在重連房間...",
+    "join_room_first": "請先加入房間再上傳檔案",
+    "confirm_delete_file": "確定要刪除這個檔案嗎？",
+    "room_disbanded": "房間已解散：",
+    "feature_under_development": "{feature}功能正在開發中",
+    "uploader_offline": "無法下載：上傳者需要在線",
+    "file_unavailable": "檔案不可用，上傳者可能離線",
+    "file_temporarily_unavailable": "檔案暫時不可用",
+    "file_uploaded_to_room": "檔案\"{filename}\"已上傳到房間",
+    "downloading_file": "正在下載：{filename}",
+    "files_redistributed": "已重新分發{count}個檔案給房間成員",
+    "user_shared_file": "{username}分享了檔案：{filename}",
+    "user_shared_file_unavailable": "{username}分享了檔案：{filename}（檔案過大或暫時不可用）",
+    "files_restored": "已恢復{count}個之前的檔案",
+    "received_file": "收到檔案：{filename}"
   }
 }

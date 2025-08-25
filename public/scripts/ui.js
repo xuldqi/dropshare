@@ -77,10 +77,15 @@ function updateDisplayName(displayName, deviceName) {
     const $displayName = $('displayName');
     let displayText = '';
     
-    // 确保始终检查是否有i18n可用，并应用正确的翻译
-    if (window.DROPSHARE_I18N) {
-        const prefix = window.DROPSHARE_I18N.translate('you_are_known_as');
-        displayText = prefix + ' ' + displayName;
+    // 使用翻译系统显示用户名称
+    if (window.i18nUtils && typeof window.i18nUtils.t === 'function') {
+        const prefix = window.i18nUtils.t('transfer.status.known_as');
+        // 检查翻译是否成功，如果返回原键值说明翻译失败
+        if (prefix && prefix !== 'transfer.status.known_as') {
+            displayText = prefix + ' ' + displayName;
+        } else {
+            displayText = 'You are known as ' + displayName;
+        }
     } else {
         displayText = 'You are known as ' + displayName;
     }
@@ -95,9 +100,9 @@ function updateDisplayName(displayName, deviceName) {
 
 // 当语言改变时更新所有需要翻译的文本
 document.addEventListener('language-changed', () => {
-    // 更新当前用户显示名称
+    // 更新当前用户显示名称  
     if (currentDisplayName) {
-        updateDisplayName(currentDisplayName);
+        updateDisplayName(currentDisplayName, null);
         updateRoomUserName(currentDisplayName);
     }
     
@@ -109,38 +114,46 @@ document.addEventListener('language-changed', () => {
     });
 });
 
-// 语言选择器功能 - 延迟初始化以确保DROPSHARE_I18N已加载
+// 语言选择器功能 - 延迟初始化以确保i18nUtils已加载
 function initializeLanguageSelector() {
     const languageSelector = document.getElementById('language-selector');
-    if (languageSelector && window.DROPSHARE_I18N) {
+    if (languageSelector && window.i18nUtils) {
+        // 当i18n系统加载完成后，重新渲染显示名称
+        if (currentDisplayName) {
+            updateDisplayName(currentDisplayName);
+        }
         // 移除之前的监听器
         languageSelector.onchange = null;
         
         languageSelector.addEventListener('change', (e) => {
-            window.DROPSHARE_I18N.changeLanguage(e.target.value);
+            window.i18nUtils.setLanguage(e.target.value);
         });
 
         // 设置当前选中的语言
-        languageSelector.value = window.DROPSHARE_I18N.getCurrentLanguage();
+        languageSelector.value = window.i18nUtils.getCurrentLanguage() || 'en';
         
-        console.log('语言选择器初始化完成, 当前语言:', window.DROPSHARE_I18N.getCurrentLanguage());
+        console.log('语言选择器初始化完成, 当前语言:', window.i18nUtils.getCurrentLanguage() || 'en');
         return true;
     }
     return false;
 }
 
-// 等待DROPSHARE_I18N加载完成
-function waitForDROPSHAREI18N() {
-    if (window.DROPSHARE_I18N) {
+// 等待i18nUtils加载完成
+function waitForI18nUtils() {
+    if (window.i18nUtils) {
         initializeLanguageSelector();
+        // 确保在i18n系统加载完成后重新渲染显示名称
+        if (currentDisplayName) {
+            updateDisplayName(currentDisplayName, null);
+        }
     } else {
-        setTimeout(waitForDROPSHAREI18N, 50);
+        setTimeout(waitForI18nUtils, 50);
     }
 }
 
-// DOM加载完成后等待DROPSHARE_I18N
+// DOM加载完成后等待i18nUtils
 document.addEventListener('DOMContentLoaded', () => {
-    waitForDROPSHAREI18N();
+    waitForI18nUtils();
 });
 
 class PeersUI {
@@ -279,8 +292,8 @@ class PeerUI {
         
         // 获取当前语言
         let lang = 'en';
-        if (window.DROPSHARE_I18N) {
-            lang = window.DROPSHARE_I18N.getCurrentLanguage();
+        if (window.i18nUtils) {
+            lang = window.i18nUtils.getCurrentLanguage() || 'en';
         }
         
         // 设备类型的本地化显示名称

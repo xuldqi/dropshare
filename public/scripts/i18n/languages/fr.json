@@ -34,7 +34,8 @@
     "contact": "Contact",
     "privacy": "Confidentialité",
     "terms": "Conditions",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "files": "fichiers"
   },
   "navigation": {
     "home": "Accueil",
@@ -222,14 +223,36 @@
       "button": "Choose Files"
     },
     "rooms": {
-      "title": "Private Rooms",
-      "subtitle": "Create secure rooms for file sharing",
-      "create_room": "Create Room",
-      "join_room": "Join Room",
-      "room_name": "Room Name",
-      "room_password": "Room Password",
-      "room_name_placeholder": "Enter room name",
-      "room_password_placeholder": "Enter password (optional)"
+      "title": "Salles multi-utilisateurs",
+      "subtitle": "Partagez rapidement des fichiers avec des utilisateurs locaux ou distants via des codes de salle",
+      "create_room": "Créer une salle",
+      "join_room": "Rejoindre une salle",
+      "room_name": "Nom de la salle",
+      "room_password": "Mot de passe de la salle",
+      "max_members": "Nombre maximum de membres",
+      "room_code": "Code de la salle",
+      "room_name_placeholder": "Saisir le nom de la salle",
+      "room_password_placeholder": "Saisir le mot de passe (optionnel)",
+      "room_code_placeholder": "Saisir le code de la salle",
+      "upload_files": "Télécharger des fichiers dans la salle",
+      "drag_files_hint": "Glissez les fichiers ici ou cliquez pour télécharger",
+      "select_files": "Sélectionner les fichiers à télécharger",
+      "shared_files": "Fichiers partagés de la salle",
+      "no_shared_files": "Aucun fichier partagé dans la salle pour le moment",
+      "upload_hint": "Les fichiers seront partagés avec tous les membres de la salle",
+      "download_hint": "Après le téléchargement des fichiers, tous les membres de la salle peuvent les télécharger",
+      "host_notice": "Avis de l'hôte",
+      "host_notice_message": "En tant qu'hôte, actualiser la page se reconnectera automatiquement à la salle. Seul cliquer sur \"Quitter la salle\" ou fermer l'onglet du navigateur dissoudra la salle.",
+      "member_notice": "Avis du membre",
+      "member_notice_message": "Actualiser la page se reconnectera automatiquement à la salle. Seul cliquer sur \"Quitter la salle\" ou fermer l'onglet du navigateur quittera la salle."
+    },
+    "status": {
+      "open_on_other_devices": "Ouvrez DropShare sur d'autres appareils pour envoyer des fichiers",
+      "discoverable": "Vous êtes détectable par tous sur ce réseau",
+      "known_as": "Votre nom :",
+      "online": "en ligne",
+      "room_members": "Membres de la salle :",
+      "leave_room": "Quitter la salle"
     },
     "history": {
       "title": "Transfer History",
@@ -278,6 +301,14 @@
     "copyright": "© 2024 DropShare. All rights reserved.",
     "made_with": "Made with ❤️ for the community"
   },
+  "dialogs": {
+    "file_received": "Fichier reçu",
+    "ask_save_before_download": "Demander où enregistrer chaque fichier avant téléchargement",
+    "ignore": "Ignorer",
+    "send_message": "Envoyer un message",
+    "send": "Envoyer",
+    "message_received": "Message reçu"
+  },
   "errors": {
     "file_too_large": "File is too large",
     "unsupported_format": "Unsupported file format",
@@ -285,7 +316,16 @@
     "conversion_failed": "Conversion failed",
     "network_error": "Network error",
     "server_error": "Server error",
-    "unknown_error": "An unknown error occurred"
+    "unknown_error": "Une erreur inconnue s'est produite",
+    "file_not_exist": "Le fichier n'existe pas",
+    "download_failed": "Téléchargement échoué, veuillez réessayer",
+    "copy_failed": "Copie échouée, code de salle : ",
+    "file_download_failed": "Téléchargement de fichier échoué",
+    "room_connection_failed": "Connexion de salle échouée : ",
+    "receiving_file_error": "Erreur lors de la réception du fichier de {username}",
+    "enter_room_name": "Veuillez saisir le nom de la salle",
+    "enter_room_code": "Veuillez saisir le code de la salle",
+    "network_unavailable": "Connexion réseau indisponible, veuillez réessayer plus tard"
   },
   "messages": {
     "file_uploaded": "File uploaded successfully",
@@ -293,6 +333,24 @@
     "file_downloaded": "File downloaded successfully",
     "room_created": "Room created successfully",
     "room_joined": "Joined room successfully",
-    "settings_saved": "Settings saved successfully"
+    "settings_saved": "Paramètres enregistrés avec succès",
+    "room_code_copied": "Code de salle copié dans le presse-papiers",
+    "file_deleted": "Fichier supprimé",
+    "file_download_started": "Téléchargement de fichier démarré",
+    "reconnecting": "Reconnexion à la salle...",
+    "join_room_first": "Veuillez d'abord rejoindre une salle pour télécharger des fichiers",
+    "confirm_delete_file": "Êtes-vous sûr de vouloir supprimer ce fichier ?",
+    "room_disbanded": "Salle dissoute : ",
+    "feature_under_development": "La fonctionnalité {feature} est en développement",
+    "uploader_offline": "Impossible de télécharger : l'uploader doit être en ligne",
+    "file_unavailable": "Fichier indisponible, l'uploader peut être hors ligne",
+    "file_temporarily_unavailable": "Fichier temporairement indisponible",
+    "file_uploaded_to_room": "Fichier \"{filename}\" téléchargé dans la salle",
+    "downloading_file": "Téléchargement : {filename}",
+    "files_redistributed": "Redistribué {count} fichiers aux membres de la salle",
+    "user_shared_file": "{username} a partagé le fichier : {filename}",
+    "user_shared_file_unavailable": "{username} a partagé le fichier : {filename} (fichier trop volumineux ou temporairement indisponible)",
+    "files_restored": "Restauré {count} fichiers précédents",
+    "received_file": "Fichier reçu : {filename}"
   }
 }

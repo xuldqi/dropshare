@@ -34,7 +34,8 @@
     "contact": "Contact",
     "privacy": "Privacy",
     "terms": "Terms",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "files": "files"
   },
   "navigation": {
     "home": "Home",
@@ -222,14 +223,36 @@
       "button": "Choose Files"
     },
     "rooms": {
-      "title": "Private Rooms",
-      "subtitle": "Create secure rooms for file sharing",
+      "title": "Multi-user Rooms",
+      "subtitle": "Quickly share files with local network users or remote users through room codes",
       "create_room": "Create Room",
       "join_room": "Join Room",
       "room_name": "Room Name",
       "room_password": "Room Password",
+      "max_members": "Max Members",
+      "room_code": "Room Code",
       "room_name_placeholder": "Enter room name",
-      "room_password_placeholder": "Enter password (optional)"
+      "room_password_placeholder": "Enter password (optional)",
+      "room_code_placeholder": "Enter room code",
+      "upload_files": "Upload Files to Room",
+      "drag_files_hint": "Drag files here or click to upload",
+      "select_files": "Select Files to Upload",
+      "shared_files": "Room Shared Files",
+      "no_shared_files": "No shared files in the room yet",
+      "upload_hint": "Files will be shared with all members in the room",
+      "download_hint": "After uploading files, all members in the room can download them",
+      "host_notice": "Host Notice",
+      "host_notice_message": "As the host, refreshing the page will automatically reconnect to the room. Only clicking \"Leave Room\" or closing the browser tab will disband the room.",
+      "member_notice": "Member Notice",
+      "member_notice_message": "Refreshing the page will automatically reconnect to the room. Only clicking \"Leave Room\" or closing the browser tab will exit the room."
+    },
+    "status": {
+      "open_on_other_devices": "Open DropShare on other devices to send files",
+      "discoverable": "You are discoverable by everyone on this network",
+      "known_as": "You are known as",
+      "online": "online",
+      "room_members": "Room Members:",
+      "leave_room": "Leave Room"
     },
     "history": {
       "title": "Transfer History",
@@ -284,6 +307,14 @@
     "copyright": "© 2024 DropShare. All rights reserved.",
     "made_with": "Made with ❤️ for the community"
   },
+  "dialogs": {
+    "file_received": "File Received",
+    "ask_save_before_download": "Ask to save each file before downloading",
+    "ignore": "Ignore",
+    "send_message": "Send a Message",
+    "send": "Send",
+    "message_received": "Message Received"
+  },
   "errors": {
     "file_too_large": "File is too large",
     "unsupported_format": "Unsupported file format",
@@ -291,7 +322,16 @@
     "conversion_failed": "Conversion failed",
     "network_error": "Network error",
     "server_error": "Server error",
-    "unknown_error": "An unknown error occurred"
+    "unknown_error": "An unknown error occurred",
+    "file_not_exist": "File does not exist",
+    "download_failed": "Download failed, please try again",
+    "copy_failed": "Copy failed, room code: ",
+    "file_download_failed": "File download failed",
+    "room_connection_failed": "Room connection failed: ",
+    "receiving_file_error": "Error receiving file from {username}",
+    "enter_room_name": "Please enter room name",
+    "enter_room_code": "Please enter room code",
+    "network_unavailable": "Network connection unavailable, please try again later"
   },
   "messages": {
     "file_uploaded": "File uploaded successfully",
@@ -299,6 +339,24 @@
     "file_downloaded": "File downloaded successfully",
     "room_created": "Room created successfully",
     "room_joined": "Joined room successfully",
-    "settings_saved": "Settings saved successfully"
+    "settings_saved": "Settings saved successfully",
+    "room_code_copied": "Room code copied to clipboard",
+    "file_deleted": "File deleted",
+    "file_download_started": "File download started",
+    "reconnecting": "Reconnecting to room...",
+    "join_room_first": "Please join a room first to upload files",
+    "confirm_delete_file": "Are you sure you want to delete this file?",
+    "room_disbanded": "Room disbanded: ",
+    "feature_under_development": "{feature} feature is under development",
+    "uploader_offline": "Unable to download: uploader needs to be online",
+    "file_unavailable": "File unavailable, uploader may be offline",
+    "file_temporarily_unavailable": "File temporarily unavailable",
+    "file_uploaded_to_room": "File \"{filename}\" uploaded to room",
+    "downloading_file": "Downloading: {filename}",
+    "files_redistributed": "Redistributed {count} files to room members",
+    "user_shared_file": "{username} shared file: {filename}",
+    "user_shared_file_unavailable": "{username} shared file: {filename} (file too large or temporarily unavailable)",
+    "files_restored": "Restored {count} previous files",
+    "received_file": "Received file: {filename}"
   }
 }

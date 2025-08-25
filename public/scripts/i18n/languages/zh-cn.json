@@ -34,7 +34,8 @@
     "contact": "联系",
     "privacy": "隐私",
     "terms": "条款",
-    "faq": "常见问题"
+    "faq": "常见问题",
+    "files": "个文件"
   },
   "navigation": {
     "home": "首页",
@@ -222,14 +223,36 @@
       "button": "选择文件"
     },
     "rooms": {
-      "title": "私人房间",
-      "subtitle": "创建安全的文件分享房间",
+      "title": "多人房间",
+      "subtitle": "通过房间码与同一网络或远程用户快速分享文件",
       "create_room": "创建房间",
       "join_room": "加入房间",
       "room_name": "房间名称",
       "room_password": "房间密码",
+      "max_members": "最大成员数",
+      "room_code": "房间码",
       "room_name_placeholder": "输入房间名称",
-      "room_password_placeholder": "输入密码（可选）"
+      "room_password_placeholder": "输入密码（可选）",
+      "room_code_placeholder": "输入房间码",
+      "upload_files": "上传文件到房间",
+      "drag_files_hint": "拖放文件到此处或点击上传",
+      "select_files": "选择文件上传",
+      "shared_files": "房间共享文件",
+      "no_shared_files": "房间内暂无共享文件",
+      "upload_hint": "文件将与房间中的所有成员共享",
+      "download_hint": "上传文件后，房间中的所有成员都可以下载",
+      "host_notice": "主持人通知",
+      "host_notice_message": "作为主持人，刷新页面将自动重连房间。只有点击"离开房间"或关闭浏览器标签页才会解散房间。",
+      "member_notice": "成员通知",
+      "member_notice_message": "刷新页面将自动重连房间。只有点击"离开房间"或关闭浏览器标签页才会退出房间。"
+    },
+    "status": {
+      "open_on_other_devices": "在其他设备上打开 DropShare 以发送文件",
+      "discoverable": "同一网络中的所有人都可以发现你",
+      "known_as": "你的名称：",
+      "online": "在线",
+      "room_members": "房间成员：",
+      "leave_room": "离开房间"
     },
     "history": {
       "title": "传输历史",
@@ -284,6 +307,14 @@
     "copyright": "© 2024 DropShare。保留所有权利。",
     "made_with": "用 ❤️ 为社区制作"
   },
+  "dialogs": {
+    "file_received": "收到文件",
+    "ask_save_before_download": "下载前询问每个文件的保存位置",
+    "ignore": "忽略",
+    "send_message": "发送消息",
+    "send": "发送",
+    "message_received": "收到消息"
+  },
   "errors": {
     "file_too_large": "文件太大",
     "unsupported_format": "不支持的文件格式",
@@ -291,7 +322,16 @@
     "conversion_failed": "转换失败",
     "network_error": "网络错误",
     "server_error": "服务器错误",
-    "unknown_error": "发生未知错误"
+    "unknown_error": "发生未知错误",
+    "file_not_exist": "文件不存在",
+    "download_failed": "下载失败，请重试",
+    "copy_failed": "复制失败，房间代码：",
+    "file_download_failed": "文件下载失败",
+    "room_connection_failed": "房间连接失败：",
+    "receiving_file_error": "从{username}接收文件时出错",
+    "enter_room_name": "请输入房间名称",
+    "enter_room_code": "请输入房间代码",
+    "network_unavailable": "网络连接不可用，请稍后重试"
   },
   "messages": {
     "file_uploaded": "文件上传成功",
@@ -299,6 +339,24 @@
     "file_downloaded": "文件下载成功",
     "room_created": "房间创建成功",
     "room_joined": "成功加入房间",
-    "settings_saved": "设置保存成功"
+    "settings_saved": "设置保存成功",
+    "room_code_copied": "房间码已复制到剪贴板",
+    "file_deleted": "文件已删除",
+    "file_download_started": "文件开始下载",
+    "reconnecting": "正在重连房间...",
+    "join_room_first": "请先加入房间再上传文件",
+    "confirm_delete_file": "确定要删除这个文件吗？",
+    "room_disbanded": "房间已解散：",
+    "feature_under_development": "{feature}功能正在开发中",
+    "uploader_offline": "无法下载：上传者需要在线",
+    "file_unavailable": "文件不可用，上传者可能离线",
+    "file_temporarily_unavailable": "文件暂时不可用",
+    "file_uploaded_to_room": "文件\"{filename}\"已上传到房间",
+    "downloading_file": "正在下载：{filename}",
+    "files_redistributed": "已重新分发{count}个文件给房间成员",
+    "user_shared_file": "{username}分享了文件：{filename}",
+    "user_shared_file_unavailable": "{username}分享了文件：{filename}（文件过大或暂时不可用）",
+    "files_restored": "已恢复{count}个之前的文件",
+    "received_file": "收到文件：{filename}"
   }
 }

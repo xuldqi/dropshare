@@ -121,7 +121,7 @@
             window.DropshareI18N.addObserver((event, data) => {
                 if (event === 'languageChanged') {
                     // 触发自定义事件
-                    document.dispatchEvent(new CustomEvent('i18n:languageChanged', {
+                    document.dispatchEvent(new CustomEvent('language-changed', {
                         detail: {
                             language: data.language,
                             previousLanguage: data.previousLanguage

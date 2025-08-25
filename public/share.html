@@ -1058,6 +1058,10 @@
 
         }
     </style>
+    <!-- I18N scripts -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
 </head>
 
 <body translate="no">
@@ -1075,24 +1079,26 @@
             <!-- 导航菜单 -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="/share.html" class="nav-link active">Transfer</a>
+                    <a href="/share.html" class="nav-link active" data-i18n="navigation.transfer">Transfer</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/share.html#rooms" class="nav-link">Rooms</a>
+                    <a href="/share.html#rooms" class="nav-link" data-i18n="navigation.rooms">Rooms</a>
                 </li>
                 <li class="nav-item">
-                    <a href="image-tools.html" class="nav-link">Images</a>
+                    <a href="image-tools.html" class="nav-link" data-i18n="navigation.images">Images</a>
                 </li>
                 <li class="nav-item">
-                    <a href="audio-tools.html" class="nav-link">Audio</a>
+                    <a href="audio-tools.html" class="nav-link" data-i18n="navigation.audio">Audio</a>
                 </li>
                 <li class="nav-item">
-                    <a href="video-tools.html" class="nav-link">Video</a>
+                    <a href="video-tools.html" class="nav-link" data-i18n="navigation.video">Video</a>
                 </li>
                 <li class="nav-item">
-                    <a href="document-tools.html" class="nav-link">Files</a>
+                    <a href="document-tools.html" class="nav-link" data-i18n="navigation.files">Files</a>
                 </li>
             </ul>
+            <!-- 语言选择器 -->
+            <div data-i18n-selector></div>
         </div>
     </nav>
 
@@ -1132,37 +1138,37 @@
             <!-- 房间功能容器 -->
             <div id="roomContainer" class="room-container">
                 <div class="room-header">
-                    <h1 class="room-title">Multi-user Sharing Rooms</h1>
-                    <p class="room-subtitle">Quickly share files with local network users or remote users through room codes</p>
+                    <h1 class="room-title" data-i18n="transfer.rooms.title">Multi-user Sharing Rooms</h1>
+                    <p class="room-subtitle" data-i18n="transfer.rooms.subtitle">Quickly share files with local network users or remote users through room codes</p>
                 </div>
 
                 <!-- 房间选项按钮 -->
                 <div class="room-options">
-                    <button id="createRoomBtn" class="room-btn">Create Room</button>
-                    <button id="joinRoomBtn" class="room-btn secondary">Join Room</button>
+                    <button id="createRoomBtn" class="room-btn" data-i18n="transfer.rooms.create_room">Create Room</button>
+                    <button id="joinRoomBtn" class="room-btn secondary" data-i18n="transfer.rooms.join_room">Join Room</button>
                 </div>
 
                 <!-- 表单容器，用于居中 -->
                 <div class="room-forms-container">
                     <!-- 创建房间表单 -->
                     <div id="createRoomForm" class="room-form">
-                        <h3>Create New Room</h3>
+                        <h3 data-i18n="transfer.rooms.create_room">Create New Room</h3>
                         <form autocomplete="off">
                             <div class="form-group">
-                                <label class="form-label">Room Name</label>
-                                <input type="text" id="roomName" name="room-name" class="form-input" placeholder="Enter room name" maxlength="20" autocomplete="off">
+                                <label class="form-label" data-i18n="transfer.rooms.room_name">Room Name</label>
+                                <input type="text" id="roomName" name="room-name" class="form-input" placeholder="Enter room name" data-i18n="transfer.rooms.room_name_placeholder" maxlength="20" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Room Password (Optional)</label>
-                                <input type="password" id="roomPassword" name="room-password" class="form-input" placeholder="Set room password" maxlength="16" autocomplete="new-password">
+                                <label class="form-label" data-i18n="transfer.rooms.room_password">Room Password</label>
+                                <input type="password" id="roomPassword" name="room-password" class="form-input" placeholder="Set room password" data-i18n="transfer.rooms.room_password_placeholder" maxlength="16" autocomplete="new-password">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Max Members</label>
+                                <label class="form-label" data-i18n="transfer.rooms.max_members">Max Members</label>
                                 <input type="number" id="maxMembers" name="max-members" class="form-input" value="10" min="2" max="50" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmCreateRoom" class="btn-primary">Create Room</button>
-                                <button type="button" id="cancelCreateRoom" class="btn-cancel">Cancel</button>
+                                <button type="button" id="confirmCreateRoom" class="btn-primary" data-i18n="transfer.rooms.create_room">Create Room</button>
+                                <button type="button" id="cancelCreateRoom" class="btn-cancel" data-i18n="common.cancel">Cancel</button>
                             </div>
                         </form>
                         <div id="createRoomError" class="error-message" style="display: none;"></div>
@@ -1170,19 +1176,19 @@
 
                     <!-- 加入房间表单 -->
                     <div id="joinRoomForm" class="room-form">
-                        <h3>Join Room</h3>
+                        <h3 data-i18n="transfer.rooms.join_room">Join Room</h3>
                         <form autocomplete="off">
                             <div class="form-group">
-                                <label class="form-label">Room Code</label>
-                                <input type="text" id="roomCode" name="room-code" class="form-input" placeholder="Enter room code" maxlength="10" style="text-transform: uppercase;" autocomplete="off">
+                                <label class="form-label" data-i18n="transfer.rooms.room_code">Room Code</label>
+                                <input type="text" id="roomCode" name="room-code" class="form-input" placeholder="Enter room code" data-i18n="transfer.rooms.room_code_placeholder" maxlength="10" style="text-transform: uppercase;" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Room Password (If Required)</label>
-                                <input type="password" id="joinRoomPassword" name="join-password" class="form-input" placeholder="Enter room password" autocomplete="off">
+                                <label class="form-label" data-i18n="transfer.rooms.room_password">Room Password</label>
+                                <input type="password" id="joinRoomPassword" name="join-password" class="form-input" placeholder="Enter room password" data-i18n="transfer.rooms.room_password_placeholder" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmJoinRoom" class="btn-primary">Join Room</button>
-                                <button type="button" id="cancelJoinRoom" class="btn-cancel">Cancel</button>
+                                <button type="button" id="confirmJoinRoom" class="btn-primary" data-i18n="transfer.rooms.join_room">Join Room</button>
+                                <button type="button" id="cancelJoinRoom" class="btn-cancel" data-i18n="common.cancel">Cancel</button>
                             </div>
                         </form>
                         <div id="joinRoomError" class="error-message" style="display: none;"></div>
@@ -1197,13 +1203,13 @@
                             <span class="room-name-display" id="roomNameDisplay"></span>
                             <div class="room-code-row">
                                 <span class="room-code-display" id="roomCodeDisplay"></span>
-                                <button id="copyRoomCode" class="copy-btn-small" title="Copy room code">📋</button>
+                                <button id="copyRoomCode" class="copy-btn-small" title="Copy" data-i18n="common.copy">📋</button>
                             </div>
                             <div class="current-user-info">
-                                <span class="current-user-label">Your name:</span>
+                                <span class="current-user-label" data-i18n="transfer.status.known_as">Your name:</span>
                                 <span class="current-user-name" id="currentUserName"></span>
                             </div>
-                            <span class="member-count" id="memberCount"><span id="memberCountNumber">2</span><span> online</span></span>
+                            <span class="member-count" id="memberCount"><span id="memberCountNumber">2</span><span data-i18n="transfer.status.online"> online</span></span>
                         </div>
                         <button class="toggle-details-btn" id="toggleDetailsBtn">
                             <svg class="toggle-icon" viewBox="0 0 24 24" width="16" height="16">
@@ -1215,14 +1221,14 @@
                     <!-- 房间详细信息（可折叠） -->
                     <div class="room-details" id="roomDetails">
                         <div class="room-members-section">
-                            <strong>Room Members:</strong>
+                            <strong data-i18n="transfer.status.room_members">Room Members:</strong>
                             <div id="memberList" class="member-list"></div>
                         </div>
                     </div>
 
                     <!-- 操作按钮 -->
                     <div class="room-actions">
-                        <button id="leaveRoomBtn" class="btn-leave-room">Leave Room</button>
+                        <button id="leaveRoomBtn" class="btn-leave-room" data-i18n="transfer.status.leave_room">Leave Room</button>
                     </div>
                 </div>
 
@@ -1242,16 +1248,16 @@
                     <div class="room-file-sharing">
                         <!-- 文件上传区域 -->
                         <div class="upload-section">
-                            <h3>📤 Upload Files to Room</h3>
+                            <h3 data-i18n="transfer.rooms.upload_files">📤 Upload Files to Room</h3>
                             <div id="dropZone" class="drop-zone">
                                 <div class="drop-zone-content">
                                     <svg class="upload-icon" viewBox="0 0 24 24" width="48" height="48">
                                         <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                                     </svg>
-                                    <p>Drag files here or click to upload</p>
-                                    <p class="upload-hint">Files will be shared with all members in the room</p>
+                                    <p data-i18n="transfer.rooms.drag_files_hint">Drag files here or click to upload</p>
+                                    <p class="upload-hint" data-i18n="transfer.rooms.upload_hint">Files will be shared with all members in the room</p>
                                     <input type="file" id="fileInput" multiple hidden>
-                                    <button id="selectFilesBtn" class="select-files-btn">Select Files to Upload</button>
+                                    <button id="selectFilesBtn" class="select-files-btn" data-i18n="transfer.rooms.select_files">Select Files to Upload</button>
                                 </div>
                             </div>
                         </div>
@@ -1259,13 +1265,13 @@
                         <!-- 房间共享文件列表 -->
                         <div class="shared-files-section">
                             <div class="shared-files-header">
-                                <h3>📁 Room Shared Files</h3>
-                                <span class="file-count" id="fileCount">0 <span>files</span></span>
+                                <h3 data-i18n="transfer.rooms.shared_files">📁 Room Shared Files</h3>
+                                <span class="file-count" id="fileCount">0 <span data-i18n="common.files">files</span></span>
                             </div>
                             <div id="sharedFilesList" class="shared-files-list">
                                 <div class="no-shared-files">
-                                    <p>No shared files in the room yet</p>
-                                    <p class="hint">After uploading files, all members in the room can download them</p>
+                                    <p data-i18n="transfer.rooms.no_shared_files">No shared files in the room yet</p>
+                                    <p class="hint" data-i18n="transfer.rooms.download_hint">After uploading files, all members in the room can download them</p>
                                 </div>
                             </div>
                         </div>
@@ -1277,7 +1283,7 @@
             <div id="peerContainer" style="display: block;">
                 <x-peers class="center"></x-peers>
                 <x-no-peers>
-                    <h2>Open DropShare on other devices to send files</h2>
+                    <h2 data-i18n="transfer.status.open_on_other_devices">Open DropShare on other devices to send files</h2>
                 </x-no-peers>
             </div>
         </div>
@@ -1292,7 +1298,7 @@
                 </div>
                 <div class="text-container">
                     <div id="displayName" class="text-line"></div>
-                    <div class="font-body2 text-line">You are discoverable by everyone on this network</div>
+                    <div class="font-body2 text-line" data-i18n="transfer.status.discoverable">You are discoverable by everyone on this network</div>
                 </div>
             </footer>
         </div>
@@ -1301,19 +1307,19 @@
     <x-dialog id="receiveDialog">
         <x-background class="full center">
             <x-paper shadow="2">
-                <h3>File Received</h3>
+                <h3 data-i18n="dialogs.file_received">File Received</h3>
                 <div class="font-subheading" id="fileName"></div>
                 <div class="font-body2" id="fileSize"></div>
                 <div class='preview' style="visibility: hidden;">
                     <img id='img-preview' src="">
                 </div>
                 <div class="row">
-                    <label for="autoDownload" class="grow">Ask to save each file before downloading</label>
+                    <label for="autoDownload" class="grow" data-i18n="dialogs.ask_save_before_download">Ask to save each file before downloading</label>
                     <input type="checkbox" id="autoDownload" checked="">
                 </div>
                 <div class="row-reverse">
-                    <a class="button" close id="download" title="Download File" autofocus>Save</a>
-                    <button class="button" close>Ignore</button>
+                    <a class="button" close id="download" title="Download File" autofocus data-i18n="common.save">Save</a>
+                    <button class="button" close data-i18n="dialogs.ignore">Ignore</button>
                 </div>
             </x-paper>
         </x-background>
@@ -1323,11 +1329,11 @@
         <form action="#">
             <x-background class="full center">
                 <x-paper shadow="2">
-                    <h3>Send a Message</h3>
+                    <h3 data-i18n="dialogs.send_message">Send a Message</h3>
                     <div id="textInput" class="textarea" role="textbox" data-placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
                     <div class="row-reverse">
-                        <button class="button" type="submit" close>Send</button>
-                        <a class="button" close>Cancel</a>
+                        <button class="button" type="submit" close data-i18n="dialogs.send">Send</button>
+                        <a class="button" close data-i18n="common.cancel">Cancel</a>
                     </div>
                 </x-paper>
             </x-background>
@@ -1337,11 +1343,11 @@
     <x-dialog id="receiveTextDialog">
         <x-background class="full center">
             <x-paper shadow="2">
-                <h3>Message Received</h3>
+                <h3 data-i18n="dialogs.message_received">Message Received</h3>
                 <div class="font-subheading" id="text"></div>
                 <div class="row-reverse">
-                    <button class="button" id="copy" close autofocus>Copy</button>
-                    <button class="button" close>Close</button>
+                    <button class="button" id="copy" close autofocus data-i18n="common.copy">Copy</button>
+                    <button class="button" close data-i18n="common.close">Close</button>
                 </div>
             </x-paper>
         </x-background>
@@ -1704,7 +1710,7 @@
             // 处理文件选择
             handleFileSelection(files) {
                 if (!this.isInRoom) {
-                    alert('Please join a room first to upload files');
+                    alert(window.i18nUtils?.t('messages.join_room_first') || 'Please join a room first to upload files');
                     return;
                 }
 
@@ -1741,7 +1747,7 @@
                     // 广播给房间内其他成员
                     this.broadcastFileToRoom(fileInfo);
 
-                    this.showToast(`File "${file.name}" uploaded to room`);
+                    this.showToast(window.i18nUtils?.t('messages.file_uploaded_to_room')?.replace('{filename}', file.name) || `File "${file.name}" uploaded to room`);
                 }
             }
 
@@ -1806,7 +1812,7 @@
             downloadSharedFile(fileId) {
                 const fileItem = document.querySelector(`[data-file-id="${fileId}"]`);
                 if (!fileItem || !fileItem._fileData) {
-                    this.showToast('File does not exist');
+                    this.showToast(window.i18nUtils?.t('errors.file_not_exist') || 'File does not exist');
                     return;
                 }
 
@@ -1815,15 +1821,15 @@
                 // 检查文件是否可用
                 if (!fileData.file) {
                     if (fileData.isRemote) {
-                        this.showToast('Unable to download: uploader needs to be online');
+                        this.showToast(window.i18nUtils?.t('messages.uploader_offline') || 'Unable to download: uploader needs to be online');
                     } else {
-                        this.showToast('File unavailable, uploader may be offline');
+                        this.showToast(window.i18nUtils?.t('messages.file_unavailable') || 'File unavailable, uploader may be offline');
                     }
                     return;
                 }
 
                 if (fileData.isAvailable === false) {
-                    this.showToast('File temporarily unavailable');
+                    this.showToast(window.i18nUtils?.t('messages.file_temporarily_unavailable') || 'File temporarily unavailable');
                     return;
                 }
 
@@ -1837,16 +1843,16 @@
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
 
-                    this.showToast(`Downloading: ${fileData.name}`);
+                    this.showToast(window.i18nUtils?.t('messages.downloading_file')?.replace('{filename}', fileData.name) || `Downloading: ${fileData.name}`);
                 } catch (error) {
                     console.error('下载文件失败:', error);
-                    this.showToast('Download failed, please try again');
+                    this.showToast(window.i18nUtils?.t('errors.download_failed') || 'Download failed, please try again');
                 }
             }
 
             // 移除共享文件
             async removeSharedFile(fileId) {
-                if (!confirm('Are you sure you want to delete this file?')) {
+                if (!confirm(window.i18nUtils?.t('messages.confirm_delete_file') || 'Are you sure you want to delete this file?')) {
                     return;
                 }
 
@@ -1861,7 +1867,7 @@
                     // 广播删除消息给房间内其他成员
                     this.broadcastFileRemoval(fileId);
 
-                    this.showToast('File deleted');
+                    this.showToast(window.i18nUtils?.t('messages.file_deleted') || 'File deleted');
                 }
 
                 // 检查是否需要显示空状态
@@ -2105,12 +2111,14 @@
             // 复制房间码
             copyRoomCode() {
                 const roomCodeText = document.getElementById('roomCodeDisplay').textContent;
-                // 提取房间码部分（去掉"Room Code: "前缀）
-                const roomCode = roomCodeText.replace('Room Code: ', '');
+                // 根据当前语言前缀移除“Room Code: ”
+                let prefix = (window.i18nUtils ? window.i18nUtils.t('transfer.rooms.room_code') : 'Room Code') + ': ';
+                const roomCode = roomCodeText.startsWith(prefix) ? roomCodeText.slice(prefix.length) : roomCodeText;
 
                 if (navigator.clipboard && window.isSecureContext) {
                     navigator.clipboard.writeText(roomCode).then(() => {
-                        this.showToast('Room code copied to clipboard');
+                        const msg = window.i18nUtils ? window.i18nUtils.t('messages.room_code_copied') : 'Room code copied to clipboard';
+                        this.showToast(msg);
                     }).catch(err => {
                         console.error('复制失败:', err);
                         this.fallbackCopyRoomCode(roomCode);
@@ -2129,10 +2137,10 @@
                 textArea.select();
                 try {
                     document.execCommand('copy');
-                    this.showToast('Room code copied to clipboard');
+                    this.showToast(window.i18nUtils?.t('messages.room_code_copied') || 'Room code copied to clipboard');
                 } catch (err) {
                     console.error('复制失败:', err);
-                    alert('Copy failed, room code: ' + roomCode);
+                    alert((window.i18nUtils?.t('errors.copy_failed') || 'Copy failed, room code: ') + roomCode);
                 }
                 document.body.removeChild(textArea);
             }
@@ -2205,7 +2213,7 @@
                 const maxMembers = parseInt(document.getElementById('maxMembers').value);
 
                 if (!roomName) {
-                    this.showError('createRoomError', 'Please enter room name');
+                    this.showError('createRoomError', window.i18nUtils?.t('errors.enter_room_name') || 'Please enter room name');
                     return;
                 }
 
@@ -2231,7 +2239,7 @@
                 const password = document.getElementById('joinRoomPassword').value;
 
                 if (!roomCode) {
-                    this.showError('joinRoomError', 'Please enter room code');
+                    this.showError('joinRoomError', window.i18nUtils?.t('errors.enter_room_code') || 'Please enter room code');
                     return;
                 }
 
@@ -2268,7 +2276,7 @@
                 } else {
                     console.warn('Network connection unavailable, message send failed:', message);
                     // 可以在这里添加重试逻辑或者错误提示
-                    this.showError('createRoomError', 'Network connection unavailable, please try again later');
+                    this.showError('createRoomError', window.i18nUtils?.t('errors.network_unavailable') || 'Network connection unavailable, please try again later');
                 }
             }
 
@@ -2431,7 +2439,7 @@
                 } else {
                     // 如果是重连失败，显示房间选项
                     console.log('房间重连失败:', message.error);
-                    this.showToast('Room connection failed: ' + message.error);
+                    this.showToast((window.i18nUtils?.t('errors.room_connection_failed') || 'Room connection failed: ') + message.error);
                     this.showRoomOptions();
                     this.hideRoomInfo();
                     this.hideFileTransferArea();
@@ -2503,7 +2511,7 @@
                     }
 
                     if (myUploads.length > 0) {
-                        this.showToast(`Redistributed ${myUploads.length} files to room members`);
+                        this.showToast(window.i18nUtils?.t('messages.files_redistributed')?.replace('{count}', myUploads.length) || `Redistributed ${myUploads.length} files to room members`);
                     }
                 } catch (error) {
                     console.error('重新分发文件失败:', error);
@@ -2606,7 +2614,7 @@
                 this.clearRoomState();
                 // 清空共享文件列表
                 this.clearSharedFilesList();
-                alert('Room disbanded: ' + message.reason);
+                alert((window.i18nUtils?.t('messages.room_disbanded') || 'Room disbanded: ') + message.reason);
                 this.onRoomLeft();
             }
 
@@ -2614,7 +2622,8 @@
             showRoomInfo(room) {
                 // 更新房间信息头部
                 document.getElementById('roomNameDisplay').textContent = room.name;
-                document.getElementById('roomCodeDisplay').textContent = `Room Code: ${room.code}`;
+                const roomCodeLabel = (window.i18nUtils ? window.i18nUtils.t('transfer.rooms.room_code') : 'Room Code');
+                document.getElementById('roomCodeDisplay').textContent = `${roomCodeLabel}: ${room.code}`;
 
                 // 更新当前用户名称
                 const currentUserName = this.getCurrentUserDisplayName();
@@ -2645,7 +2654,8 @@
                 });
 
                 // 更新成员计数
-                memberCount.textContent = `${members.length} online`;
+                const onlineText = (window.i18nUtils ? window.i18nUtils.t('transfer.status.online') : 'online');
+                memberCount.textContent = `${members.length} ${onlineText}`;
             }
 
             // 隐藏房间选项按钮
@@ -2745,7 +2755,7 @@
                             // 将接收到的文件也存储到IndexedDB
                             await this.storeFileToIndexedDB(fileInfo);
 
-                            this.showToast(`${fileInfo.uploader} shared file: ${fileInfo.name}`);
+                            this.showToast(window.i18nUtils?.t('messages.user_shared_file')?.replace('{username}', fileInfo.uploader).replace('{filename}', fileInfo.name) || `${fileInfo.uploader} shared file: ${fileInfo.name}`);
                         } else {
                             // 没有文件数据，可能文件太大或上传者离线
                             fileInfo.file = null;
@@ -2753,7 +2763,7 @@
                             fileInfo.isRemote = true;
                             fileInfo.uploaderOnline = true; // 假设在线，但文件不可用
 
-                            this.showToast(`${fileInfo.uploader} shared file: ${fileInfo.name} (file too large or temporarily unavailable)`);
+                            this.showToast(window.i18nUtils?.t('messages.user_shared_file_unavailable')?.replace('{username}', fileInfo.uploader).replace('{filename}', fileInfo.name) || `${fileInfo.uploader} shared file: ${fileInfo.name} (file too large or temporarily unavailable)`);
                         }
 
                         this.addFileToSharedList(fileInfo);
@@ -2766,7 +2776,7 @@
                         fileInfo.uploaderOnline = true;
 
                         this.addFileToSharedList(fileInfo);
-                        this.showToast(`Error receiving file from ${fileInfo.uploader}`);
+                        this.showToast(window.i18nUtils?.t('errors.receiving_file_error')?.replace('{username}', fileInfo.uploader) || `Error receiving file from ${fileInfo.uploader}`);
                     }
                 }
             }
@@ -2836,7 +2846,7 @@
                     });
 
                     if (files.length > 0) {
-                        this.showToast(`Restored ${files.length} previous files`);
+                        this.showToast(window.i18nUtils?.t('messages.files_restored')?.replace('{count}', files.length) || `Restored ${files.length} previous files`);
                     }
                 } catch (error) {
                     console.error('加载之前的文件失败:', error);
@@ -2852,11 +2862,11 @@
                 if (!roomWarning || !warningTitle || !warningMessage) return;
 
                 if (this.isHost) {
-                    warningTitle.textContent = 'Host Notice';
-                    warningMessage.textContent = 'As the host, refreshing the page will automatically reconnect to the room. Only clicking "Leave Room" or closing the browser tab will disband the room.';
+                    warningTitle.textContent = window.i18nUtils?.t('transfer.rooms.host_notice') || 'Host Notice';
+                    warningMessage.textContent = window.i18nUtils?.t('transfer.rooms.host_notice_message') || 'As the host, refreshing the page will automatically reconnect to the room. Only clicking "Leave Room" or closing the browser tab will disband the room.';
                 } else {
-                    warningTitle.textContent = 'Member Notice';  
-                    warningMessage.textContent = 'Refreshing the page will automatically reconnect to the room. Only clicking "Leave Room" or closing the browser tab will exit the room.';
+                    warningTitle.textContent = window.i18nUtils?.t('transfer.rooms.member_notice') || 'Member Notice';  
+                    warningMessage.textContent = window.i18nUtils?.t('transfer.rooms.member_notice_message') || 'Refreshing the page will automatically reconnect to the room. Only clicking "Leave Room" or closing the browser tab will exit the room.';
                 }
 
                 roomWarning.classList.add('active');
@@ -2981,7 +2991,7 @@
                 this.addToReceivedFilesList(fileData);
 
                 // 显示通知
-                this.showToast(`Received file: ${fileData.name}`);
+                this.showToast(window.i18nUtils?.t('messages.received_file')?.replace('{filename}', fileData.name) || `Received file: ${fileData.name}`);
             }
 
             // 处理文件传输进度
@@ -3036,9 +3046,9 @@
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
 
-                    this.showToast('File download started');
+                    this.showToast(window.i18nUtils?.t('messages.file_download_started') || 'File download started');
                 } else {
-                    this.showToast('File download failed');
+                    this.showToast(window.i18nUtils?.t('errors.file_download_failed') || 'File download failed');
                 }
             }
 
@@ -3077,7 +3087,7 @@
                     }
 
                     console.log('网络就绪，开始重连房间:', roomState.roomCode);
-                    this.showToast('Reconnecting to room...');
+                    this.showToast(window.i18nUtils?.t('messages.reconnecting') || 'Reconnecting to room...');
 
                     if (roomState.isHost) {
                         this.sendMessage({
@@ -3172,6 +3182,25 @@
             }
 
             // 初始化顶部导航栏语言选择器
+            
+            // 监听语言切换事件，更新房间通知文本
+            document.addEventListener('language-changed', () => {
+                if (window.roomManager && window.roomManager.isInRoom) {
+                    // 重新显示房间警告以更新翻译文本
+                    window.roomManager.showRoomWarning();
+                    
+                    // 更新房间代码显示
+                    if (window.roomManager.currentRoom) {
+                        window.roomManager.showRoomInfo(window.roomManager.currentRoom);
+                    }
+                    
+                    // 更新成员列表显示（包括在线状态文本）
+                    if (window.roomManager.members && window.roomManager.members.size > 0) {
+                        const membersArray = Array.from(window.roomManager.members.values());
+                        window.roomManager.updateMemberList(membersArray);
+                    }
+                }
+            });
         });
 
         // 初始化顶部导航栏语言选择器
@@ -3225,9 +3254,9 @@
             };
 
             if (window.roomManager) {
-                window.roomManager.showToast(`${typeNames[type]} feature is under development`);
+                window.roomManager.showToast(window.i18nUtils?.t('messages.feature_under_development')?.replace('{feature}', typeNames[type]) || `${typeNames[type]} feature is under development`);
             } else {
-                alert(`${typeNames[type]} feature is under development`);
+                alert(window.i18nUtils?.t('messages.feature_under_development')?.replace('{feature}', typeNames[type]) || `${typeNames[type]} feature is under development`);
             }
 
             console.log(`切换到${typeNames[type]}模式`);

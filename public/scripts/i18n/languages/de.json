@@ -34,7 +34,8 @@
     "contact": "Kontakt",
     "privacy": "Datenschutz",
     "terms": "Bedingungen",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "files": "Dateien"
   },
   "navigation": {
     "home": "Startseite",
@@ -222,14 +223,36 @@
       "button": "Dateien auswählen"
     },
     "rooms": {
-      "title": "Private Räume",
-      "subtitle": "Sichere Räume für die Dateifreigabe erstellen",
+      "title": "Mehrbenutzerzimmer",
+      "subtitle": "Dateien schnell mit lokalen oder entfernten Benutzern über Raumcodes teilen",
       "create_room": "Raum erstellen",
       "join_room": "Raum beitreten",
       "room_name": "Raumname",
       "room_password": "Raumpasswort",
+      "max_members": "Maximale Mitglieder",
+      "room_code": "Raumcode",
       "room_name_placeholder": "Raumname eingeben",
-      "room_password_placeholder": "Passwort eingeben (optional)"
+      "room_password_placeholder": "Passwort eingeben (optional)",
+      "room_code_placeholder": "Raumcode eingeben",
+      "upload_files": "Dateien in den Raum hochladen",
+      "drag_files_hint": "Dateien hierher ziehen oder klicken zum Hochladen",
+      "select_files": "Dateien zum Hochladen auswählen",
+      "shared_files": "Raum geteilte Dateien",
+      "no_shared_files": "Noch keine geteilten Dateien im Raum",
+      "upload_hint": "Dateien werden mit allen Mitgliedern im Raum geteilt",
+      "download_hint": "Nach dem Hochladen können alle Raummitglieder die Dateien herunterladen",
+      "host_notice": "Host-Hinweis",
+      "host_notice_message": "Als Host stellt das Aktualisieren der Seite automatisch die Verbindung zum Raum wieder her. Nur durch Klicken auf \"Raum verlassen\" oder Schließen des Browser-Tabs wird der Raum aufgelöst.",
+      "member_notice": "Mitglieder-Hinweis",
+      "member_notice_message": "Das Aktualisieren der Seite stellt automatisch die Verbindung zum Raum wieder her. Nur durch Klicken auf \"Raum verlassen\" oder Schließen des Browser-Tabs verlassen Sie den Raum."
+    },
+    "status": {
+      "open_on_other_devices": "DropShare auf anderen Geräten öffnen um Dateien zu senden",
+      "discoverable": "Sie sind für alle in diesem Netzwerk sichtbar",
+      "known_as": "Ihr Name:",
+      "online": "online",
+      "room_members": "Raummitglieder:",
+      "leave_room": "Raum verlassen"
     },
     "history": {
       "title": "Übertragungsverlauf",
@@ -278,6 +301,14 @@
     "copyright": "© 2024 DropShare. Alle Rechte vorbehalten.",
     "made_with": "Gemacht mit ❤️ für die Community"
   },
+  "dialogs": {
+    "file_received": "Datei erhalten",
+    "ask_save_before_download": "Vor dem Herunterladen nach jedem Datei-Speicherort fragen",
+    "ignore": "Ignorieren",
+    "send_message": "Nachricht senden",
+    "send": "Senden",
+    "message_received": "Nachricht erhalten"
+  },
   "errors": {
     "file_too_large": "Datei ist zu groß",
     "unsupported_format": "Nicht unterstütztes Dateiformat",
@@ -285,7 +316,16 @@
     "conversion_failed": "Konvertierung fehlgeschlagen",
     "network_error": "Netzwerkfehler",
     "server_error": "Serverfehler",
-    "unknown_error": "Ein unbekannter Fehler ist aufgetreten"
+    "unknown_error": "Ein unbekannter Fehler ist aufgetreten",
+    "file_not_exist": "Datei existiert nicht",
+    "download_failed": "Download fehlgeschlagen, bitte versuchen Sie es erneut",
+    "copy_failed": "Kopieren fehlgeschlagen, Raumcode: ",
+    "file_download_failed": "Datei-Download fehlgeschlagen",
+    "room_connection_failed": "Raumverbindung fehlgeschlagen: ",
+    "receiving_file_error": "Fehler beim Empfangen der Datei von {username}",
+    "enter_room_name": "Bitte geben Sie den Raumnamen ein",
+    "enter_room_code": "Bitte geben Sie den Raumcode ein",
+    "network_unavailable": "Netzwerkverbindung nicht verfügbar, bitte versuchen Sie es später erneut"
   },
   "messages": {
     "file_uploaded": "Datei erfolgreich hochgeladen",
@@ -293,6 +333,24 @@
     "file_downloaded": "Datei erfolgreich heruntergeladen",
     "room_created": "Raum erfolgreich erstellt",
     "room_joined": "Erfolgreich dem Raum beigetreten",
-    "settings_saved": "Einstellungen erfolgreich gespeichert"
+    "settings_saved": "Einstellungen erfolgreich gespeichert",
+    "room_code_copied": "Raumcode in Zwischenablage kopiert",
+    "file_deleted": "Datei gelöscht",
+    "file_download_started": "Datei-Download gestartet",
+    "reconnecting": "Verbindung zum Raum wird wiederhergestellt...",
+    "join_room_first": "Bitte treten Sie zuerst einem Raum bei, um Dateien hochzuladen",
+    "confirm_delete_file": "Sind Sie sicher, dass Sie diese Datei löschen möchten?",
+    "room_disbanded": "Raum aufgelöst: ",
+    "feature_under_development": "{feature} Funktion ist in Entwicklung",
+    "uploader_offline": "Download nicht möglich: Uploader muss online sein",
+    "file_unavailable": "Datei nicht verfügbar, Uploader ist möglicherweise offline",
+    "file_temporarily_unavailable": "Datei vorübergehend nicht verfügbar",
+    "file_uploaded_to_room": "Datei \"{filename}\" in den Raum hochgeladen",
+    "downloading_file": "Herunterladen: {filename}",
+    "files_redistributed": "{count} Dateien an Raummitglieder neu verteilt",
+    "user_shared_file": "{username} hat Datei geteilt: {filename}",
+    "user_shared_file_unavailable": "{username} hat Datei geteilt: {filename} (Datei zu groß oder vorübergehend nicht verfügbar)",
+    "files_restored": "{count} frühere Dateien wiederhergestellt",
+    "received_file": "Datei erhalten: {filename}"
   }
 }
