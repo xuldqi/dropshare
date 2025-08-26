@@ -433,15 +433,15 @@
     </header>
 
     <div class="container">
-        <h1 class="page-title" data-i18n="tools.cropper.title">Image Cropper</h1>
-        <p class="page-subtitle" data-i18n="tools.cropper.subtitle">Precisely crop images with multiple aspect ratios and free selection</p>
+        <h1 class="page-title" data-i18n="tools.image.cropper.title">Image Cropper</h1>
+        <p class="page-subtitle" data-i18n="tools.image.cropper.subtitle">Precisely crop images with multiple aspect ratios and free selection</p>
 
         <div class="cropper-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">✂️</div>
-                <div class="upload-text" data-i18n="tools.cropper.upload_text">Click to select images or drag them here</div>
-                <div class="upload-hint" data-i18n="tools.cropper.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
+                <div class="upload-text" data-i18n="tools.image.cropper.upload_text">Click to select images or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.image.cropper.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -450,9 +450,9 @@
                 <!-- 裁剪控制 -->
                 <div class="crop-controls">
                     <div class="control-group">
-                        <label class="control-label" data-i18n="tools.cropper.preset_ratios">Preset Ratios:</label>
+                        <label class="control-label" data-i18n="tools.image.cropper.preset_ratios">Preset Ratios:</label>
                         <div class="aspect-ratios">
-                            <button class="aspect-btn" data-ratio="free" data-i18n="tools.cropper.ratio_free">Free</button>
+                            <button class="aspect-btn" data-ratio="free" data-i18n="tools.image.cropper.ratio_free">Free</button>
                             <button class="aspect-btn active" data-ratio="1:1">1:1</button>
                             <button class="aspect-btn" data-ratio="4:3">4:3</button>
                             <button class="aspect-btn" data-ratio="16:9">16:9</button>
@@ -460,13 +460,13 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" data-i18n="tools.cropper.custom_size">Custom Size:</label>
+                        <label class="control-label" data-i18n="tools.image.cropper.custom_size">Custom Size:</label>
                         <div class="dimension-inputs">
-                            <input type="number" class="dimension-input" id="cropWidth" placeholder="Width">
+                            <input type="number" class="dimension-input" id="cropWidth" data-i18n="tools.image.resizer.width_placeholder" placeholder="Width">
                             <span>×</span>
-                            <input type="number" class="dimension-input" id="cropHeight" placeholder="Height">
+                            <input type="number" class="dimension-input" id="cropHeight" data-i18n="tools.image.resizer.height_placeholder" placeholder="Height">
                             <button class="btn btn-primary" id="applySizeBtn" style="padding: 8px 16px; font-size: 14px;">
-                                <span data-i18n="tools.cropper.apply_btn">Apply</span>
+                                <span data-i18n="tools.image.cropper.apply_btn">Apply</span>
                             </button>
                         </div>
                     </div>
@@ -491,7 +491,7 @@
 
                 <!-- 裁剪信息 -->
                 <div class="crop-info" id="cropInfo">
-                    <span data-i18n="tools.cropper.selection_area">Selection area:</span> 0 × 0 <span data-i18n="tools.cropper.pixels">pixels</span> | <span data-i18n="tools.cropper.position">Position:</span> (0, 0)
+                    <span data-i18n="tools.image.cropper.selection_area">Selection area:</span> 0 × 0 <span data-i18n="tools.image.cropper.pixels">pixels</span> | <span data-i18n="tools.image.cropper.position">Position:</span> (0, 0)
                 </div>
             </div>
 
@@ -499,19 +499,19 @@
             <div class="preview-section" id="previewSection">
                 <div class="preview-container">
                     <div class="preview-item">
-                        <h3 data-i18n="tools.cropper.original_image">Original Image</h3>
+                        <h3 data-i18n="tools.image.cropper.original_image">Original Image</h3>
                         <img id="originalPreview" class="preview-image" alt="Original Image">
                         <div class="image-info">
-                            <div><span data-i18n="tools.cropper.size_label">Size:</span> <span class="size" id="originalSize"></span></div>
-                            <div><span data-i18n="tools.cropper.file_size_label">File size:</span> <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="tools.image.cropper.size_label">Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="tools.image.cropper.file_size_label">File size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="preview-item">
-                        <h3 data-i18n="tools.cropper.crop_preview">Crop Preview</h3>
+                        <h3 data-i18n="tools.image.cropper.crop_preview">Crop Preview</h3>
                         <canvas id="croppedPreview" class="preview-image"></canvas>
                         <div class="image-info">
-                            <div><span data-i18n="tools.cropper.size_label">Size:</span> <span class="size" id="croppedSize"></span></div>
-                            <div><span data-i18n="tools.cropper.estimated_size">Estimated size:</span> <span class="size" id="croppedFileSize"></span></div>
+                            <div><span data-i18n="tools.image.cropper.size_label">Size:</span> <span class="size" id="croppedSize"></span></div>
+                            <div><span data-i18n="tools.image.cropper.estimated_size">Estimated size:</span> <span class="size" id="croppedFileSize"></span></div>
                         </div>
                     </div>
                 </div>
@@ -520,19 +520,19 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-primary" id="cropBtn" disabled>
-                    <span data-i18n="tools.cropper.start_crop_btn">✂️ Start Cropping</span>
+                    <span data-i18n="tools.image.cropper.start_crop_btn">✂️ Start Cropping</span>
                 </button>
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    <span data-i18n="tools.cropper.download_btn">📥 Download Cropped Image</span>
+                    <span data-i18n="tools.image.cropper.download_btn">📥 Download Cropped Image</span>
                 </button>
                 <button class="btn btn-secondary" id="shareBtn" style="display: none;">
-                        <span data-i18n="tools.cropper.share_btn">📤 Share Image</span>
+                        <span data-i18n="tools.image.cropper.share_btn">📤 Share Image</span>
                     </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span data-i18n="tools.cropper.reset_btn">🔄 Select Again</span>
+                    <span data-i18n="tools.image.cropper.reset_btn">🔄 Select Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    <span data-i18n="tools.cropper.back_to_tools">← Back to Tools</span>
+                    <span data-i18n="tools.image.cropper.back_to_tools">← Back to Tools</span>
                 </a>
             </div>
         </div>
@@ -619,12 +619,12 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || 'Please select an image file!');
+                alert(window.i18n?.t('alert_select_image_file') || 'Please select an image file!');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || 'File size cannot exceed 10MB!');
+                alert(window.i18n?.t('alert_file_too_large') || 'File size cannot exceed 10MB!');
                 return;
             }
 
@@ -696,7 +696,10 @@
             const realX = Math.round((cropData.x - getImageLeftOffset()) * scale);
             const realY = Math.round((cropData.y - getImageTopOffset()) * scale);
             
-            cropInfo.textContent = `Selection area: ${realWidth} × ${realHeight} pixels | Position: (${realX}, ${realY})`;
+            const labelSelection = window.i18n?.t('tools.image.cropper.selection_area') || 'Selection area:';
+            const labelPixels = window.i18n?.t('tools.image.cropper.pixels') || 'pixels';
+            const labelPosition = window.i18n?.t('tools.image.cropper.position') || 'Position:';
+            cropInfo.textContent = `${labelSelection} ${realWidth} × ${realHeight} ${labelPixels} | ${labelPosition} (${realX}, ${realY})`;
             
             // 更新输入框
             cropWidthInput.value = realWidth;
@@ -883,7 +886,7 @@
             const height = parseInt(cropHeightInput.value);
             
             if (!width || !height || width <= 0 || height <= 0) {
-                alert(window.DROPSHARE_I18N?.t('alert_enter_valid_dimensions') || 'Please enter valid width and height!');
+                alert(window.i18n?.t('tools.image.resizer.alert_invalid_dimensions') || 'Please enter valid width and height!');
                 return;
             }
             
@@ -953,7 +956,7 @@
             previewSection.style.display = 'block';
             downloadBtn.style.display = 'inline-flex';
             shareBtn.style.display = 'inline-flex';
-            cropBtn.textContent = '✂️ Crop Again';
+            cropBtn.textContent = (window.i18n?.t('tools.image.cropper.start_crop_btn')) || '✂️ Start Cropping';
         }
 
         // 下载裁剪图片
@@ -988,7 +991,7 @@
             downloadBtn.style.display = 'none';
             shareBtn.style.display = 'none';
             cropBtn.disabled = true;
-            cropBtn.textContent = '✂️ Start Cropping';
+            cropBtn.textContent = (window.i18n?.t('tools.image.cropper.start_crop_btn')) || '✂️ Start Cropping';
             fileInput.value = '';
         
             

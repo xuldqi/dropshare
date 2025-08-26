@@ -6,7 +6,9 @@
     <title data-i18n="tools.watermark.title">Image Watermark Tool - DropShare</title>
     
     <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
     <style>
         * {
             margin: 0;
@@ -493,31 +495,21 @@
                 </nav>
 
                 <!-- Language Selector -->
-                <select id="language-selector" style="padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;">
-                    <option value="en">English</option>
-                    <option value="zh">简体中文</option>
-                    <option value="zh-tw">繁體中文</option>
-                    <option value="ja">日本語</option>
-                    <option value="ko">한국어</option>
-                    <option value="fr">Français</option>
-                    <option value="de">Deutsch</option>
-                    <option value="es">Español</option>
-                    <option value="pt">Português</option>
-                </select>
+                <div data-i18n-selector></div>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title" data-i18n="tools.watermark.title">Image Watermark Tool</h1>
-        <p class="page-subtitle" data-i18n="tools.watermark.subtitle">Add text or image watermarks to protect copyright information</p>
+        <h1 class="page-title" data-i18n="tools.image.watermark.title">Image Watermark Tool</h1>
+        <p class="page-subtitle" data-i18n="tools.image.watermark.description">Add text or image watermarks to protect copyright information</p>
 
         <div class="watermark-card">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">💧</div>
-                <div class="upload-text" data-i18n="tools.watermark.upload_text">Click to select images or drag them here</div>
-                <div class="upload-hint" data-i18n="tools.watermark.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
+                <div class="upload-text" data-i18n="tools.image.watermark.upload_text">Click to select images or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.image.watermark.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -531,24 +523,24 @@
                 <div class="controls-layout">
                     <!-- Control Panel -->
                     <div class="control-panel">
-                        <div class="panel-title" data-i18n="tools.watermark.settings_title">💧 Watermark Settings</div>
+                        <div class="panel-title" data-i18n="tools.image.watermark.settings_title">💧 Watermark Settings</div>
 
                         <!-- Watermark Type Tabs -->
                         <div class="watermark-tabs">
-                            <button class="tab-btn active" data-tab="text" data-i18n="tools.watermark.text_tab">Text Watermark</button>
-                            <button class="tab-btn" data-tab="image" data-i18n="tools.watermark.image_tab">Image Watermark</button>
+                            <button class="tab-btn active" data-tab="text" data-i18n="tools.image.watermark.text_tab">Text Watermark</button>
+                            <button class="tab-btn" data-tab="image" data-i18n="tools.image.watermark.image_tab">Image Watermark</button>
                         </div>
 
                         <!-- Text Watermark Settings -->
                         <div class="tab-content active" id="textTab">
                             <div class="form-group">
-                                <label class="form-label" data-i18n="tools.watermark.text_label">Watermark Text</label>
+                                <label class="form-label" data-i18n="tools.image.watermark.text_label">Watermark Text</label>
                                 <input type="text" class="form-input" id="watermarkText" 
-                                       data-i18n="tools.watermark.text_placeholder" placeholder="Enter watermark text" value="© DropShare">
+                                       data-i18n="tools.image.watermark.text_placeholder" placeholder="Enter watermark text" value="© DropShare">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label" data-i18n="tools.watermark.font_label">Font</label>
+                                <label class="form-label" data-i18n="tools.image.watermark.font_label">Font</label>
                                 <select class="form-select" id="fontFamily">
                                     <option value="Arial">Arial</option>
                                     <option value="'Microsoft YaHei'">Microsoft YaHei</option>
@@ -561,23 +553,23 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label"><span data-i18n="tools.watermark.font_size_label">Font Size:</span> <span class="range-display" id="fontSizeDisplay">24px</span></label>
+                                <label class="form-label"><span data-i18n="tools.image.watermark.font_size_label">Font Size:</span> <span class="range-display" id="fontSizeDisplay">24px</span></label>
                                 <input type="range" class="form-range" id="fontSize" 
                                        min="12" max="120" value="24">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label" data-i18n="tools.watermark.font_color_label">Font Color</label>
+                                <label class="form-label" data-i18n="tools.image.watermark.font_color_label">Font Color</label>
                                 <input type="color" class="color-input" id="textColor" value="#ffffff">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label" data-i18n="tools.watermark.font_style_label">Font Style</label>
+                                <label class="form-label" data-i18n="tools.image.watermark.font_style_label">Font Style</label>
                                 <select class="form-select" id="fontStyle">
-                                    <option value="normal" data-i18n="tools.watermark.font_normal">Normal</option>
-                                    <option value="bold" data-i18n="tools.watermark.font_bold">Bold</option>
-                                    <option value="italic" data-i18n="tools.watermark.font_italic">Italic</option>
-                                    <option value="bold italic" data-i18n="tools.watermark.font_bold_italic">Bold Italic</option>
+                                    <option value="normal" data-i18n="tools.image.watermark.font_normal">Normal</option>
+                                    <option value="bold" data-i18n="tools.image.watermark.font_bold">Bold</option>
+                                    <option value="italic" data-i18n="tools.image.watermark.font_italic">Italic</option>
+                                    <option value="bold italic" data-i18n="tools.image.watermark.font_bold_italic">Bold Italic</option>
                                 </select>
                             </div>
                         </div>
@@ -585,15 +577,15 @@
                         <!-- Image Watermark Settings -->
                         <div class="tab-content" id="imageTab">
                             <div class="form-group">
-                                <label class="form-label">Select Watermark Image</label>
+                                <label class="form-label" data-i18n="tools.image.watermark.select_logo_label">Select Watermark Image</label>
                                 <div class="file-upload-btn" id="logoUploadBtn">
-                                    📁 Click to Select Image
+                                    <span data-i18n="tools.image.watermark.select_logo_btn">📁 Click to Select Image</span>
                                 </div>
                                 <input type="file" id="logoInput" accept="image/*" style="display: none;">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Watermark Size: <span class="range-display" id="logoSizeDisplay">100px</span></label>
+                                <label class="form-label"><span data-i18n="tools.image.watermark.logo_size_label">Watermark Size:</span> <span class="range-display" id="logoSizeDisplay">100px</span></label>
                                 <input type="range" class="form-range" id="logoSize" 
                                        min="20" max="300" value="100">
                             </div>
@@ -601,36 +593,36 @@
 
                         <!-- Position Settings -->
                         <div class="form-group">
-                            <label class="form-label">Watermark Position</label>
+                            <label class="form-label" data-i18n="tools.image.watermark.position_label">Watermark Position</label>
                             <div class="position-grid">
-                                <button class="position-btn" data-position="top-left">Top Left</button>
-                                <button class="position-btn" data-position="top-center">Top Center</button>
-                                <button class="position-btn" data-position="top-right">Top Right</button>
-                                <button class="position-btn" data-position="middle-left">Middle Left</button>
-                                <button class="position-btn active" data-position="center">Center</button>
-                                <button class="position-btn" data-position="middle-right">Middle Right</button>
-                                <button class="position-btn" data-position="bottom-left">Bottom Left</button>
-                                <button class="position-btn" data-position="bottom-center">Bottom Center</button>
-                                <button class="position-btn" data-position="bottom-right">Bottom Right</button>
+                                <button class="position-btn" data-position="top-left" data-i18n="tools.image.watermark.pos_top_left">Top Left</button>
+                                <button class="position-btn" data-position="top-center" data-i18n="tools.image.watermark.pos_top_center">Top Center</button>
+                                <button class="position-btn" data-position="top-right" data-i18n="tools.image.watermark.pos_top_right">Top Right</button>
+                                <button class="position-btn" data-position="middle-left" data-i18n="tools.image.watermark.pos_middle_left">Middle Left</button>
+                                <button class="position-btn active" data-position="center" data-i18n="tools.image.watermark.pos_center">Center</button>
+                                <button class="position-btn" data-position="middle-right" data-i18n="tools.image.watermark.pos_middle_right">Middle Right</button>
+                                <button class="position-btn" data-position="bottom-left" data-i18n="tools.image.watermark.pos_bottom_left">Bottom Left</button>
+                                <button class="position-btn" data-position="bottom-center" data-i18n="tools.image.watermark.pos_bottom_center">Bottom Center</button>
+                                <button class="position-btn" data-position="bottom-right" data-i18n="tools.image.watermark.pos_bottom_right">Bottom Right</button>
                             </div>
                         </div>
 
                         <!-- Opacity Settings -->
                         <div class="form-group">
-                            <label class="form-label">Opacity: <span class="range-display" id="opacityDisplay">70%</span></label>
+                            <label class="form-label"><span data-i18n="tools.image.watermark.opacity_label">Opacity:</span> <span class="range-display" id="opacityDisplay">70%</span></label>
                             <input type="range" class="form-range" id="opacity" 
                                    min="10" max="100" value="70">
                         </div>
 
                         <!-- Offset Settings -->
                         <div class="form-group">
-                            <label class="form-label">Horizontal Offset: <span class="range-display" id="offsetXDisplay">0px</span></label>
+                            <label class="form-label"><span data-i18n="tools.image.watermark.offset_x_label">Horizontal Offset:</span> <span class="range-display" id="offsetXDisplay">0px</span></label>
                             <input type="range" class="form-range" id="offsetX" 
                                    min="-100" max="100" value="0">
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">Vertical Offset: <span class="range-display" id="offsetYDisplay">0px</span></label>
+                            <label class="form-label"><span data-i18n="tools.image.watermark.offset_y_label">Vertical Offset:</span> <span class="range-display" id="offsetYDisplay">0px</span></label>
                             <input type="range" class="form-range" id="offsetY" 
                                    min="-100" max="100" value="0">
                         </div>
@@ -638,13 +630,13 @@
 
                     <!-- Workspace -->
                     <div class="watermark-workspace">
-                        <div class="workspace-title">🖼️ Watermark Preview</div>
+                        <div class="workspace-title" data-i18n="tools.image.watermark.preview_title">🖼️ Watermark Preview</div>
                         <div class="canvas-container">
                             <canvas id="workspaceCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>Size: <span class="size" id="imageSize"></span></div>
-                            <div>File size: <span class="size" id="fileSize"></span></div>
+                            <div><span data-i18n="tools.image.watermark.size_label">Size:</span> <span class="size" id="imageSize"></span></div>
+                            <div><span data-i18n="tools.image.watermark.file_size_label">File size:</span> <span class="size" id="fileSize"></span></div>
                         </div>
                     </div>
                 </div>
@@ -653,16 +645,16 @@
             <!-- Action Buttons -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 Download Watermarked Image
+                    <span data-i18n="tools.image.watermark.download_btn">📥 Download Watermarked Image</span>
                 </button>
                 <button class="btn btn-secondary" id="shareBtn" style="display: none;">
-                        <span>📤 Share Image</span>
+                        <span data-i18n="tools.image.watermark.share_btn">📤 Share Image</span>
                     </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 Select Again
+                    <span data-i18n="tools.image.watermark.reset_btn">🔄 Select Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    ← Back to Tools
+                    <span data-i18n="tools.image.watermark.back_to_tools">← Back to Tools</span>
                 </a>
             </div>
         </div>

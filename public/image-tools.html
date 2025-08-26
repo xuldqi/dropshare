@@ -666,7 +666,7 @@
                     <div class="tool-category" data-i18n="tools.categories.ai_powered">AI-Powered</div>
                 </div>
                 <h3 class="tool-title" data-i18n="tools.image.background_remover.title">Background Remover</h3>
-                <p class="tool-description" data-i18n="tools.image.background_remover.description">Remove backgrounds from images automatically or manually with precision tools</p>
+                <p id="bg-remover-desc" class="tool-description" data-i18n="tools.image.background_remover.description">Remove backgrounds from images automatically or manually with precision tools</p>
             </div>
 
             <!-- Filter Effects -->
@@ -886,6 +886,25 @@
                     closeDeviceModal();
                 }
             });
+
+            // 强制刷新卡片翻译（避免偶发未更新）
+            if (window.i18n && typeof window.i18n.updatePageContent === 'function') {
+                window.i18n.updatePageContent();
+            }
+            if (window.i18n && typeof window.i18n.addObserver === 'function') {
+                window.i18n.addObserver((event)=>{
+                    if (event === 'languageChanged' || event === 'initialized') {
+                        window.i18n.updatePageContent();
+                        // 手动兜底更新背景移除器描述
+                        try {
+                            const el = document.getElementById('bg-remover-desc');
+                            if (el && window.i18n?.t) {
+                                el.textContent = window.i18n.t('tools.image.background_remover.description');
+                            }
+                        } catch(e) {}
+                    }
+                });
+            }
         });
     </script>
 

@@ -3,10 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="tools.rotator.title">Image Rotator - DropShare</title>
+    <title data-i18n="tools.image.rotator.title">Image Rotator - DropShare</title>
     
     <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
     
     <style>
         * {
@@ -465,32 +467,21 @@
                     <a href="document-tools.html" data-i18n="navigation.files">Files</a>
                 </nav>
 
-                <!-- Language Selector -->
-                <select id="language-selector" style="padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;">
-                    <option value="en">English</option>
-                    <option value="zh">简体中文</option>
-                    <option value="zh-tw">繁體中文</option>
-                    <option value="ja">日本語</option>
-                    <option value="ko">한국어</option>
-                    <option value="fr">Français</option>
-                    <option value="de">Deutsch</option>
-                    <option value="es">Español</option>
-                    <option value="pt">Português</option>
-                </select>
+
             </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title" data-i18n="tools.rotator.title">Image Rotator</h1>
-        <p class="page-subtitle" data-i18n="tools.rotator.subtitle">Supports rotation at any angle, flipping and precise angle adjustment</p>
+        <h1 class="page-title" data-i18n="tools.image.rotator.title">Image Rotator</h1>
+        <p class="page-subtitle" data-i18n="tools.image.rotator.subtitle">Supports rotation at any angle, flipping and precise angle adjustment</p>
 
         <div class="rotator-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔄</div>
-                <div class="upload-text" data-i18n="tools.rotator.upload_text">Click to select images or drag them here</div>
-                <div class="upload-hint" data-i18n="tools.rotator.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
+                <div class="upload-text" data-i18n="tools.image.rotator.upload_text">Click to select images or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.image.rotator.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -504,43 +495,43 @@
                 <div class="controls-grid">
                     <!-- 快速旋转 -->
                     <div class="control-section">
-                        <div class="section-title">⚡ <span data-i18n="tools.rotator.quick_rotation">Quick Rotation</span></div>
+                        <div class="section-title">⚡ <span data-i18n="tools.image.rotator.quick_rotation">Quick Rotation</span></div>
                         
                         <div class="rotation-buttons">
                             <button class="rotation-btn" data-angle="90">
-                                <span>↻ <span data-i18n="tools.rotator.clockwise_90">Clockwise 90°</span></span>
+                                <span>↻ <span data-i18n="tools.image.rotator.clockwise_90">Clockwise 90°</span></span>
                             </button>
                             <button class="rotation-btn" data-angle="-90">
-                                <span>↺ <span data-i18n="tools.rotator.counterclockwise_90">Counter-clockwise 90°</span></span>
+                                <span>↺ <span data-i18n="tools.image.rotator.counterclockwise_90">Counter-clockwise 90°</span></span>
                             </button>
                             <button class="rotation-btn" data-angle="180">
-                                <span>↻ <span data-i18n="tools.rotator.rotate_180">Rotate 180°</span></span>
+                                <span>↻ <span data-i18n="tools.image.rotator.rotate_180">Rotate 180°</span></span>
                             </button>
                             <button class="rotation-btn" data-angle="270">
-                                <span>↻ <span data-i18n="tools.rotator.rotate_270">Rotate 270°</span></span>
+                                <span>↻ <span data-i18n="tools.image.rotator.rotate_270">Rotate 270°</span></span>
                             </button>
                         </div>
 
                         <div class="flip-buttons">
                             <button class="rotation-btn" id="flipHorizontal">
-                                <span>↔ <span data-i18n="tools.rotator.flip_horizontal">Flip Horizontal</span></span>
+                                <span>↔ <span data-i18n="tools.image.rotator.flip_horizontal">Flip Horizontal</span></span>
                             </button>
                             <button class="rotation-btn" id="flipVertical">
-                                <span>↕ <span data-i18n="tools.rotator.flip_vertical">Flip Vertical</span></span>
+                                <span>↕ <span data-i18n="tools.image.rotator.flip_vertical">Flip Vertical</span></span>
                             </button>
                         </div>
                     </div>
 
                     <!-- 精确角度 -->
                     <div class="control-section">
-                        <div class="section-title">🎯 <span data-i18n="tools.rotator.precise_angle">Precise Angle</span></div>
+                        <div class="section-title">🎯 <span data-i18n="tools.image.rotator.precise_angle">Precise Angle</span></div>
                         
                         <div class="angle-input-container">
                             <input type="number" class="angle-input" id="angleInput" 
-                                   data-i18n="tools.rotator.enter_angle" placeholder="Enter angle" min="-360" max="360" step="0.1">
+                                   data-i18n="tools.image.rotator.enter_angle" placeholder="Enter angle" min="-360" max="360" step="0.1">
                             <button class="btn btn-primary" id="applyAngleBtn" 
                                     style="padding: 8px 16px; font-size: 14px;">
-                                <span data-i18n="tools.rotator.apply">Apply</span>
+                                <span data-i18n="tools.image.rotator.apply">Apply</span>
                             </button>
                         </div>
 
@@ -554,7 +545,7 @@
                         <div class="custom-rotation">
                             <button class="btn btn-secondary" id="resetRotation" 
                                     style="width: 100%; padding: 8px 16px; font-size: 14px;">
-                                <span>🔄 <span data-i18n="tools.rotator.reset_rotation">Reset Rotation</span></span>
+                                <span>🔄 <span data-i18n="tools.image.rotator.reset_rotation">Reset Rotation</span></span>
                             </button>
                         </div>
                     </div>
@@ -565,46 +556,46 @@
             <div class="image-workspace" id="imageWorkspace">
                 <div class="workspace-container">
                     <div class="workspace-item">
-                        <h3 data-i18n="tools.rotator.original_image">Original Image</h3>
+                        <h3 data-i18n="tools.image.rotator.original_image">Original Image</h3>
                         <div class="image-container">
                             <img id="originalImage" class="workspace-image" alt="Original Image">
                         </div>
                         <div class="image-info">
-                            <div><span data-i18n="tools.rotator.size_label">Size:</span> <span class="size" id="originalSize"></span></div>
-                            <div><span data-i18n="tools.rotator.file_size_label">File size:</span> <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="tools.image.rotator.size_label">Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="tools.image.rotator.file_size_label">File size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="workspace-item">
-                        <h3 data-i18n="tools.rotator.rotation_preview">Rotation Preview</h3>
+                        <h3 data-i18n="tools.image.rotator.rotation_preview">Rotation Preview</h3>
                         <div class="image-container">
                             <canvas id="rotatedImage" class="workspace-image"></canvas>
                         </div>
                         <div class="image-info">
-                            <div><span data-i18n="tools.rotator.size_label">Size:</span> <span class="size" id="rotatedSize"></span></div>
-                            <div><span data-i18n="tools.rotator.current_angle">Current angle:</span> <span class="size" id="currentAngle">0°</span></div>
+                            <div><span data-i18n="tools.image.rotator.size_label">Size:</span> <span class="size" id="rotatedSize"></span></div>
+                            <div><span data-i18n="tools.image.rotator.current_angle">Current angle:</span> <span class="size" id="currentAngle">0°</span></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 旋转信息 -->
                 <div class="rotation-info" id="rotationInfo">
-                    <span data-i18n="tools.rotator.current_rotation_angle">Current rotation angle:</span> 0°
+                    <span data-i18n="tools.image.rotator.current_rotation_angle">Current rotation angle:</span> 0°
                 </div>
             </div>
 
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    <span data-i18n="tools.rotator.download_btn">📥 Download Rotated Image</span>
+                    <span data-i18n="tools.image.rotator.download_btn">📥 Download Rotated Image</span>
                 </button>
                 <button class="btn btn-secondary" id="shareBtn" style="display: none;">
-                        <span data-i18n="tools.rotator.share_btn">📤 Share Image</span>
+                        <span data-i18n="tools.image.rotator.share_btn">📤 Share Image</span>
                     </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span data-i18n="tools.rotator.select_again_btn">🔄 Select Again</span>
+                    <span data-i18n="tools.image.rotator.select_again_btn">🔄 Select Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    <span data-i18n="tools.rotator.back_to_tools">← Back to Tools</span>
+                    <span data-i18n="tools.image.rotator.back_to_tools">← Back to Tools</span>
                 </a>
             </div>
         </div>
@@ -700,12 +691,12 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert(window.DROPSHARE_I18N?.t('alert_select_image_file') || 'Please select an image file!');
+                alert(window.i18n?.t('alert_select_image_file') || 'Please select an image file!');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert(window.DROPSHARE_I18N?.t('alert_file_too_large') || 'File size cannot exceed 10MB!');
+                alert(window.i18n?.t('alert_file_too_large') || 'File size cannot exceed 10MB!');
                 return;
             }
 
@@ -855,8 +846,39 @@
             const displayAngle = currentRotation || parseInt(angleSlider.value) || 0;
             angleDisplay.textContent = displayAngle + '°';
             document.getElementById('currentAngle').textContent = displayAngle + '°';
+            
+            // 使用翻译键获取文本（统一使用 i18n 引擎）
+            const currentRotationText = (window.i18n && window.i18n.t)
+                ? window.i18n.t('tools.image.rotator.current_rotation_angle')
+                : 'Current rotation angle:';
+            const horizontalFlipText = flipHorizontal
+                ? ` | ${(window.i18n && window.i18n.t) ? window.i18n.t('tools.image.rotator.flip_horizontal') : 'Flip Horizontal'}`
+                : '';
+            const verticalFlipText = flipVertical
+                ? ` | ${(window.i18n && window.i18n.t) ? window.i18n.t('tools.image.rotator.flip_vertical') : 'Flip Vertical'}`
+                : '';
+            
             document.getElementById('rotationInfo').textContent = 
-                `Current rotation angle: ${displayAngle}°${flipHorizontal ? ' | Horizontal flip' : ''}${flipVertical ? ' | Vertical flip' : ''}`;
+                `${currentRotationText} ${displayAngle}°${horizontalFlipText}${verticalFlipText}`;
+        }
+        
+        function updateButtonTexts() {
+            // Update button texts that might not be caught by data-i18n
+            const buttons = [
+                { id: 'resetBtn', key: 'tools.image.rotator.select_again_btn' },
+                { id: 'downloadBtn', key: 'tools.image.rotator.download_btn' },
+                { id: 'shareBtn', key: 'tools.image.rotator.share_btn' }
+            ];
+            
+            buttons.forEach(btn => {
+                const element = document.getElementById(btn.id);
+                if (element && window.i18n && window.i18n.t) {
+                    const span = element.querySelector('span[data-i18n]');
+                    if (span) {
+                        span.textContent = window.i18n.t(btn.key);
+                    }
+                }
+            });
         }
 
         // 更新旋转后的图片
@@ -959,21 +981,46 @@
         }
     </script>
     
-    <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>    
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
-    <!-- Language System Initialization -->
+    
     <script>
         // Initialize language system when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 Starting rotator i18n system...');
+            console.log('🔧 Starting image rotator i18n system...');
             
-            if (window.DROPSHARE_I18N) {
-                console.log('✅ DROPSHARE_I18N found');
+            if (window.DropshareI18N) {
+                console.log('✅ DropshareI18N found');
                 
                 // Initialize the i18n system
-                window.DROPSHARE_I18N.init();
+                window.DropshareI18N.init();
+                
+                // 监听语言切换，确保“当前旋转角度”文案实时刷新
+                if (window.DropshareI18N.addObserver) {
+                    window.DropshareI18N.addObserver(function(event, data) {
+                        if (event === 'languageChanged' || event === 'initialized') {
+                            if (typeof updateAngleDisplay === 'function') {
+                                updateAngleDisplay();
+                            }
+                            if (typeof updateButtonTexts === 'function') {
+                                updateButtonTexts();
+                            }
+                        }
+                    });
+                }
+                
+                // 测试关键翻译
+                const testKeys = [
+                    'tools.image.rotator.title',
+                    'tools.image.rotator.subtitle',
+                    'tools.image.rotator.upload_text'
+                ];
+                
+                console.log('🔍 Testing rotator translations:');
+                testKeys.forEach(key => {
+                    const translation = window.DROPSHARE_I18N.t(key);
+                    console.log(`  ${key}: "${translation}"`);
+                });
                 
                 // Initialize language selector
                 const languageSelector = document.getElementById('language-selector');
@@ -982,13 +1029,26 @@
                     languageSelector.value = window.DROPSHARE_I18N.currentLanguage;
                     
                     // Add change listener
-                    languageSelector.addEventListener('change', function(e) {
-                        console.log('🌍 Language changing to:', e.target.value);
-                        window.DROPSHARE_I18N.setLanguage(e.target.value);
-                    });
+                languageSelector.addEventListener('change', function(e) {
+                     console.log('🌍 Language changing to:', e.target.value);
+                     window.DROPSHARE_I18N.setLanguage(e.target.value);
+                     
+                     // Update all elements with data-i18n attributes
+                     window.DROPSHARE_I18N.updatePageContent();
+                     
+                     // 刷新角度显示以应用新语言
+                     if (typeof updateAngleDisplay === 'function') {
+                         updateAngleDisplay();
+                     }
+                     
+                     // 手动更新按钮文本
+                     if (typeof updateButtonTexts === 'function') {
+                         updateButtonTexts();
+                     }
+                 });
                 }
                 
-                console.log('✅ Rotator i18n system ready');
+                console.log('✅ Image rotator i18n system ready');
             } else {
                 console.error('❌ DROPSHARE_I18N not found');
             }

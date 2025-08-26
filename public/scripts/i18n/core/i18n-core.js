@@ -173,8 +173,9 @@ class DropshareI18N {
                 return;
             }
 
-            // 加载翻译文件
-            const response = await fetch(`scripts/i18n/languages/${language}.json`);
+            // 加载翻译文件（加版本避免缓存）
+            const version = localStorage.getItem('dropshare-i18n-version') || 'v1';
+            const response = await fetch(`scripts/i18n/languages/${language}.json?${version}`, { cache: 'no-cache' });
             if (!response.ok) {
                 throw new Error(`Failed to load translations for ${language}`);
             }

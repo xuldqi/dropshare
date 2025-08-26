@@ -3,7 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Remover - DropShare</title>
+    <title data-i18n="tools.image.background_remover.title">Background Remover - DropShare</title>
+    
+    <!-- I18N -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
     <style>
         * {
             margin: 0;
@@ -44,6 +49,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -430,30 +441,39 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                🎭 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html" class="active">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" class="active" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">Background Remover</h1>
-        <p class="page-subtitle">Intelligently remove image backgrounds with manual precision editing support</p>
+        <h1 class="page-title" data-i18n="tools.image.background_remover.title">Background Remover</h1>
+        <p class="page-subtitle" data-i18n="tools.image.background_remover.subtitle">Intelligently remove image backgrounds with manual precision editing support</p>
 
         <div class="remover-card">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎭</div>
-                <div class="upload-text">Click to select images or drag them here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
+                <div class="upload-text" data-i18n="tools.image.background_remover.upload_text">Click to select images or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.image.background_remover.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -465,38 +485,38 @@
             <!-- Removal Tools -->
             <div class="removal-tools" id="removalTools">
                 <div class="instructions">
-                    <div class="instructions-title">📝 Instructions:</div>
-                    <div>1. Select the "Magic Wand" tool to click background areas and automatically select similar colors</div>
-                    <div>2. Adjust "Tolerance" to control the range of colors selected</div>
-                    <div>3. Use "Eraser" to manually remove unwanted areas</div>
-                    <div>4. Use "Restore Brush" to recover accidentally removed areas</div>
+                    <div class="instructions-title" data-i18n="tools.image.background_remover.instructions.title">📝 Instructions:</div>
+                    <div data-i18n="tools.image.background_remover.instructions.step1">1. Select the "Magic Wand" tool to click background areas and automatically select similar colors</div>
+                    <div data-i18n="tools.image.background_remover.instructions.step2">2. Adjust "Tolerance" to control the range of colors selected</div>
+                    <div data-i18n="tools.image.background_remover.instructions.step3">3. Use "Eraser" to manually remove unwanted areas</div>
+                    <div data-i18n="tools.image.background_remover.instructions.step4">4. Use "Restore Brush" to recover accidentally removed areas</div>
                 </div>
 
                 <div class="tools-panel">
                     <div class="tools-grid">
                         <!-- Selection Tools -->
                         <div class="tool-section">
-                            <div class="tool-title">🪄 Selection Tools</div>
+                            <div class="tool-title" data-i18n="tools.image.background_remover.selection_tools.title">🪄 Selection Tools</div>
                             <div class="tool-buttons">
-                                <button class="tool-btn active" id="magicWand">Magic Wand</button>
-                                <button class="tool-btn" id="eraser">Eraser</button>
-                                <button class="tool-btn" id="restoreBrush">Restore Brush</button>
+                                <button class="tool-btn active" id="magicWand" data-i18n="tools.image.background_remover.selection_tools.magic_wand">Magic Wand</button>
+                                <button class="tool-btn" id="eraser" data-i18n="tools.image.background_remover.selection_tools.eraser">Eraser</button>
+                                <button class="tool-btn" id="restoreBrush" data-i18n="tools.image.background_remover.selection_tools.restore_brush">Restore Brush</button>
                             </div>
                         </div>
 
                         <!-- Auto Selection -->
                         <div class="tool-section">
-                            <div class="tool-title">⚡ Quick Actions</div>
+                            <div class="tool-title" data-i18n="tools.image.background_remover.quick_actions.title">⚡ Quick Actions</div>
                             <div class="tool-buttons">
-                                <button class="tool-btn" id="autoRemove">Smart Remove</button>
-                                <button class="tool-btn" id="clearAll">Clear All</button>
-                                <button class="tool-btn" id="restoreAll">Restore All</button>
+                                <button class="tool-btn" id="autoRemove" data-i18n="tools.image.background_remover.quick_actions.smart_remove">Smart Remove</button>
+                                <button class="tool-btn" id="clearAll" data-i18n="tools.image.background_remover.quick_actions.clear_all">Clear All</button>
+                                <button class="tool-btn" id="restoreAll" data-i18n="tools.image.background_remover.quick_actions.restore_all">Restore All</button>
                             </div>
                         </div>
 
                         <!-- Tolerance Setting -->
                         <div class="tool-section">
-                            <div class="tool-title">🎯 Tolerance Setting</div>
+                            <div class="tool-title" data-i18n="tools.image.background_remover.tolerance.title">🎯 Tolerance Setting</div>
                             <input type="range" class="tolerance-slider" id="toleranceSlider" 
                                    min="1" max="100" value="20">
                             <div style="text-align: center;">
@@ -506,7 +526,7 @@
 
                         <!-- Brush Size -->
                         <div class="tool-section">
-                            <div class="tool-title">🖌️ Brush Size</div>
+                            <div class="tool-title" data-i18n="tools.image.background_remover.brush_size.title">🖌️ Brush Size</div>
                             <input type="range" class="tolerance-slider" id="brushSizeSlider" 
                                    min="5" max="50" value="15">
                             <div style="text-align: center;">
@@ -521,52 +541,50 @@
             <div class="editor-workspace" id="editorWorkspace">
                 <div class="workspace-container">
                     <div class="workspace-item">
-                        <h3>Original Image</h3>
+                        <h3 data-i18n="tools.image.background_remover.original_image">Original Image</h3>
                         <div class="canvas-container">
                             <canvas id="originalCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>Size: <span class="size" id="originalSize"></span></div>
-                            <div>File size: <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="tools.image.background_remover.size_label">Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="tools.image.background_remover.file_size_label">File size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="workspace-item">
-                        <h3>Background Removal Preview</h3>
+                        <h3 data-i18n="tools.image.background_remover.preview_title">Background Removal Preview</h3>
                         <div class="canvas-container">
                             <canvas id="previewCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>Format: <span class="size">PNG (transparent background)</span></div>
-                            <div>Status: <span class="size" id="editStatus">Waiting for edit</span></div>
+                            <div><span data-i18n="tools.image.background_remover.format_label">Format:</span> <span class="size" id="formatHint" data-i18n="tools.image.background_remover.format_png_hint">PNG (transparent background)</span></div>
+                            <div><span data-i18n="tools.image.background_remover.status_label">Status:</span> <span class="size" id="editStatus" data-i18n="tools.image.background_remover.status_waiting">Waiting for edit</span></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Status Info -->
-                <div class="status-info" id="statusInfo">
-                    Ready to start editing...
-                </div>
+                <div class="status-info" id="statusInfo" data-i18n="tools.image.background_remover.ready_to_edit">Ready to start editing...</div>
             </div>
 
             <!-- Action Buttons -->
             <div class="action-buttons">
                 <button class="btn btn-primary" id="processBtn" style="display: none;">
-                    🎭 Apply Removal Effect
+                    <span data-i18n="tools.image.background_remover.apply_btn">🎭 Apply Removal Effect</span>
                 </button>
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 Download Transparent Image
+                    <span data-i18n="tools.image.background_remover.download_btn">📥 Download Transparent Image</span>
                 </button>
                 <button class="btn btn-warning" id="undoBtn" style="display: none;">
-                    ↶ Undo Operation
+                    <span data-i18n="tools.image.background_remover.undo_btn">↶ Undo Operation</span>
                 </button>
                 <button class="btn btn-secondary" id="shareBtn" style="display: none;">
-                        <span>📤 Share Image</span>
+                        <span data-i18n="tools.image.background_remover.share_btn">📤 Share Image</span>
                     </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 Select Again
+                    <span data-i18n="tools.image.background_remover.reset_btn">🔄 Select Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    ← Back to Tools
+                    <span data-i18n="tools.image.background_remover.back_to_tools">← Back to Tools</span>
                 </a>
             </div>
         </div>
@@ -725,9 +743,9 @@
             processBtn.style.display = 'inline-flex';
             undoBtn.style.display = 'inline-flex';
             
-            // Update status
-            updateStatus('ready', 'Click on background areas to start removal...');
-            document.getElementById('editStatus').textContent = 'Ready for editing';
+            // Update status (i18n)
+            updateStatus('ready', (window.i18n?.t && window.i18n.t('tools.image.background_remover.ready_to_edit')) || 'Click on background areas to start removal...');
+            document.getElementById('editStatus').textContent = (window.i18n?.t && window.i18n.t('tools.image.background_remover.ready_to_edit')) || 'Ready for editing';
         }
 
         // Setup canvas
@@ -929,7 +947,7 @@
             updatePreview();
             hasEdits = true;
             document.getElementById('editStatus').textContent = 'Edited';
-            updateStatus('processed', 'Auto background removal completed');
+            updateStatus('processed', (window.i18n?.t && window.i18n.t('tools.image.background_remover.auto_removal_completed')) || 'Auto background removal completed');
         }
 
         // Clear all mask
@@ -990,7 +1008,7 @@
                 }, 'image/png');
             }
             
-            updateStatus('completed', 'Background removal completed! You can download the result image');
+            updateStatus('completed', (window.i18n?.t && window.i18n.t('tools.image.background_remover.removal_completed')) || 'Background removal completed! You can download the result image');
         }
 
         // Save to history
