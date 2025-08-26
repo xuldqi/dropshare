@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Watermark Tool - DropShare</title>
+    <title data-i18n="tools.watermark.title">Image Watermark Tool - DropShare</title>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/languages.js"></script>
     <style>
         * {
             margin: 0;
@@ -44,6 +47,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -466,30 +475,49 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                💧 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html" >Transfer</a>
-                <a href="share.html#rooms" >Rooms</a>
-                <a href="image-tools.html" class="active" >Images</a>
-                <a href="audio-tools.html" >Audio</a>
-                <a href="video-tools.html" >Video</a>
-                <a href="document-tools.html" >Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" class="active" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector -->
+                <select id="language-selector" style="padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;">
+                    <option value="en">English</option>
+                    <option value="zh">简体中文</option>
+                    <option value="zh-tw">繁體中文</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="es">Español</option>
+                    <option value="pt">Português</option>
+                </select>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">Image Watermark Tool</h1>
-        <p class="page-subtitle">Add text or image watermarks to protect copyright information</p>
+        <h1 class="page-title" data-i18n="tools.watermark.title">Image Watermark Tool</h1>
+        <p class="page-subtitle" data-i18n="tools.watermark.subtitle">Add text or image watermarks to protect copyright information</p>
 
         <div class="watermark-card">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">💧</div>
-                <div class="upload-text">Click to select images or drag them here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
+                <div class="upload-text" data-i18n="tools.watermark.upload_text">Click to select images or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.watermark.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -503,24 +531,24 @@
                 <div class="controls-layout">
                     <!-- Control Panel -->
                     <div class="control-panel">
-                        <div class="panel-title">💧 Watermark Settings</div>
+                        <div class="panel-title" data-i18n="tools.watermark.settings_title">💧 Watermark Settings</div>
 
                         <!-- Watermark Type Tabs -->
                         <div class="watermark-tabs">
-                            <button class="tab-btn active" data-tab="text">Text Watermark</button>
-                            <button class="tab-btn" data-tab="image">Image Watermark</button>
+                            <button class="tab-btn active" data-tab="text" data-i18n="tools.watermark.text_tab">Text Watermark</button>
+                            <button class="tab-btn" data-tab="image" data-i18n="tools.watermark.image_tab">Image Watermark</button>
                         </div>
 
                         <!-- Text Watermark Settings -->
                         <div class="tab-content active" id="textTab">
                             <div class="form-group">
-                                <label class="form-label">Watermark Text</label>
+                                <label class="form-label" data-i18n="tools.watermark.text_label">Watermark Text</label>
                                 <input type="text" class="form-input" id="watermarkText" 
-                                       placeholder="Enter watermark text" value="© DropShare">
+                                       data-i18n="tools.watermark.text_placeholder" placeholder="Enter watermark text" value="© DropShare">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Font</label>
+                                <label class="form-label" data-i18n="tools.watermark.font_label">Font</label>
                                 <select class="form-select" id="fontFamily">
                                     <option value="Arial">Arial</option>
                                     <option value="'Microsoft YaHei'">Microsoft YaHei</option>
@@ -533,23 +561,23 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Font Size: <span class="range-display" id="fontSizeDisplay">24px</span></label>
+                                <label class="form-label"><span data-i18n="tools.watermark.font_size_label">Font Size:</span> <span class="range-display" id="fontSizeDisplay">24px</span></label>
                                 <input type="range" class="form-range" id="fontSize" 
                                        min="12" max="120" value="24">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Font Color</label>
+                                <label class="form-label" data-i18n="tools.watermark.font_color_label">Font Color</label>
                                 <input type="color" class="color-input" id="textColor" value="#ffffff">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Font Style</label>
+                                <label class="form-label" data-i18n="tools.watermark.font_style_label">Font Style</label>
                                 <select class="form-select" id="fontStyle">
-                                    <option value="normal">Normal</option>
-                                    <option value="bold">Bold</option>
-                                    <option value="italic">Italic</option>
-                                    <option value="bold italic">Bold Italic</option>
+                                    <option value="normal" data-i18n="tools.watermark.font_normal">Normal</option>
+                                    <option value="bold" data-i18n="tools.watermark.font_bold">Bold</option>
+                                    <option value="italic" data-i18n="tools.watermark.font_italic">Italic</option>
+                                    <option value="bold italic" data-i18n="tools.watermark.font_bold_italic">Bold Italic</option>
                                 </select>
                             </div>
                         </div>

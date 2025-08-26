@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test I18N - DropShare</title>
+    
+    <!-- I18N System -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .key {
+            font-family: monospace;
+            color: #666;
+            font-size: 12px;
+        }
+        .value {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>I18N Translation Test</h1>
+    
+    <!-- Language Selector Container -->
+    <div data-i18n-selector></div>
+    
+    <h2>Cropper Tool Translations:</h2>
+    
+    <div class="test-item">
+        <div class="key">tools.cropper.title</div>
+        <div class="value" data-i18n="tools.cropper.title">Image Cropper</div>
+    </div>
+    
+    <div class="test-item">
+        <div class="key">tools.cropper.subtitle</div>
+        <div class="value" data-i18n="tools.cropper.subtitle">Precisely crop images with multiple aspect ratios and free selection</div>
+    </div>
+    
+    <div class="test-item">
+        <div class="key">tools.cropper.upload_text</div>
+        <div class="value" data-i18n="tools.cropper.upload_text">Click to select images or drag them here</div>
+    </div>
+    
+    <div class="test-item">
+        <div class="key">tools.cropper.upload_hint</div>
+        <div class="value" data-i18n="tools.cropper.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
+    </div>
+    
+    <div class="test-item">
+        <div class="key">tools.cropper.preset_ratios</div>
+        <div class="value" data-i18n="tools.cropper.preset_ratios">Preset Ratios:</div>
+    </div>
+    
+    <div class="test-item">
+        <div class="key">tools.cropper.ratio_free</div>
+        <div class="value" data-i18n="tools.cropper.ratio_free">Free</div>
+    </div>
+    
+    <h2>Navigation Translations:</h2>
+    
+    <div class="test-item">
+        <div class="key">navigation.transfer</div>
+        <div class="value" data-i18n="navigation.transfer">Transfer</div>
+    </div>
+    
+    <div class="test-item">
+        <div class="key">navigation.images</div>
+        <div class="value" data-i18n="navigation.images">Images</div>
+    </div>
+    
+    <script>
+        // 添加调试信息
+        document.addEventListener('i18n:initialized', function(e) {
+            console.log('I18N initialized with language:', e.detail.language);
+            
+            // 显示当前语言和翻译对象
+            setTimeout(() => {
+                console.log('Current translations:', window.DropshareI18N?.translations);
+                
+                // 测试几个翻译
+                const testKeys = [
+                    'tools.cropper.title',
+                    'tools.cropper.subtitle', 
+                    'navigation.transfer'
+                ];
+                
+                console.log('Translation test:');
+                testKeys.forEach(key => {
+                    const translation = window.DropshareI18N?.t(key);
+                    console.log(`${key}: "${translation}"`);
+                });
+            }, 500);
+        });
+        
+        // 监听语言变化
+        document.addEventListener('language-changed', function(e) {
+            console.log('Language changed to:', e.detail.language);
+        });
+    </script>
+</body>
+</html>

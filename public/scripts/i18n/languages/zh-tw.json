@@ -125,40 +125,128 @@
     }
   },
   "tools": {
+    "categories": {
+      "popular": "熱門",
+      "essential": "必備",
+      "pro": "專業",
+      "ai_powered": "AI驅動",
+      "creative": "創意"
+    },
     "image": {
-      "title": "图片工具",
-      "subtitle": "专业的图片编辑和转换工具",
+      "title": "圖片工具",
+      "subtitle": "專業的圖片編輯和轉換工具",
       "converter": {
-        "title": "图片转换器",
-        "description": "在不同格式之间转换图片"
+        "title": "圖片轉換器",
+        "description": "在不同格式之間轉換圖片",
+        "subtitle": "在多種圖片格式間轉換，保持最佳品質",
+        "upload_text": "點擊選擇圖片或拖拽到此處",
+        "upload_hint": "支援 JPG、PNG、GIF、BMP、TIFF、WebP 格式，允許多個檔案",
+        "select_format": "選擇輸出格式",
+        "format_jpeg": "JPEG",
+        "format_jpeg_desc": "高壓縮",
+        "format_png": "PNG",
+        "format_png_desc": "無損壓縮",
+        "format_webp": "WebP",
+        "format_webp_desc": "現代格式",
+        "format_gif": "GIF",
+        "format_gif_desc": "支援動畫",
+        "format_bmp": "BMP",
+        "format_bmp_desc": "位圖格式",
+        "format_tiff": "TIFF",
+        "format_tiff_desc": "專業級",
+        "image_quality": "圖片品質：",
+        "start_converting": "🔄 開始轉換",
+        "ready_to_convert": "準備轉換",
+        "converting": "轉換中...",
+        "completed": "已完成",
+        "failed": "失敗",
+        "conversion_complete": "🎉 轉換完成！",
+        "download_all_zip": "📦 下載全部檔案（ZIP）",
+        "share_all": "📤 分享全部檔案",
+        "choose_again": "🔄 重新選擇",
+        "back_to_tools": "← 返回工具"
       },
       "cropper": {
-        "title": "图片裁剪器",
-        "description": "轻松裁剪和调整图片大小"
+        "title": "圖片裁剪器",
+        "description": "輕鬆裁剪和調整圖片大小",
+        "subtitle": "精確裁剪圖片，支援多種寬高比和自由選擇",
+        "upload_text": "點擊選擇圖片或拖拽到此處",
+        "upload_hint": "支援 JPG、PNG、GIF、WebP 格式，最大 10MB",
+        "preset_ratios": "預設比例：",
+        "ratio_free": "自由",
+        "custom_size": "自訂尺寸：",
+        "apply_btn": "套用",
+        "selection_area": "選擇區域：",
+        "pixels": "畫素",
+        "position": "位置：",
+        "original_image": "原始圖片",
+        "crop_preview": "裁剪預覽",
+        "size_label": "尺寸：",
+        "file_size_label": "檔案大小：",
+        "estimated_size": "預估大小：",
+        "start_crop_btn": "✂️ 開始裁剪",
+        "download_btn": "📥 下載裁剪圖片",
+        "share_btn": "📤 分享圖片",
+        "reset_btn": "🔄 重新選擇",
+        "back_to_tools": "← 返回工具"
       },
       "compressor": {
-        "title": "图片压缩器",
-        "description": "在保持质量的同时减小图片文件大小"
+        "title": "圖片壓縮器",
+        "description": "在保持品質的同時減小圖片檔案大小",
+        "subtitle": "智能圖片壓縮，在保持高品質的同時減小檔案大小",
+        "upload_text": "點擊選擇圖片或拖拽到此處",
+        "upload_hint": "支援 JPG、PNG、WebP 格式，最大 10MB",
+        "original_image": "原始圖片",
+        "compressed_image": "壓縮後圖片",
+        "size_label": "尺寸：",
+        "file_size_label": "檔案大小：",
+        "size_reduced_by": "檔案大小減少了",
+        "image_quality": "圖片品質：",
+        "output_format": "輸出格式：",
+        "download_btn": "📥 下載壓縮圖片",
+        "share_btn": "📤 分享圖片",
+        "reset_btn": "🔄 重置",
+        "back_to_tools": "← 返回工具"
       },
       "background_remover": {
         "title": "背景移除器",
-        "description": "自动从图片中移除背景"
+        "description": "自動從圖片中移除背景"
       },
       "resizer": {
-        "title": "图片调整器",
-        "description": "将图片调整为任意尺寸"
+        "title": "圖片調整器",
+        "description": "將圖片調整為任意尺寸"
       },
       "rotator": {
-        "title": "图片旋转器",
-        "description": "旋转和翻转图片"
+        "title": "圖片旋轉器",
+        "description": "旋轉和翻轉圖片"
       },
       "watermark": {
-        "title": "水印工具",
-        "description": "为您的图片添加水印"
+        "title": "浮水印工具",
+        "description": "為您的圖片加上浮水印"
       },
       "filter_effects": {
-        "title": "滤镜效果",
-        "description": "应用美丽的滤镜和效果"
+        "title": "濾鏡效果",
+        "description": "套用美麗的濾鏡和效果"
+      },
+      "device_modal": {
+        "title": "選擇傳送裝置",
+        "no_devices": "未找到可用裝置",
+        "ensure_devices": "請確保其他裝置已開啟DropShare並連接到同一網路",
+        "send_button": "傳送到裝置",
+        "send_devices": "傳送到裝置",
+        "send_count": "傳送到 {count} 個裝置",
+        "unknown_device": "未知裝置",
+        "unknown_type": "未知類型",
+        "mobile_device": "行動裝置",
+        "laptop": "筆記型電腦",
+        "desktop": "桌上型電腦"
+      },
+      "messages": {
+        "yasuopic_integration": "可以整合 Yasuopic！\\n\\n此工具可以從您現有的 yasuopic 專案中整合。",
+        "coming_soon": "即將推出！\\n\\n此工具正在開發中。請稍後查看。",
+        "files_sent": "檔案已傳送到 {count} 個裝置",
+        "files_added_to_queue": "檔案已加入傳輸佇列",
+        "no_transfer_system": "無可用的傳輸系統。重新導向到主傳輸頁面？"
       }
     },
     "audio": {

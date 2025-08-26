@@ -125,40 +125,155 @@
     }
   },
   "tools": {
+    "categories": {
+      "popular": "Populaire",
+      "essential": "Essentiel",
+      "pro": "Pro",
+      "ai_powered": "Alimenté par IA",
+      "creative": "Créatif"
+    },
     "image": {
-      "title": "Image Tools",
-      "subtitle": "Professional image editing and conversion tools",
+      "title": "Outils d'image",
+      "subtitle": "Outils professionnels d'édition et de conversion d'images",
       "converter": {
-        "title": "Image Converter",
-        "description": "Convert images between different formats"
+        "title": "Convertisseur d'images",
+        "description": "Convertir des images entre différents formats",
+        "subtitle": "Convertir entre plusieurs formats d'image tout en maintenant une qualité optimale",
+        "upload_text": "Cliquez pour sélectionner des images ou glissez-les ici",
+        "upload_hint": "Supporte les formats JPG, PNG, GIF, BMP, TIFF, WebP, plusieurs fichiers autorisés",
+        "select_format": "Sélectionner le format de sortie",
+        "format_jpeg": "JPEG",
+        "format_jpeg_desc": "Haute compression",
+        "format_png": "PNG",
+        "format_png_desc": "Sans perte",
+        "format_webp": "WebP",
+        "format_webp_desc": "Format moderne",
+        "format_gif": "GIF",
+        "format_gif_desc": "Support d'animation",
+        "format_bmp": "BMP",
+        "format_bmp_desc": "Format bitmap",
+        "format_tiff": "TIFF",
+        "format_tiff_desc": "Professionnel",
+        "image_quality": "Qualité d'image :",
+        "start_converting": "🔄 Démarrer la conversion",
+        "ready_to_convert": "Prêt à convertir",
+        "converting": "Conversion...",
+        "completed": "Terminé",
+        "failed": "Échoué",
+        "conversion_complete": "🎉 Terminé !",
+        "download_all_zip": "📦 Télécharger tous les fichiers (ZIP)",
+        "share_all": "📤 Partager tous les fichiers",
+        "choose_again": "🔄 Choisir à nouveau",
+        "back_to_tools": "← Retour aux outils"
       },
       "cropper": {
-        "title": "Image Cropper",
-        "description": "Crop and resize images easily"
+        "title": "Recadrage d'images",
+        "description": "Recadrer et redimensionner les images facilement",
+        "subtitle": "Recadrer les images avec précision avec plusieurs ratios d'aspect et sélection libre",
+        "upload_text": "Cliquez pour sélectionner les images ou glissez-les ici",
+        "upload_hint": "Supporte les formats JPG, PNG, GIF, WebP, maximum 10MB",
+        "preset_ratios": "Ratios prédéfinis :",
+        "ratio_free": "Libre",
+        "custom_size": "Taille personnalisée :",
+        "apply_btn": "Appliquer",
+        "selection_area": "Zone de sélection :",
+        "pixels": "pixels",
+        "position": "Position :",
+        "original_image": "Image originale",
+        "crop_preview": "Aperçu du recadrage",
+        "size_label": "Taille :",
+        "file_size_label": "Taille du fichier :",
+        "estimated_size": "Taille estimée :",
+        "start_crop_btn": "✂️ Commencer le recadrage",
+        "download_btn": "📥 Télécharger l'image recadrée",
+        "share_btn": "📤 Partager l'image",
+        "reset_btn": "🔄 Sélectionner à nouveau",
+        "back_to_tools": "← Retour aux outils"
       },
       "compressor": {
-        "title": "Image Compressor",
-        "description": "Reduce image file size while maintaining quality"
+        "title": "Compresseur d'images",
+        "description": "Réduire la taille du fichier image tout en conservant la qualité",
+        "subtitle": "Compression d'image intelligente, réduit la taille en maintenant une haute qualité",
+        "upload_text": "Cliquez pour sélectionner l'image ou faites glisser ici",
+        "upload_hint": "Prend en charge les formats JPG, PNG, WebP, max 10 Mo",
+        "original_image": "Image Originale",
+        "compressed_image": "Image Compressée",
+        "size_label": "Taille :",
+        "file_size_label": "Taille du fichier :",
+        "size_reduced_by": "Taille du fichier réduite de",
+        "image_quality": "Qualité d'image :",
+        "output_format": "Format de sortie :",
+        "download_btn": "📥 Télécharger l'Image Compressée",
+        "share_btn": "📤 Partager l'Image",
+        "reset_btn": "🔄 Réinitialiser",
+        "back_to_tools": "← Retour aux Outils"
       },
       "background_remover": {
-        "title": "Background Remover",
-        "description": "Remove backgrounds from images automatically"
+        "title": "Suppression d'arrière-plan",
+        "description": "Supprimer automatiquement l'arrière-plan des images"
       },
       "resizer": {
-        "title": "Image Resizer",
-        "description": "Resize images to any dimension"
+        "title": "Redimensionneur d'images",
+        "description": "Redimensionner les images à n'importe quelle dimension",
+        "subtitle": "Redimensionner les images avec précision en utilisant des tailles personnalisées ou des pourcentages",
+        "upload_text": "Cliquez pour sélectionner une image ou glissez-la ici",
+        "upload_hint": "Supporte les formats JPG, PNG, GIF, WebP, maximum 10MB",
+        "size_settings": "Paramètres de taille",
+        "custom_size": "Taille personnalisée",
+        "width_placeholder": "Largeur (px)",
+        "height_placeholder": "Hauteur (px)",
+        "lock_aspect_ratio": "🔒 Verrouiller le rapport d'aspect",
+        "scale_settings": "Paramètres d'échelle",
+        "scale_percentage": "Pourcentage d'échelle :",
+        "resampling_method": "Méthode de rééchantillonnage :",
+        "auto_select": "Sélection automatique",
+        "smooth_method": "Lisse (bicubique)",
+        "pixelated_method": "Pixelisé (voisin le plus proche)",
+        "start_resize_btn": "📏 Commencer le redimensionnement",
+        "original_image": "Image originale",
+        "resized_image": "Image redimensionnée",
+        "size_label": "Taille :",
+        "file_size_label": "Taille du fichier :",
+        "estimated_size": "Taille estimée :",
+        "download_btn": "📥 Télécharger l'image redimensionnée",
+        "share_btn": "📤 Partager l'image",
+        "reset_btn": "🔄 Sélectionner à nouveau",
+        "back_to_tools": "← Retour aux outils",
+        "size_increased": "📈 Taille augmentée",
+        "size_reduced": "📉 Taille réduite",
+        "size_unchanged": "📊 Taille inchangée"
       },
       "rotator": {
-        "title": "Image Rotator",
-        "description": "Rotate and flip images"
+        "title": "Rotation d'images",
+        "description": "Faire pivoter et retourner les images"
       },
       "watermark": {
-        "title": "Watermark Tool",
-        "description": "Add watermarks to your images"
+        "title": "Outil de filigrane",
+        "description": "Ajouter des filigranes à vos images"
       },
       "filter_effects": {
-        "title": "Filter Effects",
-        "description": "Apply beautiful filters and effects"
+        "title": "Effets de filtre",
+        "description": "Appliquer de beaux filtres et effets"
+      },
+      "device_modal": {
+        "title": "Sélectionner l'appareil à envoyer",
+        "no_devices": "Aucun appareil disponible trouvé",
+        "ensure_devices": "Veuillez vous assurer que d'autres appareils ont DropShare ouvert et sont connectés au même réseau",
+        "send_button": "Envoyer aux appareils",
+        "send_devices": "Envoyer aux appareils",
+        "send_count": "Envoyer à {count} appareils",
+        "unknown_device": "Appareil inconnu",
+        "unknown_type": "Type inconnu",
+        "mobile_device": "Appareil mobile",
+        "laptop": "Ordinateur portable",
+        "desktop": "Ordinateur de bureau"
+      },
+      "messages": {
+        "yasuopic_integration": "Intégration Yasuopic disponible",
+        "coming_soon": "Bientôt disponible",
+        "files_sent": "Fichiers envoyés à {count} appareils",
+        "files_added_to_queue": "Fichiers ajoutés à la file de transfert",
+        "no_transfer_system": "Aucun système de transfert disponible"
       }
     },
     "audio": {

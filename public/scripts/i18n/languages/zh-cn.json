@@ -125,93 +125,59 @@
     }
   },
   "tools": {
-    "image": {
-      "title": "图片工具",
-      "subtitle": "专业的图片编辑和转换工具",
-      "converter": {
-        "title": "图片转换器",
-        "description": "在不同格式之间转换图片"
-      },
-      "cropper": {
-        "title": "图片裁剪器",
-        "description": "轻松裁剪和调整图片大小"
-      },
-      "compressor": {
-        "title": "图片压缩器",
-        "description": "在保持质量的同时减小图片文件大小"
-      },
-      "background_remover": {
-        "title": "背景移除器",
-        "description": "自动从图片中移除背景"
-      },
-      "resizer": {
-        "title": "图片调整器",
-        "description": "将图片调整为任意尺寸"
-      },
-      "rotator": {
-        "title": "图片旋转器",
-        "description": "旋转和翻转图片"
-      },
-      "watermark": {
-        "title": "水印工具",
-        "description": "为您的图片添加水印"
-      },
-      "filter_effects": {
-        "title": "滤镜效果",
-        "description": "应用美丽的滤镜和效果"
-      }
+    "cropper": {
+      "title": "图片裁剪器",
+      "subtitle": "精确裁剪图片，支持多种宽高比和自由选择",
+      "upload_text": "点击选择图片或拖拽到此处",
+      "upload_hint": "支持 JPG、PNG、GIF、WebP 格式，最大 10MB",
+      "preset_ratios": "预设比例：",
+      "ratio_free": "自由",
+      "custom_size": "自定义尺寸：",
+      "apply_btn": "应用",
+      "selection_area": "选择区域：",
+      "pixels": "像素",
+      "position": "位置：",
+      "original_image": "原始图片",
+      "crop_preview": "裁剪预览",
+      "size_label": "尺寸：",
+      "file_size_label": "文件大小：",
+      "estimated_size": "预估大小：",
+      "start_crop_btn": "✂️ 开始裁剪",
+      "download_btn": "📥 下载裁剪图片",
+      "share_btn": "📤 分享图片",
+      "reset_btn": "🔄 重新选择",
+      "back_to_tools": "← 返回工具"
     },
-    "audio": {
-      "title": "音频工具",
-      "subtitle": "转换和编辑音频文件",
-      "converter": {
-        "title": "音频转换器",
-        "description": "在音频格式之间转换"
-      },
-      "processor": {
-        "title": "音频处理器",
-        "description": "高级音频编辑工具"
-      }
-    },
-    "video": {
-      "title": "视频工具",
-      "subtitle": "专业的视频转换工具",
-      "converter": {
-        "title": "视频转换器",
-        "description": "在格式之间转换视频"
-      },
-      "info": {
-        "title": "视频信息",
-        "description": "获取视频文件的详细信息"
-      }
-    },
-    "document": {
-      "title": "文档工具",
-      "subtitle": "处理和转换文档",
-      "processor": {
-        "title": "文档处理器",
-        "description": "转换和处理文档"
-      },
-      "pdf_to_word": {
-        "title": "PDF转Word",
-        "description": "将PDF文件转换为Word文档"
-      },
-      "docx_to_html": {
-        "title": "DOCX转HTML",
-        "description": "将Word文档转换为HTML"
-      },
-      "docx_to_txt": {
-        "title": "DOCX转TXT",
-        "description": "将Word文档转换为纯文本"
-      },
-      "xlsx_to_csv": {
-        "title": "XLSX转CSV",
-        "description": "将Excel文件转换为CSV"
-      },
-      "csv_to_xlsx": {
-        "title": "CSV转XLSX",
-        "description": "将CSV文件转换为Excel"
-      }
+    "resizer": {
+      "title": "图片调整器",
+      "subtitle": "智能图片尺寸调整，支持多种预设和自定义选项",
+      "upload_text": "点击选择图片或拖拽到此处",
+      "upload_hint": "支持 JPG、PNG、GIF、WebP 格式，最大 10MB",
+      "size_settings": "📐 尺寸设置",
+      "custom_size": "自定义",
+      "width_placeholder": "宽度",
+      "height_placeholder": "高度",
+      "lock_aspect_ratio": "锁定宽高比",
+      "scale_settings": "🔍 缩放设置",
+      "scale_percentage": "缩放百分比：",
+      "resampling_method": "重采样方法：",
+      "auto_select": "自动选择",
+      "smooth_method": "平滑（适合放大）",
+      "pixelated_method": "像素化（保持锐利）",
+      "start_resize_btn": "📏 开始调整",
+      "original_image": "原始图片",
+      "resized_image": "调整后图片",
+      "size_label": "尺寸：",
+      "file_size_label": "文件大小：",
+      "estimated_size": "预估大小：",
+      "download_btn": "📥 下载调整后图片",
+      "share_btn": "📤 分享图片",
+      "reset_btn": "🔄 重新选择",
+      "back_to_tools": "← 返回工具",
+      "size_increased": "图片尺寸增加了",
+      "size_reduced": "图片尺寸减少了",
+      "size_unchanged": "图片尺寸保持不变",
+      "alert_invalid_dimensions": "请输入有效的宽度和高度！"
     }
   },
   "transfer": {
@@ -242,9 +208,9 @@
       "upload_hint": "文件将与房间中的所有成员共享",
       "download_hint": "上传文件后，房间中的所有成员都可以下载",
       "host_notice": "主持人通知",
-      "host_notice_message": "作为主持人，刷新页面将自动重连房间。只有点击"离开房间"或关闭浏览器标签页才会解散房间。",
+      "host_notice_message": "作为主持人，刷新页面将自动重连房间。只有点击\\\"离开房间\\\"或关闭浏览器标签页才会解散房间。",
       "member_notice": "成员通知",
-      "member_notice_message": "刷新页面将自动重连房间。只有点击"离开房间"或关闭浏览器标签页才会退出房间。"
+      "member_notice_message": "刷新页面将自动重连房间。只有点击\\\"离开房间\\\"或关闭浏览器标签页才会退出房间。"
     },
     "status": {
       "open_on_other_devices": "在其他设备上打开 DropShare 以发送文件",
@@ -258,6 +224,168 @@
       "title": "传输历史",
       "clear_history": "清除历史",
       "no_history": "暂无传输历史"
+    }
+  },
+  "tools": {
+    "categories": {
+      "popular": "热门",
+      "essential": "必备",
+      "pro": "专业",
+      "ai_powered": "AI驱动",
+      "creative": "创意"
+    },
+    "image": {
+      "title": "图片工具",
+      "subtitle": "专业的图片编辑和转换工具",
+      "converter": {
+        "title": "图片转换器",
+        "description": "在JPG、PNG、WebP、GIF等格式间转换图片",
+        "subtitle": "在多种图片格式间转换，保持最佳质量",
+        "upload_text": "点击选择图片或拖拽到此处",
+        "upload_hint": "支持 JPG、PNG、GIF、BMP、TIFF、WebP 格式，允许多个文件",
+        "select_format": "选择输出格式",
+        "format_jpeg": "JPEG",
+        "format_jpeg_desc": "高压缩",
+        "format_png": "PNG",
+        "format_png_desc": "无损压缩",
+        "format_webp": "WebP",
+        "format_webp_desc": "现代格式",
+        "format_gif": "GIF",
+        "format_gif_desc": "支持动画",
+        "format_bmp": "BMP",
+        "format_bmp_desc": "位图格式",
+        "format_tiff": "TIFF",
+        "format_tiff_desc": "专业级",
+        "image_quality": "图片质量：",
+        "start_converting": "🔄 开始转换",
+        "ready_to_convert": "准备转换",
+        "converting": "转换中...",
+        "completed": "已完成",
+        "failed": "失败",
+        "conversion_complete": "🎉 转换完成！",
+        "download_all_zip": "📦 下载全部文件（ZIP）",
+        "share_all": "📤 分享全部文件",
+        "choose_again": "🔄 重新选择",
+        "back_to_tools": "← 返回工具"
+      },
+      "cropper": {
+        "title": "图片裁剪器",
+        "description": "精确裁剪图片区域，支持宽高比控制和自由选择",
+        "subtitle": "精确裁剪图片，支持多种宽高比和自由选择",
+        "upload_text": "点击选择图片或拖拽到此处",
+        "upload_hint": "支持 JPG、PNG、GIF、WebP 格式，最大 10MB",
+        "preset_ratios": "预设比例：",
+        "ratio_free": "自由",
+        "custom_size": "自定义尺寸：",
+        "apply_btn": "应用",
+        "selection_area": "选择区域：",
+        "pixels": "像素",
+        "position": "位置：",
+        "original_image": "原始图片",
+        "crop_preview": "裁剪预览",
+        "size_label": "尺寸：",
+        "file_size_label": "文件大小：",
+        "estimated_size": "预估大小：",
+        "start_crop_btn": "✂️ 开始裁剪",
+        "download_btn": "📥 下载裁剪图片",
+        "share_btn": "📤 分享图片",
+        "reset_btn": "🔄 重新选择",
+        "back_to_tools": "← 返回工具"
+      },
+      "compressor": {
+        "title": "图片压缩器",
+        "description": "在保持质量的同时减小图片文件大小",
+        "subtitle": "智能图片压缩，在保持高品质的同时减小文件大小",
+        "upload_text": "点击选择图片或拖拽到此处",
+        "upload_hint": "支持 JPG、PNG、WebP 格式，最大 10MB",
+        "original_image": "原始图片",
+        "compressed_image": "压缩后图片",
+        "size_label": "尺寸：",
+        "file_size_label": "文件大小：",
+        "size_reduced_by": "文件大小减少了",
+        "image_quality": "图片质量：",
+        "output_format": "输出格式：",
+        "download_btn": "📥 下载压缩图片",
+        "share_btn": "📤 分享图片",
+        "reset_btn": "🔄 重置",
+        "back_to_tools": "← 返回工具"
+      },
+      "background_remover": {
+        "title": "背景移除器",
+        "description": "自动或手动精确移除图片背景，支持透明背景"
+      },
+      "resizer": {
+        "title": "图片调整器",
+        "description": "调整图片尺寸，支持保持宽高比或自定义尺寸",
+        "subtitle": "智能图片尺寸调整，支持多种预设和自定义选项",
+        "upload_text": "点击选择图片或拖拽到此处",
+        "upload_hint": "支持 JPG、PNG、GIF、WebP 格式，最大 10MB",
+        "size_settings": "📐 尺寸设置",
+        "custom_size": "自定义",
+        "width_placeholder": "宽度",
+        "height_placeholder": "高度",
+        "lock_aspect_ratio": "锁定宽高比",
+        "scale_settings": "🔍 缩放设置",
+        "scale_percentage": "缩放百分比：",
+        "resampling_method": "重采样方法：",
+        "auto_select": "自动选择",
+        "smooth_method": "平滑（适合放大）",
+        "pixelated_method": "像素化（保持锐利）",
+        "start_resize_btn": "📏 开始调整",
+        "original_image": "原始图片",
+        "resized_image": "调整后图片",
+        "size_label": "尺寸：",
+        "file_size_label": "文件大小：",
+        "estimated_size": "预估大小：",
+        "download_btn": "📥 下载调整后图片",
+        "share_btn": "📤 分享图片",
+        "reset_btn": "🔄 重新选择",
+        "back_to_tools": "← 返回工具",
+        "size_increased": "图片尺寸增加了",
+        "size_reduced": "图片尺寸减少了",
+        "size_unchanged": "图片尺寸保持不变"
+      },
+      "rotator": {
+        "title": "图片旋转器",
+        "description": "任意角度旋转图片，支持水平或垂直翻转"
+      },
+      "watermark": {
+        "title": "水印工具",
+        "description": "添加文字或logo水印保护图片，可自定义位置"
+      },
+      "filter_effects": {
+        "title": "滤镜效果",
+        "description": "应用复古、黑白、棕褐色等各种滤镜和艺术效果"
+      },
+      "device_modal": {
+        "title": "选择传送设备",
+        "no_devices": "未找到可用设备",
+        "ensure_devices": "请确保其他设备已打开DropShare并连接到同一网络",
+        "send_button": "发送到设备",
+        "send_devices": "发送到设备",
+        "send_count": "发送到 {count} 个设备",
+        "unknown_device": "未知设备",
+        "unknown_type": "未知类型",
+        "mobile_device": "移动设备",
+        "laptop": "笔记本电脑",
+        "desktop": "台式电脑",
+        "share_btn": "📤 分享",
+        "send": "发送",
+        "files_to": "个文件到",
+        "devices": "个设备",
+        "send_to": "发送到",
+        "files_sent_to": "个文件已发送到",
+        "goto_transfer_confirm": "传输功能需要跳转到传输页面。\n\n是否现在跳转到传输页面？",
+        "device": "设备",
+        "network_device": "网络设备"
+      },
+      "messages": {
+        "yasuopic_integration": "可以集成 Yasuopic！\\n\\n此工具可以从您现有的 yasuopic 项目中集成。",
+        "coming_soon": "即将推出！\\n\\n此工具正在开发中。请稍后查看。",
+        "files_sent": "文件已发送到 {count} 个设备",
+        "files_added_to_queue": "文件已添加到传输队列",
+        "no_transfer_system": "无可用的传输系统。重定向到主传输页面？"
+      }
     }
   },
   "footer": {

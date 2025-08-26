@@ -174,7 +174,7 @@ class DropshareI18N {
             }
 
             // 加载翻译文件
-            const response = await fetch(`/scripts/i18n/languages/${language}.json`);
+            const response = await fetch(`scripts/i18n/languages/${language}.json`);
             if (!response.ok) {
                 throw new Error(`Failed to load translations for ${language}`);
             }

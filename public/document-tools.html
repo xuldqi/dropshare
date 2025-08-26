@@ -7,6 +7,12 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
+    
+    <!-- I18N System -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -791,16 +797,16 @@
 
             <div class="header-controls">
                 <nav class="nav-links">
-                    <a href="share.html">Transfer</a>
-                    <a href="share.html#rooms">Rooms</a>
-                    <a href="image-tools.html">Images</a>
-                    <a href="audio-tools.html">Audio</a>
-                    <a href="video-tools.html">Video</a>
-                    <a href="document-tools.html" class="active">Files</a>
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" class="active" data-i18n="navigation.files">Files</a>
                 </nav>
-                <div class="control-buttons">
 
-                </div>
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
             </div>
         </div>
     </header>

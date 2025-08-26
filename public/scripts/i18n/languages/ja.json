@@ -125,40 +125,155 @@
     }
   },
   "tools": {
+    "categories": {
+      "popular": "人気",
+      "essential": "必須",
+      "pro": "プロ",
+      "ai_powered": "AI搭載",
+      "creative": "クリエイティブ"
+    },
     "image": {
-      "title": "Image Tools",
-      "subtitle": "Professional image editing and conversion tools",
+      "title": "画像ツール",
+      "subtitle": "プロフェッショナルな画像編集・変換ツール",
       "converter": {
-        "title": "Image Converter",
-        "description": "Convert images between different formats"
+        "title": "画像コンバーター",
+        "description": "異なる形式間で画像を変換",
+        "subtitle": "最適な品質を維持しながら複数の画像形式間で変換",
+        "upload_text": "クリックして画像を選択するか、ここにドラッグ",
+        "upload_hint": "JPG、PNG、GIF、BMP、TIFF、WebP形式をサポート、複数ファイル可能",
+        "select_format": "出力形式を選択",
+        "format_jpeg": "JPEG",
+        "format_jpeg_desc": "高圧縮",
+        "format_png": "PNG",
+        "format_png_desc": "ロスレス",
+        "format_webp": "WebP",
+        "format_webp_desc": "モダン形式",
+        "format_gif": "GIF",
+        "format_gif_desc": "アニメーションサポート",
+        "format_bmp": "BMP",
+        "format_bmp_desc": "ビットマップ形式",
+        "format_tiff": "TIFF",
+        "format_tiff_desc": "プロフェッショナル",
+        "image_quality": "画像品質：",
+        "start_converting": "🔄 変換開始",
+        "ready_to_convert": "変換準備完了",
+        "converting": "変換中...",
+        "completed": "完了",
+        "failed": "失敗",
+        "conversion_complete": "🎉 完了！",
+        "download_all_zip": "📦 すべてのファイルをダウンロード（ZIP）",
+        "share_all": "📤 すべてのファイルを共有",
+        "choose_again": "🔄 再選択",
+        "back_to_tools": "← ツールに戻る"
       },
       "cropper": {
-        "title": "Image Cropper",
-        "description": "Crop and resize images easily"
+        "title": "画像クロッパー",
+        "description": "画像を簡単にトリミング・リサイズ",
+        "subtitle": "複数のアスペクト比と自由選択で画像を精密にクロップ",
+        "upload_text": "クリックして画像を選択するか、ここにドラッグ",
+        "upload_hint": "JPG、PNG、GIF、WebP形式をサポート、最大10MB",
+        "preset_ratios": "プリセット比率：",
+        "ratio_free": "自由",
+        "custom_size": "カスタムサイズ：",
+        "apply_btn": "適用",
+        "selection_area": "選択領域：",
+        "pixels": "ピクセル",
+        "position": "位置：",
+        "original_image": "元画像",
+        "crop_preview": "クロッププレビュー",
+        "size_label": "サイズ：",
+        "file_size_label": "ファイルサイズ：",
+        "estimated_size": "推定サイズ：",
+        "start_crop_btn": "✂️ クロップ開始",
+        "download_btn": "📥 クロップした画像をダウンロード",
+        "share_btn": "📤 画像を共有",
+        "reset_btn": "🔄 再選択",
+        "back_to_tools": "← ツールに戻る"
       },
       "compressor": {
-        "title": "Image Compressor",
-        "description": "Reduce image file size while maintaining quality"
+        "title": "画像圧縮ツール",
+        "description": "品質を保ちながら画像ファイルサイズを削減",
+        "subtitle": "スマート画像圧縮、高品質を維持しながらファイルサイズを削減",
+        "upload_text": "クリックして画像を選択するか、ここにドラッグ",
+        "upload_hint": "JPG、PNG、WebP形式をサポート、最大10MB",
+        "original_image": "元画像",
+        "compressed_image": "圧縮済み画像",
+        "size_label": "サイズ：",
+        "file_size_label": "ファイルサイズ：",
+        "size_reduced_by": "ファイルサイズ削減量",
+        "image_quality": "画像品質：",
+        "output_format": "出力形式：",
+        "download_btn": "📥 圧縮画像をダウンロード",
+        "share_btn": "📤 画像を共有",
+        "reset_btn": "🔄 リセット",
+        "back_to_tools": "← ツールに戻る"
       },
       "background_remover": {
-        "title": "Background Remover",
-        "description": "Remove backgrounds from images automatically"
+        "title": "背景除去ツール",
+        "description": "画像から背景を自動で除去"
       },
       "resizer": {
-        "title": "Image Resizer",
-        "description": "Resize images to any dimension"
+        "title": "画像リサイザー",
+        "description": "画像を任意のサイズにリサイズ",
+        "subtitle": "高品質を保ちながら画像サイズを自由に調整・スケール",
+        "upload_text": "クリックして画像を選択するか、ここにドラッグ",
+        "upload_hint": "JPG、PNG、GIF、WebP形式をサポート、最大10MB",
+        "size_settings": "サイズ設定",
+        "custom_size": "カスタムサイズ：",
+        "width_placeholder": "幅",
+        "height_placeholder": "高さ",
+        "lock_aspect_ratio": "🔒 アスペクト比を固定",
+        "scale_settings": "スケール設定",
+        "scale_percentage": "スケール率：",
+        "resampling_method": "リサンプリング方法：",
+        "auto_select": "自動選択",
+        "smooth_method": "スムーズ（写真用）",
+        "pixelated_method": "ピクセル化（イラスト用）",
+        "start_resize_btn": "🔄 リサイズ開始",
+        "original_image": "元画像",
+        "resized_image": "リサイズ済み画像",
+        "size_label": "サイズ：",
+        "file_size_label": "ファイルサイズ：",
+        "estimated_size": "推定サイズ：",
+        "download_btn": "📥 リサイズした画像をダウンロード",
+        "share_btn": "📤 画像を共有",
+        "reset_btn": "🔄 リセット",
+        "back_to_tools": "← ツールに戻る",
+        "size_increased": "ファイルサイズが増加しました",
+        "size_reduced": "ファイルサイズが削減されました",
+        "size_unchanged": "ファイルサイズは変更されませんでした"
       },
       "rotator": {
-        "title": "Image Rotator",
-        "description": "Rotate and flip images"
+        "title": "画像回転ツール",
+        "description": "画像を回転・反転"
       },
       "watermark": {
-        "title": "Watermark Tool",
-        "description": "Add watermarks to your images"
+        "title": "ウォーターマークツール",
+        "description": "画像にウォーターマークを追加"
       },
       "filter_effects": {
-        "title": "Filter Effects",
-        "description": "Apply beautiful filters and effects"
+        "title": "フィルター効果",
+        "description": "美しいフィルターと効果を適用"
+      },
+      "device_modal": {
+        "title": "送信デバイスを選択",
+        "no_devices": "利用可能なデバイスが見つかりません",
+        "ensure_devices": "他のデバイスでDropShareが開かれ、同じネットワークに接続されていることを確認してください",
+        "send_button": "デバイスに送信",
+        "send_devices": "デバイスに送信",
+        "send_count": "{count}台のデバイスに送信",
+        "unknown_device": "不明なデバイス",
+        "unknown_type": "不明なタイプ",
+        "mobile_device": "モバイルデバイス",
+        "laptop": "ノートパソコン",
+        "desktop": "デスクトップ"
+      },
+      "messages": {
+        "yasuopic_integration": "Yasuopic統合が利用可能！\\n\\nこのツールは既存のyasuopicプロジェクトから統合できます。",
+        "coming_soon": "近日公開！\\n\\nこのツールは開発中です。後でもう一度確認してください。",
+        "files_sent": "ファイルが{count}台のデバイスに送信されました",
+        "files_added_to_queue": "ファイルが転送キューに追加されました",
+        "no_transfer_system": "利用可能な転送システムがありません。メイン転送ページにリダイレクトしますか？"
       }
     },
     "audio": {

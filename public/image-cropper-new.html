@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Cropper - DropShare</title>
+    
+    <!-- I18N System -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -44,6 +51,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -402,27 +415,33 @@
             <a href="/" class="logo">
                 ✂️ DropShare
             </a>
-            <nav class="nav-links">
-                <a href="share.html" >Transfer</a>
-                <a href="share.html#rooms" >Rooms</a>
-                <a href="image-tools.html" class="active" >Images</a>
-                <a href="audio-tools.html" >Audio</a>
-                <a href="video-tools.html" >Video</a>
-                <a href="document-tools.html" >Files</a>
-            </nav>
+            
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" class="active" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">Image Cropper</h1>
-        <p class="page-subtitle">Precisely crop images with multiple aspect ratios and free selection</p>
+        <h1 class="page-title" data-i18n="tools.cropper.title">Image Cropper</h1>
+        <p class="page-subtitle" data-i18n="tools.cropper.subtitle">Precisely crop images with multiple aspect ratios and free selection</p>
 
         <div class="cropper-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">✂️</div>
-                <div class="upload-text">Click to select images or drag them here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
+                <div class="upload-text" data-i18n="tools.cropper.upload_text">Click to select images or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.cropper.upload_hint">Supports JPG, PNG, GIF, WebP formats, maximum 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -431,9 +450,9 @@
                 <!-- 裁剪控制 -->
                 <div class="crop-controls">
                     <div class="control-group">
-                        <label class="control-label">Preset Ratios:</label>
+                        <label class="control-label" data-i18n="tools.cropper.preset_ratios">Preset Ratios:</label>
                         <div class="aspect-ratios">
-                            <button class="aspect-btn" data-ratio="free">Free</button>
+                            <button class="aspect-btn" data-ratio="free" data-i18n="tools.cropper.ratio_free">Free</button>
                             <button class="aspect-btn active" data-ratio="1:1">1:1</button>
                             <button class="aspect-btn" data-ratio="4:3">4:3</button>
                             <button class="aspect-btn" data-ratio="16:9">16:9</button>
@@ -441,13 +460,13 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">Custom Size:</label>
+                        <label class="control-label" data-i18n="tools.cropper.custom_size">Custom Size:</label>
                         <div class="dimension-inputs">
                             <input type="number" class="dimension-input" id="cropWidth" placeholder="Width">
                             <span>×</span>
                             <input type="number" class="dimension-input" id="cropHeight" placeholder="Height">
                             <button class="btn btn-primary" id="applySizeBtn" style="padding: 8px 16px; font-size: 14px;">
-                                <span>Apply</span>
+                                <span data-i18n="tools.cropper.apply_btn">Apply</span>
                             </button>
                         </div>
                     </div>
@@ -472,7 +491,7 @@
 
                 <!-- 裁剪信息 -->
                 <div class="crop-info" id="cropInfo">
-                    <span>Selection area:</span> 0 × 0 <span>pixels</span> | <span>Position:</span> (0, 0)
+                    <span data-i18n="tools.cropper.selection_area">Selection area:</span> 0 × 0 <span data-i18n="tools.cropper.pixels">pixels</span> | <span data-i18n="tools.cropper.position">Position:</span> (0, 0)
                 </div>
             </div>
 
@@ -480,19 +499,19 @@
             <div class="preview-section" id="previewSection">
                 <div class="preview-container">
                     <div class="preview-item">
-                        <h3>Original Image</h3>
+                        <h3 data-i18n="tools.cropper.original_image">Original Image</h3>
                         <img id="originalPreview" class="preview-image" alt="Original Image">
                         <div class="image-info">
-                            <div><span>Size:</span> <span class="size" id="originalSize"></span></div>
-                            <div><span>File size:</span> <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="tools.cropper.size_label">Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="tools.cropper.file_size_label">File size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="preview-item">
-                        <h3>Crop Preview</h3>
+                        <h3 data-i18n="tools.cropper.crop_preview">Crop Preview</h3>
                         <canvas id="croppedPreview" class="preview-image"></canvas>
                         <div class="image-info">
-                            <div><span>Size:</span> <span class="size" id="croppedSize"></span></div>
-                            <div><span>Estimated size:</span> <span class="size" id="croppedFileSize"></span></div>
+                            <div><span data-i18n="tools.cropper.size_label">Size:</span> <span class="size" id="croppedSize"></span></div>
+                            <div><span data-i18n="tools.cropper.estimated_size">Estimated size:</span> <span class="size" id="croppedFileSize"></span></div>
                         </div>
                     </div>
                 </div>
@@ -501,19 +520,19 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-primary" id="cropBtn" disabled>
-                    <span>✂️ Start Cropping</span>
+                    <span data-i18n="tools.cropper.start_crop_btn">✂️ Start Cropping</span>
                 </button>
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    <span>📥 Download Cropped Image</span>
+                    <span data-i18n="tools.cropper.download_btn">📥 Download Cropped Image</span>
                 </button>
                 <button class="btn btn-secondary" id="shareBtn" style="display: none;">
-                        <span>📤 Share Image</span>
+                        <span data-i18n="tools.cropper.share_btn">📤 Share Image</span>
                     </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span>🔄 Select Again</span>
+                    <span data-i18n="tools.cropper.reset_btn">🔄 Select Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    <span>← Back to Tools</span>
+                    <span data-i18n="tools.cropper.back_to_tools">← Back to Tools</span>
                 </a>
             </div>
         </div>
@@ -988,17 +1007,50 @@
         }
     </script>
     
-    <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>    
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
+    
+    <!-- i18n System Fix -->
     <script>
-        // Initialize language system when page loads
+        // 等待并修复i18n系统初始化问题
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
+            console.log('🔧 Starting i18n system fix...');
+            
+            function waitForI18N() {
+                if (window.DropshareI18N) {
+                    console.log('✅ DropshareI18N found');
+                    
+                    // 等待初始化完成
+                    const checkInit = setInterval(() => {
+                        if (window.DropshareI18N.isInitialized) {
+                            clearInterval(checkInit);
+                            console.log('✅ i18n initialized');
+                            
+                            // 强制更新页面内容
+                            setTimeout(() => {
+                                window.DropshareI18N.updatePageContent();
+                                console.log('✅ Page content updated');
+                            }, 100);
+                            
+                            // 监听语言变化事件
+                            document.addEventListener('language-changed', function(e) {
+                                console.log('🌍 Language change event:', e.detail?.language);
+                                setTimeout(() => {
+                                    window.DropshareI18N.updatePageContent();
+                                    console.log('✅ Content updated after language change');
+                                }, 100);
+                            });
+                            
+                        }
+                    }, 100);
+                    
+                } else {
+                    console.log('⏳ Waiting for DropshareI18N...');
+                    setTimeout(waitForI18N, 100);
+                }
             }
+            
+            waitForI18N();
         });
     </script>
 </body>

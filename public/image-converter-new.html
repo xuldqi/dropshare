@@ -3,7 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Format Converter - DropShare</title>
+    <title data-i18n="tools.image.converter.title">Image Format Converter - DropShare</title>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
     <style>
         * {
             margin: 0;
@@ -44,6 +49,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -583,8 +594,25 @@
         }
 
         @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+            }
+
             .nav-links {
-                display: none;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-end;
             }
 
             .container {
@@ -615,67 +643,76 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                🔄 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html" >Transfer</a>
-                <a href="share.html#rooms" >Rooms</a>
-                <a href="image-tools.html" class="active" >Images</a>
-                <a href="audio-tools.html" >Audio</a>
-                <a href="video-tools.html" >Video</a>
-                <a href="document-tools.html" >Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;">
+                    <path d="M7 14l5-5 5 5z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" class="active" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">Image Format Converter</h1>
-        <p class="page-subtitle">Convert between multiple image formats while maintaining optimal quality</p>
+        <h1 class="page-title" data-i18n="tools.image.converter.title">Image Format Converter</h1>
+        <p class="page-subtitle" data-i18n="tools.image.converter.subtitle">Convert between multiple image formats while maintaining optimal quality</p>
 
         <div class="converter-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🖼️</div>
-                <div class="upload-text">Click to select images or drag them here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, BMP, TIFF, WebP formats, multiple files allowed</div>
+                <div class="upload-text" data-i18n="tools.image.converter.upload_text">Click to select images or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.image.converter.upload_hint">Supports JPG, PNG, GIF, BMP, TIFF, WebP formats, multiple files allowed</div>
                 <input type="file" id="fileInput" accept="image/*" multiple>
             </div>
 
             <!-- 格式选择 -->
             <div class="format-selection">
-                <div class="format-title">Select Output Format</div>
+                <div class="format-title" data-i18n="tools.image.converter.select_format">Select Output Format</div>
                 <div class="format-grid">
                     <div class="format-option selected" data-format="jpeg">
-                        <div class="format-name">JPEG</div>
-                        <div class="format-desc">High compression</div>
+                        <div class="format-name" data-i18n="tools.image.converter.format_jpeg">JPEG</div>
+                        <div class="format-desc" data-i18n="tools.image.converter.format_jpeg_desc">High compression</div>
                     </div>
                     <div class="format-option" data-format="png">
-                        <div class="format-name">PNG</div>
-                        <div class="format-desc">Lossless</div>
+                        <div class="format-name" data-i18n="tools.image.converter.format_png">PNG</div>
+                        <div class="format-desc" data-i18n="tools.image.converter.format_png_desc">Lossless</div>
                     </div>
                     <div class="format-option" data-format="webp">
-                        <div class="format-name">WebP</div>
-                        <div class="format-desc">Modern format</div>
+                        <div class="format-name" data-i18n="tools.image.converter.format_webp">WebP</div>
+                        <div class="format-desc" data-i18n="tools.image.converter.format_webp_desc">Modern format</div>
                     </div>
                     <div class="format-option" data-format="gif">
-                        <div class="format-name">GIF</div>
-                        <div class="format-desc">Animation support</div>
+                        <div class="format-name" data-i18n="tools.image.converter.format_gif">GIF</div>
+                        <div class="format-desc" data-i18n="tools.image.converter.format_gif_desc">Animation support</div>
                     </div>
                     <div class="format-option" data-format="bmp">
-                        <div class="format-name">BMP</div>
-                        <div class="format-desc">Bitmap format</div>
+                        <div class="format-name" data-i18n="tools.image.converter.format_bmp">BMP</div>
+                        <div class="format-desc" data-i18n="tools.image.converter.format_bmp_desc">Bitmap format</div>
                     </div>
                     <div class="format-option" data-format="tiff">
-                        <div class="format-name">TIFF</div>
-                        <div class="format-desc">Professional</div>
+                        <div class="format-name" data-i18n="tools.image.converter.format_tiff">TIFF</div>
+                        <div class="format-desc" data-i18n="tools.image.converter.format_tiff_desc">Professional</div>
                     </div>
                 </div>
 
                 <!-- 质量设置 -->
                 <div class="quality-settings" id="qualitySettings">
                     <label class="quality-label">
-                        <span>Image Quality:</span> <span class="quality-value" id="qualityValue">90%</span>
+                        <span data-i18n="tools.image.converter.image_quality">Image Quality:</span> <span class="quality-value" id="qualityValue">90%</span>
                     </label>
                     <input type="range" class="quality-slider" id="qualitySlider" 
                            min="10" max="100" value="90">
@@ -687,7 +724,7 @@
 
             <!-- 转换按钮 -->
             <button class="convert-button" id="convertButton" disabled>
-                <span>🔄 Start Converting</span>
+                <span data-i18n="tools.image.converter.start_converting">🔄 Start Converting</span>
             </button>
 
             <!-- 进度条 -->
@@ -701,10 +738,10 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span>🔄 Choose Again</span>
+                    <span data-i18n="tools.image.converter.choose_again">🔄 Choose Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    <span>← Back to Tools</span>
+                    <span data-i18n="tools.image.converter.back_to_tools">← Back to Tools</span>
                 </a>
             </div>
         </div>
@@ -714,16 +751,16 @@
     <div class="device-modal" id="deviceModal">
         <div class="device-modal-content">
             <div class="device-modal-header">
-                <h3 class="device-modal-title">Select Target Device</h3>
+                <h3 class="device-modal-title" data-i18n="tools.image.device_modal.title">Select Target Device</h3>
                 <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
             </div>
             <div class="device-list" id="deviceList">
                 <!-- 设备列表将在这里动态生成 -->
             </div>
             <div class="device-modal-actions">
-                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">Cancel</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()" data-i18n="common.cancel">Cancel</button>
                 <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
-                    <span>Send to Selected Devices</span>
+                    <span data-i18n="tools.image.device_modal.send_button">Send to Selected Devices</span>
                 </button>
             </div>
         </div>
@@ -839,7 +876,7 @@
                             </div>
                         </div>
                         <div class="file-status status-ready" id="status-${index}">
-                            <span>Ready to convert</span>
+                            <span data-i18n="tools.image.converter.ready_to_convert">Ready to convert</span>
                         </div>
                     `;
                 };
@@ -884,7 +921,7 @@
                 
                 try {
                     // 更新状态
-                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_converting') || 'Converting...';
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('tools.image.converter.converting') || 'Converting...';
                     statusEl.className = 'file-status status-converting';
                     
                     // 转换文件
@@ -898,12 +935,12 @@
                     });
                     
                     // 更新状态
-                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_convert_complete') || 'Completed';
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('tools.image.converter.completed') || 'Completed';
                     statusEl.className = 'file-status status-completed';
                     
                 } catch (error) {
                     console.error('Failed:', error);
-                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_convert_failed') || 'Failed';
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('tools.image.converter.failed') || 'Failed';
                     statusEl.className = 'file-status status-error';
                 }
                 
@@ -949,28 +986,33 @@
         function showDownloadSection() {
             downloadSection.style.display = 'block';
             downloadSection.innerHTML = `
-                <h3 style="margin-bottom: 20px; color: #374151;"><span >🎉 Completed！</span></h3>
+                <h3 style="margin-bottom: 20px; color: #374151;"><span data-i18n="tools.image.converter.conversion_complete">🎉 Completed！</span></h3>
                 <div style="margin-bottom: 20px;">
                     ${convertedFiles.map((file, index) => `
                         <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;">
                             <button class="download-button" onclick="downloadFile(${index})">
-                                <span>📥 Download</span> ${file.newName}
+                                <span data-i18n="common.download">📥 Download</span> ${file.newName}
                             </button>
                             <button class="download-button" onclick="shareFile(${index})" style="background: #10b981;">
-                                <span>📤 Share</span> ${file.newName}
+                                <span data-i18n="tools.image.device_modal.share_btn">📤 Share</span> ${file.newName}
                             </button>
                         </div>
                     `).join('')}
                 </div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
                     <button class="download-button" onclick="downloadAllFiles()" style="background: #7c3aed;">
-                        <span>📦 Download All Files (ZIP)</span>
+                        <span data-i18n="tools.image.converter.download_all_zip">📦 Download All Files (ZIP)</span>
                     </button>
                     <button class="download-button" onclick="shareAllFiles()" style="background: #f59e0b;">
-                        <span>📤 Share All Files</span>
+                        <span data-i18n="tools.image.converter.share_all">📤 Share All Files</span>
                     </button>
                 </div>
             `;
+            
+            // Update translations for the newly added elements
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.updatePageContent();
+            }
         }
 
         // 下载单个文件
@@ -1096,13 +1138,13 @@
             
             if (count === 0) {
                 sendBtn.disabled = true;
-                sendBtn.textContent = window.DROPSHARE_I18N?.t('btn_send_to_selected_devices') || 'Send to Selected Devices';
+                sendBtn.textContent = window.DROPSHARE_I18N?.t('tools.image.device_modal.send_button') || 'Send to Selected Devices';
             } else {
                 sendBtn.disabled = false;
                 if (shareMode === 'all') {
-                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('btn_send_files') || 'Send'} ${fileCount} ${window.DROPSHARE_I18N?.t('label_files') || 'files to'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || 'devices'}`;
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('tools.image.device_modal.send') || 'Send'} ${fileCount} ${window.DROPSHARE_I18N?.t('tools.image.device_modal.files_to') || 'files to'} ${count} ${window.DROPSHARE_I18N?.t('tools.image.device_modal.devices') || 'devices'}`;
                 } else {
-                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('btn_send_to') || 'Send to'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || 'devices'}`;
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('tools.image.device_modal.send_to') || 'Send to'} ${count} ${window.DROPSHARE_I18N?.t('tools.image.device_modal.devices') || 'devices'}`;
                 }
             }
         }
@@ -1124,11 +1166,11 @@
                     });
                 });
                 
-                alert(`${fileCount} ${window.DROPSHARE_I18N?.t('alert_files_sending_to') || '个文件已开始Send to'} ${deviceCount} ${window.DROPSHARE_I18N?.t('label_devices') || 'devices'}!`);
+                alert(`${fileCount} ${window.DROPSHARE_I18N?.t('tools.image.device_modal.files_sent_to') || 'files sent to'} ${deviceCount} ${window.DROPSHARE_I18N?.t('tools.image.device_modal.devices') || 'devices'}!`);
                 closeDeviceModal();
             } else {
                 // 如果传输系统不可用，提供跳转选项
-                if (confirm(window.DROPSHARE_I18N?.t('confirm_goto_transfer_page') || '传输功能需要返回Send页面使用。\n\n是否现在跳转到Send页面？')) {
+                if (confirm(window.DROPSHARE_I18N?.t('tools.image.device_modal.goto_transfer_confirm') || 'Transfer functionality requires going to the transfer page.\n\nWould you like to go to the transfer page now?')) {
                     // 将文件信息存储到sessionStorage，供Send页面使用
                     const filesInfo = currentFilesToShare.map(file => ({
                         name: file.name,
@@ -1157,8 +1199,8 @@
                 peerElements.forEach(peer => {
                     devices.push({
                         id: peer.id,
-                        name: peer.querySelector('.name')?.textContent || (window.DROPSHARE_I18N?.t('unknown_device') || '未知设备'),
-                        type: peer.querySelector('.device-name')?.textContent || (window.DROPSHARE_I18N?.t('label_device') || '设备')
+                        name: peer.querySelector('.name')?.textContent || (window.DROPSHARE_I18N?.t('tools.image.device_modal.unknown_device') || 'Unknown Device'),
+                        type: peer.querySelector('.device-name')?.textContent || (window.DROPSHARE_I18N?.t('tools.image.device_modal.device') || 'Device')
                     });
                 });
             }
@@ -1169,8 +1211,8 @@
                     Object.keys(window.peersManager.peers).forEach(peerId => {
                         devices.push({
                             id: peerId,
-                            name: `${window.DROPSHARE_I18N?.t('label_device') || '设备'} ${peerId.substring(0, 8)}`,
-                            type: '网络设备'
+                            name: `${window.DROPSHARE_I18N?.t('tools.image.device_modal.device') || 'Device'} ${peerId.substring(0, 8)}`,
+                            type: window.DROPSHARE_I18N?.t('tools.image.device_modal.network_device') || 'Network Device'
                         });
                     });
                 }
@@ -1247,18 +1289,9 @@
         });
     </script>
 
-    <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>    
+    <!-- i18n system will auto-initialize -->
+    
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
-    <script>
-        // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
-            }
-        });
-    </script>
 </body>
 </html>
