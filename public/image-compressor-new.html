@@ -3,7 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Compressor - DropShare</title>
+    <title data-i18n="tools.image.compressor.title">Image Compressor - DropShare</title>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -44,6 +50,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -347,13 +359,30 @@
         }
 
         @media (max-width: 768px) {
-            .preview-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
+            .header-container {
+                padding: 0 15px;
             }
 
             .nav-links {
-                display: none;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-end;
+            }
+
+            .preview-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .container {
@@ -378,30 +407,39 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                📷 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html" class="active">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" class="active" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">Image Compressor</h1>
-        <p class="page-subtitle">Smart image compression, reduce file size while maintaining high quality</p>
+        <h1 class="page-title" data-i18n="tools.image.compressor.title">Image Compressor</h1>
+        <p class="page-subtitle" data-i18n="tools.image.compressor.subtitle">Smart image compression, reduce file size while maintaining high quality</p>
 
         <div class="compressor-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📸</div>
-                <div class="upload-text">Click to select image or drag here</div>
-                <div class="upload-hint">Supports JPG, PNG, WebP formats, max 10MB</div>
+                <div class="upload-text" data-i18n="tools.image.compressor.upload_text">Click to select image or drag here</div>
+                <div class="upload-hint" data-i18n="tools.image.compressor.upload_hint">Supports JPG, PNG, WebP formats, max 10MB</div>
                 <input type="file" id="fileInput" accept="image/*" multiple>
             </div>
 
@@ -414,40 +452,40 @@
             <div class="image-preview" id="imagePreview">
                 <div class="preview-container">
                     <div class="preview-item">
-                        <h3>Original Image</h3>
+                        <h3 data-i18n="tools.image.compressor.original_image">Original Image</h3>
                         <img id="originalImage" class="preview-image" alt="Original Image">
                         <div class="image-info">
-                            <div><span>Size:</span> <span class="size" id="originalSize"></span></div>
-                            <div><span>File size:</span> <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="tools.image.compressor.size_label">Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="tools.image.compressor.file_size_label">File size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="preview-item">
-                        <h3>Compressed Image</h3>
+                        <h3 data-i18n="tools.image.compressor.compressed_image">Compressed Image</h3>
                         <img id="compressedImage" class="preview-image" alt="Compressed Image">
                         <div class="image-info">
-                            <div><span>Size:</span> <span class="size" id="compressedSize"></span></div>
-                            <div><span>File size:</span> <span class="size" id="compressedFileSize"></span></div>
+                            <div><span data-i18n="tools.image.compressor.size_label">Size:</span> <span class="size" id="compressedSize"></span></div>
+                            <div><span data-i18n="tools.image.compressor.file_size_label">File size:</span> <span class="size" id="compressedFileSize"></span></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 压缩大小显示 -->
                 <div class="size-reduction" id="sizeReduction" style="display: none;">
-                    <span>File size reduced by</span> <span id="reductionPercentage"></span>
+                    <span data-i18n="tools.image.compressor.size_reduced_by">File size reduced by</span> <span id="reductionPercentage"></span>
                 </div>
 
                 <!-- 压缩控制 -->
                 <div class="compression-controls">
                     <div class="control-group">
                         <label class="control-label">
-                            <span>Image quality:</span> <span class="quality-value" id="qualityValue">80%</span>
+                            <span data-i18n="tools.image.compressor.image_quality">Image quality:</span> <span class="quality-value" id="qualityValue">80%</span>
                         </label>
                         <input type="range" class="quality-slider" id="qualitySlider" 
                                min="10" max="100" value="80">
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">Output format:</label>
+                        <label class="control-label" data-i18n="tools.image.compressor.output_format">Output format:</label>
                         <div class="format-options">
                             <div class="format-option selected" data-format="jpeg">JPEG</div>
                             <div class="format-option" data-format="png">PNG</div>
@@ -459,16 +497,16 @@
                 <!-- 操作按钮 -->
                 <div class="action-buttons">
                     <button class="btn btn-success" id="downloadBtn">
-                        <span>📥 Download Compressed Image</span>
+                        <span data-i18n="tools.image.compressor.download_btn">📥 Download Compressed Image</span>
                     </button>
                     <button class="btn btn-secondary" id="shareBtn" style="display: none;">
-                        <span>📤 Share Image</span>
+                        <span data-i18n="tools.image.compressor.share_btn">📤 Share Image</span>
                     </button>
                     <button class="btn btn-secondary" id="resetBtn">
-                        <span>🔄 Reset</span>
+                        <span data-i18n="tools.image.compressor.reset_btn">🔄 Reset</span>
                     </button>
                     <a href="image-tools.html" class="btn btn-primary">
-                        <span>← Back to Tools</span>
+                        <span data-i18n="tools.image.compressor.back_to_tools">← Back to Tools</span>
                     </a>
                 </div>
             </div>
@@ -736,18 +774,9 @@
         }
     </script>
     
-    <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>    
+    <!-- i18n system will auto-initialize -->
+    
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
-    <script>
-        // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
-                window.DROPSHARE_I18N.init();
-            }
-        });
-    </script>
 </body>
 </html>
