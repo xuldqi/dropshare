@@ -573,7 +573,8 @@ class Dialog {
         return new Promise(resolve => {
             // 优化对话框动画
             setTimeout(() => {
-                this.$el.querySelector('x-paper').classList.add('dialog-entered');
+                const paper = this.$el.querySelector('x-paper');
+                if (paper) paper.classList.add('dialog-entered');
                 resolve();
             }, 50);
         });
