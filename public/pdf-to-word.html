@@ -3,7 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to Word Converter - DropShare</title>
+    <title data-i18n="tools.document.pdf_to_word.title">PDF to Word Converter - DropShare</title>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -44,6 +50,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -274,8 +286,25 @@
         }
 
         @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+            }
+
             .nav-links {
-                display: none;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-end;
             }
 
             .container {
@@ -299,30 +328,38 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                📄 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html" class="active">Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;">
+                    <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" class="active" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">PDF to Word Converter</h1>
-        <p class="page-subtitle">Convert your PDF documents to editable Word format quickly and easily</p>
+        <h1 class="page-title" data-i18n="tools.document.pdf_to_word.title">PDF to Word Converter</h1>
+        <p class="page-subtitle" data-i18n="tools.document.pdf_to_word.subtitle">Convert your PDF documents to editable Word format quickly and easily</p>
 
         <div class="converter-card">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📄</div>
-                <div class="upload-text">Click to select PDF file or drag it here</div>
-                <div class="upload-hint">Supports PDF files, maximum 50MB</div>
+                <div class="upload-text" data-i18n="tools.document.pdf_to_word.upload.title">Click to select PDF file or drag it here</div>
+                <div class="upload-hint" data-i18n="tools.document.pdf_to_word.upload.hint">Supports PDF files, maximum 50MB</div>
                 <input type="file" id="fileInput" accept=".pdf">
             </div>
 
@@ -337,7 +374,7 @@
 
             <!-- Progress Section -->
             <div class="progress-section" id="progressSection">
-                <div class="progress-text" id="progressText">Preparing to convert...</div>
+                <div class="progress-text" id="progressText" data-i18n="tools.document.pdf_to_word.progress.preparing">Preparing to convert...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -355,16 +392,16 @@
 
             <!-- Action Buttons -->
             <div class="action-buttons">
-                <button class="btn btn-primary" id="convertBtn" disabled>
+                <button class="btn btn-primary" id="convertBtn" disabled data-i18n="tools.document.pdf_to_word.buttons.convert">
                     🔄 Convert to Word
                 </button>
-                <button class="btn btn-secondary" id="clearBtn">
+                <button class="btn btn-secondary" id="clearBtn" data-i18n="tools.document.pdf_to_word.buttons.clear">
                     🗑️ Clear File
                 </button>
-                <button class="btn btn-secondary" id="shareBtn" style="display: none;">
+                <button class="btn btn-secondary" id="shareBtn" style="display: none;" data-i18n="tools.document.pdf_to_word.buttons.share">
                     📤 Share File
                 </button>
-                <a href="document-tools.html" class="btn btn-primary">
+                <a href="document-tools.html" class="btn btn-primary" data-i18n="tools.document.pdf_to_word.buttons.back_to_tools">
                     ← Back to Document Tools
                 </a>
             </div>
@@ -418,7 +455,8 @@
             if (files.length > 0 && files[0].type === 'application/pdf') {
                 handleFileSelection(files[0]);
             } else {
-                alert('Please select a PDF file');
+                const message = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.messages.select_pdf') || 'Please select a PDF file';
+                alert(message);
             }
         }
 
@@ -431,12 +469,14 @@
 
         function handleFileSelection(file) {
             if (file.type !== 'application/pdf') {
-                alert('Please select a PDF file');
+                const message = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.messages.select_pdf') || 'Please select a PDF file';
+                alert(message);
                 return;
             }
 
             if (file.size > 50 * 1024 * 1024) {
-                alert('File size cannot exceed 50MB');
+                const message = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.messages.file_too_large') || 'File size cannot exceed 50MB';
+                alert(message);
                 return;
             }
 
@@ -470,7 +510,8 @@
 
         async function convertPDFToWord() {
             if (!selectedFile) {
-                alert('Please select a PDF file first');
+                const message = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.messages.select_pdf_first') || 'Please select a PDF file first';
+                alert(message);
                 return;
             }
 
@@ -482,7 +523,8 @@
             const progressFill = document.getElementById('progressFill');
             const progressText = document.getElementById('progressText');
             
-            progressText.textContent = 'Loading PDF processing libraries...';
+            const loadingMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.loading_libraries') || 'Loading PDF processing libraries...';
+            progressText.textContent = loadingMsg;
             progressFill.style.width = '10%';
 
             // Create real Word document
@@ -517,7 +559,8 @@
                 downloadBtn.download = fileName;
             } catch (error) {
                 console.error('Conversion failed:', error);
-                alert('Conversion failed: ' + error.message);
+                const errorMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.messages.conversion_failed') || 'Conversion failed:';
+                alert(errorMsg + ' ' + error.message);
                 progressSection.style.display = 'none';
                 convertBtn.disabled = false;
             }
@@ -527,12 +570,14 @@
             try {
                 // Load necessary libraries
                 await loadLibraries();
-                updateConversionProgress(20, 'Libraries loaded. Reading PDF file...');
+                const readingMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.reading_pdf') || 'Libraries loaded. Reading PDF file...';
+                updateConversionProgress(20, readingMsg);
 
                 // Read PDF file
                 const arrayBuffer = await selectedFile.arrayBuffer();
                 const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                updateConversionProgress(40, 'PDF loaded. Extracting text content...');
+                const extractingMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.extracting') || 'PDF loaded. Extracting text content...';
+                updateConversionProgress(40, extractingMsg);
                 
                 let fullText = '';
                 
@@ -545,10 +590,12 @@
                     
                     // Update progress for text extraction
                     const extractProgress = 40 + (i / pdf.numPages) * 30;
-                    updateConversionProgress(extractProgress, `Extracting text from page ${i} of ${pdf.numPages}...`);
+                    const pageProgressMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.extracting_page', {page: i, total: pdf.numPages}) || `Extracting text from page ${i} of ${pdf.numPages}...`;
+                    updateConversionProgress(extractProgress, pageProgressMsg);
                 }
                 
-                updateConversionProgress(70, 'Text extraction complete. Generating Word document...');
+                const generatingMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.generating') || 'Text extraction complete. Generating Word document...';
+                updateConversionProgress(70, generatingMsg);
 
                 // Use docx library to create real Word document
                 const doc = new window.docx.Document({
@@ -589,12 +636,14 @@
                     }],
                 });
 
-                updateConversionProgress(90, 'Document structure created. Generating DOCX file...');
+                const creatingMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.creating') || 'Document structure created. Generating DOCX file...';
+                updateConversionProgress(90, creatingMsg);
                 
                 // Generate DOCX file
                 const buffer = await window.docx.Packer.toBlob(doc);
                 
-                updateConversionProgress(100, 'Conversion complete!');
+                const completeMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.complete') || 'Conversion complete!';
+                updateConversionProgress(100, completeMsg);
                 return buffer;
                 
             } catch (error) {
@@ -756,7 +805,8 @@ Note: Unable to process this PDF file. Please try a different PDF or contact sup
 
         function shareFile() {
             if (!convertedFile) {
-                alert('No file to share');
+                const message = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.messages.no_file_to_share') || 'No file to share';
+                alert(message);
                 return;
             }
             

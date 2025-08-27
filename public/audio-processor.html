@@ -3,7 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Processor - DropShare</title>
+    <title data-i18n="tools.audio.audio_processor.title">Audio Processor - DropShare</title>
+    
+    <!-- Load i18n system -->
+    <!-- I18N System -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -44,6 +51,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -288,8 +301,25 @@
         }
 
         @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+            }
+
             .nav-links {
-                display: none;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-end;
             }
 
             .container {
@@ -317,77 +347,86 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                🎵 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" class="active" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">Audio Processor</h1>
-        <p class="page-subtitle">Process and enhance your audio files with various effects</p>
+        <h1 class="page-title" data-i18n="tools.audio.audio_processor.title">Audio Processor</h1>
+        <p class="page-subtitle" data-i18n="tools.audio.audio_processor.subtitle">Process and enhance your audio files with various effects</p>
 
         <div class="processor-card">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎵</div>
-                <div class="upload-text">Click to select audio files or drag them here</div>
-                <div class="upload-hint">Supports MP3, WAV, AAC, OGG formats, maximum 50MB each</div>
+                <div class="upload-text" data-i18n="tools.audio.audio_processor.upload.title">Click to select audio files or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.audio.audio_processor.upload.hint">Supports MP3, WAV, AAC, OGG formats, maximum 50MB each</div>
                 <input type="file" id="fileInput" accept="audio/*" multiple>
             </div>
 
             <!-- File Info -->
             <div class="file-info" id="fileInfo">
-                <h3>Selected Files:</h3>
+                <h3 data-i18n="tools.audio.audio_processor.file_info.selected_files">Selected Files:</h3>
                 <div id="fileDetails"></div>
             </div>
 
             <!-- Processing Options -->
             <div class="processing-options" id="processingOptions">
-                <h3>Processing Options:</h3>
+                <h3 data-i18n="tools.audio.audio_processor.processing_options.title">Processing Options:</h3>
                 <div class="options-grid">
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="normalizeVolume" checked>
-                            <span>Normalize Volume</span>
+                            <span data-i18n="tools.audio.audio_processor.processing_options.normalize_volume">Normalize Volume</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="removeNoise">
-                            <span>Remove Background Noise</span>
+                            <span data-i18n="tools.audio.audio_processor.processing_options.remove_noise">Remove Background Noise</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="enhanceBass">
-                            <span>Enhance Bass</span>
+                            <span data-i18n="tools.audio.audio_processor.processing_options.enhance_bass">Enhance Bass</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="addReverb">
-                            <span>Add Reverb Effect</span>
+                            <span data-i18n="tools.audio.audio_processor.processing_options.add_reverb">Add Reverb Effect</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="compressor">
-                            <span>Dynamic Range Compression</span>
+                            <span data-i18n="tools.audio.audio_processor.processing_options.compressor">Dynamic Range Compression</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="equalizer">
-                            <span>Auto EQ Enhancement</span>
+                            <span data-i18n="tools.audio.audio_processor.processing_options.equalizer">Auto EQ Enhancement</span>
                         </label>
                     </div>
                 </div>
@@ -395,7 +434,7 @@
 
             <!-- Processing Progress -->
             <div class="processing-progress" id="processingProgress">
-                <h4>Processing Audio:</h4>
+                <h4 data-i18n="tools.audio.audio_processor.progress.title">Processing Audio:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -403,32 +442,32 @@
             </div>
 
             <!-- Action Buttons -->
-            <div style="text-align: center; margin-top: 30px;">
+            <div class="action-buttons">
                 <button class="btn btn-primary" id="processBtn" disabled>
-                    🎛️ Start Processing
+                    <span data-i18n="tools.audio.audio_processor.buttons.start_processing">🎛️ Start Processing</span>
                 </button>
-                <button class="btn btn-secondary" id="clearBtn" style="margin-left: 10px;">
-                    🗑️ Clear Files
+                <button class="btn btn-secondary" id="clearBtn">
+                    <span data-i18n="tools.audio.audio_processor.buttons.clear_files">🗑️ Clear Files</span>
                 </button>
             </div>
         </div>
 
         <!-- Processing Results -->
         <div class="processing-result" id="processingResult">
-            <h3>🎉 Processing Complete!</h3>
+            <h3 data-i18n="tools.audio.audio_processor.results.title">🎉 Processing Complete!</h3>
             <div class="result-preview" id="resultPreview">
                 <!-- Audio preview will be shown here -->
             </div>
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn">
-                    📥 Download Processed Audio
+                    <span data-i18n="tools.audio.audio_processor.buttons.download">📥 Download Processed Audio</span>
                 </button>
                 <div id="shareButtonContainer" style="display: none;"></div>
                 <button class="btn btn-secondary" id="newProcessingBtn">
-                    🔄 New Processing
+                    <span data-i18n="tools.audio.audio_processor.buttons.new_processing">🔄 New Processing</span>
                 </button>
                 <a href="audio-tools.html" class="btn btn-primary">
-                    ← Back to Audio Tools
+                    <span data-i18n="tools.audio.audio_processor.buttons.back_to_tools">← Back to Audio Tools</span>
                 </a>
             </div>
         </div>
@@ -549,7 +588,7 @@
                 // Update progress
                 const progress = Math.round(((i + 1) / selectedFiles.length) * 100);
                 progressFill.style.width = progress + '%';
-                progressText.textContent = `${progress}% - Processing ${file.name}`;
+                progressText.textContent = window.DROPSHARE_I18N?.t('tools.audio.audio_processor.progress.processing_file', { percentage: progress, filename: file.name }) || `${progress}% - Processing ${file.name}`;
                 
                 // Real audio processing using Web Audio API
                 try {
@@ -577,7 +616,7 @@
                 }
             }
             
-            progressText.textContent = 'Processing Complete!';
+            progressText.textContent = window.DROPSHARE_I18N?.t('tools.audio.audio_processor.progress.complete') || 'Processing Complete!';
             
             setTimeout(() => {
                 processingProgress.style.display = 'none';
@@ -806,25 +845,25 @@
         function showProcessingResult() {
             processingResult.style.display = 'block';
             
-            let previewHTML = '<h4>Processed Audio Files:</h4>';
+            let previewHTML = `<h4>${window.DROPSHARE_I18N?.t('tools.audio.audio_processor.results.processed_files') || 'Processed Audio Files:'}</h4>`;
             processedFiles.forEach((file, index) => {
                 const appliedEffects = [];
-                if (file.options.normalizeVolume) appliedEffects.push('Volume Normalized');
-                if (file.options.removeNoise) appliedEffects.push('Noise Reduced');
-                if (file.options.enhanceBass) appliedEffects.push('Bass Enhanced');
-                if (file.options.addReverb) appliedEffects.push('Reverb Added');
-                if (file.options.compressor) appliedEffects.push('Compressed');
-                if (file.options.equalizer) appliedEffects.push('EQ Enhanced');
+                if (file.options.normalizeVolume) appliedEffects.push(window.DROPSHARE_I18N?.t('tools.audio.audio_processor.processing_options.normalize_volume') || 'Volume Normalized');
+                if (file.options.removeNoise) appliedEffects.push(window.DROPSHARE_I18N?.t('tools.audio.audio_processor.processing_options.remove_noise') || 'Noise Reduced');
+                if (file.options.enhanceBass) appliedEffects.push(window.DROPSHARE_I18N?.t('tools.audio.audio_processor.processing_options.enhance_bass') || 'Bass Enhanced');
+                if (file.options.addReverb) appliedEffects.push(window.DROPSHARE_I18N?.t('tools.audio.audio_processor.processing_options.add_reverb') || 'Reverb Added');
+                if (file.options.compressor) appliedEffects.push(window.DROPSHARE_I18N?.t('tools.audio.audio_processor.processing_options.compressor') || 'Compressed');
+                if (file.options.equalizer) appliedEffects.push(window.DROPSHARE_I18N?.t('tools.audio.audio_processor.processing_options.equalizer') || 'EQ Enhanced');
                 
                 previewHTML += `
                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #f8f9fa; border-radius: 8px; margin-bottom: 12px;">
                         <div>
                             <div style="font-weight: 500; margin-bottom: 4px;">${file.filename}</div>
                             <div style="color: #6b7280; font-size: 0.9em; margin-bottom: 4px;">
-                                ${formatFileSize(file.size)} • Processed Audio
+                                ${window.DROPSHARE_I18N?.t('tools.audio.audio_processor.results.file_size', { size: formatFileSize(file.size) }) || `${formatFileSize(file.size)} • Processed Audio`}
                             </div>
                             <div style="font-size: 0.8em; color: #10b981;">
-                                Applied: ${appliedEffects.join(', ') || 'No effects selected'}
+                                ${window.DROPSHARE_I18N?.t('tools.audio.audio_processor.results.applied_effects', { effects: appliedEffects.join(', ') }) || `Applied: ${appliedEffects.join(', ')}`} ${appliedEffects.length === 0 ? (window.DROPSHARE_I18N?.t('tools.audio.audio_processor.results.no_effects') || 'No effects selected') : ''}
                             </div>
                         </div>
                         <div style="font-size: 32px;">🎵</div>

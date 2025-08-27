@@ -3,7 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Processor - DropShare</title>
+    <title data-i18n="tools.document.processor.title">Document Processor - DropShare</title>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -44,6 +50,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -452,8 +464,25 @@
         }
 
         @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+            }
+
             .nav-links {
-                display: none;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-end;
             }
 
             .container {
@@ -490,30 +519,38 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                📄 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html" class="active">Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;">
+                    <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" class="active" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">Document Processor</h1>
-        <p class="page-subtitle">Process PDF, Word, and other document files</p>
+        <h1 class="page-title" data-i18n="tools.document.processor.title">Document Processor</h1>
+        <p class="page-subtitle" data-i18n="tools.document.processor.subtitle">Process PDF, Word, and other document files</p>
 
         <div class="processor-card">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📄</div>
-                <div class="upload-text">Click to select document files or drag them here</div>
-                <div class="upload-hint">Supports PDF, DOCX, TXT, RTF, HTML formats</div>
+                <div class="upload-text" data-i18n="tools.document.processor.upload.title">Click to select document files or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.document.processor.upload.hint">Supports PDF, DOCX, TXT, RTF, HTML formats</div>
                 <input type="file" id="fileInput" accept=".pdf,.docx,.txt,.rtf,.html,.doc">
             </div>
 
@@ -526,44 +563,44 @@
             <div class="processing-controls" id="processingWorkspace">
                 <!-- Processing Tabs -->
                 <div class="tabs">
-                    <button class="tab active" data-tab="extract">Text Extract</button>
-                    <button class="tab" data-tab="split">Split Document</button>
-                    <button class="tab" data-tab="merge">Merge Documents</button>
-                    <button class="tab" data-tab="convert">Format Convert</button>
+                    <button class="tab active" data-tab="extract" data-i18n="tools.document.processor.tabs.extract">Text Extract</button>
+                    <button class="tab" data-tab="split" data-i18n="tools.document.processor.tabs.split">Split Document</button>
+                    <button class="tab" data-tab="merge" data-i18n="tools.document.processor.tabs.merge">Merge Documents</button>
+                    <button class="tab" data-tab="convert" data-i18n="tools.document.processor.tabs.convert">Format Convert</button>
                 </div>
 
                 <!-- Text Extract Tab -->
                 <div class="tab-content active" id="extractTab">
                     <div class="tool-group">
-                        <h4>📝 Text Extraction Settings</h4>
+                        <h4 data-i18n="tools.document.processor.text_extract.settings_title">📝 Text Extraction Settings</h4>
                         <div class="page-range">
-                            <label>Extract pages:</label>
-                            <input type="number" id="extractStartPage" placeholder="Start page" min="1" value="1">
-                            <span>to</span>
-                            <input type="number" id="extractEndPage" placeholder="End page" min="1">
-                            <button class="action-button" id="extractAllPagesBtn">All pages</button>
+                            <label data-i18n="tools.document.processor.text_extract.extract_pages">Extract pages:</label>
+                            <input type="number" id="extractStartPage" data-i18n="tools.document.processor.text_extract.start_page" placeholder="Start page" min="1" value="1">
+                            <span data-i18n="tools.document.processor.text_extract.to">to</span>
+                            <input type="number" id="extractEndPage" data-i18n="tools.document.processor.text_extract.end_page" placeholder="End page" min="1">
+                            <button class="action-button" id="extractAllPagesBtn" data-i18n="tools.document.processor.text_extract.all_pages">All pages</button>
                         </div>
 
                         <div class="checkbox-group">
                             <div class="checkbox-item">
                                 <input type="checkbox" id="preserveFormatting" checked>
-                                <label for="preserveFormatting">Preserve formatting</label>
+                                <label for="preserveFormatting" data-i18n="tools.document.processor.text_extract.preserve_formatting">Preserve formatting</label>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="extractImages">
-                                <label for="extractImages">Extract image links</label>
+                                <label for="extractImages" data-i18n="tools.document.processor.text_extract.extract_images">Extract image links</label>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="removeBlankLines">
-                                <label for="removeBlankLines">Remove blank lines</label>
+                                <label for="removeBlankLines" data-i18n="tools.document.processor.text_extract.remove_blank_lines">Remove blank lines</label>
                             </div>
                         </div>
                     </div>
 
                     <div id="extractedTextArea" class="text-extraction-result" style="display: none;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <strong>Extracted text:</strong>
-                            <button class="action-button" id="copyTextBtn">Copy text</button>
+                            <strong data-i18n="tools.document.processor.text_extract.extracted_text">Extracted text:</strong>
+                            <button class="action-button" id="copyTextBtn" data-i18n="tools.document.processor.text_extract.copy_text">Copy text</button>
                         </div>
                         <div id="extractedText"></div>
                     </div>
@@ -572,25 +609,25 @@
                 <!-- Split Document Tab -->
                 <div class="tab-content" id="splitTab">
                     <div class="tool-group">
-                        <h4>✂️ Document Split Settings</h4>
+                        <h4 data-i18n="tools.document.processor.split.settings_title">✂️ Document Split Settings</h4>
                         <div class="settings-panel">
                             <div class="setting-item">
-                                <label>Split method:</label>
+                                <label data-i18n="tools.document.processor.split.split_method">Split method:</label>
                                 <select id="splitMethod">
-                                    <option value="pages">By page range</option>
-                                    <option value="interval">By page interval</option>
-                                    <option value="bookmarks">By bookmarks</option>
+                                    <option value="pages" data-i18n="tools.document.processor.split.by_pages">By page range</option>
+                                    <option value="interval" data-i18n="tools.document.processor.split.by_interval">By page interval</option>
+                                    <option value="bookmarks" data-i18n="tools.document.processor.split.by_bookmarks">By bookmarks</option>
                                 </select>
                             </div>
 
                             <div class="setting-item" id="intervalSetting">
-                                <label>Pages per file:</label>
+                                <label data-i18n="tools.document.processor.split.pages_per_file">Pages per file:</label>
                                 <input type="number" id="splitInterval" value="10" min="1">
                             </div>
                         </div>
 
                         <div id="pageRangesSetting" style="display: none;">
-                            <label>Page ranges (comma separated, e.g: 1-5, 10-15, 20):</label>
+                            <label data-i18n="tools.document.processor.split.page_ranges">Page ranges (comma separated, e.g: 1-5, 10-15, 20):</label>
                             <input type="text" id="pageRanges" placeholder="1-5, 10-15, 20" style="width: 100%; margin-top: 8px;">
                         </div>
                     </div>
@@ -599,14 +636,14 @@
                 <!-- Merge Documents Tab -->
                 <div class="tab-content" id="mergeTab">
                     <div class="tool-group">
-                        <h4>🔗 Document Merge Settings</h4>
-                        <p style="margin-bottom: 15px; color: #6b7280;">
+                        <h4 data-i18n="tools.document.processor.merge.settings_title">🔗 Document Merge Settings</h4>
+                        <p style="margin-bottom: 15px; color: #6b7280;" data-i18n="tools.document.processor.merge.description">
                             Merge multiple PDF documents into one. Please upload multiple files.
                         </p>
 
                         <div style="margin: 15px 0;">
                             <input type="file" id="mergeFilesInput" accept=".pdf" multiple style="display: none;">
-                            <button class="btn btn-secondary" onclick="document.getElementById('mergeFilesInput').click()">
+                            <button class="btn btn-secondary" onclick="document.getElementById('mergeFilesInput').click()" data-i18n="tools.document.processor.merge.select_files">
                                 Select files to merge
                             </button>
                         </div>
@@ -615,7 +652,7 @@
 
                         <div class="checkbox-item">
                             <input type="checkbox" id="addBookmarks" checked>
-                            <label for="addBookmarks">Add bookmarks for each document</label>
+                            <label for="addBookmarks" data-i18n="tools.document.processor.merge.add_bookmarks">Add bookmarks for each document</label>
                         </div>
                     </div>
                 </div>
@@ -623,22 +660,22 @@
                 <!-- Format Convert Tab -->
                 <div class="tab-content" id="convertTab">
                     <div class="tool-group">
-                        <h4>🔄 Format Conversion Settings</h4>
+                        <h4 data-i18n="tools.document.processor.convert.settings_title">🔄 Format Conversion Settings</h4>
                         <div class="settings-panel">
                             <div class="setting-item">
-                                <label>Output format:</label>
+                                <label data-i18n="tools.document.processor.convert.output_format">Output format:</label>
                                 <select id="outputFormat">
-                                    <option value="pdf">PDF</option>
-                                    <option value="docx">Word Document (.docx)</option>
-                                    <option value="txt">Plain Text (.txt)</option>
-                                    <option value="html">HTML Web Page</option>
-                                    <option value="rtf">RTF Document</option>
-                                    <option value="images">Images (JPG/PNG)</option>
+                                    <option value="pdf" data-i18n="tools.document.processor.convert.formats.pdf">PDF</option>
+                                    <option value="docx" data-i18n="tools.document.processor.convert.formats.docx">Word Document (.docx)</option>
+                                    <option value="txt" data-i18n="tools.document.processor.convert.formats.txt">Plain Text (.txt)</option>
+                                    <option value="html" data-i18n="tools.document.processor.convert.formats.html">HTML Web Page</option>
+                                    <option value="rtf" data-i18n="tools.document.processor.convert.formats.rtf">RTF Document</option>
+                                    <option value="images" data-i18n="tools.document.processor.convert.formats.images">Images (JPG/PNG)</option>
                                 </select>
                             </div>
 
                             <div class="setting-item" id="imageQualitySetting" style="display: none;">
-                                <label>Image quality:</label>
+                                <label data-i18n="tools.document.processor.convert.image_quality">Image quality:</label>
                                 <div class="range-input">
                                     <input type="range" id="imageQuality" min="50" max="100" value="90">
                                     <span class="range-value" id="imageQualityValue">90%</span>
@@ -646,12 +683,12 @@
                             </div>
 
                             <div class="setting-item" id="imageDpiSetting" style="display: none;">
-                                <label>Image DPI:</label>
+                                <label data-i18n="tools.document.processor.convert.image_dpi">Image DPI:</label>
                                 <select id="imageDpi">
-                                    <option value="72">72 DPI (Web)</option>
-                                    <option value="150" selected>150 DPI (Standard)</option>
-                                    <option value="300">300 DPI (High Quality)</option>
-                                    <option value="600">600 DPI (Print)</option>
+                                    <option value="72" data-i18n="tools.document.processor.convert.dpi_options.72">72 DPI (Web)</option>
+                                    <option value="150" selected data-i18n="tools.document.processor.convert.dpi_options.150">150 DPI (Standard)</option>
+                                    <option value="300" data-i18n="tools.document.processor.convert.dpi_options.300">300 DPI (High Quality)</option>
+                                    <option value="600" data-i18n="tools.document.processor.convert.dpi_options.600">600 DPI (Print)</option>
                                 </select>
                             </div>
                         </div>
@@ -660,7 +697,7 @@
 
                 <!-- Progress Section -->
                 <div class="progress-section" id="progressSection">
-                    <div class="progress-text" id="progressText">Preparing to process...</div>
+                    <div class="progress-text" id="progressText" data-i18n="tools.document.processor.progress.preparing">Preparing to process...</div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFillInner"></div>
                     </div>
@@ -668,23 +705,23 @@
 
                 <!-- Results Section -->
                 <div class="results-section" id="resultSection">
-                    <h4 style="margin-bottom: 16px;">Processing Results:</h4>
+                    <h4 style="margin-bottom: 16px;" data-i18n="tools.document.processor.results.title">Processing Results:</h4>
 
                     <div class="result-stats">
                         <div class="stat-item">
-                            <span class="stat-label">Original size</span>
+                            <span class="stat-label" data-i18n="tools.document.processor.results.original_size">Original size</span>
                             <span class="stat-value" id="originalFileSize">-</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">Result size</span>
+                            <span class="stat-label" data-i18n="tools.document.processor.results.result_size">Result size</span>
                             <span class="stat-value" id="resultFileSize">-</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">Page count</span>
+                            <span class="stat-label" data-i18n="tools.document.processor.results.page_count">Page count</span>
                             <span class="stat-value" id="pageCount">-</span>
                         </div>
                         <div class="stat-item">
-                            <span class="stat-label">Processing time</span>
+                            <span class="stat-label" data-i18n="tools.document.processor.results.processing_time">Processing time</span>
                             <span class="stat-value" id="processingTime">-</span>
                         </div>
                     </div>
@@ -695,25 +732,25 @@
 
             <!-- Process Button -->
             <div style="text-align: center; margin: 24px 0;">
-                <button class="btn btn-primary" id="processBtn" disabled>Start Processing</button>
+                <button class="btn btn-primary" id="processBtn" disabled data-i18n="tools.document.processor.buttons.start_processing">Start Processing</button>
             </div>
 
             <!-- Action Buttons -->
             <div class="action-buttons">
-                <button class="btn btn-success" id="downloadAllBtn" style="display: none;">
+                <button class="btn btn-success" id="downloadAllBtn" style="display: none;" data-i18n="tools.document.processor.buttons.download_all">
                     📥 Download All Files
                 </button>
                 <div id="shareButtonContainer" style="display: none;"></div>
-                <button class="btn btn-success" id="shareAllBtn" style="display: none;">
+                <button class="btn btn-success" id="shareAllBtn" style="display: none;" data-i18n="tools.document.processor.buttons.share_all">
                     📤 Share All Files
                 </button>
-                <button class="btn btn-secondary" id="resetBtn">
+                <button class="btn btn-secondary" id="resetBtn" data-i18n="tools.document.processor.buttons.reset_settings">
                     🔄 Reset Settings
                 </button>
-                <button class="btn btn-secondary" id="newFileBtn">
+                <button class="btn btn-secondary" id="newFileBtn" data-i18n="tools.document.processor.buttons.select_new_document">
                     📄 Select New Document
                 </button>
-                <a href="document-tools.html" class="btn btn-primary">
+                <a href="document-tools.html" class="btn btn-primary" data-i18n="tools.document.processor.buttons.back_to_tools">
                     ← Back to Document Tools
                 </a>
             </div>
@@ -841,7 +878,8 @@
 
             async loadDocument(file) {
                 if (!this.isSupportedFormat(file)) {
-                    alert('Unsupported document format! Please select PDF, DOCX, TXT, RTF or HTML files.');
+                    const message = window.DROPSHARE_I18N?.t('tools.document.processor.messages.unsupported_format') || 'Unsupported document format! Please select PDF, DOCX, TXT, RTF or HTML files.';
+                    alert(message);
                     return;
                 }
 
@@ -999,7 +1037,8 @@
             }
 
             async extractText() {
-                this.updateProgress(30, 'Extracting text...');
+                const extractingText = window.DROPSHARE_I18N?.t('tools.document.processor.progress.extracting') || 'Extracting text...';
+                this.updateProgress(30, extractingText);
 
                 // Simulate text extraction
                 await new Promise(resolve => setTimeout(resolve, 2000));
@@ -1018,7 +1057,8 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
 eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
 sunt in culpa qui officia deserunt mollit anim id est laborum.`;
 
-                this.updateProgress(100, 'Text extraction complete!');
+                const completeText = window.DROPSHARE_I18N?.t('tools.document.processor.messages.text_extraction_complete') || 'Text extraction complete!';
+                this.updateProgress(100, completeText);
 
                 // Show extraction results
                 document.getElementById('extractedText').textContent = extractedText;
@@ -1026,7 +1066,8 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
             }
 
             async splitDocument() {
-                this.updateProgress(30, 'Splitting document...');
+                const splittingText = window.DROPSHARE_I18N?.t('tools.document.processor.progress.splitting') || 'Splitting document...';
+                this.updateProgress(30, splittingText);
 
                 const method = document.getElementById('splitMethod').value;
                 let fileCount = 3; // Default
@@ -1039,7 +1080,8 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
                 // Simulate document splitting
                 for (let i = 0; i < fileCount; i++) {
                     await new Promise(resolve => setTimeout(resolve, 500));
-                    this.updateProgress(30 + (i + 1) / fileCount * 60, `Creating document ${i + 1}...`);
+                    const creatingText = window.DROPSHARE_I18N?.t('tools.document.processor.progress.creating_document', {number: i + 1}) || `Creating document ${i + 1}...`;
+                    this.updateProgress(30 + (i + 1) / fileCount * 60, creatingText);
 
                     // Create simulated file
                     const fileName = this.documentFile.name.replace(/\.[^.]+$/, `_part${i + 1}.pdf`);
@@ -1048,16 +1090,19 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
                     this.processedFiles.push(new File([blob], fileName, { type: 'application/pdf' }));
                 }
 
-                this.updateProgress(100, 'Document splitting complete!');
+                const completeText = window.DROPSHARE_I18N?.t('tools.document.processor.messages.splitting_complete') || 'Document splitting complete!';
+                this.updateProgress(100, completeText);
             }
 
             async mergeDocuments() {
-                this.updateProgress(30, 'Merging documents...');
+                const mergingText = window.DROPSHARE_I18N?.t('tools.document.processor.progress.merging') || 'Merging documents...';
+                this.updateProgress(30, mergingText);
 
                 // Simulate document merging
                 for (let i = 0; i < this.mergeFiles.length; i++) {
                     await new Promise(resolve => setTimeout(resolve, 300));
-                    this.updateProgress(30 + (i + 1) / this.mergeFiles.length * 60, `Processing document ${i + 1}...`);
+                    const processingText = window.DROPSHARE_I18N?.t('tools.document.processor.progress.processing_document', {number: i + 1}) || `Processing document ${i + 1}...`;
+                    this.updateProgress(30 + (i + 1) / this.mergeFiles.length * 60, processingText);
                 }
 
                 // Create merged file
@@ -1066,7 +1111,8 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
                 const blob = new Blob([mergedContent], { type: 'application/pdf' });
                 this.processedFiles.push(new File([blob], mergedFileName, { type: 'application/pdf' }));
 
-                this.updateProgress(100, 'Document merging complete!');
+                const completeText = window.DROPSHARE_I18N?.t('tools.document.processor.messages.merging_complete') || 'Document merging complete!';
+                this.updateProgress(100, completeText);
             }
 
             async convertDocument() {
@@ -1319,10 +1365,12 @@ ${extractedText.replace(/\n/g, '\\par ')}}`;
             copyExtractedText() {
                 const text = document.getElementById('extractedText').textContent;
                 navigator.clipboard.writeText(text).then(() => {
-                    alert('Text copied to clipboard!');
+                    const successMsg = window.DROPSHARE_I18N?.t('tools.document.processor.messages.text_copied') || 'Text copied to clipboard!';
+                    alert(successMsg);
                 }).catch(err => {
                     console.error('Copy failed:', err);
-                    alert('Copy failed, please manually select text to copy');
+                    const failMsg = window.DROPSHARE_I18N?.t('tools.document.processor.messages.copy_failed') || 'Copy failed, please manually select text to copy';
+                    alert(failMsg);
                 });
             }
 

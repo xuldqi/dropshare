@@ -3,7 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Converter - DropShare</title>
+    <title data-i18n="tools.video.converter.title">Video Converter - DropShare</title>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -44,6 +50,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -293,8 +305,25 @@
         }
 
         @media (max-width: 768px) {
+            .header-container {
+                padding: 0 15px;
+            }
+
             .nav-links {
-                display: none;
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-end;
             }
 
             .container {
@@ -322,42 +351,50 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                🎥 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html" class="active">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;">
+                    <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" class="active" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">Video Converter</h1>
-        <p class="page-subtitle">Convert videos between different formats with high quality</p>
+        <h1 class="page-title" data-i18n="tools.video.converter.title">Video Converter</h1>
+        <p class="page-subtitle" data-i18n="tools.video.converter.subtitle">Convert videos between different formats with high quality</p>
 
         <div class="converter-card">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎬</div>
-                <div class="upload-text">Click to select video files or drag them here</div>
-                <div class="upload-hint">Supports MP4, AVI, MOV, WebM formats, maximum 100MB each</div>
+                <div class="upload-text" data-i18n="tools.video.converter.upload.title">Click to select video files or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.video.converter.upload.hint">Supports MP4, AVI, MOV, WebM formats, maximum 100MB each</div>
                 <input type="file" id="fileInput" accept="video/*" multiple>
             </div>
 
             <!-- File Info -->
             <div class="file-info" id="fileInfo">
-                <h3>Selected Files:</h3>
+                <h3 data-i18n="tools.video.converter.file_info.selected_files">Selected Files:</h3>
                 <div id="fileDetails"></div>
             </div>
 
             <!-- Format Options -->
             <div class="format-options" id="formatOptions">
-                <h3>Select Output Format:</h3>
+                <h3 data-i18n="tools.video.converter.format_options.title">Select Output Format:</h3>
                 <div class="format-grid" id="formatGrid">
                     <div class="format-option" data-format="mp4">MP4</div>
                     <div class="format-option" data-format="avi">AVI</div>
@@ -368,7 +405,7 @@
 
             <!-- Conversion Progress -->
             <div class="conversion-progress" id="conversionProgress">
-                <h4>Conversion Progress:</h4>
+                <h4 data-i18n="tools.video.converter.progress.title">Conversion Progress:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -378,30 +415,30 @@
             <!-- Action Buttons -->
             <div style="text-align: center; margin-top: 30px;">
                 <button class="btn btn-primary" id="convertBtn" disabled>
-                    🔄 Start Conversion
+                    <span data-i18n="tools.video.converter.buttons.start_conversion">🔄 Start Conversion</span>
                 </button>
                 <button class="btn btn-secondary" id="clearBtn" style="margin-left: 10px;">
-                    🗑️ Clear Files
+                    <span data-i18n="tools.video.converter.buttons.clear_files">🗑️ Clear Files</span>
                 </button>
             </div>
         </div>
 
         <!-- Conversion Results -->
         <div class="conversion-result" id="conversionResult">
-            <h3>🎉 Conversion Complete!</h3>
+            <h3 data-i18n="tools.video.converter.results.title">🎉 Conversion Complete!</h3>
             <div class="result-preview" id="resultPreview">
                 <!-- Video preview will be shown here -->
             </div>
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn">
-                    📥 Download Videos
+                    <span data-i18n="tools.video.converter.buttons.download">📥 Download Videos</span>
                 </button>
                 <div id="shareButtonContainer" style="display: none;"></div>
                 <button class="btn btn-secondary" id="newConversionBtn">
-                    🔄 New Conversion
+                    <span data-i18n="tools.video.converter.buttons.new_conversion">🔄 New Conversion</span>
                 </button>
                 <a href="video-tools.html" class="btn btn-primary">
-                    ← Back to Video Tools
+                    <span data-i18n="tools.video.converter.buttons.back_to_tools">← Back to Video Tools</span>
                 </a>
             </div>
         </div>

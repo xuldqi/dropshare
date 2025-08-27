@@ -3,7 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV to XLSX Converter - DropShare</title>
+    <title data-i18n="tools.document.csv_to_xlsx.title">CSV to XLSX Converter - DropShare</title>
+    
+    <!-- Load i18n system -->
+    <script src="scripts/i18n/core/i18n-core.js"></script>
+    <script src="scripts/i18n/components/language-selector.js"></script>
+    <script src="scripts/i18n/init.js"></script>
     <style>
         * {
             margin: 0;
@@ -44,6 +49,12 @@
             font-weight: bold;
             color: #3367d6;
             text-decoration: none;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -314,65 +325,73 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                📋 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html" class="active">Files</a>
-            </nav>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;">
+                    <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="navigation.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+                    <a href="document-tools.html" class="active" data-i18n="navigation.files">Files</a>
+                </nav>
+
+                <!-- Language Selector Container -->
+                <div data-i18n-selector></div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">CSV to XLSX Converter</h1>
-        <p class="page-subtitle">Convert CSV data to Excel spreadsheet format with formatting options</p>
+        <h1 class="page-title" data-i18n="tools.document.csv_to_xlsx.title">CSV to XLSX Converter</h1>
+        <p class="page-subtitle" data-i18n="tools.document.csv_to_xlsx.subtitle">Convert comma-separated values files to Excel format for advanced data processing</p>
 
         <div class="converter-card">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📋</div>
-                <div class="upload-text">Click to select CSV files or drag them here</div>
-                <div class="upload-hint">Supports .csv files, maximum 10MB each</div>
+                <div class="upload-text" data-i18n="tools.document.csv_to_xlsx.upload.title">Click to select CSV files or drag them here</div>
+                <div class="upload-hint" data-i18n="tools.document.csv_to_xlsx.upload.hint">Supports .csv, .txt files, maximum 10MB each</div>
                 <input type="file" id="fileInput" accept=".csv" multiple>
             </div>
 
             <!-- File Info -->
             <div class="file-info" id="fileInfo">
-                <h3>Selected Files:</h3>
+                <h3 data-i18n="tools.document.csv_to_xlsx.file_info.selected_files">Selected Files:</h3>
                 <div id="fileDetails"></div>
             </div>
 
             <!-- Conversion Options -->
             <div class="conversion-options" id="conversionOptions">
-                <h3>Conversion Options:</h3>
+                <h3 data-i18n="tools.document.csv_to_xlsx.conversion_options.title">Conversion Options:</h3>
                 <div class="options-grid">
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="detectDataTypes" checked>
-                            <span>Auto-detect data types</span>
+                            <span data-i18n="tools.document.csv_to_xlsx.conversion_options.detect_headers">Auto-detect column headers</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="formatHeaders" checked>
-                            <span>Format column headers</span>
+                            <span data-i18n="tools.document.csv_to_xlsx.conversion_options.preserve_formatting">Preserve text formatting</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="customDelimiter">
-                            <span>Custom delimiter (semicolon)</span>
+                            <span data-i18n="tools.document.csv_to_xlsx.conversion_options.semicolon_delimiter">Semicolon (;)</span>
                         </label>
                     </div>
                     <div class="option-card">
                         <label>
                             <input type="checkbox" id="createWorksheets">
-                            <span>Create multiple worksheets</span>
+                            <span data-i18n="tools.document.csv_to_xlsx.conversion_options.create_multiple_sheets">Create separate sheets for large files</span>
                         </label>
                     </div>
                 </div>
@@ -380,7 +399,7 @@
 
             <!-- Conversion Progress -->
             <div class="conversion-progress" id="conversionProgress">
-                <h4>Conversion Progress:</h4>
+                <h4 data-i18n="tools.document.csv_to_xlsx.progress.title">Conversion Progress:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -389,10 +408,10 @@
 
             <!-- Action Buttons -->
             <div style="text-align: center; margin-top: 30px;">
-                <button class="btn btn-primary" id="convertBtn" disabled>
+                <button class="btn btn-primary" id="convertBtn" disabled data-i18n="tools.document.csv_to_xlsx.buttons.start_conversion">
                     🔄 Start Conversion
                 </button>
-                <button class="btn btn-secondary" id="clearBtn" style="margin-left: 10px;">
+                <button class="btn btn-secondary" id="clearBtn" style="margin-left: 10px;" data-i18n="tools.document.csv_to_xlsx.buttons.clear_files">
                     🗑️ Clear Files
                 </button>
             </div>
@@ -400,19 +419,19 @@
 
         <!-- Conversion Results -->
         <div class="conversion-result" id="conversionResult">
-            <h3>🎉 Conversion Complete!</h3>
+            <h3>🎉 <span data-i18n="tools.document.csv_to_xlsx.results.success_title">Conversion Complete!</span></h3>
             <div class="result-preview" id="resultPreview">
                 <!-- Excel preview will be shown here -->
             </div>
             <div class="action-buttons">
-                <button class="btn btn-success" id="downloadBtn">
-                    📥 Download XLSX Files
+                <button class="btn btn-success" id="downloadBtn" data-i18n="tools.document.csv_to_xlsx.buttons.download_xlsx">
+                    📥 Download Excel Files
                 </button>
                 <div id="shareButtonContainer" style="display: none;"></div>
-                <button class="btn btn-secondary" id="newConversionBtn">
+                <button class="btn btn-secondary" id="newConversionBtn" data-i18n="tools.document.csv_to_xlsx.buttons.new_conversion">
                     🔄 New Conversion
                 </button>
-                <a href="document-tools.html" class="btn btn-primary">
+                <a href="document-tools.html" class="btn btn-primary" data-i18n="tools.document.csv_to_xlsx.buttons.back_to_tools">
                     ← Back to Document Tools
                 </a>
             </div>
@@ -426,6 +445,14 @@
     <script src="scripts/tool-helpers.js"></script>
     
     <script>
+        // Internationalization helper function
+        function getI18nText(key, replacements = {}) {
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.t === 'function') {
+                return window.DROPSHARE_I18N.t(key, replacements);
+            }
+            return null;
+        }
+
         // DOM elements
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
@@ -493,7 +520,7 @@
                     <div>
                         <div style="font-weight: 500;">${file.name}</div>
                         <div style="color: #6b7280; font-size: 0.9em;">
-                            ${formatFileSize(file.size)} • CSV File
+                            ${formatFileSize(file.size)} • ${window.DROPSHARE_I18N?.t('tools.document.csv_to_xlsx.messages.csv_document') || 'CSV Document'}
                         </div>
                     </div>
                 `;
@@ -526,7 +553,8 @@
                 // Update progress
                 const progress = Math.round(((i + 1) / selectedFiles.length) * 100);
                 progressFill.style.width = progress + '%';
-                progressText.textContent = `${progress}% - Converting ${file.name}`;
+                const convertingMsg = window.DROPSHARE_I18N?.t('tools.document.csv_to_xlsx.progress.converting_file', {percentage: progress, filename: file.name}) || `${progress}% - Converting ${file.name}`;
+                progressText.textContent = convertingMsg;
                 
                 // Real conversion process
                 const xlsxInfo = await convertCsvToXlsx(file);
@@ -537,7 +565,8 @@
                 });
             }
             
-            progressText.textContent = 'Conversion Complete!';
+            const completeMsg = window.DROPSHARE_I18N?.t('tools.document.csv_to_xlsx.progress.complete') || 'Conversion Complete!';
+            progressText.textContent = completeMsg;
             
             setTimeout(() => {
                 conversionProgress.style.display = 'none';
@@ -759,7 +788,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (window.ToolHelpers) {
                 window.ToolHelpers.initializeToolSharing({
-                    shareButtonText: 'Share XLSX Files',
+                    shareButtonText: window.DROPSHARE_I18N?.t('tools.document.csv_to_xlsx.messages.share_functionality', {count: convertedFiles.length}) || 'Share XLSX Files',
                     shareButtonContainer: '#shareButtonContainer'
                 });
             }
