@@ -48,7 +48,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email admin@dropshare.tech -d dropshare.tech --agree-tos --non-interactive
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email 3839401@163.com -d dropshare.tech --agree-tos --non-interactive
     depends_on:
       - nginx
 
