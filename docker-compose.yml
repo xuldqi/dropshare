@@ -32,6 +32,8 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./ssl:/etc/nginx/ssl:ro
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     depends_on:
       - dropshare
     logging:
@@ -39,6 +41,16 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+  certbot:
+    image: certbot/certbot
+    container_name: dropshare-certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email admin@dropshare.tech -d dropshare.tech --agree-tos --non-interactive
+    depends_on:
+      - nginx
 
 networks:
   default:
