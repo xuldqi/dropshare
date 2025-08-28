@@ -233,8 +233,12 @@
           "clear_all": "Limpar tudo",
           "restore_all": "Restaurar tudo"
         },
-        "tolerance": { "title": "🎯 Ajuste de tolerância" },
-        "brush_size": { "title": "🖌️ Tamanho do pincel" },
+        "tolerance": {
+          "title": "🎯 Ajuste de tolerância"
+        },
+        "brush_size": {
+          "title": "🖌️ Tamanho do pincel"
+        },
         "original_image": "Imagem original",
         "preview_title": "Pré-visualização da remoção de fundo",
         "size_label": "Tamanho:",
@@ -414,54 +418,626 @@
     },
     "audio": {
       "title": "Ferramentas de áudio",
+      "title_meta": "Ferramentas de áudio - DropShare",
       "subtitle": "Converter e editar arquivos de áudio",
       "converter": {
         "title": "Conversor de áudio",
-        "description": "Converter entre formatos de áudio"
+        "description": "Converter entre formatos de áudio",
+        "subtitle": "Convert audio between different formats with high quality",
+        "upload": {
+          "title": "Click to select audio files or drag them here",
+          "hint": "Supports MP3, WAV, AAC, OGG, FLAC formats, maximum 50MB each"
+        },
+        "file_info": {
+          "selected_files": "Selected Files:"
+        },
+        "format_options": {
+          "title": "Select Output Format:",
+          "format_mp3_desc": "Most compatible",
+          "format_wav_desc": "Lossless quality",
+          "format_aac_desc": "Apple optimized",
+          "format_ogg_desc": "Open source",
+          "format_flac_desc": "Lossless compression"
+        },
+        "progress": {
+          "title": "Conversion Progress:",
+          "percentage": "{percentage}%",
+          "converting_file": "{percentage}% - Converting {filename}",
+          "complete": "Conversion Complete!"
+        },
+        "buttons": {
+          "start_conversion": "Start Conversion",
+          "clear_files": "Clear Files",
+          "download": "Download Audio",
+          "download_all": "📥 Download All Files",
+          "share_all": "📤 Share All Files",
+          "clear_all": "🔄 Clear All",
+          "new_conversion": "New Conversion",
+          "back_to_tools": "← Voltar às ferramentas de áudio"
+        },
+        "results": {
+          "title": "🎉 Conversion Complete!",
+          "converted_files": "Converted Audio Files:",
+          "conversion_results": "Conversion Results:"
+        },
+        "audio_quality": {
+          "title": "Configurações de qualidade de áudio",
+          "bitrate_label": "Taxa de bits:",
+          "sample_rate_label": "Taxa de amostragem:"
+        }
       },
       "processor": {
         "title": "Processador de áudio",
         "description": "Ferramentas avançadas de edição de áudio"
+      },
+      "badges": {
+        "professional": "Profissional",
+        "advanced": "Avançado",
+        "popular": "Popular",
+        "essential": "Essencial",
+        "quality": "Qualidade",
+        "apple": "Apple",
+        "universal": "Universal",
+        "open_source": "Código aberto",
+        "mobile": "Móvel"
+      },
+      "cards": {
+        "universal": {
+          "title": "Conversor de áudio universal",
+          "description": "Suporta conversão livre entre todos os formatos, inclui configurações avançadas"
+        },
+        "mp3_to_wav": {
+          "title": "MP3 para WAV",
+          "description": "Converter MP3 com perdas para WAV sem perdas"
+        },
+        "wav_to_mp3": {
+          "title": "WAV para MP3",
+          "description": "Comprimir WAV para MP3 e reduzir o tamanho do arquivo"
+        },
+        "flac_to_mp3": {
+          "title": "FLAC para MP3",
+          "description": "Converter FLAC sem perdas para MP3 portátil"
+        },
+        "wav_to_flac": {
+          "title": "WAV para FLAC",
+          "description": "Converter WAV para FLAC, manter qualidade sem perdas e comprimir"
+        },
+        "mp3_to_aac": {
+          "title": "MP3 para AAC",
+          "description": "Converter para AAC, formato otimizado para dispositivos Apple"
+        },
+        "aac_to_mp3": {
+          "title": "AAC para MP3",
+          "description": "Converter AAC para o formato MP3 universal"
+        },
+        "ogg_to_mp3": {
+          "title": "OGG para MP3",
+          "description": "Converter OGG Vorbis de código aberto para MP3"
+        },
+        "wav_to_aac": {
+          "title": "WAV para AAC",
+          "description": "Converter WAV sem perdas para AAC otimizado para celular"
+        }
+      },
+      "audio_processor": {
+        "title": "Audio Processor",
+        "subtitle": "Process and enhance your audio files with various effects",
+        "upload": {
+          "title": "Click to select audio files or drag them here",
+          "hint": "Supports MP3, WAV, AAC, OGG formats, maximum 50MB each"
+        },
+        "file_info": {
+          "selected_files": "Selected Files:"
+        },
+        "processing_options": {
+          "title": "Processing Options:",
+          "normalize_volume": "Normalize Volume",
+          "remove_noise": "Remove Background Noise",
+          "enhance_bass": "Enhance Bass",
+          "add_reverb": "Add Reverb Effect",
+          "compressor": "Dynamic Range Compression",
+          "equalizer": "Auto EQ Enhancement"
+        },
+        "progress": {
+          "title": "Processing Audio:",
+          "percentage": "{percentage}%",
+          "processing_file": "{percentage}% - Processing {filename}",
+          "complete": "Processing Complete!"
+        },
+        "buttons": {
+          "start_processing": "Start Processing",
+          "clear_files": "Clear Files",
+          "download": "Download Processed Audio",
+          "new_processing": "New Processing",
+          "back_to_tools": "← Voltar às ferramentas de áudio"
+        },
+        "results": {
+          "title": "🎉 Processing Complete!",
+          "processed_files": "Processed Audio Files:",
+          "file_size": "{size} • Processed Audio",
+          "applied_effects": "Applied: {effects}",
+          "no_effects": "No effects selected"
+        }
       }
     },
     "video": {
-      "title": "Video Tools",
-      "subtitle": "Professional video conversion tools",
+      "title": "Ferramentas de vídeo",
+      "title_meta": "Ferramentas de vídeo - DropShare",
+      "subtitle": "Ferramentas profissionais de conversão de vídeo",
       "converter": {
-        "title": "Video Converter",
-        "description": "Convert videos between formats"
+        "title": "Conversor de vídeo",
+        "description": "Converter vídeos entre formatos",
+        "subtitle": "Converter vídeos entre diferentes formatos com alta qualidade",
+        "upload": {
+          "title": "Clique para selecionar arquivos de vídeo ou arraste-os aqui",
+          "hint": "Suporta MP4, AVI, MOV, WebM, máximo 100MB por arquivo"
+        },
+        "file_info": {
+          "selected_files": "Arquivos selecionados:"
+        },
+        "format_options": {
+          "title": "Selecionar formato de saída:"
+        },
+        "progress": {
+          "title": "Progresso da conversão:",
+          "percentage": "{percentage}%",
+          "converting_file": "{percentage}% - Convertendo {filename}",
+          "complete": "Conversão concluída!"
+        },
+        "buttons": {
+          "start_conversion": "Iniciar conversão",
+          "clear_files": "Limpar arquivos",
+          "download": "Baixar vídeos",
+          "new_conversion": "Nova conversão",
+          "back_to_tools": "← Voltar às ferramentas de vídeo"
+        },
+        "results": {
+          "title": "🎉 Conversão concluída!",
+          "converted_files": "Arquivos de vídeo convertidos:",
+          "file_size": "{size} • Vídeo convertido"
+        }
       },
       "info": {
-        "title": "Video Info",
-        "description": "Get detailed information about video files"
+        "title": "Informações de vídeo",
+        "description": "Obtenha informações detalhadas sobre arquivos de vídeo",
+        "subtitle": "Get detailed information about your video files",
+        "upload": {
+          "title": "Click to select video files or drag them here",
+          "hint": "Supports MP4, AVI, MOV, WebM formats, maximum 100MB each"
+        },
+        "file_info": {
+          "selected_files": "Selected Files:"
+        },
+        "progress": {
+          "title": "Analyzing Video Information:",
+          "percentage": "{percentage}%",
+          "analyzing_file": "{percentage}% - Analyzing {filename}",
+          "complete": "Analysis Complete!"
+        },
+        "buttons": {
+          "analyze_videos": "Analyze Videos",
+          "clear_files": "Clear Files",
+          "new_analysis": "New Analysis",
+          "back_to_tools": "← Voltar às ferramentas de vídeo"
+        },
+        "results": {
+          "title": "📊 Video Analysis Complete!",
+          "video_info": "Video Information:",
+          "file_name": "File Name:",
+          "file_size": "File Size:",
+          "duration": "Duration:",
+          "resolution": "Resolution:",
+          "frame_rate": "Frame Rate:",
+          "codec": "Video Codec:",
+          "audio_codec": "Audio Codec:",
+          "bitrate": "Bitrate:"
+        }
+      },
+      "badges": {
+        "advanced": "Avançado",
+        "popular": "Popular",
+        "web": "Web",
+        "modern": "Moderno",
+        "open_source": "Código aberto",
+        "legacy": "Legado",
+        "apple": "Apple",
+        "analysis": "Análise"
+      },
+      "cards": {
+        "avi_to_mp4": {
+          "title": "AVI para MP4",
+          "description": "Converter vídeos AVI antigos para o formato MP4 universal"
+        },
+        "mov_to_mp4": {
+          "title": "MOV para MP4",
+          "description": "Converter o formato Apple QuickTime para MP4 universal"
+        },
+        "webm_to_mp4": {
+          "title": "WebM para MP4",
+          "description": "Converter o formato WebM otimizado para web em MP4"
+        },
+        "mp4_to_webm": {
+          "title": "MP4 para WebM",
+          "description": "Converter MP4 para WebM otimizado para web e reduzir tamanho"
+        },
+        "avi_to_webm": {
+          "title": "AVI para WebM",
+          "description": "Atualizar o formato AVI antigo para o moderno formato web WebM"
+        },
+        "mov_to_webm": {
+          "title": "MOV para WebM",
+          "description": "Converter MOV da Apple para o WebM de código aberto"
+        },
+        "mp4_to_avi": {
+          "title": "MP4 para AVI",
+          "description": "Converter MP4 para AVI e melhorar a compatibilidade com dispositivos antigos"
+        },
+        "mp4_to_mov": {
+          "title": "MP4 para MOV",
+          "description": "Converter MP4 para MOV do Apple QuickTime"
+        }
       }
     },
     "document": {
-      "title": "Document Tools",
-      "subtitle": "Process and convert documents",
+      "title": "Ferramentas de documento",
+      "title_meta": "Ferramentas de documento - DropShare",
+      "subtitle": "Processar e converter documentos",
       "processor": {
-        "title": "Document Processor",
-        "description": "Convert and process documents"
+        "title": "Processador de documentos",
+        "title_meta": "Processador de documentos - DropShare",
+        "description": "Converter e processar documentos",
+        "subtitle": "Processar arquivos PDF, Word e outros documentos",
+        "upload": {
+          "title": "Clique para selecionar arquivos de documento ou arraste-os aqui",
+          "hint": "Suporta formatos PDF, DOCX, TXT, RTF, HTML"
+        },
+        "tabs": {
+          "extract": "Extrair texto",
+          "split": "Dividir documento",
+          "merge": "Mesclar documentos",
+          "convert": "Converter formato"
+        },
+        "text_extract": {
+          "settings_title": "📝 Text Extraction Settings",
+          "extract_pages": "Extract pages:",
+          "start_page": "Start page",
+          "end_page": "End page",
+          "to": "to",
+          "all_pages": "All pages",
+          "preserve_formatting": "Preserve formatting",
+          "extract_images": "Extract image links",
+          "remove_blank_lines": "Remove blank lines",
+          "extracted_text": "Extracted text:",
+          "copy_text": "Copy text"
+        },
+        "split": {
+          "settings_title": "✂️ Document Split Settings",
+          "split_method": "Split method:",
+          "by_pages": "By page range",
+          "by_interval": "By page interval",
+          "by_bookmarks": "By bookmarks",
+          "pages_per_file": "Pages per file:",
+          "page_ranges": "Page ranges (comma separated, e.g: 1-5, 10-15, 20):"
+        },
+        "merge": {
+          "settings_title": "🔗 Document Merge Settings",
+          "description": "Merge multiple PDF documents into one. Please upload multiple files.",
+          "select_files": "Select files to merge",
+          "add_bookmarks": "Add bookmarks for each document"
+        },
+        "convert": {
+          "settings_title": "🔄 Format Conversion Settings",
+          "output_format": "Output format:",
+          "formats": {
+            "pdf": "PDF",
+            "docx": "Word Document (.docx)",
+            "txt": "Plain Text (.txt)",
+            "html": "HTML Web Page",
+            "rtf": "RTF Document",
+            "images": "Images (JPG/PNG)"
+          },
+          "image_quality": "Image quality:",
+          "image_dpi": "Image DPI:",
+          "dpi_options": {
+            "72": "72 DPI (Web)",
+            "150": "150 DPI (Standard)",
+            "300": "300 DPI (High Quality)",
+            "600": "600 DPI (Print)"
+          }
+        },
+        "progress": {
+          "preparing": "Preparing to process...",
+          "extracting": "Extracting text...",
+          "splitting": "Splitting document...",
+          "merging": "Merging documents...",
+          "converting": "Converting to {format}...",
+          "creating_document": "Creating document {number}...",
+          "processing_document": "Processing document {number}...",
+          "complete": "Processing complete!"
+        },
+        "buttons": {
+          "start_processing": "Iniciar processamento",
+          "download_all": "📥 Baixar todos os arquivos",
+          "share_all": "📤 Compartilhar todos os arquivos",
+          "reset_settings": "🔄 Redefinir configurações",
+          "select_new_document": "📄 Selecionar novo documento",
+          "back_to_tools": "← Voltar às ferramentas de documento",
+          "download": "Baixar",
+          "share": "Compartilhar",
+          "remove": "Remover"
+        },
+        "results": {
+          "title": "Processing Results:",
+          "original_size": "Original size",
+          "result_size": "Result size",
+          "page_count": "Page count",
+          "processing_time": "Processing time"
+        },
+        "messages": {
+          "unsupported_format": "Unsupported document format! Please select PDF, DOCX, TXT, RTF or HTML files.",
+          "text_copied": "Text copied to clipboard!",
+          "copy_failed": "Copy failed, please manually select text to copy",
+          "processing_failed": "Processing failed:",
+          "text_extraction_complete": "Text extraction complete!",
+          "splitting_complete": "Document splitting complete!",
+          "merging_complete": "Document merging complete!",
+          "conversion_complete": "Format conversion complete!"
+        }
       },
       "pdf_to_word": {
-        "title": "PDF to Word",
-        "description": "Convert PDF files to Word documents"
+        "title": "PDF para Word",
+        "title_meta": "Conversor de PDF para Word - DropShare",
+        "description": "Converter arquivos PDF em documentos Word",
+        "subtitle": "Converta rapidamente seus PDFs para o formato Word editável",
+        "upload": {
+          "title": "Clique para selecionar arquivo PDF ou arraste-o aqui",
+          "hint": "Suporta arquivos PDF, máximo 50MB"
+        },
+        "progress": {
+          "preparing": "Preparing to convert...",
+          "loading_libraries": "Loading PDF processing libraries...",
+          "reading_pdf": "Libraries loaded. Reading PDF file...",
+          "extracting": "PDF loaded. Extracting text content...",
+          "extracting_page": "Extracting text from page {page} of {total}...",
+          "generating": "Text extraction complete. Generating Word document...",
+          "creating": "Document structure created. Generating DOCX file...",
+          "complete": "Conversion complete!"
+        },
+        "results": {
+          "success_title": "Conversion Complete!",
+          "success_message": "Your Word document is ready for download"
+        },
+        "buttons": {
+          "convert": "Converter para Word",
+          "download": "Baixar documento Word",
+          "clear": "Limpar arquivo",
+          "share": "Compartilhar arquivo",
+          "back_to_tools": "← Voltar às ferramentas de documento"
+        },
+        "messages": {
+          "select_pdf": "Please select a PDF file",
+          "file_too_large": "File size cannot exceed 50MB",
+          "select_pdf_first": "Please select a PDF file first",
+          "conversion_failed": "Conversion failed:",
+          "no_file_to_share": "No file to share"
+        }
       },
       "docx_to_html": {
-        "title": "DOCX to HTML",
-        "description": "Convert Word documents to HTML"
+        "title": "DOCX para HTML",
+        "title_meta": "Conversor de DOCX para HTML - DropShare",
+        "description": "Converter documentos do Word para HTML",
+        "subtitle": "Transformar documentos do Microsoft Word em formato HTML limpo e pronto para a web",
+        "upload": {
+          "title": "Clique para selecionar arquivos DOCX ou arraste-os aqui",
+          "hint": "Suporta arquivos .docx, .doc, máximo 10MB"
+        },
+        "file_info": {
+          "selected_files": "Arquivos selecionados:",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "Opções de conversão:",
+          "preserve_styles": "Preservar estilos do documento",
+          "include_images": "Incluir imagens incorporadas",
+          "clean_html": "Gerar HTML limpo",
+          "responsive_layout": "Layout responsivo"
+        },
+        "progress": {
+          "title": "Conversion Progress:",
+          "converting_file": "{percentage}% - Converting {filename}",
+          "complete": "Conversion Complete!"
+        },
+        "results": {
+          "success_title": "Conversion Complete!",
+          "preview_title": "HTML Preview:"
+        },
+        "buttons": {
+          "start_conversion": "Iniciar conversão",
+          "clear_files": "Limpar arquivos",
+          "download_html": "Baixar HTML",
+          "share_file": "Compartilhar arquivo",
+          "new_conversion": "Nova conversão",
+          "back_to_tools": "← Voltar para ferramentas"
+        },
+        "messages": {
+          "conversion_failed": "DOCX conversion failed:",
+          "mammoth_load_failed": "Failed to load Mammoth.js library",
+          "invalid_file": "Please ensure the file is a valid DOCX document",
+          "file_protected": "The file is not password protected",
+          "file_not_corrupted": "The file is not corrupted",
+          "conversion_error": "Conversion Error",
+          "conversion_warnings": "DOCX conversion warnings:",
+          "generated_by": "Generated by DropShare DOCX to HTML Converter",
+          "converted_from": "Converted from DOCX on",
+          "error_reasons": "This file could not be converted to HTML. Please ensure:"
+        }
       },
       "docx_to_txt": {
-        "title": "DOCX to TXT",
-        "description": "Convert Word documents to plain text"
+        "title": "DOCX para TXT",
+        "title_meta": "Conversor de DOCX para TXT - DropShare",
+        "description": "Converter documentos do Word para texto simples",
+        "subtitle": "Extrair conteúdo de texto simples de documentos do Microsoft Word",
+        "upload": {
+          "title": "Clique para selecionar arquivos DOCX ou arraste-os aqui",
+          "hint": "Suporta arquivos .docx, .doc, máximo 10MB"
+        },
+        "file_info": {
+          "selected_files": "Arquivos selecionados:",
+          "file_size_info": "{size} • {type}"
+        },
+        "extraction_options": {
+          "title": "Opções de extração:",
+          "preserve_line_breaks": "Preservar quebras de linha",
+          "remove_extra_spaces": "Remover espaços extras",
+          "add_page_markers": "Adicionar marcadores de página",
+          "include_headers": "Incluir cabeçalhos/rodapés"
+        },
+        "progress": {
+          "title": "Progresso da extração de texto:",
+          "extracting_file": "{percentage}% - Extraindo {filename}",
+          "complete": "Extração de texto completa!"
+        },
+        "results": {
+          "success_title": "Extração de texto completa!",
+          "text_preview": "Visualização do texto extraído:"
+        },
+        "buttons": {
+          "extract_text": "Extrair texto",
+          "clear_files": "Limpar arquivos",
+          "download_txt": "Baixar TXT",
+          "copy_text": "Copiar texto",
+          "share_file": "Compartilhar arquivo",
+          "new_extraction": "Nova extração",
+          "back_to_tools": "← Voltar para ferramentas"
+        },
+        "messages": {
+          "extraction_failed": "Failed to extract text from DOCX:",
+          "no_text_found": "No text content found in the document or document is corrupted",
+          "extraction_warnings": "Extraction warnings:",
+          "warnings_notice": "⚠️ Extraction warnings: {count} items may not be fully preserved",
+          "text_copied": "Text copied to clipboard!",
+          "copy_failed": "Failed to copy text. Please select and copy manually.",
+          "statistics_header": "=== EXTRACTION STATISTICS ===",
+          "characters": "Characters:",
+          "words": "Words:",
+          "lines": "Lines:",
+          "paragraphs": "Paragraphs:",
+          "options_applied": "Extraction Options Applied:",
+          "option_line_breaks": "Preserve Line Breaks:",
+          "option_extra_spaces": "Remove Extra Spaces:",
+          "option_page_markers": "Add Page Markers:",
+          "option_headers": "Include Headers/Footers:",
+          "yes": "Yes",
+          "no": "No",
+          "document_info": "Document: {filename}",
+          "extracted_on": "Extracted on: {date}",
+          "file_size": "File size: {size}",
+          "page_marker": "=== PAGE {page} ===",
+          "header_marker": "[HEADER: {text}]",
+          "next_document": "--- NEXT DOCUMENT ---"
+        }
       },
       "xlsx_to_csv": {
-        "title": "XLSX to CSV",
-        "description": "Convert Excel files to CSV"
+        "title": "XLSX para CSV",
+        "title_meta": "Conversor de XLSX para CSV - DropShare",
+        "description": "Converter arquivos do Excel para CSV",
+        "subtitle": "Converter planilhas do Excel para formato de valores separados por vírgula para processamento de dados",
+        "upload": {
+          "title": "Clique para selecionar arquivos XLSX ou arraste-os aqui",
+          "hint": "Suporta arquivos .xlsx, .xls, máximo 10MB"
+        },
+        "file_info": {
+          "selected_files": "Arquivos selecionados:",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "Opções de conversão:",
+          "include_headers": "Incluir cabeçalhos de coluna",
+          "preserve_formulas": "Preservar fórmulas como texto",
+          "use_custom_delimiter": "Usar delimitador ponto e vírgula",
+          "select_all_sheets": "Converter todas as planilhas"
+        },
+        "progress": {
+          "title": "Progresso da conversão:",
+          "converting_file": "{percentage}% - Convertendo {filename}",
+          "complete": "Conversão concluída!"
+        },
+        "results": {
+          "success_title": "Conversão concluída!",
+          "csv_results": "Resultados da conversão CSV:",
+          "sheets_processed": "Planilhas processadas:",
+          "total_rows": "Total de linhas:",
+          "csv_preview": "Visualização CSV:",
+          "content_truncated": "[Conteúdo truncado para visualização]"
+        },
+        "buttons": {
+          "start_conversion": "Iniciar conversão",
+          "clear_files": "Limpar arquivos",
+          "download_csv": "Baixar arquivos CSV",
+          "new_conversion": "Nova conversão",
+          "back_to_tools": "← Voltar às ferramentas de documento"
+        },
+        "messages": {
+          "conversion_failed": "Failed to convert Excel file:",
+          "no_worksheets": "Excel file contains no worksheets",
+          "excel_spreadsheet": "Excel Spreadsheet",
+          "sheet_header": "# Sheet: {name}",
+          "share_functionality": "Share functionality would be integrated here for {count} CSV files"
+        }
       },
       "csv_to_xlsx": {
-        "title": "CSV to XLSX",
-        "description": "Convert CSV files to Excel"
+        "title": "CSV para XLSX",
+        "title_meta": "Conversor de CSV para XLSX - DropShare",
+        "description": "Converter arquivos CSV para Excel",
+        "subtitle": "Converter arquivos de valores separados por vírgula para formato Excel para processamento avançado de dados",
+        "upload": {
+          "title": "Clique para selecionar arquivos CSV ou arraste-os aqui",
+          "hint": "Suporta arquivos .csv, .txt, máximo 10MB"
+        },
+        "file_info": {
+          "selected_files": "Arquivos selecionados:",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "Opções de conversão:",
+          "detect_headers": "Detectar automaticamente cabeçalhos de coluna",
+          "delimiter_settings": "Configurações de delimitador",
+          "comma_delimiter": "Vírgula (,)",
+          "semicolon_delimiter": "Ponto e vírgula (;)",
+          "tab_delimiter": "Tabulação (\\t)",
+          "custom_delimiter": "Delimitador personalizado:",
+          "create_multiple_sheets": "Criar planilhas separadas para arquivos grandes",
+          "preserve_formatting": "Preservar formatação de texto"
+        },
+        "progress": {
+          "title": "Progresso da conversão:",
+          "converting_file": "{percentage}% - Convertendo {filename}",
+          "complete": "Conversão concluída!"
+        },
+        "results": {
+          "success_title": "Conversão concluída!",
+          "xlsx_results": "Resultados da conversão XLSX:",
+          "sheets_created": "Planilhas criadas:",
+          "total_rows": "Total de linhas:",
+          "total_columns": "Total de colunas:",
+          "excel_preview": "Visualização da estrutura Excel:",
+          "content_summary": "[Visualização da estrutura do arquivo Excel]"
+        },
+        "buttons": {
+          "start_conversion": "Iniciar conversão",
+          "clear_files": "Limpar arquivos",
+          "download_xlsx": "Baixar arquivos Excel",
+          "new_conversion": "Nova conversão",
+          "back_to_tools": "← Voltar às ferramentas de documento"
+        },
+        "messages": {
+          "conversion_failed": "Failed to convert CSV file:",
+          "no_data_found": "No data found in CSV file or file is corrupted",
+          "invalid_delimiter": "Invalid delimiter detected, please specify manually",
+          "csv_document": "CSV Document",
+          "parsing_error": "Error parsing CSV format:",
+          "share_functionality": "Share functionality would be integrated here for {count} Excel files"
+        }
       }
     }
   },

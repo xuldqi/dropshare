@@ -134,6 +134,7 @@
     },
     "image": {
       "title": "画像ツール",
+      "title_meta": "画像ツール - DropShare",
       "subtitle": "プロフェッショナルな画像編集・変換ツール",
       "converter": {
         "title": "画像コンバーター",
@@ -233,8 +234,12 @@
           "clear_all": "すべてクリア",
           "restore_all": "すべて復元"
         },
-        "tolerance": { "title": "🎯 許容値設定" },
-        "brush_size": { "title": "🖌️ ブラシサイズ" },
+        "tolerance": {
+          "title": "🎯 許容値設定"
+        },
+        "brush_size": {
+          "title": "🖌️ ブラシサイズ"
+        },
         "original_image": "元画像",
         "preview_title": "背景除去プレビュー",
         "size_label": "サイズ：",
@@ -417,55 +422,627 @@
       }
     },
     "audio": {
-      "title": "Audio Tools",
-      "subtitle": "Convert and edit audio files",
+      "title": "音声ツール",
+      "title_meta": "音声ツール - DropShare",
+      "subtitle": "音声ファイルの変換と編集",
       "converter": {
-        "title": "Audio Converter",
-        "description": "Convert between audio formats"
+        "title": "音声コンバーター",
+        "description": "音声フォーマット間の変換",
+        "subtitle": "高品質を保ちながら各種フォーマットに変換",
+        "upload": {
+          "title": "クリックして音声ファイルを選択、またはここにドラッグ",
+          "hint": "MP3、WAV、AAC、OGG、FLAC に対応、各 50MB まで"
+        },
+        "file_info": {
+          "selected_files": "選択されたファイル："
+        },
+        "format_options": {
+          "title": "出力形式を選択：",
+          "format_mp3_desc": "最も互換性が高い",
+          "format_wav_desc": "ロスレス品質",
+          "format_aac_desc": "Apple 最適化",
+          "format_ogg_desc": "オープンソース",
+          "format_flac_desc": "ロスレス圧縮"
+        },
+        "progress": {
+          "title": "変換の進捗：",
+          "percentage": "{percentage}%",
+          "converting_file": "{percentage}% - 変換中 {filename}",
+          "complete": "変換が完了しました！"
+        },
+        "buttons": {
+          "start_conversion": "変換を開始",
+          "clear_files": "ファイルをクリア",
+          "download": "音声をダウンロード",
+          "download_all": "📥 すべてダウンロード",
+          "share_all": "📤 すべて共有",
+          "clear_all": "🔄 すべてクリア",
+          "new_conversion": "新しい変換",
+          "back_to_tools": "← 音声ツールに戻る"
+        },
+        "results": {
+          "title": "🎉 変換が完了しました！",
+          "converted_files": "変換後の音声ファイル：",
+          "conversion_results": "変換結果："
+        },
+        "audio_quality": {
+          "title": "音質設定",
+          "bitrate_label": "ビットレート：",
+          "sample_rate_label": "サンプリングレート："
+        }
       },
       "processor": {
-        "title": "Audio Processor",
-        "description": "Advanced audio editing tools"
+        "title": "オーディオプロセッサー",
+        "description": "高度なオーディオ編集ツール"
+      },
+      "audio_processor": {
+        "title": "オーディオプロセッサー",
+        "subtitle": "多彩な効果で音声を処理・強化",
+        "upload": {
+          "title": "クリックして音声ファイルを選択、またはここにドラッグ",
+          "hint": "MP3、WAV、AAC、OGG に対応、各 50MB まで"
+        },
+        "file_info": {
+          "selected_files": "選択されたファイル："
+        },
+        "processing_options": {
+          "title": "処理オプション：",
+          "normalize_volume": "音量の正規化",
+          "remove_noise": "バックグラウンドノイズ除去",
+          "enhance_bass": "低音強化",
+          "add_reverb": "リバーブ効果",
+          "compressor": "ダイナミックレンジ圧縮",
+          "equalizer": "自動 EQ 強化"
+        },
+        "progress": {
+          "title": "音声を処理中：",
+          "percentage": "{percentage}%",
+          "processing_file": "{percentage}% - 処理中 {filename}",
+          "complete": "処理が完了しました！"
+        },
+        "buttons": {
+          "start_processing": "処理を開始",
+          "clear_files": "ファイルをクリア",
+          "download": "処理後の音声をダウンロード",
+          "new_processing": "新しい処理",
+          "back_to_tools": "← 音声ツールに戻る"
+        },
+        "results": {
+          "title": "🎉 処理が完了しました！",
+          "processed_files": "処理済み音声ファイル：",
+          "file_size": "{size} • 処理後の音声",
+          "applied_effects": "適用：{effects}",
+          "no_effects": "効果が選択されていません"
+        }
+      },
+      "badges": {
+        "professional": "プロフェッショナル",
+        "advanced": "上級",
+        "popular": "人気",
+        "essential": "必須",
+        "quality": "品質",
+        "apple": "Apple",
+        "universal": "ユニバーサル",
+        "open_source": "オープンソース",
+        "mobile": "モバイル"
+      },
+      "cards": {
+        "universal": {
+          "title": "ユニバーサル音声コンバーター",
+          "description": "全ての形式間の変換をサポート。高度な設定にも対応"
+        },
+        "mp3_to_wav": {
+          "title": "MP3 から WAV",
+          "description": "圧縮 MP3 をロスレス WAV 形式に変換"
+        },
+        "wav_to_mp3": {
+          "title": "WAV から MP3",
+          "description": "WAV を MP3 に圧縮し、ファイルサイズを削減"
+        },
+        "flac_to_mp3": {
+          "title": "FLAC から MP3",
+          "description": "ロスレス FLAC を持ち運びやすい MP3 へ変換"
+        },
+        "wav_to_flac": {
+          "title": "WAV から FLAC",
+          "description": "WAV を FLAC に変換。ロスレス品質を維持しつつ容量を圧縮"
+        },
+        "mp3_to_aac": {
+          "title": "MP3 から AAC",
+          "description": "Apple デバイス向けに最適化された AAC 形式へ変換"
+        },
+        "aac_to_mp3": {
+          "title": "AAC から MP3",
+          "description": "AAC を汎用的な MP3 形式に変換"
+        },
+        "ogg_to_mp3": {
+          "title": "OGG から MP3",
+          "description": "オープンソースの OGG Vorbis を MP3 に変換"
+        },
+        "wav_to_aac": {
+          "title": "WAV から AAC",
+          "description": "ロスレス WAV をモバイル最適化の AAC に変換"
+        }
       }
     },
     "video": {
-      "title": "Video Tools",
-      "subtitle": "Professional video conversion tools",
+      "title": "動画ツール",
+      "title_meta": "動画ツール - DropShare",
+      "subtitle": "プロ向け動画変換ツール",
       "converter": {
-        "title": "Video Converter",
-        "description": "Convert videos between formats"
+        "title": "動画コンバーター",
+        "description": "動画を各種形式に変換",
+        "subtitle": "高品質を保ちながら各種フォーマットに変換",
+        "upload": {
+          "title": "クリックして動画ファイルを選択、またはここにドラッグ",
+          "hint": "MP4、AVI、MOV、WebM に対応、各 100MB まで"
+        },
+        "file_info": {
+          "selected_files": "選択されたファイル："
+        },
+        "format_options": {
+          "title": "出力形式を選択："
+        },
+        "progress": {
+          "title": "変換の進捗：",
+          "percentage": "{percentage}%",
+          "converting_file": "{percentage}% - 変換中 {filename}",
+          "complete": "変換が完了しました！"
+        },
+        "buttons": {
+          "start_conversion": "変換を開始",
+          "clear_files": "ファイルをクリア",
+          "download": "動画をダウンロード",
+          "new_conversion": "新しい変換",
+          "back_to_tools": "← 動画ツールに戻る"
+        },
+        "results": {
+          "title": "🎉 変換が完了しました！",
+          "converted_files": "変換後の動画ファイル：",
+          "file_size": "{size} • 変換後の動画"
+        }
       },
       "info": {
-        "title": "Video Info",
-        "description": "Get detailed information about video files"
+        "title": "動画情報ビューアー",
+        "description": "動画ファイルの詳細情報を取得",
+        "subtitle": "Get detailed information about your video files",
+        "upload": {
+          "title": "Click to select video files or drag them here",
+          "hint": "Supports MP4, AVI, MOV, WebM formats, maximum 100MB each"
+        },
+        "file_info": {
+          "selected_files": "Selected Files:"
+        },
+        "progress": {
+          "title": "Analyzing Video Information:",
+          "percentage": "{percentage}%",
+          "analyzing_file": "{percentage}% - Analyzing {filename}",
+          "complete": "Analysis Complete!"
+        },
+        "buttons": {
+          "analyze_videos": "Analyze Videos",
+          "clear_files": "Clear Files",
+          "new_analysis": "New Analysis",
+          "back_to_tools": "← 動画ツールに戻る"
+        },
+        "results": {
+          "title": "📊 Video Analysis Complete!",
+          "video_info": "Video Information:",
+          "file_name": "File Name:",
+          "file_size": "File Size:",
+          "duration": "Duration:",
+          "resolution": "Resolution:",
+          "frame_rate": "Frame Rate:",
+          "codec": "Video Codec:",
+          "audio_codec": "Audio Codec:",
+          "bitrate": "Bitrate:"
+        }
+      },
+      "badges": {
+        "advanced": "上級",
+        "popular": "人気",
+        "web": "Web",
+        "modern": "モダン",
+        "open_source": "オープンソース",
+        "legacy": "レガシー",
+        "apple": "Apple",
+        "analysis": "分析"
+      },
+      "cards": {
+        "avi_to_mp4": {
+          "title": "AVI から MP4",
+          "description": "古い AVI 動画を汎用 MP4 形式に変換"
+        },
+        "mov_to_mp4": {
+          "title": "MOV から MP4",
+          "description": "Apple QuickTime 形式を汎用 MP4 形式へ"
+        },
+        "webm_to_mp4": {
+          "title": "WebM から MP4",
+          "description": "Web 最適化された WebM を MP4 に変換"
+        },
+        "mp4_to_webm": {
+          "title": "MP4 から WebM",
+          "description": "MP4 を Web 最適化 WebM に変換し容量削減"
+        },
+        "avi_to_webm": {
+          "title": "AVI から WebM",
+          "description": "古い AVI を最新の WebM Web 形式にアップグレード"
+        },
+        "mov_to_webm": {
+          "title": "MOV から WebM",
+          "description": "Apple MOV をオープンソースの WebM に変換"
+        },
+        "mp4_to_avi": {
+          "title": "MP4 から AVI",
+          "description": "MP4 を AVI に変換しレガシー機器との互換性を向上"
+        },
+        "mp4_to_mov": {
+          "title": "MP4 から MOV",
+          "description": "MP4 を Apple QuickTime MOV に変換"
+        }
       }
     },
     "document": {
-      "title": "Document Tools",
-      "subtitle": "Process and convert documents",
+      "title": "文書ツール",
+      "title_meta": "文書ツール - DropShare",
+      "subtitle": "文書の処理と変換",
       "processor": {
-        "title": "Document Processor",
-        "description": "Convert and process documents"
+        "title": "ドキュメントプロセッサー",
+        "title_meta": "ドキュメントプロセッサー - DropShare",
+        "description": "文書の変換と処理",
+        "subtitle": "PDF・Word などのドキュメントファイルを処理",
+        "upload": {
+          "title": "クリックして文書ファイルを選択、またはここにドラッグ",
+          "hint": "PDF、DOCX、TXT、RTF、HTML 形式に対応"
+        },
+        "tabs": {
+          "extract": "テキスト抽出",
+          "split": "文書分割",
+          "merge": "文書結合",
+          "convert": "形式変換"
+        },
+        "text_extract": {
+          "settings_title": "📝 テキスト抽出設定",
+          "extract_pages": "ページ抽出:",
+          "start_page": "開始ページ",
+          "end_page": "終了ページ",
+          "to": "～",
+          "all_pages": "すべてのページ",
+          "preserve_formatting": "書式を保持",
+          "extract_images": "画像リンクを抽出",
+          "remove_blank_lines": "空行を削除",
+          "extracted_text": "抽出されたテキスト:",
+          "copy_text": "テキストをコピー"
+        },
+        "split": {
+          "settings_title": "✂️ 文書分割設定",
+          "split_method": "分割方法:",
+          "by_pages": "ページ範囲別",
+          "by_interval": "ページ間隔別",
+          "by_bookmarks": "ブックマーク別",
+          "pages_per_file": "ファイルあたりのページ数:",
+          "page_ranges": "ページ範囲 (カンマ区切り、例: 1-5, 10-15, 20):"
+        },
+        "merge": {
+          "settings_title": "🔗 文書結合設定",
+          "description": "複数のPDF文書を1つに結合します。複数のファイルをアップロードしてください。",
+          "select_files": "結合するファイルを選択",
+          "add_bookmarks": "各文書にブックマークを追加"
+        },
+        "convert": {
+          "settings_title": "🔄 形式変換設定",
+          "output_format": "出力形式:",
+          "formats": {
+            "pdf": "PDF",
+            "docx": "Word文書 (.docx)",
+            "txt": "プレーンテキスト (.txt)",
+            "html": "HTMLウェブページ",
+            "rtf": "RTF文書",
+            "images": "画像 (JPG/PNG)"
+          },
+          "image_quality": "画像品質:",
+          "image_dpi": "画像DPI:",
+          "dpi_options": {
+            "72": "72 DPI (ウェブ)",
+            "150": "150 DPI (標準)",
+            "300": "300 DPI (高品質)",
+            "600": "600 DPI (印刷)"
+          }
+        },
+        "progress": {
+          "preparing": "処理準備中...",
+          "extracting": "テキスト抽出中...",
+          "splitting": "文書分割中...",
+          "merging": "文書結合中...",
+          "converting": "{format}に変換中...",
+          "creating_document": "文書{number}作成中...",
+          "processing_document": "文書{number}処理中...",
+          "complete": "処理完了！"
+        },
+        "buttons": {
+          "start_processing": "処理開始",
+          "download_all": "📥 すべてのファイルをダウンロード",
+          "share_all": "📤 すべてのファイルを共有",
+          "reset_settings": "🔄 設定をリセット",
+          "select_new_document": "📄 新しい文書を選択",
+          "back_to_tools": "← ドキュメントツールに戻る",
+          "download": "ダウンロード",
+          "share": "共有",
+          "remove": "削除"
+        },
+        "results": {
+          "title": "処理結果:",
+          "original_size": "元のサイズ",
+          "result_size": "結果サイズ",
+          "page_count": "ページ数",
+          "processing_time": "処理時間"
+        },
+        "messages": {
+          "unsupported_format": "サポートされていない文書形式です！PDF、DOCX、TXT、RTFまたはHTMLファイルを選択してください。",
+          "text_copied": "テキストがクリップボードにコピーされました！",
+          "copy_failed": "コピーに失敗しました。テキストを手動で選択してコピーしてください",
+          "processing_failed": "Processing failed:",
+          "text_extraction_complete": "Text extraction complete!",
+          "splitting_complete": "Document splitting complete!",
+          "merging_complete": "Document merging complete!",
+          "conversion_complete": "Format conversion complete!"
+        }
       },
       "pdf_to_word": {
-        "title": "PDF to Word",
-        "description": "Convert PDF files to Word documents"
+        "title": "PDF から Word",
+        "title_meta": "PDF から Word 変換器 - DropShare",
+        "description": "PDF ファイルを Word 文書に変換",
+        "subtitle": "PDF を編集可能な Word 形式（.docx）にすばやく簡単に変換",
+        "upload": {
+          "title": "クリックして PDF ファイルを選択、またはここにドラッグ",
+          "hint": "PDF ファイルに対応、最大 50MB"
+        },
+        "progress": {
+          "preparing": "Preparing to convert...",
+          "loading_libraries": "Loading PDF processing libraries...",
+          "reading_pdf": "Libraries loaded. Reading PDF file...",
+          "extracting": "PDF loaded. Extracting text content...",
+          "extracting_page": "Extracting text from page {page} of {total}...",
+          "generating": "Text extraction complete. Generating Word document...",
+          "creating": "Document structure created. Generating DOCX file...",
+          "complete": "Conversion complete!"
+        },
+        "results": {
+          "success_title": "Conversion Complete!",
+          "success_message": "Your Word document is ready for download"
+        },
+        "buttons": {
+          "convert": "Word に変換",
+          "download": "Word 文書をダウンロード",
+          "clear": "ファイルをクリア",
+          "share": "ファイルを共有",
+          "back_to_tools": "← ドキュメントツールに戻る"
+        },
+        "messages": {
+          "select_pdf": "Please select a PDF file",
+          "file_too_large": "File size cannot exceed 50MB",
+          "select_pdf_first": "Please select a PDF file first",
+          "conversion_failed": "Conversion failed:",
+          "no_file_to_share": "No file to share"
+        }
       },
       "docx_to_html": {
-        "title": "DOCX to HTML",
-        "description": "Convert Word documents to HTML"
+        "title": "DOCX から HTML",
+        "title_meta": "DOCX から HTML 変換器 - DropShare",
+        "description": "Word ドキュメントを HTML に変換",
+        "subtitle": "Microsoft Word ドキュメントをクリーンで Web 対応の HTML 形式に変換",
+        "upload": {
+          "title": "クリックして DOCX ファイルを選択、またはここにドラッグ",
+          "hint": ".docx、.doc ファイルに対応、最大 10MB"
+        },
+        "file_info": {
+          "selected_files": "選択されたファイル：",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "変換オプション：",
+          "preserve_styles": "ドキュメントスタイルを保持",
+          "include_images": "埋め込み画像を含める",
+          "clean_html": "クリーンな HTML を生成",
+          "responsive_layout": "モバイルフレンドリーレイアウト"
+        },
+        "progress": {
+          "title": "変換進行状況：",
+          "converting_file": "{percentage}% - {filename} を変換中",
+          "complete": "変換完了！"
+        },
+        "results": {
+          "success_title": "変換完了！",
+          "preview_title": "HTML プレビュー："
+        },
+        "buttons": {
+          "start_conversion": "変換開始",
+          "clear_files": "ファイルをクリア",
+          "download_html": "HTML をダウンロード",
+          "share_file": "ファイルを共有",
+          "new_conversion": "新規変換",
+          "back_to_tools": "← ツールに戻る"
+        },
+        "messages": {
+          "conversion_failed": "DOCX conversion failed:",
+          "mammoth_load_failed": "Failed to load Mammoth.js library",
+          "invalid_file": "Please ensure the file is a valid DOCX document",
+          "file_protected": "The file is not password protected",
+          "file_not_corrupted": "The file is not corrupted",
+          "conversion_error": "Conversion Error",
+          "conversion_warnings": "DOCX conversion warnings:",
+          "generated_by": "Generated by DropShare DOCX to HTML Converter",
+          "converted_from": "Converted from DOCX on",
+          "error_reasons": "This file could not be converted to HTML. Please ensure:"
+        }
       },
       "docx_to_txt": {
-        "title": "DOCX to TXT",
-        "description": "Convert Word documents to plain text"
+        "title": "DOCX から TXT",
+        "title_meta": "DOCX から TXT 変換器 - DropShare",
+        "description": "Word ドキュメントをプレーンテキストに変換",
+        "subtitle": "Microsoft Word ドキュメントからプレーンテキストコンテンツを抽出",
+        "upload": {
+          "title": "クリックして DOCX ファイルを選択、またはここにドラッグ",
+          "hint": ".docx、.doc ファイルに対応、最大 10MB"
+        },
+        "file_info": {
+          "selected_files": "選択されたファイル：",
+          "file_size_info": "{size} • {type}"
+        },
+        "extraction_options": {
+          "title": "抽出オプション：",
+          "preserve_line_breaks": "改行を保持",
+          "remove_extra_spaces": "余分なスペースを削除",
+          "add_page_markers": "ページマーカーを追加",
+          "include_headers": "ヘッダー/フッターを含める"
+        },
+        "progress": {
+          "title": "テキスト抽出進行状況：",
+          "extracting_file": "{percentage}% - {filename} を抽出中",
+          "complete": "テキスト抽出完了！"
+        },
+        "results": {
+          "success_title": "テキスト抽出完了！",
+          "text_preview": "抽出されたテキストプレビュー："
+        },
+        "buttons": {
+          "extract_text": "テキスト抽出",
+          "clear_files": "ファイルをクリア",
+          "download_txt": "TXT をダウンロード",
+          "copy_text": "テキストをコピー",
+          "share_file": "ファイルを共有",
+          "new_extraction": "新規抽出",
+          "back_to_tools": "← ツールに戻る"
+        },
+        "messages": {
+          "extraction_failed": "DOCX からのテキスト抽出に失敗しました：",
+          "no_text_found": "ドキュメントにテキストコンテンツが見つからないか、ドキュメントが破損しています",
+          "extraction_warnings": "抽出警告：",
+          "warnings_notice": "⚠️ 抽出警告：{count} 個の項目が完全に保持されない可能性があります",
+          "text_copied": "テキストがクリップボードにコピーされました！",
+          "copy_failed": "テキストのコピーに失敗しました。手動で選択してコピーしてください。",
+          "statistics_header": "=== 抽出統計 ===",
+          "characters": "文字数：",
+          "words": "単語数：",
+          "lines": "行数：",
+          "paragraphs": "段落数：",
+          "options_applied": "適用された抽出オプション：",
+          "option_line_breaks": "改行を保持：",
+          "option_extra_spaces": "余分なスペースを削除：",
+          "option_page_markers": "ページマーカーを追加：",
+          "option_headers": "ヘッダー/フッターを含める：",
+          "yes": "はい",
+          "no": "いいえ",
+          "document_info": "ドキュメント：{filename}",
+          "extracted_on": "抽出日時：{date}",
+          "file_size": "ファイルサイズ：{size}",
+          "page_marker": "=== ページ {page} ===",
+          "header_marker": "[ヘッダー：{text}]",
+          "next_document": "--- 次のドキュメント ---"
+        }
       },
       "xlsx_to_csv": {
-        "title": "XLSX to CSV",
-        "description": "Convert Excel files to CSV"
+        "title": "XLSX から CSV",
+        "title_meta": "XLSX から CSV 変換器 - DropShare",
+        "description": "Excel ファイルを CSV に変換",
+        "subtitle": "Excel スプレッドシートをカンマ区切り値形式に変換してデータ処理を実行",
+        "upload": {
+          "title": "クリックして XLSX ファイルを選択、またはここにドラッグ",
+          "hint": ".xlsx、.xls ファイルに対応、最大 10MB"
+        },
+        "file_info": {
+          "selected_files": "選択されたファイル：",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "変換オプション：",
+          "include_headers": "列ヘッダーを含める",
+          "preserve_formulas": "数式をテキストとして保持",
+          "use_custom_delimiter": "セミコロン区切り文字を使用",
+          "select_all_sheets": "すべてのワークシートを変換"
+        },
+        "progress": {
+          "title": "変換進行状況：",
+          "converting_file": "{percentage}% - {filename} を変換中",
+          "complete": "変換完了！"
+        },
+        "results": {
+          "success_title": "変換完了！",
+          "csv_results": "CSV 変換結果：",
+          "sheets_processed": "処理されたシート：",
+          "total_rows": "総行数：",
+          "csv_preview": "CSV プレビュー：",
+          "content_truncated": "[プレビューのため内容を切り詰めました]"
+        },
+        "buttons": {
+          "start_conversion": "変換開始",
+          "clear_files": "ファイルをクリア",
+          "download_csv": "CSV ファイルをダウンロード",
+          "new_conversion": "新規変換",
+          "back_to_tools": "← ドキュメントツールに戻る"
+        },
+        "messages": {
+          "conversion_failed": "Failed to convert Excel file:",
+          "no_worksheets": "Excel file contains no worksheets",
+          "excel_spreadsheet": "Excel Spreadsheet",
+          "sheet_header": "# Sheet: {name}",
+          "share_functionality": "Share functionality would be integrated here for {count} CSV files"
+        }
       },
       "csv_to_xlsx": {
-        "title": "CSV to XLSX",
-        "description": "Convert CSV files to Excel"
+        "title": "CSV から XLSX",
+        "title_meta": "CSV から XLSX 変換器 - DropShare",
+        "description": "CSV ファイルを Excel に変換",
+        "subtitle": "カンマ区切り値ファイルを Excel 形式に変換して高度なデータ処理を実行",
+        "upload": {
+          "title": "クリックして CSV ファイルを選択、またはここにドラッグ",
+          "hint": ".csv、.txt ファイルに対応、最大 10MB"
+        },
+        "file_info": {
+          "selected_files": "選択されたファイル：",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "変換オプション：",
+          "detect_headers": "列ヘッダーを自動検出",
+          "delimiter_settings": "区切り文字設定",
+          "comma_delimiter": "カンマ (,)",
+          "semicolon_delimiter": "セミコロン (;)",
+          "tab_delimiter": "タブ (\\t)",
+          "custom_delimiter": "カスタム区切り文字：",
+          "create_multiple_sheets": "大きなファイル用に別々のシートを作成",
+          "preserve_formatting": "テキスト形式を保持"
+        },
+        "progress": {
+          "title": "変換進行状況：",
+          "converting_file": "{percentage}% - {filename} を変換中",
+          "complete": "変換完了！"
+        },
+        "results": {
+          "success_title": "変換完了！",
+          "xlsx_results": "XLSX 変換結果：",
+          "sheets_created": "作成されたシート：",
+          "total_rows": "総行数：",
+          "total_columns": "総列数：",
+          "excel_preview": "Excel 構造プレビュー：",
+          "content_summary": "[Excel ファイル構造のプレビュー]"
+        },
+        "buttons": {
+          "start_conversion": "変換開始",
+          "clear_files": "ファイルをクリア",
+          "download_xlsx": "Excel ファイルをダウンロード",
+          "new_conversion": "新規変換",
+          "back_to_tools": "← ドキュメントツールに戻る"
+        },
+        "messages": {
+          "conversion_failed": "Failed to convert CSV file:",
+          "no_data_found": "No data found in CSV file or file is corrupted",
+          "invalid_delimiter": "Invalid delimiter detected, please specify manually",
+          "csv_document": "CSV Document",
+          "parsing_error": "Error parsing CSV format:",
+          "share_functionality": "Share functionality would be integrated here for {count} Excel files"
+        }
       }
     }
   },

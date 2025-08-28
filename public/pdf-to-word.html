@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="tools.document.pdf_to_word.title">PDF to Word Converter - DropShare</title>
+    <title data-i18n="tools.document.pdf_to_word.title_meta">PDF to Word Converter - DropShare</title>
     
     <!-- Load i18n system -->
     <script src="scripts/i18n/core/i18n-core.js"></script>
@@ -581,17 +581,53 @@
                 
                 let fullText = '';
                 
-                // Extract text from all pages
+                // Extract text from all pages with better formatting
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
                     const textContent = await page.getTextContent();
-                    const pageText = textContent.items.map(item => item.str).join(' ');
-                    fullText += pageText + '\n\n';
+                    
+                    // Improved text extraction with position-based formatting
+                    let pageText = '';
+                    let lastY = null;
+                    let currentLine = '';
+                    
+                    for (const item of textContent.items) {
+                        const currentY = item.transform[5]; // Y coordinate
+                        
+                        // If Y coordinate changed significantly, start a new line
+                        if (lastY !== null && Math.abs(currentY - lastY) > 5) {
+                            if (currentLine.trim()) {
+                                pageText += currentLine.trim() + '\n';
+                            }
+                            currentLine = '';
+                        }
+                        
+                        // Add space if there's a gap between text items on the same line
+                        if (currentLine && !currentLine.endsWith(' ') && !item.str.startsWith(' ')) {
+                            currentLine += ' ';
+                        }
+                        
+                        currentLine += item.str;
+                        lastY = currentY;
+                    }
+                    
+                    // Add the last line
+                    if (currentLine.trim()) {
+                        pageText += currentLine.trim() + '\n';
+                    }
+                    
+                    // Add page break between pages
+                    fullText += pageText + '\n';
                     
                     // Update progress for text extraction
                     const extractProgress = 40 + (i / pdf.numPages) * 30;
                     const pageProgressMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.extracting_page', {page: i, total: pdf.numPages}) || `Extracting text from page ${i} of ${pdf.numPages}...`;
                     updateConversionProgress(extractProgress, pageProgressMsg);
+                }
+                
+                // Check if text extraction was successful
+                if (!fullText.trim()) {
+                    throw new Error('No text content could be extracted from the PDF. The PDF might be image-based or encrypted.');
                 }
                 
                 const generatingMsg = window.DROPSHARE_I18N?.t('tools.document.pdf_to_word.progress.generating') || 'Text extraction complete. Generating Word document...';

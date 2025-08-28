@@ -145,10 +145,20 @@
         document.documentElement.dir = lang.direction || 'ltr';
 
         // 更新页面标题（如果有翻译）
-        const titleKey = 'meta.page_title';
-        const title = window.DropshareI18N.t(titleKey);
-        if (title && title !== titleKey) {
-            document.title = title;
+        const titleElement = document.querySelector('title[data-i18n]');
+        if (titleElement) {
+            const titleKey = titleElement.getAttribute('data-i18n');
+            const title = window.DropshareI18N.t(titleKey);
+            if (title && title !== titleKey) {
+                document.title = title;
+            }
+        } else {
+            // 回退到旧的meta.page_title方式
+            const titleKey = 'meta.page_title';
+            const title = window.DropshareI18N.t(titleKey);
+            if (title && title !== titleKey) {
+                document.title = title;
+            }
         }
 
         // 更新meta description（如果有翻译）

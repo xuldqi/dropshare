@@ -159,6 +159,7 @@
     },
     "image": {
       "title": "Image Tools",
+      "title_meta": "Image Tools - DropShare",
       "subtitle": "Free Online Image Processing Tools",
       "converter": {
         "title": "Image Converter",
@@ -448,6 +449,7 @@
     },
     "audio": {
       "title": "Audio Tools",
+      "title_meta": "Audio Tools - DropShare",
       "subtitle": "Convert and edit audio files",
       "converter": {
         "title": "Audio Converter",
@@ -488,6 +490,11 @@
           "title": "🎉 Conversion Complete!",
           "converted_files": "Converted Audio Files:",
           "conversion_results": "Conversion Results:"
+        },
+        "audio_quality": {
+          "title": "Audio Quality Settings",
+          "bitrate_label": "Bitrate:",
+          "sample_rate_label": "Sample Rate:"
         }
       },
       "processor": {
@@ -533,10 +540,60 @@
           "applied_effects": "Applied: {effects}",
           "no_effects": "No effects selected"
         }
+      },
+      "badges": {
+        "professional": "Professional",
+        "advanced": "Advanced",
+        "popular": "Popular",
+        "essential": "Essential",
+        "quality": "Quality",
+        "apple": "Apple",
+        "universal": "Universal",
+        "open_source": "Open Source",
+        "mobile": "Mobile"
+      },
+      "cards": {
+        "universal": {
+          "title": "Universal Audio Converter",
+          "description": "Support free conversion between all formats, including advanced settings"
+        },
+        "mp3_to_wav": {
+          "title": "MP3 to WAV",
+          "description": "Convert compressed MP3 audio to lossless WAV format"
+        },
+        "wav_to_mp3": {
+          "title": "WAV to MP3",
+          "description": "Compress WAV audio to MP3 format, reduce file size"
+        },
+        "flac_to_mp3": {
+          "title": "FLAC to MP3",
+          "description": "Convert lossless FLAC audio to portable MP3 format"
+        },
+        "wav_to_flac": {
+          "title": "WAV to FLAC",
+          "description": "Convert WAV to FLAC, maintain lossless quality and compress size"
+        },
+        "mp3_to_aac": {
+          "title": "MP3 to AAC",
+          "description": "Convert to AAC format, optimized audio format for Apple devices"
+        },
+        "aac_to_mp3": {
+          "title": "AAC to MP3",
+          "description": "Convert AAC to universal MP3 format"
+        },
+        "ogg_to_mp3": {
+          "title": "OGG to MP3",
+          "description": "Convert open source OGG Vorbis format to MP3"
+        },
+        "wav_to_aac": {
+          "title": "WAV to AAC",
+          "description": "Convert lossless WAV to mobile-optimized AAC format"
+        }
       }
     },
     "video": {
       "title": "Video Tools",
+      "title_meta": "Video Tools - DropShare",
       "subtitle": "Professional video conversion tools",
       "converter": {
         "title": "Video Converter",
@@ -606,13 +663,59 @@
           "audio_codec": "Audio Codec:",
           "bitrate": "Bitrate:"
         }
+      },
+      "badges": {
+        "advanced": "Advanced",
+        "popular": "Popular",
+        "web": "Web",
+        "modern": "Modern",
+        "open_source": "Open Source",
+        "legacy": "Legacy",
+        "apple": "Apple",
+        "analysis": "Analysis"
+      },
+      "cards": {
+        "avi_to_mp4": {
+          "title": "AVI to MP4",
+          "description": "Convert legacy AVI videos to modern universal MP4 format"
+        },
+        "mov_to_mp4": {
+          "title": "MOV to MP4",
+          "description": "Convert Apple QuickTime format to universal MP4 format"
+        },
+        "webm_to_mp4": {
+          "title": "WebM to MP4",
+          "description": "Convert web-optimized WebM format to MP4 format"
+        },
+        "mp4_to_webm": {
+          "title": "MP4 to WebM",
+          "description": "Convert MP4 to web-optimized WebM format, reduce file size"
+        },
+        "avi_to_webm": {
+          "title": "AVI to WebM",
+          "description": "Upgrade legacy AVI format to modern WebM web format"
+        },
+        "mov_to_webm": {
+          "title": "MOV to WebM",
+          "description": "Convert Apple MOV format to open source WebM format"
+        },
+        "mp4_to_avi": {
+          "title": "MP4 to AVI",
+          "description": "Convert MP4 to AVI format, improve legacy device compatibility"
+        },
+        "mp4_to_mov": {
+          "title": "MP4 to MOV",
+          "description": "Convert MP4 to Apple QuickTime MOV format"
+        }
       }
     },
     "document": {
       "title": "Document Tools",
+      "title_meta": "Document Tools - DropShare",
       "subtitle": "Process and convert documents",
       "processor": {
         "title": "Document Processor",
+        "title_meta": "Document Processor - DropShare",
         "description": "Convert and process documents",
         "subtitle": "Process PDF, Word, and other document files",
         "upload": {
@@ -712,16 +815,13 @@
           "conversion_complete": "Format conversion complete!"
         }
       },
-      "pdf_to_word": {
-        "title": "PDF to Word",
-        "description": "Convert PDF files to Word documents"
-      },
       "docx_to_html": {
         "title": "DOCX to HTML",
         "description": "Convert Word documents to HTML"
       },
       "pdf_to_word": {
         "title": "PDF to Word",
+        "title_meta": "PDF to Word Converter - DropShare",
         "description": "Convert PDF files to Word documents",
         "subtitle": "Convert your PDF documents to editable Word format quickly and easily",
         "upload": {
@@ -759,6 +859,7 @@
       },
       "docx_to_html": {
         "title": "DOCX to HTML",
+        "title_meta": "DOCX to HTML Converter - DropShare",
         "description": "Convert Word documents to HTML format for web display",
         "subtitle": "Transform Microsoft Word documents into clean, web-ready HTML format",
         "upload": {
@@ -808,6 +909,7 @@
       },
       "docx_to_txt": {
         "title": "DOCX to TXT",
+        "title_meta": "DOCX to TXT Converter - DropShare",
         "description": "Convert Word documents to plain text",
         "subtitle": "Extract plain text content from Microsoft Word documents",
         "upload": {
@@ -872,6 +974,7 @@
       },
       "xlsx_to_csv": {
         "title": "XLSX to CSV",
+        "title_meta": "XLSX to CSV Converter - DropShare",
         "description": "Convert Excel files to CSV",
         "subtitle": "Convert Excel spreadsheets to comma-separated values format for data processing",
         "upload": {
@@ -919,6 +1022,7 @@
       },
       "csv_to_xlsx": {
         "title": "CSV to XLSX",
+        "title_meta": "CSV to XLSX Converter - DropShare",
         "description": "Convert CSV files to Excel",
         "subtitle": "Convert comma-separated values files to Excel format for advanced data processing",
         "upload": {

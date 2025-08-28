@@ -45,6 +45,11 @@ window.ToolHelpers = {
 
     // Show the share button in the designated container
     showShareButton() {
+        if (!this.config || !this.config.shareButtonContainer) {
+            console.warn('Share button configuration not found');
+            return;
+        }
+        
         const container = document.querySelector(this.config.shareButtonContainer);
         if (!container || !window.createToolShareButton) {
             console.warn('Share button container not found or share system not available');
@@ -59,6 +64,11 @@ window.ToolHelpers = {
 
     // Hide the share button and clear processed files
     hideShareButton() {
+        if (!this.config || !this.config.shareButtonContainer) {
+            console.warn('Share button configuration not found');
+            return;
+        }
+        
         const container = document.querySelector(this.config.shareButtonContainer);
         if (container) {
             container.style.display = 'none';

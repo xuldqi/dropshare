@@ -120,7 +120,7 @@
     "stats": {
       "title": "数百万用户信赖",
       "users": "活跃用户",
-      "files": "处理文件",
+              "files": "處理文件",
       "countries": "国家"
     }
   },
@@ -159,6 +159,7 @@
     },
     "image": {
       "title": "圖片工具",
+      "title_meta": "圖片工具 - DropShare",
       "subtitle": "專業的圖片編輯和轉換工具",
       "converter": {
         "title": "圖片轉換器",
@@ -259,8 +260,12 @@
           "clear_all": "全部清除",
           "restore_all": "全部恢復"
         },
-        "tolerance": { "title": "🎯 容差設定" },
-        "brush_size": { "title": "🖌️ 畫筆大小" },
+        "tolerance": {
+          "title": "🎯 容差設定"
+        },
+        "brush_size": {
+          "title": "🖌️ 畫筆大小"
+        },
         "original_image": "原始圖片",
         "preview_title": "背景移除預覽",
         "size_label": "尺寸：",
@@ -436,65 +441,637 @@
       }
     },
     "audio": {
-      "title": "音频工具",
-      "subtitle": "转换和编辑音频文件",
+      "title": "音訊工具",
+      "title_meta": "音訊工具 - DropShare",
+      "subtitle": "轉換與編輯音訊檔案",
       "converter": {
-        "title": "音频转换器",
-        "description": "在音频格式之间转换"
+        "title": "音訊轉換器",
+        "description": "在音訊格式之間轉換",
+        "subtitle": "以高品質在不同音訊格式間轉換",
+        "upload": {
+          "title": "點擊選擇音訊檔或拖曳到此處",
+          "hint": "支援 MP3、WAV、AAC、OGG、FLAC，單檔最大 50MB"
+        },
+        "file_info": {
+          "selected_files": "已選擇的檔案："
+        },
+        "format_options": {
+          "title": "選擇輸出格式：",
+          "format_mp3_desc": "相容性最佳",
+          "format_wav_desc": "無損品質",
+          "format_aac_desc": "Apple 最佳化",
+          "format_ogg_desc": "開源",
+          "format_flac_desc": "無損壓縮"
+        },
+        "progress": {
+          "title": "轉換進度：",
+          "percentage": "{percentage}%",
+          "converting_file": "{percentage}% - 正在轉換 {filename}",
+          "complete": "轉換完成！"
+        },
+        "buttons": {
+          "start_conversion": "開始轉換",
+          "clear_files": "清空檔案",
+          "download": "下載音訊",
+          "download_all": "📥 下載全部",
+          "share_all": "📤 分享全部",
+          "clear_all": "🔄 全部清空",
+          "new_conversion": "新的轉換",
+          "back_to_tools": "← 返回音訊工具"
+        },
+        "results": {
+          "title": "🎉 轉換完成！",
+          "converted_files": "已轉換的音訊檔：",
+          "conversion_results": "轉換結果："
+        },
+        "audio_quality": {
+          "title": "音質設定",
+          "bitrate_label": "位元率：",
+          "sample_rate_label": "取樣率："
+        }
       },
       "processor": {
         "title": "音频处理器",
         "description": "高级音频编辑工具"
+      },
+      "audio_processor": {
+        "title": "音訊處理器",
+        "subtitle": "透過多種效果處理並增強音訊檔",
+        "upload": {
+          "title": "點擊選擇音訊檔或拖曳到此處",
+          "hint": "支援 MP3、WAV、AAC、OGG，單檔最大 50MB"
+        },
+        "file_info": {
+          "selected_files": "已選擇的檔案："
+        },
+        "processing_options": {
+          "title": "處理選項：",
+          "normalize_volume": "音量標準化",
+          "remove_noise": "去除背景雜訊",
+          "enhance_bass": "增強低頻",
+          "add_reverb": "加入殘響效果",
+          "compressor": "動態範圍壓縮",
+          "equalizer": "自動 EQ 增強"
+        },
+        "progress": {
+          "title": "處理音訊：",
+          "percentage": "{percentage}%",
+          "processing_file": "{percentage}% - 正在處理 {filename}",
+          "complete": "處理完成！"
+        },
+        "buttons": {
+          "start_processing": "開始處理",
+          "clear_files": "清空檔案",
+          "download": "下載處理後音訊",
+          "new_processing": "新的處理",
+          "back_to_tools": "← 返回音訊工具"
+        },
+        "results": {
+          "title": "🎉 處理完成！",
+          "processed_files": "已處理的音訊檔：",
+          "file_size": "{size} • 處理後音訊",
+          "applied_effects": "已套用：{effects}",
+          "no_effects": "未選擇任何效果"
+        }
+      },
+      "badges": {
+        "professional": "專業",
+        "advanced": "進階",
+        "popular": "熱門",
+        "essential": "必備",
+        "quality": "品質",
+        "apple": "Apple",
+        "universal": "通用",
+        "open_source": "開源",
+        "mobile": "行動"
+      },
+      "cards": {
+        "universal": {
+          "title": "通用音訊轉換器",
+          "description": "支援在所有格式間自由轉換，包含進階設定"
+        },
+        "mp3_to_wav": {
+          "title": "MP3 轉 WAV",
+          "description": "將有損 MP3 音訊轉為無損 WAV 格式"
+        },
+        "wav_to_mp3": {
+          "title": "WAV 轉 MP3",
+          "description": "將 WAV 壓縮為 MP3 格式，減少檔案大小"
+        },
+        "flac_to_mp3": {
+          "title": "FLAC 轉 MP3",
+          "description": "將無損 FLAC 音訊轉為便攜的 MP3 格式"
+        },
+        "wav_to_flac": {
+          "title": "WAV 轉 FLAC",
+          "description": "將 WAV 轉為 FLAC，保持無損品質並壓縮體積"
+        },
+        "mp3_to_aac": {
+          "title": "MP3 轉 AAC",
+          "description": "轉換為 AAC 格式，更適配 Apple 裝置"
+        },
+        "aac_to_mp3": {
+          "title": "AAC 轉 MP3",
+          "description": "將 AAC 轉為通用的 MP3 格式"
+        },
+        "ogg_to_mp3": {
+          "title": "OGG 轉 MP3",
+          "description": "將開源 OGG Vorbis 格式轉為 MP3"
+        },
+        "wav_to_aac": {
+          "title": "WAV 轉 AAC",
+          "description": "將無損 WAV 轉為行動端最佳化的 AAC 格式"
+        }
       }
     },
     "video": {
-      "title": "视频工具",
-      "subtitle": "专业的视频转换工具",
+      "title": "影片工具",
+      "title_meta": "影片工具 - DropShare",
+      "subtitle": "專業的影片轉換工具",
       "converter": {
-        "title": "视频转换器",
-        "description": "在格式之间转换视频"
+        "title": "影片轉換器",
+        "description": "在格式之間轉換影片",
+        "subtitle": "以高品質在不同影片格式間轉換",
+        "upload": {
+          "title": "點擊選擇影片檔或拖曳到此處",
+          "hint": "支援 MP4、AVI、MOV、WebM 格式，單檔最大 100MB"
+        },
+        "file_info": {
+          "selected_files": "已選擇的檔案："
+        },
+        "format_options": {
+          "title": "選擇輸出格式："
+        },
+        "progress": {
+          "title": "轉換進度：",
+          "percentage": "{percentage}%",
+          "converting_file": "{percentage}% - 正在轉換 {filename}",
+          "complete": "轉換完成！"
+        },
+        "buttons": {
+          "start_conversion": "開始轉換",
+          "clear_files": "清空檔案",
+          "download": "下載影片",
+          "new_conversion": "新的轉換",
+          "back_to_tools": "← 返回影片工具"
+        },
+        "results": {
+          "title": "🎉 轉換完成！",
+          "converted_files": "已轉換的影片檔：",
+          "file_size": "{size} • 已轉換影片"
+        }
       },
       "info": {
-        "title": "视频信息",
-        "description": "获取视频文件的详细信息"
+        "title": "影片資訊",
+        "description": "取得影片檔的詳細資訊",
+        "subtitle": "Get detailed information about your video files",
+        "upload": {
+          "title": "Click to select video files or drag them here",
+          "hint": "Supports MP4, AVI, MOV, WebM formats, maximum 100MB each"
+        },
+        "file_info": {
+          "selected_files": "Selected Files:"
+        },
+        "progress": {
+          "title": "Analyzing Video Information:",
+          "percentage": "{percentage}%",
+          "analyzing_file": "{percentage}% - Analyzing {filename}",
+          "complete": "Analysis Complete!"
+        },
+        "buttons": {
+          "analyze_videos": "Analyze Videos",
+          "clear_files": "Clear Files",
+          "new_analysis": "New Analysis",
+          "back_to_tools": "← 返回影片工具"
+        },
+        "results": {
+          "title": "📊 Video Analysis Complete!",
+          "video_info": "Video Information:",
+          "file_name": "File Name:",
+          "file_size": "File Size:",
+          "duration": "Duration:",
+          "resolution": "Resolution:",
+          "frame_rate": "Frame Rate:",
+          "codec": "Video Codec:",
+          "audio_codec": "Audio Codec:",
+          "bitrate": "Bitrate:"
+        }
+      },
+      "badges": {
+        "advanced": "進階",
+        "popular": "熱門",
+        "web": "Web",
+        "modern": "現代",
+        "open_source": "開源",
+        "legacy": "舊版",
+        "apple": "Apple",
+        "analysis": "分析"
+      },
+      "cards": {
+        "avi_to_mp4": {
+          "title": "AVI 轉 MP4",
+          "description": "將舊版 AVI 影片轉換為通用 MP4 格式"
+        },
+        "mov_to_mp4": {
+          "title": "MOV 轉 MP4",
+          "description": "將 Apple QuickTime 格式轉換為通用 MP4 格式"
+        },
+        "webm_to_mp4": {
+          "title": "WebM 轉 MP4",
+          "description": "將 Web 最佳化的 WebM 格式轉換為 MP4"
+        },
+        "mp4_to_webm": {
+          "title": "MP4 轉 WebM",
+          "description": "將 MP4 轉為 Web 最佳化 WebM，減少檔案大小"
+        },
+        "avi_to_webm": {
+          "title": "AVI 轉 WebM",
+          "description": "將舊版 AVI 升級為現代 WebM 網頁格式"
+        },
+        "mov_to_webm": {
+          "title": "MOV 轉 WebM",
+          "description": "將 Apple MOV 轉換為開源 WebM 格式"
+        },
+        "mp4_to_avi": {
+          "title": "MP4 轉 AVI",
+          "description": "將 MP4 轉換為 AVI，提升舊裝置相容性"
+        },
+        "mp4_to_mov": {
+          "title": "MP4 轉 MOV",
+          "description": "將 MP4 轉換為 Apple QuickTime MOV 格式"
+        }
       }
     },
     "document": {
-      "title": "文档工具",
-      "subtitle": "处理和转换文档",
+      "title": "文件工具",
+      "title_meta": "文件工具 - DropShare",
+      "subtitle": "處理和轉換文件",
       "processor": {
-        "title": "文档处理器",
-        "description": "转换和处理文档"
+        "title": "文件處理器",
+        "title_meta": "文件處理器 - DropShare",
+        "description": "轉換和處理文件",
+        "subtitle": "處理 PDF、Word 等文件",
+        "upload": {
+          "title": "點擊選擇文件檔或拖曳到此處",
+          "hint": "支援 PDF、DOCX、TXT、RTF、HTML 格式"
+        },
+        "tabs": {
+          "extract": "文字提取",
+          "split": "文件分割",
+          "merge": "文件合併",
+          "convert": "格式轉換"
+        },
+        "text_extract": {
+          "settings_title": "📝 文字提取設定",
+          "extract_pages": "提取頁面：",
+          "start_page": "起始頁",
+          "end_page": "結束頁",
+          "to": "到",
+          "all_pages": "所有頁面",
+          "preserve_formatting": "保留格式",
+          "extract_images": "提取圖片連結",
+          "remove_blank_lines": "移除空行",
+          "extracted_text": "提取的文字：",
+          "copy_text": "複製文字"
+        },
+        "split": {
+          "settings_title": "✂️ 文件分割設定",
+          "split_method": "分割方法：",
+          "by_pages": "按頁面範圍",
+          "by_interval": "按頁面間隔",
+          "by_bookmarks": "按書籤",
+          "pages_per_file": "每個檔案的頁數：",
+          "page_ranges": "頁面範圍（逗號分隔，例如：1-5, 10-15, 20）："
+        },
+        "merge": {
+          "settings_title": "🔗 文件合併設定",
+          "description": "將多個 PDF 文件合併為一個。請上傳多個檔案。",
+          "select_files": "選擇要合併的檔案",
+          "add_bookmarks": "為每個文件添加書籤"
+        },
+        "convert": {
+          "settings_title": "🔄 格式轉換設定",
+          "output_format": "輸出格式：",
+          "formats": {
+            "pdf": "PDF",
+            "docx": "Word 文件 (.docx)",
+            "txt": "純文字 (.txt)",
+            "html": "HTML 網頁",
+            "rtf": "RTF 文件",
+            "images": "圖片 (JPG/PNG)"
+          },
+          "image_quality": "圖片品質：",
+          "image_dpi": "圖片 DPI：",
+          "dpi_options": {
+            "72": "72 DPI (網頁)",
+            "150": "150 DPI (標準)",
+            "300": "300 DPI (高品質)",
+            "600": "600 DPI (列印)"
+          }
+        },
+        "progress": {
+          "preparing": "準備處理中...",
+          "extracting": "提取文字中...",
+          "splitting": "分割文件中...",
+          "merging": "合併文件中...",
+          "converting": "轉換為 {format} 中...",
+          "creating_document": "建立文件 {number} 中...",
+          "processing_document": "處理文件 {number} 中...",
+          "complete": "處理完成！"
+        },
+        "buttons": {
+          "start_processing": "開始處理",
+          "download_all": "📥 下載全部檔案",
+          "share_all": "📤 分享全部檔案",
+          "reset_settings": "🔄 重設設定",
+          "select_new_document": "📄 選擇新文件",
+          "back_to_tools": "← 返回文件工具",
+          "download": "下載",
+          "share": "分享",
+          "remove": "移除"
+        },
+        "results": {
+          "title": "處理結果：",
+          "original_size": "原始大小",
+          "result_size": "結果大小",
+          "page_count": "頁面數量",
+          "processing_time": "處理時間"
+        },
+        "messages": {
+          "unsupported_format": "不支援的文件格式！請選擇 PDF、DOCX、TXT、RTF 或 HTML 檔案。",
+          "text_copied": "文字已複製到剪貼簿！",
+          "copy_failed": "複製失敗，請手動選擇文字進行複製",
+          "processing_failed": "Processing failed:",
+          "text_extraction_complete": "Text extraction complete!",
+          "splitting_complete": "Document splitting complete!",
+          "merging_complete": "Document merging complete!",
+          "conversion_complete": "Format conversion complete!"
+        }
       },
       "pdf_to_word": {
-        "title": "PDF转Word",
-        "description": "将PDF文件转换为Word文档"
+        "title": "PDF 轉 Word",
+        "title_meta": "PDF 轉 Word 轉換器 - DropShare",
+        "description": "將 PDF 檔案轉換為 Word 文件",
+        "subtitle": "快速將 PDF 轉換為可編輯的 Word 格式",
+        "upload": {
+          "title": "點擊選擇 PDF 檔案或將其拖到此處",
+          "hint": "支援 PDF 檔案，最大 50MB"
+        },
+        "progress": {
+          "preparing": "Preparing to convert...",
+          "loading_libraries": "Loading PDF processing libraries...",
+          "reading_pdf": "Libraries loaded. Reading PDF file...",
+          "extracting": "PDF loaded. Extracting text content...",
+          "extracting_page": "Extracting text from page {page} of {total}...",
+          "generating": "Text extraction complete. Generating Word document...",
+          "creating": "Document structure created. Generating DOCX file...",
+          "complete": "Conversion complete!"
+        },
+        "results": {
+          "success_title": "Conversion Complete!",
+          "success_message": "Your Word document is ready for download"
+        },
+        "buttons": {
+          "convert": "轉換為 Word",
+          "download": "下載 Word 文檔",
+          "clear": "清空檔案",
+          "share": "分享檔案",
+          "back_to_tools": "← 返回文件工具"
+        },
+        "messages": {
+          "select_pdf": "Please select a PDF file",
+          "file_too_large": "File size cannot exceed 50MB",
+          "select_pdf_first": "Please select a PDF file first",
+          "conversion_failed": "Conversion failed:",
+          "no_file_to_share": "No file to share"
+        }
       },
       "docx_to_html": {
-        "title": "DOCX转HTML",
-        "description": "将Word文档转换为HTML"
+        "title": "DOCX轉HTML",
+        "title_meta": "DOCX轉HTML轉換器 - DropShare",
+        "description": "將Word文件轉換為HTML",
+        "subtitle": "將 Microsoft Word 文件轉換為乾淨、適合網頁的 HTML 格式",
+        "upload": {
+          "title": "點擊選擇 DOCX 檔案或將其拖到此處",
+          "hint": "支援 .docx、.doc 檔案，最大 10MB"
+        },
+        "file_info": {
+          "selected_files": "已選擇的檔案：",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "轉換選項：",
+          "preserve_styles": "保留文件樣式",
+          "include_images": "包含嵌入圖片",
+          "clean_html": "生成乾淨的 HTML",
+          "responsive_layout": "行動裝置友善佈局"
+        },
+        "progress": {
+          "title": "轉換進度：",
+          "converting_file": "{percentage}% - 正在轉換 {filename}",
+          "complete": "轉換完成！"
+        },
+        "results": {
+          "success_title": "轉換完成！",
+          "preview_title": "HTML 預覽："
+        },
+        "buttons": {
+          "start_conversion": "開始轉換",
+          "clear_files": "清空檔案",
+          "download_html": "下載 HTML",
+          "share_file": "分享檔案",
+          "new_conversion": "新轉換",
+          "back_to_tools": "← 返回工具"
+        },
+        "messages": {
+          "conversion_failed": "DOCX conversion failed:",
+          "mammoth_load_failed": "Failed to load Mammoth.js library",
+          "invalid_file": "Please ensure the file is a valid DOCX document",
+          "file_protected": "The file is not password protected",
+          "file_not_corrupted": "The file is not corrupted",
+          "conversion_error": "Conversion Error",
+          "conversion_warnings": "DOCX conversion warnings:",
+          "generated_by": "Generated by DropShare DOCX to HTML Converter",
+          "converted_from": "Converted from DOCX on",
+          "error_reasons": "This file could not be converted to HTML. Please ensure:"
+        }
       },
       "docx_to_txt": {
-        "title": "DOCX转TXT",
-        "description": "将Word文档转换为纯文本"
+        "title": "DOCX轉TXT",
+        "title_meta": "DOCX轉TXT轉換器 - DropShare",
+        "description": "將Word文件轉換為純文字",
+        "subtitle": "從 Microsoft Word 文件中提取純文字內容",
+        "upload": {
+          "title": "點擊選擇 DOCX 檔案或將其拖到此處",
+          "hint": "支援 .docx、.doc 檔案，最大 10MB"
+        },
+        "file_info": {
+          "selected_files": "已選擇的檔案：",
+          "file_size_info": "{size} • {type}"
+        },
+        "extraction_options": {
+          "title": "提取選項：",
+          "preserve_line_breaks": "保留換行",
+          "remove_extra_spaces": "移除多餘空格",
+          "add_page_markers": "添加頁面標記",
+          "include_headers": "包含頁首/頁尾"
+        },
+        "progress": {
+          "title": "文字提取進度：",
+          "extracting_file": "{percentage}% - 正在提取 {filename}",
+          "complete": "文字提取完成！"
+        },
+        "results": {
+          "success_title": "文字提取完成！",
+          "text_preview": "提取的文字預覽："
+        },
+        "buttons": {
+          "extract_text": "提取文字",
+          "clear_files": "清空檔案",
+          "download_txt": "下載 TXT",
+          "copy_text": "複製文字",
+          "share_file": "分享檔案",
+          "new_extraction": "新提取",
+          "back_to_tools": "← 返回工具"
+        },
+        "messages": {
+          "extraction_failed": "從 DOCX 提取文字失敗：",
+          "no_text_found": "文件中未找到文字內容或文件已損壞",
+          "extraction_warnings": "提取警告：",
+          "warnings_notice": "⚠️ 提取警告：{count} 個項目可能未完全保留",
+          "text_copied": "文字已複製到剪貼簿！",
+          "copy_failed": "複製文字失敗。請手動選擇並複製。",
+          "statistics_header": "=== 提取統計 ===",
+          "characters": "字元數：",
+          "words": "單詞數：",
+          "lines": "行數：",
+          "paragraphs": "段落數：",
+          "options_applied": "應用的提取選項：",
+          "option_line_breaks": "保留換行符：",
+          "option_extra_spaces": "移除多餘空格：",
+          "option_page_markers": "添加頁面標記：",
+          "option_headers": "包含頁首/頁尾：",
+          "yes": "是",
+          "no": "否",
+          "document_info": "文件：{filename}",
+          "extracted_on": "提取時間：{date}",
+          "file_size": "文件大小：{size}",
+          "page_marker": "=== 第 {page} 頁 ===",
+          "header_marker": "[頁首：{text}]",
+          "next_document": "--- 下一個文件 ---"
+        }
       },
       "xlsx_to_csv": {
-        "title": "XLSX转CSV",
-        "description": "将Excel文件转换为CSV"
+        "title": "XLSX轉CSV",
+        "title_meta": "XLSX轉CSV轉換器 - DropShare",
+        "description": "將Excel文件轉換為CSV",
+        "subtitle": "將 Excel 試算表轉換為逗號分隔值格式以進行資料處理",
+        "upload": {
+          "title": "點擊選擇 XLSX 檔案或將其拖到此處",
+          "hint": "支援 .xlsx、.xls 檔案，最大 10MB"
+        },
+        "file_info": {
+          "selected_files": "已選擇的檔案：",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "轉換選項：",
+          "include_headers": "包含欄位標題",
+          "preserve_formulas": "將公式保留為文字",
+          "use_custom_delimiter": "使用分號分隔符",
+          "select_all_sheets": "轉換所有工作表"
+        },
+        "progress": {
+          "title": "轉換進度：",
+          "converting_file": "{percentage}% - 正在轉換 {filename}",
+          "complete": "轉換完成！"
+        },
+        "results": {
+          "success_title": "轉換完成！",
+          "csv_results": "CSV 轉換結果：",
+          "sheets_processed": "已處理的工作表：",
+          "total_rows": "總行數：",
+          "csv_preview": "CSV 預覽：",
+          "content_truncated": "[內容已截斷以供預覽]"
+        },
+        "buttons": {
+          "start_conversion": "開始轉換",
+          "clear_files": "清空檔案",
+          "download_csv": "下載 CSV 檔案",
+          "new_conversion": "新轉換",
+          "back_to_tools": "← 返回文件工具"
+        },
+        "messages": {
+          "conversion_failed": "Failed to convert Excel file:",
+          "no_worksheets": "Excel file contains no worksheets",
+          "excel_spreadsheet": "Excel Spreadsheet",
+          "sheet_header": "# Sheet: {name}",
+          "share_functionality": "Share functionality would be integrated here for {count} CSV files"
+        }
       },
       "csv_to_xlsx": {
-        "title": "CSV转XLSX",
-        "description": "将CSV文件转换为Excel"
+        "title": "CSV轉XLSX",
+        "title_meta": "CSV轉XLSX轉換器 - DropShare",
+        "description": "將CSV文件轉換為Excel",
+        "subtitle": "將逗號分隔值檔案轉換為 Excel 格式以進行進階資料處理",
+        "upload": {
+          "title": "點擊選擇 CSV 檔案或將其拖到此處",
+          "hint": "支援 .csv、.txt 檔案，最大 10MB"
+        },
+        "file_info": {
+          "selected_files": "已選擇的檔案：",
+          "file_size_info": "{size} • {type}"
+        },
+        "conversion_options": {
+          "title": "轉換選項：",
+          "detect_headers": "自動偵測欄位標題",
+          "delimiter_settings": "分隔符設定",
+          "comma_delimiter": "逗號 (,)",
+          "semicolon_delimiter": "分號 (;)",
+          "tab_delimiter": "定位字元 (\\t)",
+          "custom_delimiter": "自訂分隔符：",
+          "create_multiple_sheets": "為大型檔案建立個別工作表",
+          "preserve_formatting": "保留文字格式"
+        },
+        "progress": {
+          "title": "轉換進度：",
+          "converting_file": "{percentage}% - 正在轉換 {filename}",
+          "complete": "轉換完成！"
+        },
+        "results": {
+          "success_title": "轉換完成！",
+          "xlsx_results": "XLSX 轉換結果：",
+          "sheets_created": "已建立的工作表：",
+          "total_rows": "總行數：",
+          "total_columns": "總欄數：",
+          "excel_preview": "Excel 結構預覽：",
+          "content_summary": "[Excel 檔案結構預覽]"
+        },
+        "buttons": {
+          "start_conversion": "開始轉換",
+          "clear_files": "清空檔案",
+          "download_xlsx": "下載 Excel 檔案",
+          "new_conversion": "新轉換",
+          "back_to_tools": "← 返回文件工具"
+        },
+        "messages": {
+          "conversion_failed": "Failed to convert CSV file:",
+          "no_data_found": "No data found in CSV file or file is corrupted",
+          "invalid_delimiter": "Invalid delimiter detected, please specify manually",
+          "csv_document": "CSV Document",
+          "parsing_error": "Error parsing CSV format:",
+          "share_functionality": "Share functionality would be integrated here for {count} Excel files"
+        }
       }
     }
   },
   "transfer": {
-    "title": "文件传输",
-    "subtitle": "与同一网络上的设备即时分享文件",
+            "title": "文件傳輸",
+        "subtitle": "與同一網路上的設備即時分享文件",
     "upload_area": {
-      "title": "拖放文件到此处或点击上传",
-      "subtitle": "拖放文件开始分享",
-      "button": "选择文件"
+              "title": "拖放文件到此處或點擊上傳",
+        "subtitle": "拖放文件開始分享",
+        "button": "選擇文件"
     },
     "rooms": {
       "title": "多人房間",
@@ -558,8 +1135,8 @@
       "p2p_sharing": "P2P文件分享",
       "multi_user_rooms": "多用户房间",
       "image_processing": "图片处理",
-      "video_conversion": "视频转换",
-      "document_tools": "文档工具"
+              "video_conversion": "影片轉換",
+              "document_tools": "文件工具"
     },
     "links": {
       "title": "連結"
@@ -590,12 +1167,12 @@
     "message_received": "收到訊息"
   },
   "errors": {
-    "file_too_large": "文件太大",
-    "unsupported_format": "不支持的文件格式",
-    "upload_failed": "上传失败",
-    "conversion_failed": "转换失败",
-    "network_error": "网络错误",
-    "server_error": "服务器错误",
+            "file_too_large": "文件太大",
+        "unsupported_format": "不支援的文件格式",
+            "upload_failed": "上傳失敗",
+        "conversion_failed": "轉換失敗",
+            "network_error": "網路錯誤",
+        "server_error": "伺服器錯誤",
     "unknown_error": "發生未知錯誤",
     "file_not_exist": "檔案不存在",
     "download_failed": "下載失敗，請重試",
@@ -608,11 +1185,11 @@
     "network_unavailable": "網路連接不可用，請稍後重試"
   },
   "messages": {
-    "file_uploaded": "文件上传成功",
-    "file_converted": "文件转换成功",
-    "file_downloaded": "文件下载成功",
-    "room_created": "房间创建成功",
-    "room_joined": "成功加入房间",
+            "file_uploaded": "文件上傳成功",
+        "file_converted": "文件轉換成功",
+        "file_downloaded": "文件下載成功",
+            "room_created": "房間創建成功",
+        "room_joined": "成功加入房間",
     "settings_saved": "設置保存成功",
     "room_code_copied": "房間碼已複製到剪貼簿",
     "file_deleted": "檔案已刪除",

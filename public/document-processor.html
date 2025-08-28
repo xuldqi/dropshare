@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="tools.document.processor.title">Document Processor - DropShare</title>
+    <title data-i18n="tools.document.processor.title_meta">Document Processor - DropShare</title>
     
     <!-- Load i18n system -->
     <script src="scripts/i18n/core/i18n-core.js"></script>
@@ -759,6 +759,9 @@
 
     <!-- PDF.js Library -->
     <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <script src="https://unpkg.com/docx@8.2.2/build/index.js"></script>
+    <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <!-- Sharing integration scripts -->
     <script src="scripts/tool-share-integration.js"></script>
     <script src="scripts/tool-helpers.js"></script>
@@ -796,6 +799,13 @@
                 // Upload area click event
                 uploadArea.addEventListener('click', () => fileInput.click());
 
+                // File selection
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        this.loadDocument(e.target.files[0]);
+                    }
+                });
+
                 // Drag and drop upload
                 uploadArea.addEventListener('dragover', (e) => {
                     e.preventDefault();
@@ -812,13 +822,6 @@
                     const files = e.dataTransfer.files;
                     if (files.length > 0) {
                         this.loadDocument(files[0]);
-                    }
-                });
-
-                // File selection
-                fileInput.addEventListener('change', (e) => {
-                    if (e.target.files.length > 0) {
-                        this.loadDocument(e.target.files[0]);
                     }
                 });
 
@@ -854,6 +857,45 @@
 
                 // Listen for setting changes to enable process button
                 this.bindSettingChanges();
+            }
+
+            async convertPDFToImages(fileName, format) {
+                try {
+                    const arrayBuffer = await this.documentFile.arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                    
+                    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                        const page = await pdf.getPage(pageNum);
+                        const viewport = page.getViewport({ scale: 2.0 });
+                        
+                        // Create canvas
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        
+                        // Render page to canvas
+                        await page.render({
+                            canvasContext: context,
+                            viewport: viewport
+                        }).promise;
+                        
+                        // Convert canvas to blob
+                        const blob = await new Promise(resolve => {
+                            canvas.toBlob(resolve, `image/${format === 'jpg' ? 'jpeg' : format}`, 0.9);
+                        });
+                        
+                        const imageFileName = `${fileName}_page${pageNum}.${format}`;
+                        this.processedFiles.push(new File([blob], imageFileName, { type: `image/${format === 'jpg' ? 'jpeg' : format}` }));
+                        
+                        // Update progress
+                        const progress = 50 + (pageNum / pdf.numPages) * 50;
+                        this.updateProgress(progress, `Converting page ${pageNum} of ${pdf.numPages}...`);
+                    }
+                } catch (error) {
+                    console.error('Error converting PDF to images:', error);
+                    throw error;
+                }
             }
 
             bindSliders() {
@@ -903,8 +945,11 @@
             }
 
             showWorkspace() {
-                document.getElementById('uploadArea').style.display = 'none';
-                document.getElementById('processingWorkspace').style.display = 'block';
+                const uploadArea = document.getElementById('uploadArea');
+                const processingWorkspace = document.getElementById('processingWorkspace');
+                
+                uploadArea.style.display = 'none';
+                processingWorkspace.style.display = 'block';
             }
 
             switchTab(tabName) {
@@ -1098,21 +1143,61 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
                 const mergingText = window.DROPSHARE_I18N?.t('tools.document.processor.progress.merging') || 'Merging documents...';
                 this.updateProgress(30, mergingText);
 
-                // Simulate document merging
-                for (let i = 0; i < this.mergeFiles.length; i++) {
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    const processingText = window.DROPSHARE_I18N?.t('tools.document.processor.progress.processing_document', {number: i + 1}) || `Processing document ${i + 1}...`;
-                    this.updateProgress(30 + (i + 1) / this.mergeFiles.length * 60, processingText);
+                try {
+                    // Create new PDF document using jsPDF
+                    const { jsPDF } = window.jspdf;
+                    const mergedPDF = new jsPDF();
+                    let isFirstPage = true;
+
+                    // Process each file for merging
+                    for (let i = 0; i < this.mergeFiles.length; i++) {
+                        const file = this.mergeFiles[i];
+                        const processingText = window.DROPSHARE_I18N?.t('tools.document.processor.progress.processing_document', {number: i + 1}) || `Processing document ${i + 1}...`;
+                        this.updateProgress(30 + (i + 1) / this.mergeFiles.length * 60, processingText);
+
+                        if (file.type === 'application/pdf') {
+                            // For PDF files, extract text and add to merged document
+                            const arrayBuffer = await file.arrayBuffer();
+                            const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                            
+                            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                                if (!isFirstPage) {
+                                    mergedPDF.addPage();
+                                }
+                                isFirstPage = false;
+                                
+                                const page = await pdf.getPage(pageNum);
+                                const textContent = await page.getTextContent();
+                                const pageText = textContent.items.map(item => item.str).join(' ');
+                                
+                                // Add text to PDF (simple text layout)
+                                const lines = mergedPDF.splitTextToSize(pageText, 180);
+                                mergedPDF.text(lines, 10, 20);
+                            }
+                        } else {
+                            // For text files, add content directly
+                            const text = await file.text();
+                            if (!isFirstPage) {
+                                mergedPDF.addPage();
+                            }
+                            isFirstPage = false;
+                            
+                            const lines = mergedPDF.splitTextToSize(text, 180);
+                            mergedPDF.text(lines, 10, 20);
+                        }
+                    }
+
+                    // Create merged file
+                    const mergedFileName = 'merged_document.pdf';
+                    const pdfBlob = mergedPDF.output('blob');
+                    this.processedFiles.push(new File([pdfBlob], mergedFileName, { type: 'application/pdf' }));
+
+                    const completeText = window.DROPSHARE_I18N?.t('tools.document.processor.messages.merging_complete') || 'Document merging complete!';
+                    this.updateProgress(100, completeText);
+                } catch (error) {
+                    console.error('Error merging documents:', error);
+                    throw error;
                 }
-
-                // Create merged file
-                const mergedFileName = 'merged_document.pdf';
-                const mergedContent = 'Merged PDF content';
-                const blob = new Blob([mergedContent], { type: 'application/pdf' });
-                this.processedFiles.push(new File([blob], mergedFileName, { type: 'application/pdf' }));
-
-                const completeText = window.DROPSHARE_I18N?.t('tools.document.processor.messages.merging_complete') || 'Document merging complete!';
-                this.updateProgress(100, completeText);
             }
 
             async convertDocument() {
@@ -1197,17 +1282,11 @@ sunt in culpa qui officia deserunt mollit anim id est laborum.`;
 Converted: ${new Date().toLocaleString()}\\par\\par
 ${extractedText.replace(/\n/g, '\\par ')}}`;
                         break;
-                    case 'images':
-                        // For images, we'd need canvas rendering
-                        // Create placeholder image files with proper size
-                        const pages = Math.ceil(extractedText.length / 2000) || 1;
-                        for (let i = 1; i <= Math.min(pages, 5); i++) {
-                            const imageFileName = `${fileName}_page${i}.jpg`;
-                            // Create a larger blob to simulate actual image
-                            const imageData = new Array(5000).fill('A').join('');
-                            const blob = new Blob([imageData], { type: 'image/jpeg' });
-                            this.processedFiles.push(new File([blob], imageFileName, { type: 'image/jpeg' }));
-                        }
+                    case 'jpg':
+                    case 'jpeg':
+                    case 'png':
+                        // Convert PDF pages to images using PDF.js
+                        await this.convertPDFToImages(fileName, format);
                         this.updateProgress(100, 'Format conversion complete!');
                         return;
                 }
@@ -1223,6 +1302,7 @@ ${extractedText.replace(/\n/g, '\\par ')}}`;
                     try {
                         const arrayBuffer = await this.documentFile.arrayBuffer();
                         const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                        this.totalPages = pdf.numPages; // Store total pages
                         let fullText = '';
 
                         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
@@ -1273,7 +1353,7 @@ ${extractedText.replace(/\n/g, '\\par ')}}`;
 
                 document.getElementById('originalFileSize').textContent = this.formatFileSize(originalSize);
                 document.getElementById('resultFileSize').textContent = this.formatFileSize(totalResultSize);
-                document.getElementById('pageCount').textContent = '20'; // Simulated
+                document.getElementById('pageCount').textContent = this.totalPages || '1';
                 document.getElementById('processingTime').textContent = processingTime + 's';
 
                 // Show result file list
@@ -1419,8 +1499,8 @@ ${extractedText.replace(/\n/g, '\\par ')}}`;
     </script>
 
     <!-- Load i18n system -->
-    <script src="scripts/i18n/languages.js"></script>    
+    <!-- <script src="scripts/i18n/languages.js"></script> -->    
     <!-- Mobile Navigation and Touch Optimization -->
-    <script src="scripts/mobile-navigation.js"></script>
+    <!-- <script src="scripts/mobile-navigation.js"></script> -->
 </body>
 </html>

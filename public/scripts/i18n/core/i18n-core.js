@@ -297,7 +297,9 @@ class DropshareI18N {
             const translation = this.t(key, params);
             
             // 根据元素类型更新内容
-            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+            if (element.tagName === 'TITLE') {
+                document.title = translation;
+            } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
                 element.placeholder = translation;
             } else if (element.hasAttribute('title')) {
                 element.title = translation;
