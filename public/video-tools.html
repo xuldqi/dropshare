@@ -588,12 +588,39 @@
                     <a href="video-tools.html" class="active" data-i18n="navigation.video">Video</a>
                     <a href="document-tools.html" data-i18n="navigation.files">Files</a>
                 </nav>
-
-                <!-- Language Selector Container -->
-                <div data-i18n-selector></div>
-            </div>
+            <!-- Mobile Menu Toggle Button -->
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav" id="mobile-nav">
+        <div class="mobile-nav-links">
+            <a href="share.html" data-i18n="navigation.transfer">Transfer</a>
+            <a href="share.html#rooms" data-i18n="navigation.rooms">Rooms</a>
+            <a href="image-tools.html" data-i18n="navigation.images">Images</a>
+            <a href="audio-tools.html" data-i18n="navigation.audio">Audio</a>
+            <a href="video-tools.html" data-i18n="navigation.video">Video</a>
+            <a href="document-tools.html" data-i18n="navigation.files">Files</a>
+        </div>
+        <div class="mobile-lang-selector">
+            <select id="mobile-language-selector" title="Select Language">
+                <option value="en">English</option>
+                <option value="zh-cn">中文简体</option>
+                <option value="zh-tw">中文繁體</option>
+                <option value="ko">한국어</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+                <option value="ja">日本語</option>
+                <option value="pt">Português</option>
+                <option value="de">Deutsch</option>
+            </select>
+        </div>
+    </nav>
 
     <!-- 主要内容 -->
     <main class="main-content">
@@ -932,5 +959,8 @@
             </div>
         </div>
     </div>
+    <!-- Mobile Navigation and Touch Optimization -->
+    <script src="scripts/mobile-navigation.js"></script>
+
 </body>
 </html>
