@@ -1,0 +1,101 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  
+  <!-- Background Pattern -->
+  <g opacity="0.1">
+    <circle cx="100" cy="100" r="2" fill="white"/>
+    <circle cx="300" cy="150" r="2" fill="white"/>
+    <circle cx="500" cy="80" r="2" fill="white"/>
+    <circle cx="700" cy="200" r="2" fill="white"/>
+    <circle cx="900" cy="120" r="2" fill="white"/>
+    <circle cx="1100" cy="180" r="2" fill="white"/>
+    <circle cx="200" cy="300" r="2" fill="white"/>
+    <circle cx="400" cy="350" r="2" fill="white"/>
+    <circle cx="600" cy="280" r="2" fill="white"/>
+    <circle cx="800" cy="400" r="2" fill="white"/>
+    <circle cx="1000" cy="320" r="2" fill="white"/>
+    <circle cx="150" cy="500" r="2" fill="white"/>
+    <circle cx="350" cy="550" r="2" fill="white"/>
+    <circle cx="550" cy="480" r="2" fill="white"/>
+    <circle cx="750" cy="600" r="2" fill="white"/>
+    <circle cx="950" cy="520" r="2" fill="white"/>
+  </g>
+  
+  <!-- Logo -->
+  <g transform="translate(100, 165)">
+    <circle cx="60" cy="60" r="60" fill="url(#logoGradient)"/>
+    <path d="M60 40c-11.05 0-20 8.95-20 20s8.95 20 20 20 20-8.95 20-20-8.95-20-20-20zm0 32c-6.63 0-12-5.37-12-12s5.37-12 12-12 12 5.37 12 12-5.37 12-12 12z" fill="white"/>
+    <path d="M60 50c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" fill="white"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="200" y="200" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white">DropShare</text>
+  
+  <!-- Subtitle -->
+  <text x="200" y="260" font-family="Arial, sans-serif" font-size="32" fill="#e5e7eb">Free Online File Tools &amp; Sharing</text>
+  
+  <!-- Features -->
+  <g transform="translate(200, 320)">
+    <circle cx="15" cy="15" r="15" fill="#10b981" opacity="0.2"/>
+    <text x="25" y="22" font-family="Arial, sans-serif" font-size="16" fill="#10b981">✓</text>
+    <text x="45" y="22" font-family="Arial, sans-serif" font-size="18" fill="white">No Registration Required</text>
+  </g>
+  
+  <g transform="translate(200, 360)">
+    <circle cx="15" cy="15" r="15" fill="#3b82f6" opacity="0.2"/>
+    <text x="25" y="22" font-family="Arial, sans-serif" font-size="16" fill="#3b82f6">✓</text>
+    <text x="45" y="22" font-family="Arial, sans-serif" font-size="18" fill="white">9 Languages Supported</text>
+  </g>
+  
+  <g transform="translate(200, 400)">
+    <circle cx="15" cy="15" r="15" fill="#f59e0b" opacity="0.2"/>
+    <text x="25" y="22" font-family="Arial, sans-serif" font-size="16" fill="#f59e0b">✓</text>
+    <text x="45" y="22" font-family="Arial, sans-serif" font-size="18" fill="white">Secure &amp; Private</text>
+  </g>
+  
+  <!-- Tools Icons -->
+  <g transform="translate(800, 200)">
+    <rect x="0" y="0" width="80" height="80" rx="12" fill="rgba(255,255,255,0.1)"/>
+    <text x="40" y="50" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">🖼️</text>
+    <text x="40" y="105" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#e5e7eb">Images</text>
+  </g>
+  
+  <g transform="translate(900, 200)">
+    <rect x="0" y="0" width="80" height="80" rx="12" fill="rgba(255,255,255,0.1)"/>
+    <text x="40" y="50" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">🎵</text>
+    <text x="40" y="105" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#e5e7eb">Audio</text>
+  </g>
+  
+  <g transform="translate(1000, 200)">
+    <rect x="0" y="0" width="80" height="80" rx="12" fill="rgba(255,255,255,0.1)"/>
+    <text x="40" y="50" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">🎥</text>
+    <text x="40" y="105" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#e5e7eb">Video</text>
+  </g>
+  
+  <g transform="translate(850, 300)">
+    <rect x="0" y="0" width="80" height="80" rx="12" fill="rgba(255,255,255,0.1)"/>
+    <text x="40" y="50" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">📄</text>
+    <text x="40" y="105" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#e5e7eb">Docs</text>
+  </g>
+  
+  <g transform="translate(950, 300)">
+    <rect x="0" y="0" width="80" height="80" rx="12" fill="rgba(255,255,255,0.1)"/>
+    <text x="40" y="50" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">📤</text>
+    <text x="40" y="105" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#e5e7eb">Share</text>
+  </g>
+  
+  <!-- URL -->
+  <text x="100" y="580" font-family="Arial, sans-serif" font-size="24" fill="#9ca3af">dropshare.tech</text>
+</svg>
