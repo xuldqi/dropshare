@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用统计 - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles/analytics-dashboard.css">
+    <link rel="stylesheet" type="text/css" href="styles/transfer-history.css">
+    <link rel="stylesheet" type="text/css" href="styles/ui-ux-enhancements.css">
+    <style>
+        body {
+            padding: 20px;
+            background: var(--bg-color);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .stats-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            border-left: 4px solid var(--primary-color);
+            padding-left: 15px;
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .action-button {
+            padding: 10px 20px;
+            border: 1px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .dashboard-container {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+        <div class="page-header">
+            <h1>📊 使用统计与分析</h1>
+            <a href="index.html" class="back-button">
+                ← 返回首页
+            </a>
+        </div>
+        
+        <div class="quick-actions">
+            <a href="history.html" class="action-button">
+                📄 传输历史
+            </a>
+            <a href="converter.html" class="action-button">
+                🔄 文件转换器
+            </a>
+            <button class="action-button" id="refreshStats">
+                🔄 刷新数据
+            </button>
+            <button class="action-button" id="exportData">
+                📥 导出数据
+            </button>
+        </div>
+        
+        <div class="stats-section">
+            <h2 class="section-title">📈 实时统计</h2>
+            <div class="dashboard-container" id="analytics-dashboard">
+                <!-- Analytics dashboard content will be loaded here -->
+                <div class="loading-message">正在加载统计数据...</div>
+            </div>
+        </div>
+        
+        <div class="stats-section">
+            <h2 class="section-title">🔥 热门功能</h2>
+            <div class="dashboard-container">
+                <div class="feature-stats" id="feature-stats">
+                    <div class="feature-item">
+                        <span class="feature-name">文件传输</span>
+                        <span class="feature-count" id="file-transfer-count">0</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-name">消息发送</span>
+                        <span class="feature-count" id="message-count">0</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-name">私人房间</span>
+                        <span class="feature-count" id="room-count">0</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-name">文件转换</span>
+                        <span class="feature-count" id="convert-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-section">
+            <h2 class="section-title">⚡ 性能指标</h2>
+            <div class="dashboard-container">
+                <div class="performance-metrics" id="performance-metrics">
+                    <div class="metric-item">
+                        <span class="metric-name">平均传输速度</span>
+                        <span class="metric-value" id="avg-speed">计算中...</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-name">成功率</span>
+                        <span class="metric-value" id="success-rate">计算中...</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-name">在线设备数</span>
+                        <span class="metric-value" id="online-devices">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="scripts/transfer-history.js"></script>
+    <script src="scripts/analytics-enhanced.js"></script>
+    <script src="scripts/analytics-dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化统计组件
+            if (window.AnalyticsEnhanced) {
+                const analytics = new window.AnalyticsEnhanced();
+            }
+            
+            if (window.AnalyticsDashboard) {
+                const dashboard = new window.AnalyticsDashboard();
+                // 将仪表板内容加载到容器中
+                const container = document.getElementById('analytics-dashboard');
+                if (container) {
+                    container.innerHTML = ''; // 清空loading消息
+                    // 这里可以调用dashboard的render方法
+                }
+            }
+            
+            // 绑定按钮事件
+            document.getElementById('refreshStats')?.addEventListener('click', function() {
+                location.reload();
+            });
+            
+            document.getElementById('exportData')?.addEventListener('click', function() {
+                // 导出数据功能
+                alert('导出功能开发中...');
+            });
+            
+            // 模拟更新统计数据
+            updateFeatureStats();
+            updatePerformanceMetrics();
+        });
+        
+        function updateFeatureStats() {
+            // 从localStorage获取或模拟统计数据
+            const stats = {
+                fileTransfers: parseInt(localStorage.getItem('file-transfer-count') || '0'),
+                messages: parseInt(localStorage.getItem('message-count') || '0'),
+                rooms: parseInt(localStorage.getItem('room-count') || '0'),
+                converts: parseInt(localStorage.getItem('convert-count') || '0')
+            };
+            
+            document.getElementById('file-transfer-count').textContent = stats.fileTransfers;
+            document.getElementById('message-count').textContent = stats.messages;
+            document.getElementById('room-count').textContent = stats.rooms;
+            document.getElementById('convert-count').textContent = stats.converts;
+        }
+        
+        function updatePerformanceMetrics() {
+            // 模拟性能指标
+            document.getElementById('avg-speed').textContent = '1.2 MB/s';
+            document.getElementById('success-rate').textContent = '98.5%';
+            document.getElementById('online-devices').textContent = '1';
+        }
+    </script>
+    
+    <style>
+        .feature-stats, .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item, .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-color-secondary);
+            border-radius: 8px;
+        }
+        
+        .feature-count, .metric-value {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.2em;
+        }
+        
+        .loading-message {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+    </style>
+</body>
+</html>

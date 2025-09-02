@@ -1,0 +1,109 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Run tests
+      run: npm test --if-present
+      
+    - name: Build Docker image
+      run: |
+        docker build -t colletools:${{ github.sha }} .
+        docker tag colletools:${{ github.sha }} colletools:latest
+        
+    - name: Save Docker image
+      run: docker save colletools:latest | gzip > colletools-latest.tar.gz
+      
+    - name: Deploy to server
+      if: github.ref == 'refs/heads/main'
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT || 22 }}
+        script: |
+          # 进入项目目录
+          cd /var/www/colletools
+          
+          # 停止现有容器
+          docker-compose down || true
+          
+          # 拉取最新代码
+          git pull origin main
+          
+          # 确保 .env 文件配置正确
+          if [ ! -f ".env" ] || ! grep -q "colletools.com" .env; then
+            echo "🔧 修复域名配置..."
+            cat > .env << 'EOF'
+          # Colletools.com 专用配置
+          PRIMARY_DOMAIN=colletools.com
+          SECONDARY_DOMAIN=colletools.com
+          
+          # SSL 证书邮箱
+          SSL_EMAIL=${{ secrets.SSL_EMAIL }}
+          
+          # 应用配置
+          NODE_ENV=production
+          PORT=3000
+          
+          # 文件上传配置
+          MAX_FILE_SIZE=100MB
+          UPLOAD_PATH=./uploads
+          
+          # 日志配置
+          LOG_LEVEL=info
+          LOG_PATH=./logs
+          EOF
+            echo "✅ 已创建正确的 .env 配置"
+          fi
+          
+          # 创建必要目录
+          mkdir -p uploads logs ssl
+          
+          # 清理旧镜像
+          docker image prune -f
+          
+          # 构建并启动新容器
+          docker-compose up -d --build
+          
+          # 清理未使用的镜像
+          docker image prune -f
+          
+          # 检查容器状态
+          docker-compose ps
+          
+          echo "✅ 部署完成！"
+          echo "🌐 访问地址：https://colletools.com"
+          
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "✅ Deployment successful!"
+        else
+          echo "❌ Deployment failed!"
+        fi

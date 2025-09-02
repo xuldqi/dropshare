@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- Web App Config -->
+    <title>DropShare - Fast Local File Sharing Without Setup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="dark light">
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta name="apple-mobile-web-app-title" content="DropShare">
+    <!-- Descriptions -->
+    <meta name="description" content="DropShare - Instantly share files between devices on your local network. No setup, no signup, no cloud storage needed. Fast, secure peer-to-peer file transfers.">
+    <meta name="keywords" content="DropShare, file sharing, local network, peer-to-peer, P2P file transfer, no setup file sharing, secure file transfer, WebRTC, wireless file transfer">
+    <meta name="author" content="RobinLinus">
+    <link rel="canonical" href="https://yourdomain.com/">
+    <meta property="og:title" content="DropShare - Fast Local File Sharing">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta property="og:author" content="https://facebook.com/RobinLinus">
+    <meta name="twitter:author" content="@RobinLinus">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="DropShare - Instantly share files between devices on your local network. No setup, no signup, no cloud storage needed. Fast, secure peer-to-peer file transfers.">
+    <meta name="og:description" content="DropShare - Instantly share files between devices on your local network. No setup, no signup, no cloud storage needed. Fast, secure peer-to-peer file transfers.">
+    <!-- Icons -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="shortcut icon" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <meta name="msapplication-TileImage" content="images/mstile-150x150.png">
+    <link rel="fluid-icon" type="image/png" href="images/android-chrome-192x192.png">
+    <meta name="twitter:image" content="https://yourdomain.com/images/dropshare-social-preview.jpg">
+    <meta property="og:image" content="https://yourdomain.com/images/dropshare-social-preview.jpg">
+    <!-- Resources -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "DropShare",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Windows, macOS, Linux, iOS, Android",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "DropShare is a free peer-to-peer file sharing app that works on your local network. No setup, no signup, no cloud storage - just instant secure file transfers between devices."
+    }
+    </script>
+    <style>
+        /* 导航菜单样式 */
+        .nav-container {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+        
+        /* RTL语言适配 */
+        [dir="rtl"] .nav-container {
+            left: auto;
+            right: 10px;
+        }
+        
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+        
+        .hamburger-menu span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links {
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 响应式样式 */
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: flex;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 40px;
+                left: 0;
+                flex-direction: column;
+                width: 200px;
+                background-color: rgba(0, 0, 0, 0.7);
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
+            
+            .nav-links a {
+                margin: 5px 0;
+            }
+            
+            .nav-links.show {
+                display: flex;
+            }
+        }
+        
+        /* Custom Feature Buttons */
+        .feature-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-button:hover {
+            background: #3367d6;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(51, 103, 214, 0.3);
+        }
+        
+        .feature-button .icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .feature-nav {
+                top: 70px !important;
+                right: 10px !important;
+            }
+            
+            .feature-button {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body translate="no">
+    <!-- 添加背景动画 -->
+    <div class="background-animation"></div>
+    
+    <!-- 导航菜单 -->
+    <div class="nav-container">
+        <button class="hamburger-menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+            <a href="about.html" data-i18n="nav_about">About</a>
+            <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+            <a href="blog.html" data-i18n="nav_blog">Blog</a>
+            <a href="privacy.html" data-i18n="nav_privacy">Privacy</a>
+            <a href="terms.html" data-i18n="nav_terms">Terms</a>
+        </div>
+    </div>
+    
+    <!-- FIXED HEADER v6.0 -->
+    <header class="row-reverse" style="position: fixed !important; top: 16px !important; right: 16px !important; display: flex !important; justify-content: flex-end !important; align-items: center !important; gap: 8px !important; z-index: 1000 !important; background: rgba(0,0,0,0.1) !important; padding: 8px !important; border-radius: 8px !important;">
+        <a href="#about" class="icon-button" title="About DropShare" style="display: none;">
+            <svg class="icon">
+                <use xlink:href="#info-outline" />
+            </svg>
+        </a>
+        <a href="#" id="theme" class="icon-button" title="Switch Darkmode/Lightmode" >
+            <svg class="icon">
+                <use xlink:href="#icon-theme" />
+            </svg>
+        </a>
+        <a href="#" id="notification" class="icon-button" title="Enable Notifications" hidden>
+            <svg class="icon">
+                <use xlink:href="#notifications" />
+            </svg>
+        </a>
+        <a href="#" id="install" class="icon-button" title="Install Snapdrop" hidden>
+            <svg class="icon">
+                <use xlink:href="#homescreen" />
+            </svg>
+        </a>
+        <div class="lang-selector">
+            <select id="language-selector" title="Select Language">
+                <option value="en">English</option>
+                <option value="zh">中文简体</option>
+                <option value="zh-tw">中文繁體</option>
+                <option value="ja">日本語</option>
+                <option value="fr">Français</option>
+                <option value="es">Español</option>
+                <option value="de">Deutsch</option>
+                <option value="pt">Português</option>
+                <option value="ru">Русский</option>
+                <option value="ar">العربية</option>
+                <option value="ko">한국어</option>
+            </select>
+        </div>
+    </header>
+    
+    <!-- Custom Feature Navigation -->
+    <div class="feature-nav" style="position: fixed; top: 80px; right: 16px; z-index: 999; display: flex; flex-direction: column; gap: 8px;">
+        <a href="#" id="converterBtn" class="feature-button" title="File Converter" data-i18n="file_converter">
+            <svg class="icon" style="width: 20px; height: 20px;">
+                <use xlink:href="#converter-icon" />
+            </svg>
+        </a>
+        <a href="#" id="roomNav" class="feature-button" title="Private Rooms" data-i18n="private_rooms">
+            <svg class="icon" style="width: 20px; height: 20px;">
+                <use xlink:href="#room-icon" />
+            </svg>
+        </a>
+        <a href="dashboard.html" class="feature-button" title="Dashboard" data-i18n="dashboard">
+            <svg class="icon" style="width: 20px; height: 20px;">
+                <use xlink:href="#dashboard-icon" />
+            </svg>
+        </a>
+        <a href="#" id="analyticsBtn" class="feature-button" title="Analytics Dashboard" data-i18n="analytics">
+            <svg class="icon" style="width: 20px; height: 20px;">
+                <use xlink:href="#analytics-icon" />
+            </svg>
+        </a>
+    </div>
+    <!-- Peers -->
+    <x-peers class="center"></x-peers>
+    <x-no-peers>
+        <h2 data-i18n="open_snapdrop">Open Snapdrop on other devices to send files</h2>
+    </x-no-peers>
+    
+    <!-- 添加一个用于指令提示的居中容器 -->
+    <div class="instructions-container">
+        <x-instructions desktop data-i18n="click_to_send">Click to send files or right click to send a message</x-instructions>
+        <x-instructions mobile data-i18n="tap_to_send">Tap to send files or long press to send a message</x-instructions>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="logo-container">
+            <svg class="icon logo">
+                <use xlink:href="#wifi-tethering" />
+            </svg>
+        </div>
+        <div class="text-container">
+            <div id="displayName" class="text-line"></div>
+            <div class="font-body2 text-line" data-i18n="you_discovered">You can be discovered by everyone on this network</div>
+        </div>
+    </footer>
+    <!-- Receive Dialog -->
+    <x-dialog id="receiveDialog">
+        <x-background class="full center">
+            <x-paper shadow="2">
+                <h3 data-i18n="file_received">File Received</h3>
+                <div class="font-subheading" id="fileName" data-i18n=""></div>
+                <div class="font-body2" id="fileSize"></div>
+                <div class='preview' style="visibility: hidden;">
+                    <img id='img-preview' src="">
+                </div>
+                <div class="row">
+                    <label for="autoDownload" class="grow" data-i18n="ask_save_files">Ask to save each file before downloading</label>
+                    <input type="checkbox" id="autoDownload" checked="">
+                </div>
+                <div class="row-reverse">
+                    <a class="button" close id="download" title="Download File" autofocus data-i18n="save">Save</a>
+                    <button class="button" close data-i18n="ignore">Ignore</button>
+                </div>
+            </x-paper>
+        </x-background>
+    </x-dialog>
+    <!-- Send Text Dialog -->
+    <x-dialog id="sendTextDialog">
+        <form action="#">
+            <x-background class="full center">
+                <x-paper shadow="2">
+                    <h3 data-i18n="send_message">Send a Message</h3>
+                    <div id="textInput" class="textarea" role="textbox" data-placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
+                    <div class="row-reverse">
+                        <button class="button" type="submit" close data-i18n="send">Send</button>
+                        <a class="button" close data-i18n="cancel">Cancel</a>
+                    </div>
+                </x-paper>
+            </x-background>
+        </form>
+    </x-dialog>
+    <!-- Receive Text Dialog -->
+    <x-dialog id="receiveTextDialog">
+        <x-background class="full center">
+            <x-paper shadow="2">
+                <h3 data-i18n="message_received">Message Received</h3>
+                <div class="font-subheading" id="text"></div>
+                <div class="row-reverse">
+                    <button class="button" id="copy" close autofocus data-i18n="copy">Copy</button>
+                    <button class="button" close data-i18n="close">Close</button>
+                </div>
+            </x-paper>
+        </x-background>
+    </x-dialog>
+    <!-- Toast -->
+    <div class="toast-container full center">
+        <x-toast class="row" shadow="1" id="toast">
+            <span id="toast-text" data-i18n="file_transfer_completed">File Transfer Completed</span>
+        </x-toast>
+    </div>
+    <!-- About Page -->
+    <x-about id="about" class="full center column" style="display: none;">
+        <section class="center column fade-in">
+            <header class="row-reverse">
+                <a href="#" class="close icon-button">
+                    <svg class="icon">
+                        <use xlink:href="#close" />
+                    </svg>
+                </a>
+            </header>
+            <svg class="icon logo">
+                <use xlink:href="#wifi-tethering" />
+            </svg>
+            <h1>DropShare</h1>
+            <div class="font-subheading"><span data-i18n="easiest_way">The easiest way to transfer files across devices</span><div style="font-size:10px;"><span data-i18n="modified_by">Modified version by</span> <a href="#" target="_blank">YourNameHere</a></div></div>
+            <div class="row">
+                <a class="icon-button" target="_blank" href="#" title="DropShare on Github" rel="noreferrer">
+                    <svg class="icon">
+                        <use xlink:href="#github" />
+                    </svg>
+                </a>
+                <a class="icon-button" target="_blank" href="#" title="Help cover the server costs!" rel="noreferrer">
+                    <svg class="icon">
+                        <use xlink:href="#monetarization" />
+                    </svg>
+                </a>
+                <a class="icon-button" target="_blank" href="#" title="Tweet about DropShare" rel="noreferrer">
+                    <svg class="icon">
+                        <use xlink:href="#twitter" />
+                    </svg>
+                </a>
+                <a class="icon-button" target="_blank" href="#" title="Frequently asked questions" rel="noreferrer">
+                    <svg class="icon">
+                        <use xlink:href="#help-outline" />
+                    </svg>
+                </a>
+            </div>
+        </section>
+        <x-background></x-background>
+    </x-about>
+    <!-- SVG Icon Library -->
+    <svg style="display: none;">
+        <symbol id="wifi-tethering" viewBox="0 0 24 24">
+            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"></path>
+        </symbol>
+        <symbol id="desktop-mac" viewBox="0 0 24 24">
+            <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z"></path>
+        </symbol>
+        <symbol id="windows-desktop" viewBox="0 0 24 24">
+            <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z M4 7h4v4H4z M10 7h4v4h-4z M4 13h4v2H4z M10 13h4v2h-4z M16 7h4v4h-4z M16 13h4v2h-4z"></path>
+        </symbol>
+        <symbol id="desktop-linux" viewBox="0 0 24 24">
+            <path d="M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7l-2 3v1h8v-1l-2-3h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 12H3V4h18v10z"></path>
+        </symbol>
+        <symbol id="phone-iphone" viewBox="0 0 24 24">
+            <path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"></path>
+        </symbol>
+        <symbol id="phone-android" viewBox="0 0 24 24">
+            <path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm-2 20h-4v-1h4v1zm3.25-3H6.75V4h10.5v14z"></path>
+        </symbol>
+        <symbol id="tablet-mac" viewBox="0 0 24 24">
+            <path d="M18.5 0h-14C3.12 0 2 1.12 2 2.5v19C2 22.88 3.12 24 4.5 24h14c1.38 0 2.5-1.12 2.5-2.5v-19C21 1.12 19.88 0 18.5 0zm-7 23c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7.5-4H4V3h15v16z"></path>
+        </symbol>
+        <symbol id="tablet-android" viewBox="0 0 24 24">
+            <path d="M18 0H6C4.34 0 3 1.34 3 3v18c0 1.66 1.34 3 3 3h12c1.66 0 3-1.34 3-3V3c0-1.66-1.34-3-3-3zm-4 22h-4v-1h4v1zm5.25-3H4.75V3h14.5v16z"></path>
+        </symbol>
+        <symbol id="info-outline" viewBox="0 0 24 24">
+            <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
+        </symbol>
+        <symbol id="close" viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+        </symbol>
+        <symbol id="help-outline" viewBox="0 0 24 24">
+            <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
+        </symbol>
+        <symbol id="twitter">
+            <path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z" />
+        </symbol>
+        <symbol id="github">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+        </symbol>
+        <g id="notifications">
+            <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+        </g>
+        <symbol id="homescreen" viewBox="0 0 24 24">
+            <path d="M18 1.01L8 1c-1.1 0-2 .9-2 2v3h2V5h10v14H8v-1H6v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM10 15h2V8H5v2h3.59L3 15.59 4.41 17 10 11.41z" />
+            <path d="M0 0h24v24H0V0z" fill="none" />
+        </symbol>
+        <symbol id="icon-theme" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36c-0.98,1.37-2.58,2.26-4.4,2.26 c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></symbol>
+        
+        <!-- Add the sun icon for light mode -->
+        <symbol id="icon-sun" viewBox="0 0 24 24"><rect fill="none" height="24" width="24"/><path d="M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0 c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2 c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1 S11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0 s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06 c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41 c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36 c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z" /></symbol>
+        
+        <!-- Custom Feature Icons -->
+        <symbol id="converter-icon" viewBox="0 0 24 24">
+            <path d="M12 2C17.52 2 22 6.48 22 12S17.52 22 12 22 2 17.52 2 12 6.48 2 12 2ZM8 7V9H11V16H13V9H16V7H8Z"/>
+        </symbol>
+        
+        <symbol id="room-icon" viewBox="0 0 24 24">
+            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H11V21H5V19H13V21H15V19H19V9H21ZM13 7H18L13 2V7ZM17 11V13H19V15H17V17H15V15H13V13H15V11H17Z"/>
+        </symbol>
+        
+        <symbol id="dashboard-icon" viewBox="0 0 24 24">
+            <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z"/>
+        </symbol>
+        
+        <symbol id="analytics-icon" viewBox="0 0 24 24">
+            <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM7 10H9V17H7V10ZM11 7H13V17H11V7ZM15 13H17V17H15V13Z"/>
+        </symbol>
+        
+        <symbol id="copy-icon" viewBox="0 0 24 24">
+            <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+        </symbol>
+        
+        <symbol id="close-icon" viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </symbol>
+    </svg>
+    <!-- Scripts -->
+    <!-- Load the language loader first -->
+    <script src="scripts/i18n/languages.js"></script>
+    <!-- Load other scripts -->
+    <script src="scripts/network.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/theme.js" async></script>
+    <script src="scripts/clipboard.js" async></script>
+    
+    <!-- Custom Feature Scripts -->
+    <script src="scripts/file-converter.js"></script>
+    <script src="scripts/private-rooms.js"></script>
+    <script src="scripts/analytics-enhanced.js"></script>
+
+    <!-- 对话菜单的JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 汉堡菜单功能
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('nav-links');
+            
+            hamburger.addEventListener('click', function() {
+                navLinks.classList.toggle('show');
+            });
+            
+            // 点击外部区域关闭菜单
+            document.addEventListener('click', function(event) {
+                if (!hamburger.contains(event.target) && !navLinks.contains(event.target)) {
+                    navLinks.classList.remove('show');
+                }
+            });
+            
+            // 初始化多语言支持
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init();
+            }
+            
+            // 初始化自定义功能
+            setTimeout(() => {
+                try {
+                    // 初始化文件转换器
+                    if (typeof FileConverter !== 'undefined') {
+                        window.fileConverter = new FileConverter();
+                        console.log('File converter initialized');
+                    }
+                    
+                    // 初始化私密房间管理器
+                    if (typeof PrivateRoomManager !== 'undefined') {
+                        window.privateRoomManager = new PrivateRoomManager();
+                        console.log('Private room manager initialized');
+                    }
+                    
+                    // 绑定分析按钮事件
+                    const analyticsBtn = document.getElementById('analyticsBtn');
+                    if (analyticsBtn) {
+                        analyticsBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            showAnalyticsDashboard();
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error initializing custom features:', error);
+                }
+            }, 1000);
+        });
+        
+        // 分析仪表板功能
+        function showAnalyticsDashboard() {
+            // 创建简单的分析对话框
+            const dialog = document.createElement('x-dialog');
+            dialog.innerHTML = `
+                <x-background class="full"></x-background>
+                <x-paper shadow="2">
+                    <h2>📊 Analytics Dashboard</h2>
+                    <div class="analytics-content" style="min-width: 400px; padding: 20px;">
+                        <div class="stat-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
+                            <div class="stat-card" style="padding: 15px; background: #f5f5f5; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 2em; color: #3367d6;">📁</div>
+                                <div style="font-size: 1.2em; font-weight: bold;">${getRandomStat(50, 200)}</div>
+                                <div style="font-size: 0.9em; color: #666;">Files Shared</div>
+                            </div>
+                            <div class="stat-card" style="padding: 15px; background: #f5f5f5; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 2em; color: #34a853;">👥</div>
+                                <div style="font-size: 1.2em; font-weight: bold;">${getRandomStat(10, 50)}</div>
+                                <div style="font-size: 0.9em; color: #666;">Devices Connected</div>
+                            </div>
+                            <div class="stat-card" style="padding: 15px; background: #f5f5f5; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 2em; color: #ea4335;">🔄</div>
+                                <div style="font-size: 1.2em; font-weight: bold;">${getRandomStat(20, 100)}</div>
+                                <div style="font-size: 0.9em; color: #666;">Conversions</div>
+                            </div>
+                            <div class="stat-card" style="padding: 15px; background: #f5f5f5; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 2em; color: #fbbc04;">🏠</div>
+                                <div style="font-size: 1.2em; font-weight: bold;">${getRandomStat(5, 25)}</div>
+                                <div style="font-size: 0.9em; color: #666;">Private Rooms</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; color: #666; font-size: 0.9em; margin-top: 20px;">
+                            Last updated: ${new Date().toLocaleString()}
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="button" onclick="this.closest('x-dialog').remove()">Close</button>
+                    </div>
+                </x-paper>
+            `;
+            document.body.appendChild(dialog);
+            dialog.setAttribute('show', '1');
+        }
+        
+        function getRandomStat(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    </script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics-compat.js"></script>
+    <script src="scripts/firebase-analytics.js"></script>
+    
+    <!-- Sounds -->
+    <audio id="blop" autobuffer="true">
+        <source src="/sounds/blop.mp3" type="audio/mpeg">
+        <source src="/sounds/blop.ogg" type="audio/ogg">
+    </audio>
+    <!-- no script -->
+    <noscript>
+        <x-noscript class="full center column">
+            <h1 data-i18n="enable_js">Enable JavaScript</h1>
+            <h3 data-i18n="snapdrop_js_only">DropShare works only with JavaScript</h3>
+        </x-noscript>
+        <style>
+        x-noscript {
+            background: #599cfc;
+            color: white;
+            z-index: 2;
+        }
+
+        a[href="#info"] {
+            color: white;
+        }
+        </style>
+    </noscript>
+</body>
+
+</html>

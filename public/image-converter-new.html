@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片格式转换器 - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .format-selection {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .format-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .format-option {
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .format-option:hover {
+            border-color: #3367d6;
+            transform: translateY(-2px);
+        }
+
+        .format-option.selected {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .format-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .format-desc {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .quality-settings {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .quality-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .quality-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 8px;
+        }
+
+        .quality-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3367d6;
+            cursor: pointer;
+        }
+
+        .quality-value {
+            text-align: center;
+            background: #3367d6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .file-list {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .file-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .file-details h4 {
+            font-size: 16px;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .file-meta {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .file-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-ready {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-converting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .convert-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .convert-button:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .convert-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3367d6, #2563eb);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .download-section {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .download-button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .download-button:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        /* 设备选择弹窗样式 */
+        .device-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .device-modal.show {
+            display: flex;
+        }
+        
+        .device-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .device-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .device-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin: 0;
+        }
+        
+        .device-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .device-modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .device-list {
+            margin-bottom: 20px;
+        }
+        
+        .device-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .device-item:hover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+        
+        .device-item.selected {
+            border-color: #3367d6;
+            background: #dbeafe;
+        }
+        
+        .device-checkbox {
+            margin-right: 12px;
+        }
+        
+        .device-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        
+        .device-info {
+            flex: 1;
+        }
+        
+        .device-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+        
+        .device-type {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .no-devices {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+        
+        .no-devices-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        
+        .device-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-btn-cancel {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .modal-btn-cancel:hover {
+            background: #e5e7eb;
+        }
+        
+        .modal-btn-send {
+            background: #3367d6;
+            color: white;
+        }
+        
+        .modal-btn-send:hover {
+            background: #2563eb;
+        }
+        
+        .modal-btn-send:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .format-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .file-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>    
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🔄 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="share.html">传送</a>
+                <a href="share.html#rooms">多人房间</a>
+                <a href="image-tools.html" class="active">图片</a>
+                <a href="audio-tools.html">音频</a>
+                <a href="video-tools.html">视频</a>
+                <a href="document-tools.html">文件</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← back
+            </a>
+        </div>
+        
+        <h1 class="page-title">图片格式转换器</h1>
+        <p class="page-subtitle">支持多种图片格式互相转换，保持最佳质量</p>
+
+        <div class="converter-card">
+            <!-- 上传区域 -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🖼️</div>
+                <div class="upload-text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint">支持 JPG, PNG, GIF, BMP, TIFF, WebP 格式，可选择多个文件</div>
+                <input type="file" id="fileInput" accept="image/*" multiple>
+            </div>
+
+            <!-- 格式选择 -->
+            <div class="format-selection">
+                <div class="format-title">选择输出格式</div>
+                <div class="format-grid">
+                    <div class="format-option selected" data-format="jpeg">
+                        <div class="format-name">JPEG</div>
+                        <div class="format-desc">高压缩比</div>
+                    </div>
+                    <div class="format-option" data-format="png">
+                        <div class="format-name">PNG</div>
+                        <div class="format-desc">无损压缩</div>
+                    </div>
+                    <div class="format-option" data-format="webp">
+                        <div class="format-name">WebP</div>
+                        <div class="format-desc">现代格式</div>
+                    </div>
+                    <div class="format-option" data-format="gif">
+                        <div class="format-name">GIF</div>
+                        <div class="format-desc">动图支持</div>
+                    </div>
+                    <div class="format-option" data-format="bmp">
+                        <div class="format-name">BMP</div>
+                        <div class="format-desc">位图格式</div>
+                    </div>
+                    <div class="format-option" data-format="tiff">
+                        <div class="format-name">TIFF</div>
+                        <div class="format-desc">专业格式</div>
+                    </div>
+                </div>
+
+                <!-- 质量设置 -->
+                <div class="quality-settings" id="qualitySettings">
+                    <label class="quality-label">
+                        <span>图片质量:</span> <span class="quality-value" id="qualityValue">90%</span>
+                    </label>
+                    <input type="range" class="quality-slider" id="qualitySlider" 
+                           min="10" max="100" value="90">
+                </div>
+            </div>
+
+            <!-- 文件列表 -->
+            <div class="file-list" id="fileList"></div>
+
+            <!-- 转换按钮 -->
+            <button class="convert-button" id="convertButton" disabled>
+                <span>🔄 开始转换</span>
+            </button>
+
+            <!-- 进度条 -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- 下载区域 -->
+            <div class="download-section" id="downloadSection"></div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="resetBtn">
+                    <span>🔄 重新选择</span>
+                </button>
+                <a href="image-tools.html" class="btn btn-primary">
+                    <span>← 返回工具页</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设备选择弹窗 -->
+    <div class="device-modal" id="deviceModal">
+        <div class="device-modal-content">
+            <div class="device-modal-header">
+                <h3 class="device-modal-title">选择传送设备</h3>
+                <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
+            </div>
+            <div class="device-list" id="deviceList">
+                <!-- 设备列表将在这里动态生成 -->
+            </div>
+            <div class="device-modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
+                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
+                    <span>传送到选中设备</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let selectedFiles = [];
+        let convertedFiles = [];
+        let selectedFormat = 'jpeg';
+        let isConverting = false;
+
+        // DOM 元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const formatOptions = document.querySelectorAll('.format-option');
+        const qualitySettings = document.getElementById('qualitySettings');
+        const qualitySlider = document.getElementById('qualitySlider');
+        const qualityValue = document.getElementById('qualityValue');
+        const convertButton = document.getElementById('convertButton');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const downloadSection = document.getElementById('downloadSection');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // 支持 JPEG 质量调节的格式
+        const qualityFormats = ['jpeg', 'webp'];
+
+        // 事件监听器
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        formatOptions.forEach(option => {
+            option.addEventListener('click', handleFormatChange);
+        });
+        
+        qualitySlider.addEventListener('input', handleQualityChange);
+        convertButton.addEventListener('click', convertAllFiles);
+        resetBtn.addEventListener('click', resetConverter);
+
+        // 拖拽处理
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            processFiles(files);
+        }
+
+        // 文件选择处理
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            processFiles(files);
+        }
+
+        // 处理文件
+        function processFiles(files) {
+            const imageFiles = files.filter(file => file.type.startsWith('image/'));
+            
+            if (imageFiles.length === 0) {
+                alert(";
+                return;
+            }
+
+            // 检查文件大小
+            const oversizedFiles = imageFiles.filter(file => file.size > 10 * 1024 * 1024);
+            if (oversizedFiles.length > 0) {
+                alert(`${".join('\n')}`);
+                return;
+            }
+
+            selectedFiles = imageFiles;
+            displayFileList();
+            convertButton.disabled = false;
+        }
+
+        // 显示文件列表
+        function displayFileList() {
+            fileList.style.display = 'block';
+            fileList.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    fileItem.innerHTML = `
+                        <div class="file-info">
+                            <img src="${e.target.result}" class="file-preview" alt="Preview">
+                            <div class="file-details">
+                                <h4>${file.name}</h4>
+                                <div class="file-meta">
+                                    ${formatFileSize(file.size)} • ${getFileExtension(file.name).toUpperCase()}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="file-status status-ready" id="status-${index}">
+                            <span>待转换</span>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+                
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        // 格式选择变化
+        function handleFormatChange(e) {
+            formatOptions.forEach(option => option.classList.remove('selected'));
+            e.target.classList.add('selected');
+            selectedFormat = e.target.dataset.format;
+            
+            // 显示/隐藏质量设置
+            if (qualityFormats.includes(selectedFormat)) {
+                qualitySettings.style.display = 'block';
+            } else {
+                qualitySettings.style.display = 'none';
+            }
+        }
+
+        // 质量滑块变化
+        function handleQualityChange(e) {
+            const value = e.target.value;
+            qualityValue.textContent = value + '%';
+        }
+
+        // 转换所有文件
+        async function convertAllFiles() {
+            if (isConverting) return;
+            
+            isConverting = true;
+            convertButton.disabled = true;
+            progressBar.style.display = 'block';
+            convertedFiles = [];
+
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                const statusEl = document.getElementById(`status-${i}`);
+                
+                try {
+                    // 更新状态
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_converting') || '转换中...';
+                    statusEl.className = 'file-status status-converting';
+                    
+                    // 转换文件
+                    const convertedBlob = await convertImage(file);
+                    
+                    // 保存转换结果
+                    convertedFiles.push({
+                        originalName: file.name,
+                        blob: convertedBlob,
+                        newName: getNewFileName(file.name, selectedFormat)
+                    });
+                    
+                    // 更新状态
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_convert_complete') || '转换完成';
+                    statusEl.className = 'file-status status-completed';
+                    
+                } catch (error) {
+                    console.error('转换失败:', error);
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_convert_failed') || '转换失败';
+                    statusEl.className = 'file-status status-error';
+                }
+                
+                // 更新进度
+                const progress = ((i + 1) / selectedFiles.length) * 100;
+                progressFill.style.width = progress + '%';
+            }
+
+            // 转换完成
+            isConverting = false;
+            setTimeout(() => {
+                progressBar.style.display = 'none';
+                showDownloadSection();
+            }, 500);
+        }
+
+        // 转换单个图片
+        function convertImage(file) {
+            return new Promise((resolve, reject) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    const mimeType = `image/${selectedFormat}`;
+                    const quality = qualityFormats.includes(selectedFormat) 
+                        ? qualitySlider.value / 100 
+                        : undefined;
+
+                    canvas.toBlob(resolve, mimeType, quality);
+                };
+
+                img.onerror = reject;
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        // 显示下载区域
+        function showDownloadSection() {
+            downloadSection.style.display = 'block';
+            downloadSection.innerHTML = `
+                <h3 style="margin-bottom: 20px; color: #374151;"><span>🎉 转换完成！</span></h3>
+                <div style="margin-bottom: 20px;">
+                    ${convertedFiles.map((file, index) => `
+                        <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;">
+                            <button class="download-button" onclick="downloadFile(${index})">
+                                <span>📥 下载</span> ${file.newName}
+                            </button>
+                            <button class="download-button" onclick="shareFile(${index})" style="background: #10b981;">
+                                <span>📤 传送</span> ${file.newName}
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                    <button class="download-button" onclick="downloadAllFiles()" style="background: #7c3aed;">
+                        <span>📦 下载全部文件 (ZIP)</span>
+                    </button>
+                    <button class="download-button" onclick="shareAllFiles()" style="background: #f59e0b;">
+                        <span>📤 传送全部文件</span>
+                    </button>
+                </div>
+            `;
+        }
+
+        // 下载单个文件
+        function downloadFile(index) {
+            const file = convertedFiles[index];
+            const url = URL.createObjectURL(file.blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.newName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 下载所有文件（这里简化实现，实际项目可以使用 JSZip）
+        function downloadAllFiles() {
+            convertedFiles.forEach((file, index) => {
+                setTimeout(() => downloadFile(index), index * 500);
+            });
+        }
+
+        // 全局变量存储当前要传送的文件
+        let currentFilesToShare = null;
+        let selectedDevices = new Set();
+        let shareMode = 'single'; // 'single' 或 'all'
+        
+        // 传送单个文件到其他设备
+        function shareFile(index) {
+            const file = convertedFiles[index];
+            
+            // 创建File对象用于传输
+            currentFilesToShare = [new File([file.blob], file.newName, { 
+                type: file.blob.type 
+            })];
+            
+            shareMode = 'single';
+            showDeviceModal();
+        }
+
+        // 传送所有文件到其他设备
+        function shareAllFiles() {
+            if (convertedFiles.length === 0) return;
+            
+            // 创建所有文件的File对象
+            currentFilesToShare = convertedFiles.map(file => 
+                new File([file.blob], file.newName, { 
+                    type: file.blob.type 
+                })
+            );
+            
+            shareMode = 'all';
+            showDeviceModal();
+        }
+        
+        // 显示设备选择弹窗
+        function showDeviceModal() {
+            const modal = document.getElementById('deviceModal');
+            const deviceList = document.getElementById('deviceList');
+            
+            // 清空选中设备
+            selectedDevices.clear();
+            updateSendButton();
+            
+            // 获取可用设备
+            const devices = getAvailableDevices();
+            
+            if (devices.length === 0) {
+                deviceList.innerHTML = `
+                    <div class="no-devices">
+                        <div class="no-devices-icon">📱</div>
+                        <p>未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                    </div>
+                `;
+            } else {
+                deviceList.innerHTML = devices.map(device => `
+                    <div class="device-item" onclick="toggleDevice('${device.id}')">
+                        <input type="checkbox" class="device-checkbox" id="device-${device.id}">
+                        <div class="device-icon">${getDeviceIcon(device)}</div>
+                        <div class="device-info">
+                            <div class="device-name">${device.name}</div>
+                            <div class="device-type">${device.type}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        // 关闭设备选择弹窗
+        function closeDeviceModal() {
+            const modal = document.getElementById('deviceModal');
+            modal.classList.remove('show');
+            selectedDevices.clear();
+            currentFilesToShare = null;
+        }
+        
+        // 切换设备选择状态
+        function toggleDevice(deviceId) {
+            const checkbox = document.getElementById(`device-${deviceId}`);
+            const deviceItem = checkbox.closest('.device-item');
+            
+            if (selectedDevices.has(deviceId)) {
+                selectedDevices.delete(deviceId);
+                checkbox.checked = false;
+                deviceItem.classList.remove('selected');
+            } else {
+                selectedDevices.add(deviceId);
+                checkbox.checked = true;
+                deviceItem.classList.add('selected');
+            }
+            
+            updateSendButton();
+        }
+        
+        // 更新发送按钮状态
+        function updateSendButton() {
+            const sendBtn = document.getElementById('sendToDevicesBtn');
+            const count = selectedDevices.size;
+            const fileCount = currentFilesToShare ? currentFilesToShare.length : 0;
+            
+            if (count === 0) {
+                sendBtn.disabled = true;
+                sendBtn.textContent = window.DROPSHARE_I18N?.t('btn_send_to_selected_devices') || '传送到选中设备';
+            } else {
+                sendBtn.disabled = false;
+                if (shareMode === 'all') {
+                    sendBtn.textContent = `${" || '个文件到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
+                } else {
+                    sendBtn.textContent = `${" || '个设备'}`;
+                }
+            }
+        }
+        
+        // 传送到选中的设备
+        function sendToSelectedDevices() {
+            if (!currentFilesToShare || selectedDevices.size === 0) return;
+            
+            const deviceCount = selectedDevices.size;
+            const fileCount = currentFilesToShare.length;
+            
+            // 检查是否有可用的传输系统
+            if (window.Events && typeof window.Events.fire === 'function') {
+                // 向每个选中的设备发送文件
+                selectedDevices.forEach(deviceId => {
+                    window.Events.fire('files-selected', {
+                        files: currentFilesToShare,
+                        to: deviceId
+                    });
+                });
+                
+                alert(`${fileCount} ${" || '个设备'}!`);
+                closeDeviceModal();
+            } else {
+                // 如果传输系统不可用，提供跳转选项
+                if (confirm(") {
+                    // 将文件信息存储到sessionStorage，供传送页面使用
+                    const filesInfo = currentFilesToShare.map(file => ({
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        timestamp: Date.now()
+                    }));
+                    if (shareMode === 'all') {
+                        sessionStorage.setItem('pendingFilesTransfer', JSON.stringify(filesInfo));
+                    } else {
+                        sessionStorage.setItem('pendingFileTransfer', JSON.stringify(filesInfo[0]));
+                    }
+                    window.location.href = 'share.html';
+                }
+            }
+        }
+        
+        // 获取可用设备列表
+        function getAvailableDevices() {
+            // 尝试从现有的传输系统获取设备列表
+            const devices = [];
+            
+            // 从DOM中获取设备信息（如果在传送页面）
+            const peerElements = document.querySelectorAll('x-peer');
+            if (peerElements.length > 0) {
+                peerElements.forEach(peer => {
+                    devices.push({
+                        id: peer.id,
+                        name: peer.querySelector('.name')?.textContent || (",
+                        type: peer.querySelector('.device-name')?.textContent || ("
+                    });
+                });
+            }
+            
+            // 如果没有找到设备，检查是否有全局的设备信息
+            if (devices.length === 0) {
+                if (window.peersManager && window.peersManager.peers) {
+                    Object.keys(window.peersManager.peers).forEach(peerId => {
+                        devices.push({
+                            id: peerId,
+                            name: `${"}`,
+                            type: '网络设备'
+                        });
+                    });
+                }
+            }
+            
+            return devices;
+        }
+        
+        // 获取设备图标
+        function getDeviceIcon(device) {
+            const type = device.type.toLowerCase();
+            if (type.includes('phone') || type.includes('mobile')) return '📱';
+            if (type.includes('tablet') || type.includes('ipad')) return '📺';
+            if (type.includes('mac') || type.includes('apple')) return '💻';
+            if (type.includes('windows') || type.includes('pc')) return '🖥️';
+            return '💻'; // 默认电脑图标
+        }
+
+        // 重置转换器
+        function resetConverter() {
+            selectedFiles = [];
+            convertedFiles = [];
+            isConverting = false;
+            fileList.style.display = 'none';
+            downloadSection.style.display = 'none';
+            progressBar.style.display = 'none';
+            progressFill.style.width = '0%';
+            convertButton.disabled = true;
+            fileInput.value = '';
+        }
+
+        // 工具函数
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getFileExtension(filename) {
+            return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+        }
+
+        function getNewFileName(originalName, newFormat) {
+            const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
+            return `${nameWithoutExt}.${newFormat}`;
+        }
+
+        // 初始化质量设置显示状态
+        if (qualityFormats.includes(selectedFormat)) {
+            qualitySettings.style.display = 'block';
+        }
+        
+        // 阻止弹窗背景点击关闭
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('deviceModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeDeviceModal();
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Load i18n system -->
+        
+    <!-- Mobile Navigation and Touch Optimization -->
+    <script src="scripts/mobile-navigation.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            
+        });
+    </script>
+</body>
+</html>

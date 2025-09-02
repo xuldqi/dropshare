@@ -1,0 +1,53 @@
+{
+    "name": "DropShare - Fast Local File Sharing",
+    "short_name": "DropShare",
+    "description": "Instantly share files between devices on your local network. No setup, no signup required.",
+    "icons": [{
+        "src": "images/android-chrome-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    },{
+        "src": "images/android-chrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    },{
+        "src": "images/android-chrome-192x192-maskable.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "maskable"
+    },{
+        "src": "images/android-chrome-512x512-maskable.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+    },{
+        "src": "images/favicon-96x96.png",
+        "sizes": "96x96",
+        "type": "image/png"
+    }],
+    "background_color": "#212121",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#3367d6",
+    "orientation": "any",
+    "categories": ["utilities", "productivity", "file sharing"],
+    "lang": "en",
+    "dir": "ltr",
+    "prefer_related_applications": false,
+    "share_target": {
+        "method":"GET",
+        "action": "/?share_target",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url",
+            "files": [
+                {
+                    "name": "files",
+                    "accept": ["*/*"]
+                }
+            ]
+        }
+    }
+}

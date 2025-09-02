@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片旋转器 - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .rotator-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .rotation-controls {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .control-section {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rotation-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .rotation-btn {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .rotation-btn:hover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .rotation-btn:active {
+            transform: scale(0.95);
+        }
+
+        .flip-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .custom-rotation {
+            margin-top: 20px;
+        }
+
+        .angle-input-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .angle-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .angle-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 8px;
+        }
+
+        .angle-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3367d6;
+            cursor: pointer;
+        }
+
+        .angle-display {
+            text-align: center;
+            background: #3367d6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .image-workspace {
+            display: none;
+            margin: 30px 0;
+        }
+
+        .workspace-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .workspace-item {
+            text-align: center;
+        }
+
+        .workspace-item h3 {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .image-container {
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .workspace-image {
+            max-width: 100%;
+            max-height: 300px;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .image-info {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .image-info .size {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .rotation-info {
+            text-align: center;
+            margin: 20px 0;
+            padding: 16px;
+            background: linear-gradient(135deg, #3367d6, #2563eb);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .workspace-container,
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .rotation-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>    
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🔄 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="share.html">传送</a>
+                <a href="share.html#rooms">多人房间</a>
+                <a href="image-tools.html" class="active">图片</a>
+                <a href="audio-tools.html">音频</a>
+                <a href="video-tools.html">视频</a>
+                <a href="document-tools.html">文件</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← back
+            </a>
+        </div>
+        
+        <h1 class="page-title">图片旋转器</h1>
+        <p class="page-subtitle">支持任意角度旋转、翻转和精确角度调整</p>
+
+        <div class="rotator-card">
+            <!-- 上传区域 -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🔄</div>
+                <div class="upload-text">点击选择图片或拖拽到这里</div>
+                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <!-- 进度条 -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- 旋转控制 -->
+            <div class="rotation-controls" id="rotationControls">
+                <div class="controls-grid">
+                    <!-- 快速旋转 -->
+                    <div class="control-section">
+                        <div class="section-title">⚡ 快速旋转</div>
+                        
+                        <div class="rotation-buttons">
+                            <button class="rotation-btn" data-angle="90">
+                                <span>↻ 顺时针 90°</span>
+                            </button>
+                            <button class="rotation-btn" data-angle="-90">
+                                <span>↺ 逆时针 90°</span>
+                            </button>
+                            <button class="rotation-btn" data-angle="180">
+                                <span>↻ 旋转 180°</span>
+                            </button>
+                            <button class="rotation-btn" data-angle="270">
+                                <span>↻ 旋转 270°</span>
+                            </button>
+                        </div>
+
+                        <div class="flip-buttons">
+                            <button class="rotation-btn" id="flipHorizontal">
+                                <span>↔ 水平翻转</span>
+                            </button>
+                            <button class="rotation-btn" id="flipVertical">
+                                <span>↕ 垂直翻转</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 精确角度 -->
+                    <div class="control-section">
+                        <div class="section-title">🎯 精确角度</div>
+                        
+                        <div class="angle-input-container">
+                            <input type="number" class="angle-input" id="angleInput" placeholder="输入角度" min="-360" max="360" step="0.1">
+                            <button class="btn btn-primary" id="applyAngleBtn" 
+                                    style="padding: 8px 16px; font-size: 14px;">
+                                <span>应用</span>
+                            </button>
+                        </div>
+
+                        <input type="range" class="angle-slider" id="angleSlider" 
+                               min="-180" max="180" value="0" step="1">
+                        
+                        <div style="text-align: center; margin-top: 8px;">
+                            <span class="angle-display" id="angleDisplay">0°</span>
+                        </div>
+
+                        <div class="custom-rotation">
+                            <button class="btn btn-secondary" id="resetRotation" 
+                                    style="width: 100%; padding: 8px 16px; font-size: 14px;">
+                                <span>🔄 重置旋转</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图片工作区 -->
+            <div class="image-workspace" id="imageWorkspace">
+                <div class="workspace-container">
+                    <div class="workspace-item">
+                        <h3>原始图片</h3>
+                        <div class="image-container">
+                            <img id="originalImage" class="workspace-image" alt="原始图片">
+                        </div>
+                        <div class="image-info">
+                            <div><span>尺寸:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span>文件大小:</span> <span class="size" id="originalFileSize"></span></div>
+                        </div>
+                    </div>
+                    <div class="workspace-item">
+                        <h3>旋转预览</h3>
+                        <div class="image-container">
+                            <canvas id="rotatedImage" class="workspace-image"></canvas>
+                        </div>
+                        <div class="image-info">
+                            <div><span>尺寸:</span> <span class="size" id="rotatedSize"></span></div>
+                            <div><span>当前角度:</span> <span class="size" id="currentAngle">0°</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 旋转信息 -->
+                <div class="rotation-info" id="rotationInfo">
+                    <span>当前旋转角度:</span> 0°
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <button class="btn btn-success" id="downloadBtn" style="display: none;">
+                    <span>📥 下载旋转图片</span>
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    <span>🔄 重新选择</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let originalFile = null;
+        let originalImage = null;
+        let currentRotation = 0;
+        let flipHorizontal = false;
+        let flipVertical = false;
+        let rotatedCanvas = null;
+
+        // DOM 元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const rotationControls = document.getElementById('rotationControls');
+        const imageWorkspace = document.getElementById('imageWorkspace');
+        const originalImg = document.getElementById('originalImage');
+        const rotatedImg = document.getElementById('rotatedImage');
+        const angleSlider = document.getElementById('angleSlider');
+        const angleInput = document.getElementById('angleInput');
+        const angleDisplay = document.getElementById('angleDisplay');
+        const applyAngleBtn = document.getElementById('applyAngleBtn');
+        const resetRotationBtn = document.getElementById('resetRotation');
+        const flipHorizontalBtn = document.getElementById('flipHorizontal');
+        const flipVerticalBtn = document.getElementById('flipVertical');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const rotationBtns = document.querySelectorAll('.rotation-btn[data-angle]');
+
+        // 事件监听器
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        angleSlider.addEventListener('input', handleSliderChange);
+        angleInput.addEventListener('input', handleInputChange);
+        applyAngleBtn.addEventListener('click', applyCustomAngle);
+        resetRotationBtn.addEventListener('click', resetRotation);
+        flipHorizontalBtn.addEventListener('click', () => toggleFlip('horizontal'));
+        flipVerticalBtn.addEventListener('click', () => toggleFlip('vertical'));
+
+        rotationBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const angle = parseInt(e.target.dataset.angle);
+                rotateImage(angle);
+            });
+        });
+
+        downloadBtn.addEventListener('click', downloadRotatedImage);
+        resetBtn.addEventListener('click', resetRotator);
+
+        // 拖拽处理
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        // 文件选择处理
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // 处理文件
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert(";
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert(";
+                return;
+            }
+
+            originalFile = file;
+            showProgress();
+            loadImage(file);
+        }
+
+        // 显示进度条
+        function showProgress() {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // 加载图片
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                originalImage = new Image();
+                originalImage.onload = function() {
+                    setupRotator(this, file);
+                };
+                originalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 设置旋转器
+        function setupRotator(img, file) {
+            originalImg.src = img.src;
+            
+            // 显示原始图片信息
+            document.getElementById('originalSize').textContent = `${img.width} × ${img.height}`;
+            document.getElementById('originalFileSize').textContent = formatFileSize(file.size);
+            
+            // 重置状态
+            currentRotation = 0;
+            flipHorizontal = false;
+            flipVertical = false;
+            updateAngleDisplay();
+            
+            // 显示控制区域和工作区
+            rotationControls.style.display = 'block';
+            imageWorkspace.style.display = 'block';
+            
+            // 初始化画布
+            updateRotatedImage();
+        }
+
+        // 滑块变化
+        function handleSliderChange(e) {
+            const angle = parseInt(e.target.value);
+            angleInput.value = angle;
+            updateAngleDisplay();
+            currentRotation = angle;
+            updateRotatedImage();
+        }
+
+        // 输入框变化
+        function handleInputChange(e) {
+            const angle = parseFloat(e.target.value) || 0;
+            angleSlider.value = Math.max(-180, Math.min(180, angle));
+            updateAngleDisplay();
+        }
+
+        // 应用自定义角度
+        function applyCustomAngle() {
+            const angle = parseFloat(angleInput.value) || 0;
+            currentRotation = angle;
+            angleSlider.value = Math.max(-180, Math.min(180, angle));
+            updateAngleDisplay();
+            updateRotatedImage();
+        }
+
+        // 旋转图片
+        function rotateImage(deltaAngle) {
+            currentRotation += deltaAngle;
+            // 规范化角度到 -180 到 180 范围
+            while (currentRotation > 180) currentRotation -= 360;
+            while (currentRotation <= -180) currentRotation += 360;
+            
+            angleSlider.value = currentRotation;
+            angleInput.value = currentRotation;
+            updateAngleDisplay();
+            updateRotatedImage();
+        }
+
+        // 切换翻转
+        function toggleFlip(direction) {
+            if (direction === 'horizontal') {
+                flipHorizontal = !flipHorizontal;
+                flipHorizontalBtn.style.background = flipHorizontal ? '#3367d6' : 'white';
+                flipHorizontalBtn.style.color = flipHorizontal ? 'white' : '#333';
+            } else {
+                flipVertical = !flipVertical;
+                flipVerticalBtn.style.background = flipVertical ? '#3367d6' : 'white';
+                flipVerticalBtn.style.color = flipVertical ? 'white' : '#333';
+            }
+            updateRotatedImage();
+        }
+
+        // 重置旋转
+        function resetRotation() {
+            currentRotation = 0;
+            flipHorizontal = false;
+            flipVertical = false;
+            angleSlider.value = 0;
+            angleInput.value = 0;
+            updateAngleDisplay();
+            
+            // 重置翻转按钮样式
+            flipHorizontalBtn.style.background = 'white';
+            flipHorizontalBtn.style.color = '#333';
+            flipVerticalBtn.style.background = 'white';
+            flipVerticalBtn.style.color = '#333';
+            
+            updateRotatedImage();
+        }
+
+        // 更新角度显示
+        function updateAngleDisplay() {
+            const displayAngle = currentRotation || parseInt(angleSlider.value) || 0;
+            angleDisplay.textContent = displayAngle + '°';
+            document.getElementById('currentAngle').textContent = displayAngle + '°';
+            document.getElementById('rotationInfo').textContent = 
+                `当前旋转角度: ${displayAngle}°${flipHorizontal ? ' | 水平翻转' : ''}${flipVertical ? ' | 垂直翻转' : ''}`;
+        }
+
+        // 更新旋转后的图片
+        function updateRotatedImage() {
+            if (!originalImage) return;
+
+            const canvas = rotatedImg;
+            const ctx = canvas.getContext('2d');
+            
+            // 计算旋转后的尺寸
+            const radians = (currentRotation * Math.PI) / 180;
+            const cos = Math.abs(Math.cos(radians));
+            const sin = Math.abs(Math.sin(radians));
+            
+            const newWidth = originalImage.width * cos + originalImage.height * sin;
+            const newHeight = originalImage.width * sin + originalImage.height * cos;
+            
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            
+            // 设置变换
+            ctx.save();
+            ctx.translate(newWidth / 2, newHeight / 2);
+            ctx.rotate(radians);
+            
+            // 应用翻转
+            const scaleX = flipHorizontal ? -1 : 1;
+            const scaleY = flipVertical ? -1 : 1;
+            ctx.scale(scaleX, scaleY);
+            
+            // 绘制图片
+            ctx.drawImage(originalImage, -originalImage.width / 2, -originalImage.height / 2);
+            ctx.restore();
+            
+            // 更新信息
+            document.getElementById('rotatedSize').textContent = `${Math.round(newWidth)} × ${Math.round(newHeight)}`;
+            updateAngleDisplay();
+            
+            // 显示下载按钮
+            downloadBtn.style.display = 'inline-flex';
+            
+            // 保存画布引用
+            rotatedCanvas = canvas;
+        }
+
+        // 下载旋转后的图片
+        function downloadRotatedImage() {
+            if (!rotatedCanvas) return;
+            
+            const format = originalFile.type.includes('png') ? 'image/png' : 'image/jpeg';
+            const quality = format === 'image/jpeg' ? 0.9 : undefined;
+            
+            rotatedCanvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `rotated_${originalFile.name}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, format, quality);
+        }
+
+        // 重置旋转器
+        function resetRotator() {
+            originalFile = null;
+            originalImage = null;
+            rotatedCanvas = null;
+            currentRotation = 0;
+            flipHorizontal = false;
+            flipVertical = false;
+            
+            rotationControls.style.display = 'none';
+            imageWorkspace.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            fileInput.value = '';
+            
+            // 重置控件
+            angleSlider.value = 0;
+            angleInput.value = 0;
+            updateAngleDisplay();
+            
+            // 重置翻转按钮
+            flipHorizontalBtn.style.background = 'white';
+            flipHorizontalBtn.style.color = '#333';
+            flipVerticalBtn.style.background = 'white';
+            flipVerticalBtn.style.color = '#333';
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+    
+    <!-- Load i18n system -->
+        
+    <!-- Mobile Navigation and Touch Optimization -->
+    <script src="scripts/mobile-navigation.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            
+        });
+    </script>
+</body>
+</html>

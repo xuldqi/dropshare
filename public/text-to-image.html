@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片文字添加器 - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">    
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <style>
+        body { padding: 20px; background: var(--bg-color); }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--border-color); }
+        .header-buttons { display: flex; gap: 12px; }
+        .back-button { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: var(--primary-color); text-decoration: none; border: 1px solid var(--primary-color); border-radius: 8px; transition: all 0.3s ease; font-size: 14px; }
+        .back-button:hover { background: var(--primary-color); color: white; }
+        .tool-container { max-width: 800px; margin: 0 auto; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 40px; text-align: center; box-shadow: var(--shadow-sm); }
+        .coming-soon { font-size: 64px; margin-bottom: 20px; }
+        .tool-title { font-size: 32px; font-weight: bold; color: var(--text-primary); margin-bottom: 16px; }
+        .tool-description { font-size: 18px; color: var(--text-secondary); margin-bottom: 30px; line-height: 1.6; }
+        .features-list { text-align: left; max-width: 500px; margin: 0 auto 30px auto; background: var(--background-color); padding: 24px; border-radius: 8px; }
+        .features-list h3 { margin-bottom: 16px; color: var(--text-primary); }
+        .features-list ul { list-style: none; padding: 0; }
+        .features-list li { padding: 8px 0; color: var(--text-secondary); border-bottom: 1px solid var(--border-color); }
+        .features-list li:last-child { border-bottom: none; }
+        .features-list li:before { content: "✨ "; color: var(--primary-color); }
+        .notify-btn { background: var(--primary-color); color: white; border: none; padding: 12px 32px; border-radius: 25px; font-size: 16px; cursor: pointer; transition: all 0.3s ease; }
+        .notify-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>📝 图片文字添加器</h1>
+        <div class="header-buttons">
+            <a href="image-tools.html" class="back-button">← 图片工具</a>
+            <a href="index.html" class="back-button">🏠 首页</a>
+        </div>
+    </div>
+    <div class="tool-container">
+        <div class="coming-soon">🚧</div>
+        <h2 class="tool-title">即将推出</h2>
+        <p class="tool-description">图片文字和水印添加工具正在开发中，让您轻松为图片添加文字</p>
+        <div class="features-list">
+            <h3>🎯 预期功能</h3>
+            <ul>
+                <li>自定义文字内容</li>
+                <li>丰富字体选择</li>
+                <li>文字样式设置</li>
+                <li>透明水印添加</li>
+                <li>位置精准控制</li>
+                <li>批量文字处理</li>
+            </ul>
+        </div>
+        <button class="notify-btn" onclick="alert('感谢您的关注！我们会尽快推出这个功能。')">🔔 通知我上线</button>
+    </div>
+</body>
+</html>

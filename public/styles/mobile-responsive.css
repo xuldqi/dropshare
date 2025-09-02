@@ -1,0 +1,344 @@
+/* DropShare 移动端响应式样式 */
+
+/* 移动端优化变量 */
+:root {
+    --mobile-header-height: 60px;
+    --mobile-padding: 16px;
+    --mobile-font-size: 14px;
+    --mobile-button-height: 44px;
+}
+
+/* 汉堡菜单样式 */
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--primary-600);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--gray-100);
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--primary-600);
+    margin: 5px 0;
+    transition: 0.3s;
+    border-radius: 3px;
+}
+
+/* 汉堡菜单动画 */
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* 移动端导航菜单 */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    top: var(--mobile-header-height);
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    max-height: calc(100vh - var(--mobile-header-height));
+    overflow-y: auto;
+}
+
+.mobile-nav.active {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mobile-nav-links {
+    padding: 20px 0;
+}
+
+.mobile-nav-links a {
+    display: block;
+    padding: 15px 24px;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--gray-100);
+    transition: all 0.2s;
+}
+
+.mobile-nav-links a:hover,
+.mobile-nav-links a:active {
+    background: var(--primary-50);
+    color: var(--primary-700);
+    padding-left: 32px;
+}
+
+.mobile-nav-links a:last-child {
+    border-bottom: none;
+}
+
+/* 移动端语言选择器 */
+.mobile-lang-selector {
+    padding: 20px 24px;
+    border-top: 1px solid var(--gray-200);
+    background: var(--gray-50);
+}
+
+.mobile-lang-selector select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+}
+
+/* 小屏幕适配 (手机) */
+@media (max-width: 768px) {
+    /* Header 调整 */
+    .header {
+        padding: 8px 0;
+        height: var(--mobile-header-height);
+    }
+
+    .header-container {
+        padding: 0 var(--mobile-padding);
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .logo svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* 隐藏桌面导航，显示移动端菜单按钮 */
+    .nav-links {
+        display: none !important;
+    }
+
+    .control-buttons .lang-selector {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    /* Hero区域调整 */
+    .hero {
+        padding-top: calc(var(--mobile-header-height) + 20px);
+        padding-left: var(--mobile-padding);
+        padding-right: var(--mobile-padding);
+    }
+
+    .hero-title {
+        font-size: 28px !important;
+        line-height: 1.2;
+        margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+        margin-bottom: 24px;
+    }
+
+    .hero-buttons {
+        flex-direction: column !important;
+        gap: 12px;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        min-height: var(--mobile-button-height);
+        font-size: 16px;
+    }
+
+    /* 分类网格调整 */
+    .categories-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+        padding: 0 var(--mobile-padding);
+    }
+
+    .category-card {
+        padding: 20px 16px;
+    }
+
+    .category-title {
+        font-size: 18px;
+    }
+
+    .category-description {
+        font-size: 14px;
+    }
+
+    /* 工具网格调整 */
+    .tools-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+        padding: 0 var(--mobile-padding);
+    }
+
+    .tool-card {
+        padding: 16px;
+        text-align: center;
+    }
+
+    /* Footer 调整 */
+    .site-footer {
+        padding: 30px var(--mobile-padding) 20px;
+        margin-top: 40px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .footer-section h3 {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .footer-links a {
+        font-size: 14px;
+        padding: 8px 0;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+        font-size: 12px;
+    }
+}
+
+/* 更小屏幕适配 (小手机) */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 24px !important;
+    }
+
+    .hero-subtitle {
+        font-size: 15px;
+    }
+
+    .category-card {
+        padding: 16px 12px;
+    }
+
+    .category-title {
+        font-size: 16px;
+    }
+
+    .category-description {
+        font-size: 13px;
+    }
+
+    .mobile-nav-links a {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+
+    .mobile-lang-selector {
+        padding: 16px 20px;
+    }
+}
+
+/* 平板适配 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px;
+    }
+
+    .hero-title {
+        font-size: 36px !important;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+}
+
+/* 触摸优化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 移动设备触摸优化 */
+    .btn, button, .tool-card, .category-card {
+        min-height: var(--mobile-button-height);
+    }
+
+    .nav-links a {
+        min-height: 36px;
+    }
+
+    .mobile-nav-links a {
+        min-height: 48px;
+    }
+}
+
+/* 横屏手机优化 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        padding-top: calc(var(--mobile-header-height) + 10px);
+    }
+
+    .hero-title {
+        font-size: 24px !important;
+        margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+
+    .hero-buttons {
+        flex-direction: row !important;
+        gap: 12px;
+    }
+
+    .mobile-nav {
+        max-height: calc(100vh - var(--mobile-header-height));
+    }
+}
+
+/* 高DPI屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo svg,
+    .category-card svg,
+    .tool-card svg {
+        transform: translateZ(0); /* 启用硬件加速 */
+    }
+}

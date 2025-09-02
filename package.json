@@ -1,0 +1,25 @@
+{
+  "name": "dropshare",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Instantly share files with devices on the same network",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-themes": "node build-theme-versions.js"
+  },
+  "engines": {
+    "node": ">= 18"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "jsdom": "^22.1.0",
+    "ua-parser-js": "^2.0.3",
+    "unique-names-generator": "^4.7.1",
+    "ws": "^8.18.2"
+  }
+}
