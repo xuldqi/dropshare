@@ -741,8 +741,8 @@
             try {
                 await changeResolution();
             } catch (error) {
-                console.error('转换失败:', error);
-                alert('转换失败: ' + error.message);
+                console.error('Conversion failed:', error);
+                alert('Conversion failed: ' + error.message);
             } finally {
                 this.disabled = false;
             }
