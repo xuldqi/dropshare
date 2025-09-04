@@ -1,15 +1,15 @@
 // 为所有工具页面添加分享功能的集成脚本
 
-// 1. 添加分享按钮到结果区域
+// 1. Add share button to result area
 function addShareButtons() {
-    // 查找下载按钮，在旁边添加分享按钮
+    // Find download buttons and add share buttons next to them
     const downloadButtons = document.querySelectorAll('button[onclick*="download"], a[download]');
     
     downloadButtons.forEach(button => {
-        // 如果已经有分享按钮，跳过
+        // If share button already exists, skip
         if (button.parentNode.querySelector('.share-button')) return;
         
-        // 创建分享按钮
+        // Create share button
         const shareButton = document.createElement('button');
         shareButton.className = 'share-button';
         shareButton.innerHTML = '📤 Share to Device';
@@ -28,38 +28,38 @@ function addShareButtons() {
         shareButton.onmouseover = () => shareButton.style.background = '#059669';
         shareButton.onmouseout = () => shareButton.style.background = '#10b981';
         
-        // 添加点击事件
+        // Add click event
         shareButton.onclick = () => shareCurrentFile();
         
-        // 插入到下载按钮后面
+        // Insert after download button
         button.parentNode.insertBefore(shareButton, button.nextSibling);
     });
 }
 
-// 2. 分享当前文件的函数
+// 2. Function to share current file
 function shareCurrentFile() {
-    // 尝试获取当前页面的处理结果
+    // Try to get the processing result from current page
     const resultFile = getCurrentResultFile();
     
     if (resultFile) {
-        // 如果有结果文件，显示设备选择器
+        // If result file exists, show device selector
         if (window.deviceSelector) {
             window.deviceSelector.show(resultFile);
         } else {
-            // 备用方案：打开分享页面
+            // Fallback: open share page
             openSharePage(resultFile);
         }
     } else {
-        // 如果没有结果文件，打开分享页面让用户上传
+        // If no result file, open share page for user upload
         window.open('/share.html', '_blank');
     }
 }
 
-// 3. 获取当前页面的结果文件
+// 3. Get result file from current page
 function getCurrentResultFile() {
-    // 尝试从各种可能的位置获取结果文件
+    // Try to get result file from various possible locations
     
-    // 方法1: 检查是否有下载链接
+    // Method 1: Check if there's a download link
     const downloadLink = document.querySelector('a[download]');
     if (downloadLink && downloadLink.href && downloadLink.href.startsWith('blob:')) {
         return {
@@ -69,7 +69,7 @@ function getCurrentResultFile() {
         };
     }
     
-    // 方法2: 检查canvas结果
+    // Method 2: Check canvas result
     const canvas = document.querySelector('canvas');
     if (canvas) {
         return {
@@ -79,7 +79,7 @@ function getCurrentResultFile() {
         };
     }
     
-    // 方法3: 检查结果图片
+    // Method 3: Check result image
     const resultImg = document.querySelector('.result img, #resultImage');
     if (resultImg && resultImg.src && resultImg.src.startsWith('blob:')) {
         return {
@@ -92,9 +92,9 @@ function getCurrentResultFile() {
     return null;
 }
 
-// 4. 打开分享页面并传递文件
+// 4. Open share page and pass file
 function openSharePage(file) {
-    // 将文件存储到sessionStorage，以便分享页面使用
+    // Store file to sessionStorage for share page to use
     if (file.url) {
         sessionStorage.setItem('shareFile', JSON.stringify({
             url: file.url,
@@ -102,7 +102,7 @@ function openSharePage(file) {
             type: file.type
         }));
     } else if (file.canvas) {
-        // 将canvas转换为blob
+        // Convert canvas to blob
         file.canvas.toBlob(blob => {
             const url = URL.createObjectURL(blob);
             sessionStorage.setItem('shareFile', JSON.stringify({
@@ -113,7 +113,7 @@ function openSharePage(file) {
         });
     }
     
-    // 打开分享页面
+    // Open share page
     window.open('/share.html?auto=true', '_blank');
 }
 
