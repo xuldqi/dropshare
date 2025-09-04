@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  dropshare-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dropshare-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - PRIMARY_DOMAIN=dropshare.tech
+      - SECONDARY_DOMAIN=dropshare.tech
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    networks:
+      - dropshare-network
+
+  # Backup service with different port
+  dropshare-app-secondary:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dropshare-app-secondary
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - PRIMARY_DOMAIN=dropshare.tech
+      - SECONDARY_DOMAIN=dropshare.tech
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    networks:
+      - dropshare-network
+    depends_on:
+      - dropshare-app
+
+networks:
+  dropshare-network:
+    driver: bridge
+
+volumes:
+  uploads:
+  logs:

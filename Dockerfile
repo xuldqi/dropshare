@@ -1,23 +1,34 @@
-# 使用Node.js官方镜像作为基础镜像
-FROM node:16-alpine
+# Use Node.js official image as base image
+FROM node:18-alpine
 
-# 设置工作目录
+# Set working directory
 WORKDIR /app
 
-# 复制package.json和package-lock.json
+# Copy package files
 COPY package*.json ./
 
-# 安装项目依赖
-RUN npm install
+# Install dependencies
+RUN npm ci --only=production
 
-# 复制所有源代码
+# Copy source code
 COPY . .
 
-# 设置端口环境变量
-ENV PORT=8080
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
 
-# 暴露端口
-EXPOSE 8080
+# Create non-root user
+RUN addgroup -g 1001 -S dropshare && \
+    adduser -S dropshare -u 1001
 
-# 启动应用
+# Change ownership of app directory
+RUN chown -R dropshare:dropshare /app
+
+# Switch to non-root user
+USER dropshare
+
+# Expose port
+EXPOSE 3000
+
+# Start application
 CMD ["npm", "start"]
