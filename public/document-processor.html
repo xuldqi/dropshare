@@ -522,6 +522,8 @@
         }
     </style>
 
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
 </head>
 <body>
     <!-- Header -->
@@ -1449,6 +1451,9 @@
                         fileName += '.html';
                         mimeType = 'text/html';
                         const convertedHtmlContent = "text converted html content" || '转换后的HTML内容';
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
                         content = `<html><body><p>${this.documentContent || convertedHtmlContent}</p></body></html>`;
                         break;
                     case 'images':
@@ -1624,5 +1629,8 @@
             documentProcessor = new DocumentProcessor();
         });
     </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
 </body>
 </html>

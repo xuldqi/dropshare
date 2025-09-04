@@ -399,6 +399,8 @@
             white-space: pre-wrap;
         }
     </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
 </head>
 
 <body>
@@ -827,6 +829,8 @@
         }
         ${preserveFormatting ? 'pre { white-space: pre-wrap; font-family: inherit; }' : ''}
     </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
 </head>
 <body>`;
             
@@ -837,6 +841,9 @@
                 htmlContent += paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('\n');
             }
             
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
             htmlContent += `</body></html>`;
             return htmlContent;
         }
@@ -922,5 +929,8 @@
             document.getElementById('fileInput').click();
         });
     </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
 </body>
 </html>

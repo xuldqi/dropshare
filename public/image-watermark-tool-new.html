@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片水印工具 - DropShare</title>
+    <title>Image Watermark Tool - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -459,6 +459,9 @@
     </style>    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <!-- Share Integration Styles -->
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
 
 </head>
 
@@ -470,34 +473,34 @@
                 💧 DropShare
             </a>
             <nav class="nav-links">
-                <a href="index.html">首页</a>
-                <a href="share.html">传送</a>
-                <a href="share.html#rooms">多人房间</a>
-                <a href="image-tools.html" class="active">图片</a>
-                <a href="audio-tools.html">音频</a>
-                <a href="video-tools.html">视频</a>
-                <a href="document-tools.html">文件</a>
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html" class="active">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <!-- Top-left return button -->
-        <div style="margin-bottom: 20px;">
+        <!-- Top-left return button (hidden by CSS) -->
+        <div style="margin-bottom: 20px; display: none;">
             <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
+                ← Back
             </a>
         </div>
         
-        <h1 class="page-title">图片水印工具</h1>
-        <p class="page-subtitle">为图片添加文字或图片水印，保护版权信息</p>
+        <h1 class="page-title">Image Watermark Tool</h1>
+        <p class="page-subtitle">Add text or image watermarks to protect your copyright</p>
 
         <div class="watermark-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">💧</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text">Click to select image or drag here</div>
+                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -511,27 +514,27 @@
                 <div class="controls-layout">
                     <!-- 控制面板 -->
                     <div class="control-panel">
-                        <div class="panel-title">💧 水印设置</div>
+                        <div class="panel-title">💧 Watermark Settings</div>
 
                         <!-- 水印类型标签 -->
                         <div class="watermark-tabs">
-                            <button class="tab-btn active" data-tab="text">文字水印</button>
-                            <button class="tab-btn" data-tab="image">图片水印</button>
+                            <button class="tab-btn active" data-tab="text">Text Watermark</button>
+                            <button class="tab-btn" data-tab="image">Image Watermark</button>
                         </div>
 
                         <!-- 文字水印设置 -->
                         <div class="tab-content active" id="textTab">
                             <div class="form-group">
-                                <label class="form-label">水印文字</label>
-                                <input type="text" class="form-input" id="watermarkText" placeholder="输入水印文字" value="© DropShare">
+                                <label class="form-label">Watermark Text</label>
+                                <input type="text" class="form-input" id="watermarkText" placeholder="Enter watermark text" value="© DropShare">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">字体</label>
+                                <label class="form-label">Font</label>
                                 <select class="form-select" id="fontFamily">
                                     <option value="Arial">Arial</option>
-                                    <option value="'Microsoft YaHei'">微软雅黑</option>
-                                    <option value="'PingFang SC'">苹方</option>
+                                    <option value="'Microsoft YaHei'">Microsoft YaHei</option>
+                                    <option value="'PingFang SC'">PingFang SC</option>
                                     <option value="Georgia">Georgia</option>
                                     <option value="'Times New Roman'">Times New Roman</option>
                                     <option value="'Courier New'">Courier New</option>
@@ -540,23 +543,23 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">字体大小: <span class="range-display" id="fontSizeDisplay">24px</span></label>
+                                <label class="form-label">Font Size: <span class="range-display" id="fontSizeDisplay">24px</span></label>
                                 <input type="range" class="form-range" id="fontSize" 
                                        min="12" max="120" value="24">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">字体颜色</label>
+                                <label class="form-label">Font Color</label>
                                 <input type="color" class="color-input" id="textColor" value="#ffffff">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">字体样式</label>
+                                <label class="form-label">Font Style</label>
                                 <select class="form-select" id="fontStyle">
-                                    <option value="normal">普通</option>
-                                    <option value="bold">加粗</option>
-                                    <option value="italic">斜体</option>
-                                    <option value="bold italic">加粗斜体</option>
+                                    <option value="normal">Normal</option>
+                                    <option value="bold">Bold</option>
+                                    <option value="italic">Italic</option>
+                                    <option value="bold italic">Bold Italic</option>
                                 </select>
                             </div>
                         </div>
@@ -564,15 +567,15 @@
                         <!-- 图片水印设置 -->
                         <div class="tab-content" id="imageTab">
                             <div class="form-group">
-                                <label class="form-label">选择水印图片</label>
+                                <label class="form-label">Select Watermark Image</label>
                                 <div class="file-upload-btn" id="logoUploadBtn">
-                                    📁 点击选择图片
+                                    📁 Click to select image
                                 </div>
                                 <input type="file" id="logoInput" accept="image/*" style="display: none;">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">水印大小: <span class="range-display" id="logoSizeDisplay">100px</span></label>
+                                <label class="form-label">Watermark Size: <span class="range-display" id="logoSizeDisplay">100px</span></label>
                                 <input type="range" class="form-range" id="logoSize" 
                                        min="20" max="300" value="100">
                             </div>
@@ -580,36 +583,36 @@
 
                         <!-- 位置设置 -->
                         <div class="form-group">
-                            <label class="form-label">水印位置</label>
+                            <label class="form-label">Watermark Position</label>
                             <div class="position-grid">
-                                <button class="position-btn" data-position="top-left">左上</button>
-                                <button class="position-btn" data-position="top-center">上中</button>
-                                <button class="position-btn" data-position="top-right">右上</button>
-                                <button class="position-btn" data-position="middle-left">左中</button>
-                                <button class="position-btn active" data-position="center">中心</button>
-                                <button class="position-btn" data-position="middle-right">右中</button>
-                                <button class="position-btn" data-position="bottom-left">左下</button>
-                                <button class="position-btn" data-position="bottom-center">下中</button>
-                                <button class="position-btn" data-position="bottom-right">右下</button>
+                                <button class="position-btn" data-position="top-left">Top Left</button>
+                                <button class="position-btn" data-position="top-center">Top Center</button>
+                                <button class="position-btn" data-position="top-right">Top Right</button>
+                                <button class="position-btn" data-position="middle-left">Middle Left</button>
+                                <button class="position-btn active" data-position="center">Center</button>
+                                <button class="position-btn" data-position="middle-right">Middle Right</button>
+                                <button class="position-btn" data-position="bottom-left">Bottom Left</button>
+                                <button class="position-btn" data-position="bottom-center">Bottom Center</button>
+                                <button class="position-btn" data-position="bottom-right">Bottom Right</button>
                             </div>
                         </div>
 
                         <!-- 透明度设置 -->
                         <div class="form-group">
-                            <label class="form-label">透明度: <span class="range-display" id="opacityDisplay">70%</span></label>
+                            <label class="form-label">Opacity: <span class="range-display" id="opacityDisplay">70%</span></label>
                             <input type="range" class="form-range" id="opacity" 
                                    min="10" max="100" value="70">
                         </div>
 
                         <!-- 偏移设置 -->
                         <div class="form-group">
-                            <label class="form-label">水平偏移: <span class="range-display" id="offsetXDisplay">0px</span></label>
+                            <label class="form-label">Horizontal Offset: <span class="range-display" id="offsetXDisplay">0px</span></label>
                             <input type="range" class="form-range" id="offsetX" 
                                    min="-100" max="100" value="0">
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">垂直偏移: <span class="range-display" id="offsetYDisplay">0px</span></label>
+                            <label class="form-label">Vertical Offset: <span class="range-display" id="offsetYDisplay">0px</span></label>
                             <input type="range" class="form-range" id="offsetY" 
                                    min="-100" max="100" value="0">
                         </div>
@@ -617,25 +620,25 @@
 
                     <!-- 工作区 -->
                     <div class="watermark-workspace">
-                        <div class="workspace-title">🖼️ 水印预览</div>
+                        <div class="workspace-title">🖼️ Watermark Preview</div>
                         <div class="canvas-container">
                             <canvas id="workspaceCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="imageSize"></span></div>
-                            <div>文件大小: <span class="size" id="fileSize"></span></div>
+                            <div>Size: <span class="size" id="imageSize"></span></div>
+                            <div>File Size: <span class="size" id="fileSize"></span></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- 操作按钮 -->
-            <div class="action-buttons">
+            <div class="action-buttons result-actions">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 下载水印图片
+                    📥 Download Watermarked Image
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 重新选择
+                    🔄 Reset
                 </button>
             </div>
         </div>
@@ -805,12 +808,12 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('请选择图片文件！');
+                alert('Please select an image file!');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert('文件大小不能超过 10MB！');
+                alert('File size cannot exceed 10MB!');
                 return;
             }
 
@@ -855,7 +858,7 @@
             reader.onload = function(e) {
                 logoImage = new Image();
                 logoImage.onload = function() {
-                    logoUploadBtn.textContent = '✅ Logo已加载';
+                    logoUploadBtn.textContent = '✅ Logo loaded';
                     logoUploadBtn.style.borderColor = '#10b981';
                     logoUploadBtn.style.color = '#10b981';
                     updateWatermark();
@@ -1099,7 +1102,7 @@
             selectPosition('center');
             
             // 重置Logo按钮
-            logoUploadBtn.textContent = '📁 点击选择图片';
+            logoUploadBtn.textContent = '📁 Click to select image';
             logoUploadBtn.style.borderColor = '#d1d5db';
             logoUploadBtn.style.color = '#6b7280';
         }
@@ -1113,5 +1116,9 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
     </script>
+    
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
 </body>
 </html>

@@ -26,6 +26,8 @@
         .notify-btn { background: var(--primary-color); color: white; border: none; padding: 12px 32px; border-radius: 25px; font-size: 16px; cursor: pointer; transition: all 0.3s ease; }
         .notify-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
     </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
 </head>
 <body>
     <div class="page-header">
@@ -52,5 +54,8 @@
         </div>
         <button class="notify-btn" onclick="alert('感谢您的关注！我们会尽快推出这个功能。')">🔔 通知我上线</button>
     </div>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
 </body>
 </html>
