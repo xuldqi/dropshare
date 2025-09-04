@@ -63,7 +63,7 @@ ssh $SERVER << 'EOF'
     
     echo ""
     echo "=== 端口占用情况 ==="
-    sudo netstat -tlnp | grep -E ":3000|:3001|:8080" || echo "相关端口未占用"
+    sudo netstat -tlnp | grep -E ":3000|:3001|:3003" || echo "相关端口未占用"
 EOF
 
 echo ""
@@ -94,9 +94,9 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
-    # 代理到colletools应用 (假设在8080端口)
+    # 代理到colletools应用 (3003端口)
     location / {
-        proxy_pass http://127.0.0.1:8080;
+        proxy_pass http://127.0.0.1:3003;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -206,7 +206,7 @@ echo "-------------------------"
 
 ssh $SERVER << 'EOF'
     echo "=== 端口监听状态 ==="
-    sudo netstat -tlnp | grep -E ":80|:443|:3000|:8080" | head -6
+    sudo netstat -tlnp | grep -E ":80|:443|:3000|:3003" | head -6
     
     echo ""
     echo "=== Docker容器状态 ==="
@@ -226,10 +226,10 @@ echo "🎉 双项目配置完成！"
 echo ""
 echo "📋 项目访问:"
 echo "- dropshare.tech → http://127.0.0.1:3000 (dropshare项目)"
-echo "- colletools.com → http://127.0.0.1:8080 (colletools项目)"
+echo "- colletools.com → http://127.0.0.1:3003 (colletools项目)"
 echo ""
 echo "🔍 如果colletools.com无法访问，请检查:"
-echo "1. colletools项目是否在8080端口运行"
+echo "1. colletools项目是否在3003端口运行"
 echo "2. 是否需要启动colletools容器"
 echo "3. 端口是否需要调整"
 echo ""
