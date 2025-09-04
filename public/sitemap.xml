@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://yourdomain.com/</loc>
+    <loc>https://dropshare.tech/</loc>
     <lastmod>2023-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/about.html</loc>
+    <loc>https://dropshare.tech/about.html</loc>
     <lastmod>2023-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/faq.html</loc>
+    <loc>https://dropshare.tech/faq.html</loc>
     <lastmod>2023-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/blog.html</loc>
+    <loc>https://dropshare.tech/blog.html</loc>
     <lastmod>2023-08-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/privacy.html</loc>
+    <loc>https://dropshare.tech/privacy.html</loc>
     <lastmod>2023-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://yourdomain.com/terms.html</loc>
+    <loc>https://dropshare.tech/terms.html</loc>
     <lastmod>2023-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

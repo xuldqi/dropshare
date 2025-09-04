@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://dropshare.tech/sitemap.xml
 
 # Disallow access to certain files/directories if needed
 # Disallow: /private/
