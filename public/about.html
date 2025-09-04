@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#3367d6">
     <meta name="color-scheme" content="dark light">
-    <meta name="description" content="了解DropShare - 最简单的局域网Documents传输工具。支持手机电脑互传Documents，iPhone、Android、Mac、Windows跨设备Documents分享。无需注册安装，零配置快速Documents传输。">
-    <meta name="keywords" content="DropShare介绍, Documents传输工具说明, 局域网Documents共享教程, 跨设备Documents传输指南, 免费Documents分享软件, 手机电脑传Documents方法, 无线Documents传输原理, P2PDocuments共享技术, WebRTCDocuments传输, 安全Documents分享方案, 办公室Documents传输解决方案, 家庭网络Documents共享, 移动设备Documents同步, 浏览器Documents传输技术, 点对点Documents传输优势, 本地网络Documents分享, 零配置Documents传输, 即时Documents共享, 多平台Documents传输, 企业Documents分享工具">
+    <meta name="description" content="Learn about DropShare — the easiest local network file sharing tool. Seamlessly share files between phones and computers across iPhone, Android, Mac, and Windows. No signup or installation required; zero‑config, fast, peer‑to‑peer transfers.">
+    <meta name="keywords" content="DropShare overview, file transfer tool, LAN file sharing, cross‑device file transfer, free file sharing app, phone to computer file transfer, wireless file transfer, P2P file sharing, WebRTC file transfer, secure file sharing, office file transfer, home network file sharing, mobile device sync, browser file transfer, peer‑to‑peer advantages, local network sharing, zero‑config transfers, instant file sharing, multi‑platform file transfer, enterprise file sharing">
     <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
     <link rel="shortcut icon" href="images/favicon-96x96.png">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -70,7 +70,7 @@
             margin-right: 16px;
         }
 
-        /* RTL适配 */
+        /* RTL adaptation */
         [dir="rtl"] header .icon-button {
             margin-right: 0;
             margin-left: 16px;
@@ -125,7 +125,7 @@
         
         
         
-        .1);
+            opacity: 0.1);
         }
 
         .content-wrapper {
@@ -170,7 +170,7 @@
             margin-bottom: 30px;
         }
 
-        /* 修正在RTL中返回按钮的图标方向 */
+        /* Fix return button icon direction in RTL */
         [dir="rtl"] .icon-button svg path {
             transform: scale(-1, 1);
             transform-origin: center;
@@ -250,7 +250,7 @@
             }
         }
     
-        .1);
+            opacity: 0.1);
         }
         
         
@@ -265,15 +265,10 @@
     <div class="header-wrapper">
         <header>
             <div class="header-nav">
-                <a href="/" class="icon-button" title="Back to DropShare">
-                    <svg class="icon">
-                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
-                    </svg>
-                </a>
                 <h1 data-i18n="about_header_title">About DropShare</h1>
             </div>
             
-            <!-- 统一导航菜单和控制按钮 -->
+            <!-- Unify navigation menu and control buttons -->
             <div class="header-controls">
                 <nav class="header-nav-links">
                     <a href="share.html">Transfer</a>
@@ -386,24 +381,24 @@
         // 初始化语言系统
         let currentLanguage = localStorage.getItem('preferred_language') || 'en';
         
-        function') {
+        function changeLanguage(langCode) {
                 window.DROPSHARE_I18N.changeLanguage(langCode);
             }
             
-            // 翻译页面元素
+            // Translate page elements
             translatePageElements();
         }
         
-         function() {
-            console.log('📄 页面加载完成，初始化语言系统');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Page loaded, initializing language system');
             
-            // 设置语言选择器的值
+            // Set language selector value
             const selector = document.getElementById('language-selector');
             if (selector) {
                 selector.value = currentLanguage;
             }
             
-            // 等待语言系统加载后翻译页面
+            // Wait for language system to load then translate page
             setTimeout(() => {
                 translatePageElements();
             }, 500);

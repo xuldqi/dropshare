@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metadata Editor - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #43e97b;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #43e97b;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #43e97b;
+            background: rgba(67, 233, 123, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .tool-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area.dragover {
+            border-color: #43e97b;
+            background: rgba(67, 233, 123, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(67, 233, 123, 0.3);
+        }
+
+        .metadata-editor {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .metadata-editor.active {
+            display: grid;
+        }
+
+        .current-metadata {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .artwork-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .artwork-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #e1e5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: #666;
+            font-size: 3rem;
+        }
+
+        .artwork-upload {
+            background: #43e97b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .metadata-list {
+            list-style: none;
+        }
+
+        .metadata-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .metadata-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .metadata-value {
+            color: #666;
+            font-style: italic;
+        }
+
+        .metadata-value:empty::after {
+            content: 'Not set';
+            opacity: 0.5;
+        }
+
+        .edit-metadata {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e1e5e9;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #43e97b;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .genre-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .genre-tag {
+            background: #43e97b;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .genre-tag:hover {
+            background: #38d66b;
+        }
+
+        .genre-tag.selected {
+            background: #333;
+        }
+
+        .custom-genre {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .audio-preview {
+            grid-column: 1 / -1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .play-btn {
+            background: #43e97b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn:hover {
+            background: #38d66b;
+        }
+
+        .audio-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .audio-title {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .audio-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(67, 233, 123, 0.1);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e5e9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .status {
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 2rem;
+            width: 100%;
+            display: none;
+        }
+
+        .download-btn.active {
+            display: block;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .metadata-editor {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            <nav class="nav-links">
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Metadata Editor</h1>
+            <p class="page-subtitle">Edit audio metadata including title, artist, album, and cover art information</p>
+        </div>
+
+        <div class="tool-container">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🏷️</div>
+                <h3>Upload Audio File</h3>
+                <p>Drag and drop your audio file here or click to browse</p>
+                <input type="file" id="fileInput" class="file-input" accept="audio/*">
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Audio File</button>
+            </div>
+
+            <!-- Metadata Editor -->
+            <div class="metadata-editor" id="metadataEditor">
+                <!-- Audio Preview -->
+                <div class="audio-preview">
+                    <div class="audio-controls">
+                        <button class="play-btn" id="playBtn">▶</button>
+                        <div class="audio-info">
+                            <div class="audio-title" id="audioTitle">Unknown Title</div>
+                            <div class="audio-details" id="audioDetails">Unknown Artist • Unknown Album</div>
+                        </div>
+                    </div>
+                    <audio id="audioElement" style="display: none;"></audio>
+                </div>
+
+                <!-- Current Metadata -->
+                <div class="current-metadata">
+                    <h3 class="section-title">📋 Current Metadata</h3>
+                    
+                    <div class="artwork-container">
+                        <div class="artwork-image" id="currentArtwork">🎵</div>
+                        <button class="artwork-upload" id="artworkUpload">Upload Artwork</button>
+                        <input type="file" id="artworkInput" accept="image/*" style="display: none;">
+                    </div>
+
+                    <ul class="metadata-list">
+                        <li class="metadata-item">
+                            <span class="metadata-label">Title:</span>
+                            <span class="metadata-value" id="currentTitle"></span>
+                        </li>
+                        <li class="metadata-item">
+                            <span class="metadata-label">Artist:</span>
+                            <span class="metadata-value" id="currentArtist"></span>
+                        </li>
+                        <li class="metadata-item">
+                            <span class="metadata-label">Album:</span>
+                            <span class="metadata-value" id="currentAlbum"></span>
+                        </li>
+                        <li class="metadata-item">
+                            <span class="metadata-label">Year:</span>
+                            <span class="metadata-value" id="currentYear"></span>
+                        </li>
+                        <li class="metadata-item">
+                            <span class="metadata-label">Genre:</span>
+                            <span class="metadata-value" id="currentGenre"></span>
+                        </li>
+                        <li class="metadata-item">
+                            <span class="metadata-label">Track:</span>
+                            <span class="metadata-value" id="currentTrack"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Edit Metadata -->
+                <div class="edit-metadata">
+                    <h3 class="section-title">✏️ Edit Metadata</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-input" id="newTitle" placeholder="Enter song title">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Artist</label>
+                        <input type="text" class="form-input" id="newArtist" placeholder="Enter artist name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Album</label>
+                        <input type="text" class="form-input" id="newAlbum" placeholder="Enter album name">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Year</label>
+                        <input type="number" class="form-input" id="newYear" placeholder="2024" min="1900" max="2100">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Genre</label>
+                        <input type="text" class="form-input" id="newGenre" placeholder="Enter genre">
+                        <div class="genre-tags">
+                            <span class="genre-tag">Pop</span>
+                            <span class="genre-tag">Rock</span>
+                            <span class="genre-tag">Jazz</span>
+                            <span class="genre-tag">Classical</span>
+                            <span class="genre-tag">Electronic</span>
+                            <span class="genre-tag">Hip Hop</span>
+                            <span class="genre-tag">Country</span>
+                            <span class="genre-tag">R&B</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Track Number</label>
+                        <input type="text" class="form-input" id="newTrack" placeholder="1 or 1/12">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Comment</label>
+                        <textarea class="form-input form-textarea" id="newComment" placeholder="Add a comment..."></textarea>
+                    </div>
+
+                    <button class="save-btn" id="saveBtn">Save Metadata Changes</button>
+                </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="status" id="status">Processing...</div>
+            </div>
+
+            <!-- Download Button -->
+            <button class="download-btn" id="downloadBtn">Download Updated Audio File</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.7/dist/umd/ffmpeg.js"></script>
+    <script src="https://unpkg.com/music-metadata-browser@2.5.10/dist/index.min.js"></script>
+    <script>
+        let ffmpeg = null;
+        let audioFile = null;
+        let audioElement = null;
+        let currentMetadata = {};
+        let newArtwork = null;
+
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const metadataEditor = document.getElementById('metadataEditor');
+        const saveBtn = document.getElementById('saveBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // Initialize FFmpeg
+        async function initFFmpeg() {
+            if (!ffmpeg) {
+                const { toBlobURL } = FFmpegWASM;
+                
+                ffmpeg = new FFmpeg();
+                
+                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd';
+                
+                await ffmpeg.load({
+                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                });
+            }
+        }
+
+        // File upload handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        async function handleFile(file) {
+            if (!file.type.startsWith('audio/')) {
+                alert('Please select an audio file.');
+                return;
+            }
+
+            audioFile = file;
+            
+            // Show metadata editor
+            metadataEditor.classList.add('active');
+            
+            // Setup audio preview
+            setupAudioPlayer(file);
+            
+            // Extract metadata
+            await extractMetadata(file);
+        }
+
+        function setupAudioPlayer(file) {
+            const url = URL.createObjectURL(file);
+            audioElement = document.getElementById('audioElement');
+            audioElement.src = url;
+
+            const playBtn = document.getElementById('playBtn');
+            playBtn.addEventListener('click', () => {
+                if (audioElement.paused) {
+                    audioElement.play();
+                    playBtn.textContent = '⏸';
+                } else {
+                    audioElement.pause();
+                    playBtn.textContent = '▶';
+                }
+            });
+
+            audioElement.addEventListener('ended', () => {
+                playBtn.textContent = '▶';
+            });
+        }
+
+        async function extractMetadata(file) {
+            try {
+                // Use music-metadata-browser to extract metadata
+                if (window.musicMetadata) {
+                    const metadata = await window.musicMetadata.parseBlob(file);
+                    currentMetadata = metadata;
+                    displayCurrentMetadata(metadata);
+                    populateEditForm(metadata);
+                } else {
+                    // Fallback: use basic file information
+                    const basicMetadata = {
+                        common: {
+                            title: file.name.replace(/\.[^/.]+$/, ""),
+                            artist: '',
+                            album: '',
+                            year: '',
+                            genre: '',
+                            track: { no: null, of: null }
+                        }
+                    };
+                    currentMetadata = basicMetadata;
+                    displayCurrentMetadata(basicMetadata);
+                    populateEditForm(basicMetadata);
+                }
+            } catch (error) {
+                console.error('Failed to extract metadata:', error);
+                
+                // Use filename as fallback
+                const fallbackMetadata = {
+                    common: {
+                        title: file.name.replace(/\.[^/.]+$/, ""),
+                        artist: 'Unknown Artist',
+                        album: 'Unknown Album',
+                        year: '',
+                        genre: '',
+                        track: { no: null, of: null }
+                    }
+                };
+                displayCurrentMetadata(fallbackMetadata);
+                populateEditForm(fallbackMetadata);
+            }
+        }
+
+        function displayCurrentMetadata(metadata) {
+            const common = metadata.common || {};
+            
+            document.getElementById('currentTitle').textContent = common.title || '';
+            document.getElementById('currentArtist').textContent = common.artist || '';
+            document.getElementById('currentAlbum').textContent = common.album || '';
+            document.getElementById('currentYear').textContent = common.year || '';
+            document.getElementById('currentGenre').textContent = (common.genre && common.genre[0]) || '';
+            
+            const trackText = common.track?.no ? 
+                (common.track.of ? `${common.track.no}/${common.track.of}` : common.track.no.toString()) : '';
+            document.getElementById('currentTrack').textContent = trackText;
+            
+            // Update audio info
+            document.getElementById('audioTitle').textContent = common.title || 'Unknown Title';
+            document.getElementById('audioDetails').textContent = 
+                `${common.artist || 'Unknown Artist'} • ${common.album || 'Unknown Album'}`;
+            
+            // Handle artwork
+            if (common.picture && common.picture.length > 0) {
+                const artwork = common.picture[0];
+                const blob = new Blob([artwork.data], { type: artwork.format });
+                const url = URL.createObjectURL(blob);
+                const artworkImg = document.getElementById('currentArtwork');
+                artworkImg.innerHTML = `<img src="${url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">`;
+            }
+        }
+
+        function populateEditForm(metadata) {
+            const common = metadata.common || {};
+            
+            document.getElementById('newTitle').value = common.title || '';
+            document.getElementById('newArtist').value = common.artist || '';
+            document.getElementById('newAlbum').value = common.album || '';
+            document.getElementById('newYear').value = common.year || '';
+            document.getElementById('newGenre').value = (common.genre && common.genre[0]) || '';
+            
+            const trackText = common.track?.no ? 
+                (common.track.of ? `${common.track.no}/${common.track.of}` : common.track.no.toString()) : '';
+            document.getElementById('newTrack').value = trackText;
+            document.getElementById('newComment').value = common.comment || '';
+        }
+
+        // Genre tag selection
+        document.querySelectorAll('.genre-tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                document.getElementById('newGenre').value = tag.textContent;
+                document.querySelectorAll('.genre-tag').forEach(t => t.classList.remove('selected'));
+                tag.classList.add('selected');
+            });
+        });
+
+        // Artwork upload
+        document.getElementById('artworkUpload').addEventListener('click', () => {
+            document.getElementById('artworkInput').click();
+        });
+
+        document.getElementById('artworkInput').addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                if (file.type.startsWith('image/')) {
+                    newArtwork = file;
+                    const url = URL.createObjectURL(file);
+                    const artworkImg = document.getElementById('currentArtwork');
+                    artworkImg.innerHTML = `<img src="${url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">`;
+                }
+            }
+        });
+
+        // Save metadata
+        saveBtn.addEventListener('click', async () => {
+            if (!audioFile) {
+                alert('Please select an audio file first.');
+                return;
+            }
+
+            try {
+                saveBtn.disabled = true;
+                progressContainer.classList.add('active');
+                
+                await initFFmpeg();
+                
+                const inputName = 'input.mp3';
+                const outputName = 'output.mp3';
+                let artworkName = '';
+                
+                await ffmpeg.writeFile(inputName, new Uint8Array(await audioFile.arrayBuffer()));
+                
+                // Handle artwork
+                if (newArtwork) {
+                    artworkName = 'artwork.jpg';
+                    await ffmpeg.writeFile(artworkName, new Uint8Array(await newArtwork.arrayBuffer()));
+                }
+                
+                const command = buildFFmpegCommand(inputName, outputName, artworkName);
+                
+                // Track progress
+                ffmpeg.on('progress', ({ progress }) => {
+                    const percent = Math.round(progress * 100);
+                    document.getElementById('progressFill').style.width = percent + '%';
+                    document.getElementById('status').textContent = `Updating metadata... ${percent}%`;
+                });
+
+                await ffmpeg.exec(command);
+                
+                const outputData = await ffmpeg.readFile(outputName);
+                const outputBlob = new Blob([outputData.buffer], { type: 'audio/mp3' });
+                
+                // Create download link
+                const url = URL.createObjectURL(outputBlob);
+                downloadBtn.onclick = () => {
+                    const title = document.getElementById('newTitle').value || 'untitled';
+                    const artist = document.getElementById('newArtist').value || 'unknown';
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${artist} - ${title}.mp3`;
+                    a.click();
+                };
+                
+                downloadBtn.classList.add('active');
+                document.getElementById('status').textContent = 'Metadata updated successfully!';
+                
+            } catch (error) {
+                console.error('Metadata update failed:', error);
+                document.getElementById('status').textContent = 'Metadata update failed. Please try again.';
+            } finally {
+                saveBtn.disabled = false;
+            }
+        });
+
+        function buildFFmpegCommand(inputName, outputName, artworkName) {
+            const command = ['-i', inputName];
+            
+            if (artworkName) {
+                command.push('-i', artworkName);
+            }
+            
+            // Copy audio stream
+            command.push('-c:a', 'copy');
+            
+            if (artworkName) {
+                command.push('-c:v', 'mjpeg');
+                command.push('-disposition:v:0', 'attached_pic');
+            }
+            
+            // Metadata flags
+            const title = document.getElementById('newTitle').value;
+            const artist = document.getElementById('newArtist').value;
+            const album = document.getElementById('newAlbum').value;
+            const year = document.getElementById('newYear').value;
+            const genre = document.getElementById('newGenre').value;
+            const track = document.getElementById('newTrack').value;
+            const comment = document.getElementById('newComment').value;
+            
+            if (title) command.push('-metadata', `title=${title}`);
+            if (artist) command.push('-metadata', `artist=${artist}`);
+            if (album) command.push('-metadata', `album=${album}`);
+            if (year) command.push('-metadata', `date=${year}`);
+            if (genre) command.push('-metadata', `genre=${genre}`);
+            if (track) command.push('-metadata', `track=${track}`);
+            if (comment) command.push('-metadata', `comment=${comment}`);
+            
+            command.push('-id3v2_version', '3');
+            command.push('-write_id3v1', '1');
+            command.push(outputName);
+            
+            return command;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await initFFmpeg();
+            } catch (error) {
+                console.error('Failed to initialize FFmpeg:', error);
+            }
+        });
+    </script>
+</body>
+</html>

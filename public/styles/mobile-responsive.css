@@ -1,3 +1,5 @@
+/* Hide legacy Top-left return button (web) */
+.container > div[style*="margin-bottom: 20px"] > a { display: none !important; }
 /* DropShare 移动端响应式样式 */
 
 /* 移动端优化变量 */

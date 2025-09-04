@@ -540,7 +540,7 @@
             handleFiles(files) {
                 const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
                 if (imageFiles.length === 0) {
-                    alert(";
+                    alert('请选择有效的图片文件');
                     return;
                 }
                 
@@ -723,7 +723,7 @@
             
             async startConversion() {
                 if (!this.selectedFormat) {
-                    alert(";
+                    alert('请先选择输出格式');
                     return;
                 }
                 
@@ -734,18 +734,18 @@
                 
                 for (let i = 0; i < this.selectedFiles.length; i++) {
                     const file = this.selectedFiles[i];
-                    this.updateProgress((i / this.selectedFiles.length) * 100, `${";
+                    this.updateProgress((i / this.selectedFiles.length) * 100, `正在转换 ${file.name}...`);
                     
                     try {
                         const convertedFile = await this.convertImage(file);
                         this.convertedFiles.push(convertedFile);
                     } catch (error) {
                         console.error('转换失败:', error);
-                        alert(`${";
+                        alert(`转换 ${file.name} 失败: ${error.message}`);
                     }
                 }
                 
-                this.updateProgress(100, ";
+                this.updateProgress(100, '转换完成!');
                 setTimeout(() => {
                     this.showResults();
                 }, 500);
@@ -843,9 +843,9 @@
                 const file = this.convertedFiles[index];
                 if (window.ui && window.ui.filesQueue) {
                     window.ui.filesQueue.push(file);
-                    alert(`${file.name} ${";
+                    alert(`${file.name} 已添加到分享队列`);
                 } else {
-                    alert(";
+                    alert('分享功能暂时不可用');
                 }
             }
             
@@ -854,9 +854,9 @@
                     this.convertedFiles.forEach(file => {
                         window.ui.filesQueue.push(file);
                     });
-                    alert(`${this.convertedFiles.length} ${";
+                    alert(`${this.convertedFiles.length} 个文件已添加到分享队列`);
                 } else {
-                    alert(";
+                    alert('分享功能暂时不可用');
                 }
             }
             

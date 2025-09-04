@@ -951,9 +951,9 @@
                 } else if (fileType.includes('html')) {
                     await this.parseHTMLFile(file);
                 } else {
-                    // 对于其他格式，显示基本信息
-                    const docTypeText = "text document type" || '文档类型';
-                    const fileSizeText = "text file size" || '文件大小';
+                    // For other formats, display basic information
+                    const docTypeText = "text document type" || 'Document Type';
+                    const fileSizeText = "text file size" || 'File Size';
                     this.documentContent = `${docTypeText}: ${fileType}\n${fileSizeText}: ${this.formatFileSize(file.size)}`;
                     this.totalPages = 1;
                     this.updatePreview();
@@ -962,7 +962,7 @@
             
             async parsePDF(file) {
                 try {
-                    const pdfLoadingText = "text pdf loading" || 'PDF文档已加载，正在解析...';
+                    const pdfLoadingText = "text pdf loading" || 'PDF document loaded, parsing...';
                     this.documentContent = pdfLoadingText;
                     this.updatePreview();
                     
@@ -976,10 +976,10 @@
                     // 渲染第一页作为预览
                     await this.renderPDFPage(1);
                     
-                    console.log('✅ PDF解析成功，页数:', this.totalPages);
+                    console.log('✅ PDF parsing successful, pages:', this.totalPages);
                 } catch (error) {
-                    console.error('PDF解析失败:', error);
-                    this.documentContent = `PDF解析失败: ${error.message}`;
+                    console.error('PDF parsing failed:', error);
+                    this.documentContent = `PDF parsing failed: ${error.message}`;
                     this.totalPages = 0;
                     this.updatePreview();
                 }
@@ -991,16 +991,16 @@
                 try {
                     const page = await this.pdfDocument.getPage(pageNumber);
                     
-                    // 提取文本内容
+                    // Extract text content
                     const textContent = await page.getTextContent();
                     const pageText = textContent.items.map(item => item.str).join(' ');
                     
-                    // 更新当前页内容
-                    this.documentContent = pageText || `PDF第${pageNumber}页 - 无法提取文本内容`;
+                    // Update current page content
+                    this.documentContent = pageText || `PDF page ${pageNumber} - Unable to extract text content`;
                     this.currentPage = pageNumber;
                     this.updatePreview();
                     
-                    // 可选：渲染PDF页面到canvas
+                    // Optional: Render PDF page to canvas
                     const viewport = page.getViewport({ scale: 1.0 });
                     const canvas = document.createElement('canvas');
                     const context = canvas.getContext('2d');
@@ -1012,7 +1012,7 @@
                         viewport: viewport
                     }).promise;
                     
-                    // 将canvas添加到预览区域
+                    // Add canvas to preview area
                     const previewArea = document.getElementById('previewArea');
                     previewArea.innerHTML = '';
                     previewArea.appendChild(canvas);
@@ -1020,8 +1020,8 @@
                     canvas.style.height = 'auto';
                     
                 } catch (error) {
-                    console.error('PDF页面渲染失败:', error);
-                    this.documentContent = `第${pageNumber}页渲染失败: ${error.message}`;
+                    console.error('PDF page rendering failed:', error);
+                    this.documentContent = `Page ${pageNumber} rendering failed: ${error.message}`;
                     this.updatePreview();
                 }
             }
@@ -1029,7 +1029,7 @@
             async parseTextFile(file) {
                 const text = await file.text();
                 this.documentContent = text;
-                this.totalPages = Math.ceil(text.length / 2000); // 每2000字符算一页
+                this.totalPages = Math.ceil(text.length / 2000); // 2000 characters per page
                 this.updatePreview();
             }
             
@@ -1066,10 +1066,10 @@
             
             updatePreview() {
                 const previewArea = document.getElementById('previewArea');
-                const noPreviewText = "text no preview available" || '无法预览此文档内容';
+                const noPreviewText = "text no preview available" || 'Unable to preview this document content';
                 const content = this.documentContent || noPreviewText;
                 
-                // 简单的分页显示
+                // Simple pagination display
                 const wordsPerPage = 500;
                 const words = content.split(' ');
                 const startIndex = (this.currentPage - 1) * wordsPerPage;
@@ -1078,19 +1078,19 @@
                 
                 previewArea.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${pageContent}</pre>`;
                 
-                // 更新页面信息
-                const pageInfoText = "text page format" || '页面: {current} / {total}';
+                // Update page information
+                const pageInfoText = "text page format" || 'Page: {current} / {total}';
                 document.getElementById('documentPageInfo').textContent = pageInfoText.replace('{current}', this.currentPage).replace('{total}', this.totalPages);
                 document.getElementById('currentPageInput').value = this.currentPage;
                 document.getElementById('currentPageInput').max = this.totalPages;
                 
-                // 更新页面控制按钮状态
+                // Update page control button states
                 document.getElementById('firstPageBtn').disabled = this.currentPage <= 1;
                 document.getElementById('prevPageBtn').disabled = this.currentPage <= 1;
                 document.getElementById('nextPageBtn').disabled = this.currentPage >= this.totalPages;
                 document.getElementById('lastPageBtn').disabled = this.currentPage >= this.totalPages;
                 
-                // 更新提取设置的默认值
+                // Update default values for extraction settings
                 document.getElementById('extractEndPage').value = this.totalPages;
                 document.getElementById('extractEndPage').max = this.totalPages;
             }
@@ -1100,10 +1100,10 @@
                     this.currentPage = pageNum;
                     
                     if (this.pdfDocument) {
-                        // 如果是PDF文档，重新渲染指定页面
+                        // If it's a PDF document, re-render the specified page
                         await this.renderPDFPage(pageNum);
                     } else {
-                        // 对于其他文档类型，使用原有的分页逻辑
+                        // For other document types, use the original pagination logic
                         this.updatePreview();
                     }
                 }
@@ -1193,7 +1193,7 @@
                     item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--surface-color); border-radius: 4px; margin-bottom: 8px;';
                     item.innerHTML = `
                         <span>${file.name}</span>
-                        <button onclick="documentProcessor.removeMergeFile(${index})" style="background: var(--error-color); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">删除</button>
+                        <button onclick="documentProcessor.removeMergeFile(${index})" style="background: var(--error-color); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">Remove</button>
                     `;
                     list.appendChild(item);
                 });
@@ -1244,8 +1244,8 @@
                         this.showResults(startTime);
                     }
                 } catch (error) {
-                    console.error('文档处理失败:', error);
-                    const processingFailedText = "alert processing failed" || '处理失败: ';
+                    console.error('Document processing failed:', error);
+                    const processingFailedText = "alert processing failed" || 'Processing failed: ';
                     alert(processingFailedText + error.message);
                 } finally {
                     document.getElementById('processBtn').disabled = false;
@@ -1253,7 +1253,7 @@
             }
             
             async extractText() {
-                const extractingText = "progress extracting text" || '正在提取文本...';
+                const extractingText = "progress extracting text" || 'Extracting text...';
                 this.updateProgress(30, extractingText);
                 
                 const startPage = parseInt(document.getElementById('extractStartPage').value) || 1;
@@ -1267,22 +1267,22 @@
                 
                 try {
                     if (this.pdfDocument) {
-                        // 真正的PDF文本提取
+                        // Actual PDF text extraction
                         const totalPages = Math.min(endPage, this.totalPages);
                         
                         for (let pageNum = startPage; pageNum <= totalPages; pageNum++) {
                             this.updateProgress(30 + (pageNum - startPage) / (totalPages - startPage + 1) * 60, 
-                                             "progress extracting page" ? "progress extracting page".replace('{pageNum}', pageNum) : `正在提取第 ${pageNum} 页...`);
+                                             "progress extracting page" ? "progress extracting page".replace('{pageNum}', pageNum) : `Extracting page ${pageNum}...`);
                             
                             try {
                                 const page = await this.pdfDocument.getPage(pageNum);
                                 
-                                // 提取文本内容
+                                // Extract text content
                                 const textContent = await page.getTextContent();
                                 let pageText = '';
                                 
                                 if (preserveFormatting) {
-                                    // 保持格式：考虑文本位置信息
+                                    // Preserve formatting: consider text position information
                                     let lastY = null;
                                     textContent.items.forEach(item => {
                                         if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
@@ -1295,7 +1295,7 @@
                                         lastY = item.transform[5];
                                     });
                                 } else {
-                                    // 简单文本提取
+                                    // Simple text extraction
                                     pageText = textContent.items.map(item => item.str).join(' ');
                                 }
                                 
@@ -1303,11 +1303,11 @@
                                     if (extractedText && !extractedText.endsWith('\n\n')) {
                                         extractedText += '\n\n';
                                     }
-                                    extractedText += `=== 第 ${pageNum} 页 ===\n`;
+                                    extractedText += `=== Page ${pageNum} ===\n`;
                                     extractedText += pageText.trim() + '\n';
                                 }
                                 
-                                // 提取图片信息（如果选择了此选项）
+                                // Extract image information (if this option is selected)
                                 if (extractImages) {
                                     try {
                                         const operatorList = await page.getOperatorList();
@@ -1315,22 +1315,22 @@
                                         for (let i = 0; i < operatorList.fnArray.length; i++) {
                                             if (operatorList.fnArray[i] === pdfjsLib.OPS.paintImageXObject) {
                                                 imageCount++;
-                                                imageLinks.push(`[图片 ${pageNum}-${imageCount}] 位于第 ${pageNum} 页`);
+                                                imageLinks.push(`[Image ${pageNum}-${imageCount}] Located on page ${pageNum}`);
                                             }
                                         }
                                     } catch (imgError) {
-                                        console.warn('提取图片信息失败:', imgError);
+                                        console.warn('Failed to extract image information:', imgError);
                                     }
                                 }
                                 
                             } catch (pageError) {
-                                console.error(`第${pageNum}页提取失败:`, pageError);
-                                extractedText += `\n=== 第 ${pageNum} 页 ===\n[页面提取失败: ${pageError.message}]\n`;
+                                console.error(`Page ${pageNum} extraction failed:`, pageError);
+                                extractedText += `\n=== Page ${pageNum} ===\n[Page extraction failed: ${pageError.message}]\n`;
                             }
                         }
                     } else {
-                        // 非PDF文档使用原有逻辑
-                        extractedText = this.documentContent || "无法提取文本内容";
+                        // Non-PDF documents use original logic
+                        extractedText = this.documentContent || "Unable to extract text content";
                     }
                     
                     // 后处理

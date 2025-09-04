@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Format Converter - DropShare</title>
+    <script src="/vendor/ffmpeg/ffmpeg.js"></script>
+    <script src="/vendor/ffmpeg/util.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .conversion-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .file-info {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .info-label {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .format-btn {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .format-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .format-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .format-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .format-desc {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .quality-section {
+            margin-top: 16px;
+        }
+
+        .quality-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        }
+
+        .quality-btn {
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .quality-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .quality-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .convert-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .convert-button:hover {
+            background: #2563eb;
+        }
+
+        .convert-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .engine-status {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+
+        .engine-status.loaded {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="audio-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← Back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Audio Format Converter</h1>
+        <p class="page-subtitle">Convert between different audio formats - Real FFmpeg Processing</p>
+        
+        <div class="converter-card">
+            <div class="engine-status" id="engineStatus">
+                Loading audio processing engine...
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🔄</div>
+                <div class="upload-text">Click or drag to upload audio file</div>
+                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG, M4A, WMA formats</div>
+                <input type="file" id="fileInput" accept="audio/*">
+            </div>
+            
+            <div class="conversion-controls" id="conversionControls">
+                <div class="file-info">
+                    <div class="info-row">
+                        <span class="info-label">Current Format</span>
+                        <span class="info-value" id="currentFormat">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">File Size</span>
+                        <span class="info-value" id="currentSize">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value" id="currentDuration">-</span>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">Convert To Format</div>
+                    <div class="format-options">
+                        <div class="format-btn active" data-format="mp3">
+                            <div class="format-name">MP3</div>
+                            <div class="format-desc">Most compatible</div>
+                        </div>
+                        <div class="format-btn" data-format="aac">
+                            <div class="format-name">AAC</div>
+                            <div class="format-desc">Apple standard</div>
+                        </div>
+                        <div class="format-btn" data-format="ogg">
+                            <div class="format-name">OGG</div>
+                            <div class="format-desc">Open source</div>
+                        </div>
+                        <div class="format-btn" data-format="wav">
+                            <div class="format-name">WAV</div>
+                            <div class="format-desc">Uncompressed</div>
+                        </div>
+                        <div class="format-btn" data-format="flac">
+                            <div class="format-name">FLAC</div>
+                            <div class="format-desc">Lossless</div>
+                        </div>
+                        <div class="format-btn" data-format="m4a">
+                            <div class="format-name">M4A</div>
+                            <div class="format-desc">iTunes</div>
+                        </div>
+                    </div>
+
+                    <div class="quality-section">
+                        <div class="section-title">Quality Settings</div>
+                        <div class="quality-options">
+                            <div class="quality-btn" data-quality="low">Low (128k)</div>
+                            <div class="quality-btn active" data-quality="medium">Medium (192k)</div>
+                            <div class="quality-btn" data-quality="high">High (320k)</div>
+                            <div class="quality-btn" data-quality="lossless">Lossless</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="convert-button" id="convertBtn" disabled>Loading Engine...</button>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing conversion...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ffmpeg = null;
+        let audioFile = null;
+        let isEngineLoaded = false;
+        
+        // Initialize FFmpeg when page loads
+        async function initFFmpeg() {
+            const statusEl = document.getElementById('engineStatus');
+            statusEl.style.display = 'block';
+            statusEl.textContent = 'Loading audio processing engine...';
+
+            try {
+                // Check if FFmpeg is available
+                if (typeof FFmpegWASM === 'undefined') {
+                    throw new Error('FFmpeg library not loaded');
+                }
+
+                const { FFmpeg } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
+                
+                ffmpeg = new FFmpeg();
+                
+                ffmpeg.on('log', ({ message }) => {
+                    console.log(message);
+                });
+                
+                ffmpeg.on('progress', ({ progress }) => {
+                    const percentage = Math.round(progress * 100);
+                    updateProgress(percentage);
+                });
+                
+                statusEl.textContent = 'Loading FFmpeg core files...';
+                
+                // Try multiple sources with timeout: CDN → CDN → local mirror
+                const sourceBases = [
+                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                    // Optional local mirror (place files at public/vendor/ffmpeg)
+                    // /vendor/ffmpeg/ffmpeg-core.js and /vendor/ffmpeg/ffmpeg-core.wasm
+                    `${location.origin}/vendor/ffmpeg`
+                ];
+
+                async function tryLoadFrom(baseURL, timeoutMs = 10000) {
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), timeoutMs);
+                    try {
+                        const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
+                        const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
+                        // ffmpeg.load does its own fetches; we just time-box our preparation
+                        await ffmpeg.load({ coreURL, wasmURL });
+                        return true;
+                    } finally {
+                        clearTimeout(timer);
+                    }
+                }
+
+                let loaded = false;
+                for (const baseURL of sourceBases) {
+                    try {
+                        statusEl.textContent = `Loading FFmpeg core from: ${baseURL} ...`;
+                        loaded = await tryLoadFrom(baseURL, 12000);
+                        if (loaded) break;
+                    } catch (e) {
+                        console.warn(`Failed to load from ${baseURL}:`, e);
+                        // continue to next source
+                    }
+                }
+                
+                if (!loaded) {
+                    throw new Error('Failed to load FFmpeg from all CDN sources');
+                }
+                
+                isEngineLoaded = true;
+                statusEl.textContent = '✓ Audio processing engine loaded and ready!';
+                statusEl.classList.add('loaded');
+                
+                // Hide status after 3 seconds
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 3000);
+                
+                // Enable convert button if file is loaded
+                if (audioFile) {
+                    document.getElementById('convertBtn').disabled = false;
+                    document.getElementById('convertBtn').textContent = 'Convert Audio';
+                }
+                
+                console.log('FFmpeg loaded successfully');
+                
+            } catch (error) {
+                console.error('Failed to load FFmpeg:', error);
+                statusEl.textContent = '✗ Failed to load audio processing engine. Please refresh the page.';
+                statusEl.style.background = '#fee2e2';
+                statusEl.style.color = '#dc2626';
+                
+                // Show more detailed error in console
+                console.error('Detailed error:', error.stack || error.message);
+                
+                // Try alternative loading method after 3 seconds
+                setTimeout(async () => {
+                    statusEl.textContent = 'Trying alternative loading method...';
+                    try {
+                        const { FFmpeg } = FFmpegWASM;
+                        ffmpeg = new FFmpeg();
+                        await ffmpeg.load();
+                        
+                        isEngineLoaded = true;
+                        statusEl.textContent = '✓ Audio processing engine loaded (fallback method)!';
+                        statusEl.style.background = '#d1fae5';
+                        statusEl.style.color = '#065f46';
+                    } catch (fallbackError) {
+                        console.error('Fallback method also failed:', fallbackError);
+                        statusEl.textContent = '✗ Cannot load audio engine. Please check your internet connection.';
+                    }
+                }, 3000);
+            }
+        }
+        
+        // Initialize on page load - wait for both DOM and window to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(initFFmpeg, 100); // Small delay to ensure everything is ready
+            });
+        } else {
+            setTimeout(initFFmpeg, 100);
+        }
+        
+        // File upload
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('audio/')) {
+                audioFile = file;
+                document.getElementById('conversionControls').style.display = 'block';
+                
+                // Update file info
+                const extension = file.name.split('.').pop().toUpperCase();
+                document.getElementById('currentFormat').textContent = extension;
+                document.getElementById('currentSize').textContent = formatFileSize(file.size);
+                
+                // Create audio element to get duration
+                const audio = document.createElement('audio');
+                audio.src = URL.createObjectURL(file);
+                audio.addEventListener('loadedmetadata', function() {
+                    document.getElementById('currentDuration').textContent = formatTime(audio.duration);
+                    URL.revokeObjectURL(audio.src);
+                });
+
+                const convertBtn = document.getElementById('convertBtn');
+                if (isEngineLoaded) {
+                    convertBtn.disabled = false;
+                    convertBtn.textContent = 'Convert Audio';
+                } else {
+                    convertBtn.disabled = true;
+                    convertBtn.textContent = 'Loading Engine...';
+                }
+            }
+        });
+        
+        // Format selection
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update quality options based on format
+                updateQualityOptions(this.dataset.format);
+            });
+        });
+
+        // Quality selection
+        document.querySelectorAll('.quality-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function updateQualityOptions(format) {
+            const qualityBtns = document.querySelectorAll('.quality-btn');
+            
+            // Reset all buttons
+            qualityBtns.forEach(btn => {
+                btn.style.display = 'block';
+                btn.disabled = false;
+            });
+            
+            if (format === 'wav' || format === 'flac') {
+                // Hide bitrate options for lossless formats
+                qualityBtns.forEach(btn => {
+                    if (btn.dataset.quality !== 'lossless') {
+                        btn.style.display = 'none';
+                    } else {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateProgress(percentage) {
+            const progressSection = document.getElementById('progressSection');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressSection.style.display === 'none') {
+                progressSection.style.display = 'block';
+            }
+            
+            progressFill.style.width = Math.min(percentage, 100) + '%';
+            progressText.textContent = `Converting... ${Math.min(percentage, 100)}%`;
+        }
+        
+        // Convert button with real FFmpeg functionality
+        document.getElementById('convertBtn').addEventListener('click', async function() {
+            if (!audioFile || !ffmpeg || !isEngineLoaded) return;
+            
+            const targetFormat = document.querySelector('.format-btn.active').dataset.format;
+            const quality = document.querySelector('.quality-btn.active').dataset.quality;
+            
+            // Check if conversion is needed
+            const currentFormat = audioFile.name.split('.').pop().toLowerCase();
+            if (currentFormat === targetFormat && quality !== 'lossless') {
+                alert('File is already in the target format!');
+                return;
+            }
+            
+            // Show progress
+            const progressSection = document.getElementById('progressSection');
+            progressSection.style.display = 'block';
+            this.disabled = true;
+            
+            try {
+                // Write input file to FFmpeg filesystem
+                const inputFileName = 'input.' + currentFormat;
+                const outputFileName = 'output.' + targetFormat;
+                
+                document.getElementById('progressText').textContent = 'Loading file...';
+                await ffmpeg.writeFile(inputFileName, new Uint8Array(await audioFile.arrayBuffer()));
+                
+                // Build FFmpeg command based on target format and quality
+                let command = ['-i', inputFileName];
+                
+                // Format-specific encoding
+                if (targetFormat === 'mp3') {
+                    command.push('-codec:a', 'libmp3lame');
+                    switch (quality) {
+                        case 'low': command.push('-b:a', '128k'); break;
+                        case 'medium': command.push('-b:a', '192k'); break;
+                        case 'high': command.push('-b:a', '320k'); break;
+                        case 'lossless': command.push('-b:a', '320k'); break;
+                    }
+                } else if (targetFormat === 'aac') {
+                    command.push('-codec:a', 'aac');
+                    switch (quality) {
+                        case 'low': command.push('-b:a', '96k'); break;
+                        case 'medium': command.push('-b:a', '128k'); break;
+                        case 'high': command.push('-b:a', '256k'); break;
+                        case 'lossless': command.push('-b:a', '256k'); break;
+                    }
+                } else if (targetFormat === 'ogg') {
+                    command.push('-codec:a', 'libvorbis');
+                    switch (quality) {
+                        case 'low': command.push('-q:a', '2'); break;
+                        case 'medium': command.push('-q:a', '5'); break;
+                        case 'high': command.push('-q:a', '8'); break;
+                        case 'lossless': command.push('-q:a', '10'); break;
+                    }
+                } else if (targetFormat === 'wav') {
+                    command.push('-codec:a', 'pcm_s16le');
+                } else if (targetFormat === 'flac') {
+                    command.push('-codec:a', 'flac');
+                } else if (targetFormat === 'm4a') {
+                    command.push('-codec:a', 'aac', '-f', 'mp4');
+                }
+                
+                command.push('-y', outputFileName);
+                
+                console.log('FFmpeg convert command:', command.join(' '));
+                document.getElementById('progressText').textContent = 'Converting audio...';
+                
+                // Execute FFmpeg command
+                await ffmpeg.exec(command);
+                
+                // Read the output file
+                const outputData = await ffmpeg.readFile(outputFileName);
+                
+                // Create download link
+                const mimeType = {
+                    'mp3': 'audio/mpeg',
+                    'aac': 'audio/aac',
+                    'ogg': 'audio/ogg',
+                    'wav': 'audio/wav',
+                    'flac': 'audio/flac',
+                    'm4a': 'audio/mp4'
+                };
+                
+                const blob = new Blob([outputData.buffer], { type: mimeType[targetFormat] });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const originalName = audioFile.name.replace(/\.[^/.]+$/, '');
+                a.download = `${originalName}.${targetFormat}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Clean up
+                try {
+                    await ffmpeg.deleteFile(inputFileName);
+                    await ffmpeg.deleteFile(outputFileName);
+                } catch (e) {
+                    console.warn('Cleanup warning:', e);
+                }
+                
+                document.getElementById('progressFill').style.width = '100%';
+                document.getElementById('progressText').textContent = `✓ Converted to ${targetFormat.toUpperCase()}!`;
+                
+            } catch (error) {
+                console.error('Conversion failed:', error);
+                document.getElementById('progressText').textContent = 'Conversion failed: ' + error.message;
+            } finally {
+                this.disabled = false;
+                this.textContent = 'Convert Audio';
+            }
+        });
+
+        // Drag and drop upload
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('audio/')) {
+                document.getElementById('fileInput').files = files;
+                document.getElementById('fileInput').dispatchEvent(new Event('change'));
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume Normalizer - DropShare</title>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .engine-status {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+            margin-bottom: 20px;
+        }
+        
+        .engine-status.loaded {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+        
+        .choose-file-btn {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .choose-file-btn:hover {
+            background: #16a34a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(34, 197, 94, 0.3);
+        }
+
+        .conversion-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .preset-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .preset-btn:hover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .preset-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .custom-controls {
+            margin-top: 16px;
+            display: none;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            min-width: 100px;
+            font-weight: 500;
+        }
+
+        .input-group select,
+        .input-group input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #22c55e;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .file-info {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .file-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .file-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .back-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+            transform: translateX(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .preset-options {
+                flex-direction: column;
+            }
+            
+            .preset-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="audio-tools.html" class="back-btn">← Back</a>
+        
+        <h1 class="page-title">Volume Normalizer</h1>
+        <p class="page-subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
+        
+        <div class="converter-card">
+            <div class="engine-status" id="engineStatus">
+                Loading audio processing engine...
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Upload Audio File</div>
+                <div class="upload-hint">Drag and drop your audio file here or click to browse</div>
+                <button class="choose-file-btn" onclick="document.getElementById('fileInput').click()">Choose Audio File</button>
+                <input type="file" id="fileInput" accept="audio/*">
+            </div>
+            
+            <div class="file-info" id="fileInfo">
+                <div class="file-info-row">
+                    <span>File:</span>
+                    <span id="fileName">-</span>
+                </div>
+                <div class="file-info-row">
+                    <span>Size:</span>
+                    <span id="fileSize">-</span>
+                </div>
+                <div class="file-info-row">
+                    <span>Duration:</span>
+                    <span id="fileDuration">-</span>
+                </div>
+            </div>
+
+            <div class="conversion-controls" id="conversionControls">
+                <div class="control-section">
+                    <div class="section-title">Normalization Preset</div>
+                    <div class="preset-options">
+                        <div class="preset-btn active" data-method="peak" data-target="0">Peak (0 dB)</div>
+                        <div class="preset-btn" data-method="peak" data-target="-3">Peak (-3 dB)</div>
+                        <div class="preset-btn" data-method="rms" data-target="-12">RMS (-12 dB)</div>
+                        <div class="preset-btn" data-method="loudness" data-target="-23">Loudness (-23 LUFS)</div>
+                        <div class="preset-btn" data-method="custom">Custom</div>
+                    </div>
+                    
+                    <div class="custom-controls" id="customControls">
+                        <div class="input-group">
+                            <label>Method:</label>
+                            <select id="customMethod">
+                                <option value="peak">Peak Normalization</option>
+                                <option value="rms">RMS Normalization</option>
+                                <option value="loudness">Loudness Normalization</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Target Level:</label>
+                            <input type="number" id="customTarget" value="-3" step="0.1" min="-50" max="0">
+                            <span>dB/LUFS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="normalizeBtn">Normalize Audio</button>
+                </div>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-text" id="progressText">Processing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ffmpeg = null;
+        let audioFile = null;
+        let isEngineLoaded = false;
+        
+        // Initialize FFmpeg when page loads
+        async function initFFmpeg() {
+            const statusEl = document.getElementById('engineStatus');
+            statusEl.style.display = 'block';
+            statusEl.textContent = 'Loading audio processing engine...';
+            try {
+                const { createFFmpeg, fetchFile } = FFmpeg;
+                ffmpeg = createFFmpeg({
+                    log: true,
+                    corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+                });
+                
+                ffmpeg.setProgress(({ ratio }) => {
+                    const percentage = Math.round(ratio * 100);
+                    updateProgress(percentage);
+                });
+                
+                await ffmpeg.load();
+                
+                isEngineLoaded = true;
+                statusEl.textContent = '✓ Audio processing engine loaded and ready!';
+                statusEl.classList.add('loaded');
+                
+                console.log('FFmpeg loaded successfully');
+                
+            } catch (error) {
+                console.error('Failed to load FFmpeg:', error);
+                statusEl.textContent = '✗ Failed to load audio processing engine. Please refresh the page.';
+                statusEl.style.background = '#fee2e2';
+                statusEl.style.color = '#dc2626';
+            }
+        }
+
+        function updateProgress(percentage) {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+            }
+            
+            if (progressText && percentage > 0) {
+                progressText.textContent = `Processing... ${percentage}%`;
+            }
+        }
+
+        window.addEventListener('load', initFFmpeg);
+        
+        // File upload handlers
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+
+        function handleFileUpload(file) {
+            if (!file.type.startsWith('audio/')) {
+                alert('Please select a valid audio file.');
+                return;
+            }
+
+            audioFile = file;
+            
+            // Show file info
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileInfo').style.display = 'block';
+            
+            // Get audio duration
+            const audio = new Audio();
+            audio.src = URL.createObjectURL(file);
+            audio.addEventListener('loadedmetadata', () => {
+                document.getElementById('fileDuration').textContent = formatDuration(audio.duration);
+                URL.revokeObjectURL(audio.src);
+            });
+            
+            // Show conversion controls
+            document.getElementById('conversionControls').style.display = 'block';
+            
+            // Hide engine status
+            document.getElementById('engineStatus').style.display = 'none';
+        }
+
+        function formatFileSize(bytes) {
+            const units = ['B', 'KB', 'MB', 'GB'];
+            let size = bytes;
+            let unitIndex = 0;
+            
+            while (size >= 1024 && unitIndex < units.length - 1) {
+                size /= 1024;
+                unitIndex++;
+            }
+            
+            return `${size.toFixed(1)} ${units[unitIndex]}`;
+        }
+
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Preset selection
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const customControls = document.getElementById('customControls');
+                if (this.dataset.method === 'custom') {
+                    customControls.style.display = 'block';
+                } else {
+                    customControls.style.display = 'none';
+                }
+            });
+        });
+
+        // Normalize button
+        document.getElementById('normalizeBtn').addEventListener('click', async function() {
+            if (!audioFile || !ffmpeg || !isEngineLoaded) {
+                alert('Please upload an audio file and wait for the engine to load.');
+                return;
+            }
+
+            const normalizeBtn = this;
+            normalizeBtn.disabled = true;
+            
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('conversionControls').style.display = 'none';
+            
+            try {
+                const selectedPreset = document.querySelector('.preset-btn.active');
+                const method = selectedPreset.dataset.method === 'custom' ? 
+                    document.getElementById('customMethod').value : selectedPreset.dataset.method;
+                const target = selectedPreset.dataset.method === 'custom' ? 
+                    document.getElementById('customTarget').value : selectedPreset.dataset.target;
+
+                // Write input file to FFmpeg filesystem
+                const fileExtension = audioFile.name.split('.').pop().toLowerCase();
+                const inputFileName = `input.${fileExtension}`;
+                const outputFileName = `normalized.${fileExtension}`;
+                
+                document.getElementById('progressText').textContent = 'Loading file...';
+                ffmpeg.FS('writeFile', inputFileName, await fetchFile(audioFile));
+                
+                // Build FFmpeg command based on normalization method
+                let filterArgs = [];
+                
+                if (method === 'peak') {
+                    // Peak normalization
+                    filterArgs = ['-af', `volume=${target}dB`];
+                } else if (method === 'rms') {
+                    // RMS normalization (approximate)
+                    filterArgs = ['-af', `volume=${target}dB:precision=fixed`];
+                } else if (method === 'loudness') {
+                    // Loudness normalization (EBU R128)
+                    filterArgs = ['-af', `loudnorm=I=${target}:LRA=11:TP=-1.5`];
+                }
+                
+                const command = ['-i', inputFileName, ...filterArgs, '-y', outputFileName];
+                
+                console.log('FFmpeg normalize command:', command.join(' '));
+                document.getElementById('progressText').textContent = 'Analyzing and normalizing audio...';
+                
+                // Execute FFmpeg command
+                await ffmpeg.run(...command);
+                
+                // Read the output file
+                const outputData = ffmpeg.FS('readFile', outputFileName);
+                
+                // Create download link
+                const blob = new Blob([outputData.buffer], { type: audioFile.type });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `normalized_${audioFile.name}`;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Clean up
+                try {
+                    ffmpeg.FS('unlink', inputFileName);
+                    ffmpeg.FS('unlink', outputFileName);
+                } catch (e) {
+                    console.warn('Cleanup warning:', e);
+                }
+                
+                document.getElementById('progressFill').style.width = '100%';
+                document.getElementById('progressText').textContent = 'Normalization complete! File downloaded.';
+                
+                setTimeout(() => {
+                    document.getElementById('progressSection').style.display = 'none';
+                    document.getElementById('conversionControls').style.display = 'block';
+                    normalizeBtn.disabled = false;
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Normalization error:', error);
+                document.getElementById('progressText').textContent = 'Error during normalization. Please try again.';
+                document.getElementById('progressSection').style.display = 'none';
+                document.getElementById('conversionControls').style.display = 'block';
+                normalizeBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

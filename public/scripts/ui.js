@@ -28,9 +28,14 @@ window.addEventListener('error', (event) => {
     // Prevent errors from freezing the page completely
     if (event.error && event.error.message && event.error.message.includes('dialog')) {
         console.warn('Dialog-related error detected, attempting to clean up dialogs');
-        document.querySelectorAll('x-dialog[show]').forEach(dialog => {
-            dialog.removeAttribute('show');
-        });
+        const dialogs = document.querySelectorAll('x-dialog[show]');
+        if (dialogs) {
+            dialogs.forEach(dialog => {
+                if (dialog && dialog.removeAttribute) {
+                    dialog.removeAttribute('show');
+                }
+            });
+        }
     }
 });
 
@@ -75,6 +80,8 @@ function updateRoomUserName(displayName) {
 // Function to update display name
 function updateDisplayName(displayName, deviceName) {
     const $displayName = $('displayName');
+    if (!$displayName) return;
+    
     let displayText = '';
     
     // Always check if i18n is available and apply correct translation
@@ -158,7 +165,10 @@ class PeersUI {
         // Ensure not to display current user themselves
         if (peer.id === window.currentPeerId) return;
         const peerUI = new PeerUI(peer);
-        $$('x-peers').appendChild(peerUI.$el);
+        const peersContainer = $$('x-peers');
+        if (peersContainer) {
+            peersContainer.appendChild(peerUI.$el);
+        }
     }
 
     _onPeers(peers) {
@@ -187,7 +197,10 @@ class PeersUI {
     }
 
     _clearPeers() {
-        const $peers = $$('x-peers').innerHTML = '';
+        const $peers = $$('x-peers');
+        if ($peers) {
+            $peers.innerHTML = '';
+        }
     }
 
     _onPaste(e) {
@@ -547,8 +560,13 @@ class PeerUI {
 class Dialog {
     constructor(id) {
         this.$el = $(id);
-        this.$el.querySelectorAll('[close]').forEach(el => el.addEventListener('click', e => this.hide()))
-        this.$autoFocus = this.$el.querySelector('[autofocus]');
+        if (this.$el) {
+            const closeElements = this.$el.querySelectorAll('[close]');
+            if (closeElements) {
+                closeElements.forEach(el => el.addEventListener('click', e => this.hide()));
+            }
+            this.$autoFocus = this.$el.querySelector('[autofocus]');
+        }
         // Register to dialog manager
         DialogManager.register(this);
     }

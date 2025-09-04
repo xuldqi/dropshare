@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片压缩器 - DropShare</title>
+    <title>Image Compressor - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -382,13 +382,13 @@
                 📷 DropShare
             </a>
             <nav class="nav-links">
-                <a href="index.html">首页</a>
-                <a href="share.html">传送</a>
-                <a href="share.html#rooms">多人房间</a>
-                <a href="image-tools.html" class="active">图片</a>
-                <a href="audio-tools.html">音频</a>
-                <a href="video-tools.html">视频</a>
-                <a href="document-tools.html">文件</a>
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html" class="active">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
             </nav>
         </div>
     </header>
@@ -401,61 +401,61 @@
             </a>
         </div>
         
-        <h1 class="page-title">图片压缩器</h1>
-        <p class="page-subtitle">智能压缩图片，减小文件大小同时保持高质量</p>
+        <h1 class="page-title">Image Compressor</h1>
+        <p class="page-subtitle">Smartly compress images to reduce file size while preserving quality</p>
 
         <div class="compressor-card">
-            <!-- 上传区域 -->
+            <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📸</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, WebP 格式，最大 10MB</div>
+                <div class="upload-text">Click to choose images or drag them here</div>
+                <div class="upload-hint">Supports JPG, PNG, WebP; up to 10MB</div>
                 <input type="file" id="fileInput" accept="image/*" multiple>
             </div>
 
-            <!-- 进度条 -->
+            <!-- Progress Bar -->
             <div class="progress-bar" id="progressBar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
 
-            <!-- 图片预览和压缩控制 -->
+            <!-- Image Preview and Compression Controls -->
             <div class="image-preview" id="imagePreview">
                 <div class="preview-container">
                     <div class="preview-item">
-                        <h3>原始图片</h3>
-                        <img id="originalImage" class="preview-image" alt="原始图片">
+                        <h3>Original Image</h3>
+                        <img id="originalImage" class="preview-image" alt="Original image">
                         <div class="image-info">
-                            <div><span>尺寸:</span> <span class="size" id="originalSize"></span></div>
-                            <div><span>文件大小:</span> <span class="size" id="originalFileSize"></span></div>
+                            <div><span>Dimensions:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="preview-item">
-                        <h3>压缩后图片</h3>
-                        <img id="compressedImage" class="preview-image" alt="压缩后图片">
+                        <h3>Compressed Image</h3>
+                        <img id="compressedImage" class="preview-image" alt="Compressed image">
                         <div class="image-info">
-                            <div><span>尺寸:</span> <span class="size" id="compressedSize"></span></div>
-                            <div><span>文件大小:</span> <span class="size" id="compressedFileSize"></span></div>
+                            <div><span>Dimensions:</span> <span class="size" id="compressedSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="compressedFileSize"></span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 压缩大小显示 -->
+                <!-- Size Reduction Display -->
                 <div class="size-reduction" id="sizeReduction" style="display: none;">
-                    <span>文件大小减少了</span> <span id="reductionPercentage"></span>
+                    <span>File size reduced by</span> <span id="reductionPercentage"></span>
                 </div>
 
-                <!-- 压缩控制 -->
+                <!-- Compression Controls -->
                 <div class="compression-controls">
                     <div class="control-group">
                         <label class="control-label">
-                            <span>图片质量:</span> <span class="quality-value" id="qualityValue">80%</span>
+                            <span>Image quality:</span> <span class="quality-value" id="qualityValue">80%</span>
                         </label>
                         <input type="range" class="quality-slider" id="qualitySlider" 
                                min="10" max="100" value="80">
                     </div>
 
                     <div class="control-group">
-                        <label class="control-label">输出格式:</label>
+                        <label class="control-label">Output format:</label>
                         <div class="format-options">
                             <div class="format-option selected" data-format="jpeg">JPEG</div>
                             <div class="format-option" data-format="png">PNG</div>
@@ -464,13 +464,13 @@
                     </div>
                 </div>
 
-                <!-- 操作按钮 -->
+                <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="btn btn-success" id="downloadBtn">
-                        <span>📥 下载压缩图片</span>
+                        <span>📥 Download compressed image</span>
                     </button>
                     <button class="btn btn-secondary" id="resetBtn">
-                        <span>🔄 重新选择</span>
+                        <span>🔄 Reset</span>
                     </button>
                 </div>
             </div>
@@ -478,12 +478,12 @@
     </div>
 
     <script>
-        // 全局变量
+        // Global variables
         let originalFile = null;
         let originalCanvas = null;
         let compressedCanvas = null;
 
-        // DOM 元素
+        // DOM elements
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const imagePreview = document.getElementById('imagePreview');
@@ -497,7 +497,7 @@
         const progressBar = document.getElementById('progressBar');
         const progressFill = document.getElementById('progressFill');
 
-        // 事件监听器
+        // Event listeners
         uploadArea.addEventListener('click', () => fileInput.click());
         uploadArea.addEventListener('dragover', handleDragOver);
         uploadArea.addEventListener('drop', handleDrop);
@@ -510,7 +510,7 @@
         downloadBtn.addEventListener('click', downloadCompressedImage);
         resetBtn.addEventListener('click', resetCompressor);
 
-        // 拖拽处理
+        // Drag & Drop handlers
         function handleDragOver(e) {
             e.preventDefault();
             uploadArea.classList.add('dragover');
@@ -530,7 +530,7 @@
             }
         }
 
-        // 文件选择处理
+        // File selection handler
         function handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) {
@@ -538,17 +538,17 @@
             }
         }
 
-        // 处理文件
+        // Process file
         function processFile(file) {
-            // 验证文件类型
+            // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert(";
+                alert('Please select an image file.');
                 return;
             }
 
-            // 验证文件大小
+            // Validate file size
             if (file.size > 10 * 1024 * 1024) {
-                alert(";
+                alert('File size exceeds 10MB limit.');
                 return;
             }
 
@@ -557,7 +557,7 @@
             loadImage(file);
         }
 
-        // 显示进度条
+        // Show progress bar
         function showProgress() {
             progressBar.style.display = 'block';
             let progress = 0;
@@ -574,7 +574,7 @@
             }, 50);
         }
 
-        // 加载图片
+        // Load image
         function loadImage(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -588,55 +588,55 @@
             reader.readAsDataURL(file);
         }
 
-        // 显示原始图片
+        // Display original image
         function displayOriginalImage(img, file) {
             originalImage.src = img.src;
             
-            // 显示原始图片信息
+            // Show original image info
             document.getElementById('originalSize').textContent = `${img.width} × ${img.height}`;
             document.getElementById('originalFileSize').textContent = formatFileSize(file.size);
             
-            // 创建原始图片的 canvas
+            // Create canvas for original image
             originalCanvas = document.createElement('canvas');
             const ctx = originalCanvas.getContext('2d');
             originalCanvas.width = img.width;
             originalCanvas.height = img.height;
             ctx.drawImage(img, 0, 0);
             
-            // 显示预览区域
+            // Show preview area
             imagePreview.style.display = 'block';
         }
 
-        // 压缩图片
+        // Compress image
         function compressImage() {
             if (!originalCanvas) return;
 
             const quality = qualitySlider.value / 100;
             const format = getSelectedFormat();
             
-            // 创建压缩后的 canvas
+            // Create canvas for compressed image
             compressedCanvas = document.createElement('canvas');
             const ctx = compressedCanvas.getContext('2d');
             compressedCanvas.width = originalCanvas.width;
             compressedCanvas.height = originalCanvas.height;
             
-            // 绘制图片
+            // Draw image
             ctx.drawImage(originalCanvas, 0, 0);
             
-            // 转换为指定格式和质量
+            // Convert to specified format and quality
             const mimeType = `image/${format}`;
             const dataUrl = compressedCanvas.toDataURL(mimeType, quality);
             
-            // 显示压缩后的图片
+            // Show compressed image
             compressedImage.src = dataUrl;
             
-            // 计算压缩后的文件大小
+            // Estimate compressed file size
             const compressedSize = Math.round((dataUrl.length - 22) * 3 / 4); // 估算大小
             document.getElementById('compressedSize').textContent = 
                 `${compressedCanvas.width} × ${compressedCanvas.height}`;
             document.getElementById('compressedFileSize').textContent = formatFileSize(compressedSize);
             
-            // 显示压缩比例
+            // Show reduction percentage
             const originalSize = originalFile.size;
             const reduction = Math.round((1 - compressedSize / originalSize) * 100);
             if (reduction > 0) {
@@ -647,27 +647,27 @@
             }
         }
 
-        // 获取选中的格式
+        // Get selected output format
         function getSelectedFormat() {
             const selected = document.querySelector('.format-option.selected');
             return selected.dataset.format;
         }
 
-        // 质量滑块变化
+        // Quality slider change
         function handleQualityChange(e) {
             const value = e.target.value;
             qualityValue.textContent = value + '%';
             compressImage();
         }
 
-        // 格式选择变化
+        // Format option change
         function handleFormatChange(e) {
             formatOptions.forEach(option => option.classList.remove('selected'));
             e.target.classList.add('selected');
             compressImage();
         }
 
-        // 下载压缩图片
+        // Download compressed image
         function downloadCompressedImage() {
             if (!compressedCanvas) return;
 
@@ -687,7 +687,7 @@
             }, mimeType, quality);
         }
 
-        // 重置压缩器
+        // Reset compressor
         function resetCompressor() {
             originalFile = null;
             originalCanvas = null;
@@ -697,7 +697,7 @@
             document.getElementById('sizeReduction').style.display = 'none';
         }
 
-        // 格式化文件大小
+        // Format file size
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;

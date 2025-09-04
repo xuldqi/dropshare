@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Merger - DropShare</title>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .merger-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-list {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: #f9fafb;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            font-size: 20px;
+        }
+
+        .file-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .move-btn, .remove-btn {
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .move-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .remove-btn:hover {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #dc2626;
+        }
+
+        .merge-controls {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .merge-options {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            margin-bottom: 16px;
+        }
+
+        .option-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .fade-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .fade-btn {
+            padding: 6px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .fade-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .fade-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .merge-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .merge-button:hover {
+            background: #2563eb;
+        }
+
+        .merge-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .add-more-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: 2px dashed #d1d5db;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .add-more-btn:hover {
+            border-color: #3367d6;
+            color: #3367d6;
+        }
+
+        .engine-status {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+
+        .engine-status.loaded {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="audio-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← Back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Audio Merger</h1>
+        <p class="page-subtitle">Combine multiple audio files into one seamless track - Real FFmpeg Processing</p>
+        
+        <div class="merger-card">
+            <div class="engine-status" id="engineStatus">
+                Loading audio processing engine...
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🔗</div>
+                <div class="upload-text">Click or drag to upload multiple audio files</div>
+                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <input type="file" id="fileInput" accept="audio/*" multiple>
+            </div>
+            
+            <div class="file-list" id="fileList">
+                <h3 style="margin-bottom: 16px; color: #374151;">Audio Files (merge in order)</h3>
+                <div id="audioFiles"></div>
+                
+                <button class="add-more-btn" onclick="document.getElementById('fileInput').click()">
+                    + Add More Audio Files
+                </button>
+                
+                <div class="merge-controls">
+                    <div class="merge-options">
+                        <div class="option-group">
+                            <div class="option-label">Crossfade Duration</div>
+                            <div class="fade-options">
+                                <div class="fade-btn active" data-fade="0">No Crossfade</div>
+                                <div class="fade-btn" data-fade="0.5">0.5s</div>
+                                <div class="fade-btn" data-fade="1">1s</div>
+                                <div class="fade-btn" data-fade="2">2s</div>
+                                <div class="fade-btn" data-fade="3">3s</div>
+                            </div>
+                        </div>
+                        <div class="option-group">
+                            <div class="option-label">Output Format</div>
+                            <div class="fade-options">
+                                <div class="fade-btn active" data-format="mp3">MP3</div>
+                                <div class="fade-btn" data-format="wav">WAV</div>
+                                <div class="fade-btn" data-format="aac">AAC</div>
+                                <div class="fade-btn" data-format="flac">FLAC</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="merge-button" id="mergeBtn" disabled>Loading Engine...</button>
+                </div>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing merge...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ffmpeg = null;
+        let audioFiles = [];
+        let isEngineLoaded = false;
+        
+        // Initialize FFmpeg when page loads
+        async function initFFmpeg() {
+            const statusEl = document.getElementById('engineStatus');
+            statusEl.style.display = 'block';
+            statusEl.textContent = 'Loading audio processing engine...';
+
+            try {
+                ffmpeg = new FFmpeg();
+                
+                ffmpeg.on('log', ({ message }) => {
+                    console.log(message);
+                });
+                
+                ffmpeg.on('progress', ({ progress }) => {
+                    const percentage = Math.round(progress * 100);
+                    updateProgress(percentage);
+                });
+                
+                const { FFmpeg } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
+                
+                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+                
+                await ffmpeg.load({
+                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                });
+                
+                isEngineLoaded = true;
+                statusEl.textContent = '✓ Audio processing engine loaded and ready!';
+                statusEl.classList.add('loaded');
+                
+                // Hide status after 3 seconds
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 3000);
+                
+                // Enable merge button if files are loaded
+                if (audioFiles.length >= 2) {
+                    document.getElementById('mergeBtn').disabled = false;
+                    document.getElementById('mergeBtn').textContent = 'Merge Audio Files';
+                }
+                
+                console.log('FFmpeg loaded successfully');
+                
+            } catch (error) {
+                console.error('Failed to load FFmpeg:', error);
+                statusEl.textContent = '✗ Failed to load audio processing engine. Please refresh the page.';
+                statusEl.style.background = '#fee2e2';
+                statusEl.style.color = '#dc2626';
+            }
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', initFFmpeg);
+        
+        // File upload
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (file.type.startsWith('audio/')) {
+                    audioFiles.push(file);
+                }
+            });
+            updateFileList();
+            
+            // Clear input to allow adding same files again
+            this.value = '';
+        });
+        
+        // Update file list
+        function updateFileList() {
+            if (audioFiles.length === 0) {
+                document.getElementById('fileList').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('fileList').style.display = 'block';
+            const audioFilesContainer = document.getElementById('audioFiles');
+            audioFilesContainer.innerHTML = '';
+            
+            audioFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-icon">🎵</div>
+                        <div class="file-details">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${formatFileSize(file.size)}</div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="move-btn" onclick="moveFile(${index}, -1)" ${index === 0 ? 'disabled' : ''}>↑</button>
+                        <button class="move-btn" onclick="moveFile(${index}, 1)" ${index === audioFiles.length - 1 ? 'disabled' : ''}>↓</button>
+                        <button class="remove-btn" onclick="removeFile(${index})">×</button>
+                    </div>
+                `;
+                audioFilesContainer.appendChild(fileItem);
+            });
+            
+            // Show merge controls if we have at least 2 files
+            if (audioFiles.length >= 2) {
+                document.querySelector('.merge-controls').style.display = 'block';
+                const mergeBtn = document.getElementById('mergeBtn');
+                if (isEngineLoaded) {
+                    mergeBtn.disabled = false;
+                    mergeBtn.textContent = 'Merge Audio Files';
+                } else {
+                    mergeBtn.disabled = true;
+                    mergeBtn.textContent = 'Loading Engine...';
+                }
+            } else {
+                document.querySelector('.merge-controls').style.display = 'none';
+            }
+        }
+        
+        // Move file position
+        function moveFile(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= audioFiles.length) return;
+            
+            [audioFiles[index], audioFiles[newIndex]] = [audioFiles[newIndex], audioFiles[index]];
+            updateFileList();
+        }
+        
+        // Remove file
+        function removeFile(index) {
+            audioFiles.splice(index, 1);
+            updateFileList();
+        }
+        
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Option selection
+        document.querySelectorAll('.fade-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Only deactivate buttons in the same group
+                const parent = this.parentElement;
+                parent.querySelectorAll('.fade-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function updateProgress(percentage) {
+            const progressSection = document.getElementById('progressSection');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressSection.style.display === 'none') {
+                progressSection.style.display = 'block';
+            }
+            
+            progressFill.style.width = Math.min(percentage, 100) + '%';
+            progressText.textContent = `Merging... ${Math.min(percentage, 100)}%`;
+        }
+        
+        // Merge button with real FFmpeg functionality
+        document.getElementById('mergeBtn').addEventListener('click', async function() {
+            if (audioFiles.length < 2 || !ffmpeg || !isEngineLoaded) return;
+            
+            const crossfadeDuration = document.querySelector('[data-fade].active').dataset.fade;
+            const outputFormat = document.querySelector('[data-format].active').dataset.format;
+            
+            // Show progress
+            const progressSection = document.getElementById('progressSection');
+            progressSection.style.display = 'block';
+            this.disabled = true;
+            
+            try {
+                document.getElementById('progressText').textContent = 'Loading files...';
+                
+                // Write all input files to FFmpeg filesystem
+                const inputFileNames = [];
+                for (let i = 0; i < audioFiles.length; i++) {
+                    const file = audioFiles[i];
+                    const extension = file.name.split('.').pop().toLowerCase();
+                    const fileName = `input${i}.${extension}`;
+                    inputFileNames.push(fileName);
+                    await ffmpeg.writeFile(fileName, new Uint8Array(await file.arrayBuffer()));
+                }
+                
+                const outputFileName = `merged.${outputFormat}`;
+                
+                // Build FFmpeg command for merging
+                let command = [];
+                
+                // Add all input files
+                inputFileNames.forEach(fileName => {
+                    command.push('-i', fileName);
+                });
+                
+                if (parseFloat(crossfadeDuration) > 0) {
+                    // Complex filter for crossfading
+                    let filterComplex = '';
+                    for (let i = 0; i < audioFiles.length - 1; i++) {
+                        if (i === 0) {
+                            filterComplex += `[0][1]acrossfade=d=${crossfadeDuration}:c1=tri:c2=tri[a${i}];`;
+                        } else if (i === audioFiles.length - 2) {
+                            filterComplex += `[a${i-1}][${i+1}]acrossfade=d=${crossfadeDuration}:c1=tri:c2=tri[out]`;
+                        } else {
+                            filterComplex += `[a${i-1}][${i+1}]acrossfade=d=${crossfadeDuration}:c1=tri:c2=tri[a${i}];`;
+                        }
+                    }
+                    command.push('-filter_complex', filterComplex);
+                    command.push('-map', '[out]');
+                } else {
+                    // Simple concatenation without crossfade
+                    const filterComplex = `${inputFileNames.map((_, i) => `[${i}:0]`).join('')}concat=n=${audioFiles.length}:v=0:a=1[out]`;
+                    command.push('-filter_complex', filterComplex);
+                    command.push('-map', '[out]');
+                }
+                
+                // Output format settings
+                if (outputFormat === 'mp3') {
+                    command.push('-codec:a', 'libmp3lame', '-b:a', '192k');
+                } else if (outputFormat === 'aac') {
+                    command.push('-codec:a', 'aac', '-b:a', '128k');
+                } else if (outputFormat === 'wav') {
+                    command.push('-codec:a', 'pcm_s16le');
+                } else if (outputFormat === 'flac') {
+                    command.push('-codec:a', 'flac');
+                }
+                
+                command.push('-y', outputFileName);
+                
+                console.log('FFmpeg merge command:', command.join(' '));
+                document.getElementById('progressText').textContent = 'Merging audio files...';
+                
+                // Execute FFmpeg command
+                await ffmpeg.exec(command);
+                
+                // Read the output file
+                const outputData = await ffmpeg.readFile(outputFileName);
+                
+                // Create download link
+                const mimeTypes = {
+                    'mp3': 'audio/mpeg',
+                    'aac': 'audio/aac',
+                    'wav': 'audio/wav',
+                    'flac': 'audio/flac'
+                };
+                
+                const blob = new Blob([outputData.buffer], { type: mimeTypes[outputFormat] });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `merged_audio.${outputFormat}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Clean up
+                try {
+                    inputFileNames.forEach(async (fileName) => {
+                        await ffmpeg.deleteFile(fileName);
+                    });
+                    await ffmpeg.deleteFile(outputFileName);
+                } catch (e) {
+                    console.warn('Cleanup warning:', e);
+                }
+                
+                document.getElementById('progressFill').style.width = '100%';
+                const crossfadeText = parseFloat(crossfadeDuration) > 0 ? ` with ${crossfadeDuration}s crossfade` : '';
+                document.getElementById('progressText').textContent = `✓ ${audioFiles.length} files merged${crossfadeText}!`;
+                
+            } catch (error) {
+                console.error('Merge failed:', error);
+                document.getElementById('progressText').textContent = 'Merge failed: ' + error.message;
+            } finally {
+                this.disabled = false;
+                this.textContent = 'Merge Audio Files';
+            }
+        });
+
+        // Drag and drop upload
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('audio/'));
+            if (files.length > 0) {
+                files.forEach(file => audioFiles.push(file));
+                updateFileList();
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+</body>
+</html>

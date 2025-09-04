@@ -34,6 +34,132 @@
     <!-- Resources -->
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="manifest" href="manifest.json">
+    
+    <script>
+        // Immediate hash check and mode setting - runs before DOM is ready
+        (function() {
+            console.log('=== IMMEDIATE MODE SETUP ===');
+            console.log('Current hash:', window.location.hash);
+            
+            // Set data-mode on both html and body immediately
+            const mode = window.location.hash === '#rooms' ? 'rooms' : 'transfer';
+            document.documentElement.setAttribute('data-mode', mode);
+            
+            // Also set it when body becomes available
+            if (document.body) {
+                document.body.setAttribute('data-mode', mode);
+            } else {
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.body.setAttribute('data-mode', mode);
+                });
+            }
+            
+            // Force immediate mode switch when DOM is ready
+            document.addEventListener('DOMContentLoaded', function() {
+                if (mode === 'rooms') {
+                    switchToRoomsMode();
+                } else {
+                    switchToTransferMode();
+                }
+            });
+            
+            console.log('Mode set to:', mode);
+        })();
+        
+        // Force switch to rooms mode
+        function switchToRoomsMode() {
+            console.log('Switching to Rooms mode...');
+            document.documentElement.setAttribute('data-mode', 'rooms');
+            if (document.body) {
+                document.body.setAttribute('data-mode', 'rooms');
+            }
+            
+            const roomContainer = document.getElementById('roomContainer');
+            const peerContainer = document.getElementById('peerContainer');
+            
+            if (roomContainer) {
+                roomContainer.style.cssText = 'display: flex !important; visibility: visible !important; opacity: 1 !important;';
+            }
+            
+            if (peerContainer) {
+                peerContainer.style.cssText = 'display: none !important;';
+            }
+            
+            console.log('Switched to Rooms mode');
+        }
+        
+        // Force switch to transfer mode
+        function switchToTransferMode() {
+            console.log('Switching to Transfer mode...');
+            document.documentElement.setAttribute('data-mode', 'transfer');
+            if (document.body) {
+                document.body.setAttribute('data-mode', 'transfer');
+            }
+            
+            const roomContainer = document.getElementById('roomContainer');
+            const peerContainer = document.getElementById('peerContainer');
+            
+            if (roomContainer) {
+                roomContainer.style.cssText = 'display: none !important;';
+            }
+            
+            if (peerContainer) {
+                peerContainer.style.cssText = 'display: block !important; visibility: visible !important;';
+            }
+            
+            console.log('Switched to Transfer mode');
+        }
+        
+        // Listen for hash changes
+        window.addEventListener('hashchange', function() {
+            console.log('Hash changed to:', window.location.hash);
+            if (window.location.hash === '#rooms') {
+                switchToRoomsMode();
+            } else {
+                switchToTransferMode();
+            }
+        });
+    </script>
+    
+    <script>
+        // Global functions for room buttons - must be in global scope
+        function showCreateForm() {
+            console.log('Create Room button clicked!');
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            
+            if (createForm && joinForm) {
+                // Hide all forms first
+                createForm.classList.remove('active');
+                joinForm.classList.remove('active');
+                
+                // Show create form
+                createForm.classList.add('active');
+                console.log('Create form shown');
+            } else {
+                console.error('Forms not found');
+            }
+        }
+        
+        function showJoinForm() {
+            console.log('Join Room button clicked!');
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            
+            if (createForm && joinForm) {
+                // Hide all forms first
+                createForm.classList.remove('active');
+                joinForm.classList.remove('active');
+                
+                // Show join form  
+                joinForm.classList.add('active');
+                console.log('Join form shown');
+            } else {
+                console.error('Forms not found');
+            }
+        }
+    </script>
+    
     <style>
         /* Override styles.css layout for centered sharing page */
         body {
@@ -127,14 +253,16 @@
             display: flex !important;
         }
         
-        /* Show room container by default for testing */
+        /* Default state - show transfer, hide rooms */
         #roomContainer {
-            display: flex !important;
-            visibility: visible !important;
-            opacity: 1 !important;
+            display: none !important;
         }
         
-        /* CSS-based mode switching */
+        #peerContainer {
+            display: block !important;
+        }
+        
+        /* Rooms mode - show rooms, hide transfer */
         body[data-mode="rooms"] #roomContainer {
             display: flex !important;
             visibility: visible !important;
@@ -145,12 +273,34 @@
             display: none !important;
         }
         
+        /* Transfer mode - explicitly show transfer, hide rooms */
         body[data-mode="transfer"] #roomContainer {
             display: none !important;
         }
         
         body[data-mode="transfer"] #peerContainer {
             display: block !important;
+        }
+        
+        /* Backup CSS based on hash */
+        body:not([data-mode]) #roomContainer {
+            display: none !important;
+        }
+        
+        /* Force rooms visibility when hash is present */
+        body:target-within(#roomContainer) #roomContainer,
+        html:has([data-mode="rooms"]) #roomContainer {
+            display: flex !important;
+        }
+        
+        html:has([data-mode="rooms"]) #peerContainer {
+            display: none !important;
+        }
+        
+        /* Hide the "Open DropShare" message in rooms mode */
+        body[data-mode="rooms"] x-no-peers,
+        body[data-mode="rooms"] x-no-peers h2 {
+            display: none !important;
         }
         
         .room-header {
@@ -1195,8 +1345,8 @@
                 
                 <!-- Room option buttons -->
                 <div class="room-options">
-                    <button id="createRoomBtn" class="room-btn">Create Room</button>
-                    <button id="joinRoomBtn" class="room-btn secondary">Join Room</button>
+                    <button id="createRoomBtn" class="room-btn" onclick="showCreateForm()">Create Room</button>
+                    <button id="joinRoomBtn" class="room-btn secondary" onclick="showJoinForm()">Join Room</button>
                 </div>
                 
                 <!-- Form container for centering -->
@@ -1756,10 +1906,15 @@
             
             // Initialize room UI events
             initializeRoomUI() {
+                console.log('=== INITIALIZING ROOM UI ===');
                 // Wait for DOM to fully load before binding events
                 const bindEvents = () => {
+                    console.log('Attempting to bind room UI events...');
                     const createBtn = document.getElementById('createRoomBtn');
                     const joinBtn = document.getElementById('joinRoomBtn');
+                    
+                    console.log('Create button found:', !!createBtn, createBtn);
+                    console.log('Join button found:', !!joinBtn, joinBtn);
                     
                     if (!createBtn || !joinBtn) {
                         console.log('Room buttons not found, waiting for DOM loading...');
@@ -1767,15 +1922,23 @@
                         return;
                     }
                     
+                    console.log('Binding click events to room buttons...');
+                    
                     // Create Room button
-                    createBtn.addEventListener('click', () => {
+                    createBtn.addEventListener('click', (e) => {
+                        console.log('Create Room button clicked!');
+                        e.preventDefault();
                         this.showCreateRoomForm();
                     });
                 
                     // Join Room button
-                    joinBtn.addEventListener('click', () => {
+                    joinBtn.addEventListener('click', (e) => {
+                        console.log('Join Room button clicked!');
+                        e.preventDefault();
                         this.showJoinRoomForm();
                     });
+                    
+                    console.log('Room button events bound successfully!');
                     
                     // Confirm Create Room
                     document.getElementById('confirmCreateRoom').addEventListener('click', () => {
@@ -3087,9 +3250,9 @@
                     const saved = localStorage.getItem('dropshare_room_state');
                     if (saved) {
                         const roomState = JSON.parse(saved);
-                        // 检查状态是否过期（24小时）
+                        // Check if state expired (24 hours)
                         const now = Date.now();
-                        const maxAge = 24 * 60 * 60 * 1000; // 24小时
+                        const maxAge = 24 * 60 * 60 * 1000; // 24 hours
                         
                         if (now - roomState.timestamp < maxAge) {
                             console.log('Found saved room state:', roomState);
@@ -3118,7 +3281,7 @@
             
             // Setup file transfer event listeners
             setupFileEvents() {
-                // 等待Events系统就绪
+                // Wait for Events system ready
                 const setupEvents = () => {
                     if (!window.Events) {
                         setTimeout(setupEvents, 100);
@@ -3284,30 +3447,42 @@
             const initRoomManager = () => {
                 console.log('Initializing room manager...');
                 
-                // Check if DOM elements exist
-                const roomContainer = document.getElementById('roomContainer');
-                const peerContainer = document.getElementById('peerContainer');
-                
-                if (!roomContainer || !peerContainer) {
-                    console.log('DOM elements not ready, waiting to retry...');
-                    setTimeout(initRoomManager, 50);
-                    return;
+                // Force initialize RoomManager regardless of DOM state
+                if (!window.roomManager) {
+                    console.log('Creating room manager...');
+                    try {
+                        window.roomManager = new RoomManager();
+                        roomManager = window.roomManager;
+                        console.log('Room manager initialization completed successfully');
+                    } catch (error) {
+                        console.error('Failed to initialize room manager:', error);
+                        // Retry after a delay
+                        setTimeout(initRoomManager, 200);
+                    }
+                } else {
+                    console.log('Room manager already exists');
                 }
-                
-                console.log('DOM elements ready, creating room manager');
-                roomManager = new RoomManager();
-                window.roomManager = roomManager;
-                console.log('Room manager initialization completed');
             };
             
             // Initialize immediately
             initRoomManager();
         });
         
-        // 页面完全加载后的补充检查
+        // Additional checks after page fully loaded
         window.addEventListener('load', function() {
             console.log('Page fully loaded, checking room status');
             console.log('Current hash:', window.location.hash);
+            
+            // Ensure RoomManager is initialized
+            if (!window.roomManager) {
+                console.log('RoomManager not found on page load, force initializing...');
+                try {
+                    window.roomManager = new RoomManager();
+                    console.log('RoomManager force initialized on page load');
+                } catch (error) {
+                    console.error('Failed to force initialize RoomManager:', error);
+                }
+            }
             
             // Initialize navigation bar function links
             initNavbarFunctionLinks();
@@ -3378,23 +3553,6 @@
             
             // Initialize navigation bar function links
             initNavbarFunctionLinks();
-        }
-        
-        // Update navigation active state
-        function updateNavActiveState() {
-            const transferLink = document.querySelector('a[href="/share.html"]');
-            const roomsLink = document.querySelector('a[href="/share.html#rooms"]');
-            
-            if (transferLink && roomsLink) {
-                transferLink.classList.remove('active');
-                roomsLink.classList.remove('active');
-                
-                if (window.location.hash === '#rooms') {
-                    roomsLink.classList.add('active');
-                } else {
-                    transferLink.classList.add('active');
-                }
-            }
         }
 
         // Initialize navigation bar function links

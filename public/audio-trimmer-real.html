@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Trimmer - DropShare</title>
+    <script src="/vendor/ffmpeg/ffmpeg.js"></script>
+    <script src="/vendor/ffmpeg/util.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .trimmer-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .trim-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .audio-preview {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 20px;
+            border-radius: 8px;
+        }
+
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .time-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .time-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .time-input-group label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .time-input {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .time-input:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .preset-btn {
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .current-position {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin: 16px 0;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .position-btn {
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .position-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .trim-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .trim-button:hover {
+            background: #2563eb;
+        }
+
+        .trim-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .engine-status {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            display: none;
+        }
+
+        .engine-status.loaded {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="audio-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← Back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Audio Trimmer</h1>
+        <p class="page-subtitle">Cut and trim audio files with precise timing - Real FFmpeg Processing</p>
+        
+        <div class="trimmer-card">
+            <div class="engine-status" id="engineStatus">
+                Loading audio processing engine...
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">✂️</div>
+                <div class="upload-text">Click or drag to upload audio file</div>
+                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <input type="file" id="fileInput" accept="audio/*">
+            </div>
+            
+            <div class="trim-controls" id="trimControls">
+                <audio class="audio-preview" id="audioPreview" controls></audio>
+                
+                <div class="current-position">
+                    <button class="position-btn" onclick="setCurrentTime('start')">Set as Start</button>
+                    <span id="currentTimeDisplay">00:00</span>
+                    <button class="position-btn" onclick="setCurrentTime('end')">Set as End</button>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-label">Set Trim Time</div>
+                    <div class="time-inputs">
+                        <div class="time-input-group">
+                            <label>Start Time (seconds)</label>
+                            <input type="number" class="time-input" id="startTime" placeholder="0" value="0" min="0" step="0.1">
+                        </div>
+                        <div class="time-input-group">
+                            <label>End Time (seconds)</label>
+                            <input type="number" class="time-input" id="endTime" placeholder="10" value="10" min="0" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <div class="preset-buttons">
+                        <div class="preset-btn" onclick="setDuration(15)">15 Seconds</div>
+                        <div class="preset-btn" onclick="setDuration(30)">30 Seconds</div>
+                        <div class="preset-btn" onclick="setDuration(60)">1 Minute</div>
+                        <div class="preset-btn" onclick="setDuration(300)">5 Minutes</div>
+                    </div>
+                </div>
+                
+                <button class="trim-button" id="trimBtn" disabled>Loading Engine...</button>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing trim...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ffmpeg = null;
+        let audioFile = null;
+        let isEngineLoaded = false;
+        let audioDuration = 0;
+        
+        // Initialize FFmpeg when page loads
+        async function initFFmpeg() {
+            const statusEl = document.getElementById('engineStatus');
+            statusEl.style.display = 'block';
+            statusEl.textContent = 'Loading audio processing engine...';
+
+            try {
+                const { FFmpeg } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
+                
+                ffmpeg = new FFmpeg();
+                
+                ffmpeg.on('log', ({ message }) => {
+                    console.log(message);
+                });
+                
+                ffmpeg.on('progress', ({ progress }) => {
+                    const percentage = Math.round(progress * 100);
+                    updateProgress(percentage);
+                });
+                
+                const bases = [
+                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                    `${location.origin}/vendor/ffmpeg`
+                ];
+                let loaded = false;
+                for (const baseURL of bases) {
+                    try {
+                        const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
+                        const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
+                        await ffmpeg.load({ coreURL, wasmURL });
+                        loaded = true;
+                        break;
+                    } catch (e) {
+                        console.warn('FFmpeg load failed from', baseURL, e);
+                    }
+                }
+                if (!loaded) throw new Error('FFmpeg core load failed from all sources');
+                
+                isEngineLoaded = true;
+                statusEl.textContent = '✓ Audio processing engine loaded and ready!';
+                statusEl.classList.add('loaded');
+                
+                // Hide status after 3 seconds
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 3000);
+                
+                // Enable trim button if file is loaded
+                if (audioFile) {
+                    document.getElementById('trimBtn').disabled = false;
+                    document.getElementById('trimBtn').textContent = 'Trim Audio';
+                }
+                
+                console.log('FFmpeg loaded successfully');
+                
+            } catch (error) {
+                console.error('Failed to load FFmpeg:', error);
+                statusEl.textContent = '✗ Failed to load audio processing engine. Please refresh the page.';
+                statusEl.style.background = '#fee2e2';
+                statusEl.style.color = '#dc2626';
+            }
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', initFFmpeg);
+        
+        // File upload
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('audio/')) {
+                audioFile = file;
+                const audioUrl = URL.createObjectURL(file);
+                const audioPreview = document.getElementById('audioPreview');
+                audioPreview.src = audioUrl;
+                document.getElementById('trimControls').style.display = 'block';
+                
+                // Update current time display
+                audioPreview.addEventListener('timeupdate', function() {
+                    const currentTime = audioPreview.currentTime;
+                    document.getElementById('currentTimeDisplay').textContent = formatTime(currentTime);
+                });
+                
+                // When audio loads, update duration and end time
+                audioPreview.addEventListener('loadedmetadata', function() {
+                    audioDuration = audioPreview.duration;
+                    document.getElementById('endTime').value = Math.min(audioDuration, 10).toFixed(1);
+                    document.getElementById('endTime').max = audioDuration.toFixed(1);
+                    document.getElementById('startTime').max = audioDuration.toFixed(1);
+                });
+
+                const trimBtn = document.getElementById('trimBtn');
+                if (isEngineLoaded) {
+                    trimBtn.disabled = false;
+                    trimBtn.textContent = 'Trim Audio';
+                } else {
+                    trimBtn.disabled = true;
+                    trimBtn.textContent = 'Loading Engine...';
+                }
+            }
+        });
+
+        // Set current playback position as start/end time
+        function setCurrentTime(type) {
+            const audioPreview = document.getElementById('audioPreview');
+            const currentTime = audioPreview.currentTime;
+            
+            if (type === 'start') {
+                document.getElementById('startTime').value = currentTime.toFixed(1);
+            } else if (type === 'end') {
+                document.getElementById('endTime').value = currentTime.toFixed(1);
+            }
+        }
+        
+        // Set preset duration
+        function setDuration(seconds) {
+            const startTime = parseFloat(document.getElementById('startTime').value) || 0;
+            const endTime = Math.min(startTime + seconds, audioDuration);
+            document.getElementById('endTime').value = endTime.toFixed(1);
+        }
+        
+        // Time format conversion
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateProgress(percentage) {
+            const progressSection = document.getElementById('progressSection');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressSection.style.display === 'none') {
+                progressSection.style.display = 'block';
+            }
+            
+            progressFill.style.width = Math.min(percentage, 100) + '%';
+            progressText.textContent = `Trimming... ${Math.min(percentage, 100)}%`;
+        }
+        
+        // Trim button with real FFmpeg functionality
+        document.getElementById('trimBtn').addEventListener('click', async function() {
+            if (!audioFile || !ffmpeg || !isEngineLoaded) return;
+            
+            const startTime = parseFloat(document.getElementById('startTime').value) || 0;
+            const endTime = parseFloat(document.getElementById('endTime').value) || 10;
+            
+            if (startTime >= endTime) {
+                alert('End time must be greater than start time!');
+                return;
+            }
+
+            if (endTime > audioDuration) {
+                alert('End time cannot exceed audio duration!');
+                return;
+            }
+            
+            // Show progress
+            const progressSection = document.getElementById('progressSection');
+            progressSection.style.display = 'block';
+            this.disabled = true;
+            
+            try {
+                // Write input file to FFmpeg filesystem
+                const fileExtension = audioFile.name.split('.').pop().toLowerCase();
+                const inputFileName = 'input.' + fileExtension;
+                const outputFileName = 'trimmed.' + fileExtension;
+                
+                document.getElementById('progressText').textContent = 'Loading file...';
+                await ffmpeg.writeFile(inputFileName, new Uint8Array(await audioFile.arrayBuffer()));
+                
+                // Build FFmpeg command for trimming
+                const duration = endTime - startTime;
+                const command = [
+                    '-i', inputFileName,
+                    '-ss', startTime.toString(),
+                    '-t', duration.toString(),
+                    '-c', 'copy', // Use copy to avoid re-encoding when possible
+                    '-y', outputFileName
+                ];
+                
+                console.log('FFmpeg trim command:', command.join(' '));
+                document.getElementById('progressText').textContent = 'Trimming audio...';
+                
+                // Execute FFmpeg command
+                await ffmpeg.exec(command);
+                
+                // Read the output file
+                const outputData = await ffmpeg.readFile(outputFileName);
+                
+                // Create download link
+                const blob = new Blob([outputData.buffer], { type: audioFile.type });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const originalName = audioFile.name.replace(/\.[^/.]+$/, '');
+                a.download = `trimmed_${originalName}_${startTime}s-${endTime}s.${fileExtension}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Clean up
+                try {
+                    await ffmpeg.deleteFile(inputFileName);
+                    await ffmpeg.deleteFile(outputFileName);
+                } catch (e) {
+                    console.warn('Cleanup warning:', e);
+                }
+                
+                document.getElementById('progressFill').style.width = '100%';
+                document.getElementById('progressText').textContent = `✓ Audio trimmed! Duration: ${duration.toFixed(1)}s`;
+                
+            } catch (error) {
+                console.error('Trimming failed:', error);
+                document.getElementById('progressText').textContent = 'Trimming failed: ' + error.message;
+            } finally {
+                this.disabled = false;
+                this.textContent = 'Trim Audio';
+            }
+        });
+
+        // Drag and drop upload
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('audio/')) {
+                document.getElementById('fileInput').files = files;
+                document.getElementById('fileInput').dispatchEvent(new Event('change'));
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolution Changer - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .changer-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-info {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .video-preview {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .file-details {
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .original-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .resolution-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .resolution-presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .preset-btn {
+            padding: 16px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .preset-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .preset-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .preset-desc {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .custom-resolution {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .dimension-inputs {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .dimension-input {
+            width: 100px;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .aspect-ratio-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quality-settings {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .setting-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-label {
+            flex: 0 0 120px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .setting-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .change-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .change-button:hover {
+            background: #2563eb;
+        }
+
+        .change-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .result-section {
+            display: none;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .comparison-item {
+            text-align: center;
+            padding: 16px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .comparison-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #374151;
+        }
+
+        .comparison-details {
+            display: grid;
+            gap: 8px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .download-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .download-btn:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🎥 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html" class="active">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="video-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Resolution Changer</h1>
+        <p class="page-subtitle">Change video resolution to HD, Full HD, 4K, or custom dimensions</p>
+        
+        <div class="changer-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📺</div>
+                <div class="upload-text">Click or drag to upload a video file</div>
+                <div class="upload-hint">Supports MP4, AVI, MOV, WMV, MKV and more</div>
+                <input type="file" id="fileInput" accept="video/*">
+            </div>
+            
+            <div class="file-info" id="fileInfo">
+                <video class="video-preview" id="videoPreview" controls></video>
+                <div class="file-details">
+                    <h4 id="fileName">-</h4>
+                </div>
+                <div class="original-info">
+                    <div class="info-item">
+                        <div class="info-label">Original Resolution</div>
+                        <div class="info-value" id="originalResolution">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">File Size</div>
+                        <div class="info-value" id="fileSize">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Duration</div>
+                        <div class="info-value" id="duration">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Frame Rate</div>
+                        <div class="info-value" id="frameRate">-</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resolution-controls" id="resolutionControls">
+                <div class="control-section">
+                    <div class="section-title">Select Target Resolution</div>
+                    <div class="resolution-presets">
+                        <div class="preset-btn" data-resolution="480">
+                            <div class="preset-name">480p</div>
+                            <div class="preset-desc">854×480</div>
+                        </div>
+                        <div class="preset-btn" data-resolution="720">
+                            <div class="preset-name">720p HD</div>
+                            <div class="preset-desc">1280×720</div>
+                        </div>
+                        <div class="preset-btn active" data-resolution="1080">
+                            <div class="preset-name">1080p FHD</div>
+                            <div class="preset-desc">1920×1080</div>
+                        </div>
+                        <div class="preset-btn" data-resolution="1440">
+                            <div class="preset-name">1440p QHD</div>
+                            <div class="preset-desc">2560×1440</div>
+                        </div>
+                        <div class="preset-btn" data-resolution="2160">
+                            <div class="preset-name">4K UHD</div>
+                            <div class="preset-desc">3840×2160</div>
+                        </div>
+                        <div class="preset-btn" data-resolution="custom">
+                            <div class="preset-name">Custom</div>
+                            <div class="preset-desc">Custom size</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="custom-resolution" id="customResolution">
+                    <div class="section-title">Custom Resolution</div>
+                    <div class="dimension-inputs">
+                        <input type="number" class="dimension-input" id="customWidth" placeholder="Width" min="1">
+                        <span>×</span>
+                        <input type="number" class="dimension-input" id="customHeight" placeholder="Height" min="1">
+                    </div>
+                    <div class="aspect-ratio-controls">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keepAspectRatio" checked>
+                            <label for="keepAspectRatio">Keep aspect ratio</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quality-settings">
+                    <div class="section-title">Quality Settings</div>
+                    <div class="setting-row">
+                        <div class="setting-label">Scaling algorithm:</div>
+                        <select class="setting-input" id="scaleAlgorithm">
+                            <option value="lanczos">Lanczos (highest quality)</option>
+                            <option value="bicubic" selected>Bicubic (balanced)</option>
+                            <option value="bilinear">Bilinear (fast)</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">Video bitrate:</div>
+                        <select class="setting-input" id="bitrate">
+                            <option value="auto" selected>Auto</option>
+                            <option value="1000k">1 Mbps</option>
+                            <option value="2000k">2 Mbps</option>
+                            <option value="4000k">4 Mbps</option>
+                            <option value="8000k">8 Mbps</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="change-button" id="changeBtn">Start Conversion</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div class="result-section" id="resultSection">
+                <h3>Resolution change complete!</h3>
+                <div class="result-comparison">
+                    <div class="comparison-item">
+                        <div class="comparison-title">Original</div>
+                        <div class="comparison-details">
+                            <div class="detail-item">
+                                <span>Resolution:</span>
+                                <span id="originalResolutionResult">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>File size:</span>
+                                <span id="originalSizeResult">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <div class="comparison-title">Converted</div>
+                        <div class="comparison-details">
+                            <div class="detail-item">
+                                <span>Resolution:</span>
+                                <span id="newResolutionResult">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>File size:</span>
+                                <span id="newSizeResult">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" id="downloadBtn">Download converted video</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/vendor/ffmpeg/ffmpeg.js"></script>
+    <script src="/vendor/ffmpeg/util.js"></script>
+    <script>
+        let videoFile = null;
+        let ffmpeg = null;
+        let selectedResolution = '1080';
+        let convertedVideoBytes = null;
+
+        async function loadFFmpeg() {
+            if (!ffmpeg) {
+                const { FFmpeg } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
+                ffmpeg = new FFmpeg();
+                ffmpeg.on('log', ({ message }) => {
+                    console.log(message);
+                });
+                ffmpeg.on('progress', ({ progress }) => {
+                    const percent = Math.round(progress * 100);
+                    document.getElementById('progressFill').style.width = percent + '%';
+                    document.getElementById('progressText').textContent = `Converting... ${percent}%`;
+                });
+                const bases = [
+                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                    `${location.origin}/vendor/ffmpeg`
+                ];
+                let loaded = false;
+                for (const baseURL of bases) {
+                    try {
+                        const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
+                        const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
+                        await ffmpeg.load({ coreURL, wasmURL });
+                        loaded = true;
+                        break;
+                    } catch (e) {
+                        console.warn('FFmpeg load failed from', baseURL, e);
+                    }
+                }
+                if (!loaded) throw new Error('FFmpeg core load failed from all sources');
+            }
+            return ffmpeg;
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                loadVideo(file);
+            }
+        });
+
+        function loadVideo(file) {
+            videoFile = file;
+            const videoUrl = URL.createObjectURL(file);
+            const videoPreview = document.getElementById('videoPreview');
+            videoPreview.src = videoUrl;
+            
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileInfo').style.display = 'block';
+            
+            videoPreview.addEventListener('loadedmetadata', function() {
+                const width = videoPreview.videoWidth;
+                const height = videoPreview.videoHeight;
+                const duration = Math.floor(videoPreview.duration);
+                
+                document.getElementById('originalResolution').textContent = `${width}×${height}`;
+                document.getElementById('duration').textContent = formatTime(duration);
+                document.getElementById('frameRate').textContent = '30 fps'; // 估算值
+                
+                // 设置自定义分辨率的默认值
+                document.getElementById('customWidth').value = width;
+                document.getElementById('customHeight').value = height;
+                
+                document.getElementById('resolutionControls').style.display = 'block';
+            });
+        }
+
+        // 分辨率预设选择
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedResolution = this.dataset.resolution;
+                
+                const customDiv = document.getElementById('customResolution');
+                if (selectedResolution === 'custom') {
+                    customDiv.style.display = 'block';
+                } else {
+                    customDiv.style.display = 'none';
+                }
+            });
+        });
+
+        // 保持宽高比
+        document.getElementById('keepAspectRatio').addEventListener('change', function() {
+            if (this.checked && videoFile) {
+                updateAspectRatio();
+            }
+        });
+
+        document.getElementById('customWidth').addEventListener('input', function() {
+            if (document.getElementById('keepAspectRatio').checked && videoFile) {
+                updateAspectRatio('width');
+            }
+        });
+
+        document.getElementById('customHeight').addEventListener('input', function() {
+            if (document.getElementById('keepAspectRatio').checked && videoFile) {
+                updateAspectRatio('height');
+            }
+        });
+
+        function updateAspectRatio(changedDimension = 'width') {
+            const videoPreview = document.getElementById('videoPreview');
+            const originalWidth = videoPreview.videoWidth;
+            const originalHeight = videoPreview.videoHeight;
+            const aspectRatio = originalWidth / originalHeight;
+            
+            const widthInput = document.getElementById('customWidth');
+            const heightInput = document.getElementById('customHeight');
+            
+            if (changedDimension === 'width') {
+                const newWidth = parseInt(widthInput.value);
+                if (newWidth) {
+                    heightInput.value = Math.round(newWidth / aspectRatio);
+                }
+            } else {
+                const newHeight = parseInt(heightInput.value);
+                if (newHeight) {
+                    widthInput.value = Math.round(newHeight * aspectRatio);
+                }
+            }
+        }
+
+        document.getElementById('changeBtn').addEventListener('click', async function() {
+            if (!videoFile) {
+                alert('Please select a video file first');
+                return;
+            }
+            
+            this.disabled = true;
+            document.getElementById('progressSection').style.display = 'block';
+            
+            try {
+                await changeResolution();
+            } catch (error) {
+                console.error('转换失败:', error);
+                alert('转换失败: ' + error.message);
+            } finally {
+                this.disabled = false;
+            }
+        });
+
+        async function changeResolution() {
+            document.getElementById('progressText').textContent = 'Loading FFmpeg...';
+            document.getElementById('progressFill').style.width = '10%';
+            
+            const ffmpeg = await loadFFmpeg();
+            
+            document.getElementById('progressText').textContent = 'Preparing files...';
+            document.getElementById('progressFill').style.width = '20%';
+            
+            const inputFileName = 'input.' + videoFile.name.split('.').pop();
+            const outputFileName = 'output.mp4';
+            
+            await ffmpeg.writeFile(inputFileName, await videoFile.arrayBuffer());
+            
+            // 获取目标分辨率
+            let targetWidth, targetHeight;
+            if (selectedResolution === 'custom') {
+                targetWidth = parseInt(document.getElementById('customWidth').value);
+                targetHeight = parseInt(document.getElementById('customHeight').value);
+            } else {
+                const resolutions = {
+                    '480': [854, 480],
+                    '720': [1280, 720],
+                    '1080': [1920, 1080],
+                    '1440': [2560, 1440],
+                    '2160': [3840, 2160]
+                };
+                [targetWidth, targetHeight] = resolutions[selectedResolution];
+            }
+            
+            const command = ['-i', inputFileName];
+            
+            // Scaling settings
+            const scaleAlgorithm = document.getElementById('scaleAlgorithm').value;
+            let scaleFilter = `scale=${targetWidth}:${targetHeight}`;
+            
+            // Add scaling algorithm
+            if (scaleAlgorithm === 'lanczos') {
+                scaleFilter += ':flags=lanczos';
+            } else if (scaleAlgorithm === 'bicubic') {
+                scaleFilter += ':flags=bicubic';
+            } else if (scaleAlgorithm === 'bilinear') {
+                scaleFilter += ':flags=bilinear';
+            }
+            
+            command.push('-vf', scaleFilter);
+            
+            // Bitrate settings
+            const bitrate = document.getElementById('bitrate').value;
+            if (bitrate !== 'auto') {
+                command.push('-b:v', bitrate);
+            } else {
+                // 根据分辨率自动调整码率
+                const autoBitrates = {
+                    '480': '1000k',
+                    '720': '2500k',
+                    '1080': '4000k',
+                    '1440': '6000k',
+                    '2160': '15000k'
+                };
+                const autoBitrate = autoBitrates[selectedResolution] || '4000k';
+                command.push('-b:v', autoBitrate);
+            }
+            
+            command.push('-c:a', 'copy'); // keep original audio
+            command.push('-y', outputFileName);
+            
+            document.getElementById('progressText').textContent = 'Changing resolution...';
+            await ffmpeg.exec(command);
+            
+            const output = await ffmpeg.readFile(outputFileName);
+            convertedVideoBytes = output;
+            
+            document.getElementById('progressText').textContent = 'Conversion complete!';
+            document.getElementById('progressFill').style.width = '100%';
+            
+            showResults(targetWidth, targetHeight);
+            
+            // 清理
+            await ffmpeg.deleteFile(inputFileName);
+            await ffmpeg.deleteFile(outputFileName);
+            
+            setTimeout(() => {
+                document.getElementById('progressSection').style.display = 'none';
+                document.getElementById('progressFill').style.width = '0%';
+            }, 2000);
+        }
+
+        function showResults(newWidth, newHeight) {
+            const videoPreview = document.getElementById('videoPreview');
+            const originalWidth = videoPreview.videoWidth;
+            const originalHeight = videoPreview.videoHeight;
+            
+            document.getElementById('originalResolutionResult').textContent = `${originalWidth}×${originalHeight}`;
+            document.getElementById('originalSizeResult').textContent = formatFileSize(videoFile.size);
+            document.getElementById('newResolutionResult').textContent = `${newWidth}×${newHeight}`;
+            document.getElementById('newSizeResult').textContent = formatFileSize(convertedVideoBytes.length);
+            
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            if (!convertedVideoBytes) {
+                alert('No converted file to download');
+                return;
+            }
+            
+            const blob = new Blob([convertedVideoBytes], { type: 'video/mp4' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = videoFile.name.replace(/\.[^.]+$/, '_resized.mp4');
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            if (h > 0) {
+                return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            } else {
+                return `${m}:${s.toString().padStart(2, '0')}`;
+            }
+        }
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('video/')) {
+                loadVideo(files[0]);
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+</body>
+</html>

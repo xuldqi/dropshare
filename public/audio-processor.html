@@ -4,100 +4,141 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>音频处理器 - DropShare</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            background: #f8f9fa;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            box-sizing: border-box;
         }
-        
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
             text-align: center;
         }
-        
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #2d3748;
-            margin-bottom: 8px;
-            letter-spacing: -0.025em;
-        }
-        
+
         .page-subtitle {
-            font-size: 1.1rem;
-            color: #718096;
-            margin-bottom: 60px;
-            font-weight: 400;
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
         }
-        
-        .upload-area {
-            border: 2px dashed #cbd5e0;
-            border-radius: 12px;
-            padding: 80px 40px;
-            margin: 40px auto;
+
+        .processor-card {
             background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            max-width: 600px;
+            background: #f9fafb;
+            margin-bottom: 30px;
         }
-        
-        .upload-area:hover {
-            border-color: #3182ce;
-            background: #f7fafc;
-        }
-        
+
+        .upload-area:hover,
         .upload-area.dragover {
-            border-color: #3182ce;
-            background: #ebf8ff;
-            transform: scale(1.02);
+            border-color: #3367d6;
+            background: #eff6ff;
         }
-        
+
         .upload-icon {
-            font-size: 3rem;
-            color: #a0aec0;
-            margin-bottom: 24px;
-        }
-        
-        .upload-button {
-            background: #3182ce;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            font-size: 48px;
             margin-bottom: 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            color: #9ca3af;
         }
-        
-        .upload-button:hover {
-            background: #2c5aa0;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
-        }
-        
+
         .upload-text {
-            color: #718096;
-            font-size: 1rem;
-            margin-top: 16px;
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
-        
-        .conversion-panel {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
             text-align: left;
         }
         
@@ -269,46 +310,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
-        .footer-info {
-            max-width: 600px;
-            margin: 80px auto 40px;
-            text-align: center;
-            padding: 0 20px;
-        }
-        
-        .footer-text {
-            color: #3182ce;
-            font-size: 0.875rem;
-            margin-bottom: 24px;
-        }
-        
-        .rating-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .rating-text {
-            color: #718096;
-            font-size: 0.875rem;
-        }
-        
-        .rating-display {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .stars {
-            color: #fbd38d;
-            font-size: 1.2rem;
-        }
-        
-        .rating-score {
-            color: #3182ce;
-            font-weight: 600;
-        }
         /* 设备选择弹窗样式 */
         .device-modal {
             display: none;
@@ -555,31 +556,42 @@
     </style>
 </head>
 <body>
-    <div class="page-header">
-        <h1 class="page-main-title">🎵 音频转换器</h1>
-        <div class="header-buttons">
-            <div class="control-buttons">
-                <div class="lang-selector">
-                    
-                </div>
-            </div>
-            <a href="audio-tools.html" class="back-button">← 音频工具</a>
-            <a href="index.html" class="back-button">🏠 首页</a>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="share.html">传送</a>
+                <a href="share.html#rooms">多人房间</a>
+                <a href="image-tools.html">图片</a>
+                <a href="audio-tools.html" class="active">音频</a>
+                <a href="video-tools.html">视频</a>
+                <a href="document-tools.html">文件</a>
+            </nav>
         </div>
-    </div>
+    </header>
 
     <div class="container">
-        <h1 class="page-title" id="pageTitle">MP3 to WAV audio</h1>
-        <p class="page-subtitle" id="pageSubtitle">Convert MP3 to WAV audio</p>
-        
-        <div class="upload-area" id="uploadArea">
-            <div class="upload-icon" id="uploadIcon">📄</div>
-            <button class="upload-button" onclick="document.getElementById('fileInput').click()">
-                📤 Upload from PC or Mobile
-            </button>
-            <div class="upload-text">or Drag files here</div>
-            <input type="file" id="fileInput" multiple accept="audio/*" style="display: none;">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="audio-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← back
+            </a>
         </div>
+        
+        <h1 class="page-title" id="pageTitle">音频处理器</h1>
+        <p class="page-subtitle" id="pageSubtitle">专业音频处理工具，支持多种音频格式</p>
+        
+        <div class="processor-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon" id="uploadIcon">🎵</div>
+                <div class="upload-text">点击或拖拽上传音频文件</div>
+                <div class="upload-hint">or Drag files here</div>
+                <input type="file" id="fileInput" multiple accept="audio/*">
+            </div>
         
         <div class="conversion-panel" id="conversionPanel" style="display: none;">
             <div id="fileList"></div>
@@ -605,17 +617,6 @@
             <div class="results-section" id="resultsSection" style="display: none;">
                 <h3>转换结果:</h3>
                 <div id="resultsList"></div>
-            </div>
-        </div>
-        
-        <div class="footer-info">
-            <div class="footer-text">Uploaded and generated files are deleted 1 hour after upload</div>
-            <div class="rating-section">
-                <div class="rating-text">Help Us Improve</div>
-                <div class="rating-display">
-                    <div class="stars">★★★★★</div>
-                    <div class="rating-score">4.8 (1703)</div>
-                </div>
             </div>
         </div>
     </div>

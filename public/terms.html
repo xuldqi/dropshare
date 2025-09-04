@@ -17,12 +17,9 @@
     <script>
       (function() {
         try {
-          var theme = localStorage.getItem('theme');
-          if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.body.classList.add('dark-theme');
-          } else if (theme === 'light') {
-            document.body.classList.add('light-theme');
-          }
+          // Force light theme
+          document.body.classList.add('light-theme');
+          document.body.classList.remove('dark-theme');
         } catch (e) {}
       })();
     </script>
@@ -34,9 +31,10 @@
             flex-direction: column;
             min-height: 100vh;
             overflow-y: auto;
-            background: #212121;
+            background: #ffffff;
             align-items: stretch;
             justify-content: flex-start;
+            color: #1f2937;
         }
 
         .header-wrapper {
@@ -46,9 +44,9 @@
             right: 0;
             height: 56px;
             z-index: 100;
-            background-color: #212121;
-            border-bottom: 1px solid #333;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         header {
@@ -115,7 +113,7 @@
         
         
         
-        .1);
+            opacity: 0.1);
         }
 
         .content-wrapper {
@@ -134,22 +132,14 @@
             padding-top: 0;
         }
         .terms-section {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #3367d6;
-            color: white;
-            border-radius: 4px;
-            text-decoration: none;
-            margin-top: 20px;
-            margin-bottom: 30px;
-        }
+
         h1, h2, h3 {
             color: #3367d6;
             background-color: transparent;
@@ -205,7 +195,7 @@
             background-color: transparent;
         }
         
-        /* 修正在RTL中图标方向 */
+        /* Fix icon direction in RTL */
         [dir="rtl"] .icon-button svg path {
             transform: scale(-1, 1);
             transform-origin: center;
@@ -232,7 +222,7 @@
             }
         }
     
-        .1);
+            opacity: 0.1);
         }
         
         
@@ -255,7 +245,7 @@
                 <h1>Terms of Service</h1>
             </div>
             
-            <!-- 统一导航菜单和控制按钮 -->
+            <!-- Unify navigation menu and control buttons -->
             <div class="header-controls">
                 <nav class="header-nav-links">
                     <a href="share.html">Transfer</a>
@@ -263,7 +253,7 @@
                     <a href="image-tools.html">Images</a>
                     <a href="audio-tools.html">Audio</a>
                     <a href="video-tools.html">Video</a>
-                    <a href="document-tools.html">Documents</a>
+                    <a href="document-tools.html">Files</a>
                 </nav>
                 <div class="control-buttons">
                     
@@ -389,31 +379,31 @@
 
     <script src="scripts/i18n/languages.js"></script>
     <script>
-        // 初始化语言系统
+        // Initialize language system
         let currentLanguage = localStorage.getItem('preferred_language') || 'en';
         
-        function') {
+        function changeLanguage(langCode) {
                 window.DROPSHARE_I18N.changeLanguage(langCode);
             }
             
-            // 翻译页面元素
+            // Translate page elements
             translatePageElements();
         }
         
-         function() {
-            console.log('📄 页面加载完成，初始化语言系统');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Page loaded, initializing language system');
             
-            // 设置语言选择器的值
+            // Set language selector value
             const selector = document.getElementById('language-selector');
             if (selector) {
                 selector.value = currentLanguage;
             }
             
-            // 等待语言系统加载后翻译页面
+            // Translate after language system is ready
             setTimeout(() => {
                 translatePageElements();
             }, 500);
         });
     </script>
 </body>
-</html> 
+</html>

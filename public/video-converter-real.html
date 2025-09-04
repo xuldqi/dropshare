@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频格式转换 - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .conversion-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .current-file {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: #3367d6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .file-details h4 {
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .file-details p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .format-selection {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .format-btn {
+            padding: 16px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .format-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .format-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .format-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .format-desc {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .quality-settings {
+            margin-bottom: 20px;
+        }
+
+        .quality-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+        }
+
+        .quality-btn {
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .quality-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .quality-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .advanced-settings {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .setting-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-label {
+            flex: 0 0 120px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .setting-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .convert-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .convert-button:hover {
+            background: #2563eb;
+        }
+
+        .convert-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .toggle-advanced {
+            color: #3367d6;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                🎥 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html" class="active">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="video-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Video Format Converter</h1>
+        <p class="page-subtitle">Convert videos to different formats and codecs</p>
+        
+        <div class="converter-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🔄</div>
+                <div class="upload-text">Click or drag to upload a video file</div>
+                <div class="upload-hint">Supports MP4, AVI, MOV, WMV, MKV, WebM and more</div>
+                <input type="file" id="fileInput" accept="video/*">
+            </div>
+            
+            <div class="conversion-controls" id="conversionControls">
+                <div class="current-file" id="currentFile"></div>
+                
+                <div class="format-selection">
+                    <div class="section-title">Select output format</div>
+                    <div class="format-grid">
+                        <div class="format-btn active" data-format="mp4">
+                            <div class="format-name">MP4</div>
+                            <div class="format-desc">Widely compatible</div>
+                        </div>
+                        <div class="format-btn" data-format="avi">
+                            <div class="format-name">AVI</div>
+                            <div class="format-desc">Classic format</div>
+                        </div>
+                        <div class="format-btn" data-format="mov">
+                            <div class="format-name">MOV</div>
+                            <div class="format-desc">Apple format</div>
+                        </div>
+                        <div class="format-btn" data-format="mkv">
+                            <div class="format-name">MKV</div>
+                            <div class="format-desc">Open format</div>
+                        </div>
+                        <div class="format-btn" data-format="webm">
+                            <div class="format-name">WebM</div>
+                            <div class="format-desc">Web optimized</div>
+                        </div>
+                        <div class="format-btn" data-format="wmv">
+                            <div class="format-name">WMV</div>
+                            <div class="format-desc">Windows format</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quality-settings">
+                    <div class="section-title">Conversion quality</div>
+                    <div class="quality-grid">
+                        <div class="quality-btn" data-quality="high">High</div>
+                        <div class="quality-btn active" data-quality="medium">Standard</div>
+                        <div class="quality-btn" data-quality="low">Fast</div>
+                        <div class="quality-btn" data-quality="custom">Custom</div>
+                    </div>
+                </div>
+                
+                <button class="toggle-advanced" id="toggleAdvanced">Show advanced settings</button>
+                
+                <div class="advanced-settings" id="advancedSettings" style="display: none;">
+                    <div class="setting-row">
+                        <div class="setting-label">Resolution:</div>
+                        <select class="setting-input" id="resolution">
+                            <option value="original">Keep original</option>
+                            <option value="1920x1080">1920x1080 (1080p)</option>
+                            <option value="1280x720">1280x720 (720p)</option>
+                            <option value="854x480">854x480 (480p)</option>
+                            <option value="640x360">640x360 (360p)</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">Video bitrate:</div>
+                        <input type="text" class="setting-input" id="videoBitrate" placeholder="例如: 2000k">
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">Audio bitrate:</div>
+                        <input type="text" class="setting-input" id="audioBitrate" placeholder="例如: 192k">
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">Frame rate:</div>
+                        <input type="text" class="setting-input" id="frameRate" placeholder="例如: 30">
+                    </div>
+                </div>
+                
+                <button class="convert-button" id="convertBtn">Start conversion</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/vendor/ffmpeg/ffmpeg.js"></script>
+    <script src="/vendor/ffmpeg/util.js"></script>
+    <script>
+        const { FFmpeg } = FFmpegWASM;
+        const { toBlobURL } = FFmpegUtil;
+        let videoFile = null;
+        let ffmpeg = null;
+        let selectedFormat = 'mp4';
+        let selectedQuality = 'medium';
+
+        async function loadFFmpeg() {
+            if (!ffmpeg) {
+                ffmpeg = new FFmpeg();
+                ffmpeg.on('log', ({ message }) => {
+                    console.log(message);
+                });
+                ffmpeg.on('progress', ({ progress }) => {
+                    const percent = Math.round(progress * 100);
+                    document.getElementById('progressFill').style.width = percent + '%';
+                    document.getElementById('progressText').textContent = `Converting... ${percent}%`;
+                });
+                
+                // Multi-source: jsDelivr → unpkg → local mirror
+                const bases = [
+                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                    `${location.origin}/vendor/ffmpeg`
+                ];
+                let loaded = false;
+                for (const baseURL of bases) {
+                    try {
+                        const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
+                        const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
+                        await ffmpeg.load({ coreURL, wasmURL });
+                        loaded = true;
+                        break;
+                    } catch (e) {
+                        console.warn('FFmpeg load failed from', baseURL, e);
+                    }
+                }
+                if (!loaded) throw new Error('FFmpeg core load failed from all sources');
+            }
+            return ffmpeg;
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                videoFile = file;
+                showFileInfo(file);
+                document.getElementById('conversionControls').style.display = 'block';
+            }
+        });
+
+        function showFileInfo(file) {
+            const container = document.getElementById('currentFile');
+            const size = (file.size / (1024 * 1024)).toFixed(1);
+            const extension = file.name.split('.').pop().toUpperCase();
+            
+            container.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">${extension}</div>
+                    <div class="file-details">
+                        <h4>${file.name}</h4>
+                        <p>大小: ${size} MB | 格式: ${extension}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 格式选择
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedFormat = this.dataset.format;
+            });
+        });
+
+        // 质量选择
+        document.querySelectorAll('.quality-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedQuality = this.dataset.quality;
+            });
+        });
+
+        // 高级设置切换
+        document.getElementById('toggleAdvanced').addEventListener('click', function() {
+            const settings = document.getElementById('advancedSettings');
+            if (settings.style.display === 'none') {
+                settings.style.display = 'block';
+                this.textContent = '隐藏高级设置';
+            } else {
+                settings.style.display = 'none';
+                this.textContent = '显示高级设置';
+            }
+        });
+
+        document.getElementById('convertBtn').addEventListener('click', async function() {
+            if (!videoFile) {
+                alert('Please select a video file first');
+                return;
+            }
+            
+            this.disabled = true;
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('progressText').textContent = 'Loading FFmpeg...';
+            
+            try {
+                const ffmpeg = await loadFFmpeg();
+                
+                document.getElementById('progressText').textContent = 'Preparing files...';
+                
+                const inputFileName = 'input.' + videoFile.name.split('.').pop();
+                const outputFileName = `converted_video.${selectedFormat}`;
+                
+                await ffmpeg.writeFile(inputFileName, await videoFile.arrayBuffer());
+                
+                const command = ['-i', inputFileName];
+                
+                // Codec settings
+                const codecSettings = {
+                    'mp4': ['-c:v', 'libx264', '-c:a', 'aac'],
+                    'avi': ['-c:v', 'libx264', '-c:a', 'mp3'],
+                    'mov': ['-c:v', 'libx264', '-c:a', 'aac'],
+                    'mkv': ['-c:v', 'libx264', '-c:a', 'aac'],
+                    'webm': ['-c:v', 'libvpx-vp9', '-c:a', 'libvorbis'],
+                    'wmv': ['-c:v', 'msmpeg4v3', '-c:a', 'wmav2']
+                };
+                
+                command.push(...(codecSettings[selectedFormat] || codecSettings['mp4']));
+                
+                // Quality settings
+                if (selectedQuality === 'high') {
+                    command.push('-crf', '18', '-preset', 'slow');
+                } else if (selectedQuality === 'medium') {
+                    command.push('-crf', '23', '-preset', 'medium');
+                } else if (selectedQuality === 'low') {
+                    command.push('-crf', '28', '-preset', 'fast');
+                }
+                
+                // Advanced settings
+                const resolution = document.getElementById('resolution').value;
+                if (resolution !== 'original') {
+                    command.push('-s', resolution);
+                }
+                
+                const videoBitrate = document.getElementById('videoBitrate').value;
+                if (videoBitrate) {
+                    command.push('-b:v', videoBitrate);
+                }
+                
+                const audioBitrate = document.getElementById('audioBitrate').value;
+                if (audioBitrate) {
+                    command.push('-b:a', audioBitrate);
+                }
+                
+                const frameRate = document.getElementById('frameRate').value;
+                if (frameRate) {
+                    command.push('-r', frameRate);
+                }
+                
+                command.push('-y', outputFileName);
+                
+                document.getElementById('progressText').textContent = 'Converting video...';
+                await ffmpeg.exec(command);
+                
+                const output = await ffmpeg.readFile(outputFileName);
+                const mimeTypes = {
+                    'mp4': 'video/mp4',
+                    'avi': 'video/x-msvideo',
+                    'mov': 'video/quicktime',
+                    'mkv': 'video/x-matroska',
+                    'webm': 'video/webm',
+                    'wmv': 'video/x-ms-wmv'
+                };
+                
+                const blob = new Blob([output], { type: mimeTypes[selectedFormat] || 'video/mp4' });
+                
+                // Download file
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `converted_${Date.now()}.${selectedFormat}`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                document.getElementById('progressText').textContent = 'Conversion complete!';
+                document.getElementById('progressFill').style.width = '100%';
+                
+                // 清理
+                await ffmpeg.deleteFile(inputFileName);
+                await ffmpeg.deleteFile(outputFileName);
+                
+            } catch (error) {
+                console.error('Conversion failed:', error);
+                alert('Conversion failed. Please check file format and settings');
+                document.getElementById('progressText').textContent = 'Conversion failed';
+            } finally {
+                this.disabled = false;
+                setTimeout(() => {
+                    document.getElementById('progressSection').style.display = 'none';
+                    document.getElementById('progressFill').style.width = '0%';
+                }, 3000);
+            }
+        });
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('video/')) {
+                document.getElementById('fileInput').files = files;
+                const event = new Event('change');
+                document.getElementById('fileInput').dispatchEvent(event);
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+</body>
+</html>

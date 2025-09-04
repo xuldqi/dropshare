@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Compressor - DropShare</title>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.7/dist/umd/ffmpeg.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .compressor-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .compression-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .quality-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .quality-btn {
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .quality-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .quality-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .format-btn {
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .format-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .format-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .compress-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .compress-button:hover {
+            background: #2563eb;
+        }
+
+        .compress-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="audio-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← Back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Audio Compressor</h1>
+        <p class="page-subtitle">Reduce audio file size while maintaining quality</p>
+        
+        <div class="compressor-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🗜️</div>
+                <div class="upload-text">Click or drag to upload audio file</div>
+                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <input type="file" id="fileInput" accept="audio/*">
+            </div>
+            
+            <div class="compression-controls" id="compressionControls">
+                <div class="control-section">
+                    <div class="section-title">Compression Quality</div>
+                    <div class="quality-options">
+                        <div class="quality-btn active" data-quality="high">High Quality</div>
+                        <div class="quality-btn" data-quality="medium">Standard</div>
+                        <div class="quality-btn" data-quality="low">Max Compression</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">Output Format</div>
+                    <div class="format-options">
+                        <div class="format-btn active" data-format="mp3">MP3</div>
+                        <div class="format-btn" data-format="aac">AAC</div>
+                        <div class="format-btn" data-format="ogg">OGG</div>
+                        <div class="format-btn" data-format="wav">WAV</div>
+                    </div>
+                </div>
+                
+                <button class="compress-button" id="compressBtn">Start Compression</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing compression...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File upload
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('audio/')) {
+                document.getElementById('compressionControls').style.display = 'block';
+            }
+        });
+        
+        // Quality selection
+        document.querySelectorAll('.quality-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Format selection
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Compress button
+        document.getElementById('compressBtn').addEventListener('click', function() {
+            const progressSection = document.getElementById('progressSection');
+            progressSection.style.display = 'block';
+            
+            // Simulate compression progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    document.getElementById('progressText').textContent = 'Compression complete!';
+                }
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressText').textContent = `Compressing... ${Math.round(progress)}%`;
+            }, 300);
+        });
+
+        // Drag and drop upload
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('audio/')) {
+                document.getElementById('fileInput').files = files;
+                document.getElementById('compressionControls').style.display = 'block';
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Converter Test - DropShare</title>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .loading { background: #fff3cd; color: #856404; }
+        .success { background: #d1edff; color: #0c5460; }
+        .error { background: #f8d7da; color: #721c24; }
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Audio Converter Test</h1>
+    <div id="status" class="status loading">Initializing FFmpeg...</div>
+    
+    <div class="upload-area">
+        <input type="file" id="fileInput" accept="audio/*">
+        <p>Select an audio file to test conversion</p>
+    </div>
+    
+    <button id="convertBtn" disabled>Convert to MP3</button>
+
+    <script>
+        let ffmpeg = null;
+        let isReady = false;
+
+        async function loadFFmpeg() {
+            const status = document.getElementById('status');
+            
+            try {
+                status.textContent = 'Loading FFmpeg library...';
+                status.className = 'status loading';
+
+                // Check if FFmpeg is available
+                if (typeof FFmpegWASM === 'undefined') {
+                    throw new Error('FFmpeg library not available');
+                }
+
+                const { FFmpeg } = FFmpegWASM;
+                ffmpeg = new FFmpeg();
+
+                status.textContent = 'Loading FFmpeg core...';
+                
+                // Simple load without custom URLs first
+                await ffmpeg.load();
+
+                isReady = true;
+                status.textContent = 'FFmpeg loaded successfully!';
+                status.className = 'status success';
+                
+                console.log('FFmpeg is ready');
+
+            } catch (error) {
+                console.error('FFmpeg load error:', error);
+                status.textContent = `Failed to load FFmpeg: ${error.message}`;
+                status.className = 'status error';
+                
+                // Try alternative method
+                setTimeout(async () => {
+                    try {
+                        status.textContent = 'Trying alternative loading...';
+                        status.className = 'status loading';
+                        
+                        const { FFmpeg } = FFmpegWASM;
+                        const { toBlobURL } = FFmpegWASM;
+                        
+                        ffmpeg = new FFmpeg();
+                        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+                        
+                        await ffmpeg.load({
+                            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                        });
+
+                        isReady = true;
+                        status.textContent = 'FFmpeg loaded with alternative method!';
+                        status.className = 'status success';
+                        
+                    } catch (altError) {
+                        console.error('Alternative load failed:', altError);
+                        status.textContent = 'All loading methods failed. Please refresh page.';
+                        status.className = 'status error';
+                    }
+                }, 2000);
+            }
+        }
+
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const convertBtn = document.getElementById('convertBtn');
+            if (e.target.files[0] && isReady) {
+                convertBtn.disabled = false;
+                convertBtn.textContent = 'Convert to MP3';
+            }
+        });
+
+        document.getElementById('convertBtn').addEventListener('click', async () => {
+            const file = document.getElementById('fileInput').files[0];
+            if (!file || !isReady) return;
+
+            const status = document.getElementById('status');
+            const btn = document.getElementById('convertBtn');
+            
+            try {
+                btn.disabled = true;
+                status.textContent = 'Converting...';
+                status.className = 'status loading';
+
+                await ffmpeg.writeFile('input.wav', new Uint8Array(await file.arrayBuffer()));
+                await ffmpeg.exec(['-i', 'input.wav', 'output.mp3']);
+                const data = await ffmpeg.readFile('output.mp3');
+
+                const blob = new Blob([data.buffer], { type: 'audio/mp3' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'converted.mp3';
+                a.click();
+
+                status.textContent = 'Conversion successful! File downloaded.';
+                status.className = 'status success';
+                
+            } catch (error) {
+                console.error('Conversion error:', error);
+                status.textContent = `Conversion failed: ${error.message}`;
+                status.className = 'status error';
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // Initialize when page loads
+        window.addEventListener('load', loadFFmpeg);
+    </script>
+</body>
+</html>

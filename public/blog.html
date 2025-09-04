@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#3367d6">
     <meta name="color-scheme" content="dark light">
-    <meta name="description" content="了解安全Documents传输技术，数据安全保护，以及DropShare点对点Documents传输的技术原理。WebRTC加密传输，局域网Documents共享安全指南。">
-    <meta name="keywords" content="Documents传输安全, 数据安全保护, WebRTC加密技术, 点对点传输安全, 局域网Documents共享安全, Documents传输加密, 私密Documents分享, 安全Documents传输协议, 网络安全Documents传输, 企业Documents安全分享, 加密Documents传输工具, 安全的Documents共享方案, Documents传输隐私保护, 本地网络安全传输, 零信任Documents分享, 端到端加密Documents传输, 安全的跨设备Documents同步, Documents传输最佳实践, 数据泄露防护, 安全Documents分享技术">
+    <meta name="description" content="Learn about secure file transfer technologies, data protection, and the principles behind DropShare's peer‑to‑peer transfers. WebRTC encrypted transfers and local network security guides.">
+    <meta name="keywords" content="file transfer security, data protection, WebRTC encryption, peer‑to‑peer security, LAN file sharing security, encrypted file transfer, private file sharing, secure transfer protocols, network security file transfer, enterprise secure sharing, encrypted file tools, secure sharing solutions, file privacy protection, local network secure transfer, zero‑trust sharing, end‑to‑end encrypted transfer, secure cross‑device sync, file transfer best practices, data loss prevention, secure sharing technologies">
     <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
     <link rel="shortcut icon" href="images/favicon-96x96.png">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -118,7 +118,7 @@
         
         
         
-        .1);
+            opacity: 0.1);
         }
 
         .content-wrapper {
@@ -237,7 +237,7 @@
             }
         }
     
-        .1);
+            opacity: 0.1);
         }
         
         
@@ -252,11 +252,6 @@
     <div class="header-wrapper">
         <header>
             <div class="header-nav">
-                <a href="/" class="icon-button" title="Back to DropShare">
-                    <svg class="icon">
-                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
-                    </svg>
-                </a>
                 <h1>DropShare Blog</h1>
             </div>
             
@@ -268,7 +263,7 @@
                     <a href="image-tools.html">Images</a>
                     <a href="audio-tools.html">Audio</a>
                     <a href="video-tools.html">Video</a>
-                    <a href="document-tools.html">Documents</a>
+                    <a href="document-tools.html">Files</a>
                 </nav>
                 <div class="control-buttons">
                     
@@ -404,27 +399,27 @@
 
     <script src="scripts/i18n/languages.js"></script>
     <script>
-        // 初始化语言系统
+        // Initialize language system
         let currentLanguage = localStorage.getItem('preferred_language') || 'en';
         
-        function') {
+        function changeLanguage(langCode) {
                 window.DROPSHARE_I18N.changeLanguage(langCode);
             }
             
-            // 翻译页面元素
+            // Translate page elements
             translatePageElements();
         }
         
          function() {
-            console.log('📄 页面加载完成，初始化语言系统');
+            console.log('📄 Page loaded, initializing language system');
             
-            // 设置语言选择器的值
+            // Set language selector value
             const selector = document.getElementById('language-selector');
             if (selector) {
                 selector.value = currentLanguage;
             }
             
-            // 等待语言系统加载后翻译页面
+            // Translate after language system is ready
             setTimeout(() => {
                 translatePageElements();
             }, 500);

@@ -1,5 +1,5 @@
 // Bump cache to invalidate old entries when deploying UI changes
-var CACHE_NAME = 'dropshare-cache-v3';
+var CACHE_NAME = 'dropshare-cache-v4';
 var urlsToCache = [
   './',
   'styles.css',
@@ -56,16 +56,43 @@ self.addEventListener('activate', function(event) {
 // Fetch event - serve from cache or network
 self.addEventListener('fetch', function(event) {
   const req = event.request;
+
+  // Only handle GET requests for caching. Let others (POST/PUT/DELETE etc.) pass-through.
+  if (req.method !== 'GET') {
+    event.respondWith(fetch(req));
+    return;
+  }
+
   const acceptHeader = req.headers.get('accept') || '';
   const isHTML = req.mode === 'navigate' || acceptHeader.includes('text/html');
   const isCSS = req.destination === 'style' || /\.css(\?|$)/.test(req.url);
+  const isBypass = (() => {
+    try {
+      const u = new URL(req.url);
+      const crossOrigin = u.origin !== self.location.origin;
+      const heavyBinary = /ffmpeg-core\.(js|wasm)|pdf\.worker|tesseract|\.wasm(\?|$)/i.test(u.pathname);
+      return crossOrigin || heavyBinary;
+    } catch (e) {
+      return true;
+    }
+  })();
 
-  // Network-first for HTML and CSS to ensure UI edits are visible immediately
+  // Never cache cross-origin or heavy binary engines; use network directly.
+  if (isBypass) {
+    event.respondWith(fetch(req).catch(() => caches.match(req)));
+    return;
+  }
+
+  // Network-first for HTML/CSS to ensure UI edits are visible immediately
   if (isHTML || isCSS) {
     event.respondWith(
       fetch(req).then(function(networkRes) {
-        const resClone = networkRes.clone();
-        caches.open(CACHE_NAME).then(function(cache) { cache.put(req, resClone); });
+        if (networkRes && networkRes.ok && networkRes.type === 'basic') {
+          const resClone = networkRes.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(req, resClone).catch(() => {});
+          });
+        }
         return networkRes;
       }).catch(function() {
         return caches.match(req).then(function(cached) { return cached || caches.match('/'); });
@@ -74,13 +101,19 @@ self.addEventListener('fetch', function(event) {
     return;
   }
 
-  // Default cache-first for other requests
+  // Cache-first for other GET requests
   event.respondWith(
     caches.match(req).then(function(res) {
       return res || fetch(req).then(function(networkRes) {
-        const resClone = networkRes.clone();
-        caches.open(CACHE_NAME).then(function(cache) { cache.put(req, resClone); });
+        if (networkRes && networkRes.ok && networkRes.type === 'basic') {
+          const resClone = networkRes.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(req, resClone).catch(() => {});
+          });
+        }
         return networkRes;
+      }).catch(function() {
+        return caches.match(req);
       });
     })
   );

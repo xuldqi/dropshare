@@ -19,14 +19,14 @@ process.on('uncaughtException', (error, origin) => {
     console.log('Origin:', origin)
     console.log('Time:', new Date().toISOString())
     
-    // 记录内存使用情况
+    // Log memory usage
     const memUsage = process.memoryUsage()
     console.log('Memory usage:')
     console.log(`RSS: ${Math.round(memUsage.rss / 1024 / 1024)} MB`)
     console.log(`Heap Used: ${Math.round(memUsage.heapUsed / 1024 / 1024)} MB`)
     console.log(`Heap Total: ${Math.round(memUsage.heapTotal / 1024 / 1024)} MB`)
     
-    // 不要退出进程，继续运行
+    // Don't exit process, continue running
     console.log('Server continuing to run...')
 })
 
@@ -36,7 +36,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.log('Reason:', reason)
     console.log('Time:', new Date().toISOString())
     
-    // 不要退出进程
+    // Don't exit process
     console.log('Server continuing to run...')
 })
 
@@ -46,7 +46,7 @@ const http = require('http');
 
 const limiter = RateLimit({
 	windowMs: 5 * 60 * 1000, // 5 minutes
-	max: 100, // Limit each IP to 100 requests per `window` (here, per 5 minutes)
+	max: 1000, // Limit each IP to 1000 requests per `window` (here, per 5 minutes)
 	message: 'Too many requests from this IP Address, please try again after 5 minutes.',
 	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
@@ -62,28 +62,45 @@ app.use(limiter);
 // see https://github.com/express-rate-limit/express-rate-limit#troubleshooting-proxy-issues
 app.set('trust proxy', 5);
 
-app.use(express.static('public'));
+// Serve static with proper MIME for .wasm and safer defaults
+app.use(express.static('public', {
+    setHeaders(res, path) {
+        if (path.endsWith('.wasm')) {
+            res.set('Content-Type', 'application/wasm');
+        }
+        // Avoid incorrect caching during dev for core engines
+        if (/\/vendor\/ffmpeg\/ffmpeg-core\.(js|wasm)$/.test(path)) {
+            res.set('Cache-Control', 'no-store');
+        }
+    }
+}));
 
+// Fallback: only redirect for HTML navigations; return 404 for missing assets to avoid HTML-as-JS
 app.use(function(req, res) {
-    res.redirect('/');
+    const accept = req.headers['accept'] || '';
+    const isHTML = accept.includes('text/html') || req.method === 'GET' && !req.path.includes('.');
+    if (isHTML) {
+        return res.redirect('/');
+    }
+    res.status(404).send('Not found');
 });
 
-// 创建HTTP服务器
+// Create HTTP server
 const server = http.createServer(app);
 
 // 简化监听方式，添加错误处理
 server.listen(port, '0.0.0.0', () => {
     console.log('---------------------------------------');
-    console.log('DropShare 已启动，监听所有网络接口');
-    console.log('端口: ' + port);
-    console.log('请访问: http://localhost:' + port);
+    console.log('DropShare started, listening on all network interfaces');
+    console.log('Port: ' + port);
+    console.log('Please visit: http://localhost:' + port);
     console.log('---------------------------------------');
 })
 .on('error', (err) => {
-    console.error('服务器启动失败:');
+    console.error('Server startup failed:');
     console.error(err);
     if(err.code === 'EADDRINUSE') {
-        console.error(`端口 ${port} 已被占用，请尝试使用不同的端口`);
+        console.error(`Port ${port} is already in use, please try a different port`);
 }
 });
 
@@ -99,50 +116,50 @@ class DropShareServer {
         this._wss.on('headers', (headers, response) => this._onHeaders(headers, response));
 
         this._rooms = {};
-        this._privateRooms = {}; // 私密房间存储
-        this._recentlyDisconnected = new Map(); // 跟踪最近断开连接的用户，用于重连检测
-        this._timers = new Map(); // 存储所有定时器用于清理
+        this._privateRooms = {}; // Private room storage
+        this._recentlyDisconnected = new Map(); // Track recently disconnected users for reconnection detection
+        this._timers = new Map(); // Store all timers for cleanup
 
-        // 添加服务器统计监控
+        // Add server statistics monitoring
         this._stats = {
             connections: 0,
             totalConnections: 0,
             startTime: Date.now()
         };
 
-        // 每5分钟输出服务器状态
+        // Output server status every 5 minutes
         this._statsTimer = setInterval(() => {
             this._logServerStats();
-            this._cleanupExpiredData(); // 定期清理过期数据
+            this._cleanupExpiredData(); // Regularly clean up expired data
         }, 5 * 60 * 1000);
 
-        // 添加服务器关闭时的清理机制
+        // Add cleanup mechanism when server shuts down
         this._setupCleanupHandlers();
 
         console.log('DropShare is running on port', port);
     }
 
-    // 设置服务器关闭时的清理处理器
+    // Set up cleanup handlers when server shuts down
     _setupCleanupHandlers() {
         const cleanup = () => {
-            console.log('=== 服务器关闭，清理资源 ===');
+            console.log('=== Server shutting down, cleaning up resources ===');
             try {
-                // 清理主要统计计时器
+                // Clean up main statistics timer
                 if (this._statsTimer) {
                     clearInterval(this._statsTimer);
-                    console.log('主统计计时器已清理');
+                    console.log('Main statistics timer cleaned up');
                 }
                 
-                // 清理所有自定义计时器
+                // Clean up all custom timers
                 let cleanedCount = 0;
                 for (const [timerId, timerData] of this._timers) {
                     clearTimeout(timerData.timer);
                     cleanedCount++;
                 }
                 this._timers.clear();
-                console.log(`已清理 ${cleanedCount} 个自定义计时器`);
+                console.log(`Cleaned up ${cleanedCount} custom timers`);
                 
-                // 清理所有 peer 的 keepalive 计时器
+                // Clean up all peer keepalive timers
                 let peerTimerCount = 0;
                 for (const ip in this._rooms) {
                     for (const peerId in this._rooms[ip]) {
@@ -153,22 +170,22 @@ class DropShareServer {
                         }
                     }
                 }
-                console.log(`已清理 ${peerTimerCount} 个 peer keepalive 计时器`);
+                console.log(`Cleaned up ${peerTimerCount} peer keepalive timers`);
                 
-                console.log('所有资源清理完成');
+                console.log('All resources cleaned up');
             } catch (error) {
-                console.error('清理资源时发生错误:', error);
+                console.error('Error occurred while cleaning up resources:', error);
             }
         };
 
-        // 监听进程退出信号
+        // Listen for process exit signals
         process.on('SIGINT', cleanup);
         process.on('SIGTERM', cleanup);
         process.on('exit', cleanup);
     }
 
     _logServerStats() {
-        const uptime = Math.round((Date.now() - this._stats.startTime) / 1000 / 60); // 分钟
+        const uptime = Math.round((Date.now() - this._stats.startTime) / 1000 / 60); // minutes
         const memUsage = process.memoryUsage();
         
         console.log('=== Server Stats ===');
@@ -181,14 +198,14 @@ class DropShareServer {
         console.log('===================');
     }
 
-    // 清理过期数据，防止内存泄漏
+    // Clean up expired data to prevent memory leaks
     _cleanupExpiredData() {
         try {
-            console.log('=== 开始清理过期数据 ===');
+            console.log('=== Starting cleanup of expired data ===');
             
-            // 清理过期的重连记录（超过10分钟）
+            // Clean up expired reconnection records (over 10 minutes)
             const now = Date.now();
-            const expiredThreshold = 10 * 60 * 1000; // 10分钟
+            const expiredThreshold = 10 * 60 * 1000; // 10 minutes
             let cleanedReconnections = 0;
             
             for (const [peerId, data] of this._recentlyDisconnected) {
@@ -198,7 +215,7 @@ class DropShareServer {
                 }
             }
             
-            // 清理过期的计时器
+            // Clean up expired timers
             let cleanedTimers = 0;
             const timerTypes = {};
             for (const [timerId, timerData] of this._timers) {
@@ -207,16 +224,16 @@ class DropShareServer {
                     this._timers.delete(timerId);
                     cleanedTimers++;
                     
-                    // 统计计时器类型
+                    // Count timer types
                     timerTypes[timerData.type] = (timerTypes[timerData.type] || 0) + 1;
                 }
             }
             
             if (cleanedTimers > 0) {
-                console.log(`清理的计时器类型:`, timerTypes);
+                console.log(`Cleaned timer types:`, timerTypes);
             }
             
-            // 清理空的房间
+            // Clean up empty rooms
             let cleanedRooms = 0;
             for (const [ip, room] of Object.entries(this._rooms)) {
                 if (Object.keys(room).length === 0) {
@@ -225,7 +242,7 @@ class DropShareServer {
                 }
             }
             
-            // 清理空的私密房间
+            // Clean up empty private rooms
             let cleanedPrivateRooms = 0;
             for (const [roomCode, room] of Object.entries(this._privateRooms)) {
                 if (room.members.size === 0) {
@@ -234,16 +251,16 @@ class DropShareServer {
                 }
             }
             
-            console.log(`清理完成 - 重连记录: ${cleanedReconnections}, 计时器: ${cleanedTimers}, 房间: ${cleanedRooms}, 私密房间: ${cleanedPrivateRooms}`);
-            console.log(`当前状态 - 重连记录: ${this._recentlyDisconnected.size}, 计时器: ${this._timers.size}, 房间: ${Object.keys(this._rooms).length}, 私密房间: ${Object.keys(this._privateRooms).length}`);
+            console.log(`Cleanup completed - Reconnection records: ${cleanedReconnections}, Timers: ${cleanedTimers}, Rooms: ${cleanedRooms}, Private rooms: ${cleanedPrivateRooms}`);
+            console.log(`Current status - Reconnection records: ${this._recentlyDisconnected.size}, Timers: ${this._timers.size}, Rooms: ${Object.keys(this._rooms).length}, Private rooms: ${Object.keys(this._privateRooms).length}`);
         } catch (error) {
-            console.error('清理数据时发生错误:', error);
+            console.error('Error occurred while cleaning up data:', error);
         }
     }
 
     _onConnection(peer) {
         try {
-            // 更新连接统计
+            // Update connection statistics
             this._stats.connections++;
             this._stats.totalConnections++;
             console.log(`New connection: ${peer.id} (total: ${this._stats.connections})`);
