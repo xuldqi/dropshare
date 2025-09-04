@@ -21,32 +21,32 @@ class DeviceSelector {
             <div class="device-modal-overlay"></div>
             <div class="device-modal-content">
                 <div class="device-modal-header">
-                    <h3>📤 选择接收设备</h3>
+                    <h3>📤 Select Receiving Device</h3>
                     <button class="device-modal-close" type="button">&times;</button>
                 </div>
                 
                 <div class="device-discovery-status">
                     <div class="discovery-spinner"></div>
-                    <span class="discovery-text">正在搜索附近设备...</span>
+                    <span class="discovery-text">Searching for nearby devices...</span>
                 </div>
                 
                 <div class="device-list-container">
                     <div class="device-list-header">
                         <label class="select-all-devices">
                             <input type="checkbox" id="selectAllDevices">
-                            <span>全选设备</span>
+                            <span>Select All Devices</span>
                         </label>
-                        <span class="device-count">找到 0 个设备</span>
+                        <span class="device-count">Found 0 devices</span>
                     </div>
                     
                     <div class="device-list" id="deviceList">
-                        <!-- 设备列表将在这里动态生成 -->
+                        <!-- Device list will be dynamically generated here -->
                     </div>
                     
                     <div class="no-devices-message" style="display: none;">
                         <div class="no-devices-icon">📱</div>
-                        <p>未发现附近设备</p>
-                        <small>确保其他设备也打开了 DropShare 并在同一网络中</small>
+                        <p>No nearby devices found</p>
+                        <small>Make sure other devices have DropShare open and are on the same network</small>
                     </div>
                 </div>
                 
@@ -55,13 +55,13 @@ class DeviceSelector {
                         🔄 刷新设备
                     </button>
                     <button class="btn-primary" id="sendToSelected" disabled>
-                        📤 发送到选中设备 (<span id="selectedCount">0</span>)
+                        📤 Send to Selected Devices (<span id="selectedCount">0</span>)
                     </button>
                 </div>
                 
                 <div class="send-progress" style="display: none;">
                     <div class="progress-header">
-                        <span>正在发送文件...</span>
+                        <span>Sending file...</span>
                         <span class="progress-percentage">0%</span>
                     </div>
                     <div class="progress-bar">
@@ -99,7 +99,7 @@ class DeviceSelector {
             this.sendToSelectedDevices();
         };
         
-        // ESC键关闭
+        // ESC key to close
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.isVisible) {
                 this.hide();
@@ -134,14 +134,14 @@ class DeviceSelector {
         this.devices = [];
         this.renderDeviceList();
         
-        // 模拟设备发现（实际应用中需要与后端WebSocket通信）
+        // Simulate device discovery (in real app, need WebSocket communication with backend)
         this.discoverDevices();
     }
     
     // 模拟设备发现
     async discoverDevices() {
-        // 这里应该连接到后端WebSocket获取真实设备列表
-        // 现在先模拟一些设备
+        // Here should connect to backend WebSocket to get real device list
+        // Now simulate some devices
         await new Promise(resolve => setTimeout(resolve, 1500));
         
         this.devices = [
@@ -197,7 +197,7 @@ class DeviceSelector {
         
         // 更新设备数量
         const onlineDevices = this.devices.filter(d => d.online);
-        deviceCount.textContent = `找到 ${onlineDevices.length} 个设备`;
+        deviceCount.textContent = `Found ${onlineDevices.length} devices`;
         
         if (onlineDevices.length === 0) {
             deviceList.style.display = 'none';
@@ -224,7 +224,7 @@ class DeviceSelector {
                     <div class="device-details">
                         <span class="device-os">${device.os}</span>
                         <span class="device-status ${device.online ? 'online' : 'offline'}">
-                            ${device.online ? '● 在线' : '○ 离线'}
+                            ${device.online ? '● Online' : '○ Offline'}
                         </span>
                     </div>
                 </div>
@@ -232,14 +232,14 @@ class DeviceSelector {
                 <div class="device-actions">
                     ${device.online ? `
                         <button class="btn-quick-send" onclick="deviceSelector.quickSend('${device.id}')">
-                            快速发送
+                            Quick Send
                         </button>
                     ` : ''}
                 </div>
             </div>
         `).join('');
         
-        // 绑定设备选择事件
+        // Bind device selection events
         deviceList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
             checkbox.onchange = (e) => {
                 const deviceId = e.target.closest('.device-item').dataset.deviceId;
@@ -248,7 +248,7 @@ class DeviceSelector {
         });
     }
     
-    // 获取设备图标
+    // Get device icon
     getDeviceIcon(device) {
         const icons = {
             mobile: '📱',
@@ -259,7 +259,7 @@ class DeviceSelector {
         return icons[device.type] || '📱';
     }
     
-    // 切换设备选择
+    // Toggle device selection
     toggleDeviceSelection(deviceId, selected) {
         if (selected) {
             this.selectedDevices.add(deviceId);
@@ -270,7 +270,7 @@ class DeviceSelector {
         this.updateSelectAllCheckbox();
     }
     
-    // 更新全选状态
+    // Update select all state
     toggleSelectAll(selectAll) {
         const onlineDevices = this.devices.filter(d => d.online);
         const checkboxes = this.modal.querySelectorAll('.device-item.online input[type="checkbox"]');
@@ -286,7 +286,7 @@ class DeviceSelector {
         this.updateSelectedCount();
     }
     
-    // 更新全选复选框状态
+            // Update select all checkbox state
     updateSelectAllCheckbox() {
         const selectAllCheckbox = this.modal.querySelector('#selectAllDevices');
         const onlineDevices = this.devices.filter(d => d.online);
@@ -304,7 +304,7 @@ class DeviceSelector {
         }
     }
     
-    // 更新选中设备数量
+    // Update selected device count
     updateSelectedCount() {
         const count = this.selectedDevices.size;
         const selectedCountSpan = this.modal.querySelector('#selectedCount');
@@ -314,13 +314,13 @@ class DeviceSelector {
         sendButton.disabled = count === 0;
         
         if (count > 0) {
-            sendButton.textContent = `📤 发送到选中设备 (${count})`;
+            sendButton.textContent = `📤 Send to Selected Devices (${count})`;
         } else {
-            sendButton.textContent = '📤 发送到选中设备 (0)';
+            sendButton.textContent = '📤 Send to Selected Devices (0)';
         }
     }
     
-    // 快速发送到单个设备
+    // Quick send to single device
     async quickSend(deviceId) {
         const device = this.devices.find(d => d.id === deviceId);
         if (!device) return;
@@ -330,10 +330,10 @@ class DeviceSelector {
         await this.sendToSelectedDevices();
     }
     
-    // 发送到选中设备
+    // Send to selected devices
     async sendToSelectedDevices() {
         if (this.selectedDevices.size === 0) {
-            alert('请先选择接收设备');
+            alert('Please select receiving devices first');
             return;
         }
         
@@ -341,40 +341,40 @@ class DeviceSelector {
             this.devices.find(d => d.id === id)
         ).filter(Boolean);
         
-        // 显示发送进度
+        // Show send progress
         this.showSendProgress(true);
         
         try {
-            // 模拟发送过程
+            // Simulate sending process
             for (let i = 0; i < selectedDevicesList.length; i++) {
                 const device = selectedDevicesList[i];
                 const progress = ((i + 1) / selectedDevicesList.length) * 100;
                 
-                this.updateSendProgress(progress, `正在发送到 ${device.name}...`);
+                this.updateSendProgress(progress, `Sending to ${device.name}...`);
                 
-                // 模拟发送延迟
+                // Simulate sending delay
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                // 这里应该调用实际的文件发送API
-                console.log(`发送文件到设备: ${device.name}`, this.fileToShare);
+                // Here should call actual file sending API
+                console.log(`Sending file to device: ${device.name}`, this.fileToShare);
             }
             
-            this.updateSendProgress(100, `成功发送到 ${selectedDevicesList.length} 个设备`);
+            this.updateSendProgress(100, `Successfully sent to ${selectedDevicesList.length} devices`);
             
-            // 延迟关闭
+            // Delay close
             setTimeout(() => {
                 this.hide();
-                this.showNotification(`文件已成功发送到 ${selectedDevicesList.length} 个设备`);
+                this.showNotification(`File successfully sent to ${selectedDevicesList.length} devices`);
             }, 1500);
             
         } catch (error) {
-            console.error('发送失败:', error);
-            this.updateSendProgress(0, '发送失败，请重试');
+            console.error('Send failed:', error);
+            this.updateSendProgress(0, 'Send failed, please retry');
             setTimeout(() => this.showSendProgress(false), 2000);
         }
     }
     
-    // 显示/隐藏发送进度
+    // Show/hide send progress
     showSendProgress(show) {
         const progress = this.modal.querySelector('.send-progress');
         const actions = this.modal.querySelector('.device-modal-actions');
@@ -383,7 +383,7 @@ class DeviceSelector {
         actions.style.display = show ? 'none' : 'flex';
     }
     
-    // 更新发送进度
+    // Update send progress
     updateSendProgress(percentage, status) {
         const progressFill = this.modal.querySelector('.progress-fill');
         const progressPercentage = this.modal.querySelector('.progress-percentage');
@@ -394,14 +394,14 @@ class DeviceSelector {
         sendStatus.textContent = status;
     }
     
-    // 刷新设备列表
+    // Refresh device list
     refreshDevices() {
         this.startDeviceDiscovery();
     }
     
-    // 显示通知
+    // Show notification
     showNotification(message) {
-        // 创建临时通知
+        // Create temporary notification
         const notification = document.createElement('div');
         notification.className = 'device-notification';
         notification.textContent = message;
@@ -420,7 +420,7 @@ class DeviceSelector {
         
         document.body.appendChild(notification);
         
-        // 3秒后自动移除
+        // Auto remove after 3 seconds
         setTimeout(() => {
             notification.style.animation = 'slideOutRight 0.3s ease';
             setTimeout(() => notification.remove(), 300);
