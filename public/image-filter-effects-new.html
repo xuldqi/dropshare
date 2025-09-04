@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>图片滤镜特效 - DropShare</title>
+    <title>Image Filter Effects - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -447,13 +447,13 @@
                 🎨 DropShare
             </a>
             <nav class="nav-links">
-                <a href="index.html">首页</a>
-                <a href="share.html">传送</a>
-                <a href="share.html#rooms">多人房间</a>
-                <a href="image-tools.html" class="active">图片</a>
-                <a href="audio-tools.html">音频</a>
-                <a href="video-tools.html">视频</a>
-                <a href="document-tools.html">文件</a>
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html" class="active">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
             </nav>
         </div>
     </header>
@@ -466,15 +466,15 @@
             </a>
         </div>
         
-        <h1 class="page-title">图片滤镜特效</h1>
-        <p class="page-subtitle">应用专业级滤镜效果，让图片更具艺术感</p>
+        <h1 class="page-title">Image Filter Effects</h1>
+        <p class="page-subtitle">Apply professional-grade filter effects to make images more artistic</p>
 
         <div class="filter-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎨</div>
-                <div class="upload-text">点击选择图片或拖拽到这里</div>
-                <div class="upload-hint">支持 JPG, PNG, GIF, WebP 格式，最大 10MB</div>
+                <div class="upload-text">Click to select image or drag here</div>
+                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -488,27 +488,27 @@
                 <div class="controls-grid">
                     <!-- 滤镜面板 -->
                     <div class="filter-panel">
-                        <div class="panel-title">🎛️ 滤镜控制</div>
+                        <div class="panel-title">🎛️ Filter Controls</div>
 
                         <!-- 预设滤镜 -->
                         <div class="preset-filters">
-                            <div class="filter-title">🎭 预设滤镜</div>
+                            <div class="filter-title">🎭 Preset Filters</div>
                             <div class="preset-grid">
-                                <button class="preset-btn active" data-preset="none">原图</button>
-                                <button class="preset-btn" data-preset="vintage">复古</button>
-                                <button class="preset-btn" data-preset="bw">黑白</button>
-                                <button class="preset-btn" data-preset="sepia">怀旧</button>
-                                <button class="preset-btn" data-preset="warm">暖调</button>
-                                <button class="preset-btn" data-preset="cool">冷调</button>
-                                <button class="preset-btn" data-preset="dramatic">戏剧</button>
-                                <button class="preset-btn" data-preset="dreamy">梦幻</button>
+                                <button class="preset-btn active" data-preset="none">Original</button>
+                                <button class="preset-btn" data-preset="vintage">Vintage</button>
+                                <button class="preset-btn" data-preset="bw">B&W</button>
+                                <button class="preset-btn" data-preset="sepia">Sepia</button>
+                                <button class="preset-btn" data-preset="warm">Warm</button>
+                                <button class="preset-btn" data-preset="cool">Cool</button>
+                                <button class="preset-btn" data-preset="dramatic">Dramatic</button>
+                                <button class="preset-btn" data-preset="dreamy">Dreamy</button>
                             </div>
                         </div>
 
                         <!-- 基础调整 -->
                         <div class="filter-group">
                             <div class="filter-title">
-                                💡 亮度
+                                💡 Brightness
                                 <span class="filter-value" id="brightnessValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="brightnessSlider" 
@@ -517,7 +517,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌗 对比度
+                                🌗 Contrast
                                 <span class="filter-value" id="contrastValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="contrastSlider" 
@@ -526,7 +526,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌈 饱和度
+                                🌈 Saturation
                                 <span class="filter-value" id="saturationValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="saturationSlider" 
@@ -535,7 +535,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌅 色相
+                                🌅 Hue
                                 <span class="filter-value" id="hueValue">0°</span>
                             </div>
                             <input type="range" class="filter-slider" id="hueSlider" 
@@ -545,7 +545,7 @@
                         <!-- 高级效果 -->
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌫️ 模糊
+                                🌫️ Blur
                                 <span class="filter-value" id="blurValue">0px</span>
                             </div>
                             <input type="range" class="filter-slider" id="blurSlider" 
@@ -554,7 +554,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                ✨ 锐化
+                                ✨ Sharpen
                                 <span class="filter-value" id="sharpenValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="sharpenSlider" 
@@ -563,7 +563,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                ☀️ 曝光
+                                ☀️ Exposure
                                 <span class="filter-value" id="exposureValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="exposureSlider" 
@@ -572,7 +572,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🎯 渐晕
+                                🎯 Vignette
                                 <span class="filter-value" id="vignetteValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="vignetteSlider" 
@@ -581,36 +581,36 @@
 
                         <!-- 快速操作 -->
                         <div class="quick-actions">
-                            <button class="quick-btn" id="resetFilters">🔄 重置</button>
-                            <button class="quick-btn" id="randomFilter">🎲 随机</button>
-                            <button class="quick-btn" id="toggleComparison">👁️ 对比</button>
+                            <button class="quick-btn" id="resetFilters">🔄 Reset</button>
+                            <button class="quick-btn" id="randomFilter">🎲 Random</button>
+                            <button class="quick-btn" id="toggleComparison">👁️ Compare</button>
                         </div>
                     </div>
 
                     <!-- 图片工作区 -->
                     <div class="image-workspace">
-                        <div class="workspace-title">🖼️ 实时预览</div>
+                        <div class="workspace-title">🖼️ Live Preview</div>
                         <div class="image-container">
-                            <img id="workspaceImage" class="workspace-image" alt="滤镜预览">
+                            <img id="workspaceImage" class="workspace-image" alt="Filter preview">
                         </div>
                         <div class="image-info">
-                            <div>尺寸: <span class="size" id="imageSize"></span></div>
-                            <div>文件大小: <span class="size" id="fileSize"></span></div>
+                            <div>Size: <span class="size" id="imageSize"></span></div>
+                            <div>File Size: <span class="size" id="fileSize"></span></div>
                         </div>
 
                         <!-- 对比模式 -->
                         <div class="comparison-mode" id="comparisonMode">
                             <div class="comparison-container">
                                 <div class="comparison-item">
-                                    <h4>原图</h4>
+                                    <h4>Original</h4>
                                     <div class="image-container">
-                                        <img id="originalComparison" class="workspace-image" alt="原图">
+                                        <img id="originalComparison" class="workspace-image" alt="Original image">
                                     </div>
                                 </div>
                                 <div class="comparison-item">
-                                    <h4>滤镜效果</h4>
+                                    <h4>Filtered</h4>
                                     <div class="image-container">
-                                        <img id="filteredComparison" class="workspace-image" alt="滤镜效果">
+                                        <img id="filteredComparison" class="workspace-image" alt="Filtered image">
                                     </div>
                                 </div>
                             </div>
@@ -622,10 +622,10 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 下载滤镜图片
+                    📥 Download Filtered Image
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 重新选择
+                    🔄 Select Again
                 </button>
             </div>
         </div>
