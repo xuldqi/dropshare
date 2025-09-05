@@ -29,9 +29,9 @@ for pattern in "${HTML_FILES[@]}"; do
     <script src="device-selector.js"></script>\
     <script src="add-share-integration.js"></script>
 ' "$file"
-                echo "  ✅ 已添加分享脚本"
+                echo "  ✅ Added sharing script"
             else
-                echo "  ⏭️  已存在分享脚本"
+                echo "  ⏭️  Sharing script already exists"
             fi
         fi
     done
@@ -39,14 +39,14 @@ done
 
 echo ""
 
-# 2. 在主页添加分享功能卡片
-echo "🏠 第2步: 在主页添加分享功能..."
+# 2. Add sharing feature card to homepage
+echo "🏠 Step 2: Adding sharing feature to homepage..."
 echo "------------------------------"
 
 if [[ -f "public/index.html" ]]; then
-    # 检查是否已经有分享卡片
+    # Check if sharing card already exists
     if ! grep -q "Device Sharing" "public/index.html"; then
-        # 在工具网格中添加分享卡片
+        # Add sharing card to tools grid
         cat >> temp_share_card.html << 'EOF'
             <div class="tool-card" onclick="window.open('/share.html', '_blank')" style="background: linear-gradient(135deg, #10b981, #059669); color: white; cursor: pointer;">
                 <div class="tool-icon">📤</div>
@@ -60,49 +60,49 @@ if [[ -f "public/index.html" ]]; then
             </div>
 EOF
         
-        # 找到第一个工具卡片的位置并插入
+        # Find first tool card position and insert
         if grep -q "tool-card" "public/index.html"; then
-            # 在第一个tool-card前插入分享卡片
+            # Insert sharing card before first tool-card
             sed -i.bak '/class="tool-card"/r temp_share_card.html' "public/index.html"
-            echo "  ✅ 已添加分享功能卡片"
+            echo "  ✅ Added sharing feature card"
         fi
         
         rm -f temp_share_card.html
     else
-        echo "  ⏭️  已存在分享功能"
+        echo "  ⏭️  Sharing feature already exists"
     fi
 fi
 
 echo ""
 
-# 3. 更新导航菜单
-echo "🧭 第3步: 更新导航菜单..."
+# 3. Update navigation menu
+echo "🧭 Step 3: Updating navigation menu..."
 echo "-------------------------"
 
-# 需要更新导航的文件
+# Files that need navigation updates
 NAV_FILES=("public/index.html" "public/"*.html)
 
 for file in "${NAV_FILES[@]}"; do
     if [[ -f "$file" && ! "$file" =~ (share|rooms)\.html ]]; then
-        # 检查是否已经有分享链接
+        # Check if sharing link already exists
         if ! grep -q 'href.*share\.html' "$file"; then
-            # 在导航中添加分享链接
+            # Add sharing link to navigation
             sed -i.bak 's|<a href="index.html">Home</a>|<a href="index.html">Home</a>\
                 <a href="share.html" style="color: #10b981;">Share</a>|' "$file"
-            echo "  ✅ 已更新 $file 的导航"
+            echo "  ✅ Updated navigation for $file"
         fi
     fi
 done
 
 echo ""
 
-# 4. 为工具页面添加结果分享按钮样式
-echo "🎨 第4步: 添加分享按钮样式..."
+# 4. Add sharing button styles for tool pages
+echo "🎨 Step 4: Adding sharing button styles..."
 echo "-----------------------------"
 
-# 创建分享样式文件
+# Create sharing styles file
 cat > public/share-integration.css << 'EOF'
-/* 分享功能样式 */
+/* Sharing functionality styles */
 .share-button {
     display: inline-flex;
     align-items: center;
@@ -150,7 +150,7 @@ cat > public/share-integration.css << 'EOF'
     left: 100%;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .share-button {
         padding: 10px 16px;
@@ -161,12 +161,12 @@ cat > public/share-integration.css << 'EOF'
 }
 EOF
 
-# 将样式文件链接添加到HTML文件
+# Add style file links to HTML files
 for file in public/*.html; do
     if [[ -f "$file" ]]; then
-        # 检查是否已经包含分享样式
+        # Check if sharing styles are already included
         if ! grep -q "share-integration.css" "$file"; then
-            # 在</head>前添加样式链接
+            # Add style links before </head>
             sed -i.bak '/<\/head>/i\
     <link rel="stylesheet" href="share-integration.css">\
     <link rel="stylesheet" href="device-selector.css">
@@ -175,47 +175,47 @@ for file in public/*.html; do
     fi
 done
 
-echo "  ✅ 已添加分享样式"
+echo "  ✅ Added sharing styles"
 echo ""
 
-# 5. 清理备份文件
-echo "🧹 第5步: 清理备份文件..."
+# 5. Clean up backup files
+echo "🧹 Step 5: Cleaning up backup files..."
 echo "-------------------------"
 
 find public/ -name "*.bak" -delete
-echo "  ✅ 已清理备份文件"
+echo "  ✅ Cleaned up backup files"
 echo ""
 
-# 6. 验证集成结果
-echo "🔍 第6步: 验证集成结果..."
+# 6. Verify integration results
+echo "🔍 Step 6: Verifying integration results..."
 echo "-------------------------"
 
-echo "分享脚本集成统计:"
-echo "- HTML文件处理: $(grep -l "add-share-integration.js" public/*.html | wc -l) 个"
-echo "- 样式文件集成: $(grep -l "share-integration.css" public/*.html | wc -l) 个"
-echo "- 导航链接添加: $(grep -l 'href.*share\.html' public/*.html | wc -l) 个"
+echo "Sharing script integration statistics:"
+echo "- HTML files processed: $(grep -l "add-share-integration.js" public/*.html | wc -l)"
+echo "- Style files integrated: $(grep -l "share-integration.css" public/*.html | wc -l)"
+echo "- Navigation links added: $(grep -l 'href.*share\.html' public/*.html | wc -l)"
 
 echo ""
-echo "主要功能文件:"
-echo "- 分享脚本: add-share-integration.js"
-echo "- 分享样式: public/share-integration.css"
-echo "- 分享页面: public/share.html"
-echo "- 房间功能: public/rooms.html"
+echo "Main feature files:"
+echo "- Sharing script: add-share-integration.js"
+echo "- Sharing styles: public/share-integration.css"
+echo "- Sharing page: public/share.html"
+echo "- Room functionality: public/rooms.html"
 
 echo ""
 echo "======================"
-echo "🎉 分享功能集成完成！"
+echo "🎉 Sharing functionality integration completed!"
 echo ""
-echo "📋 新增功能:"
-echo "1. 所有工具页面现在都有'📤 Share to Device'按钮"
-echo "2. 主页新增分享功能卡片"
-echo "3. 导航菜单添加分享链接"
-echo "4. 处理结果可直接分享到其他设备"
+echo "📋 New features:"
+echo "1. All tool pages now have '📤 Share to Device' button"
+echo "2. Homepage added sharing feature card"
+echo "3. Navigation menu added sharing link"
+echo "4. Processing results can be directly shared to other devices"
 echo ""
-echo "🔗 使用方法:"
-echo "1. 在任何工具处理完文件后，点击'Share to Device'按钮"
-echo "2. 或直接访问分享页面进行P2P文件传输"
-echo "3. 使用房间功能进行多设备协作"
+echo "🔗 How to use:"
+echo "1. After processing files in any tool, click 'Share to Device' button"
+echo "2. Or directly access sharing page for P2P file transfer"
+echo "3. Use room functionality for multi-device collaboration"
 echo ""
-echo "✨ 现在dropshare真正实现了'处理+分享'的完整功能！"
+echo "✨ Now dropshare truly implements the complete 'process + share' functionality!"
 echo "======================"
