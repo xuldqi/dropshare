@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# 集成分享功能到所有工具页面的脚本
+# Script to integrate sharing functionality into all tool pages
 
-echo "🔗 开始集成分享功能..."
+echo "🔗 Starting share integration..."
 echo "======================"
 
-# 1. 添加分享脚本到所有HTML文件
-echo "📝 第1步: 添加分享脚本到HTML文件..."
+# 1. Add sharing scripts to all HTML files
+echo "📝 Step 1: Adding sharing scripts to HTML files..."
 echo "-----------------------------------"
 
-# 要处理的HTML文件模式
+# HTML file patterns to process
 HTML_FILES=(
     "public/*.html"
     "public/*-real.html"
@@ -19,11 +19,11 @@ HTML_FILES=(
 for pattern in "${HTML_FILES[@]}"; do
     for file in $pattern; do
         if [[ -f "$file" && ! "$file" =~ (share|rooms)\.html ]]; then
-            echo "处理文件: $file"
+            echo "Processing file: $file"
             
-            # 检查是否已经包含分享脚本
+            # Check if sharing script is already included
             if ! grep -q "add-share-integration.js" "$file"; then
-                # 在</body>前添加分享脚本和设备选择器
+                # Add sharing script and device selector before </body>
                 sed -i.bak '/<\/body>/i\
     <!-- Share Integration -->\
     <script src="device-selector.js"></script>\
