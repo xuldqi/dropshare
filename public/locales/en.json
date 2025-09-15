@@ -430,13 +430,13 @@
   "video_info_subtitle": "View detailed video file information",
   "video_info_upload_text": "or Drag files here",
   
-  "image_background_remover_title": "Background Remover - DropShare",
+  "image_background_remover_title": "Background Remover",
   "image_background_remover_heading": "Background Remover",
   "image_background_remover_subtitle": "Intelligently remove image backgrounds with manual precision adjustment support",
   "image_background_remover_upload_text": "Click to select image or drag here",
   "image_background_remover_upload_hint": "Supports JPG, PNG, GIF, WebP formats, max 10MB",
   
-  "image_filter_effects_title": "Image Filter Effects - DropShare",
+  "image_filter_effects_title": "Image Filter Effects",
   "image_filter_effects_heading": "Image Filter Effects",
   "image_filter_effects_subtitle": "Apply professional-grade filter effects to make images more artistic",
   "image_filter_effects_upload_text": "Click to select image or drag here",
