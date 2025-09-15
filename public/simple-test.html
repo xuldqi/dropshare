@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Language Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        select { padding: 10px; font-size: 16px; margin: 10px 0; }
+        .test-item { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Simple Language Test</h1>
+    
+    <div>
+        <label>Language: </label>
+        <select id="language-selector">
+            <option value="en">English</option>
+            <option value="zh-CN">简体中文</option>
+            <option value="zh-TW">繁體中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="pt">Português</option>
+        </select>
+    </div>
+    
+    <div class="test-item">
+        <p data-i18n="nav_home">Home</p>
+        <p data-i18n="nav_share">Share</p>
+        <p data-i18n="nav_rooms">Rooms</p>
+    </div>
+    
+    <div id="debug"></div>
+
+    <script src="scripts/i18n/languages.js"></script>
+    
+    <script>
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            const debug = document.getElementById('debug');
+            
+            debug.innerHTML = 'Initializing...<br>';
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                debug.innerHTML += `Current language: ${currentLang}<br>`;
+                
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    debug.innerHTML += `Changing to: ${newLang}<br>`;
+                    
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                        translatePage();
+                        debug.innerHTML += `Translation completed<br>`;
+                    }
+                });
+                
+                debug.innerHTML += 'Language selector ready<br>';
+            } else {
+                debug.innerHTML += 'Error: Missing element or DROPSHARE_I18N<br>';
+            }
+        }
+        
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined') {
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.textContent = translation;
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                    initializeLanguageSelector();
+                    translatePage();
+                } else {
+                    document.getElementById('debug').innerHTML = 'DROPSHARE_I18N not loaded<br>';
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Language Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        select { padding: 10px; font-size: 16px; margin: 10px 0; }
+        .test-item { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Simple Language Test</h1>
+    
+    <div>
+        <label>Language: </label>
+        <select id="language-selector">
+            <option value="en">English</option>
+            <option value="zh-CN">简体中文</option>
+            <option value="zh-TW">繁體中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="pt">Português</option>
+        </select>
+    </div>
+    
+    <div class="test-item">
+        <p data-i18n="nav_home">Home</p>
+        <p data-i18n="nav_share">Share</p>
+        <p data-i18n="nav_rooms">Rooms</p>
+    </div>
+    
+    <div id="debug"></div>
+
+    <script src="scripts/i18n/languages.js"></script>
+    
+    <script>
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            const debug = document.getElementById('debug');
+            
+            debug.innerHTML = 'Initializing...<br>';
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                debug.innerHTML += `Current language: ${currentLang}<br>`;
+                
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    debug.innerHTML += `Changing to: ${newLang}<br>`;
+                    
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                        translatePage();
+                        debug.innerHTML += `Translation completed<br>`;
+                    }
+                });
+                
+                debug.innerHTML += 'Language selector ready<br>';
+            } else {
+                debug.innerHTML += 'Error: Missing element or DROPSHARE_I18N<br>';
+            }
+        }
+        
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined') {
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.textContent = translation;
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                    initializeLanguageSelector();
+                    translatePage();
+                } else {
+                    document.getElementById('debug').innerHTML = 'DROPSHARE_I18N not loaded<br>';
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>

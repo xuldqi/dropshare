@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Share and Rooms Language Switching</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .page-link { display: block; margin: 10px 0; padding: 10px; background: #f0f0f0; text-decoration: none; color: #333; }
+        .page-link:hover { background: #e0e0e0; }
+        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Test Share and Rooms Language Switching</h1>
+    
+    <div class="test-section">
+        <h2>Test Pages</h2>
+        <a href="share.html" class="page-link">Share/Transfer Page</a>
+        <a href="share.html#rooms" class="page-link">Rooms Page (Share with #rooms hash)</a>
+        <a href="rooms.html" class="page-link">Rooms Page (Standalone)</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>Instructions</h2>
+        <ol>
+            <li>点击上面的链接打开页面</li>
+            <li>尝试切换语言选择器</li>
+            <li>检查页面内容是否翻译</li>
+            <li>检查浏览器控制台的日志</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>Expected Console Logs</h2>
+        <p>你应该在控制台看到类似这样的日志：</p>
+        <div class="debug">
+            Language changed to: zh-CN<br>
+            DROPSHARE_I18N.changeLanguage called with: zh-CN<br>
+            translatePage called<br>
+            Found X elements to translate<br>
+            Translated nav_home to 首页<br>
+            ...
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Debug Info</h2>
+        <p>如果语言切换不工作，请检查：</p>
+        <ul>
+            <li>浏览器控制台是否有错误</li>
+            <li>是否有 "Language changed to:" 日志</li>
+            <li>是否有 "translatePage called" 日志</li>
+            <li>语言选择器的值是否改变</li>
+        </ul>
+    </div>
+</body>
+</html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Share and Rooms Language Switching</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .page-link { display: block; margin: 10px 0; padding: 10px; background: #f0f0f0; text-decoration: none; color: #333; }
+        .page-link:hover { background: #e0e0e0; }
+        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Test Share and Rooms Language Switching</h1>
+    
+    <div class="test-section">
+        <h2>Test Pages</h2>
+        <a href="share.html" class="page-link">Share/Transfer Page</a>
+        <a href="share.html#rooms" class="page-link">Rooms Page (Share with #rooms hash)</a>
+        <a href="rooms.html" class="page-link">Rooms Page (Standalone)</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>Instructions</h2>
+        <ol>
+            <li>点击上面的链接打开页面</li>
+            <li>尝试切换语言选择器</li>
+            <li>检查页面内容是否翻译</li>
+            <li>检查浏览器控制台的日志</li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>Expected Console Logs</h2>
+        <p>你应该在控制台看到类似这样的日志：</p>
+        <div class="debug">
+            Language changed to: zh-CN<br>
+            DROPSHARE_I18N.changeLanguage called with: zh-CN<br>
+            translatePage called<br>
+            Found X elements to translate<br>
+            Translated nav_home to 首页<br>
+            ...
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Debug Info</h2>
+        <p>如果语言切换不工作，请检查：</p>
+        <ul>
+            <li>浏览器控制台是否有错误</li>
+            <li>是否有 "Language changed to:" 日志</li>
+            <li>是否有 "translatePage called" 日志</li>
+            <li>语言选择器的值是否改变</li>
+        </ul>
+    </div>
+</body>
+</html>

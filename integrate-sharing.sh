@@ -35,7 +35,7 @@ for pattern in "${HTML_FILES[@]}"; do
             fi
         fi
     done
-done
+done恢复
 
 echo ""
 
