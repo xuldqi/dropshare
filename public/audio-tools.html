@@ -3,7 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Tools - DropShare</title>
+    <title data-i18n="audio_tools_title">Audio Tools</title>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4803558716082981" 
+            crossorigin="anonymous"></script>
+    
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         * {
@@ -121,6 +126,18 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         /* Main Content */
@@ -286,6 +303,8 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/ui.js"></script>
 </head>
 <body>
     <!-- 背景装饰图形 -->
@@ -298,62 +317,81 @@
                 <svg viewBox="0 0 24 24">
                     <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
                 </svg>
-                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+                <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
             </div>
 
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" class="active" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+
+                <div class="control-buttons">
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">Audio Tools</h1>
-            <p class="page-subtitle">Professional audio processing tools for all your needs</p>
+            <h1 class="page-title" data-i18n="audio_tools_title">Audio Tools</h1>
+            <p class="page-subtitle" data-i18n="audio_tools_subtitle">Professional audio processing tools for all your needs</p>
         </div>
 
         <div class="tools-grid">
             <!-- Audio Compressor -->
-            <div class="tool-card" data-keywords="compress reduce size quality mp3">
+            <div class="tool-card" data-tool="compressor" data-keywords="compress reduce size quality mp3">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">🗜️</div>
                 </div>
-                <h3 class="tool-title">Audio Compressor</h3>
-                <p class="tool-description">Reduce audio file size while maintaining quality for web and storage optimization</p>
+                <h3 class="tool-title" data-i18n="audio_compressor">Audio Compressor</h3>
+                <p class="tool-description" data-i18n="audio_compressor_desc">Reduce audio file size while maintaining quality for web and storage optimization</p>
             </div>
 
             <!-- Format Converter -->
-            <div class="tool-card" data-keywords="convert format mp3 wav flac aac ogg">
+            <div class="tool-card" data-tool="converter" data-keywords="convert format mp3 wav flac aac ogg">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🔄</div>
                 </div>
-                <h3 class="tool-title">Format Converter</h3>
-                <p class="tool-description">Convert audio between different formats like MP3, WAV, FLAC, AAC, and more</p>
+                <h3 class="tool-title" data-i18n="audio_converter">Format Converter</h3>
+                <p class="tool-description" data-i18n="audio_converter_desc">Convert audio between different formats like MP3, WAV, FLAC, AAC, and more</p>
             </div>
 
             <!-- Audio Trimmer -->
-            <div class="tool-card" data-keywords="trim cut slice duration time">
+            <div class="tool-card" data-tool="trimmer" data-keywords="trim cut slice duration time">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-trim">✂️</div>
                 </div>
-                <h3 class="tool-title">Audio Trimmer</h3>
-                <p class="tool-description">Cut and trim audio files to specific durations with precise timing control</p>
+                <h3 class="tool-title" data-i18n="audio_trimmer">Audio Trimmer</h3>
+                <p class="tool-description" data-i18n="audio_trimmer_desc">Cut and trim audio files to specific durations with precise timing control</p>
             </div>
 
             <!-- Audio Merger -->
-            <div class="tool-card" data-keywords="merge combine join multiple tracks">
+            <div class="tool-card" data-tool="merger" data-keywords="merge combine join multiple tracks">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-merge">🔗</div>
                 </div>
-                <h3 class="tool-title">Audio Merger</h3>
-                <p class="tool-description">Combine multiple audio files into one seamless track with fade effects</p>
+                <h3 class="tool-title" data-i18n="audio_merger">Audio Merger</h3>
+                <p class="tool-description" data-i18n="audio_merger_desc">Combine multiple audio files into one seamless track with fade effects</p>
             </div>
 
             <!-- Volume Normalizer -->
@@ -361,8 +399,8 @@
                 <div class="tool-card-header">
                     <div class="tool-icon icon-normalize">📊</div>
                 </div>
-                <h3 class="tool-title">Volume Normalizer</h3>
-                <p class="tool-description">Normalize audio levels and adjust volume to consistent standards</p>
+                <h3 class="tool-title" data-i18n="volume_normalizer">Volume Normalizer</h3>
+                <p class="tool-description" data-i18n="volume_normalizer_desc">Normalize audio levels and adjust volume to consistent standards</p>
             </div>
 
             <!-- Audio Effects -->
@@ -370,8 +408,8 @@
                 <div class="tool-card-header">
                     <div class="tool-icon icon-effects">🎛️</div>
                 </div>
-                <h3 class="tool-title">Audio Effects</h3>
-                <p class="tool-description">Apply various audio effects like reverb, echo, bass boost, and equalizer settings</p>
+                <h3 class="tool-title" data-i18n="audio_effects">Audio Effects</h3>
+                <p class="tool-description" data-i18n="audio_effects_desc">Apply various audio effects like reverb, echo, bass boost, and equalizer settings</p>
             </div>
 
             <!-- Metadata Editor -->
@@ -379,8 +417,8 @@
                 <div class="tool-card-header">
                     <div class="tool-icon icon-metadata">🏷️</div>
                 </div>
-                <h3 class="tool-title">Metadata Editor</h3>
-                <p class="tool-description">Edit audio metadata including title, artist, album, and cover art information</p>
+                <h3 class="tool-title" data-i18n="metadata_editor">Metadata Editor</h3>
+                <p class="tool-description" data-i18n="metadata_editor_desc">Edit audio metadata including title, artist, album, and cover art information</p>
             </div>
 
             <!-- Bitrate Converter -->
@@ -388,8 +426,8 @@
                 <div class="tool-card-header">
                     <div class="tool-icon icon-bitrate">⚙️</div>
                 </div>
-                <h3 class="tool-title">Bitrate Converter</h3>
-                <p class="tool-description">Change audio bitrate and quality settings for different use cases</p>
+                <h3 class="tool-title" data-i18n="bitrate_converter">Bitrate Converter</h3>
+                <p class="tool-description" data-i18n="bitrate_converter_desc">Change audio bitrate and quality settings for different use cases</p>
             </div>
         </div>
     </main>
@@ -424,36 +462,37 @@
         // 工具卡片点击事件 - 跳转到实际工具页面
         document.querySelectorAll('.tool-card').forEach(card => {
             card.addEventListener('click', function() {
-                const title = this.querySelector('.tool-title').textContent;
+                const toolType = this.getAttribute('data-tool');
                 let toolPage = '';
                 
-                // 根据工具名称跳转到对应页面
-                switch(title) {
-                    case 'Audio Compressor':
+                // 根据工具类型跳转到对应页面
+                switch(toolType) {
+                    case 'compressor':
                         toolPage = 'audio-compressor-real.html';
                         break;
-                    case 'Format Converter':
+                    case 'converter':
                         toolPage = 'audio-converter-ffmpeg-stable.html';
                         break;
-                    case 'Audio Trimmer':
+                    case 'trimmer':
                         toolPage = 'audio-trimmer-real.html';
                         break;
-                    case 'Audio Merger':
+                    case 'merger':
                         toolPage = 'audio-merger-real.html';
                         break;
-                    case 'Volume Normalizer':
+                    case 'normalizer':
                         toolPage = 'volume-normalizer-stable.html';
                         break;
-                    case 'Audio Effects':
+                    case 'effects':
                         toolPage = 'audio-effects-real.html';
                         break;
-                    case 'Metadata Editor':
+                    case 'metadata':
                         toolPage = 'metadata-editor-real.html';
                         break;
-                    case 'Bitrate Converter':
+                    case 'bitrate':
                         toolPage = 'bitrate-converter-real.html';
                         break;
                     default:
+                        const title = this.querySelector('.tool-title').textContent;
                         alert(`${title}\n\nThis tool is coming soon!`);
                         return;
                 }
@@ -465,7 +504,105 @@
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             createBackgroundShapes();
+            
+            // Initialize language selector - same as homepage
+            setTimeout(() => {
+                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                    initializeLanguageSelector();
+                    translatePage(); // 添加翻译调用
+                    setTimeout(() => {
+                        syncLanguageSelector();
+                    }, 100);
+                }
+            }, 100);
         });
+        
+        // Initialize language selector
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                // Set current language
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                // Add change event listener
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    console.log('Language changed to:', newLang);
+                    
+                    // Change language using unified system
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.setLanguage(newLang);
+                        translatePage();
+                    }
+                });
+                
+                console.log('Language selector initialized with language:', currentLang);
+            }
+        }
+        
+        // Sync language selector with current language
+        function syncLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.getCurrentLanguage === 'function') {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                console.log('Language selector synced to:', currentLang);
+            }
+        }
+        
+        // Translation function - same as homepage
+        function translatePage() {
+            console.log('translatePage called');
+            if (typeof window.DROPSHARE_I18N === 'undefined') {
+                console.log('Translation system not loaded yet');
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            console.log('Found', elements.length, 'elements to translate');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && element.type === 'button') {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'password')) {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                    console.log('Translated', key, 'to', translation);
+                }
+            });
+        }
+        
+        // Translation function
+        function translatePageLocal() {
+            if (typeof window.DROPSHARE_I18N === 'undefined') {
+                console.log('Translation system not loaded yet');
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && element.type === 'button') {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'password')) {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+        }
     </script>
     <!-- Share Integration -->
     <script src="device-selector.js"></script>

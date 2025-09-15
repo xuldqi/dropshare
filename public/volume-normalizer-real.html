@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volume Normalizer - DropShare</title>
+    <title data-i18n="volume_normalizer_title">Volume Normalizer - DropShare</title>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
     <style>
         * {
@@ -314,6 +314,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -343,8 +344,8 @@
             </a>
         </div>
         
-        <h1 class="page-title">Volume Normalizer</h1>
-        <p class="page-subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="volume_normalizer_heading">Volume Normalizer</h1>
+        <p class="page-subtitle" data-i18n="volume_normalizer_subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
         
         <div class="normalizer-card">
             <div class="engine-status" id="engineStatus">
@@ -353,8 +354,8 @@
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📊</div>
-                <div class="upload-text">Click or drag to upload audio file</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="volume_normalizer_upload_text">Click or drag to upload audio file</div>
+                <div class="upload-hint" data-i18n="volume_normalizer_upload_hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
@@ -398,7 +399,7 @@
                     </div>
                 </div>
                 
-                <button class="normalize-button" id="normalizeBtn" disabled>Loading Engine...</button>
+                <button class="normalize-button" id="normalizeBtn" disabled data-i18n="btn_loading_engine">Loading Engine...</button>
             </div>
 
             <div class="progress-section" id="progressSection">

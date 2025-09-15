@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Extractor - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .extractor-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-info {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .file-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            background: #059669;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .file-meta h4 {
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .file-meta p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .extraction-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .extraction-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .option-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-item input {
+            margin: 0;
+        }
+
+        .checkbox-item label {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .page-range {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .range-inputs {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .range-input {
+            width: 80px;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        .extract-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .extract-button:hover {
+            background: #2563eb;
+        }
+
+        .extract-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .result-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .result-stats {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3367d6;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .extracted-text {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .text-header {
+            background: #f9fafb;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-header h4 {
+            color: #374151;
+            margin: 0;
+        }
+
+        .text-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .text-content {
+            padding: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            color: #374151;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .download-btn {
+            flex: 1;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #059669;
+        }
+
+        .download-btn.secondary {
+            background: #6b7280;
+        }
+
+        .download-btn.secondary:hover {
+            background: #4b5563;
+        }
+
+        .ocr-notice {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #92400e;
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                📄 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html" class="active">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="document-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Text Extractor</h1>
+        <p class="page-subtitle">Extract text content from PDFs, images, and scanned documents with OCR</p>
+        
+        <div class="extractor-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">Click or drag to upload a file</div>
+                <div class="upload-hint">Supports PDF, images (JPG, PNG), and document formats</div>
+                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.docx,.doc,.txt,.rtf">
+            </div>
+            
+            <div class="file-info" id="fileInfo">
+                <div class="file-details">
+                    <div class="file-icon" id="fileIcon">FILE</div>
+                    <div class="file-meta">
+                        <h4 id="fileName">-</h4>
+                        <p id="fileSize">-</p>
+                        <p id="fileType">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="extraction-controls" id="extractionControls">
+                <div class="control-section">
+                    <div class="section-title">Extraction options</div>
+                    <div class="extraction-options">
+                        <div class="option-group">
+                            <div class="option-title">Text processing</div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="preserveFormatting" checked>
+                                <label for="preserveFormatting">Preserve formatting</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="removeBlankLines">
+                                <label for="removeBlankLines">Remove blank lines</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="trimWhitespace" checked>
+                                <label for="trimWhitespace">Trim whitespace</label>
+                            </div>
+                        </div>
+                        
+                        <div class="option-group">
+                            <div class="option-title">Content types</div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="extractText" checked>
+                                <label for="extractText">Extract text</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="extractTables">
+                                <label for="extractTables">Detect tables</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="extractImages">
+                                <label for="extractImages">Image info</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-range" id="pageRangeSection" style="display: none;">
+                    <div class="option-title">Page range (PDF)</div>
+                    <div class="range-inputs">
+                        <label>From</label>
+                        <input type="number" id="startPage" class="range-input" min="1" value="1">
+                        <label>to</label>
+                        <input type="number" id="endPage" class="range-input" min="1" value="1">
+                        <label>pages</label>
+                        <button type="button" onclick="setAllPages()" style="margin-left: 12px; padding: 6px 12px; border: 1px solid #3367d6; border-radius: 4px; background: white; color: #3367d6; cursor: pointer;">All pages</button>
+                    </div>
+                </div>
+                
+                <div class="ocr-notice" id="ocrNotice" style="display: none;">
+                    💡 Image detected. OCR will be used to extract text. Accuracy depends on image quality.
+                </div>
+                
+                <button class="extract-button" id="extractBtn">Start extraction</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div class="result-section" id="resultSection">
+                <div class="result-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="characterCount">0</div>
+                        <div class="stat-label">Characters</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="wordCount">0</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="lineCount">0</div>
+                        <div class="stat-label">Lines</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="pageProcessed">0</div>
+                        <div class="stat-label">Pages processed</div>
+                    </div>
+                </div>
+                
+                <div class="extracted-text">
+                    <div class="text-header">
+                        <h4>Extracted text</h4>
+                        <div class="text-actions">
+                            <button class="action-btn" onclick="copyText()">Copy</button>
+                            <button class="action-btn" onclick="selectAll()">Select all</button>
+                            <button class="action-btn" onclick="clearText()">Clear</button>
+                        </div>
+                    </div>
+                    <div class="text-content" id="extractedTextContent"></div>
+                </div>
+                
+                <div class="download-buttons">
+                    <button class="download-btn" onclick="downloadText()">Download TXT</button>
+                    <button class="download-btn secondary" onclick="downloadJson()">Download JSON</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <script src="https://unpkg.com/tesseract.js@2.1.5/dist/tesseract.min.js"></script>
+    <script src="https://unpkg.com/mammoth@1.4.21/mammoth.browser.min.js"></script>
+    <script>
+        // PDF.js worker setup
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+        }
+
+        let currentFile = null;
+        let pdfDocument = null;
+        let totalPages = 0;
+        let extractedText = '';
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                loadFile(file);
+            }
+        });
+
+        async function loadFile(file) {
+            currentFile = file;
+            const fileType = file.type || getFileTypeFromName(file.name);
+            const fileName = file.name;
+            const fileExt = fileName.split('.').pop().toLowerCase();
+            
+            // 显示文件信息
+            document.getElementById('fileName').textContent = fileName;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileType').textContent = fileExt.toUpperCase();
+            document.getElementById('fileIcon').textContent = fileExt.toUpperCase();
+            document.getElementById('fileInfo').style.display = 'block';
+            
+            // 根据文件类型显示相应选项
+            const isImage = fileType.startsWith('image/');
+            const isPDF = fileType === 'application/pdf';
+            
+            document.getElementById('ocrNotice').style.display = isImage ? 'block' : 'none';
+            document.getElementById('pageRangeSection').style.display = isPDF ? 'block' : 'none';
+            
+            if (isPDF) {
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    pdfDocument = pdf;
+                    totalPages = pdf.numPages;
+                    document.getElementById('endPage').value = totalPages;
+                    document.getElementById('endPage').max = totalPages;
+                    document.getElementById('startPage').max = totalPages;
+                } catch (error) {
+                    console.error('PDF加载失败:', error);
+                }
+            }
+            
+            document.getElementById('extractionControls').style.display = 'block';
+        }
+
+        function setAllPages() {
+            if (totalPages > 0) {
+                document.getElementById('startPage').value = 1;
+                document.getElementById('endPage').value = totalPages;
+            }
+        }
+
+        document.getElementById('extractBtn').addEventListener('click', async function() {
+            if (!currentFile) {
+                alert('请先选择文件');
+                return;
+            }
+            
+            this.disabled = true;
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+            
+            try {
+                await extractTextFromFile();
+            } catch (error) {
+                console.error('提取失败:', error);
+                alert('提取失败: ' + error.message);
+            } finally {
+                this.disabled = false;
+            }
+        });
+
+        async function extractTextFromFile() {
+            const fileType = currentFile.type || getFileTypeFromName(currentFile.name);
+            
+            document.getElementById('progressText').textContent = '正在分析文件...';
+            document.getElementById('progressFill').style.width = '10%';
+            
+            extractedText = '';
+            
+            if (fileType === 'application/pdf') {
+                await extractFromPDF();
+            } else if (fileType.startsWith('image/')) {
+                await extractFromImage();
+            } else if (fileType.includes('word') || currentFile.name.endsWith('.docx')) {
+                await extractFromDocx();
+            } else {
+                await extractFromTextFile();
+            }
+            
+            // 后处理
+            await postProcessText();
+            
+            document.getElementById('progressText').textContent = '提取完成！';
+            document.getElementById('progressFill').style.width = '100%';
+            
+            showResults();
+            
+            setTimeout(() => {
+                document.getElementById('progressSection').style.display = 'none';
+                document.getElementById('progressFill').style.width = '0%';
+            }, 2000);
+        }
+
+        async function extractFromPDF() {
+            if (!pdfDocument) return;
+            
+            const startPage = parseInt(document.getElementById('startPage').value) || 1;
+            const endPage = parseInt(document.getElementById('endPage').value) || totalPages;
+            
+            let pageTexts = [];
+            const pagesToProcess = Math.min(endPage, totalPages) - startPage + 1;
+            
+            for (let pageNum = startPage; pageNum <= Math.min(endPage, totalPages); pageNum++) {
+                const progress = 10 + ((pageNum - startPage) / pagesToProcess) * 70;
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressText').textContent = `正在处理第 ${pageNum} 页...`;
+                
+                try {
+                    const page = await pdfDocument.getPage(pageNum);
+                    const textContent = await page.getTextContent();
+                    
+                    let pageText = '';
+                    if (document.getElementById('preserveFormatting').checked) {
+                        // 保持格式的文本提取
+                        let lastY = null;
+                        textContent.items.forEach(item => {
+                            if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
+                                pageText += '\n';
+                            }
+                            pageText += item.str;
+                            if (!item.str.endsWith(' ') && !item.hasEOL) {
+                                pageText += ' ';
+                            }
+                            lastY = item.transform[5];
+                        });
+                    } else {
+                        // 简单文本提取
+                        pageText = textContent.items.map(item => item.str).join(' ');
+                    }
+                    
+                    if (pageText.trim()) {
+                        pageTexts.push(`=== 第 ${pageNum} 页 ===\n${pageText.trim()}`);
+                    }
+                    
+                    // 如果启用了图片信息提取
+                    if (document.getElementById('extractImages').checked) {
+                        try {
+                            const operatorList = await page.getOperatorList();
+                            let imageCount = 0;
+                            for (let i = 0; i < operatorList.fnArray.length; i++) {
+                                if (operatorList.fnArray[i] === pdfjsLib.OPS.paintImageXObject) {
+                                    imageCount++;
+                                }
+                            }
+                            if (imageCount > 0) {
+                                pageTexts.push(`[第 ${pageNum} 页包含 ${imageCount} 个图片]`);
+                            }
+                        } catch (imgError) {
+                            console.warn('图片信息提取失败:', imgError);
+                        }
+                    }
+                    
+                } catch (pageError) {
+                    console.error(`第${pageNum}页处理失败:`, pageError);
+                    pageTexts.push(`\n=== 第 ${pageNum} 页 ===\n[页面处理失败: ${pageError.message}]`);
+                }
+            }
+            
+            extractedText = pageTexts.join('\n\n');
+        }
+
+        async function extractFromImage() {
+            document.getElementById('progressText').textContent = '正在加载OCR引擎...';
+            document.getElementById('progressFill').style.width = '20%';
+            
+            try {
+                const worker = Tesseract.createWorker({
+                    logger: m => {
+                        if (m.status === 'recognizing text') {
+                            const progress = 20 + (m.progress * 60);
+                            document.getElementById('progressFill').style.width = progress + '%';
+                            document.getElementById('progressText').textContent = `OCR识别中... ${Math.round(m.progress * 100)}%`;
+                        }
+                    }
+                });
+                
+                await worker.load();
+                await worker.loadLanguage('chi_sim+eng');
+                await worker.initialize('chi_sim+eng');
+                
+                document.getElementById('progressText').textContent = '正在识别文本...';
+                const { data: { text } } = await worker.recognize(currentFile);
+                
+                extractedText = text;
+                await worker.terminate();
+                
+            } catch (error) {
+                console.error('OCR识别失败:', error);
+                // 如果OCR失败，尝试基本的图片信息
+                extractedText = `[OCR识别失败: ${error.message}]\n\n文件信息:\n- 文件名: ${currentFile.name}\n- 文件大小: ${formatFileSize(currentFile.size)}\n- 文件类型: ${currentFile.type}`;
+            }
+        }
+
+        async function extractFromDocx() {
+            try {
+                document.getElementById('progressText').textContent = '正在解析DOCX文档...';
+                document.getElementById('progressFill').style.width = '50%';
+                
+                const arrayBuffer = await currentFile.arrayBuffer();
+                const result = await mammoth.extractRawText({arrayBuffer: arrayBuffer});
+                extractedText = result.value;
+                
+            } catch (error) {
+                console.error('DOCX解析失败:', error);
+                extractedText = `[DOCX解析失败: ${error.message}]`;
+            }
+        }
+
+        async function extractFromTextFile() {
+            document.getElementById('progressText').textContent = '正在读取文本内容...';
+            document.getElementById('progressFill').style.width = '50%';
+            
+            extractedText = await currentFile.text();
+        }
+
+        async function postProcessText() {
+            document.getElementById('progressText').textContent = '正在处理文本...';
+            document.getElementById('progressFill').style.width = '90%';
+            
+            if (!extractedText) {
+                extractedText = '[未能提取到文本内容]';
+                return;
+            }
+            
+            // 清理空白字符
+            if (document.getElementById('trimWhitespace').checked) {
+                extractedText = extractedText.replace(/[ \t]+/g, ' ');
+            }
+            
+            // 移除空行
+            if (document.getElementById('removeBlankLines').checked) {
+                extractedText = extractedText.replace(/\n\s*\n\s*\n/g, '\n\n');
+            }
+        }
+
+        function showResults() {
+            // 显示统计信息
+            const charCount = extractedText.length;
+            const wordCount = extractedText.split(/\s+/).filter(word => word.length > 0).length;
+            const lineCount = extractedText.split('\n').length;
+            
+            document.getElementById('characterCount').textContent = charCount.toLocaleString();
+            document.getElementById('wordCount').textContent = wordCount.toLocaleString();
+            document.getElementById('lineCount').textContent = lineCount.toLocaleString();
+            document.getElementById('pageProcessed').textContent = pdfDocument ? 
+                (parseInt(document.getElementById('endPage').value) - parseInt(document.getElementById('startPage').value) + 1) : 1;
+            
+            // 显示提取的文本
+            document.getElementById('extractedTextContent').textContent = extractedText;
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyText() {
+            navigator.clipboard.writeText(extractedText).then(() => {
+                alert('文本已复制到剪贴板');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动选择文本复制');
+            });
+        }
+
+        function selectAll() {
+            const textArea = document.getElementById('extractedTextContent');
+            if (document.createRange) {
+                const range = document.createRange();
+                range.selectNodeContents(textArea);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+
+        function clearText() {
+            document.getElementById('extractedTextContent').textContent = '';
+        }
+
+        function downloadText() {
+            if (!extractedText) return;
+            
+            const blob = new Blob([extractedText], { type: 'text/plain; charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `extracted_text_${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadJson() {
+            if (!extractedText) return;
+            
+            const data = {
+                sourceFile: currentFile.name,
+                extractedAt: new Date().toISOString(),
+                textContent: extractedText,
+                statistics: {
+                    characters: extractedText.length,
+                    words: extractedText.split(/\s+/).filter(word => word.length > 0).length,
+                    lines: extractedText.split('\n').length
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `extracted_data_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function getFileTypeFromName(fileName) {
+            const ext = fileName.toLowerCase().split('.').pop();
+            const typeMap = {
+                'pdf': 'application/pdf',
+                'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'doc': 'application/msword',
+                'txt': 'text/plain',
+                'jpg': 'image/jpeg',
+                'jpeg': 'image/jpeg',
+                'png': 'image/png',
+                'bmp': 'image/bmp',
+                'tiff': 'image/tiff'
+            };
+            return typeMap[ext] || 'application/octet-stream';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                loadFile(files[0]);
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

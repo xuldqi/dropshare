@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Text Adder - DropShare</title>
+    <title data-i18n="text_to_image_title">Image Text Adder - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
@@ -28,31 +28,32 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 <body>
     <div class="page-header">
-        <h1>📝 Image Text Adder</h1>
+        <h1 data-i18n="text_to_image_heading">📝 Image Text Adder</h1>
         <div class="header-buttons">
-            <a href="image-tools.html" class="back-button">← Image Tools</a>
-            <a href="index.html" class="back-button">🏠 Home</a>
+            <a href="image-tools.html" class="back-button" data-i18n="back_to_image_tools">← Image Tools</a>
+            <a href="index.html" class="back-button" data-i18n="back_to_home">🏠 Home</a>
         </div>
     </div>
     <div class="tool-container">
         <div class="coming-soon">🚧</div>
-        <h2 class="tool-title">Coming Soon</h2>
-        <p class="tool-description">Image text and watermark adding tool is under development, making it easy for you to add text to images</p>
+        <h2 class="tool-title" data-i18n="coming_soon_title">Coming Soon</h2>
+        <p class="tool-description" data-i18n="text_to_image_coming_soon_desc">Image text and watermark adding tool is under development, making it easy for you to add text to images</p>
         <div class="features-list">
-            <h3>🎯 Expected Features</h3>
+            <h3 data-i18n="expected_features_title">🎯 Expected Features</h3>
             <ul>
-                <li>Custom text content</li>
-                <li>Rich font selection</li>
-                <li>Text style settings</li>
-                <li>Transparent watermark adding</li>
-                <li>Precise position control</li>
-                <li>Batch text processing</li>
+                <li data-i18n="feature_custom_text_content">Custom text content</li>
+                <li data-i18n="feature_rich_font_selection">Rich font selection</li>
+                <li data-i18n="feature_text_style_settings">Text style settings</li>
+                <li data-i18n="feature_transparent_watermark">Transparent watermark adding</li>
+                <li data-i18n="feature_precise_position_control">Precise position control</li>
+                <li data-i18n="feature_batch_text_processing">Batch text processing</li>
             </ul>
         </div>
-        <button class="notify-btn" onclick="alert('Thank you for your attention! We will launch this feature as soon as possible.')">🔔 Notify Me When Available</button>
+        <button class="notify-btn" onclick="alert(getTranslation('alert_notify_message') || 'Thank you for your attention! We will launch this feature as soon as possible.')" data-i18n="notify_me_when_available">🔔 Notify Me When Available</button>
     </div>
     <!-- Share Integration -->
     <script src="device-selector.js"></script>

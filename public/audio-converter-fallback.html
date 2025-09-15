@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Format Converter - DropShare</title>
+    <title data-i18n="audio_converter_fallback_title">Audio Format Converter - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -274,6 +274,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 <body>
     <header class="header">
@@ -282,43 +283,43 @@
                 🎵 DropShare
             </a>
             <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                <a href="audio-tools.html" class="active" data-i18n="nav_audio">Audio</a>
+                <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                <a href="document-tools.html" data-i18n="nav_files">Files</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
         
-        <h1 class="page-title">Audio Format Converter</h1>
-        <p class="page-subtitle">Convert between different audio formats - Browser Native Processing</p>
+        <h1 class="page-title" data-i18n="audio_converter_fallback_heading">Audio Format Converter</h1>
+        <p class="page-subtitle" data-i18n="audio_converter_fallback_subtitle">Convert between different audio formats - Browser Native Processing</p>
         
         <div class="converter-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔄</div>
-                <div class="upload-text">Click or drag to upload audio file</div>
-                <div class="upload-hint">Supports MP3, WAV, OGG, AAC, M4A formats</div>
+                <div class="upload-text" data-i18n="audio_converter_fallback_upload_text">Click or drag to upload audio file</div>
+                <div class="upload-hint" data-i18n="audio_converter_fallback_upload_hint">Supports MP3, WAV, OGG, AAC, M4A formats</div>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
             <div class="audio-preview" id="audioPreview">
                 <audio id="audioPlayer" class="audio-player" controls>
-                    Your browser does not support the audio element.
+                    <span data-i18n="audio_browser_not_support">Your browser does not support the audio element.</span>
                 </audio>
                 <div class="audio-info" id="audioInfo">
-                    File: <span id="fileName">-</span> | 
-                    Duration: <span id="fileDuration">-</span>
+                    <span data-i18n="audio_file_label">File:</span> <span id="fileName">-</span> | 
+                    <span data-i18n="audio_duration_label">Duration:</span> <span id="fileDuration">-</span>
                 </div>
             </div>
             
             <div class="conversion-controls" id="conversionControls">
                 <div class="control-section">
-                    <div class="section-title">Convert To</div>
+                    <div class="section-title" data-i18n="convert_to_label">Convert To</div>
                     <div class="format-options">
                         <div class="format-btn active" data-format="wav" data-mime="audio/wav">WAV</div>
                         <div class="format-btn" data-format="webm" data-mime="audio/webm">WebM</div>
@@ -326,7 +327,7 @@
                     </div>
                 </div>
                 
-                <button class="convert-button" id="convertBtn">Start Conversion</button>
+                <button class="convert-button" id="convertBtn" data-i18n="start_conversion_btn">Start Conversion</button>
             </div>
             
             <div class="progress-section" id="progressSection">
@@ -337,8 +338,8 @@
             </div>
 
             <div class="note">
-                <strong>Note about Browser-based Audio Conversion:</strong>
-                This tool uses your browser's native audio processing capabilities. Some format conversions may have limitations compared to professional tools. For best results, we recommend converting to MP3 or WAV formats which have the widest browser support.
+                <strong data-i18n="browser_conversion_note_title">Note about Browser-based Audio Conversion:</strong>
+                <span data-i18n="browser_conversion_note_desc">This tool uses your browser's native audio processing capabilities. Some format conversions may have limitations compared to professional tools. For best results, we recommend converting to MP3 or WAV formats which have the widest browser support.</span>
             </div>
         </div>
     </div>

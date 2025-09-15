@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频信息查看器 - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #718096;
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
+        
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 80px 40px;
+            margin: 40px auto;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            max-width: 600px;
+        }
+        
+        .upload-area:hover {
+            border-color: #3182ce;
+            background: #f7fafc;
+        }
+        
+        .upload-area.dragover {
+            border-color: #3182ce;
+            background: #ebf8ff;
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #a0aec0;
+            margin-bottom: 24px;
+        }
+        
+        .upload-button {
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .upload-button:hover {
+            background: #2c5aa0;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        }
+        
+        .upload-text {
+            color: #718096;
+            font-size: 1rem;
+            margin-top: 16px;
+        }
+        
+        .conversion-panel {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: left;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .file-icon {
+            font-size: 2rem;
+            margin-right: 16px;
+            color: #3182ce;
+        }
+        
+        .file-details h4 {
+            margin: 0 0 4px 0;
+            color: #2d3748;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .file-details p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        
+        .format-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+            margin: 24px 0;
+        }
+        
+        .format-option {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .format-option:hover {
+            border-color: #3182ce;
+            background: #f7fafc;
+        }
+        
+        .format-option.selected {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+        }
+        
+        .convert-button {
+            width: 100%;
+            background: #3182ce;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 24px;
+        }
+        
+        .convert-button:hover:not(:disabled) {
+            background: #2c5aa0;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        }
+        
+        .convert-button:disabled {
+            background: #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .progress-section {
+            margin: 24px 0;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3182ce;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.875rem;
+            color: #718096;
+            text-align: center;
+        }
+        
+        .results-section {
+            margin-top: 32px;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .result-info h4 {
+            margin: 0 0 4px 0;
+            color: #2d3748;
+            font-weight: 600;
+        }
+        
+        .result-info p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-button {
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .action-button.primary {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .video-preview {
+            max-width: 200px;
+            max-height: 150px;
+            margin-top: 8px;
+            border-radius: 6px;
+        }
+        
+        .footer-info {
+            max-width: 600px;
+            margin: 80px auto 40px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .footer-text {
+            color: #3182ce;
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+        }
+        
+        .rating-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .rating-text {
+            color: #718096;
+            font-size: 0.875rem;
+        }
+        
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stars {
+            color: #fbd38d;
+            font-size: 1.2rem;
+        }
+        
+        .rating-score {
+            color: #3182ce;
+            font-weight: 600;
+        }
+        
+        /* 设备选择弹窗样式 */
+        .device-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1200;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .device-modal.show {
+            display: flex;
+        }
+        
+        .device-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .device-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .device-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+        
+        .device-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .device-modal-close:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .device-list {
+            margin-bottom: 20px;
+        }
+        
+        .device-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .device-item:hover {
+            border-color: #3182ce;
+            background: #f7fafc;
+        }
+        
+        .device-item.selected {
+            border-color: #3182ce;
+            background: #ebf8ff;
+        }
+        
+        .device-checkbox {
+            margin-right: 12px;
+        }
+        
+        .device-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        
+        .device-info {
+            flex: 1;
+        }
+        
+        .device-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        
+        .device-type {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .no-devices {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .no-devices-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        
+        .device-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-btn-cancel {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .modal-btn-cancel:hover {
+            background: #e9ecef;
+        }
+        
+        .modal-btn-send {
+            background: #3182ce;
+            color: white;
+        }
+        
+        .modal-btn-send:hover {
+            background: #2c5aa0;
+        }
+        
+        .modal-btn-send:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            background: #ffffff;
+        }
+        
+        .page-main-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: #3182ce;
+            text-decoration: none;
+            border: 1px solid #3182ce;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .back-button:hover {
+            background: #3182ce;
+            color: white;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .lang-selector select {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #374151;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .lang-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .lang-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .lang-selector select {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+<body>
+    <div class="page-header">
+        <h1 class="page-main-title">🎥 视频转换器</h1>
+        <div class="header-buttons">
+            <div class="control-buttons">
+                <div class="lang-selector">
+                    
+                </div>
+            </div>
+            <a href="video-tools.html" class="back-button">← 视频工具</a>
+            <a href="index.html" class="back-button">🏠 首页</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title" id="pageTitle">AVI to MP4 video</h1>
+        <p class="page-subtitle" id="pageSubtitle">Convert AVI to MP4 video</p>
+        
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon" id="uploadIcon">📄</div>
+            <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+                📤 Upload from PC or Mobile
+            </button>
+            <div class="upload-text">or Drag files here</div>
+            <input type="file" id="fileInput" multiple accept="video/*" style="display: none;">
+        </div>
+        
+        <div class="conversion-panel" id="conversionPanel" style="display: none;">
+            <div id="fileList"></div>
+            
+            <h3 id="formatSelectorTitle">选择输出格式：</h3>
+            <div class="format-selector" id="formatSelector">
+                <div class="format-option" data-format="mp4">MP4</div>
+                <div class="format-option" data-format="webm">WebM</div>
+                <div class="format-option" data-format="avi">AVI</div>
+                <div class="format-option" data-format="mov">MOV</div>
+            </div>
+            
+            <button class="convert-button" id="convertBtn" disabled>开始转换</button>
+            
+            <div class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-text" id="progressText">准备转换...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h3>转换结果:</h3>
+                <div id="resultsList"></div>
+            </div>
+        </div>
+        
+        <div class="footer-info">
+            <div class="footer-text">Uploaded and generated files are deleted 1 hour after upload</div>
+            <div class="rating-section">
+                <div class="rating-text">Help Us Improve</div>
+                <div class="rating-display">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-score">4.8 (1703)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FFmpeg 懒加载管理器 -->
+    <script src="scripts/ffmpeg-loader.js"></script>
+    
+    <script>
+        class VideoConverter {
+            constructor() {
+                this.ffmpeg = null;
+                this.selectedFiles = [];
+                this.selectedFormat = '';
+                this.convertedFiles = [];
+                this.ffmpegReady = false;
+                this.presetFromFormat = null;
+                this.presetToFormat = null;
+                this.init();
+            }
+            
+            init() {
+                this.parseUrlParams();
+                this.updatePageForPreset();
+                this.bindEvents();
+            }
+            
+            parseUrlParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                this.presetFromFormat = urlParams.get('from');
+                this.presetToFormat = urlParams.get('to');
+                
+                console.log('预设转换:', this.presetFromFormat, '→', this.presetToFormat);
+            }
+            
+            updatePageForPreset() {
+                if (this.presetFromFormat && this.presetToFormat) {
+                    // 更新页面标题
+                    const pageTitle = document.getElementById('pageTitle');
+                    const pageSubtitle = document.getElementById('pageSubtitle');
+                    const fromFormatUpper = this.presetFromFormat.toUpperCase();
+                    const toFormatUpper = this.presetToFormat.toUpperCase();
+                    
+                    pageTitle.textContent = `${fromFormatUpper} to ${toFormatUpper} video`;
+                    pageSubtitle.textContent = `Convert ${fromFormatUpper} to ${toFormatUpper} video`;
+                    
+                    // 更新上传区域图标
+                    const uploadIcon = document.getElementById('uploadIcon');
+                    uploadIcon.textContent = '🎥';
+                    
+                    // 更新文件输入类型
+                    const fileInput = document.getElementById('fileInput');
+                    fileInput.accept = `video/${this.presetFromFormat}`;
+                    
+                    // 预选输出格式
+                    this.selectedFormat = this.presetToFormat;
+                    
+                    // 隐藏格式选择器并显示预设信息
+                    const formatSelectorTitle = document.getElementById('formatSelectorTitle');
+                    const formatSelector = document.getElementById('formatSelector');
+                    
+                    formatSelectorTitle.textContent = `输出格式：${toFormatUpper}`;
+                    formatSelector.style.display = 'none';
+                    
+                    // 添加格式说明
+                    const formatInfo = document.createElement('div');
+                    formatInfo.style.cssText = `
+                        background: #f7fafc;
+                        padding: 16px;
+                        border-radius: 8px;
+                        margin: 16px 0;
+                        border: 1px solid #e2e8f0;
+                    `;
+                    formatInfo.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 1.5em;">🔄</span>
+                            <div>
+                                <div style="font-weight: 600; color: #2d3748; margin-bottom: 4px;">
+                                    ${fromFormatUpper} → ${toFormatUpper}
+                                </div>
+                                <div style="color: #718096; font-size: 0.875rem;">
+                                    ${this.getFormatDescription(this.presetFromFormat, this.presetToFormat)}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    formatSelector.parentNode.insertBefore(formatInfo, formatSelector);
+                } else {
+                    // 默认通用模式
+                    const pageTitle = document.getElementById('pageTitle');
+                    const pageSubtitle = document.getElementById('pageSubtitle');
+                    pageTitle.textContent = 'Video Converter';
+                    pageSubtitle.textContent = 'Convert video between different formats';
+                }
+            }
+            
+            getFormatDescription(from, to) {
+                const descriptions = {
+                    'avi_mp4': '将老式 AVI 视频转换为现代通用的 MP4 格式',
+                    'mov_mp4': '将 Apple QuickTime 格式转换为通用的 MP4 格式',
+                    'webm_mp4': '将网页优化的 WebM 格式转换为 MP4 格式',
+                    'mp4_webm': '将 MP4 转换为网页优化的 WebM 格式，减小文件大小',
+                    'avi_webm': '将老式 AVI 格式升级为现代的 WebM 网页格式',
+                    'mov_webm': '将 Apple MOV 格式转换为开源的 WebM 格式',
+                    'mp4_avi': '将 MP4 转换为 AVI 格式，提高老设备兼容性',
+                    'mp4_mov': '将 MP4 转换为 Apple QuickTime MOV 格式'
+                };
+                
+                const key = `${from}_${to}`;
+                return descriptions[key] || `将 ${from.toUpperCase()} 格式转换为 ${to.toUpperCase()} 格式`;
+            }
+            
+            async ensureFFmpegReady() {
+                if (this.ffmpegReady && this.ffmpeg) {
+                    return this.ffmpeg;
+                }
+                
+                // 显示加载状态
+                this.showLoadingState();
+                
+                try {
+                    // 使用全局懒加载管理器获取 FFmpeg
+                    this.ffmpeg = await window.ffmpegLoader.getFFmpeg({
+                        onProgress: (percent, text) => {
+                            this.updateProgress(percent, text);
+                        },
+                        onStatusUpdate: (status) => {
+                            this.updateLoadingStatus(status);
+                        }
+                    });
+                    
+                    this.ffmpegReady = true;
+                    this.hideLoadingState();
+                    return this.ffmpeg;
+                    
+                } catch (error) {
+                    console.error('FFmpeg加载失败:', error);
+                    this.showLoadingError(error);
+                    throw error;
+                }
+            }
+            
+            showLoadingState() {
+                // 创建加载覆盖层
+                if (!document.getElementById('ffmpegLoadingOverlay')) {
+                    const overlay = document.createElement('div');
+                    overlay.id = 'ffmpegLoadingOverlay';
+                    overlay.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.8);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 1000;
+                        color: white;
+                    `;
+                    
+                    overlay.innerHTML = `
+                        <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
+                            <div style="font-size: 2em; margin-bottom: 15px;">⏳</div>
+                            <h3 id="loadingTitle">正在加载视频转换引擎...</h3>
+                            <p id="loadingStatus">首次使用需要下载约25MB的转换库，请稍候...</p>
+                            <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin: 20px 0;">
+                                <div id="loadingProgressFill" style="height: 100%; background: #3182ce; width: 0%; transition: width 0.3s ease;"></div>
+                            </div>
+                            <div id="loadingProgressText">准备加载...</div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(overlay);
+                }
+            }
+            
+            hideLoadingState() {
+                const overlay = document.getElementById('ffmpegLoadingOverlay');
+                if (overlay) {
+                    overlay.remove();
+                }
+            }
+            
+            updateLoadingStatus(status) {
+                const statusElement = document.getElementById('loadingStatus');
+                if (statusElement) {
+                    statusElement.textContent = status;
+                }
+            }
+            
+            showLoadingError(error) {
+                const overlay = document.getElementById('ffmpegLoadingOverlay');
+                if (overlay) {
+                    overlay.innerHTML = `
+                        <div style="text-align: center; background: white; padding: 30px; border-radius: 12px; max-width: 400px; color: #2d3748;">
+                            <div style="font-size: 2em; margin-bottom: 15px; color: #ef4444;">❌</div>
+                            <h3 style="color: #ef4444;">视频转换引擎加载失败</h3>
+                            <p>${error.message}</p>
+                            <p>请检查网络连接并重试</p>
+                            <div style="margin-top: 20px;">
+                                <button onclick="location.reload()" style="background: #3182ce; color: white; border: none; padding: 8px 16px; border-radius: 6px; margin-right: 8px; cursor: pointer;">重新加载页面</button>
+                                <button onclick="document.getElementById('ffmpegLoadingOverlay').remove()" style="background: #e2e8f0; color: #4a5568; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">关闭</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            bindEvents() {
+                const uploadArea = document.getElementById('uploadArea');
+                const fileInput = document.getElementById('fileInput');
+                const formatOptions = document.querySelectorAll('.format-option');
+                const convertBtn = document.getElementById('convertBtn');
+                // clearBtn 和 shareAllBtn 在简化版本中不存在
+                
+                // 拖拽上传
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('dragover');
+                });
+                
+                uploadArea.addEventListener('dragleave', () => {
+                    uploadArea.classList.remove('dragover');
+                });
+                
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('dragover');
+                    this.handleFiles(e.dataTransfer.files);
+                });
+                
+                // 文件选择
+                fileInput.addEventListener('change', (e) => {
+                    this.handleFiles(e.target.files);
+                });
+                
+                // 格式选择
+                formatOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        formatOptions.forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                        this.selectedFormat = option.dataset.format;
+                        convertBtn.disabled = false;
+                    });
+                });
+                
+                // 转换按钮
+                convertBtn.addEventListener('click', () => {
+                    this.startConversion();
+                });
+                
+                // 在简化版本中，这些按钮不存在
+            }
+            
+            handleFiles(files) {
+                let videoFiles = Array.from(files).filter(file => file.type.startsWith('video/'));
+                
+                if (videoFiles.length === 0) {
+                    alert(";
+                    return;
+                }
+                
+                // 如果有预设的输入格式，验证文件格式
+                if (this.presetFromFormat) {
+                    const expectedMimeTypes = this.getExpectedMimeTypes(this.presetFromFormat);
+                    const validFiles = videoFiles.filter(file => {
+                        return expectedMimeTypes.some(mimeType => file.type === mimeType) ||
+                               file.name.toLowerCase().endsWith('.' + this.presetFromFormat);
+                    });
+                    
+                    if (validFiles.length === 0) {
+                        alert(`请选择 ${this.presetFromFormat.toUpperCase()} 格式的视频文件！`);
+                        return;
+                    }
+                    
+                    if (validFiles.length < videoFiles.length) {
+                        const skipped = videoFiles.length - validFiles.length;
+                        alert(`已跳过 ${skipped} 个非 ${this.presetFromFormat.toUpperCase()} 格式的文件`);
+                    }
+                    
+                    videoFiles = validFiles;
+                }
+                
+                this.selectedFiles = videoFiles;
+                this.showFileList();
+                const conversionPanel = document.getElementById('conversionPanel');
+                if (conversionPanel) {
+                    conversionPanel.style.display = 'block';
+                }
+                
+                // 如果有预设格式，自动启用转换按钮
+                if (this.presetToFormat) {
+                    const convertBtn = document.getElementById('convertBtn');
+                    if (convertBtn) {
+                        convertBtn.disabled = false;
+                    }
+                }
+            }
+            
+            getExpectedMimeTypes(format) {
+                const mimeTypeMap = {
+                    'mp4': ['video/mp4'],
+                    'avi': ['video/avi', 'video/x-msvideo'],
+                    'mov': ['video/quicktime', 'video/mov'],
+                    'webm': ['video/webm']
+                };
+                
+                return mimeTypeMap[format] || [];
+            }
+            
+            showFileList() {
+                const fileList = document.getElementById('fileList');
+                let html = '';
+                
+                this.selectedFiles.forEach((file, index) => {
+                    html += `
+                        <div class="file-item">
+                            <div class="file-icon">🎥</div>
+                            <div class="file-details">
+                                <h4>${file.name}</h4>
+                                <p>${this.formatFileSize(file.size)} • ${file.type}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                fileList.innerHTML = html;
+            }
+            
+            // 简化版本，不需要复杂的编解码器选择
+            updateCodecOptions() {
+                // 在简化版本中，我们使用默认的编解码器设置
+                // 不需要用户手动选择编解码器
+            }
+            
+            async startConversion() {
+                if (!this.selectedFormat) {
+                    alert(";
+                    return;
+                }
+                
+                if (!this.selectedFiles || this.selectedFiles.length === 0) {
+                    alert(";
+                    return;
+                }
+                
+                try {
+                    // 确保 FFmpeg 已加载（懒加载）
+                    await this.ensureFFmpegReady();
+                    
+                    const progressSection = document.getElementById('progressSection');
+                    const convertBtn = document.getElementById('convertBtn');
+                    
+                    if (progressSection) progressSection.style.display = 'block';
+                    if (convertBtn) convertBtn.disabled = true;
+                    
+                    this.convertedFiles = [];
+                    
+                    for (let i = 0; i < this.selectedFiles.length; i++) {
+                        const file = this.selectedFiles[i];
+                        this.updateProgress(0, `${";
+                        
+                        try {
+                            const convertedFile = await this.convertVideo(file);
+                            this.convertedFiles.push(convertedFile);
+                            
+                            const overallProgress = ((i + 1) / this.selectedFiles.length) * 100;
+                            this.updateProgress(overallProgress, `${" || '个视频'}`);
+                        } catch (error) {
+                            console.error('转换失败:', error);
+                            alert(`${";
+                        }
+                    }
+                    
+                    setTimeout(() => {
+                        this.showResults();
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('FFmpeg 加载失败:', error);
+                    alert(";
+                    const convertBtn = document.getElementById('convertBtn');
+                    if (convertBtn) convertBtn.disabled = false;
+                    
+                    // 隐藏进度条
+                    const progressSection = document.getElementById('progressSection');
+                    if (progressSection) progressSection.style.display = 'none';
+                }
+            }
+            
+            async convertVideo(file) {
+                const inputFileName = `input_${Date.now()}.${this.getFileExtension(file.name)}`;
+                const outputFileName = `output_${Date.now()}.${this.selectedFormat}`;
+                
+                // 将文件写入 FFmpeg 文件系统
+                await this.ffmpeg.writeFile(inputFileName, new Uint8Array(await file.arrayBuffer()));
+                
+                // 构建转换命令 - 简化版本使用默认设置
+                let args = ['-i', inputFileName];
+                
+                // 根据目标格式设置默认的编解码器
+                switch (this.selectedFormat) {
+                    case 'mp4':
+                        args.push('-c:v', 'libx264', '-crf', '23', '-c:a', 'aac');
+                        break;
+                    case 'webm':
+                        args.push('-c:v', 'libvpx-vp9', '-crf', '30', '-c:a', 'libvorbis');
+                        break;
+                    case 'avi':
+                        args.push('-c:v', 'libx264', '-crf', '23', '-c:a', 'aac');
+                        break;
+                    case 'mov':
+                        args.push('-c:v', 'libx264', '-crf', '23', '-c:a', 'aac');
+                        break;
+                    default:
+                        args.push('-c:v', 'libx264', '-crf', '23', '-c:a', 'aac');
+                }
+                
+                // 输出文件
+                args.push(outputFileName);
+                
+                // 执行转换
+                await this.ffmpeg.exec(args);
+                
+                // 读取转换后的文件
+                const data = await this.ffmpeg.readFile(outputFileName);
+                
+                // 清理临时文件
+                await this.ffmpeg.deleteFile(inputFileName);
+                await this.ffmpeg.deleteFile(outputFileName);
+                
+                // 创建新文件对象
+                const newFileName = this.changeFileExtension(file.name, this.selectedFormat);
+                const mimeType = this.getMimeType(this.selectedFormat);
+                
+                return new File([data], newFileName, { type: mimeType });
+            }
+            
+            showResults() {
+                const resultsList = document.getElementById('resultsList');
+                let html = '';
+                
+                this.convertedFiles.forEach((file, index) => {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-info">
+                                <h4>${file.name}</h4>
+                                <p>${this.formatFileSize(file.size)} • ${file.type}</p>
+                            </div>
+                            <div class="result-actions">
+                                <button class="action-button" onclick="videoConverter.downloadFile(${index})">下载</button>
+                                <button class="action-button primary" onclick="videoConverter.shareFile(${index})">分享</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                resultsList.innerHTML = html;
+                const resultsSection = document.getElementById('resultsSection');
+                const convertBtn = document.getElementById('convertBtn');
+                
+                if (resultsSection) resultsSection.style.display = 'block';
+                if (convertBtn) convertBtn.disabled = false;
+            }
+            
+            downloadFile(index) {
+                const file = this.convertedFiles[index];
+                const url = URL.createObjectURL(file);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = file.name;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+            
+            shareFile(index) {
+                const file = this.convertedFiles[index];
+                currentShareFile = file;
+                showDeviceModal();
+            }
+            
+            shareAllFiles() {
+                if (!this.convertedFiles || this.convertedFiles.length === 0) {
+                    alert(";
+                    return;
+                }
+                currentShareFiles = this.convertedFiles;
+                showDeviceModal();
+            }
+            
+            updateProgress(percent, text) {
+                // 更新主进度条
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                if (progressFill) progressFill.style.width = percent + '%';
+                if (progressText) progressText.textContent = text;
+                
+                // 更新加载覆盖层中的进度条（如果存在）
+                const loadingProgressFill = document.getElementById('loadingProgressFill');
+                const loadingProgressText = document.getElementById('loadingProgressText');
+                if (loadingProgressFill) loadingProgressFill.style.width = percent + '%';
+                if (loadingProgressText) loadingProgressText.textContent = text;
+            }
+            
+            reset() {
+                this.selectedFiles = [];
+                this.selectedFormat = '';
+                this.convertedFiles = [];
+                
+                const fileInput = document.getElementById('fileInput');
+                const conversionPanel = document.getElementById('conversionPanel');
+                const progressSection = document.getElementById('progressSection');
+                const resultsSection = document.getElementById('resultsSection');
+                
+                if (fileInput) fileInput.value = '';
+                if (conversionPanel) conversionPanel.style.display = 'none';
+                if (progressSection) progressSection.style.display = 'none';
+                if (resultsSection) resultsSection.style.display = 'none';
+                
+                document.querySelectorAll('.format-option').forEach(opt => opt.classList.remove('selected'));
+            }
+            
+            getFileExtension(fileName) {
+                return fileName.split('.').pop().toLowerCase();
+            }
+            
+            getMimeType(format) {
+                const types = {
+                    'mp4': 'video/mp4',
+                    'webm': 'video/webm',
+                    'avi': 'video/x-msvideo',
+                    'mov': 'video/quicktime'
+                };
+                return types[format] || 'video/mp4';
+            }
+            
+            changeFileExtension(fileName, newExt) {
+                return fileName.replace(/\.[^/.]+$/, '') + '.' + newExt;
+            }
+            
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+        
+        // 初始化
+        let videoConverter;
+        document.addEventListener('DOMContentLoaded', () => {
+            videoConverter = new VideoConverter();
+        });
+        
+        // 设备传送功能变量
+        let selectedDevices = new Set();
+        let currentShareFile = null;
+        let currentShareFiles = null;
+        
+        // 显示设备选择弹窗
+        function showDeviceModal() {
+            const modal = document.getElementById('deviceModal');
+            const deviceList = document.getElementById('deviceList');
+            
+            selectedDevices.clear();
+            updateSendButton();
+            
+            const devices = getAvailableDevices();
+            
+            if (devices.length === 0) {
+                deviceList.innerHTML = `
+                    <div class="no-devices">
+                        <div class="no-devices-icon">📱</div>
+                        <p>未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                    </div>
+                `;
+            } else {
+                deviceList.innerHTML = devices.map(device => `
+                    <div class="device-item" onclick="toggleDevice('${device.id}')">
+                        <input type="checkbox" class="device-checkbox" id="device-${device.id}">
+                        <div class="device-icon">${getDeviceIcon(device)}</div>
+                        <div class="device-info">
+                            <div class="device-name">${device.name}</div>
+                            <div class="device-type">${device.type}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        // 关闭设备选择弹窗
+        function closeDeviceModal() {
+            document.getElementById('deviceModal').classList.remove('show');
+            selectedDevices.clear();
+        }
+        
+        // 切换设备选择
+        function toggleDevice(deviceId) {
+            const checkbox = document.getElementById(`device-${deviceId}`);
+            const deviceItem = checkbox.closest('.device-item');
+            
+            if (selectedDevices.has(deviceId)) {
+                selectedDevices.delete(deviceId);
+                checkbox.checked = false;
+                deviceItem.classList.remove('selected');
+            } else {
+                selectedDevices.add(deviceId);
+                checkbox.checked = true;
+                deviceItem.classList.add('selected');
+            }
+            
+            updateSendButton();
+        }
+        
+        // 更新发送按钮
+        function updateSendButton() {
+            const sendBtn = document.getElementById('sendToDevicesBtn');
+            const count = selectedDevices.size;
+            
+            if (count === 0) {
+                sendBtn.disabled = true;
+                sendBtn.textContent = window.DROPSHARE_I18N?.t('btn_send_to_selected_devices') || '传送到选中设备';
+            } else {
+                sendBtn.disabled = false;
+                sendBtn.textContent = `${" || '个设备'}`;
+            }
+        }
+        
+        // 传送到选中设备
+        function sendToSelectedDevices() {
+            if (selectedDevices.size === 0) return;
+            
+            const filesToSend = currentShareFiles || (currentShareFile ? [currentShareFile] : []);
+            if (filesToSend.length === 0) {
+                alert(";
+                return;
+            }
+            
+            // 检查传输系统
+            if (window.Events && typeof window.Events.fire === 'function') {
+                selectedDevices.forEach(deviceId => {
+                    window.Events.fire('files-selected', {
+                        files: filesToSend,
+                        to: deviceId
+                    });
+                });
+                
+                alert(`${" || '个设备'}!`);
+                closeDeviceModal();
+            } else {
+                // 如果没有传输系统，尝试添加到分享队列
+                if (window.ui && window.ui.filesQueue) {
+                    filesToSend.forEach(file => {
+                        window.ui.filesQueue.push(file);
+                    });
+                    alert(";
+                    closeDeviceModal();
+                } else {
+                    if (confirm('传输功能需要返回传送页面使用。\\n\\n是否现在跳转到传送页面？')) {
+                        sessionStorage.setItem('pendingFileTransfer', JSON.stringify({
+                            files: filesToSend.map(f => ({ name: f.name, type: f.type, size: f.size })),
+                            timestamp: Date.now()
+                        }));
+                        window.location.href = 'share.html';
+                    }
+                }
+            }
+        }
+        
+        // 获取可用设备
+        function getAvailableDevices() {
+            const devices = [];
+            
+            // 检查现有设备
+            const peerElements = document.querySelectorAll('x-peer');
+            if (peerElements.length > 0) {
+                peerElements.forEach(peer => {
+                    devices.push({
+                        id: peer.id,
+                        name: peer.querySelector('.name')?.textContent || '未知设备',
+                        type: peer.querySelector('.device-name')?.textContent || '设备'
+                    });
+                });
+            }
+            
+            // 模拟设备（供测试）
+            if (devices.length === 0) {
+                devices.push(
+                    { id: 'demo1', name: 'iPhone 13', type: 'iOS 手机' },
+                    { id: 'demo2', name: 'MacBook Pro', type: 'macOS 笔记本' },
+                    { id: 'demo3', name: 'Windows PC', type: 'Windows 桌面' }
+                );
+            }
+            
+            return devices;
+        }
+        
+        // 获取设备图标
+        function getDeviceIcon(device) {
+            const type = device.type.toLowerCase();
+            if (type.includes('phone') || type.includes('mobile') || type.includes('ios')) return '📱';
+            if (type.includes('tablet') || type.includes('ipad')) return '📺';
+            if (type.includes('mac') || type.includes('apple') || type.includes('macos')) return '💻';
+            if (type.includes('windows') || type.includes('pc')) return '🖥️';
+            return '💻';
+        }
+    </script>
+    
+    <!-- 设备选择弹窗 -->
+    <div class="device-modal" id="deviceModal">
+        <div class="device-modal-content">
+            <div class="device-modal-header">
+                <h3 class="device-modal-title">选择传送设备</h3>
+                <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
+            </div>
+            <div class="device-list" id="deviceList">
+                <!-- 设备列表将在这里动态生成 -->
+            </div>
+            <div class="device-modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">取消</button>
+                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()" disabled>
+                    传送到选中设备
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load i18n system -->
+    
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

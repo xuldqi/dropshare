@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volume Normalizer - DropShare</title>
+    <title data-i18n="volume_normalizer_title">Volume Normalizer - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -274,6 +274,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -284,13 +285,13 @@
                 🎵 DropShare
             </a>
             <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                <a href="audio-tools.html" class="active" data-i18n="nav_audio">Audio</a>
+                <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                <a href="document-tools.html" data-i18n="nav_files">Files</a>
             </nav>
         </div>
     </header>
@@ -299,55 +300,55 @@
         <!-- Top-left return button -->
         <div style="margin-bottom: 20px;">
             <a href="audio-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← Back
+                <span data-i18n="back_btn">← Back</span>
             </a>
         </div>
         
-        <h1 class="page-title">Volume Normalizer</h1>
-        <p class="page-subtitle">Normalize audio levels to consistent standards</p>
+        <h1 class="page-title" data-i18n="volume_normalizer_heading">Volume Normalizer</h1>
+        <p class="page-subtitle" data-i18n="volume_normalizer_simple_subtitle">Normalize audio levels to consistent standards</p>
         
         <div class="normalizer-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📊</div>
-                <div class="upload-text">Click or drag to upload audio file</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="volume_normalizer_upload_text">Click or drag to upload audio file</div>
+                <div class="upload-hint" data-i18n="volume_normalizer_upload_hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
             <div class="normalize-controls" id="normalizeControls">
                 <div class="control-section">
-                    <div class="section-title">Normalization Standards</div>
+                    <div class="section-title" data-i18n="normalization_standards">Normalization Standards</div>
                     <div class="normalization-presets">
-                        <div class="preset-btn active" data-preset="lufs-23">Broadcast (-23 LUFS)</div>
-                        <div class="preset-btn" data-preset="lufs-16">Streaming (-16 LUFS)</div>
-                        <div class="preset-btn" data-preset="lufs-14">Loud (-14 LUFS)</div>
-                        <div class="preset-btn" data-preset="peak-0">Peak (0 dB)</div>
-                        <div class="preset-btn" data-preset="custom">Custom</div>
+                        <div class="preset-btn active" data-preset="lufs-23" data-i18n="preset_broadcast">Broadcast (-23 LUFS)</div>
+                        <div class="preset-btn" data-preset="lufs-16" data-i18n="preset_streaming">Streaming (-16 LUFS)</div>
+                        <div class="preset-btn" data-preset="lufs-14" data-i18n="preset_loud">Loud (-14 LUFS)</div>
+                        <div class="preset-btn" data-preset="peak-0" data-i18n="preset_peak">Peak (0 dB)</div>
+                        <div class="preset-btn" data-preset="custom" data-i18n="preset_custom">Custom</div>
                     </div>
 
                     <div class="custom-controls" id="customControls" style="display: none;">
                         <div class="input-group">
-                            <label>Target LUFS</label>
+                            <label data-i18n="target_lufs_label">Target LUFS</label>
                             <input type="number" class="input-field" id="targetLufs" value="-23" step="0.1" min="-60" max="0">
                         </div>
                         <div class="input-group">
-                            <label>Peak Limit (dB)</label>
+                            <label data-i18n="peak_limit_label">Peak Limit (dB)</label>
                             <input type="number" class="input-field" id="peakLimit" value="-1" step="0.1" min="-10" max="0">
                         </div>
                     </div>
                 </div>
 
                 <div class="control-section">
-                    <div class="section-title">Volume Preview</div>
+                    <div class="section-title" data-i18n="volume_preview_title">Volume Preview</div>
                     <div class="volume-preview">
-                        <div class="preview-label">Current Volume Level</div>
+                        <div class="preview-label" data-i18n="current_volume_level">Current Volume Level</div>
                         <div class="volume-bar">
                             <div class="volume-fill" id="volumeFill" style="width: 45%;"></div>
                         </div>
                     </div>
                 </div>
                 
-                <button class="normalize-button" id="normalizeBtn">Normalize Audio</button>
+                <button class="normalize-button" id="normalizeBtn" data-i18n="volume_normalizer_normalize_btn">Normalize Audio</button>
             </div>
         </div>
     </div>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Audio Support Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .test-result { padding: 10px; margin: 5px 0; border-radius: 5px; }
+        .supported { background: #d4edda; color: #155724; }
+        .not-supported { background: #f8d7da; color: #721c24; }
+        .unknown { background: #fff3cd; color: #856404; }
+        h2 { margin-top: 30px; }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+<body>
+    <h1>Browser Audio Format Support Test</h1>
+    
+    <h2>MediaRecorder API Support</h2>
+    <div id="mediaRecorderTests"></div>
+    
+    <h2>Audio Playback Support</h2>
+    <div id="audioPlaybackTests"></div>
+    
+    <h2>Web Audio API Support</h2>
+    <div id="webAudioTests"></div>
+
+    <script>
+        // Test MediaRecorder support for different formats
+        function testMediaRecorderSupport() {
+            const container = document.getElementById('mediaRecorderTests');
+            const formats = [
+                { mime: 'audio/webm', name: 'WebM' },
+                { mime: 'audio/webm;codecs=opus', name: 'WebM (Opus)' },
+                { mime: 'audio/mp4', name: 'MP4' },
+                { mime: 'audio/ogg', name: 'OGG' },
+                { mime: 'audio/ogg;codecs=opus', name: 'OGG (Opus)' },
+                { mime: 'audio/wav', name: 'WAV' },
+                { mime: 'audio/mpeg', name: 'MP3' }
+            ];
+            
+            if (!window.MediaRecorder) {
+                container.innerHTML = '<div class="not-supported">MediaRecorder API not supported</div>';
+                return;
+            }
+            
+            formats.forEach(format => {
+                const supported = MediaRecorder.isTypeSupported(format.mime);
+                const div = document.createElement('div');
+                div.className = `test-result ${supported ? 'supported' : 'not-supported'}`;
+                div.textContent = `${format.name} (${format.mime}): ${supported ? 'Supported' : 'Not Supported'}`;
+                container.appendChild(div);
+            });
+        }
+        
+        // Test audio playback support
+        function testAudioPlaybackSupport() {
+            const container = document.getElementById('audioPlaybackTests');
+            const audio = document.createElement('audio');
+            
+            const formats = [
+                { ext: 'mp3', mime: 'audio/mpeg' },
+                { ext: 'wav', mime: 'audio/wav' },
+                { ext: 'ogg', mime: 'audio/ogg' },
+                { ext: 'webm', mime: 'audio/webm' },
+                { ext: 'm4a', mime: 'audio/mp4' },
+                { ext: 'aac', mime: 'audio/aac' }
+            ];
+            
+            formats.forEach(format => {
+                const support = audio.canPlayType(format.mime);
+                const div = document.createElement('div');
+                let className = 'unknown';
+                let status = 'Unknown';
+                
+                if (support === 'probably') {
+                    className = 'supported';
+                    status = 'Probably';
+                } else if (support === 'maybe') {
+                    className = 'unknown';
+                    status = 'Maybe';
+                } else {
+                    className = 'not-supported';
+                    status = 'No';
+                }
+                
+                div.className = `test-result ${className}`;
+                div.textContent = `${format.ext.toUpperCase()} (${format.mime}): ${status}`;
+                container.appendChild(div);
+            });
+        }
+        
+        // Test Web Audio API support
+        function testWebAudioSupport() {
+            const container = document.getElementById('webAudioTests');
+            const tests = [
+                {
+                    name: 'AudioContext',
+                    test: () => !!(window.AudioContext || window.webkitAudioContext)
+                },
+                {
+                    name: 'OfflineAudioContext',
+                    test: () => !!(window.OfflineAudioContext || window.webkitOfflineAudioContext)
+                },
+                {
+                    name: 'decodeAudioData',
+                    test: () => {
+                        try {
+                            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                            return typeof ctx.decodeAudioData === 'function';
+                        } catch (e) {
+                            return false;
+                        }
+                    }
+                }
+            ];
+            
+            tests.forEach(test => {
+                const supported = test.test();
+                const div = document.createElement('div');
+                div.className = `test-result ${supported ? 'supported' : 'not-supported'}`;
+                div.textContent = `${test.name}: ${supported ? 'Supported' : 'Not Supported'}`;
+                container.appendChild(div);
+            });
+        }
+        
+        // Run all tests
+        document.addEventListener('DOMContentLoaded', () => {
+            testMediaRecorderSupport();
+            testAudioPlaybackSupport();
+            testWebAudioSupport();
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

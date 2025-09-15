@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><script>
+    // 预加载主题设置，防止闪屏
+    (function() {
+      document.documentElement.style.backgroundColor = '#f5f5f5';
+      document.documentElement.style.color = '#333';
+      document.documentElement.style.visibility = 'visible';
+      
+      // 确保body也设置正确的样式
+      function setBodyStyle() {
+        if (document.body) {
+          document.body.style.backgroundColor = '#f5f5f5';
+          document.body.style.color = '#333';
+          document.body.style.visibility = 'visible';
+        } else {
+          setTimeout(setBodyStyle, 0);
+        }
+      }
+      setBodyStyle();
+    })();
+  </script><link rel="stylesheet" href="/noflash-light.css"><style>
+    html, body {
+      background-color: #f5f5f5 !important;
+      color: #333 !important;
+      visibility: visible !important;
+    }
+  </style>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>About DropShare - Easy File Sharing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Learn about DropShare - the easiest way to share files between devices on the same network. No setup, no signup required.">
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="shortcut icon" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="module" src="scripts/about.js"></script>
+    <script src="scripts/page-theme.js" defer=""></script>
+    <style>
+        :root {
+            --text-color: #eee;
+            --bg-color: #121212;
+            --bg-color-secondary: #333;
+        }
+        
+        html[data-theme="light"] {
+            --text-color: #333;
+            --bg-color: #fafafa;
+            --bg-color-secondary: #f1f3f4;
+        }
+        
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-y: auto;
+            background: var(--bg-color);
+            align-items: stretch;
+            justify-content: flex-start;
+            transition: background-color 0.3s ease;
+        }
+
+        .header-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            z-index: 100;
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--bg-color-secondary);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        header {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        header .icon-button {
+            margin-right: 16px;
+        }
+
+        /* RTL适配 */
+        [dir="rtl"] header .icon-button {
+            margin-right: 0;
+            margin-left: 16px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+            color: #4285f4;
+        }
+
+        .content-wrapper {
+            margin-top: 100px;
+            flex: 1;
+            width: 100%;
+            display: block;
+            align-items: stretch;
+            justify-content: flex-start;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 0;
+        }
+
+        .feature-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3367d6;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* 修正在RTL中返回按钮的图标方向 */
+        [dir="rtl"] .icon-button svg path {
+            transform: scale(-1, 1);
+            transform-origin: center;
+        }
+
+        h1, h2, h3 {
+            color: #3367d6;
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 15px;
+            border: none;
+            box-shadow: none;
+        }
+
+        footer {
+            position: relative;
+            padding: 16px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            background-color: var(--bg-color);
+            border-top: 1px solid var(--bg-color-secondary);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        footer .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        footer .icon.logo {
+            width: 40px;
+            height: 40px;
+        }
+        
+        footer .text-container {
+            display: none;
+        }
+
+        section {
+            margin-bottom: 40px;
+            background-color: transparent;
+            border: none;
+        }
+
+        section h2 {
+            position: relative;
+            z-index: 1;
+            background-color: transparent;
+        }
+
+        @media (max-width: 600px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+<body class="light-theme">
+    <div class="background-animation"></div>
+    
+    <div class="header-wrapper">
+        <header>
+            <a href="/" class="icon-button" title="Back to DropShare">
+                <svg class="icon">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                </svg>
+            </a>
+            <h1>About DropShare</h1>
+        </header>
+    </div>
+    
+    <div class="content-wrapper">
+        <div class="container">
+            <section>
+                <h2>What is DropShare?</h2>
+                <p>DropShare is a modern web application that allows you to easily share files between devices on the same network. No setup, no signup, no cloud storage needed - just instant peer-to-peer file sharing.</p>
+                
+                <div class="feature-box">
+                    <h3>How It Works</h3>
+                    <p>DropShare uses WebRTC technology to establish a direct connection between devices. Your files are transferred directly from one device to another without going through a server, ensuring privacy and speed.</p>
+                </div>
+            </section>
+            
+            <section>
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <h3>No Setup Required</h3>
+                        <p>Just open DropShare in your browser and start sharing files immediately. No account creation or software installation needed.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Privacy Focused</h3>
+                        <p>All transfers are peer-to-peer, meaning your files are never stored on our servers. Your data remains private and secure.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Cross-Platform</h3>
+                        <p>Works on all modern devices and browsers including smartphones, tablets, and computers running Windows, macOS, Linux, iOS, or Android.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Fast Transfers</h3>
+                        <p>Direct device-to-device connection means faster transfer speeds than cloud-based services.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h2>How to Use DropShare</h2>
+                <div class="feature-box">
+                    <h3>Step 1: Connect Devices</h3>
+                    <p>Make sure all devices are connected to the same Wi-Fi network or local area network.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Step 2: Open DropShare</h3>
+                    <p>Open DropShare on all devices you want to share files between. Just visit the website in your browser.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Step 3: Select Device</h3>
+                    <p>You'll see all available devices on the network. Click on the device you want to send files to.</p>
+                </div>
+                <div class="feature-box">
+                    <h3>Step 4: Send Files</h3>
+                    <p>Select the files you want to share. The recipient will get a notification and can accept the transfer.</p>
+                </div>
+            </section>
+            
+            <a href="/" class="back-button">Back to DropShare</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="logo-container">
+            <svg class="icon logo">
+                <use xlink:href="#wifi-tethering"></use>
+            </svg>
+        </div>
+        <div class="text-container">
+            <div class="text-line">DropShare</div>
+            <div class="font-body2 text-line">The easiest way to share files across devices</div>
+        </div>
+    </footer>
+    
+    <script>
+        // Import necessary SVG icons
+        const iconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        iconSvg.setAttribute("style", "display: none;");
+        iconSvg.innerHTML = `
+            <symbol id=wifi-tethering viewBox="0 0 24 24">
+                <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"></path>
+            </symbol>
+        `;
+        document.body.appendChild(iconSvg);
+    </script>
+
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+ <script src="/scripts/theme-redirect.js"></script></body></html>

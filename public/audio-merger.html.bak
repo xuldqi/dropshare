@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Merger - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .merger-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-list {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: #f9fafb;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            font-size: 20px;
+        }
+
+        .file-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .move-btn, .remove-btn {
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .move-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .remove-btn:hover {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #dc2626;
+        }
+
+        .merge-controls {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .merge-options {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            margin-bottom: 16px;
+        }
+
+        .option-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .fade-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .fade-btn {
+            padding: 6px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .fade-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .fade-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .merge-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .merge-button:hover {
+            background: #2563eb;
+        }
+
+        .merge-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .add-more-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: 2px dashed #d1d5db;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .add-more-btn:hover {
+            border-color: #3367d6;
+            color: #3367d6;
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        
+        <h1 class="page-title">Audio Merger</h1>
+        <p class="page-subtitle">Combine multiple audio files into one seamless track</p>
+        
+        <div class="merger-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🔗</div>
+                <div class="upload-text">Click or drag to upload multiple audio files</div>
+                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <input type="file" id="fileInput" accept="audio/*" multiple>
+            </div>
+            
+            <div class="file-list" id="fileList">
+                <h3 style="margin-bottom: 16px; color: #374151;">Audio Files (merge in order)</h3>
+                <div id="audioFiles"></div>
+                
+                <button class="add-more-btn" onclick="document.getElementById('fileInput').click()">
+                    + Add More Audio Files
+                </button>
+                
+                <div class="merge-controls">
+                    <div class="merge-options">
+                        <div class="option-group">
+                            <div class="option-label">Fade Transitions</div>
+                            <div class="fade-options">
+                                <div class="fade-btn active" data-fade="none">No Fade</div>
+                                <div class="fade-btn" data-fade="short">Short Fade</div>
+                                <div class="fade-btn" data-fade="medium">Medium Fade</div>
+                                <div class="fade-btn" data-fade="long">Long Fade</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="merge-button" id="mergeBtn">Merge Audio Files</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let audioFiles = [];
+        
+        // File upload
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (file.type.startsWith('audio/')) {
+                    audioFiles.push(file);
+                }
+            });
+            updateFileList();
+            
+            // Clear input to allow adding same files again
+            this.value = '';
+        });
+        
+        // Update file list
+        function updateFileList() {
+            if (audioFiles.length === 0) {
+                document.getElementById('fileList').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('fileList').style.display = 'block';
+            const audioFilesContainer = document.getElementById('audioFiles');
+            audioFilesContainer.innerHTML = '';
+            
+            audioFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-icon">🎵</div>
+                        <div class="file-details">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${formatFileSize(file.size)}</div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="move-btn" onclick="moveFile(${index}, -1)" ${index === 0 ? 'disabled' : ''}>↑</button>
+                        <button class="move-btn" onclick="moveFile(${index}, 1)" ${index === audioFiles.length - 1 ? 'disabled' : ''}>↓</button>
+                        <button class="remove-btn" onclick="removeFile(${index})">×</button>
+                    </div>
+                `;
+                audioFilesContainer.appendChild(fileItem);
+            });
+            
+            // Show merge controls if we have at least 2 files
+            if (audioFiles.length >= 2) {
+                document.querySelector('.merge-controls').style.display = 'block';
+            } else {
+                document.querySelector('.merge-controls').style.display = 'none';
+            }
+        }
+        
+        // Move file position
+        function moveFile(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= audioFiles.length) return;
+            
+            [audioFiles[index], audioFiles[newIndex]] = [audioFiles[newIndex], audioFiles[index]];
+            updateFileList();
+        }
+        
+        // Remove file
+        function removeFile(index) {
+            audioFiles.splice(index, 1);
+            updateFileList();
+        }
+        
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Fade option selection
+        document.querySelectorAll('.fade-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.fade-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Merge button
+        document.getElementById('mergeBtn').addEventListener('click', function() {
+            if (audioFiles.length < 2) {
+                alert('Please select at least 2 audio files to merge');
+                return;
+            }
+            
+            const selectedFade = document.querySelector('.fade-btn.active').dataset.fade;
+            const fileNames = audioFiles.map(file => file.name).join('\\n');
+            alert(`Merging the following audio files with ${selectedFade} fade:\\n${fileNames}\\n\\nFeature in development!`);
+        });
+
+        // Drag and drop upload
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('audio/'));
+            if (files.length > 0) {
+                files.forEach(file => audioFiles.push(file));
+                updateFileList();
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

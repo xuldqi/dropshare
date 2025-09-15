@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Tools - DropShare</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景装饰几何图形 */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.6;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 14px solid #ffa726;
+        }
+
+        .circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e91e63;
+        }
+
+        .square {
+            width: 10px;
+            height: 10px;
+            background: #42a5f5;
+            transform: rotate(45deg);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 1000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 24px;
+            padding-right: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a202c;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #4a5568;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+
+        @media (max-width: 1200px) {
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .tool-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 10px;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .tool-card:hover .tool-title {
+            color: #667eea;
+        }
+
+        .tool-description {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .tool-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: #718096;
+            margin-top: auto;
+        }
+
+        .tool-stats span {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        /* Audio tool specific colors */
+        .icon-compress { background: linear-gradient(135deg, #ff6b6b, #ff8e8e); }
+        .icon-convert { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .icon-trim { background: linear-gradient(135deg, #a8e6cf, #7fcdcd); }
+        .icon-merge { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .icon-normalize { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .icon-effects { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .icon-metadata { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .icon-bitrate { background: linear-gradient(135deg, #fa709a, #fee140); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+<body>
+    <!-- 背景装饰图形 -->
+    <div class="bg-shapes"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+
+            <nav class="nav-links">
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html" class="active">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Document Tools</h1>
+            <p class="page-subtitle">Professional document processing tools for all your needs</p>
+        </div>
+
+        <div class="tools-grid">
+            <!-- PDF Compressor -->
+            <div class="tool-card" data-keywords="pdf compress reduce size optimize">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-compress">🗜️</div>
+                </div>
+                <h3 class="tool-title">PDF Compressor</h3>
+                <p class="tool-description">Reduce PDF file size while maintaining quality for web and storage optimization</p>
+            </div>
+
+            <!-- Format Converter -->
+            <div class="tool-card" data-keywords="convert format pdf docx txt html epub">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-convert">🔄</div>
+                </div>
+                <h3 class="tool-title">Format Converter</h3>
+                <p class="tool-description">Convert documents between PDF, DOCX, TXT, HTML, EPUB and other formats</p>
+            </div>
+
+            <!-- Text Extractor -->
+            <div class="tool-card" data-keywords="extract text content ocr scan pdf">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-trim">📄</div>
+                </div>
+                <h3 class="tool-title">Text Extractor</h3>
+                <p class="tool-description">Extract text content from PDFs, images, and scanned documents with OCR</p>
+            </div>
+
+            <!-- PDF Merger -->
+            <div class="tool-card" data-keywords="merge combine join multiple pdf documents">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-merge">🔗</div>
+                </div>
+                <h3 class="tool-title">PDF Merger</h3>
+                <p class="tool-description">Combine multiple PDF files into one document with custom page ordering</p>
+            </div>
+
+            <!-- PDF Splitter -->
+            <div class="tool-card" data-keywords="split divide separate pages pdf extract">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-normalize">✂️</div>
+                </div>
+                <h3 class="tool-title">PDF Splitter</h3>
+                <p class="tool-description">Split PDF documents into separate files or extract specific pages</p>
+            </div>
+
+            <!-- Document Editor -->
+            <div class="tool-card" data-keywords="edit modify text annotations comments">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-effects">✏️</div>
+                </div>
+                <h3 class="tool-title">Document Editor</h3>
+                <p class="tool-description">Edit document content, add annotations, comments, and modify text</p>
+            </div>
+
+            <!-- Password Protection -->
+            <div class="tool-card" data-keywords="password protect security encrypt lock">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-metadata">🔒</div>
+                </div>
+                <h3 class="tool-title">Password Protection</h3>
+                <p class="tool-description">Add or remove password protection and security settings for documents</p>
+            </div>
+
+            <!-- Metadata Editor -->
+            <div class="tool-card" data-keywords="metadata properties title author subject">
+                <div class="tool-card-header">
+                    <div class="tool-icon icon-bitrate">🏷️</div>
+                </div>
+                <h3 class="tool-title">Metadata Editor</h3>
+                <p class="tool-description">Edit document properties including title, author, subject, and keywords</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 生成背景装饰图形
+        function createBackgroundShapes() {
+            const shapesContainer = document.querySelector('.bg-shapes');
+            const shapes = ['triangle', 'circle', 'square'];
+            const colors = ['#ffa726', '#e91e63', '#42a5f5', '#66bb6a'];
+
+            for (let i = 0; i < 15; i++) {
+                const shape = document.createElement('div');
+                const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
+                
+                shape.className = `shape ${shapeType}`;
+                shape.style.left = Math.random() * 100 + '%';
+                shape.style.top = Math.random() * 100 + '%';
+                shape.style.animationDelay = Math.random() * 20 + 's';
+                shape.style.animationDuration = (20 + Math.random() * 20) + 's';
+
+                // 随机颜色（仅适用于某些形状）
+                if (shapeType === 'circle' || shapeType === 'square') {
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    shape.style.background = color;
+                }
+                
+                shapesContainer.appendChild(shape);
+            }
+        }
+
+        // 工具卡片点击事件 - 跳转到实际工具页面
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.tool-title').textContent;
+                let toolPage = 'document-processor.html'; // 默认跳转到文档处理器
+                
+                switch(title) {
+                    case 'PDF Compressor':
+                        toolPage = 'pdf-compressor-real.html';
+                        break;
+                    case 'Format Converter':
+                        toolPage = 'document-converter-real.html';
+                        break;
+                    case 'Text Extractor':
+                        toolPage = 'text-extractor-real.html';
+                        break;
+                    case 'PDF Merger':
+                        toolPage = 'pdf-merger-real.html';
+                        break;
+                    case 'PDF Splitter':
+                        toolPage = 'pdf-splitter-real.html';
+                        break;
+                    case 'Document Editor':
+                        toolPage = 'document-processor.html';
+                        break;
+                    case 'Password Protection':
+                        toolPage = 'document-processor.html';
+                        break;
+                    case 'Metadata Editor':
+                        toolPage = 'document-processor.html';
+                        break;
+                    default:
+                        alert(`${title}\n\nThis tool is coming soon!`);
+                        return;
+                }
+                
+                window.location.href = toolPage;
+            });
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            createBackgroundShapes();
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

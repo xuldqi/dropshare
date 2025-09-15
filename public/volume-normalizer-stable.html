@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volume Normalizer - DropShare</title>
+    <title data-i18n="volume_normalizer_stable_title">Volume Normalizer - DropShare</title>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
     <style>
         * {
@@ -356,6 +356,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 <body>
     <header class="header">
@@ -378,8 +379,8 @@
     <div class="container">
         <a href="audio-tools.html" class="back-btn">← Back</a>
         
-        <h1 class="page-title">Volume Normalizer</h1>
-        <p class="page-subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="volume_normalizer_stable_heading">Volume Normalizer</h1>
+        <p class="page-subtitle" data-i18n="volume_normalizer_stable_subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
         
         <div class="converter-card">
             <div class="engine-status" id="engineStatus">
@@ -388,8 +389,8 @@
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📁</div>
-                <div class="upload-text">Upload Audio File</div>
-                <div class="upload-hint">Drag and drop your audio file here or click to browse</div>
+                <div class="upload-text" data-i18n="volume_normalizer_stable_upload_text">Upload Audio File</div>
+                <div class="upload-hint" data-i18n="volume_normalizer_stable_upload_hint">Drag and drop your audio file here or click to browse</div>
                 <button class="choose-file-btn" onclick="document.getElementById('fileInput').click()">Choose Audio File</button>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
@@ -438,7 +439,7 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn btn-primary" id="normalizeBtn">Normalize Audio</button>
+                    <button class="btn btn-primary" id="normalizeBtn" data-i18n="volume_normalizer_stable_normalize_btn">Normalize Audio</button>
                 </div>
             </div>
 

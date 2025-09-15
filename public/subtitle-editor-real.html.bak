@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subtitle Editor - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #6b7280;
+            opacity: 0.9;
+        }
+
+        .tool-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .control-group input, .control-group select {
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .control-group input:focus, .control-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .workspace {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .workspace.active {
+            display: grid;
+        }
+
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-player {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-controls {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .play-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .timeline {
+            flex: 1;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .timeline-progress {
+            height: 100%;
+            background: #667eea;
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        .subtitle-editor {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .subtitle-list {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 1rem;
+            background: white;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle-item {
+            padding: 1rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .subtitle-item:hover {
+            background: #f0f2f5;
+        }
+
+        .subtitle-item.active {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+        }
+
+        .subtitle-time {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .subtitle-text {
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .subtitle-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .subtitle-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .subtitle-btn:hover {
+            background: #5a6fd8;
+        }
+
+        .subtitle-btn.danger {
+            background: #ff6b6b;
+        }
+
+        .subtitle-btn.danger:hover {
+            background: #ff5252;
+        }
+
+        .add-subtitle {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .add-subtitle:hover {
+            background: #218838;
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e5e9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .status {
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 2rem;
+            width: 100%;
+            display: none;
+        }
+
+        .download-btn.active {
+            display: block;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-form input, .modal-form textarea {
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .modal-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .modal-btn.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: #e1e5e9;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            <nav class="nav-links">
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Subtitle Editor</h1>
+            <p class="page-subtitle">Add, edit, and synchronize subtitles for your videos with precision timing</p>
+        </div>
+
+        <div class="tool-container">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎬</div>
+                <h3>Upload Video or Subtitle File</h3>
+                <p>Drag and drop your video file or existing subtitle file (.srt, .vtt) here</p>
+                <input type="file" id="fileInput" class="file-input" accept="video/*,.srt,.vtt" multiple>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Files</button>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <div class="control-group">
+                    <label>Export Format</label>
+                    <select id="outputFormat">
+                        <option value="srt">SRT</option>
+                        <option value="vtt">WebVTT</option>
+                        <option value="ass">ASS</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Font Size</label>
+                    <input type="range" id="fontSize" min="12" max="32" value="16">
+                    <span id="fontSizeValue">16px</span>
+                </div>
+                <div class="control-group">
+                    <label>Position</label>
+                    <select id="subtitlePosition">
+                        <option value="bottom">Bottom</option>
+                        <option value="top">Top</option>
+                        <option value="middle">Middle</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Workspace -->
+            <div class="workspace" id="workspace">
+                <!-- Video Player -->
+                <div class="video-container">
+                    <video id="videoPlayer" class="video-player" controls>
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-controls">
+                        <button class="play-btn" id="playBtn">Play</button>
+                        <div class="timeline" id="timeline">
+                            <div class="timeline-progress" id="timelineProgress"></div>
+                        </div>
+                        <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
+                    </div>
+                </div>
+
+                <!-- Subtitle Editor -->
+                <div class="subtitle-editor">
+                    <div class="subtitle-list" id="subtitleList">
+                        <!-- Subtitles will be added here -->
+                    </div>
+                    <div class="subtitle-controls">
+                        <button class="subtitle-btn" id="addSubtitle">Add Subtitle</button>
+                        <button class="subtitle-btn" id="deleteSubtitle">Delete Selected</button>
+                        <button class="subtitle-btn" id="exportSubtitles">Export Subtitles</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="status" id="status">Processing...</div>
+            </div>
+
+            <!-- Download Button -->
+            <button class="download-btn" id="downloadBtn">Download Subtitle File</button>
+        </div>
+    </div>
+
+    <!-- Add/Edit Subtitle Modal -->
+    <div class="modal" id="subtitleModal">
+        <div class="modal-content">
+            <div class="modal-header">Add/Edit Subtitle</div>
+            <div class="modal-form">
+                <input type="text" id="startTime" placeholder="Start time (00:00:00,000)">
+                <input type="text" id="endTime" placeholder="End time (00:00:00,000)">
+                <textarea id="subtitleTextArea" placeholder="Subtitle text"></textarea>
+                <div class="modal-buttons">
+                    <button class="modal-btn secondary" id="cancelBtn">Cancel</button>
+                    <button class="modal-btn primary" id="saveBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <script>
+        let ffmpeg = null;
+        let videoFile = null;
+        let subtitleFile = null;
+        let subtitles = [];
+        let currentSubtitleIndex = -1;
+        let videoElement = null;
+
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const workspace = document.getElementById('workspace');
+        const progressContainer = document.getElementById('progressContainer');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const subtitleModal = document.getElementById('subtitleModal');
+        const subtitleList = document.getElementById('subtitleList');
+
+        // Initialize FFmpeg
+        async function initFFmpeg() {
+            if (!ffmpeg) {
+                const { FFmpeg } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
+                
+                ffmpeg = new FFmpeg();
+                
+                const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+                
+                await ffmpeg.load({
+                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                });
+            }
+        }
+
+        // File upload handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleFiles(files);
+        });
+
+        async function handleFiles(files) {
+            for (const file of files) {
+                if (file.type.startsWith('video/')) {
+                    videoFile = file;
+                    loadVideo(file);
+                } else if (file.name.endsWith('.srt') || file.name.endsWith('.vtt')) {
+                    subtitleFile = file;
+                    await loadSubtitles(file);
+                }
+            }
+
+            if (videoFile) {
+                workspace.classList.add('active');
+            }
+        }
+
+        function loadVideo(file) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const url = URL.createObjectURL(file);
+            videoPlayer.src = url;
+            videoElement = videoPlayer;
+
+            videoPlayer.addEventListener('loadedmetadata', () => {
+                updateDuration();
+            });
+
+            videoPlayer.addEventListener('timeupdate', () => {
+                updateTimeline();
+                highlightCurrentSubtitle();
+            });
+        }
+
+        async function loadSubtitles(file) {
+            const text = await file.text();
+            if (file.name.endsWith('.srt')) {
+                subtitles = parseSRT(text);
+            } else if (file.name.endsWith('.vtt')) {
+                subtitles = parseVTT(text);
+            }
+            renderSubtitles();
+        }
+
+        function parseSRT(text) {
+            const subtitles = [];
+            const blocks = text.split('\n\n').filter(block => block.trim());
+            
+            blocks.forEach(block => {
+                const lines = block.split('\n');
+                if (lines.length >= 3) {
+                    const index = lines[0];
+                    const timeRange = lines[1];
+                    const text = lines.slice(2).join('\n');
+                    
+                    const [startTime, endTime] = timeRange.split(' --> ');
+                    
+                    subtitles.push({
+                        index: parseInt(index),
+                        startTime: timeToSeconds(startTime.replace(',', '.')),
+                        endTime: timeToSeconds(endTime.replace(',', '.')),
+                        text: text
+                    });
+                }
+            });
+            
+            return subtitles;
+        }
+
+        function parseVTT(text) {
+            const subtitles = [];
+            const lines = text.split('\n');
+            let currentSubtitle = null;
+            
+            lines.forEach(line => {
+                if (line.includes(' --> ')) {
+                    if (currentSubtitle) {
+                        subtitles.push(currentSubtitle);
+                    }
+                    const [startTime, endTime] = line.split(' --> ');
+                    currentSubtitle = {
+                        index: subtitles.length + 1,
+                        startTime: timeToSeconds(startTime),
+                        endTime: timeToSeconds(endTime),
+                        text: ''
+                    };
+                } else if (currentSubtitle && line.trim()) {
+                    currentSubtitle.text += (currentSubtitle.text ? '\n' : '') + line;
+                }
+            });
+            
+            if (currentSubtitle) {
+                subtitles.push(currentSubtitle);
+            }
+            
+            return subtitles;
+        }
+
+        function timeToSeconds(timeString) {
+            const parts = timeString.split(':');
+            const seconds = parts.pop();
+            const minutes = parts.pop() || 0;
+            const hours = parts.pop() || 0;
+            
+            return parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseFloat(seconds);
+        }
+
+        function secondsToTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
+            const ms = Math.floor((seconds % 1) * 1000);
+            
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')},${ms.toString().padStart(3, '0')}`;
+        }
+
+        function renderSubtitles() {
+            subtitleList.innerHTML = '';
+            
+            subtitles.forEach((subtitle, index) => {
+                const subtitleItem = document.createElement('div');
+                subtitleItem.className = 'subtitle-item';
+                subtitleItem.innerHTML = `
+                    <div class="subtitle-time">${secondsToTime(subtitle.startTime)} --> ${secondsToTime(subtitle.endTime)}</div>
+                    <div class="subtitle-text">${subtitle.text}</div>
+                `;
+                
+                subtitleItem.addEventListener('click', () => {
+                    selectSubtitle(index);
+                    if (videoElement) {
+                        videoElement.currentTime = subtitle.startTime;
+                    }
+                });
+                
+                subtitleItem.addEventListener('dblclick', () => {
+                    editSubtitle(index);
+                });
+                
+                subtitleList.appendChild(subtitleItem);
+            });
+        }
+
+        function selectSubtitle(index) {
+            const items = subtitleList.querySelectorAll('.subtitle-item');
+            items.forEach(item => item.classList.remove('active'));
+            
+            if (index >= 0 && index < items.length) {
+                items[index].classList.add('active');
+                currentSubtitleIndex = index;
+            }
+        }
+
+        function highlightCurrentSubtitle() {
+            if (!videoElement) return;
+            
+            const currentTime = videoElement.currentTime;
+            let activeIndex = -1;
+            
+            subtitles.forEach((subtitle, index) => {
+                if (currentTime >= subtitle.startTime && currentTime <= subtitle.endTime) {
+                    activeIndex = index;
+                }
+            });
+            
+            if (activeIndex !== currentSubtitleIndex) {
+                selectSubtitle(activeIndex);
+            }
+        }
+
+        function updateTimeline() {
+            if (!videoElement) return;
+            
+            const progress = (videoElement.currentTime / videoElement.duration) * 100;
+            document.getElementById('timelineProgress').style.width = progress + '%';
+            document.getElementById('currentTime').textContent = formatTime(videoElement.currentTime);
+        }
+
+        function updateDuration() {
+            if (!videoElement) return;
+            
+            document.getElementById('duration').textContent = formatTime(videoElement.duration);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Subtitle editing
+        document.getElementById('addSubtitle').addEventListener('click', () => {
+            const currentTime = videoElement ? videoElement.currentTime : 0;
+            editSubtitle(-1, currentTime);
+        });
+
+        document.getElementById('deleteSubtitle').addEventListener('click', () => {
+            if (currentSubtitleIndex >= 0) {
+                subtitles.splice(currentSubtitleIndex, 1);
+                currentSubtitleIndex = -1;
+                renderSubtitles();
+            }
+        });
+
+        function editSubtitle(index, defaultStartTime = 0) {
+            const isEdit = index >= 0;
+            const subtitle = isEdit ? subtitles[index] : {
+                startTime: defaultStartTime,
+                endTime: defaultStartTime + 5,
+                text: ''
+            };
+            
+            document.getElementById('startTime').value = secondsToTime(subtitle.startTime);
+            document.getElementById('endTime').value = secondsToTime(subtitle.endTime);
+            document.getElementById('subtitleTextArea').value = subtitle.text;
+            
+            subtitleModal.classList.add('active');
+            
+            document.getElementById('saveBtn').onclick = () => {
+                const startTime = timeToSeconds(document.getElementById('startTime').value);
+                const endTime = timeToSeconds(document.getElementById('endTime').value);
+                const text = document.getElementById('subtitleTextArea').value;
+                
+                const newSubtitle = {
+                    index: isEdit ? subtitle.index : subtitles.length + 1,
+                    startTime,
+                    endTime,
+                    text
+                };
+                
+                if (isEdit) {
+                    subtitles[index] = newSubtitle;
+                } else {
+                    subtitles.push(newSubtitle);
+                    subtitles.sort((a, b) => a.startTime - b.startTime);
+                }
+                
+                renderSubtitles();
+                subtitleModal.classList.remove('active');
+            };
+        }
+
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            subtitleModal.classList.remove('active');
+        });
+
+        // Export subtitles
+        document.getElementById('exportSubtitles').addEventListener('click', exportSubtitles);
+
+        function exportSubtitles() {
+            const format = document.getElementById('outputFormat').value;
+            let content = '';
+            
+            if (format === 'srt') {
+                content = generateSRT();
+            } else if (format === 'vtt') {
+                content = generateVTT();
+            } else if (format === 'ass') {
+                content = generateASS();
+            }
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `subtitles.${format}`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+            
+            downloadBtn.classList.add('active');
+        }
+
+        function generateSRT() {
+            return subtitles.map((subtitle, index) => {
+                return `${index + 1}\n${secondsToTime(subtitle.startTime)} --> ${secondsToTime(subtitle.endTime)}\n${subtitle.text}\n`;
+            }).join('\n');
+        }
+
+        function generateVTT() {
+            let vtt = 'WEBVTT\n\n';
+            vtt += subtitles.map(subtitle => {
+                const startTime = secondsToTime(subtitle.startTime).replace(',', '.');
+                const endTime = secondsToTime(subtitle.endTime).replace(',', '.');
+                return `${startTime} --> ${endTime}\n${subtitle.text}\n`;
+            }).join('\n');
+            return vtt;
+        }
+
+        function generateASS() {
+            let ass = `[Script Info]
+Title: Generated Subtitles
+ScriptType: v4.00+
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,${document.getElementById('fontSize').value},&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+`;
+            
+            ass += subtitles.map(subtitle => {
+                const startTime = secondsToASSTime(subtitle.startTime);
+                const endTime = secondsToASSTime(subtitle.endTime);
+                return `Dialogue: 0,${startTime},${endTime},Default,,0,0,0,,${subtitle.text}`;
+            }).join('\n');
+            
+            return ass;
+        }
+
+        function secondsToASSTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = (seconds % 60).toFixed(2);
+            
+            return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.padStart(5, '0')}`;
+        }
+
+        // Video controls
+        document.getElementById('playBtn').addEventListener('click', () => {
+            if (videoElement) {
+                if (videoElement.paused) {
+                    videoElement.play();
+                    document.getElementById('playBtn').textContent = 'Pause';
+                } else {
+                    videoElement.pause();
+                    document.getElementById('playBtn').textContent = 'Play';
+                }
+            }
+        });
+
+        document.getElementById('timeline').addEventListener('click', (e) => {
+            if (videoElement) {
+                const rect = e.target.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                videoElement.currentTime = percent * videoElement.duration;
+            }
+        });
+
+        // Font size control
+        document.getElementById('fontSize').addEventListener('input', (e) => {
+            document.getElementById('fontSizeValue').textContent = e.target.value + 'px';
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            exportSubtitles();
+        });
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await initFFmpeg();
+            } catch (error) {
+                console.error('Failed to initialize FFmpeg:', error);
+            }
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Merger - DropShare</title>
+    <title data-i18n="audio_merger_title">Audio Merger - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -299,6 +299,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -309,13 +310,13 @@
                 🎵 DropShare
             </a>
             <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                <a href="audio-tools.html" class="active" data-i18n="nav_audio">Audio</a>
+                <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                <a href="document-tools.html" data-i18n="nav_files">Files</a>
             </nav>
         </div>
     </header>
@@ -323,38 +324,38 @@
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">Audio Merger</h1>
-        <p class="page-subtitle">Combine multiple audio files into one seamless track</p>
+        <h1 class="page-title" data-i18n="audio_merger_heading">Audio Merger</h1>
+        <p class="page-subtitle" data-i18n="audio_merger_subtitle">Combine multiple audio files into one seamless track</p>
         
         <div class="merger-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔗</div>
-                <div class="upload-text">Click or drag to upload multiple audio files</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="upload_multiple_audio">Click or drag to upload multiple audio files</div>
+                <div class="upload-hint" data-i18n="supports_audio_formats">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*" multiple>
             </div>
             
             <div class="file-list" id="fileList">
-                <h3 style="margin-bottom: 16px; color: #374151;">Audio Files (merge in order)</h3>
+                <h3 style="margin-bottom: 16px; color: #374151;" data-i18n="audio_files_merge_order">Audio Files (merge in order)</h3>
                 <div id="audioFiles"></div>
                 
                 <button class="add-more-btn" onclick="document.getElementById('fileInput').click()">
-                    + Add More Audio Files
+                    <span data-i18n="add_more_audio_files">+ Add More Audio Files</span>
                 </button>
                 
                 <div class="merge-controls">
                     <div class="merge-options">
                         <div class="option-group">
-                            <div class="option-label">Fade Transitions</div>
+                            <div class="option-label" data-i18n="fade_transitions_label">Fade Transitions</div>
                             <div class="fade-options">
-                                <div class="fade-btn active" data-fade="none">No Fade</div>
-                                <div class="fade-btn" data-fade="short">Short Fade</div>
-                                <div class="fade-btn" data-fade="medium">Medium Fade</div>
-                                <div class="fade-btn" data-fade="long">Long Fade</div>
+                                <div class="fade-btn active" data-fade="none" data-i18n="fade_no">No Fade</div>
+                                <div class="fade-btn" data-fade="short" data-i18n="fade_short">Short Fade</div>
+                                <div class="fade-btn" data-fade="medium" data-i18n="fade_medium">Medium Fade</div>
+                                <div class="fade-btn" data-fade="long" data-i18n="fade_long">Long Fade</div>
                             </div>
                         </div>
                     </div>
-                    <button class="merge-button" id="mergeBtn">Merge Audio Files</button>
+                    <button class="merge-button" id="mergeBtn" data-i18n="merge_audio_files_btn">Merge Audio Files</button>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Trimmer - DropShare</title>
+    <title data-i18n="audio_trimmer_real_title">Audio Trimmer - DropShare</title>
     <script src="/vendor/ffmpeg/ffmpeg.js"></script>
     <script src="/vendor/ffmpeg/util.js"></script>
     <style>
@@ -311,6 +311,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -335,8 +336,8 @@
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">Audio Trimmer</h1>
-        <p class="page-subtitle">Cut and trim audio files with precise timing - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="audio_trimmer_real_heading">Audio Trimmer</h1>
+        <p class="page-subtitle" data-i18n="audio_trimmer_real_subtitle">Cut and trim audio files with precise timing - Real FFmpeg Processing</p>
         
         <div class="trimmer-card">
             <div class="engine-status" id="engineStatus">
@@ -345,8 +346,8 @@
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">✂️</div>
-                <div class="upload-text">Click or drag to upload audio file</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="audio_trimmer_real_upload_text">Click or drag to upload audio file</div>
+                <div class="upload-hint" data-i18n="audio_trimmer_real_upload_hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
@@ -380,7 +381,7 @@
                     </div>
                 </div>
                 
-                <button class="trim-button" id="trimBtn" disabled>Loading Engine...</button>
+                <button class="trim-button" id="trimBtn" disabled data-i18n="audio_trimmer_real_trim_btn">Trim Audio</button>
             </div>
 
             <div class="progress-section" id="progressSection">

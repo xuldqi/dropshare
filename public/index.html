@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DropShare - Free Online File Tools & Sharing</title>
-    <meta name="description" content="Free online tools for file sharing, image editing, audio/video conversion, PDF processing, and document tools. No registration required.">
+    <title data-i18n="site_name">DropShare</title>
+    <meta name="description" data-i18n-content="home_meta_description" content="Free online tools for file sharing, image editing, audio/video conversion, PDF processing, and document tools. No registration required.">
     
     <!-- Icons -->
     <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
@@ -615,6 +615,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -630,12 +631,12 @@
 
         <div class="header-controls">
             <nav class="nav-links">
-                    <a href="share.html">Transfer</a>
-                    <a href="share.html#rooms">Rooms</a>
-                    <a href="image-tools.html">Images</a>
-                    <a href="audio-tools.html">Audio</a>
-                    <a href="video-tools.html">Video</a>
-                    <a href="document-tools.html">Files</a>
+                    <a href="share.html" data-i18n="nav.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav.rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav.video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav.files">Files</a>
             </nav>
 
             <div class="control-buttons">
@@ -648,13 +649,13 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-container">
-            <h1 class="hero-title">Fast Local File Sharing Across Devices on Your Network</h1>
+            <h1 class="hero-title" data-i18n="home.hero_title">Fast Local File Sharing Across Devices on Your Network</h1>
             <p class="hero-subtitle">
-                Instantly share files with nearby devices. No setup required, completely peer-to-peer.
+                <span data-i18n="home.hero_subtitle">Instantly share files with nearby devices. No setup required, completely peer-to-peer.</span>
             </p>
             <div class="hero-buttons">
-                <a href="share.html" class="btn btn-primary">Start Sharing Files</a>
-                <a href="share.html#rooms" class="btn btn-secondary">Multi-user Rooms</a>
+                <a href="share.html" class="btn btn-primary" data-i18n="home.cta_share">Start Sharing Files</a>
+                <a href="share.html#rooms" class="btn btn-secondary" data-i18n="home.cta_rooms">Multi-user Rooms</a>
             </div>
         </div>
         </section>
@@ -663,9 +664,9 @@
     <section id="tools" class="categories">
         <div class="categories-container">
             <div class="section-header">
-                <h2 class="section-title">Choose Your Tool Category</h2>
+                <h2 class="section-title" data-i18n="home.choose_category">Choose Your Tool Category</h2>
                 <p class="section-description">
-                    Select from our comprehensive collection of tools organized by category
+                    <span data-i18n="home.choose_category_desc">Select from our comprehensive collection of tools organized by category</span>
                 </p>
                     </div>
 
@@ -673,68 +674,68 @@
                 <!-- Image Tools -->
                 <a href="image-tools.html" class="category-card">
                     <div class="category-icon icon-image">🖼️</div>
-                    <h3 class="category-title">Image Tools</h3>
+                    <h3 class="category-title" data-i18n="category.image_title">Image Tools</h3>
                     <p class="category-description">
-                        Edit, convert, and optimize images
+                        <span data-i18n="category.image_desc">Edit, convert, and optimize images</span>
                     </p>
                     <div class="category-tools">
-                        <div class="category-tool">Format Converter</div>
-                        <div class="category-tool">Image Cropper</div>
-                        <div class="category-tool">Background Remover</div>
+                        <div class="category-tool" data-i18n="tools.format_converter">Format Converter</div>
+                        <div class="category-tool" data-i18n="tools.image_cropper">Image Cropper</div>
+                        <div class="category-tool" data-i18n="tools.background_remover">Background Remover</div>
                 </div>
                     <div class="category-link">
-                        View Tools →
+                        <span data-i18n="category_view_tools">View Tools →</span>
                     </div>
                 </a>
 
                 <!-- Audio Tools -->
                 <a href="audio-tools.html" class="category-card">
                     <div class="category-icon icon-audio">🎵</div>
-                    <h3 class="category-title">Audio Tools</h3>
+                    <h3 class="category-title" data-i18n="category.audio_title">Audio Tools</h3>
                     <p class="category-description">
-                        Convert audio between different formats
+                        <span data-i18n="category.audio_desc">Convert audio between different formats</span>
                     </p>
                     <div class="category-tools">
-                        <div class="category-tool">Format Converter</div>
-                        <div class="category-tool">MP3, WAV, AAC, OGG, FLAC</div>
-                        <div class="category-tool">High Quality Output</div>
+                        <div class="category-tool" data-i18n="tools.audio_format_converter">Format Converter</div>
+                        <div class="category-tool" data-i18n="tools.audio_formats">MP3, WAV, AAC, OGG, FLAC</div>
+                        <div class="category-tool" data-i18n="tools.high_quality">High Quality Output</div>
                     </div>
                     <div class="category-link">
-                        View Tools →
+                        <span data-i18n="category_view_tools">View Tools →</span>
                     </div>
                 </a>
 
                 <!-- Document Tools -->
                 <a href="document-tools.html" class="category-card">
                     <div class="category-icon icon-document">📄</div>
-                    <h3 class="category-title">Document Tools</h3>
+                    <h3 class="category-title" data-i18n="category.document_title">Document Tools</h3>
                     <p class="category-description">
-                        Convert, merge, split, and extract text
+                        <span data-i18n="category.document_desc">Convert, merge, split, and extract text</span>
                     </p>
                     <div class="category-tools">
-                        <div class="category-tool">PDF Processor</div>
-                        <div class="category-tool">Text Extractor</div>
-                        <div class="category-tool">Document Merger</div>
+                        <div class="category-tool" data-i18n="tools.pdf_processor">PDF Processor</div>
+                        <div class="category-tool" data-i18n="tools.text_extractor">Text Extractor</div>
+                        <div class="category-tool" data-i18n="tools.document_merger">Document Merger</div>
                 </div>
                     <div class="category-link">
-                        View Tools →
+                        <span data-i18n="category_view_tools">View Tools →</span>
                 </div>
                 </a>
 
                 <!-- Video Tools -->
                 <a href="video-tools.html" class="category-card">
                     <div class="category-icon icon-video">🎥</div>
-                    <h3 class="category-title">Video Tools</h3>
+                    <h3 class="category-title" data-i18n="category.video_title">Video Tools</h3>
                     <p class="category-description">
-                        Convert videos between different formats
+                        <span data-i18n="category.video_desc">Convert videos between different formats</span>
                     </p>
                     <div class="category-tools">
-                        <div class="category-tool">Video Converter</div>
-                        <div class="category-tool">MP4, AVI, MOV, WebM, MKV</div>
-                        <div class="category-tool">Professional Quality</div>
+                        <div class="category-tool" data-i18n="tools.video_converter">Video Converter</div>
+                        <div class="category-tool" data-i18n="tools.video_formats">MP4, AVI, MOV, WebM, MKV</div>
+                        <div class="category-tool" data-i18n="tools.professional_quality">Professional Quality</div>
             </div>
                     <div class="category-link">
-                        View Tools →
+                        <span data-i18n="category_view_tools">View Tools →</span>
                     </div>
                 </a>
 
@@ -748,23 +749,23 @@
             <div class="features-grid">
                 <div class="feature-item">
                     <div class="feature-icon">🆓</div>
-                    <h3 class="feature-title">100% Free</h3>
+                    <h3 class="feature-title" data-i18n="features.free_title">100% Free</h3>
                     <p class="feature-text">
-                        All tools are completely free to use with no hidden charges or subscriptions required.
+                        <span data-i18n="features.free_desc">All tools are completely free to use with no hidden charges or subscriptions required.</span>
                     </p>
                     </div>
                 <div class="feature-item">
                     <div class="feature-icon">🔒</div>
-                    <h3 class="feature-title">Secure & Private</h3>
+                    <h3 class="feature-title" data-i18n="features.secure_title">Secure & Private</h3>
                     <p class="feature-text">
-                        Your files are processed locally and securely. No data is stored on our servers.
+                        <span data-i18n="features.secure_desc">Your files are processed locally and securely. No data is stored on our servers.</span>
                     </p>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Fast & Easy</h3>
+                    <h3 class="feature-title" data-i18n="features.fast_title">Fast & Easy</h3>
                     <p class="feature-text">
-                        No registration required. Simply upload your file and get results in seconds.
+                        <span data-i18n="features.fast_desc">No registration required. Simply upload your file and get results in seconds.</span>
                     </p>
                     </div>
                 </div>
@@ -776,26 +777,26 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>Navigate</h3>
+                    <h3 data-i18n="footer.navigate">Navigate</h3>
                     <ul class="footer-links">
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html" data-i18n="footer.privacy_policy">Privacy Policy</a></li>
+                        <li><a href="terms.html" data-i18n="footer.terms_service">Terms of Service</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-section">
-                    <h3>Tools</h3>
+                    <h3 data-i18n="footer.tools">Tools</h3>
                     <ul class="footer-links">
-                        <li><a href="image-tools.html">Image Tools</a></li>
-                        <li><a href="audio-tools.html">Audio Tools</a></li>
-                        <li><a href="video-tools.html">Video Tools</a></li>
-                        <li><a href="document-tools.html">Document Tools</a></li>
-                        <li><a href="share.html">File Transfer</a></li>
+                        <li><a href="image-tools.html" data-i18n="footer.image_tools">Image Tools</a></li>
+                        <li><a href="audio-tools.html" data-i18n="footer.audio_tools">Audio Tools</a></li>
+                        <li><a href="video-tools.html" data-i18n="footer.video_tools">Video Tools</a></li>
+                        <li><a href="document-tools.html" data-i18n="footer.document_tools">Document Tools</a></li>
+                        <li><a href="share.html" data-i18n="footer.file_transfer">File Transfer</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-section">
-                    <h3>LINKS</h3>
+                    <h3 data-i18n="footer.links">LINKS</h3>
                     <ul class="footer-links">
                         <li><a href="https://zipic.online" target="_blank">ZiPic</a></li>
                         <li><a href="https://colletools.com" target="_blank">ColleTools</a></li>
@@ -811,8 +812,8 @@
                     <span>DropShare</span>
                 </div>
                 <div class="footer-copyright">
-                    <p>Copyright © 2024 DropShare and contributors.<br>
-                    Open source file sharing solution.</p>
+                    <p><span data-i18n="footer.copyright">Copyright © 2024 DropShare and contributors.</span><br>
+                    <span data-i18n="footer.open_source">Open source file sharing solution.</span></p>
                 </div>
             </div>
         </div>

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Format Converter - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .conversion-panel {
+            display: none;
+        }
+
+        .file-list {
+            margin-bottom: 30px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .file-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            color: #3367d6;
+        }
+
+        .file-details {
+            flex: 1;
+        }
+
+        .file-details h4 {
+            margin: 0 0 4px 0;
+            color: #1f2937;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .file-details p {
+            margin: 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .format-selection {
+            margin-bottom: 30px;
+        }
+
+        .format-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .format-option {
+            padding: 16px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .format-option:hover {
+            border-color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .format-option.selected {
+            background: #3367d6;
+            color: white;
+            border-color: #3367d6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 30px;
+            padding: 24px;
+            background: #f0fdf4;
+            border-radius: 12px;
+            border: 1px solid #bbf7d0;
+        }
+
+        .results-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #15803d;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #d1fae5;
+        }
+
+        .result-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .format-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    
+        .control-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        
+        
+        .1);
+        }
+        
+        .1);
+        }
+        
+        @media (max-width: 768px) {
+            .control-buttons {
+                top: 10px;
+                right: 10px;
+            }
+            
+            
+        </style>    
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+                <div class="control-buttons">
+                    
+                </div>
+        <div class="header-container">
+            <a href="/" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Multi-user Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Documents</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        
+        <h1 class="page-title">Audio格式转换器</h1>
+        <p class="page-subtitle">将您的AudioDocuments转换为不同格式</p>
+
+        <div class="converter-card">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎵</div>
+                <div class="upload-text">点击选择AudioDocuments或拖拽到这里</div>
+                <div class="upload-hint">支持格式：MP3、WAV、AAC、OGG、FLAC</div>
+                <input type="file" id="fileInput" accept="audio/*" multiple>
+            </div>
+
+            <!-- Conversion Panel -->
+            <div class="conversion-panel" id="conversionPanel">
+                <div class="file-list" id="fileList"></div>
+                
+                <div class="format-selection">
+                    <div class="format-title">选择输出格式:</div>
+                    <div class="format-grid">
+                        <div class="format-option selected" data-format="mp3">
+                            <div>MP3</div>
+                        </div>
+                        <div class="format-option" data-format="wav">
+                            <div>WAV</div>
+                        </div>
+                        <div class="format-option" data-format="aac">
+                            <div>AAC</div>
+                        </div>
+                        <div class="format-option" data-format="ogg">
+                            <div>OGG</div>
+                        </div>
+                        <div class="format-option" data-format="flac">
+                            <div>FLAC</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="convertBtn" disabled>
+                    <span>🔄 开始转换</span>
+                </button>
+                <button class="btn btn-secondary" id="clearBtn">
+                    <span>🗑️ 清空</span>
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <div class="results-title">
+                    🎉 <span>转换完成！</span>
+                </div>
+                <div id="resultsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let selectedFiles = [];
+        let selectedFormat = 'mp3';
+        let convertedFiles = [];
+
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const conversionPanel = document.getElementById('conversionPanel');
+        const fileList = document.getElementById('fileList');
+        const formatOptions = document.querySelectorAll('.format-option');
+        const convertBtn = document.getElementById('convertBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultsList = document.getElementById('resultsList');
+
+        // Initialize
+        setupEventListeners();
+
+        function setupEventListeners() {
+            // Upload area events
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleDrop);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+
+            // File input
+            fileInput.addEventListener('change', handleFileSelect);
+
+            // Format selection
+            formatOptions.forEach(option => {
+                option.addEventListener('click', () => selectFormat(option.dataset.format));
+            });
+
+            // Action buttons
+            convertBtn.addEventListener('click', startConversion);
+            clearBtn.addEventListener('click', clearFiles);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            processFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            processFiles(files);
+        }
+
+        function processFiles(files) {
+            const audioFiles = files.filter(file => file.type.startsWith('audio/'));
+            
+            if (audioFiles.length === 0) {
+                alert('请选择有效的音频文件!');
+                return;
+            }
+
+            selectedFiles = audioFiles;
+            displayFiles();
+            showConversionPanel();
+        }
+
+        function displayFiles() {
+            fileList.innerHTML = '';
+            
+            selectedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-icon">🎵</div>
+                    <div class="file-details">
+                        <h4>${file.name}</h4>
+                        <p>${formatFileSize(file.size)} • ${file.type.split('/')[1].toUpperCase()}</p>
+                    </div>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        function showConversionPanel() {
+            conversionPanel.style.display = 'block';
+            convertBtn.disabled = false;
+        }
+
+        function selectFormat(format) {
+            selectedFormat = format;
+            formatOptions.forEach(option => {
+                option.classList.toggle('selected', option.dataset.format === format);
+            });
+        }
+
+        function startConversion() {
+            convertBtn.disabled = true;
+            convertBtn.innerHTML = '<span>🔄 转换中...</span>';
+            
+            // Simulate conversion process
+            setTimeout(() => {
+                completeConversion();
+            }, 2000);
+        }
+
+        function completeConversion() {
+            convertedFiles = selectedFiles.map(file => ({
+                originalFile: file,
+                convertedName: file.name.replace(/\.[^/.]+$/, `.${selectedFormat}`),
+                format: selectedFormat,
+                size: Math.round(file.size * 0.8) // Simulated size
+            }));
+
+            displayResults();
+            resultsSection.style.display = 'block';
+            convertBtn.innerHTML = '<span>🔄 开始转换</span>';
+            convertBtn.disabled = false;
+        }
+
+        function displayResults() {
+            resultsList.innerHTML = '';
+            
+            convertedFiles.forEach((file, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="result-info">
+                        <div class="file-icon">🎵</div>
+                        <div>
+                            <h4>${file.convertedName}</h4>
+                            <p>${formatFileSize(file.size)} • ${file.format.toUpperCase()}</p>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn btn-primary btn-small" onclick="downloadFile(${index})">
+                            📥 <span>下载</span>
+                        </button>
+                    </div>
+                `;
+                resultsList.appendChild(resultItem);
+            });
+        }
+
+        function downloadFile(index) {
+            const file = convertedFiles[index];
+            // Simulate download
+            const blob = new Blob(['Converted audio file'], { type: `audio/${file.format}` });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.convertedName;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function clearFiles() {
+            selectedFiles = [];
+            convertedFiles = [];
+            fileList.innerHTML = '';
+            resultsList.innerHTML = '';
+            conversionPanel.style.display = 'none';
+            resultsSection.style.display = 'none';
+            convertBtn.disabled = true;
+            fileInput.value = '';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+    
+    <!-- Load i18n system -->
+        
+    <!-- Mobile Navigation and Touch Optimization -->
+    <script src="scripts/mobile-navigation.js"></script>
+    <script>
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            
+        });
+    </script>
+
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // 初始化语言选择器
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 页面加载完成，初始化多语言系统...');
+            
+            // 等待DROPSHARE_I18N加载
+            function waitForI18N() {
+                if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.changeLanguage === 'function') {
+                    initLanguageSelector();
+                    translatePage();
+                } else {
+                    setTimeout(waitForI18N, 100);
+                }
+            }
+            
+            waitForI18N();
+        });
+        
+         function() {
+                    const newLang = this.value;
+                    console.log('🌐 切换语言到:', newLang);
+                    
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                        localStorage.setItem('preferred_language', newLang);
+                        translatePage();
+                    }
+                });
+                
+                console.log('✅ 语言选择器初始化完成');
+            }
+        }
+        
+        function translatePage() {
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.translate === 'function') {
+                const elements = document.querySelectorAll('[data-i18n]');
+                elements.forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const translation = window.DROPSHARE_I18N.translate(key);
+                    if (translation !== key) {
+                        element.textContent = translation;
+                    }
+                });
+                console.log('🔄 页面翻译完成');
+            }
+        }
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

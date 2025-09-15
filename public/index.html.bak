@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropShare - Free Online File Tools & Sharing</title>
+    <meta name="description" content="Free online tools for file sharing, image editing, audio/video conversion, PDF processing, and document tools. No registration required.">
+    
+    <!-- Icons -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3367d6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-800: #1e40af;
+            --primary-900: #1e3a8a;
+            
+            --red-500: #ef4444;
+            --green-500: #10b981;
+            --purple-500: #8b5cf6;
+            --blue-500: #06b6d4;
+            --orange-500: #f59e0b;
+            --pink-500: #ec4899;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-600);
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--primary-600);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-900) 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.1"><circle cx="30" cy="30" r="2"/></g></g></svg>');
+            opacity: 0.5;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-800);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-800);
+        }
+
+        /* Tool Categories */
+        .categories {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .categories-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+        }
+
+        .section-description {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-100);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            min-height: 280px;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover .category-icon {
+            transform: scale(1.1);
+        }
+
+        .category-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--gray-900);
+        }
+
+        .category-description {
+            color: var(--gray-600);
+            margin-bottom: 16px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .category-tools {
+            margin-bottom: 16px;
+        }
+
+        .category-tool {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+
+        .category-tool::before {
+            content: '•';
+            color: var(--primary-500);
+            font-weight: bold;
+        }
+
+        .category-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-600);
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: auto;
+        }
+
+        .category-link:hover {
+            color: var(--primary-700);
+        }
+
+        /* Color variants */
+        .icon-share { background: var(--gray-100); }
+        .icon-image { background: var(--gray-100); }
+        .icon-audio { background: var(--gray-100); }
+        .icon-document { background: var(--gray-100); }
+        .icon-video { background: var(--gray-100); }
+        .icon-rooms { background: var(--gray-100); }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: var(--gray-50);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 24px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--gray-900);
+        }
+
+        .feature-text {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        /* Popular Tools */
+        .popular {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .popular-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .popular-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .popular-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .popular-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .popular-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .popular-category {
+            background: var(--primary-100);
+            color: var(--primary-800);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .popular-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #fbbf24;
+        }
+
+        .popular-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .popular-usage {
+            color: var(--gray-600);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .popular-btn {
+            width: 100%;
+            background: var(--primary-600);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .popular-btn:hover {
+            background: var(--primary-700);
+        }
+
+        /* Footer */
+        .site-footer {
+            background: #3c4043;
+            color: #e8eaed;
+            padding: 60px 40px 40px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #9aa0a6;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .footer-links a.external::after {
+            content: '↗';
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #5f6368;
+            padding-top: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-600);
+        }
+
+        .footer-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-600);
+        }
+
+        .footer-copyright {
+            font-size: 13px;
+            color: #9aa0a6;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+                max-width: none;
+            }
+            
+            .nav-links {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+            
+            .nav-links a {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .control-buttons {
+                display: flex;
+            }
+
+            .site-footer {
+                padding: 40px 20px 30px;
+                margin-top: 60px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                gap: 15px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+            </svg>
+            <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+        </div>
+
+        <div class="header-controls">
+            <nav class="nav-links">
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Rooms</a>
+                    <a href="image-tools.html">Images</a>
+                    <a href="audio-tools.html">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html">Files</a>
+            </nav>
+
+            <div class="control-buttons">
+                
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title">Fast Local File Sharing Across Devices on Your Network</h1>
+            <p class="hero-subtitle">
+                Instantly share files with nearby devices. No setup required, completely peer-to-peer.
+            </p>
+            <div class="hero-buttons">
+                <a href="share.html" class="btn btn-primary">Start Sharing Files</a>
+                <a href="share.html#rooms" class="btn btn-secondary">Multi-user Rooms</a>
+            </div>
+        </div>
+        </section>
+
+    <!-- Tool Categories -->
+    <section id="tools" class="categories">
+        <div class="categories-container">
+            <div class="section-header">
+                <h2 class="section-title">Choose Your Tool Category</h2>
+                <p class="section-description">
+                    Select from our comprehensive collection of tools organized by category
+                </p>
+                    </div>
+
+            <div class="categories-grid">
+                <!-- Image Tools -->
+                <a href="image-tools.html" class="category-card">
+                    <div class="category-icon icon-image">🖼️</div>
+                    <h3 class="category-title">Image Tools</h3>
+                    <p class="category-description">
+                        Edit, convert, and optimize images
+                    </p>
+                    <div class="category-tools">
+                        <div class="category-tool">Format Converter</div>
+                        <div class="category-tool">Image Cropper</div>
+                        <div class="category-tool">Background Remover</div>
+                </div>
+                    <div class="category-link">
+                        View Tools →
+                    </div>
+                </a>
+
+                <!-- Audio Tools -->
+                <a href="audio-tools.html" class="category-card">
+                    <div class="category-icon icon-audio">🎵</div>
+                    <h3 class="category-title">Audio Tools</h3>
+                    <p class="category-description">
+                        Convert audio between different formats
+                    </p>
+                    <div class="category-tools">
+                        <div class="category-tool">Format Converter</div>
+                        <div class="category-tool">MP3, WAV, AAC, OGG, FLAC</div>
+                        <div class="category-tool">High Quality Output</div>
+                    </div>
+                    <div class="category-link">
+                        View Tools →
+                    </div>
+                </a>
+
+                <!-- Document Tools -->
+                <a href="document-tools.html" class="category-card">
+                    <div class="category-icon icon-document">📄</div>
+                    <h3 class="category-title">Document Tools</h3>
+                    <p class="category-description">
+                        Convert, merge, split, and extract text
+                    </p>
+                    <div class="category-tools">
+                        <div class="category-tool">PDF Processor</div>
+                        <div class="category-tool">Text Extractor</div>
+                        <div class="category-tool">Document Merger</div>
+                </div>
+                    <div class="category-link">
+                        View Tools →
+                </div>
+                </a>
+
+                <!-- Video Tools -->
+                <a href="video-tools.html" class="category-card">
+                    <div class="category-icon icon-video">🎥</div>
+                    <h3 class="category-title">Video Tools</h3>
+                    <p class="category-description">
+                        Convert videos between different formats
+                    </p>
+                    <div class="category-tools">
+                        <div class="category-tool">Video Converter</div>
+                        <div class="category-tool">MP4, AVI, MOV, WebM, MKV</div>
+                        <div class="category-tool">Professional Quality</div>
+            </div>
+                    <div class="category-link">
+                        View Tools →
+                    </div>
+                </a>
+
+                    </div>
+                </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="features-container">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🆓</div>
+                    <h3 class="feature-title">100% Free</h3>
+                    <p class="feature-text">
+                        All tools are completely free to use with no hidden charges or subscriptions required.
+                    </p>
+                    </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Secure & Private</h3>
+                    <p class="feature-text">
+                        Your files are processed locally and securely. No data is stored on our servers.
+                    </p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Fast & Easy</h3>
+                    <p class="feature-text">
+                        No registration required. Simply upload your file and get results in seconds.
+                    </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>Navigate</h3>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <ul class="footer-links">
+                        <li><a href="image-tools.html">Image Tools</a></li>
+                        <li><a href="audio-tools.html">Audio Tools</a></li>
+                        <li><a href="video-tools.html">Video Tools</a></li>
+                        <li><a href="document-tools.html">Document Tools</a></li>
+                        <li><a href="share.html">File Transfer</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>LINKS</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://zipic.online" target="_blank">ZiPic</a></li>
+                        <li><a href="https://colletools.com" target="_blank">ColleTools</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                    </svg>
+                    <span>DropShare</span>
+                </div>
+                <div class="footer-copyright">
+                    <p>Copyright © 2024 DropShare and contributors.<br>
+                    Open source file sharing solution.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Simple English-only language system -->
+    <script src="scripts/i18n/languages.js"></script>
+    
+    <!-- Load network module first (contains Events class) -->
+    <script src="scripts/network.js"></script>
+    <script src="scripts/ui.js"></script>
+    
+    <!-- Simplified initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Homepage loaded successfully');
+            
+            // Update navigation active state based on current page
+            updateNavActiveState();
+            
+            // Listen for navigation clicks to update active states
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // Remove active class from all links
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                });
+            });
+        });
+        
+        function updateNavActiveState() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const currentHash = window.location.hash;
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                
+                const linkHref = link.getAttribute('href');
+                const linkPage = linkHref.split('#')[0].split('/').pop();
+                const linkHash = linkHref.includes('#') ? '#' + linkHref.split('#')[1] : '';
+                
+                // Check if this link matches current page and hash
+                if (linkPage === currentPage) {
+                    if ((linkHash === '' && currentHash === '') || 
+                        (linkHash === currentHash)) {
+                        link.classList.add('active');
+                    }
+                }
+            });
+        }
+        
+        // Listen for hash changes (when navigating within share.html)
+        window.addEventListener('hashchange', updateNavActiveState);
+        window.addEventListener('popstate', updateNavActiveState);
+    </script>
+    
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

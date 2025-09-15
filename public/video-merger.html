@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Merger - DropShare</title>
+    <title data-i18n="tool_video_merger">Video Merger - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -254,6 +254,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -278,14 +279,14 @@
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">视频合并器</h1>
-        <p class="page-subtitle">将多个视频文件合并为一个完整的视频</p>
+        <h1 class="page-title" data-i18n="tool_video_merger">视频合并器</h1>
+        <p class="page-subtitle" data-i18n="tool_video_merger_desc">将多个视频文件合并为一个完整的视频</p>
         
         <div class="merger-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔗</div>
-                <div class="upload-text">点击或拖拽上传多个视频文件</div>
-                <div class="upload-hint">支持 MP4, AVI, MOV, WMV 等格式</div>
+                <div class="upload-text" data-i18n="video_merger_upload_text">点击或拖拽上传多个视频文件</div>
+                <div class="upload-hint" data-i18n="video_merger_upload_hint">支持 MP4, AVI, MOV, WMV 等格式</div>
                 <input type="file" id="fileInput" accept="video/*" multiple>
             </div>
             

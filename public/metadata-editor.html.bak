@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metadata Editor - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .metadata-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .metadata-editor {
+            display: none;
+        }
+
+        .editor-layout {
+            display: grid;
+            grid-template-columns: 1fr 250px;
+            gap: 30px;
+            margin-bottom: 24px;
+        }
+
+        .metadata-form {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .album-art-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .album-art-preview {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            background: #f9fafb;
+            overflow: hidden;
+        }
+
+        .album-art-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .album-art-placeholder {
+            font-size: 48px;
+            color: #9ca3af;
+        }
+
+        .upload-art-btn {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .upload-art-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .genre-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .genre-tag {
+            background: #e3f2fd;
+            color: #3367d6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .genre-tag.active {
+            background: #3367d6;
+            color: white;
+        }
+
+        .save-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .save-button:hover {
+            background: #2563eb;
+        }
+
+        .save-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .editor-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                🎵 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="audio-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← Back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Metadata Editor</h1>
+        <p class="page-subtitle">Edit audio metadata including title, artist, album, and cover art</p>
+        
+        <div class="metadata-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🏷️</div>
+                <div class="upload-text">Click or drag to upload audio file</div>
+                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <input type="file" id="fileInput" accept="audio/*">
+            </div>
+            
+            <div class="metadata-editor" id="metadataEditor">
+                <div class="editor-layout">
+                    <div class="metadata-form">
+                        <div class="form-group">
+                            <label class="form-label" for="title">Title</label>
+                            <input type="text" class="form-input" id="title" placeholder="Song title">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="artist">Artist</label>
+                                <input type="text" class="form-input" id="artist" placeholder="Artist name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="album">Album</label>
+                                <input type="text" class="form-input" id="album" placeholder="Album name">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="year">Year</label>
+                                <input type="number" class="form-input" id="year" placeholder="2024" min="1900" max="2030">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="track">Track Number</label>
+                                <input type="number" class="form-input" id="track" placeholder="1" min="1" max="999">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="albumArtist">Album Artist</label>
+                            <input type="text" class="form-input" id="albumArtist" placeholder="Album artist">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="genre">Genre</label>
+                            <input type="text" class="form-input" id="genre" placeholder="Enter genre or select from tags below">
+                            <div class="genre-tags">
+                                <div class="genre-tag" data-genre="Rock">Rock</div>
+                                <div class="genre-tag" data-genre="Pop">Pop</div>
+                                <div class="genre-tag" data-genre="Jazz">Jazz</div>
+                                <div class="genre-tag" data-genre="Classical">Classical</div>
+                                <div class="genre-tag" data-genre="Electronic">Electronic</div>
+                                <div class="genre-tag" data-genre="Hip Hop">Hip Hop</div>
+                                <div class="genre-tag" data-genre="Country">Country</div>
+                                <div class="genre-tag" data-genre="Folk">Folk</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="composer">Composer</label>
+                            <input type="text" class="form-input" id="composer" placeholder="Composer name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="comment">Comment</label>
+                            <textarea class="form-input form-textarea" id="comment" placeholder="Additional comments or notes"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="album-art-section">
+                        <h3 style="margin-bottom: 16px; color: #374151; font-size: 16px;">Album Art</h3>
+                        <div class="album-art-preview" id="albumArtPreview">
+                            <div class="album-art-placeholder">🎨</div>
+                        </div>
+                        <button class="upload-art-btn" onclick="document.getElementById('albumArtInput').click()">
+                            Upload Album Art
+                        </button>
+                        <input type="file" id="albumArtInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                
+                <button class="save-button" id="saveBtn">Save Metadata</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let audioFile = null;
+        
+        // File upload
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('audio/')) {
+                audioFile = file;
+                document.getElementById('metadataEditor').style.display = 'block';
+                
+                // Extract existing metadata (simulation)
+                loadExistingMetadata(file);
+            }
+        });
+
+        // Album art upload
+        document.getElementById('albumArtInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('albumArtPreview');
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Album Art">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Genre tag selection
+        document.querySelectorAll('.genre-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                // Toggle active state
+                this.classList.toggle('active');
+                
+                // Update genre input
+                const activeGenres = Array.from(document.querySelectorAll('.genre-tag.active'))
+                    .map(tag => tag.dataset.genre);
+                document.getElementById('genre').value = activeGenres.join(', ');
+            });
+        });
+
+        // Load existing metadata (simulated)
+        function loadExistingMetadata(file) {
+            // Simulate extracting metadata from file name
+            const fileName = file.name.replace(/\.[^/.]+$/, ""); // Remove extension
+            const parts = fileName.split(' - ');
+            
+            if (parts.length >= 2) {
+                document.getElementById('artist').value = parts[0] || '';
+                document.getElementById('title').value = parts[1] || '';
+            } else {
+                document.getElementById('title').value = fileName;
+            }
+            
+            // Set current year as default
+            document.getElementById('year').value = new Date().getFullYear();
+        }
+
+        // Auto-fill album artist from artist
+        document.getElementById('artist').addEventListener('input', function() {
+            if (!document.getElementById('albumArtist').value) {
+                document.getElementById('albumArtist').value = this.value;
+            }
+        });
+        
+        // Save metadata
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            if (!audioFile) return;
+            
+            const metadata = {
+                title: document.getElementById('title').value,
+                artist: document.getElementById('artist').value,
+                album: document.getElementById('album').value,
+                albumArtist: document.getElementById('albumArtist').value,
+                year: document.getElementById('year').value,
+                track: document.getElementById('track').value,
+                genre: document.getElementById('genre').value,
+                composer: document.getElementById('composer').value,
+                comment: document.getElementById('comment').value
+            };
+
+            // Filter out empty values
+            const nonEmptyMetadata = Object.entries(metadata)
+                .filter(([key, value]) => value && value.trim() !== '')
+                .map(([key, value]) => `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}`)
+                .join('\\n');
+
+            const hasAlbumArt = document.querySelector('#albumArtPreview img') !== null;
+            
+            let message = `Saving metadata for: ${audioFile.name}\\n\\n`;
+            if (nonEmptyMetadata) {
+                message += nonEmptyMetadata;
+            } else {
+                message += 'No metadata to save';
+            }
+            
+            if (hasAlbumArt) {
+                message += '\\n\\nAlbum art will also be embedded';
+            }
+            
+            alert(message + '\\n\\nFeature in development!');
+        });
+
+        // Drag and drop upload
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('audio/')) {
+                document.getElementById('fileInput').files = files;
+                // Trigger change event
+                const event = new Event('change');
+                document.getElementById('fileInput').dispatchEvent(event);
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

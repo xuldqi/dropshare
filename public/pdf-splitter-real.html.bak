@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Splitter - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .splitter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-info {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .file-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            background: #ef4444;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .file-meta h4 {
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .file-meta p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .split-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .split-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .method-btn {
+            padding: 16px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .method-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .method-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .method-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .method-desc {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .method-settings {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .setting-group {
+            margin-bottom: 16px;
+        }
+
+        .setting-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .page-range-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .page-range-input input {
+            width: 80px;
+        }
+
+        .add-range-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .page-preview {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .page-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 4px;
+        }
+
+        .page-item:hover {
+            background: #f9fafb;
+        }
+
+        .page-checkbox {
+            margin-right: 8px;
+        }
+
+        .page-thumb {
+            width: 40px;
+            height: 56px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .split-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .split-button:hover {
+            background: #2563eb;
+        }
+
+        .split-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .result-section {
+            display: none;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-files {
+            margin: 16px 0;
+        }
+
+        .result-file {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .file-info-text {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .download-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .download-btn:hover {
+            background: #059669;
+        }
+
+        .download-all-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .download-all-btn:hover {
+            background: #059669;
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                📄 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html" class="active">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="document-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← back
+            </a>
+        </div>
+        
+        <h1 class="page-title">PDF Splitter</h1>
+        <p class="page-subtitle">Split PDF documents into separate files or extract specific pages</p>
+        
+        <div class="splitter-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">✂️</div>
+                <div class="upload-text">Click or drag to upload a PDF file</div>
+                <div class="upload-hint">Supports all standard PDF formats</div>
+                <input type="file" id="fileInput" accept=".pdf,application/pdf">
+            </div>
+            
+            <div class="file-info" id="fileInfo">
+                <div class="file-details">
+                    <div class="file-icon">PDF</div>
+                    <div class="file-meta">
+                        <h4 id="fileName">-</h4>
+                        <p id="fileSize">-</p>
+                        <p id="pageCount">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="split-controls" id="splitControls">
+                <div class="control-section">
+                    <div class="section-title">Split method</div>
+                    <div class="split-methods">
+                        <div class="method-btn active" data-method="pages">
+                            <div class="method-name">By page range</div>
+                            <div class="method-desc">Custom page ranges</div>
+                        </div>
+                        <div class="method-btn" data-method="interval">
+                            <div class="method-name">Fixed interval</div>
+                            <div class="method-desc">Every N pages per file</div>
+                        </div>
+                        <div class="method-btn" data-method="single">
+                            <div class="method-name">Single pages</div>
+                            <div class="method-desc">One file per page</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Page range settings -->
+                <div class="method-settings" id="pagesSettings">
+                    <div class="section-title">Page range settings</div>
+                    <div id="pageRanges">
+                        <div class="page-range-input">
+                            <input type="number" placeholder="Start page" min="1" class="range-start">
+                            <span>to</span>
+                            <input type="number" placeholder="End page" min="1" class="range-end">
+                            <button class="add-range-btn" onclick="addPageRange()">Add range</button>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; font-size: 12px; color: #6b7280;">
+                        Example: 1-5 means pages 1 to 5, 6 means page 6 only
+                    </div>
+                </div>
+                
+                <!-- Interval settings -->
+                <div class="method-settings" id="intervalSettings" style="display: none;">
+                    <div class="section-title">Interval settings</div>
+                    <div class="setting-group">
+                        <div class="setting-label">Pages per file</div>
+                        <input type="number" class="setting-input" id="intervalPages" value="5" min="1">
+                    </div>
+                </div>
+                
+                <!-- Page preview -->
+                <div class="page-preview" id="pagePreview" style="display: none;">
+                    <div class="section-title">Page preview</div>
+                    <div id="pageList"></div>
+                </div>
+                
+                <button class="split-button" id="splitBtn">Start splitting</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div class="result-section" id="resultSection">
+                <h3>Split complete!</h3>
+                <div class="result-files" id="resultFiles"></div>
+                <button class="download-all-btn" id="downloadAllBtn">Download all files</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script>
+        // PDF.js worker setup
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+        }
+
+        let pdfFile = null;
+        let pdfDocument = null;
+        let totalPages = 0;
+        let selectedMethod = 'pages';
+        let splitFiles = [];
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                loadPdfFile(file);
+            } else {
+                alert('Please select a valid PDF file');
+            }
+        });
+
+        async function loadPdfFile(file) {
+            pdfFile = file;
+            
+            try {
+                // 显示文件信息
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileSize').textContent = formatFileSize(file.size);
+                document.getElementById('fileInfo').style.display = 'block';
+                
+                // 使用PDF.js获取页数和内容
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                totalPages = pdf.numPages;
+                pdfDocument = pdf;
+                
+                document.getElementById('pageCount').textContent = `${totalPages} pages`;
+                document.getElementById('splitControls').style.display = 'block';
+                
+                // 更新页面范围输入的最大值
+                updatePageRangeInputs();
+                
+                // 显示页面预览
+                await showPagePreview();
+                
+            } catch (error) {
+                console.error('Failed to parse PDF:', error);
+                alert('Failed to parse the PDF file');
+            }
+        }
+
+        // 方法选择
+        document.querySelectorAll('.method-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedMethod = this.dataset.method;
+                
+                // 显示对应设置
+                document.querySelectorAll('.method-settings').forEach(s => s.style.display = 'none');
+                if (selectedMethod === 'pages') {
+                    document.getElementById('pagesSettings').style.display = 'block';
+                } else if (selectedMethod === 'interval') {
+                    document.getElementById('intervalSettings').style.display = 'block';
+                }
+            });
+        });
+
+        function updatePageRangeInputs() {
+            const inputs = document.querySelectorAll('.range-start, .range-end');
+            inputs.forEach(input => {
+                input.max = totalPages;
+            });
+            document.getElementById('intervalPages').max = totalPages;
+        }
+
+        function addPageRange() {
+            const container = document.getElementById('pageRanges');
+            const div = document.createElement('div');
+            div.className = 'page-range-input';
+            div.innerHTML = `
+                <input type="number" placeholder="Start" min="1" max="${totalPages}" class="range-start">
+                <span>to</span>
+                <input type="number" placeholder="End" min="1" max="${totalPages}" class="range-end">
+                <button class="add-range-btn" onclick="removePageRange(this)" style="background: #ef4444;">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removePageRange(btn) {
+            btn.parentElement.remove();
+        }
+
+        async function showPagePreview() {
+            if (!pdfDocument) return;
+            
+            const container = document.getElementById('pageList');
+            container.innerHTML = '';
+            
+            for (let i = 1; i <= Math.min(totalPages, 20); i++) { // 只显示前20页预览
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'page-item';
+                pageDiv.innerHTML = `
+                    <input type="checkbox" class="page-checkbox" data-page="${i}" checked>
+                    <div class="page-thumb">${i}</div>
+                    <span>第 ${i} 页</span>
+                `;
+                container.appendChild(pageDiv);
+            }
+            
+            if (totalPages > 20) {
+                const moreDiv = document.createElement('div');
+                moreDiv.style.textAlign = 'center';
+                moreDiv.style.color = '#6b7280';
+                moreDiv.style.padding = '16px';
+                moreDiv.textContent = `... 还有 ${totalPages - 20} 页`;
+                container.appendChild(moreDiv);
+            }
+            
+            document.getElementById('pagePreview').style.display = 'block';
+        }
+
+        document.getElementById('splitBtn').addEventListener('click', async function() {
+            if (!pdfFile) {
+                alert('Please select a PDF file first');
+                return;
+            }
+            
+            this.disabled = true;
+            document.getElementById('progressSection').style.display = 'block';
+            
+            try {
+                await splitPdf();
+            } catch (error) {
+                console.error('分割失败:', error);
+                alert('分割失败: ' + error.message);
+            } finally {
+                this.disabled = false;
+            }
+        });
+
+        async function splitPdf() {
+            document.getElementById('progressText').textContent = 'Analyzing PDF structure...';
+            document.getElementById('progressFill').style.width = '10%';
+            
+            const arrayBuffer = await pdfFile.arrayBuffer();
+            const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+            
+            splitFiles = [];
+            let ranges = [];
+            
+            // 根据选择的方法生成分割范围
+            if (selectedMethod === 'pages') {
+                ranges = getCustomRanges();
+            } else if (selectedMethod === 'interval') {
+                ranges = getIntervalRanges();
+            } else if (selectedMethod === 'single') {
+                ranges = getSinglePageRanges();
+            }
+            
+            if (ranges.length === 0) {
+                alert('请设置有效的分割范围');
+                return;
+            }
+            
+            document.getElementById('progressText').textContent = 'Splitting document...';
+            
+            for (let i = 0; i < ranges.length; i++) {
+                const range = ranges[i];
+                const progress = 10 + (i / ranges.length) * 80;
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressText').textContent = `Processing file ${i + 1}...`;
+                
+                // 创建新的PDF文档
+                const newPdf = await PDFLib.PDFDocument.create();
+                
+                // 复制指定页面
+                const pages = await newPdf.copyPages(pdfDoc, range.pages.map(p => p - 1));
+                pages.forEach(page => newPdf.addPage(page));
+                
+                // 生成PDF字节
+                const pdfBytes = await newPdf.save();
+                
+                // 创建文件
+                const fileName = pdfFile.name.replace('.pdf', `_${range.name}.pdf`);
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const file = new File([blob], fileName, { type: 'application/pdf' });
+                
+                splitFiles.push(file);
+            }
+            
+            document.getElementById('progressText').textContent = 'Split complete!';
+            document.getElementById('progressFill').style.width = '100%';
+            
+            showSplitResults();
+            
+            setTimeout(() => {
+                document.getElementById('progressSection').style.display = 'none';
+                document.getElementById('progressFill').style.width = '0%';
+            }, 2000);
+        }
+
+        function getCustomRanges() {
+            const ranges = [];
+            const rangeInputs = document.querySelectorAll('#pageRanges .page-range-input');
+            
+            rangeInputs.forEach((input, index) => {
+                const startInput = input.querySelector('.range-start');
+                const endInput = input.querySelector('.range-end');
+                
+                const start = parseInt(startInput.value);
+                const end = parseInt(endInput.value) || start;
+                
+                if (start >= 1 && start <= totalPages && end >= start && end <= totalPages) {
+                    const pages = [];
+                    for (let i = start; i <= end; i++) {
+                        pages.push(i);
+                    }
+                    
+                    const name = start === end ? `page${start}` : `pages${start}-${end}`;
+                    ranges.push({ pages, name });
+                }
+            });
+            
+            return ranges;
+        }
+
+        function getIntervalRanges() {
+            const interval = parseInt(document.getElementById('intervalPages').value) || 5;
+            const ranges = [];
+            
+            for (let start = 1; start <= totalPages; start += interval) {
+                const end = Math.min(start + interval - 1, totalPages);
+                const pages = [];
+                
+                for (let i = start; i <= end; i++) {
+                    pages.push(i);
+                }
+                
+                const name = start === end ? `page${start}` : `pages${start}-${end}`;
+                ranges.push({ pages, name });
+            }
+            
+            return ranges;
+        }
+
+        function getSinglePageRanges() {
+            const ranges = [];
+            
+            for (let i = 1; i <= totalPages; i++) {
+                ranges.push({
+                    pages: [i],
+                    name: `page${i}`
+                });
+            }
+            
+            return ranges;
+        }
+
+        function showSplitResults() {
+            const container = document.getElementById('resultFiles');
+            container.innerHTML = '';
+            
+            splitFiles.forEach((file, index) => {
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'result-file';
+                fileDiv.innerHTML = `
+                    <div class="file-info-text">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <button class="download-btn" onclick="downloadFile(${index})">Download</button>
+                `;
+                container.appendChild(fileDiv);
+            });
+            
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function downloadFile(index) {
+            const file = splitFiles[index];
+            const url = URL.createObjectURL(file);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        document.getElementById('downloadAllBtn').addEventListener('click', function() {
+            splitFiles.forEach((file, index) => {
+                setTimeout(() => downloadFile(index), index * 500);
+            });
+        });
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type === 'application/pdf') {
+                loadPdfFile(files[0]);
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

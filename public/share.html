@@ -33,6 +33,11 @@
     <meta property="og:image" content="https://snapdrop.net/images/twitter-stream.jpg">
     <!-- Resources -->
     <link rel="stylesheet" type="text/css" href="styles.css">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4803558716082981" 
+            crossorigin="anonymous"></script>
+    
     <link rel="manifest" href="manifest.json">
     
     <script>
@@ -161,6 +166,108 @@
     </script>
     
     <style>
+        /* Unified Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 1000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #2563eb;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .icon-button:hover {
+            background: #f3f4f6;
+            color: #3367d6;
+            border-color: #d1d5db;
+        }
+
+        .icon-button .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
         /* Override styles.css layout for centered sharing page */
         body {
             display: flex !important;
@@ -197,6 +304,33 @@
             transform: translateX(-50%);
             text-align: center;
             z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-info-bottom footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .user-info-bottom .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .user-info-bottom .text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
         
         /* Style the peer area */
@@ -1131,18 +1265,6 @@
             }
         }
         
-        /* Top navigation bar styles */
-        .top-navbar {
-            background: #fff;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            height: 60px;
-        }
         
         .navbar-container {
             max-width: 1200px;
@@ -1221,12 +1343,8 @@
         }
         
         /* Adjust page content to make space for fixed navigation bar */
-        body {
-            padding-top: 60px !important;
-        }
-        
         .page-container {
-            padding-top: 20px; /* Reduce original top padding */
+            padding-top: 80px; /* Space for fixed header */
         }
         
         /* Responsive navigation bar */
@@ -1262,6 +1380,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body translate="no">
@@ -1279,25 +1398,35 @@
             <!-- Navigation menu -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="/share.html" class="nav-link active">Transfer</a>
+                    <a href="/share.html" class="nav-link active" data-i18n="nav_transfer">Transfer</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/share.html#rooms" class="nav-link">Rooms</a>
+                    <a href="/share.html#rooms" class="nav-link" data-i18n="nav_rooms">Rooms</a>
                 </li>
                 <li class="nav-item">
-                    <a href="image-tools.html" class="nav-link">Images</a>
+                    <a href="image-tools.html" class="nav-link" data-i18n="nav_images">Images</a>
                 </li>
                 <li class="nav-item">
-                    <a href="audio-tools.html" class="nav-link">Audio</a>
+                    <a href="audio-tools.html" class="nav-link" data-i18n="nav_audio">Audio</a>
                 </li>
                 <li class="nav-item">
-                    <a href="video-tools.html" class="nav-link">Video</a>
+                    <a href="video-tools.html" class="nav-link" data-i18n="nav_video">Video</a>
                 </li>
                 <li class="nav-item">
-                    <a href="document-tools.html" class="nav-link">Documents</a>
+                    <a href="document-tools.html" class="nav-link" data-i18n="nav_files">Documents</a>
                 </li>
                 <li class="nav-item language-selector">
-                    
+                    <select id="navbar-language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                        <option value="en">English</option>
+                        <option value="zh-CN">简体中文</option>
+                        <option value="zh-TW">繁體中文</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="es">Español</option>
+                    </select>
                 </li>
             </ul>
         </div>
@@ -1308,29 +1437,43 @@
     
     <!-- Back to home button is hidden -->
     
-    <header class="row-reverse">
-        <a href="#about" class="icon-button" title="About DropShare" style="display: none;">
-            <svg class="icon">
-                <use xlink:href="#info-outline" />
+    <!-- Unified Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
             </svg>
-        </a>
-        <a href="#" id="theme" class="icon-button" title="Switch Darkmode/Lightmode" >
-            <svg class="icon">
-                <use xlink:href="#icon-theme" />
-            </svg>
-        </a>
-        <a href="#" id="notification" class="icon-button" title="Enable Notifications" hidden>
-            <svg class="icon">
-                <use xlink:href="#notifications" />
-            </svg>
-        </a>
-        <a href="#" id="install" class="icon-button" title="Install Snapdrop" hidden>
-            <svg class="icon">
-                <use xlink:href="#homescreen" />
-            </svg>
-        </a>
-        <div class="lang-selector">
-            
+                <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+            </div>
+
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" class="active" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+
+                <div class="control-buttons">
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
     
@@ -1341,37 +1484,37 @@
             <!-- Room functionality container -->
             <div id="roomContainer" class="room-container">
                 <div class="room-header">
-                    <h1 class="room-title">Rooms</h1>
-                    <p class="room-subtitle">Quickly share files with users on the same network or remote users via room codes</p>
+                    <h1 class="room-title" data-i18n="share_rooms_title">Rooms</h1>
+                    <p class="room-subtitle" data-i18n="share_rooms_subtitle">Quickly share files with users on the same network or remote users via room codes</p>
                 </div>
                 
                 <!-- Room option buttons -->
                 <div class="room-options">
-                    <button id="createRoomBtn" class="room-btn" onclick="showCreateForm()">Create Room</button>
-                    <button id="joinRoomBtn" class="room-btn secondary" onclick="showJoinForm()">Join Room</button>
+                    <button id="createRoomBtn" class="room-btn" onclick="showCreateForm()" data-i18n="share_create_room">Create Room</button>
+                    <button id="joinRoomBtn" class="room-btn secondary" onclick="showJoinForm()" data-i18n="share_join_room">Join Room</button>
                 </div>
                 
                 <!-- Form container for centering -->
                 <div class="room-forms-container">
                     <!-- Create Room form -->
                     <div id="createRoomForm" class="room-form">
-                        <h3>Create New Room</h3>
+                        <h3 data-i18n="share_create_new_room">Create New Room</h3>
                         <form autocomplete="off">
                             <div class="form-group">
-                                <label class="form-label">Room Name</label>
-                                <input type="text" id="roomName" name="room-name" class="form-input" placeholder="Enter Room Name" maxlength="20" autocomplete="off">
+                                <label class="form-label" data-i18n="share_room_name">Room Name</label>
+                                <input type="text" id="roomName" name="room-name" class="form-input" data-i18n-placeholder="share_enter_room_name" placeholder="Enter Room Name" maxlength="20" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Room Password (Optional)</label>
-                                <input type="password" id="roomPassword" name="room-password" class="form-input" placeholder="Set room password" maxlength="16" autocomplete="new-password">
+                                <label class="form-label" data-i18n="share_room_password_optional">Room Password (Optional)</label>
+                                <input type="password" id="roomPassword" name="room-password" class="form-input" data-i18n-placeholder="share_set_room_password" placeholder="Set room password" maxlength="16" autocomplete="new-password">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Maximum Members</label>
+                                <label class="form-label" data-i18n="share_maximum_members">Maximum Members</label>
                                 <input type="number" id="maxMembers" name="max-members" class="form-input" value="10" min="2" max="50" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmCreateRoom" class="btn-primary">Create Room</button>
-                                <button type="button" id="cancelCreateRoom" class="btn-cancel">Cancel</button>
+                                <button type="button" id="confirmCreateRoom" class="btn-primary" data-i18n="share_create_room">Create Room</button>
+                                <button type="button" id="cancelCreateRoom" class="btn-cancel" data-i18n="share_cancel">Cancel</button>
                             </div>
                         </form>
                         <div id="createRoomError" class="error-message" style="display: none;"></div>
@@ -1379,19 +1522,19 @@
                     
                     <!-- Join Room form -->
                     <div id="joinRoomForm" class="room-form">
-                        <h3>Join Room</h3>
+                        <h3 data-i18n="share_join_room">Join Room</h3>
                         <form autocomplete="off">
                             <div class="form-group">
-                                <label class="form-label">Room Code</label>
-                                <input type="text" id="roomCode" name="room-code" class="form-input" placeholder="Enter Room Code" maxlength="10" style="text-transform: uppercase;" autocomplete="off">
+                                <label class="form-label" data-i18n="share_room_code">Room Code</label>
+                                <input type="text" id="roomCode" name="room-code" class="form-input" data-i18n-placeholder="share_enter_room_code" placeholder="Enter Room Code" maxlength="10" style="text-transform: uppercase;" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Room Password (if required)</label>
-                                <input type="password" id="joinRoomPassword" name="join-password" class="form-input" placeholder="Enter room password" autocomplete="off">
+                                <label class="form-label" data-i18n="share_room_password_if_required">Room Password (if required)</label>
+                                <input type="password" id="joinRoomPassword" name="join-password" class="form-input" data-i18n-placeholder="share_enter_room_password" placeholder="Enter room password" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmJoinRoom" class="btn-primary">Join Room</button>
-                                <button type="button" id="cancelJoinRoom" class="btn-cancel">Cancel</button>
+                                <button type="button" id="confirmJoinRoom" class="btn-primary" data-i18n="share_join_room">Join Room</button>
+                                <button type="button" id="cancelJoinRoom" class="btn-cancel" data-i18n="share_cancel">Cancel</button>
                             </div>
                         </form>
                         <div id="joinRoomError" class="error-message" style="display: none;"></div>
@@ -1409,10 +1552,10 @@
                                 <button id="copyRoomCode" class="copy-btn-small" data-i18n-title="copy_room_code" title="CopyRoom Code">📋</button>
                             </div>
                             <div class="current-user-info">
-                                <span class="current-user-label">Your Name: </span>
+                                <span class="current-user-label" data-i18n="share_your_name">Your Name: </span>
                                 <span class="current-user-name" id="currentUserName"></span>
                             </div>
-                            <span class="member-count" id="memberCount"><span id="memberCountNumber">2</span><span> online</span></span>
+                            <span class="member-count" id="memberCount"><span id="memberCountNumber">2</span><span data-i18n="share_online"> online</span></span>
                         </div>
                         <button class="toggle-details-btn" id="toggleDetailsBtn">
                             <svg class="toggle-icon" viewBox="0 0 24 24" width="16" height="16">
@@ -1424,14 +1567,14 @@
                     <!-- Room details (collapsible) -->
                     <div class="room-details" id="roomDetails">
                         <div class="room-members-section">
-                            <strong>Room Members:</strong>
+                            <strong data-i18n="share_room_members">Room Members:</strong>
                             <div id="memberList" class="member-list"></div>
                         </div>
                     </div>
                     
                     <!-- Action buttons -->
                     <div class="room-actions">
-                        <button id="leaveRoomBtn" class="btn-leave-room">Leave Room</button>
+                        <button id="leaveRoomBtn" class="btn-leave-room" data-i18n="share_leave_room">Leave Room</button>
                     </div>
                 </div>
                 
@@ -1451,16 +1594,16 @@
                     <div class="room-file-sharing">
                         <!-- File upload area -->
                         <div class="upload-section">
-                            <h3>📤 Upload files to room</h3>
+                            <h3 data-i18n="share_upload_files_to_room">📤 Upload files to room</h3>
                             <div id="dropZone" class="drop-zone">
                                 <div class="drop-zone-content">
                                     <svg class="upload-icon" viewBox="0 0 24 24" width="48" height="48">
                                         <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                                     </svg>
-                                    <p>Drag files here or click to upload</p>
-                                    <p class="upload-hint">Files will be shared with all room members</p>
+                                    <p data-i18n="share_drag_files_here">Drag files here or click to upload</p>
+                                    <p class="upload-hint" data-i18n="share_files_shared_with_members">Files will be shared with all room members</p>
                                     <input type="file" id="fileInput" multiple hidden>
-                                    <button id="selectFilesBtn" class="select-files-btn">Select Files to Upload</button>
+                                    <button id="selectFilesBtn" class="select-files-btn" data-i18n="share_select_files_to_upload">Select Files to Upload</button>
                                 </div>
                             </div>
                         </div>
@@ -1468,13 +1611,13 @@
                         <!-- Shared Room Files list -->
                         <div class="shared-files-section">
                             <div class="shared-files-header">
-                                <h3>📁 Shared Room Files</h3>
-                                <span class="file-count" id="fileCount">0 <span> files</span></span>
+                                <h3 data-i18n="share_shared_room_files">📁 Shared Room Files</h3>
+                                <span class="file-count" id="fileCount">0 <span data-i18n="share_files"> files</span></span>
                             </div>
                             <div id="sharedFilesList" class="shared-files-list">
                                 <div class="no-shared-files">
-                                    <p>No shared files in room</p>
-                                    <p class="hint">After uploading files, all room members can download</p>
+                                    <p data-i18n="share_no_shared_files">No shared files in room</p>
+                                    <p class="hint" data-i18n="share_after_upload_hint">After uploading files, all room members can download</p>
                                 </div>
                             </div>
                         </div>
@@ -1486,7 +1629,7 @@
             <div id="peerContainer">
                 <x-peers class="center"></x-peers>
                 <x-no-peers>
-                    <h2>Open DropShare on other devices to send files</h2>
+                    <h2 data-i18n="share_open_dropshare_other_devices">Open DropShare on other devices to send files</h2>
                 </x-no-peers>
             </div>
         </div>
@@ -1501,7 +1644,7 @@
                 </div>
                 <div class="text-container">
                     <div id="displayName" class="text-line"></div>
-                    <div class="font-body2 text-line">You can be discovered by everyone on this network</div>
+                    <div class="font-body2 text-line" data-i18n="share_discoverable_network">You can be discovered by everyone on this network</div>
                 </div>
             </footer>
         </div>
@@ -1510,19 +1653,19 @@
     <x-dialog id="receiveDialog">
         <x-background class="full center">
             <x-paper shadow="2">
-                <h3>File Received</h3>
+                <h3 data-i18n="share_file_received">File Received</h3>
                 <div class="font-subheading" id="fileName"></div>
                 <div class="font-body2" id="fileSize"></div>
                 <div class='preview' style="visibility: hidden;">
                     <img id='img-preview' src="">
                 </div>
                 <div class="row">
-                    <label for="autoDownload" class="grow">Ask to save each file before downloading</label>
+                    <label for="autoDownload" class="grow" data-i18n="share_ask_save_before_download">Ask to save each file before downloading</label>
                     <input type="checkbox" id="autoDownload" checked="">
                 </div>
                 <div class="row-reverse">
-                    <a class="button" close id="download" title="Download File" autofocus>Save</a>
-                    <button class="button" close>Ignore</button>
+                    <a class="button" close id="download" title="Download File" autofocus data-i18n="share_save">Save</a>
+                    <button class="button" close data-i18n="share_ignore">Ignore</button>
                 </div>
             </x-paper>
         </x-background>
@@ -1532,11 +1675,11 @@
         <form action="#">
             <x-background class="full center">
                 <x-paper shadow="2">
-                    <h3>Send a Message</h3>
-                    <div id="textInput" class="textarea" role="textbox" data-placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
+                    <h3 data-i18n="share_send_message">Send a Message</h3>
+                    <div id="textInput" class="textarea" role="textbox" data-i18n-placeholder="share_send_message_placeholder" data-placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
                     <div class="row-reverse">
-                        <button class="button" type="submit" close>Send</button>
-                        <a class="button" close>Cancel</a>
+                        <button class="button" type="submit" close data-i18n="share_send">Send</button>
+                        <a class="button" close data-i18n="share_cancel">Cancel</a>
                     </div>
                 </x-paper>
             </x-background>
@@ -1546,11 +1689,11 @@
     <x-dialog id="receiveTextDialog">
         <x-background class="full center">
             <x-paper shadow="2">
-                <h3>Message Received</h3>
+                <h3 data-i18n="share_message_received">Message Received</h3>
                 <div class="font-subheading" id="text"></div>
                 <div class="row-reverse">
-                    <button class="button" id="copy" close autofocus>Copy</button>
-                    <button class="button" close>Close</button>
+                    <button class="button" id="copy" close autofocus data-i18n="share_copy">Copy</button>
+                    <button class="button" close data-i18n="share_close">Close</button>
                 </div>
             </x-paper>
         </x-background>
@@ -1558,7 +1701,7 @@
     <!-- Toast -->
     <div class="toast-container full center">
         <x-toast class="row" shadow="1" id="toast">
-            <span id="toast-text">File Transfer Completed</span>
+            <span id="toast-text" data-i18n="share_file_transfer_completed">File Transfer Completed</span>
         </x-toast>
     </div>
     <!-- About Page -->
@@ -1575,7 +1718,7 @@
                 <use xlink:href="#wifi-tethering" />
             </svg>
             <h1>DropShare</h1>
-            <div class="font-subheading"><span>The easiest way to transfer files across devices</span><div style="font-size:10px;"><span>Modified version by</span> <a href="#" target="_blank">YourNameHere</a></div></div>
+            <div class="font-subheading"><span data-i18n="share_easiest_way_transfer">The easiest way to transfer files across devices</span><div style="font-size:10px;"><span data-i18n="share_modified_version_by">Modified version by</span> <a href="#" target="_blank">YourNameHere</a></div></div>
             <div class="row">
                 <a class="icon-button" target="_blank" href="#" title="DropShare on Github" rel="noreferrer">
                     <svg class="icon">
@@ -1661,7 +1804,6 @@
     <script src="scripts/network.js"></script>
     <script src="scripts/ui.js"></script>
     <script src="scripts/private-rooms.js"></script>
-    <script src="scripts/theme.js" async></script>
     <script src="scripts/clipboard.js" async></script>
 
     <!-- Room functionality JavaScript -->
@@ -2152,7 +2294,7 @@
                     if (fileData.isRemote) {
                         this.showToast('Cannot download: uploader needs to be online');
                     } else {
-                        this.showToast('File unavailable, uploader may be offline');
+                        this.showToast(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.translate('share_file_unavailable') : 'File unavailable, uploader may be offline');
                     }
                     return;
                 }
@@ -2172,10 +2314,10 @@
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                     
-                    this.showToast(`Downloading: ${fileData.name}`);
+                    this.showToast((window.DROPSHARE_I18N ? window.DROPSHARE_I18N.translate('share_downloading') : 'Downloading') + ': ' + fileData.name);
                 } catch (error) {
                     console.error('File download failed:', error);
-                    this.showToast('Download failed, please retry');
+                    this.showToast(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.translate('share_download_failed') : 'Download failed, please retry');
                 }
             }
             
@@ -2888,7 +3030,7 @@
             updateFileItemDisplay(fileItem, fileData) {
                 const fileIcon = this.getFileIcon(fileData.type);
                 const uploadTime = new Date(fileData.uploadTime).toLocaleString();
-                const isRestored = fileData.isRestored ? ' <span class="restored-tag">(Restored)</span>' : '';
+                const isRestored = fileData.isRestored ? ' <span class="restored-tag">(' + (window.DROPSHARE_I18N ? window.DROPSHARE_I18N.translate('share_restored') : 'Restored') + ')</span>' : '';
                 const canDownload = fileData.file && fileData.isAvailable !== false;
                 const isOwner = fileData.uploaderId === this.getCurrentUserId();
                 
@@ -2906,7 +3048,7 @@
                             itemClass += ' file-unavailable';
                         }
                     } else {
-                        statusHint = '<span class="unavailable-hint">File unavailable</span>';
+                        statusHint = '<span class="unavailable-hint">' + (window.DROPSHARE_I18N ? window.DROPSHARE_I18N.translate('share_file_unavailable') : 'File unavailable') + '</span>';
                         itemClass += ' file-unavailable';
                     }
                 }
@@ -2926,8 +3068,8 @@
                         </div>
                     </div>
                     <div class="shared-file-actions">
-                        <button class="action-btn btn-download" onclick="roomManager.downloadSharedFile('${fileData.id}')" ${!canDownload ? 'disabled' : ''}>Download</button>
-                        ${isOwner ? `<button class="action-btn btn-cancel" onclick="roomManager.removeSharedFile('${fileData.id}')">Delete</button>` : ''}
+                        <button class="action-btn btn-download" onclick="roomManager.downloadSharedFile('${fileData.id}')" ${!canDownload ? 'disabled' : ''}>${window.DROPSHARE_I18N ? window.DROPSHARE_I18N.translate('share_download') : 'Download'}</button>
+                        ${isOwner ? `<button class="action-btn btn-cancel" onclick="roomManager.removeSharedFile('${fileData.id}')">${window.DROPSHARE_I18N ? window.DROPSHARE_I18N.translate('share_delete') : 'Delete'}</button>` : ''}
                     </div>
                 `;
                 
@@ -3346,7 +3488,7 @@
                         </div>
                     </div>
                     <div class="file-actions">
-                        <button class="action-btn btn-download" onclick="roomManager.downloadFile('${fileData.name}', this)">Download</button>
+                        <button class="action-btn btn-download" onclick="roomManager.downloadFile('${fileData.name}', this)">${window.DROPSHARE_I18N ? window.DROPSHARE_I18N.translate('share_download') : 'Download'}</button>
                     </div>
                 `;
                 
@@ -3441,11 +3583,115 @@
         // Initialize room manager
         let roomManager;
         
+        // Initialize language selector - EXACT COPY from main site
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            const navbarLanguageSelector = document.getElementById('navbar-language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                // Set current language
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                // Add change event listener
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    console.log('Language changed to:', newLang);
+                    
+                    // Change language using unified system
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                        translatePage();
+                    }
+                });
+                
+                console.log('Language selector initialized with language:', currentLang);
+            }
+            
+            if (navbarLanguageSelector && window.DROPSHARE_I18N) {
+                // Set current language
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                navbarLanguageSelector.value = currentLang;
+                
+                // Add change event listener
+                navbarLanguageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    console.log('Navbar language changed to:', newLang);
+                    
+                    // Change language using unified system
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                        translatePage();
+                    }
+                });
+                
+                console.log('Navbar language selector initialized with language:', currentLang);
+            }
+        }
+        
+        // Sync language selector with current language - EXACT COPY from main site
+        function syncLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            const navbarLanguageSelector = document.getElementById('navbar-language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.getCurrentLanguage === 'function') {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                console.log('Language selector synced to:', currentLang);
+            }
+            
+            if (navbarLanguageSelector && window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.getCurrentLanguage === 'function') {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                navbarLanguageSelector.value = currentLang;
+                console.log('Navbar language selector synced to:', currentLang);
+            }
+        }
+        
+        // Translation function - same as homepage
+        function translatePage() {
+            console.log('translatePage called');
+            if (typeof window.DROPSHARE_I18N === 'undefined') {
+                console.log('Translation system not loaded yet');
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            console.log('Found', elements.length, 'elements to translate');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && element.type === 'button') {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'password')) {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                    console.log('Translated', key, 'to', translation);
+                }
+            });
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize multilingual support
+            // Initialize translations - EXACT COPY from main site
+            setTimeout(() => {
+                // Initialize language selector first
+                initializeLanguageSelector();
+                
+                // Then translate the page
+                if (typeof translatePage === 'function') {
+                    translatePage();
+                }
+                
+                // Sync language selector with current language
+                setTimeout(() => {
+                    syncLanguageSelector();
+                }, 100);
+            }, 100);
             
-            
-            // Initialize room manager immediately...wait for network
+            // Initialize room manager after language setup
             const initRoomManager = () => {
                 console.log('Initializing room manager...');
                 
@@ -3517,45 +3763,11 @@
                 }
             }
             
-            // Initialize top navigation bar language selector
-            initNavbarLanguageSelector();
-        });
-        
-        // Initialize top navigation bar language selector
-        function initNavbarLanguageSelector() {
-            const navbarLangSelector = document.getElementById('navbar-language-selector');
-            const headerLangSelector = document.getElementById('language-selector');
-            
-            if (navbarLangSelector && headerLangSelector) {
-                // Sync values of both selectors
-                const savedLang = localStorage.getItem('preferred_language') || 'en';
-                navbarLangSelector.value = savedLang;
-                headerLangSelector.value = savedLang;
-                
-                // Listen for top navigation bar language selection changes
-                navbarLangSelector.addEventListener('change', function() {
-                    const selectedLang = this.value;
-                    // Sync to header language selector
-                    headerLangSelector.value = selectedLang;
-                    
-                    // Save language preference
-                    localStorage.setItem('preferred_language', selectedLang);
-                    
-                    // Trigger language switch
-                    if (window.DROPSHARE_I18N && typeof 
-                        console.log('Language changed to:', selectedLang);
-                    }
-                });
-                
-                // Listen for header language selector changes, sync to top navigation bar
-                headerLangSelector.addEventListener('change', function() {
-                    navbarLangSelector.value = this.value;
-                });
-            }
-            
             // Initialize navigation bar function links
             initNavbarFunctionLinks();
-        }
+        });
+        
+
 
         // Initialize navigation bar function links
         function initNavbarFunctionLinks() {
@@ -3583,7 +3795,6 @@
 
             // Initial state
             updateNavActiveState();
-        }
             
             // Transfer link (back to main page)
             const transferLink = document.querySelector('a[href="/"]');
@@ -3636,6 +3847,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics-compat.js"></script>
     <script src="scripts/firebase-analytics.js"></script>
     
+    
     <!-- Sounds -->
     <audio id="blop" autobuffer="true">
         <source src="/sounds/blop.mp3" type="audio/mpeg">
@@ -3644,8 +3856,8 @@
     <!-- no script -->
     <noscript>
         <x-noscript class="full center column">
-            <h1>Enable JavaScript</h1>
-            <h3>DropShare works only with JavaScript</h3>
+            <h1 data-i18n="share_enable_javascript">Enable JavaScript</h1>
+            <h3 data-i18n="share_javascript_required">DropShare works only with JavaScript</h3>
         </x-noscript>
         <style>
         x-noscript {

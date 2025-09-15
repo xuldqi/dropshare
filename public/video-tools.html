@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Tools - DropShare</title>
+    <title data-i18n="video_tools_title">Video Tools</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         * {
@@ -94,6 +94,12 @@
             width: 32px;
             height: 32px;
             fill: #2563eb;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .nav-links {
@@ -286,6 +292,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 <body>
     <!-- 背景装饰图形 -->
@@ -298,98 +305,115 @@
                 <svg viewBox="0 0 24 24">
                     <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
                 </svg>
-                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+                <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
             </div>
 
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="video-tools.html" class="active">Video</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" class="active" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end;">
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="main-content">
         <div class="page-header">
-            <h1 class="page-title">Video Tools</h1>
-            <p class="page-subtitle">Professional video processing tools for all your needs</p>
+            <h1 class="page-title" data-i18n="video_tools_title">Video Tools</h1>
+            <p class="page-subtitle" data-i18n="video_tools_subtitle">Professional video processing tools for all your needs</p>
         </div>
 
         <div class="tools-grid">
             <!-- Video Compressor -->
-            <div class="tool-card" data-keywords="compress reduce size quality mp4">
+            <div class="tool-card" data-tool="compressor" data-keywords="compress reduce size quality mp4">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-compress">🗜️</div>
                 </div>
-                <h3 class="tool-title">Video Compressor</h3>
-                <p class="tool-description">Reduce video file size while maintaining quality for web and storage optimization</p>
+                <h3 class="tool-title" data-i18n="tool_video_compressor">Video Compressor</h3>
+                <p class="tool-description" data-i18n="tool_video_compressor_desc">Reduce video file size while maintaining quality for web and storage optimization</p>
             </div>
 
             <!-- Format Converter -->
-            <div class="tool-card" data-keywords="convert format mp4 avi mkv mov webm">
+            <div class="tool-card" data-tool="converter" data-keywords="convert format mp4 avi mkv mov webm">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-convert">🔄</div>
                 </div>
-                <h3 class="tool-title">Format Converter</h3>
-                <p class="tool-description">Convert videos between different formats like MP4, AVI, MKV, MOV, and more</p>
+                <h3 class="tool-title" data-i18n="tool_video_converter">Format Converter</h3>
+                <p class="tool-description" data-i18n="tool_video_converter_desc">Convert videos between different formats like MP4, AVI, MKV, MOV, and more</p>
             </div>
 
             <!-- Video Trimmer -->
-            <div class="tool-card" data-keywords="trim cut slice duration time">
+            <div class="tool-card" data-tool="trimmer" data-keywords="trim cut slice duration time">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-trim">✂️</div>
                 </div>
-                <h3 class="tool-title">Video Trimmer</h3>
-                <p class="tool-description">Cut and trim video clips to specific durations with precise timing control</p>
+                <h3 class="tool-title" data-i18n="tool_video_trimmer">Video Trimmer</h3>
+                <p class="tool-description" data-i18n="tool_video_trimmer_desc">Cut and trim video clips to specific durations with precise timing control</p>
             </div>
 
             <!-- Video Merger -->
-            <div class="tool-card" data-keywords="merge combine join multiple clips">
+            <div class="tool-card" data-tool="merger" data-keywords="merge combine join multiple clips">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-merge">🔗</div>
                 </div>
-                <h3 class="tool-title">Video Merger</h3>
-                <p class="tool-description">Combine multiple video clips into one seamless video with transitions</p>
+                <h3 class="tool-title" data-i18n="tool_video_merger">Video Merger</h3>
+                <p class="tool-description" data-i18n="tool_video_merger_desc">Combine multiple video clips into one seamless video with transitions</p>
             </div>
 
             <!-- Resolution Changer -->
-            <div class="tool-card" data-keywords="resolution resize 1080p 4k hd upscale downscale">
+            <div class="tool-card" data-tool="resolution" data-keywords="resolution resize 1080p 4k hd upscale downscale">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-normalize">📺</div>
                 </div>
-                <h3 class="tool-title">Resolution Changer</h3>
-                <p class="tool-description">Change video resolution to HD, Full HD, 4K, or custom dimensions</p>
+                <h3 class="tool-title" data-i18n="tool_resolution_changer">Resolution Changer</h3>
+                <p class="tool-description" data-i18n="tool_resolution_changer_desc">Change video resolution to HD, Full HD, 4K, or custom dimensions</p>
             </div>
 
             <!-- Video Effects -->
-            <div class="tool-card" data-keywords="effects filters brightness contrast saturation">
+            <div class="tool-card" data-tool="effects" data-keywords="effects filters brightness contrast saturation">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-effects">🎨</div>
                 </div>
-                <h3 class="tool-title">Video Effects</h3>
-                <p class="tool-description">Apply various video effects and filters like brightness, contrast, and artistic styles</p>
+                <h3 class="tool-title" data-i18n="tool_video_effects">Video Effects</h3>
+                <p class="tool-description" data-i18n="tool_video_effects_desc">Apply various video effects and filters like brightness, contrast, and artistic styles</p>
             </div>
 
             <!-- Subtitle Editor -->
-            <div class="tool-card" data-keywords="subtitles captions srt vtt text overlay">
+            <div class="tool-card" data-tool="subtitle" data-keywords="subtitles captions srt vtt text overlay">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-metadata">📝</div>
                 </div>
-                <h3 class="tool-title">Subtitle Editor</h3>
-                <p class="tool-description">Add, edit, or remove subtitles and captions from your video files</p>
+                <h3 class="tool-title" data-i18n="tool_subtitle_editor">Subtitle Editor</h3>
+                <p class="tool-description" data-i18n="tool_subtitle_editor_desc">Add, edit, or remove subtitles and captions from your video files</p>
             </div>
 
             <!-- Frame Rate Converter -->
-            <div class="tool-card" data-keywords="fps framerate 30fps 60fps smooth">
+            <div class="tool-card" data-tool="framerate" data-keywords="fps framerate 30fps 60fps smooth">
                 <div class="tool-card-header">
                     <div class="tool-icon icon-bitrate">⚙️</div>
                 </div>
-                <h3 class="tool-title">Frame Rate Converter</h3>
-                <p class="tool-description">Change video frame rate for smooth playback or specific requirements</p>
+                <h3 class="tool-title" data-i18n="tool_frame_rate_converter">Frame Rate Converter</h3>
+                <p class="tool-description" data-i18n="tool_frame_rate_converter_desc">Change video frame rate for smooth playback or specific requirements</p>
             </div>
         </div>
     </main>
@@ -424,39 +448,22 @@
         // 工具卡片点击事件 - 跳转到实际工具页面
         document.querySelectorAll('.tool-card').forEach(card => {
             card.addEventListener('click', function() {
-                const title = this.querySelector('.tool-title').textContent;
+                const toolType = this.getAttribute('data-tool');
                 let toolPage = '';
-                
-                switch(title) {
-                    case 'Video Compressor':
-                        toolPage = 'video-compressor-real.html';
-                        break;
-                    case 'Format Converter':
-                        toolPage = 'video-converter-real.html';
-                        break;
-                    case 'Video Trimmer':
-                        toolPage = 'video-trimmer-real.html';
-                        break;
-                    case 'Video Merger':
-                        toolPage = 'video-merger-real.html';
-                        break;
-                    case 'Resolution Changer':
-                        toolPage = 'resolution-changer-real.html';
-                        break;
-                    case 'Video Effects':
-                        toolPage = 'video-effects-real.html';
-                        break;
-                    case 'Subtitle Editor':
-                        toolPage = 'subtitle-editor-real.html';
-                        break;
-                    case 'Frame Rate Converter':
-                        toolPage = 'frame-rate-converter-real.html';
-                        break;
+                switch(toolType) {
+                    case 'compressor': toolPage = 'video-compressor-real.html'; break;
+                    case 'converter': toolPage = 'video-converter-real.html'; break;
+                    case 'trimmer': toolPage = 'video-trimmer-real.html'; break;
+                    case 'merger': toolPage = 'video-merger-real.html'; break;
+                    case 'resolution': toolPage = 'resolution-changer-real.html'; break;
+                    case 'effects': toolPage = 'video-effects-real.html'; break;
+                    case 'subtitle': toolPage = 'subtitle-editor-real.html'; break;
+                    case 'framerate': toolPage = 'frame-rate-converter-real.html'; break;
                     default:
+                        const title = this.querySelector('.tool-title').textContent;
                         alert(`${title}\n\nThis tool is coming soon!`);
                         return;
                 }
-                
                 window.location.href = toolPage;
             });
         });

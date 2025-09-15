@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Merger - DropShare</title>
+    <title data-i18n="audio_merger_real_title">Audio Merger - DropShare</title>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <style>
@@ -340,6 +340,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -364,8 +365,8 @@
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">Audio Merger</h1>
-        <p class="page-subtitle">Combine multiple audio files into one seamless track - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="audio_merger_real_heading">Audio Merger</h1>
+        <p class="page-subtitle" data-i18n="audio_merger_real_subtitle">Combine multiple audio files into one seamless track - Real FFmpeg Processing</p>
         
         <div class="merger-card">
             <div class="engine-status" id="engineStatus">
@@ -374,8 +375,8 @@
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔗</div>
-                <div class="upload-text">Click or drag to upload multiple audio files</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="audio_merger_real_upload_text">Click or drag to upload multiple audio files</div>
+                <div class="upload-hint" data-i18n="audio_merger_real_upload_hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*" multiple>
             </div>
             
@@ -409,7 +410,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="merge-button" id="mergeBtn" disabled>Loading Engine...</button>
+                    <button class="merge-button" id="mergeBtn" disabled data-i18n="audio_merger_real_merge_btn">Merge Audio Files</button>
                 </div>
             </div>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>视频信息查看器 - DropShare</title>
+    <title data-i18n="video_info_title">视频信息查看器 - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -563,6 +563,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 <body>
     <div class="page-header">
@@ -579,15 +580,15 @@
     </div>
 
     <div class="container">
-        <h1 class="page-title" id="pageTitle">AVI to MP4 video</h1>
-        <p class="page-subtitle" id="pageSubtitle">Convert AVI to MP4 video</p>
+        <h1 class="page-title" id="pageTitle" data-i18n="video_info_heading">AVI to MP4 video</h1>
+        <p class="page-subtitle" id="pageSubtitle" data-i18n="video_info_subtitle">Convert AVI to MP4 video</p>
         
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon" id="uploadIcon">📄</div>
             <button class="upload-button" onclick="document.getElementById('fileInput').click()">
                 📤 Upload from PC or Mobile
             </button>
-            <div class="upload-text">or Drag files here</div>
+            <div class="upload-text" data-i18n="video_info_upload_text">or Drag files here</div>
             <input type="file" id="fileInput" multiple accept="video/*" style="display: none;">
         </div>
         

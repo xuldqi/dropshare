@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Compressor - DropShare</title>
+    <title data-i18n="audio_compressor_real_title">Audio Compressor - DropShare</title>
     <script src="/vendor/ffmpeg/ffmpeg.js"></script>
     <script src="/vendor/ffmpeg/util.js"></script>
     <style>
@@ -283,6 +283,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -307,8 +308,8 @@
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">Audio Compressor</h1>
-        <p class="page-subtitle">Reduce audio file size while maintaining quality - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="audio_compressor_real_heading">Audio Compressor</h1>
+        <p class="page-subtitle" data-i18n="audio_compressor_real_subtitle">Reduce audio file size while maintaining quality - Real FFmpeg Processing</p>
         
         <div class="compressor-card">
             <div class="engine-status" id="engineStatus">
@@ -317,8 +318,8 @@
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🗜️</div>
-                <div class="upload-text">Click or drag to upload audio file</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="audio_compressor_real_upload_text">Click or drag to upload audio file</div>
+                <div class="upload-hint" data-i18n="audio_compressor_real_upload_hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
@@ -342,7 +343,7 @@
                     </div>
                 </div>
                 
-                <button class="compress-button" id="compressBtn" disabled>Loading Engine...</button>
+                <button class="compress-button" id="compressBtn" disabled data-i18n="btn_loading_engine">Loading Engine...</button>
             </div>
             
             <div class="progress-section" id="progressSection">

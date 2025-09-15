@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resolution Changer - DropShare</title>
+    <title data-i18n="resolution_changer_title">Resolution Changer - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -419,6 +419,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -446,14 +447,14 @@
             </a>
         </div>
         
-        <h1 class="page-title">Resolution Changer</h1>
-        <p class="page-subtitle">Change video resolution to HD, Full HD, 4K, or custom dimensions</p>
+        <h1 class="page-title" data-i18n="resolution_changer_heading">Resolution Changer</h1>
+        <p class="page-subtitle" data-i18n="resolution_changer_subtitle">Change video resolution to HD, Full HD, 4K, or custom dimensions</p>
         
         <div class="changer-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📺</div>
-                <div class="upload-text">Click or drag to upload a video file</div>
-                <div class="upload-hint">Supports MP4, AVI, MOV, WMV, MKV and more</div>
+                <div class="upload-text" data-i18n="resolution_changer_upload_text">Click or drag to upload a video file</div>
+                <div class="upload-hint" data-i18n="resolution_changer_upload_hint">Supports MP4, AVI, MOV, WMV, MKV and more</div>
                 <input type="file" id="fileInput" accept="video/*">
             </div>
             
@@ -550,7 +551,7 @@
                     </div>
                 </div>
                 
-                <button class="change-button" id="changeBtn">Start Conversion</button>
+                <button class="change-button" id="changeBtn" data-i18n="resolution_changer_start_btn">Start Conversion</button>
             </div>
             
             <div class="progress-section" id="progressSection">

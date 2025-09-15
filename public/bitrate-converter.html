@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitrate Converter - DropShare</title>
+    <title data-i18n="bitrate_converter_title">Bitrate Converter - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -334,6 +334,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -363,14 +364,14 @@
             </a>
         </div>
         
-        <h1 class="page-title">Bitrate Converter</h1>
-        <p class="page-subtitle">Change audio bitrate and quality settings</p>
+        <h1 class="page-title" data-i18n="bitrate_converter_heading">Bitrate Converter</h1>
+        <p class="page-subtitle" data-i18n="bitrate_converter_subtitle">Change audio bitrate and quality settings</p>
         
         <div class="converter-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">⚙️</div>
-                <div class="upload-text">Click or drag to upload audio file</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="bitrate_converter_upload_text">Click or drag to upload audio file</div>
+                <div class="upload-hint" data-i18n="bitrate_converter_upload_hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
@@ -424,7 +425,7 @@
                     <div class="estimate-value" id="estimatedSize">8.2 MB</div>
                 </div>
                 
-                <button class="convert-button" id="convertBtn">Convert Bitrate</button>
+                <button class="convert-button" id="convertBtn" data-i18n="bitrate_converter_convert_btn">Convert Bitrate</button>
             </div>
         </div>
     </div>

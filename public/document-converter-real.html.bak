@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Format Converter - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-info {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .file-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            background: #3367d6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .file-meta h4 {
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .file-meta p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .conversion-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .format-btn {
+            padding: 16px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .format-btn:hover {
+            border-color: #3367d6;
+        }
+
+        .format-btn.active {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .format-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .format-desc {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .quality-settings {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .setting-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-label {
+            flex: 0 0 120px;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .setting-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .toggle-quality {
+            color: #3367d6;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+            margin-bottom: 16px;
+        }
+
+        .convert-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .convert-button:hover {
+            background: #2563eb;
+        }
+
+        .convert-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .progress-section {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .result-section {
+            display: none;
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .conversion-info {
+            margin: 16px 0;
+            padding: 16px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+        }
+
+        .conversion-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #3367d6;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .download-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .download-btn:hover {
+            background: #059669;
+        }
+
+        .preview-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .preview-content {
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                📄 DropShare
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html" class="active">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="document-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← back
+            </a>
+        </div>
+        
+        <h1 class="page-title">Format Converter</h1>
+        <p class="page-subtitle">Convert documents between PDF, DOCX, TXT, HTML, EPUB and other formats</p>
+        
+        <div class="converter-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🔄</div>
+                <div class="upload-text">Click or drag to upload a document</div>
+                <div class="upload-hint">Supports PDF, DOCX, TXT, RTF, HTML, MD and more</div>
+                <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt,.rtf,.html,.htm,.md">
+            </div>
+            
+            <div class="file-info" id="fileInfo">
+                <div class="file-details">
+                    <div class="file-icon" id="fileIcon">DOC</div>
+                    <div class="file-meta">
+                        <h4 id="fileName">-</h4>
+                        <p id="fileSize">-</p>
+                        <p id="fileType">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-section" id="previewSection">
+                <div class="section-title">Document preview</div>
+                <div class="preview-content" id="previewContent"></div>
+            </div>
+            
+            <div class="conversion-controls" id="conversionControls">
+                <div class="control-section">
+                    <div class="section-title">Select output format</div>
+                    <div class="format-grid">
+                        <div class="format-btn active" data-format="pdf">
+                            <div class="format-name">PDF</div>
+                            <div class="format-desc">Portable document</div>
+                        </div>
+                        <div class="format-btn" data-format="docx">
+                            <div class="format-name">DOCX</div>
+                            <div class="format-desc">Word document</div>
+                        </div>
+                        <div class="format-btn" data-format="txt">
+                            <div class="format-name">TXT</div>
+                            <div class="format-desc">Plain text</div>
+                        </div>
+                        <div class="format-btn" data-format="html">
+                            <div class="format-name">HTML</div>
+                            <div class="format-desc">Web page</div>
+                        </div>
+                        <div class="format-btn" data-format="md">
+                            <div class="format-name">Markdown</div>
+                            <div class="format-desc">Markdown</div>
+                        </div>
+                        <div class="format-btn" data-format="rtf">
+                            <div class="format-name">RTF</div>
+                            <div class="format-desc">Rich Text</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="toggle-quality" id="toggleQuality">Show conversion options</button>
+                
+                <div class="quality-settings" id="qualitySettings">
+                    <div class="setting-row">
+                        <div class="setting-label">Page size:</div>
+                        <select class="setting-input" id="pageSize">
+                            <option value="A4">A4</option>
+                            <option value="Letter">Letter</option>
+                            <option value="Legal">Legal</option>
+                            <option value="A3">A3</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">Font size:</div>
+                        <select class="setting-input" id="fontSize">
+                            <option value="10">10pt</option>
+                            <option value="12" selected>12pt</option>
+                            <option value="14">14pt</option>
+                            <option value="16">16pt</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">Preserve formatting:</div>
+                        <select class="setting-input" id="preserveFormatting">
+                            <option value="true" selected>是</option>
+                            <option value="false">否</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="convert-button" id="convertBtn">Start conversion</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <div id="progressText">Preparing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div class="result-section" id="resultSection">
+                <h3>Conversion complete!</h3>
+                <div class="conversion-info">
+                    <div class="conversion-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="originalFormat">-</div>
+                            <div class="stat-label">Original format</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="targetFormat">-</div>
+                            <div class="stat-label">Target format</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="resultSize">-</div>
+                            <div class="stat-label">File size</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="download-btn" id="downloadBtn">Download converted file</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/mammoth@1.4.21/mammoth.browser.min.js"></script>
+    <script src="https://unpkg.com/marked@4.0.10/marked.min.js"></script>
+    <script>
+        // PDF.js worker setup
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+        }
+
+        let documentFile = null;
+        let documentContent = '';
+        let selectedFormat = 'pdf';
+        let convertedFile = null;
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                loadDocument(file);
+            }
+        });
+
+        async function loadDocument(file) {
+            documentFile = file;
+            
+            // Display file information
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileType').textContent = fileExtension.toUpperCase();
+            document.getElementById('fileIcon').textContent = fileExtension.toUpperCase();
+            document.getElementById('fileInfo').style.display = 'block';
+            
+            try {
+                // Parse content based on file type
+                await parseDocument(file, fileExtension);
+                document.getElementById('conversionControls').style.display = 'block';
+                
+                // Show preview
+                if (documentContent) {
+                    document.getElementById('previewContent').textContent = documentContent.substring(0, 1000) + 
+                        (documentContent.length > 1000 ? '...\n\n[Preview truncated; full content will be used for conversion]' : '');
+                    document.getElementById('previewSection').style.display = 'block';
+                }
+                
+            } catch (error) {
+                console.error('Document parsing failed:', error);
+                alert('Document parsing failed: ' + error.message);
+            }
+        }
+
+        async function parseDocument(file, extension) {
+            const reader = new FileReader();
+            
+            switch (extension) {
+                case 'pdf':
+                    await parsePDF(file);
+                    break;
+                case 'docx':
+                    await parseDocx(file);
+                    break;
+                case 'txt':
+                case 'md':
+                    documentContent = await file.text();
+                    break;
+                case 'html':
+                case 'htm':
+                    const htmlText = await file.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlText, 'text/html');
+                    documentContent = doc.body.textContent || doc.body.innerText || htmlText;
+                    break;
+                case 'rtf':
+                    // RTF 解析比较复杂，这里简化处理
+                    const rtfText = await file.text();
+                    // 移除RTF控制码，保留文本内容
+                    documentContent = rtfText.replace(/\\[a-z0-9-]+\s?/gi, '').replace(/[{}]/g, '');
+                    break;
+                default:
+                    documentContent = await file.text();
+            }
+        }
+
+        async function parsePDF(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let fullText = '';
+            
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += pageText + '\n\n';
+            }
+            
+            documentContent = fullText.trim();
+        }
+
+        async function parseDocx(file) {
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const result = await mammoth.extractRawText({arrayBuffer: arrayBuffer});
+                documentContent = result.value;
+            } catch (error) {
+                console.error('DOCX解析失败:', error);
+                // 如果mammoth解析失败，尝试基本的文本提取
+                documentContent = '无法完全解析DOCX内容，请尝试其他格式。';
+            }
+        }
+
+        // 格式选择
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedFormat = this.dataset.format;
+            });
+        });
+
+        // 质量设置切换
+        document.getElementById('toggleQuality').addEventListener('click', function() {
+            const settings = document.getElementById('qualitySettings');
+            if (settings.style.display === 'none' || settings.style.display === '') {
+                settings.style.display = 'block';
+                this.textContent = '隐藏转换选项';
+            } else {
+                settings.style.display = 'none';
+                this.textContent = '显示转换选项';
+            }
+        });
+
+        document.getElementById('convertBtn').addEventListener('click', async function() {
+            if (!documentFile) {
+                alert('请先选择文档');
+                return;
+            }
+            
+            this.disabled = true;
+            document.getElementById('progressSection').style.display = 'block';
+            
+            try {
+                await convertDocument();
+            } catch (error) {
+                console.error('转换失败:', error);
+                alert('转换失败: ' + error.message);
+            } finally {
+                this.disabled = false;
+            }
+        });
+
+        async function convertDocument() {
+            document.getElementById('progressText').textContent = 'Preparing conversion...';
+            document.getElementById('progressFill').style.width = '20%';
+            
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            let convertedContent;
+            let mimeType;
+            let fileName = documentFile.name.split('.').slice(0, -1).join('.');
+            
+            document.getElementById('progressText').textContent = 'Converting format...';
+            document.getElementById('progressFill').style.width = '60%';
+            
+            switch (selectedFormat) {
+                case 'pdf':
+                    convertedContent = await convertToPDF();
+                    mimeType = 'application/pdf';
+                    fileName += '.pdf';
+                    break;
+                case 'docx':
+                    convertedContent = await convertToDocx();
+                    mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                    fileName += '.docx';
+                    break;
+                case 'txt':
+                    convertedContent = documentContent;
+                    mimeType = 'text/plain';
+                    fileName += '.txt';
+                    break;
+                case 'html':
+                    convertedContent = convertToHTML();
+                    mimeType = 'text/html';
+                    fileName += '.html';
+                    break;
+                case 'md':
+                    convertedContent = convertToMarkdown();
+                    mimeType = 'text/markdown';
+                    fileName += '.md';
+                    break;
+                case 'rtf':
+                    convertedContent = convertToRTF();
+                    mimeType = 'application/rtf';
+                    fileName += '.rtf';
+                    break;
+                default:
+                    throw new Error('不支持的输出格式');
+            }
+            
+            document.getElementById('progressText').textContent = 'Generating file...';
+            document.getElementById('progressFill').style.width = '90%';
+            
+            // 创建文件
+            const blob = new Blob([convertedContent], { type: mimeType });
+            convertedFile = new File([blob], fileName, { type: mimeType });
+            
+            document.getElementById('progressText').textContent = 'Conversion complete!';
+            document.getElementById('progressFill').style.width = '100%';
+            
+            showConversionResults();
+            
+            setTimeout(() => {
+                document.getElementById('progressSection').style.display = 'none';
+                document.getElementById('progressFill').style.width = '0%';
+            }, 2000);
+        }
+
+        async function convertToPDF() {
+            const pdfDoc = await PDFLib.PDFDocument.create();
+            const page = pdfDoc.addPage();
+            const { width, height } = page.getSize();
+            
+            const fontSize = parseInt(document.getElementById('fontSize').value) || 12;
+            
+            // 简单的文本到PDF转换
+            const lines = documentContent.split('\n');
+            let yPosition = height - 50;
+            const lineHeight = fontSize + 4;
+            
+            for (let i = 0; i < lines.length && yPosition > 50; i++) {
+                const line = lines[i].substring(0, 80); // 限制每行长度
+                page.drawText(line, {
+                    x: 50,
+                    y: yPosition,
+                    size: fontSize,
+                });
+                yPosition -= lineHeight;
+                
+                // 如果页面不够，添加新页面
+                if (yPosition <= 50 && i < lines.length - 1) {
+                    const newPage = pdfDoc.addPage();
+                    yPosition = height - 50;
+                }
+            }
+            
+            return await pdfDoc.save();
+        }
+
+        async function convertToDocx() {
+            // 创建简单的DOCX内容（这里是模拟，实际需要更复杂的库）
+            const docxContent = `<?xml version="1.0" encoding="UTF-8"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+    <w:body>
+        <w:p>
+            <w:r>
+                <w:t>${documentContent.replace(/\n/g, '</w:t></w:r></w:p><w:p><w:r><w:t>')}</w:t>
+            </w:r>
+        </w:p>
+    </w:body>
+</w:document>`;
+            return new TextEncoder().encode(docxContent);
+        }
+
+        function convertToHTML() {
+            const preserveFormatting = document.getElementById('preserveFormatting').value === 'true';
+            
+            let htmlContent = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${documentFile.name}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            color: #333;
+        }
+        ${preserveFormatting ? 'pre { white-space: pre-wrap; font-family: inherit; }' : ''}
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+<body>`;
+            
+            if (preserveFormatting) {
+                htmlContent += `<pre>${documentContent.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>`;
+            } else {
+                const paragraphs = documentContent.split('\n\n');
+                htmlContent += paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('\n');
+            }
+            
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+            htmlContent += `</body></html>`;
+            return htmlContent;
+        }
+
+        function convertToMarkdown() {
+            // 简单的文本到Markdown转换
+            let mdContent = documentContent;
+            
+            // 检测和转换标题
+            mdContent = mdContent.replace(/^(.+)$/gm, (match, line) => {
+                if (line.length < 60 && /^[A-Z\u4e00-\u9fff]/.test(line.trim())) {
+                    return `# ${line.trim()}`;
+                }
+                return line;
+            });
+            
+            // 添加文档标题
+            mdContent = `# ${documentFile.name.split('.')[0]}\n\n${mdContent}`;
+            
+            return mdContent;
+        }
+
+        function convertToRTF() {
+            const fontSize = parseInt(document.getElementById('fontSize').value) || 12;
+            
+            return `{\\rtf1\\ansi\\deff0 {\\fonttbl {\\f0 Times New Roman;}}
+\\f0\\fs${fontSize * 2} ${documentContent.replace(/\n/g, '\\par ')}}`;
+        }
+
+        function showConversionResults() {
+            const originalExt = documentFile.name.split('.').pop().toUpperCase();
+            document.getElementById('originalFormat').textContent = originalExt;
+            document.getElementById('targetFormat').textContent = selectedFormat.toUpperCase();
+            document.getElementById('resultSize').textContent = formatFileSize(convertedFile.size);
+            
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            if (!convertedFile) {
+                alert('没有转换文件可下载');
+                return;
+            }
+            
+            const url = URL.createObjectURL(convertedFile);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = convertedFile.name;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                loadDocument(files[0]);
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

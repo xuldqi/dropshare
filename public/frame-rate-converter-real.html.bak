@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frame Rate Converter - DropShare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .tool-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .control-section h4 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .control-group input, .control-group select {
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .control-group input:focus, .control-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .frame-rate-presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .preset-btn {
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .preset-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .preset-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .advanced-options {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .advanced-options.active {
+            display: block;
+        }
+
+        .toggle-advanced {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        .info-section {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-section h5 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-section li {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .process-btn {
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .process-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .process-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e5e9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .status {
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .eta {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 2rem;
+            width: 100%;
+            display: none;
+        }
+
+        .download-btn.active {
+            display: block;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .video-preview {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .video-preview.active {
+            display: block;
+        }
+
+        .preview-video {
+            width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            background: #000;
+        }
+
+        .video-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .frame-rate-presets {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            </div>
+            <nav class="nav-links">
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Frame Rate Converter</h1>
+            <p class="page-subtitle">Convert video frame rates for smooth playback and compatibility</p>
+        </div>
+
+        <div class="tool-container">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎬</div>
+                <h3>Upload Video File</h3>
+                <p>Drag and drop your video file here or click to browse</p>
+                <input type="file" id="fileInput" class="file-input" accept="video/*">
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Video File</button>
+            </div>
+
+            <!-- Video Preview -->
+            <div class="video-preview" id="videoPreview">
+                <video id="previewVideo" class="preview-video" controls>
+                    Your browser does not support the video tag.
+                </video>
+                <div class="video-info" id="videoInfo">
+                    <div class="info-item">
+                        <div class="info-label">Current Frame Rate</div>
+                        <div class="info-value" id="currentFPS">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Duration</div>
+                        <div class="info-value" id="duration">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Resolution</div>
+                        <div class="info-value" id="resolution">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">File Size</div>
+                        <div class="info-value" id="fileSize">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <!-- Frame Rate Settings -->
+                <div class="control-section">
+                    <h4>🎯 Target Frame Rate</h4>
+                    <div class="frame-rate-presets">
+                        <button class="preset-btn" data-fps="23.98">23.98</button>
+                        <button class="preset-btn" data-fps="24">24</button>
+                        <button class="preset-btn active" data-fps="25">25</button>
+                        <button class="preset-btn" data-fps="29.97">29.97</button>
+                        <button class="preset-btn" data-fps="30">30</button>
+                        <button class="preset-btn" data-fps="50">50</button>
+                        <button class="preset-btn" data-fps="59.94">59.94</button>
+                        <button class="preset-btn" data-fps="60">60</button>
+                    </div>
+                    <div class="control-group">
+                        <label>Custom Frame Rate</label>
+                        <input type="number" id="customFPS" placeholder="e.g., 48" step="0.01" min="1" max="120">
+                    </div>
+                </div>
+
+                <!-- Conversion Method -->
+                <div class="control-section">
+                    <h4>⚙️ Conversion Method</h4>
+                    <div class="control-group">
+                        <label>Frame Interpolation</label>
+                        <select id="interpolation">
+                            <option value="fps">Standard FPS Filter</option>
+                            <option value="minterpolate">Motion Interpolation</option>
+                            <option value="telecine">Telecine (24→30)</option>
+                            <option value="framestep">Frame Step</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Motion Estimation</label>
+                        <select id="motionEstimation">
+                            <option value="bilat">Bilateral</option>
+                            <option value="bidir">Bidirectional</option>
+                            <option value="epzs">EPZS</option>
+                            <option value="hex">Hexagonal</option>
+                        </select>
+                    </div>
+                    <button class="toggle-advanced" onclick="toggleAdvanced()">Advanced Options ▼</button>
+                    <div class="advanced-options" id="advancedOptions">
+                        <div class="control-group">
+                            <label>Scene Detection</label>
+                            <input type="range" id="sceneThreshold" min="0" max="1" step="0.01" value="0.2">
+                            <span id="sceneValue">0.2</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Search Parameter</label>
+                            <input type="range" id="searchParam" min="4" max="64" step="1" value="32">
+                            <span id="searchValue">32</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Settings -->
+                <div class="control-section">
+                    <h4>📤 Output Settings</h4>
+                    <div class="control-group">
+                        <label>Video Codec</label>
+                        <select id="videoCodec">
+                            <option value="libx264">H.264</option>
+                            <option value="libx265">H.265/HEVC</option>
+                            <option value="libvpx-vp9">VP9</option>
+                            <option value="libaom-av1">AV1</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Quality (CRF)</label>
+                        <input type="range" id="quality" min="18" max="30" value="23">
+                        <span id="qualityValue">23</span>
+                    </div>
+                    <div class="control-group">
+                        <label>Audio Processing</label>
+                        <select id="audioProcessing">
+                            <option value="copy">Copy Original</option>
+                            <option value="aac">Re-encode AAC</option>
+                            <option value="remove">Remove Audio</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="info-section">
+                <h5>Frame Rate Conversion Tips:</h5>
+                <ul>
+                    <li>• Use motion interpolation for smooth slow-motion effects</li>
+                    <li>• 24 fps is standard for films, 30/60 fps for web content</li>
+                    <li>• Higher frame rates increase file size significantly</li>
+                    <li>• Scene detection helps maintain quality during cuts</li>
+                </ul>
+            </div>
+
+            <!-- Process Button -->
+            <button class="process-btn" id="processBtn">Convert Frame Rate</button>
+
+            <!-- Progress -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="status" id="status">Processing...</div>
+                <div class="eta" id="eta">Estimated time remaining: calculating...</div>
+            </div>
+
+            <!-- Download Button -->
+            <button class="download-btn" id="downloadBtn">Download Converted Video</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <script>
+        let ffmpeg = null;
+        let videoFile = null;
+        let videoMetadata = {};
+
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const videoPreview = document.getElementById('videoPreview');
+        const previewVideo = document.getElementById('previewVideo');
+        const processBtn = document.getElementById('processBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // Initialize FFmpeg
+        async function initFFmpeg() {
+            if (!ffmpeg) {
+                const { FFmpeg } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
+                
+                ffmpeg = new FFmpeg();
+                
+                const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+                
+                await ffmpeg.load({
+                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                });
+            }
+        }
+
+        // File upload handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        async function handleFile(file) {
+            if (!file.type.startsWith('video/')) {
+                alert('Please select a video file.');
+                return;
+            }
+
+            videoFile = file;
+            
+            // Show video preview
+            const url = URL.createObjectURL(file);
+            previewVideo.src = url;
+            videoPreview.classList.add('active');
+
+            // Update file info
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+
+            // Get video metadata
+            previewVideo.onloadedmetadata = () => {
+                videoMetadata = {
+                    duration: previewVideo.duration,
+                    width: previewVideo.videoWidth,
+                    height: previewVideo.videoHeight
+                };
+
+                document.getElementById('duration').textContent = formatDuration(previewVideo.duration);
+                document.getElementById('resolution').textContent = `${previewVideo.videoWidth}×${previewVideo.videoHeight}`;
+                
+                // Estimate frame rate (rough approximation)
+                estimateFrameRate(file);
+            };
+
+            processBtn.disabled = false;
+        }
+
+        async function estimateFrameRate(file) {
+            try {
+                await initFFmpeg();
+                const inputName = 'input.mp4';
+                await ffmpeg.writeFile(inputName, new Uint8Array(await file.arrayBuffer()));
+
+                // Use ffprobe-like functionality to get frame rate
+                const command = ['-i', inputName, '-f', 'null', '-'];
+                
+                let output = '';
+                ffmpeg.on('log', ({ message }) => {
+                    if (message.includes('fps')) {
+                        const fpsMatch = message.match(/(\d+\.?\d*)\s*fps/);
+                        if (fpsMatch) {
+                            document.getElementById('currentFPS').textContent = fpsMatch[1] + ' fps';
+                        }
+                    }
+                });
+
+                await ffmpeg.exec(command);
+                
+            } catch (error) {
+                console.error('Failed to estimate frame rate:', error);
+                document.getElementById('currentFPS').textContent = 'Unknown';
+            }
+        }
+
+        // Frame rate preset buttons
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('customFPS').value = '';
+            });
+        });
+
+        // Range input updates
+        document.getElementById('sceneThreshold').addEventListener('input', (e) => {
+            document.getElementById('sceneValue').textContent = e.target.value;
+        });
+
+        document.getElementById('searchParam').addEventListener('input', (e) => {
+            document.getElementById('searchValue').textContent = e.target.value;
+        });
+
+        document.getElementById('quality').addEventListener('input', (e) => {
+            document.getElementById('qualityValue').textContent = e.target.value;
+        });
+
+        function toggleAdvanced() {
+            const advanced = document.getElementById('advancedOptions');
+            const btn = document.querySelector('.toggle-advanced');
+            
+            if (advanced.classList.contains('active')) {
+                advanced.classList.remove('active');
+                btn.textContent = 'Advanced Options ▼';
+            } else {
+                advanced.classList.add('active');
+                btn.textContent = 'Advanced Options ▲';
+            }
+        }
+
+        // Process video
+        processBtn.addEventListener('click', async () => {
+            if (!videoFile) {
+                alert('Please select a video file first.');
+                return;
+            }
+
+            try {
+                processBtn.disabled = true;
+                progressContainer.classList.add('active');
+                
+                await initFFmpeg();
+                
+                const inputName = 'input.mp4';
+                const outputName = 'output.mp4';
+                
+                await ffmpeg.writeFile(inputName, new Uint8Array(await videoFile.arrayBuffer()));
+                
+                // Build FFmpeg command
+                const command = buildFFmpegCommand(inputName, outputName);
+                
+                // Track progress
+                let startTime = Date.now();
+                ffmpeg.on('progress', ({ progress, time }) => {
+                    const percent = Math.round(progress * 100);
+                    document.getElementById('progressFill').style.width = percent + '%';
+                    
+                    if (percent > 0) {
+                        const elapsed = (Date.now() - startTime) / 1000;
+                        const estimated = (elapsed / progress) - elapsed;
+                        document.getElementById('eta').textContent = 
+                            `Estimated time remaining: ${Math.round(estimated)}s`;
+                    }
+                    
+                    document.getElementById('status').textContent = 
+                        `Converting frame rate... ${percent}%`;
+                });
+
+                await ffmpeg.exec(command);
+                
+                const outputData = await ffmpeg.readFile(outputName);
+                const outputBlob = new Blob([outputData.buffer], { type: 'video/mp4' });
+                
+                // Create download link
+                const url = URL.createObjectURL(outputBlob);
+                downloadBtn.onclick = () => {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `converted_${getTargetFrameRate()}fps_${videoFile.name}`;
+                    a.click();
+                };
+                
+                downloadBtn.classList.add('active');
+                document.getElementById('status').textContent = 'Conversion completed successfully!';
+                
+            } catch (error) {
+                console.error('Conversion failed:', error);
+                document.getElementById('status').textContent = 'Conversion failed. Please try again.';
+            } finally {
+                processBtn.disabled = false;
+            }
+        });
+
+        function buildFFmpegCommand(inputName, outputName) {
+            const command = ['-i', inputName];
+            
+            const targetFPS = getTargetFrameRate();
+            const interpolation = document.getElementById('interpolation').value;
+            const videoCodec = document.getElementById('videoCodec').value;
+            const quality = document.getElementById('quality').value;
+            const audioProcessing = document.getElementById('audioProcessing').value;
+            
+            // Video filters
+            let videoFilters = [];
+            
+            if (interpolation === 'fps') {
+                videoFilters.push(`fps=${targetFPS}`);
+            } else if (interpolation === 'minterpolate') {
+                const motionEstimation = document.getElementById('motionEstimation').value;
+                const sceneThreshold = document.getElementById('sceneThreshold').value;
+                const searchParam = document.getElementById('searchParam').value;
+                
+                videoFilters.push(`minterpolate=fps=${targetFPS}:mi_mode=mci:mc_mode=${motionEstimation}:scd=scene:scd_threshold=${sceneThreshold}:search_param=${searchParam}`);
+            } else if (interpolation === 'telecine') {
+                if (targetFPS == 30 || targetFPS == 29.97) {
+                    videoFilters.push('telecine');
+                } else {
+                    videoFilters.push(`fps=${targetFPS}`);
+                }
+            } else if (interpolation === 'framestep') {
+                // Calculate frame step for target FPS
+                videoFilters.push(`fps=${targetFPS}`);
+            }
+            
+            if (videoFilters.length > 0) {
+                command.push('-vf', videoFilters.join(','));
+            }
+            
+            // Video codec and quality
+            command.push('-c:v', videoCodec);
+            command.push('-crf', quality);
+            
+            // Audio processing
+            if (audioProcessing === 'copy') {
+                command.push('-c:a', 'copy');
+            } else if (audioProcessing === 'aac') {
+                command.push('-c:a', 'aac');
+                command.push('-b:a', '128k');
+            } else if (audioProcessing === 'remove') {
+                command.push('-an');
+            }
+            
+            // Output settings
+            command.push('-movflags', '+faststart');
+            command.push('-preset', 'medium');
+            command.push(outputName);
+            
+            return command;
+        }
+
+        function getTargetFrameRate() {
+            const customFPS = document.getElementById('customFPS').value;
+            if (customFPS && customFPS > 0) {
+                return parseFloat(customFPS);
+            }
+            
+            const activePreset = document.querySelector('.preset-btn.active');
+            return activePreset ? parseFloat(activePreset.dataset.fps) : 25;
+        }
+
+        function formatDuration(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await initFFmpeg();
+            } catch (error) {
+                console.error('Failed to initialize FFmpeg:', error);
+            }
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

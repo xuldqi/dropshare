@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Converter - DropShare</title>
+    <title data-i18n="video_converter_title">Video Converter - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -566,6 +566,7 @@
 
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -589,14 +590,14 @@
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title" id="pageTitle">视频转换器</h1>
-        <p class="page-subtitle" id="pageSubtitle">专业视频转换工具，支持多种视频格式</p>
+        <h1 class="page-title" id="pageTitle" data-i18n="video_converter_heading">视频转换器</h1>
+        <p class="page-subtitle" id="pageSubtitle" data-i18n="video_converter_subtitle">专业视频转换工具，支持多种视频格式</p>
         
         <div class="converter-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon" id="uploadIcon">🎥</div>
-                <div class="upload-text">点击或拖拽上传视频文件</div>
-                <div class="upload-hint">or Drag files here</div>
+                <div class="upload-text" data-i18n="video_converter_upload_text">点击或拖拽上传视频文件</div>
+                <div class="upload-hint" data-i18n="video_converter_upload_hint">or Drag files here</div>
                 <input type="file" id="fileInput" multiple accept="video/*">
             </div>
         
@@ -611,7 +612,7 @@
                 <div class="format-option" data-format="mov">MOV</div>
             </div>
             
-            <button class="convert-button" id="convertBtn" disabled>开始转换</button>
+            <button class="convert-button" id="convertBtn" disabled data-i18n="video_converter_start_btn">开始转换</button>
             
             <div class="progress-section" id="progressSection" style="display: none;">
                 <div class="progress-text" id="progressText">准备转换...</div>

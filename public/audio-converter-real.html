@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Format Converter - DropShare</title>
+    <title data-i18n="audio_converter_title">Audio Format Converter - DropShare</title>
     <script src="/vendor/ffmpeg/ffmpeg.js"></script>
     <script src="/vendor/ffmpeg/util.js"></script>
     <style>
@@ -326,6 +326,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -350,8 +351,8 @@
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">Audio Format Converter</h1>
-        <p class="page-subtitle">Convert between different audio formats - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="audio_converter_heading">Audio Format Converter</h1>
+        <p class="page-subtitle" data-i18n="audio_converter_subtitle">Convert between different audio formats - Real FFmpeg Processing</p>
         
         <div class="converter-card">
             <div class="engine-status" id="engineStatus">
@@ -421,7 +422,7 @@
                     </div>
                 </div>
                 
-                <button class="convert-button" id="convertBtn" disabled>Loading Engine...</button>
+                <button class="convert-button" id="convertBtn" disabled data-i18n="btn_loading_engine">Loading Engine...</button>
             </div>
 
             <div class="progress-section" id="progressSection">

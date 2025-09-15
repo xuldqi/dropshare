@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Effects - DropShare</title>
+    <title data-i18n="video_effects_title">Video Effects - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -407,6 +407,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -429,14 +430,14 @@
 
     <div class="container">
         
-        <h1 class="page-title">Video Effects</h1>
-        <p class="page-subtitle">Apply various video effects and filters like brightness, contrast, and artistic styles</p>
+        <h1 class="page-title" data-i18n="video_effects_heading">Video Effects</h1>
+        <p class="page-subtitle" data-i18n="video_effects_subtitle">Apply various video effects and filters like brightness, contrast, and artistic styles</p>
         
         <div class="effects-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎨</div>
-                <div class="upload-text">Click or drag to upload a video file</div>
-                <div class="upload-hint">Supports MP4, AVI, MOV, WMV, MKV and more</div>
+                <div class="upload-text" data-i18n="video_effects_upload_text">Click or drag to upload a video file</div>
+                <div class="upload-hint" data-i18n="video_effects_upload_hint">Supports MP4, AVI, MOV, WMV, MKV and more</div>
                 <input type="file" id="fileInput" accept="video/*">
             </div>
             
@@ -620,7 +621,7 @@
                     </div>
                 </div>
                 
-                <button class="apply-button" id="applyBtn">Apply Effects</button>
+                <button class="apply-button" id="applyBtn" data-i18n="video_effects_apply_btn">Apply Effects</button>
             </div>
             
             <div class="progress-section" id="progressSection">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Merger - DropShare</title>
+    <title data-i18n="video_merger_real_title">Video Merger - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -306,6 +306,7 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -328,14 +329,14 @@
 
     <div class="container">
         
-        <h1 class="page-title">Video Merger</h1>
-        <p class="page-subtitle">Combine multiple video files into a single file</p>
+        <h1 class="page-title" data-i18n="video_merger_real_heading">Video Merger</h1>
+        <p class="page-subtitle" data-i18n="video_merger_real_subtitle">Combine multiple video files into a single file</p>
         
         <div class="merger-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📹</div>
-                <div class="upload-text">Click or drag to upload video files</div>
-                <div class="upload-hint">Supports multiple selection: MP4, AVI, MOV, WMV and more</div>
+                <div class="upload-text" data-i18n="video_merger_real_upload_text">Click or drag to upload video files</div>
+                <div class="upload-hint" data-i18n="video_merger_real_upload_hint">Supports multiple selection: MP4, AVI, MOV, WMV and more</div>
                 <input type="file" id="fileInput" accept="video/*" multiple>
             </div>
             
@@ -362,7 +363,7 @@
                     </div>
                 </div>
                 
-                <button class="merge-button" id="mergeBtn">Start Merging</button>
+                <button class="merge-button" id="mergeBtn" data-i18n="video_merger_real_start_btn">Start Merging</button>
             </div>
             
             <div class="progress-section" id="progressSection">

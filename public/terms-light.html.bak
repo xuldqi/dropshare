@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><script>
+    // 预加载主题设置，防止闪屏
+    (function() {
+      document.documentElement.style.backgroundColor = '#f5f5f5';
+      document.documentElement.style.color = '#333';
+      document.documentElement.style.visibility = 'visible';
+      
+      // 确保body也设置正确的样式
+      function setBodyStyle() {
+        if (document.body) {
+          document.body.style.backgroundColor = '#f5f5f5';
+          document.body.style.color = '#333';
+          document.body.style.visibility = 'visible';
+        } else {
+          setTimeout(setBodyStyle, 0);
+        }
+      }
+      setBodyStyle();
+    })();
+  </script><link rel="stylesheet" href="/noflash-light.css"><style>
+    html, body {
+      background-color: #f5f5f5 !important;
+      color: #333 !important;
+      visibility: visible !important;
+    }
+  </style>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Terms of Service - DropShare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="DropShare Terms of Service - Understand the rules and guidelines for using our file sharing service.">
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="shortcut icon" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="module" src="scripts/terms.js"></script>
+    <script src="scripts/page-theme.js" defer=""></script>
+    <script>
+      (function() {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.add('dark-theme');
+          } else if (theme === 'light') {
+            document.body.classList.add('light-theme');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-y: auto;
+            background: #212121;
+            align-items: stretch;
+            justify-content: flex-start;
+        }
+
+        .header-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            z-index: 100;
+            background-color: #212121;
+            border-bottom: 1px solid #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        header {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        header .icon-button {
+            margin-right: 16px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+            color: #4285f4;
+        }
+
+        .content-wrapper {
+            margin-top: 100px;
+            flex: 1;
+            width: 100%;
+            display: block;
+            align-items: initial;
+            justify-content: initial;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 0;
+        }
+        .terms-section {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3367d6;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        h1, h2, h3 {
+            color: #3367d6;
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 15px;
+            border: none;
+            box-shadow: none;
+        }
+        .last-updated {
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        ol li {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            position: relative;
+            padding: 16px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            background-color: #212121;
+            border-top: 1px solid #333;
+        }
+        
+        footer .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        footer .icon.logo {
+            width: 40px;
+            height: 40px;
+        }
+        
+        footer .text-container {
+            display: none;
+        }
+
+        section {
+            margin-bottom: 20px;
+            background-color: transparent;
+            border: none;
+        }
+        
+        section h2 {
+            position: relative;
+            z-index: 1;
+            background-color: transparent;
+        }
+        
+        /* 修正在RTL中图标方向 */
+        [dir="rtl"] .icon-button svg path {
+            transform: scale(-1, 1);
+            transform-origin: center;
+        }
+    </style>
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+<body class="light-theme">
+    <div class="background-animation"></div>
+    
+    <div class="header-wrapper">
+        <header>
+            <a href="/" class="icon-button" title="Back to DropShare">
+                <svg class="icon">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                </svg>
+            </a>
+            <h1>Terms of Service</h1>
+        </header>
+    </div>
+    
+    <div class="content-wrapper">
+        <div class="container">
+            <p class="last-updated">Last Updated: June 2023</p>
+            
+            <section class="terms-section">
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing or using DropShare, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this service.</p>
+            </section>
+            
+            <section class="terms-section">
+                <h2>2. Description of Service</h2>
+                <p>DropShare is a file sharing service that allows users to transfer files between devices connected to the same network. The service is provided "as is" and "as available" without any warranties of any kind.</p>
+            </section>
+            
+            <section class="terms-section">
+                <h2>3. User Responsibilities</h2>
+                <p>As a user of DropShare, you agree to:</p>
+                <ol>
+                    <li>Use the service in compliance with all applicable laws and regulations.</li>
+                    <li>Not use the service to transfer illegal, harmful, threatening, abusive, harassing, defamatory, vulgar, obscene, or otherwise objectionable material.</li>
+                    <li>Not attempt to access any other user's device without permission.</li>
+                    <li>Not use the service to distribute malware, viruses, or any other malicious code.</li>
+                    <li>Respect the privacy and rights of other users.</li>
+                    <li>Accept full responsibility for all files you share through the service.</li>
+                </ol>
+            </section>
+            
+            <section class="terms-section">
+                <h2>4. Intellectual Property Rights</h2>
+                <p>You retain all ownership rights to the files you share through DropShare. However, by using the service, you grant us the right to facilitate the transfer of your files between devices as requested by you.</p>
+                <p>The DropShare name, logo, and all related names, logos, product and service names, designs, and slogans are trademarks of DropShare or its affiliates. You must not use such marks without the prior written permission of DropShare.</p>
+            </section>
+            
+            <section class="terms-section">
+                <h2>5. Disclaimer of Warranties</h2>
+                <p>THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. DROPSHARE MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+                <p>DROPSHARE DOES NOT WARRANT THAT:</p>
+                <ol>
+                    <li>THE SERVICE WILL FUNCTION UNINTERRUPTED, SECURE, OR AVAILABLE AT ANY PARTICULAR TIME OR LOCATION;</li>
+                    <li>ANY ERRORS OR DEFECTS WILL BE CORRECTED;</li>
+                    <li>THE SERVICE IS FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS;</li>
+                    <li>THE RESULTS OF USING THE SERVICE WILL MEET YOUR REQUIREMENTS.</li>
+                </ol>
+            </section>
+            
+            <section class="terms-section">
+                <h2>6. Limitation of Liability</h2>
+                <p>IN NO EVENT SHALL DROPSHARE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM:</p>
+                <ol>
+                    <li>YOUR ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE SERVICE;</li>
+                    <li>ANY CONDUCT OR CONTENT OF ANY THIRD PARTY ON THE SERVICE;</li>
+                    <li>ANY CONTENT OBTAINED FROM THE SERVICE; AND</li>
+                    <li>UNAUTHORIZED ACCESS, USE, OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT.</li>
+                </ol>
+            </section>
+            
+            <section class="terms-section">
+                <h2>7. Indemnification</h2>
+                <p>You agree to defend, indemnify, and hold harmless DropShare and its licensees and licensors, and their employees, contractors, agents, officers, and directors, from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses (including but not limited to attorney's fees) arising from your use of and access to the Service.</p>
+            </section>
+            
+            <section class="terms-section">
+                <h2>8. Termination</h2>
+                <p>We may terminate or suspend your access to the Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+            </section>
+            
+            <section class="terms-section">
+                <h2>9. Changes to Terms</h2>
+                <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
+            </section>
+            
+            <section class="terms-section">
+                <h2>10. Contact Us</h2>
+                <p>If you have any questions about these Terms, please contact us at:</p>
+                <p>Email: support@dropshare.example.com</p>
+            </section>
+            
+            <a href="/" class="back-button">Back to DropShare</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="logo-container">
+            <svg class="icon logo">
+                <use xlink:href="#wifi-tethering"></use>
+            </svg>
+        </div>
+        <div class="text-container">
+            <div class="text-line">DropShare</div>
+            <div class="font-body2 text-line">The easiest way to share files across devices</div>
+        </div>
+    </footer>
+    
+    <script>
+        // Import necessary SVG icons
+        const iconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        iconSvg.setAttribute("style", "display: none;");
+        iconSvg.innerHTML = `
+            <symbol id=wifi-tethering viewBox="0 0 24 24">
+                <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"></path>
+            </symbol>
+        `;
+        document.body.appendChild(iconSvg);
+    </script>
+
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+ <script src="/scripts/theme-redirect.js"></script></body></html>

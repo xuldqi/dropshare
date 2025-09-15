@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Rotator - DropShare</title>
+    <title data-i18n="image_rotator_title">Image Rotator - DropShare</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body { padding: 20px; background: var(--bg-color); }
@@ -32,34 +32,35 @@
 
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 <body>
     <div class="page-header">
-        <h1>🔄 Image Rotator</h1>
+        <h1 data-i18n="image_rotator_heading">🔄 Image Rotator</h1>
         <div class="header-buttons">
             <div class="control-buttons">
                 
             </div>
-            <a href="image-tools.html" class="back-button">← Image Tools</a>
-            <a href="index.html" class="back-button">🏠 Home</a>
+            <a href="image-tools.html" class="back-button" data-i18n="back_to_image_tools">← Image Tools</a>
+            <a href="index.html" class="back-button" data-i18n="back_to_home">🏠 Home</a>
         </div>
     </div>
     <div class="tool-container">
         <div class="coming-soon">🚧</div>
-        <h2 class="tool-title">Coming Soon</h2>
-        <p class="tool-description">Image rotation and flip tools are under development, supporting rotation at any angle</p>
+        <h2 class="tool-title" data-i18n="coming_soon_title">Coming Soon</h2>
+        <p class="tool-description" data-i18n="image_rotator_coming_soon_desc">Image rotation and flip tools are under development, supporting rotation at any angle</p>
         <div class="features-list">
-            <h3>🎯 Expected Features</h3>
+            <h3 data-i18n="expected_features_title">🎯 Expected Features</h3>
             <ul>
-                <li>90-degree quick rotation</li>
-                <li>Rotation at any angle</li>
-                <li>Horizontal and vertical flip</li>
-                <li>Automatic background fill</li>
-                <li>Batch rotation processing</li>
-                <li>Real-time preview effect</li>
+                <li data-i18n="feature_90_degree_rotation">90-degree quick rotation</li>
+                <li data-i18n="feature_any_angle_rotation">Rotation at any angle</li>
+                <li data-i18n="feature_horizontal_vertical_flip">Horizontal and vertical flip</li>
+                <li data-i18n="feature_auto_background_fill">Automatic background fill</li>
+                <li data-i18n="feature_batch_rotation">Batch rotation processing</li>
+                <li data-i18n="feature_realtime_preview">Real-time preview effect</li>
             </ul>
         </div>
-        <button class="notify-btn" onclick="showNotifyMessage()">🔔 Notify Me When Available</button>
+        <button class="notify-btn" onclick="showNotifyMessage()" data-i18n="notify_me_when_available">🔔 Notify Me When Available</button>
     </div>
 
         <!-- Firebase SDK -->

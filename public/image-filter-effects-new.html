@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Filter Effects - DropShare</title>
+    <title data-i18n="image_filter_effects_title">Image Filter Effects - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -437,6 +437,7 @@
 
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
 </head>
 
 <body>
@@ -466,15 +467,15 @@
             </a>
         </div>
         
-        <h1 class="page-title">Image Filter Effects</h1>
-        <p class="page-subtitle">Apply professional-grade filter effects to make images more artistic</p>
+        <h1 class="page-title" data-i18n="image_filter_effects_heading">Image Filter Effects</h1>
+        <p class="page-subtitle" data-i18n="image_filter_effects_subtitle">Apply professional-grade filter effects to make images more artistic</p>
 
         <div class="filter-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎨</div>
-                <div class="upload-text">Click to select image or drag here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
+                <div class="upload-text" data-i18n="image_filter_effects_upload_text">Click to select image or drag here</div>
+                <div class="upload-hint" data-i18n="image_filter_effects_upload_hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
