@@ -344,6 +344,8 @@
   "image_resizer_title": "图片尺寸调整器 - DropShare",
   "image_resizer_upload_hint": "支持 PNG、JPG、JPEG、WEBP 格式",
   "image_resizer_upload_text": "点击或拖拽上传图片",
+  "image_converter_title": "图片格式转换器",
+  "image_converter_subtitle": "在多种图片格式间转换，保持最佳质量",
   "image_rotator_heading": "图片旋转器",
   "image_tools_subtitle": "专业的图片编辑和处理工具",
   "image_tools_title": "图片工具 - DropShare",

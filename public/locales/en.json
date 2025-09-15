@@ -325,6 +325,8 @@
   "image_format_converter_title": "Image Format Converter - DropShare",
   "image_format_converter_heading": "Image Format Converter",
   "image_format_converter_subtitle": "Convert between multiple image formats while maintaining optimal quality",
+  "image_converter_title": "Image Format Converter",
+  "image_converter_subtitle": "Convert between multiple image formats while maintaining optimal quality",
   "image_converter_upload_text": "Click to select images or drag here",
   "image_converter_upload_hint": "Supports JPG, PNG, GIF, BMP, TIFF, WebP formats, can select multiple files",
   "image_converter_select_format": "Select Output Format",
