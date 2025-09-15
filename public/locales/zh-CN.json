@@ -344,21 +344,6 @@
   "image_resizer_title": "图片尺寸调整器 - DropShare",
   "image_resizer_upload_hint": "支持 PNG、JPG、JPEG、WEBP 格式",
   "image_resizer_upload_text": "点击或拖拽上传图片",
-  "label_scale_percent": "缩放百分比：",
-  "label_resampling_method": "重采样方式：",
-  "option_auto_select": "自动选择",
-  "option_smooth_enlarge": "平滑（放大优选）",
-  "option_pixelated_sharp": "像素化（保持锐利）",
-  "label_resized_image": "调整后图片",
-  "label_estimated_size": "预估大小：",
-  "label_selection": "选择区域：",
-  "label_pixels": "像素",
-  "label_position": "位置：",
-  "label_preset_ratios": "预设比例：",
-  "ratio_free": "自由",
-  "label_custom_dimensions": "自定义尺寸：",
-  "btn_apply": "应用",
-  "image_enter_angle": "输入角度",
   "image_rotator_heading": "图片旋转器",
   "image_tools_subtitle": "专业的图片编辑和处理工具",
   "image_tools_title": "图片工具 - DropShare",
@@ -634,7 +619,3 @@
   "share_enter_room_name": "输入房间名称",
   "copy_room_code": "复制房间代码"
 }
-
-
-
-

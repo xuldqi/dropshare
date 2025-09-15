@@ -136,7 +136,3 @@
   document.addEventListener('DOMContentLoaded', init);
 })();
 
-
-
-
-

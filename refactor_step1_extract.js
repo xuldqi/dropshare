@@ -92,7 +92,3 @@ try {
         fs.unlinkSync(TEMP_JS_PATH);
     }
 }
-
-
-
-
