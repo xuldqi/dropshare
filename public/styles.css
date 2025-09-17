@@ -864,7 +864,8 @@ body.light-theme {
     }
 }
 
-/* 背景动画 */
+/* 背景动画已移除，使用 JavaScript Canvas 实现 */
+/*
 .background-animation {
     position: fixed;
     top: 0;
@@ -892,6 +893,7 @@ body.light-theme {
         opacity: 0.3;
     }
 }
+*/
 
 /* Add responsive button styles for mobile */
 @media (max-width: 480px) {

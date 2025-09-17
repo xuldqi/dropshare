@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test RoomManager Init</title>
+    <script src="scripts/network.js"></script>
+</head>
+<body>
+    <h1>Test RoomManager Initialization</h1>
+    <button onclick="testInit()">Test Room Manager</button>
+    <div id="output"></div>
+    
+    <script>
+        function testInit() {
+            console.log('=== TESTING ROOM MANAGER INITIALIZATION ===');
+            console.log('Available objects:', {
+                network: !!window.network,
+                serverConnection: !!window.serverConnection,
+                Events: !!window.Events,
+                roomManager: !!window.roomManager
+            });
+            
+            const output = document.getElementById('output');
+            output.innerHTML = `
+                <h3>Object Status:</h3>
+                <p>window.network: ${!!window.network}</p>
+                <p>window.serverConnection: ${!!window.serverConnection}</p>
+                <p>window.Events: ${!!window.Events}</p>
+                <p>window.roomManager: ${!!window.roomManager}</p>
+            `;
+            
+            if (!window.roomManager && window.network) {
+                console.log('Attempting to create RoomManager manually...');
+                try {
+                    // Try to create RoomManager manually
+                    console.log('Creating test room manager...');
+                    output.innerHTML += '<p>Attempting to create RoomManager...</p>';
+                } catch (error) {
+                    console.error('Failed to create RoomManager:', error);
+                    output.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

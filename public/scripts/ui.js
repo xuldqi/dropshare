@@ -39,9 +39,11 @@ window.addEventListener('error', (event) => {
     }
 });
 
-// Temporarily disable dialog initialization to avoid interference
+// Initialize dialogs when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, skipping dialog initialization');
+    console.log('DOM loaded, triggering load event for dialog initialization');
+    // Trigger the load event to initialize dialogs
+    Events.fire('load');
 });
 
 // set display name
@@ -161,9 +163,8 @@ class PeersUI {
     }
 
     _onPeerJoined(peer) {
+        console.log('Peer joined:', peer.id, 'Current peer ID:', window.currentPeerId);
         if ($(peer.id)) return; // peer already exists
-        // Ensure not to display current user themselves
-        if (peer.id === window.currentPeerId) return;
         const peerUI = new PeerUI(peer);
         const peersContainer = $$('x-peers');
         if (peersContainer) {
@@ -173,14 +174,9 @@ class PeersUI {
 
     _onPeers(peers) {
         this._clearPeers();
-        // If current user ID not set yet, delay processing
-        if (!window.currentPeerId) {
-            setTimeout(() => this._onPeers(peers), 100);
-            return;
-        }
-        // Filter out current user, ensure only other devices are shown
-        const otherPeers = peers.filter(peer => peer.id !== window.currentPeerId);
-        otherPeers.forEach(peer => this._onPeerJoined(peer));
+        console.log('Received peers:', peers, 'Current peer ID:', window.currentPeerId);
+        // Show all peers like the original project
+        peers.forEach(peer => this._onPeerJoined(peer));
     }
 
     _onPeerLeft(peerId) {
@@ -603,7 +599,9 @@ class ReceiveDialog extends Dialog {
 
     constructor() {
         super('receiveDialog');
+        console.log('📥 ReceiveDialog initialized');
         Events.on('file-received', e => {
+            console.log('📥 ReceiveDialog: file-received event:', e.detail);
             this._nextFile(e.detail);
             window.blop.play();
         });
@@ -835,8 +833,10 @@ class Notifications {
         // Check whether notification permissions have already been granted
         if (Notification.permission !== 'granted') {
             this.$button = $('notification');
-            this.$button.removeAttribute('hidden');
-            this.$button.addEventListener('click', e => this._requestPermission());
+            if (this.$button) {
+                this.$button.removeAttribute('hidden');
+                this.$button.addEventListener('click', e => this._requestPermission());
+            }
         }
         Events.on('text-received', e => this._messageNotification(e.detail.text));
         Events.on('file-received', e => this._downloadNotification(e.detail.name));
@@ -1097,11 +1097,11 @@ Events.on('load', () => {
 
     function drawCircle(radius) {
         ctx.beginPath();
-        let color = Math.round(255 * (1 - radius / Math.max(w, h)));
+        ctx.lineWidth = 2;
+        let color = Math.round(197 * (1 - radius / Math.max(w, h)));
         ctx.strokeStyle = 'rgba(' + color + ',' + color + ',' + color + ',0.1)';
         ctx.arc(x0, y0, radius, 0, 2 * Math.PI);
         ctx.stroke();
-        ctx.lineWidth = 2;
     }
 
     let step = 0;
@@ -1144,14 +1144,7 @@ document.body.onclick = e => { // safari hack to fix audio
     blop.play();
 }
 
-// Initialize background animation
-window.addEventListener('load', () => {
-    // Set background animation to active state
-    const bgAnimation = document.querySelector('.background-animation');
-    if (bgAnimation) {
-        bgAnimation.classList.add('animate');
-    }
-});
+// Background animation is handled by JavaScript canvas below, no CSS animation needed
 
 // Enhanced device icon system
 const deviceIcons = {

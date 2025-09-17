@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="image_filter_effects_title">Image Filter Effects - DropShare</title>
+    <title data-i18n="image_filter_effects_title">Image Filter Effects</title>
     <style>
         * {
             margin: 0;
@@ -70,6 +70,18 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .container {
@@ -438,6 +450,7 @@
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
     <script src="/locales/i18n.js"></script>
+    <script src="scripts/ui.js"></script>
 </head>
 
 <body>
@@ -445,17 +458,36 @@
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                🎨 DropShare
+                🎨 <span data-i18n="site_name">DropShare</span>
             </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html" class="active">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="index.html" data-i18n="nav_home">Home</a>
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" class="active" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+
+                <div class="control-buttons">
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -463,7 +495,7 @@
         <!-- Top-left return button -->
         <div style="margin-bottom: 20px;">
             <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
+                <span data-i18n="nav_back">← back</span>
             </a>
         </div>
         
@@ -489,27 +521,27 @@
                 <div class="controls-grid">
                     <!-- 滤镜面板 -->
                     <div class="filter-panel">
-                        <div class="panel-title">🎛️ Filter Controls</div>
+                        <div class="panel-title" data-i18n="image_filter_panel_title">🎛️ Filter Controls</div>
 
                         <!-- 预设滤镜 -->
                         <div class="preset-filters">
-                            <div class="filter-title">🎭 Preset Filters</div>
+                            <div class="filter-title" data-i18n="image_filter_presets">🎭 Preset Filters</div>
                             <div class="preset-grid">
-                                <button class="preset-btn active" data-preset="none">Original</button>
-                                <button class="preset-btn" data-preset="vintage">Vintage</button>
-                                <button class="preset-btn" data-preset="bw">B&W</button>
-                                <button class="preset-btn" data-preset="sepia">Sepia</button>
-                                <button class="preset-btn" data-preset="warm">Warm</button>
-                                <button class="preset-btn" data-preset="cool">Cool</button>
-                                <button class="preset-btn" data-preset="dramatic">Dramatic</button>
-                                <button class="preset-btn" data-preset="dreamy">Dreamy</button>
+                                <button class="preset-btn active" data-preset="none" data-i18n="filter_original">Original</button>
+                                <button class="preset-btn" data-preset="vintage" data-i18n="filter_vintage">Vintage</button>
+                                <button class="preset-btn" data-preset="bw" data-i18n="filter_bw">B&W</button>
+                                <button class="preset-btn" data-preset="sepia" data-i18n="filter_sepia">Sepia</button>
+                                <button class="preset-btn" data-preset="warm" data-i18n="filter_warm">Warm</button>
+                                <button class="preset-btn" data-preset="cool" data-i18n="filter_cool">Cool</button>
+                                <button class="preset-btn" data-preset="dramatic" data-i18n="filter_dramatic">Dramatic</button>
+                                <button class="preset-btn" data-preset="dreamy" data-i18n="filter_dreamy">Dreamy</button>
                             </div>
                         </div>
 
                         <!-- 基础调整 -->
                         <div class="filter-group">
                             <div class="filter-title">
-                                💡 Brightness
+                                💡 <span data-i18n="filter_brightness">Brightness</span>
                                 <span class="filter-value" id="brightnessValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="brightnessSlider" 
@@ -518,7 +550,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌗 Contrast
+                                🌗 <span data-i18n="filter_contrast">Contrast</span>
                                 <span class="filter-value" id="contrastValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="contrastSlider" 
@@ -527,7 +559,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌈 Saturation
+                                🌈 <span data-i18n="filter_saturation">Saturation</span>
                                 <span class="filter-value" id="saturationValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="saturationSlider" 
@@ -536,7 +568,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌅 Hue
+                                🌅 <span data-i18n="filter_hue">Hue</span>
                                 <span class="filter-value" id="hueValue">0°</span>
                             </div>
                             <input type="range" class="filter-slider" id="hueSlider" 
@@ -546,7 +578,7 @@
                         <!-- 高级效果 -->
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌫️ Blur
+                                🌫️ <span data-i18n="filter_blur">Blur</span>
                                 <span class="filter-value" id="blurValue">0px</span>
                             </div>
                             <input type="range" class="filter-slider" id="blurSlider" 
@@ -555,7 +587,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                ✨ Sharpen
+                                ✨ <span data-i18n="filter_sharpen">Sharpen</span>
                                 <span class="filter-value" id="sharpenValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="sharpenSlider" 
@@ -564,7 +596,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                ☀️ Exposure
+                                ☀️ <span data-i18n="filter_exposure">Exposure</span>
                                 <span class="filter-value" id="exposureValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="exposureSlider" 
@@ -573,7 +605,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🎯 Vignette
+                                🎯 <span data-i18n="filter_vignette">Vignette</span>
                                 <span class="filter-value" id="vignetteValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="vignetteSlider" 
@@ -582,34 +614,34 @@
 
                         <!-- 快速操作 -->
                         <div class="quick-actions">
-                            <button class="quick-btn" id="resetFilters">🔄 Reset</button>
-                            <button class="quick-btn" id="randomFilter">🎲 Random</button>
-                            <button class="quick-btn" id="toggleComparison">👁️ Compare</button>
+                            <button class="quick-btn" id="resetFilters" data-i18n="btn_reset">🔄 Reset</button>
+                            <button class="quick-btn" id="randomFilter" data-i18n="filter_random">🎲 Random</button>
+                            <button class="quick-btn" id="toggleComparison" data-i18n="filter_compare">👁️ Compare</button>
                         </div>
                     </div>
 
                     <!-- 图片工作区 -->
                     <div class="image-workspace">
-                        <div class="workspace-title">🖼️ Live Preview</div>
+                        <div class="workspace-title" data-i18n="image_filter_preview">🖼️ Live Preview</div>
                         <div class="image-container">
                             <img id="workspaceImage" class="workspace-image" alt="Filter preview">
                         </div>
                         <div class="image-info">
-                            <div>Size: <span class="size" id="imageSize"></span></div>
-                            <div>File Size: <span class="size" id="fileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">Size:</span> <span class="size" id="imageSize"></span></div>
+                            <div><span data-i18n="label_file_size">File Size:</span> <span class="size" id="fileSize"></span></div>
                         </div>
 
                         <!-- 对比模式 -->
                         <div class="comparison-mode" id="comparisonMode">
                             <div class="comparison-container">
                                 <div class="comparison-item">
-                                    <h4>Original</h4>
+                                    <h4 data-i18n="label_original_image">Original</h4>
                                     <div class="image-container">
                                         <img id="originalComparison" class="workspace-image" alt="Original image">
                                     </div>
                                 </div>
                                 <div class="comparison-item">
-                                    <h4>Filtered</h4>
+                                    <h4 data-i18n="image_filter_filtered">Filtered</h4>
                                     <div class="image-container">
                                         <img id="filteredComparison" class="workspace-image" alt="Filtered image">
                                     </div>
@@ -623,10 +655,10 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 Download Filtered Image
+                    <span data-i18n="image_filter_download">📥 Download Filtered Image</span>
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 Select Again
+                    <span data-i18n="btn_select_again">🔄 Select Again</span>
                 </button>
             </div>
         </div>
@@ -1053,6 +1085,52 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
+    <script>
+    function initializeLanguageSelector() {
+        const languageSelector = document.getElementById('language-selector');
+        
+        if (languageSelector && window.DROPSHARE_I18N) {
+            const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+            languageSelector.value = currentLang;
+            
+            languageSelector.addEventListener('change', function(e) {
+                const newLang = e.target.value;
+                if (window.DROPSHARE_I18N) {
+                    window.DROPSHARE_I18N.setLanguage(newLang);
+                    translatePage();
+                }
+            });
+        }
+    }
+
+    function translatePage() {
+        if (typeof window.DROPSHARE_I18N === 'undefined') return;
+        
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const translation = window.DROPSHARE_I18N.t(key);
+            
+            if (translation && translation !== key) {
+                if (element.tagName === 'INPUT' && element.type === 'button') {
+                    element.value = translation;
+                } else if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'password')) {
+                    element.placeholder = translation;
+                } else {
+                    element.textContent = translation;
+                }
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                initializeLanguageSelector();
+                translatePage();
+            }
+        }, 100);
+    });
     </script>
     <!-- Share Integration -->
     <script src="device-selector.js"></script>

@@ -66,6 +66,11 @@
                 } else {
                     switchToTransferMode();
                 }
+                
+                // Initialize global file upload functionality
+                setTimeout(() => {
+                    initGlobalFileUpload();
+                }, 500);
             });
             
             console.log('Mode set to:', mode);
@@ -127,6 +132,29 @@
     </script>
     
     <script>
+        // Immediately hide user info if in room mode
+        (function() {
+            function hideUserInfoIfInRoomMode() {
+                if (window.location.hash === '#rooms' || window.location.hash === '#room') {
+                    setTimeout(() => {
+                        const selectors = ['.user-info-bottom', '#userInfoBottom'];
+                        selectors.forEach(selector => {
+                            const element = document.querySelector(selector);
+                            if (element) {
+                                element.style.display = 'none';
+                                console.log('🚀 User info hidden:', selector);
+                            }
+                        });
+                    }, 100);
+                }
+            }
+            
+            // Call immediately and on events
+            hideUserInfoIfInRoomMode();
+            document.addEventListener('DOMContentLoaded', hideUserInfoIfInRoomMode);
+            window.addEventListener('hashchange', hideUserInfoIfInRoomMode);
+        })();
+        
         // Global functions for room buttons - must be in global scope
         function showCreateForm() {
             console.log('Create Room button clicked!');
@@ -825,8 +853,20 @@
             border: 1px solid #e5e7eb;
         }
         
+        .member-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+        
         .member-name {
             font-weight: 500;
+        }
+        
+        .member-device {
+            font-size: 11px;
+            color: #9ca3af;
         }
         
         .member-role {
@@ -1381,6 +1421,756 @@
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
     <script src="/locales/i18n.js"></script>
+    
+    <script>
+        // Toast notification function
+        window.showToast = function(message) {
+            const toastElement = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            
+            if (toastElement && toastText) {
+                toastText.textContent = message;
+                toastElement.setAttribute('class', 'row');
+                toastElement.style.display = 'block';
+                
+                // Hide after 2 seconds
+                setTimeout(() => {
+                    toastElement.style.display = 'none';
+                }, 2000);
+            } else {
+                // Fallback to custom toast if x-toast not working
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: #323232;
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 6px;
+                    z-index: 10000;
+                    font-size: 14px;
+                `;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 2000);
+            }
+        };
+        
+        // Simple copy room code function
+        window.copyRoomCodeSimple = function() {
+            console.log('📋 Copying room code...');
+            
+            const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+            if (roomCodeDisplay) {
+                const roomCodeText = roomCodeDisplay.textContent;
+                // Extract just the room code (remove "Room Code: " prefix)
+                const roomCode = roomCodeText.replace('Room Code: ', '').trim();
+                
+                console.log('📋 Room code to copy:', roomCode);
+                
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(roomCode).then(() => {
+                        console.log('✅ Room code copied to clipboard');
+                        showToast('复制成功');
+                    }).catch(err => {
+                        console.error('❌ Copy failed:', err);
+                        prompt('Copy this room code:', roomCode);
+                    });
+                } else {
+                    prompt('Copy this room code:', roomCode);
+                }
+            } else {
+                console.error('❌ Room code display not found');
+            }
+        };
+        
+        // Test function to manually display room info
+        window.testRoomDisplay = function() {
+            console.log('🧪 Testing room info display...');
+            
+            // Test with sample room data
+            const sampleRoom = {
+                name: '测试房间',
+                code: 'TESTXOYLJ4', 
+                memberCount: 1,
+                maxMembers: 10,
+                isPrivate: false
+            };
+            
+            console.log('Sample room data:', sampleRoom);
+            displayRoomInfo(sampleRoom);
+        };
+        
+        // Simple room creation handlers
+        function handleLeaveRoom() {
+            console.log('🚪 === LEAVE ROOM BUTTON CLICKED ===');
+            
+            // Send leave room message to server
+            const message = { type: 'leave-room' };
+            console.log('📤 Sending leave room message:', message);
+            
+            if (window.network && window.network.send) {
+                window.network.send(message);
+                console.log('✅ Leave message sent via window.network');
+            } else if (window.serverConnection && window.serverConnection.send) {
+                window.serverConnection.send(message);
+                console.log('✅ Leave message sent via serverConnection');
+            } else {
+                console.error('❌ No network connection available');
+            }
+            
+            // Immediately update UI (don't wait for server response)
+            leaveRoomUI();
+        }
+        
+        // Global handler for file input change
+        function handleFileInputChange(event) {
+            console.log('📁 handleFileInputChange called, files:', event.target.files.length);
+            
+            // Prevent multiple rapid calls
+            if (handleFileInputChange.processing) {
+                console.log('⏳ Already processing files, ignoring...');
+                return;
+            }
+            handleFileInputChange.processing = true;
+            
+            const files = event.target.files;
+            if (!files || files.length === 0) {
+                console.log('❌ No files selected');
+                handleFileInputChange.processing = false;
+                return;
+            }
+            
+            console.log('🔍 Debug - current URL hash:', window.location.hash);
+            
+            // Enhanced check - also consider URL hash for room mode
+            const isInRoomMode = window.location.hash === '#rooms' || window.location.hash === '#room';
+            
+            if (isInRoomMode) {
+                console.log('✅ Room mode detected, uploading', files.length, 'files');
+                try {
+                    uploadFilesToRoom(files);
+                } catch (error) {
+                    console.error('❌ Upload error:', error);
+                }
+            } else {
+                console.log('❌ Not in room mode - hash:', window.location.hash);
+                alert('Please join a room first to upload files');
+            }
+            
+            // Clear file input and reset processing flag
+            setTimeout(() => {
+                event.target.value = '';
+                handleFileInputChange.processing = false;
+                console.log('✅ File input reset, ready for next selection');
+            }, 500);
+        }
+        
+        // Global file upload initialization - independent of RoomManager
+        function initGlobalFileUpload() {
+            console.log('🔧 Initializing global file upload functionality...');
+            
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const selectFilesBtn = document.getElementById('selectFilesBtn');
+            
+            if (!dropZone || !fileInput || !selectFilesBtn) {
+                console.log('File transfer elements not found, retrying in 100ms...');
+                setTimeout(initGlobalFileUpload, 100);
+                return;
+            }
+            
+            // Prevent multiple initialization
+            if (window.globalFileUploadInitialized) {
+                console.log('Global file upload already initialized');
+                return;
+            }
+            
+            console.log('📁 Setting up file upload event listeners...');
+            
+            // Remove any existing event listeners by cloning elements
+            const newSelectBtn = selectFilesBtn.cloneNode(true);
+            const newDropZone = dropZone.cloneNode(true);
+            const newFileInput = fileInput.cloneNode(true);
+            
+            selectFilesBtn.parentNode.replaceChild(newSelectBtn, selectFilesBtn);
+            dropZone.parentNode.replaceChild(newDropZone, dropZone);
+            fileInput.parentNode.replaceChild(newFileInput, fileInput);
+            
+            // Get fresh references
+            const freshDropZone = document.getElementById('dropZone');
+            const freshFileInput = document.getElementById('fileInput');
+            const freshSelectBtn = document.getElementById('selectFilesBtn');
+            
+            // Add event listeners
+            freshSelectBtn.addEventListener('click', function(e) {
+                console.log('📁 Global - Select files button clicked');
+                e.preventDefault();
+                e.stopPropagation();
+                freshFileInput.click();
+            });
+            
+            freshDropZone.addEventListener('click', function(e) {
+                console.log('📁 Global - Drop zone clicked');
+                e.preventDefault();
+                e.stopPropagation();
+                freshFileInput.click();
+            });
+            
+            freshFileInput.addEventListener('change', function(e) {
+                console.log('📁 Global - Files selected:', e.target.files.length, 'files');
+                handleGlobalFileSelection(e.target.files);
+                e.target.value = '';
+            });
+            
+            // Drag functionality
+            freshDropZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                freshDropZone.classList.add('dragover');
+            });
+            
+            freshDropZone.addEventListener('dragleave', function() {
+                freshDropZone.classList.remove('dragover');
+            });
+            
+            freshDropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                freshDropZone.classList.remove('dragover');
+                console.log('📁 Global - Files dropped:', e.dataTransfer.files.length, 'files');
+                handleGlobalFileSelection(e.dataTransfer.files);
+            });
+            
+            window.globalFileUploadInitialized = true;
+            console.log('✅ Global file upload functionality initialized successfully');
+        }
+        
+        // Global file selection handler
+        function handleGlobalFileSelection(files) {
+            console.log('📁 Global - Handling file selection:', files.length, 'files');
+            
+            if (!files || files.length === 0) {
+                console.log('No files selected');
+                return;
+            }
+            
+            // Check if in room mode
+            const isInRoom = document.getElementById('roomInfo') && 
+                           document.getElementById('roomInfo').classList.contains('active');
+            
+            if (!isInRoom) {
+                alert('Please join a room first to upload files');
+                return;
+            }
+            
+            // Try to use RoomManager if available, or create it if in room mode
+            const isInRoomMode = window.location.hash === '#rooms' || window.location.hash === '#room';
+            
+            if (window.roomManager && typeof window.roomManager.uploadFilesToRoom === 'function') {
+                console.log('Using RoomManager to upload files');
+                window.roomManager.uploadFilesToRoom(files);
+            } else if (isInRoomMode) {
+                console.log('Room mode detected, creating RoomManager...');
+                try {
+                    if (!window.roomManager) {
+                        window.roomManager = new RoomManager();
+                    }
+                    setTimeout(() => {
+                        if (window.roomManager && typeof window.roomManager.uploadFilesToRoom === 'function') {
+                            window.roomManager.uploadFilesToRoom(files);
+                        } else {
+                            console.log('RoomManager still not ready, using manual upload');
+                            uploadFilesToRoomManual(files);
+                        }
+                    }, 200);
+                } catch (error) {
+                    console.error('Failed to create RoomManager:', error);
+                    uploadFilesToRoomManual(files);
+                }
+            } else {
+                // Fallback to manual upload
+                console.log('RoomManager not available, using manual upload');
+                uploadFilesToRoomManual(files);
+            }
+        }
+        
+        // Simplified file upload function for room mode
+        function uploadFilesToRoom(files) {
+            console.log('📤 Upload files to room:', files.length, 'files');
+            
+            if (!files || files.length === 0) {
+                console.log('❌ No files to upload');
+                return;
+            }
+            
+            // Use the manual upload function
+            uploadFilesToRoomManual(files);
+        }
+        
+        // Manual file upload function
+        function uploadFilesToRoomManual(files) {
+            console.log('📤 Manual upload files to room:', files.length, 'files');
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                console.log(`Uploading file ${i + 1}:`, file.name, file.size, 'bytes');
+                
+                // Create file info
+                const fileInfo = {
+                    id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    uploader: 'You',
+                    uploadTime: Date.now()
+                };
+                
+                // Send to server
+                if (window.network && window.network.send) {
+                    const message = {
+                        type: 'room-file-upload',
+                        fileInfo: fileInfo,
+                        fileData: file
+                    };
+                    
+                    console.log('📤 Sending file upload message:', message);
+                    window.network.send(message);
+                } else {
+                    console.error('❌ No network connection available for file upload');
+                }
+            }
+        }
+        
+        function leaveRoomUI() {
+            console.log('🚪 Updating UI for leaving room...');
+            
+            // Hide existing room info panel
+            const roomInfo = document.getElementById('roomInfo');
+            if (roomInfo) {
+                roomInfo.classList.remove('active');
+                console.log('✅ Room info panel hidden');
+            }
+            
+            // Hide fallback info if it exists
+            const fallbackInfo = document.getElementById('fallbackRoomInfo');
+            if (fallbackInfo) {
+                fallbackInfo.style.display = 'none';
+            }
+            
+            // Show the Create/Join Room buttons again since user left the room
+            const roomOptions = document.querySelector('.room-options');
+            if (roomOptions) {
+                roomOptions.style.cssText = 'display: flex !important;';
+                console.log('✅ Room options shown again with !important');
+            }
+            
+            // Hide file transfer area since user left the room
+            const fileTransferArea = document.getElementById('fileTransferArea');
+            if (fileTransferArea) {
+                fileTransferArea.classList.remove('active');
+                console.log('✅ File transfer area hidden');
+            }
+            
+            // Show bottom user info again when leaving room
+            if (window.roomManager && typeof window.roomManager.showBottomUserInfo === 'function') {
+                window.roomManager.showBottomUserInfo();
+                console.log('✅ Bottom user info shown again');
+            }
+            
+            // Show room controls (Create Room / Join Room buttons)
+            const roomControls = document.querySelector('.room-controls');
+            if (roomControls) {
+                roomControls.style.display = 'block';
+                console.log('✅ Room controls shown');
+            }
+            
+            // Clear any room-related data
+            console.log('✅ Room UI updated for leaving');
+        }
+        
+        function handleJoinRoom() {
+            console.log('🔵 === JOIN ROOM BUTTON CLICKED ===');
+            
+            const roomCode = document.getElementById('roomCode').value.trim();
+            const password = document.getElementById('joinRoomPassword').value;
+            
+            console.log('Form values:', { roomCode, password });
+            
+            if (!roomCode) {
+                alert('Please enter Room Code');
+                return;
+            }
+            
+            const message = {
+                type: 'join-room',
+                roomCode: roomCode.toUpperCase(), // 确保房间代码是大写
+                password: password
+            };
+            
+            console.log('📤 Sending join room message:', message);
+            
+            if (window.network && window.network.send) {
+                window.network.send(message);
+                console.log('✅ Message sent via window.network');
+            } else if (window.serverConnection && window.serverConnection.send) {
+                window.serverConnection.send(message);
+                console.log('✅ Message sent via serverConnection');
+            } else {
+                console.error('❌ No network connection available');
+                console.log('Network status:', {
+                    network: !!window.network,
+                    serverConnection: !!window.serverConnection
+                });
+            }
+        }
+        
+        function handleCancelRoom() {
+            console.log('🔴 === CANCEL ROOM BUTTON CLICKED ===');
+            
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            
+            if (createForm) {
+                createForm.classList.remove('active');
+                console.log('✅ Create form hidden');
+            }
+            if (joinForm) {
+                joinForm.classList.remove('active');
+                console.log('✅ Join form hidden');
+            }
+            
+            // Clear form fields
+            const roomCodeInput = document.getElementById('roomCode');
+            const joinPasswordInput = document.getElementById('joinRoomPassword');
+            
+            if (roomCodeInput) roomCodeInput.value = '';
+            if (joinPasswordInput) joinPasswordInput.value = '';
+            
+            console.log('✅ Join form fields cleared');
+        }
+        
+        function handleCreateRoom() {
+            console.log('🔵 === CREATE ROOM BUTTON CLICKED ===');
+            
+            const roomName = document.getElementById('roomName').value.trim();
+            const roomPassword = document.getElementById('roomPassword').value;
+            const maxMembers = parseInt(document.getElementById('maxMembers').value);
+            
+            console.log('Form values:', { roomName, roomPassword, maxMembers });
+            
+            if (!roomName) {
+                alert('Please enter Room Name');
+                return;
+            }
+            
+            const message = {
+                type: 'create-room',
+                roomSettings: {
+                    code: Math.random().toString(36).substr(2, 8).toUpperCase(),
+                    name: roomName,
+                    password: roomPassword,
+                    maxMembers: maxMembers,
+                    isPrivate: !!roomPassword
+                }
+            };
+            
+            console.log('📤 Sending room creation message:', message);
+            
+            if (window.network && window.network.send) {
+                window.network.send(message);
+                console.log('✅ Message sent via window.network');
+            } else if (window.serverConnection && window.serverConnection.send) {
+                window.serverConnection.send(message);
+                console.log('✅ Message sent via serverConnection');
+            } else {
+                console.error('❌ No network connection available');
+                console.log('Network status:', {
+                    network: !!window.network,
+                    serverConnection: !!window.serverConnection
+                });
+            }
+        }
+        
+        function handleCancelRoom() {
+            console.log('🔴 === CANCEL ROOM BUTTON CLICKED ===');
+            
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            
+            if (createForm) {
+                createForm.classList.remove('active');
+                console.log('✅ Create form hidden');
+            }
+            if (joinForm) {
+                joinForm.classList.remove('active');
+                console.log('✅ Join form hidden');
+            }
+            
+            // Clear form fields
+            document.getElementById('roomName').value = '';
+            document.getElementById('roomPassword').value = '';
+            document.getElementById('maxMembers').value = '10';
+            console.log('✅ Form fields cleared');
+        }
+        
+        // Handle room creation response
+        function handleRoomResponse(message) {
+            console.log('🏠 === ROOM RESPONSE RECEIVED ===', message);
+            
+            if (message.type === 'room-created') {
+                console.log('✅ Room created successfully!', message.room);
+                
+                // Hide the create form
+                const createForm = document.getElementById('createRoomForm');
+                if (createForm) {
+                    createForm.classList.remove('active');
+                }
+                
+                // Show room info
+                displayRoomInfo(message.room);
+                
+                // Switch to room mode
+                switchToRoomMode(message.room);
+            } else if (message.type === 'room-joined') {
+                console.log('✅ Room joined successfully!', message.room || message);
+                
+                // Hide the join form
+                const joinForm = document.getElementById('joinRoomForm');
+                if (joinForm) {
+                    joinForm.classList.remove('active');
+                }
+                
+                // Show room info
+                displayRoomInfo(message.room || { 
+                    name: message.roomName || 'Joined Room',
+                    code: message.roomCode || 'Unknown',
+                    memberCount: message.memberCount || 1
+                });
+                
+                // Switch to room mode
+                switchToRoomMode(message.room || { code: message.roomCode });
+            } else if (message.type === 'room-left') {
+                console.log('✅ Successfully left room');
+                leaveRoomUI();
+            } else if (message.type === 'room-error') {
+                console.error('❌ Room operation failed:', message.error);
+                alert('Room operation failed: ' + message.error);
+            }
+        }
+        
+        function displayRoomInfo(room) {
+            console.log('📋 Displaying room info using existing UI:', room);
+            
+            // Use existing room info elements
+            const roomInfo = document.getElementById('roomInfo');
+            const roomNameDisplay = document.getElementById('roomNameDisplay');
+            const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+            const memberCount = document.getElementById('memberCountNumber');
+            const currentUserName = document.getElementById('currentUserName');
+            
+            if (roomInfo && roomNameDisplay && roomCodeDisplay) {
+                // Fill in room information
+                roomNameDisplay.textContent = room.name || room.roomName || room.settings?.name || 'Untitled Room';
+                roomCodeDisplay.textContent = `Room Code: ${room.code || room.roomCode || 'Unknown'}`;
+                
+                if (memberCount) {
+                    memberCount.textContent = room.memberCount || 1;
+                }
+                
+                if (currentUserName) {
+                    // Get the real user display name instead of hardcoding "Host (You)"
+                    const displayNameEl = document.getElementById('displayName');
+                    if (displayNameEl && displayNameEl.textContent) {
+                        const text = displayNameEl.textContent.trim();
+                        console.log('Display name text for room:', text);
+                        
+                        // Extract the actual name from different possible formats:
+                        // "You are called Orange Firefly" -> "Orange Firefly"  
+                        // "You are known as Orange Firefly" -> "Orange Firefly"
+                        const calledMatch = text.match(/You are called (.+)$/i);
+                        const knownMatch = text.match(/You are known as (.+)$/i);
+                        
+                        if (calledMatch) {
+                            currentUserName.textContent = calledMatch[1].trim();
+                        } else if (knownMatch) {
+                            currentUserName.textContent = knownMatch[1].trim();
+                        } else {
+                            // Fallback: try to extract last two words (e.g., "Orange Firefly")
+                            const words = text.split(/\s+/);
+                            if (words.length >= 2) {
+                                const lastName = words[words.length - 1];
+                                const secondLastName = words[words.length - 2];
+                                currentUserName.textContent = `${secondLastName} ${lastName}`;
+                            } else {
+                                currentUserName.textContent = 'Anonymous User';
+                            }
+                        }
+                    } else {
+                        currentUserName.textContent = 'Anonymous User';
+                    }
+                }
+                
+                // Show the room info panel
+                roomInfo.classList.add('active');
+                console.log('✅ Room info panel activated');
+                
+                // Hide the Create/Join Room buttons since user is now in a room
+                const roomOptions = document.querySelector('.room-options');
+                if (roomOptions) {
+                    roomOptions.style.cssText = 'display: none !important;';
+                    console.log('✅ Room options hidden with !important');
+                }
+                
+                // Show file transfer area for file sharing
+                const fileTransferArea = document.getElementById('fileTransferArea');
+                if (fileTransferArea) {
+                    fileTransferArea.classList.add('active');
+                    console.log('✅ File transfer area shown');
+                }
+                
+                // Initialize file transfer functionality if not already done
+                if (window.roomManager && typeof window.roomManager.initializeFileTransfer === 'function') {
+                    window.roomManager.initializeFileTransfer();
+                    console.log('✅ File transfer functionality initialized');
+                }
+                
+                // Also initialize global file upload as backup
+                setTimeout(() => {
+                    initGlobalFileUpload();
+                }, 200);
+                
+                // Hide bottom user info when in room
+                if (window.roomManager && typeof window.roomManager.hideBottomUserInfo === 'function') {
+                    window.roomManager.hideBottomUserInfo();
+                    console.log('✅ Bottom user info hidden');
+                }
+                
+            } else {
+                console.warn('❌ Could not find existing room info elements, creating fallback');
+                // Fallback: create simple display
+                let fallbackInfo = document.getElementById('fallbackRoomInfo');
+                if (!fallbackInfo) {
+                    fallbackInfo = document.createElement('div');
+                    fallbackInfo.id = 'fallbackRoomInfo';
+                    fallbackInfo.style.cssText = `
+                        background: #4CAF50;
+                        color: white;
+                        padding: 15px;
+                        margin: 10px;
+                        border-radius: 8px;
+                        font-family: Arial, sans-serif;
+                    `;
+                    
+                    const roomControls = document.querySelector('.room-controls');
+                    if (roomControls) {
+                        roomControls.parentNode.insertBefore(fallbackInfo, roomControls.nextSibling);
+                    }
+                }
+                
+                fallbackInfo.innerHTML = `
+                    <h3>🎉 Room Created Successfully!</h3>
+                    <p><strong>Room Name:</strong> ${room.name}</p>
+                    <p><strong>Room Code:</strong> <span style="font-size: 18px; font-weight: bold;">${room.code}</span></p>
+                    <p><strong>Members:</strong> ${room.memberCount || 1}/${room.maxMembers}</p>
+                `;
+                fallbackInfo.style.display = 'block';
+            }
+        }
+        
+        function switchToRoomMode(room) {
+            console.log('🔄 Switching to room mode for:', room.code);
+            
+            // Hide room selection controls
+            const roomControls = document.querySelector('.room-controls');
+            if (roomControls) {
+                roomControls.style.display = 'none';
+            }
+        }
+        
+        function leaveRoom() {
+            console.log('🚪 Leaving room...');
+            
+            // Hide existing room info panel
+            const roomInfo = document.getElementById('roomInfo');
+            if (roomInfo) {
+                roomInfo.classList.remove('active');
+                console.log('✅ Room info panel hidden');
+            }
+            
+            // Hide fallback info if it exists
+            const fallbackInfo = document.getElementById('fallbackRoomInfo');
+            if (fallbackInfo) {
+                fallbackInfo.style.display = 'none';
+            }
+            
+            // Show room controls
+            const roomControls = document.querySelector('.room-controls');
+            if (roomControls) {
+                roomControls.style.display = 'block';
+            }
+            
+            // Send leave message if network available
+            if (window.network && window.network.send) {
+                window.network.send({ type: 'leave-room' });
+            }
+        }
+        
+        // Set up message listener when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Setting up room message listener...');
+            
+            // Wait for network system to be available
+            setTimeout(() => {
+                console.log('Checking for network systems...');
+                console.log('Available objects:', {
+                    Events: !!window.Events,
+                    network: !!window.network,
+                    serverConnection: !!window.serverConnection
+                });
+                
+                if (window.network && window.network.serverConnection) {
+                    console.log('✅ Found network.serverConnection, setting up message interceptor');
+                    
+                    // Store original message handler
+                    const serverConnection = window.network.serverConnection;
+                    const originalOnMessage = serverConnection._onMessage;
+                    
+                    // Override message handler
+                    serverConnection._onMessage = function(msg) {
+                        // Parse the message
+                        let message;
+                        try {
+                            message = JSON.parse(msg);
+                        } catch (e) {
+                            // Call original handler if parsing fails
+                            return originalOnMessage.call(this, msg);
+                        }
+                        
+                        console.log('📨 Intercepted WebSocket message:', message);
+                        
+                        // Handle room messages before calling original handler
+                        if (message.type && message.type.startsWith('room-')) {
+                            console.log('🏠 Room message detected:', message.type);
+                            handleRoomResponse(message);
+                        }
+                        
+                        // Call original handler
+                        return originalOnMessage.call(this, msg);
+                    };
+                    
+                    console.log('✅ WebSocket message interceptor installed successfully');
+                } else {
+                    console.log('❌ Network system not found, will retry...');
+                    setTimeout(arguments.callee, 500);
+                }
+            }, 1000);
+        });
+    </script>
+    
 </head>
 
 <body translate="no">
@@ -1432,8 +2222,7 @@
         </div>
     </nav>
     
-    <!-- Add background animation -->
-    <div class="background-animation"></div>
+    <!-- Background animation is handled by JavaScript canvas in ui.js -->
     
     <!-- Back to home button is hidden -->
     
@@ -1513,8 +2302,8 @@
                                 <input type="number" id="maxMembers" name="max-members" class="form-input" value="10" min="2" max="50" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmCreateRoom" class="btn-primary" data-i18n="share_create_room">Create Room</button>
-                                <button type="button" id="cancelCreateRoom" class="btn-cancel" data-i18n="share_cancel">Cancel</button>
+                                <button type="button" id="confirmCreateRoom" class="btn-primary" data-i18n="share_create_room" onclick="handleCreateRoom()">Create Room</button>
+                                <button type="button" id="cancelCreateRoom" class="btn-cancel" data-i18n="share_cancel" onclick="handleCancelRoom()">Cancel</button>
                             </div>
                         </form>
                         <div id="createRoomError" class="error-message" style="display: none;"></div>
@@ -1533,8 +2322,8 @@
                                 <input type="password" id="joinRoomPassword" name="join-password" class="form-input" data-i18n-placeholder="share_enter_room_password" placeholder="Enter room password" autocomplete="off">
                             </div>
                             <div class="form-actions">
-                                <button type="button" id="confirmJoinRoom" class="btn-primary" data-i18n="share_join_room">Join Room</button>
-                                <button type="button" id="cancelJoinRoom" class="btn-cancel" data-i18n="share_cancel">Cancel</button>
+                                <button type="button" id="confirmJoinRoom" class="btn-primary" data-i18n="share_join_room" onclick="handleJoinRoom()">Join Room</button>
+                                <button type="button" id="cancelJoinRoom" class="btn-cancel" data-i18n="share_cancel" onclick="handleCancelRoom()">Cancel</button>
                             </div>
                         </form>
                         <div id="joinRoomError" class="error-message" style="display: none;"></div>
@@ -1549,7 +2338,7 @@
                             <span class="room-name-display" id="roomNameDisplay"></span>
                             <div class="room-code-row">
                                 <span class="room-code-display" id="roomCodeDisplay"></span>
-                                <button id="copyRoomCode" class="copy-btn-small" data-i18n-title="copy_room_code" title="CopyRoom Code">📋</button>
+                                <button id="copyRoomCode" class="copy-btn-small" data-i18n-title="copy_room_code" title="Copy Room Code" onclick="copyRoomCodeSimple()">📋</button>
                             </div>
                             <div class="current-user-info">
                                 <span class="current-user-label" data-i18n="share_your_name">Your Name: </span>
@@ -1574,7 +2363,7 @@
                     
                     <!-- Action buttons -->
                     <div class="room-actions">
-                        <button id="leaveRoomBtn" class="btn-leave-room" data-i18n="share_leave_room">Leave Room</button>
+                        <button id="leaveRoomBtn" class="btn-leave-room" data-i18n="share_leave_room" onclick="handleLeaveRoom()">Leave Room</button>
                     </div>
                 </div>
                 
@@ -1595,15 +2384,15 @@
                         <!-- File upload area -->
                         <div class="upload-section">
                             <h3 data-i18n="share_upload_files_to_room">📤 Upload files to room</h3>
-                            <div id="dropZone" class="drop-zone">
+                            <div id="dropZone" class="drop-zone" onclick="document.getElementById('fileInput').click()">
                                 <div class="drop-zone-content">
                                     <svg class="upload-icon" viewBox="0 0 24 24" width="48" height="48">
                                         <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                                     </svg>
                                     <p data-i18n="share_drag_files_here">Drag files here or click to upload</p>
                                     <p class="upload-hint" data-i18n="share_files_shared_with_members">Files will be shared with all room members</p>
-                                    <input type="file" id="fileInput" multiple hidden>
-                                    <button id="selectFilesBtn" class="select-files-btn" data-i18n="share_select_files_to_upload">Select Files to Upload</button>
+                                    <input type="file" id="fileInput" multiple style="position: absolute; left: -9999px; opacity: 0;" onchange="handleFileInputChange(event)">
+                                    <label for="fileInput" class="select-files-btn" style="cursor: pointer; display: inline-block; padding: 8px 16px; background: #4285f4; color: white; border-radius: 4px; text-align: center; user-select: none;" data-i18n="share_select_files_to_upload">Select Files to Upload</label>
                                 </div>
                             </div>
                         </div>
@@ -1635,7 +2424,7 @@
         </div>
         
         <!-- User info at bottom -->
-        <div class="user-info-bottom">
+        <div class="user-info-bottom" id="userInfoBottom">
             <footer>
                 <div class="logo-container">
                     <svg class="icon logo">
@@ -1943,6 +2732,9 @@
                 // Set up file events
                 this.setupFileEvents();
                 
+                // Check for saved room state and auto-reconnect
+                this.checkAndReconnectRoom();
+                
                 console.log('RoomManager constructor completed');
             }
             
@@ -2051,58 +2843,95 @@
             // Initialize room UI events
             initializeRoomUI() {
                 console.log('=== INITIALIZING ROOM UI ===');
+                console.log('Current DOM state:', document.readyState);
+                console.log('Window location hash:', window.location.hash);
+                
                 // Wait for DOM to fully load before binding events
                 const bindEvents = () => {
-                    console.log('Attempting to bind room UI events...');
+                    console.log('=== ATTEMPTING TO BIND ROOM UI EVENTS ===');
                     const createBtn = document.getElementById('createRoomBtn');
                     const joinBtn = document.getElementById('joinRoomBtn');
+                    const confirmCreateBtn = document.getElementById('confirmCreateRoom');
+                    const cancelCreateBtn = document.getElementById('cancelCreateRoom');
+                    const confirmJoinBtn = document.getElementById('confirmJoinRoom');
+                    const cancelJoinBtn = document.getElementById('cancelJoinRoom');
                     
-                    console.log('Create button found:', !!createBtn, createBtn);
-                    console.log('Join button found:', !!joinBtn, joinBtn);
+                    console.log('Button existence check:', {
+                        createBtn: !!createBtn,
+                        joinBtn: !!joinBtn,
+                        confirmCreateBtn: !!confirmCreateBtn,
+                        cancelCreateBtn: !!cancelCreateBtn,
+                        confirmJoinBtn: !!confirmJoinBtn,
+                        cancelJoinBtn: !!cancelJoinBtn
+                    });
                     
-                    if (!createBtn || !joinBtn) {
-                        console.log('Room buttons not found, waiting for DOM loading...');
+                    if (!createBtn || !joinBtn || !confirmCreateBtn || !cancelCreateBtn || !confirmJoinBtn || !cancelJoinBtn) {
+                        console.log('Some room buttons not found, waiting for DOM loading...');
+                        console.log('Missing buttons:', {
+                            createBtn: !createBtn,
+                            joinBtn: !joinBtn, 
+                            confirmCreateBtn: !confirmCreateBtn,
+                            cancelCreateBtn: !cancelCreateBtn,
+                            confirmJoinBtn: !confirmJoinBtn,
+                            cancelJoinBtn: !cancelJoinBtn
+                        });
                         setTimeout(bindEvents, 100);
                         return;
                     }
                     
-                    console.log('Binding click events to room buttons...');
+                    console.log('✓ All buttons found! Binding click events to room buttons...');
                     
-                    // Create Room button
+                    // Create Room button (show form)
                     createBtn.addEventListener('click', (e) => {
                         console.log('Create Room button clicked!');
                         e.preventDefault();
                         this.showCreateRoomForm();
                     });
                 
-                    // Join Room button
+                    // Join Room button (show form)
                     joinBtn.addEventListener('click', (e) => {
                         console.log('Join Room button clicked!');
                         e.preventDefault();
                         this.showJoinRoomForm();
                     });
                     
-                    console.log('Room button events bound successfully!');
-                    
-                    // Confirm Create Room
-                    document.getElementById('confirmCreateRoom').addEventListener('click', () => {
+                    // Confirm Create Room (actual room creation)
+                    confirmCreateBtn.addEventListener('click', (e) => {
+                        console.log('=== CREATE ROOM CONFIRM BUTTON CLICKED ===');
+                        console.log('Room manager:', this);
+                        console.log('Button element:', e.target);
+                        e.preventDefault(); // Prevent form submission
                         this.createRoom();
                     });
                     
-                    // CancelCreate Room
-                    document.getElementById('cancelCreateRoom').addEventListener('click', () => {
+                    // Cancel Create Room
+                    cancelCreateBtn.addEventListener('click', (e) => {
+                        console.log('=== CANCEL CREATE ROOM BUTTON CLICKED ===');
+                        console.log('Room manager:', this);
+                        console.log('Button element:', e.target);
+                        e.preventDefault(); // Prevent form submission
                         this.hideAllForms();
                     });
                     
                     // Confirm Join Room
-                    document.getElementById('confirmJoinRoom').addEventListener('click', () => {
+                    confirmJoinBtn.addEventListener('click', (e) => {
+                        console.log('=== JOIN ROOM CONFIRM BUTTON CLICKED ===');
+                        e.preventDefault();
                         this.joinRoom();
                     });
                     
-                    // CancelJoin Room
-                    document.getElementById('cancelJoinRoom').addEventListener('click', () => {
+                    // Cancel Join Room
+                    cancelJoinBtn.addEventListener('click', (e) => {
+                        console.log('=== CANCEL JOIN ROOM BUTTON CLICKED ===');
+                        e.preventDefault();
                         this.hideAllForms();
                     });
+                    
+                    console.log('✅ ALL ROOM BUTTON EVENTS BOUND SUCCESSFULLY!');
+                };
+                
+                // Start binding process
+                bindEvents();
                     
                     // Leave Room
                     document.getElementById('leaveRoomBtn').addEventListener('click', () => {
@@ -2145,17 +2974,34 @@
                     return;
                 }
                 
+                // Prevent multiple event binding
+                if (this.fileTransferInitialized) {
+                    console.log('File transfer already initialized, skipping...');
+                    return;
+                }
+                
+                console.log('🔧 Initializing file transfer functionality...');
+                
                 // Click to select files
-                selectFilesBtn.addEventListener('click', () => {
+                selectFilesBtn.addEventListener('click', (e) => {
+                    console.log('📁 Select files button clicked');
+                    e.preventDefault();
                     fileInput.click();
                 });
                 
-                dropZone.addEventListener('click', () => {
-                    fileInput.click();
+                dropZone.addEventListener('click', (e) => {
+                    console.log('📁 Drop zone clicked');
+                    e.preventDefault();
+                    // Use label trigger instead of direct click
+                    const fileInput = document.getElementById('fileInput');
+                    if (fileInput) {
+                        fileInput.click();
+                    }
                 });
                 
                 // File selection
                 fileInput.addEventListener('change', (e) => {
+                    console.log('📁 Files selected:', e.target.files.length, 'files');
                     this.handleFileSelection(e.target.files);
                     // Clear file input, allow repeated upload of same file
                     e.target.value = '';
@@ -2174,8 +3020,12 @@
                 dropZone.addEventListener('drop', (e) => {
                     e.preventDefault();
                     dropZone.classList.remove('dragover');
+                    console.log('📁 Files dropped:', e.dataTransfer.files.length, 'files');
                     this.handleFileSelection(e.dataTransfer.files);
                 });
+                
+                this.fileTransferInitialized = true;
+                console.log('✅ File transfer functionality initialized successfully');
             }
             
             // Handle file selection
@@ -2226,10 +3076,34 @@
             getCurrentUserDisplayName() {
                 const displayNameEl = document.getElementById('displayName');
                 if (displayNameEl && displayNameEl.textContent) {
-                    // Extract display name (remove "You are called" prefix etc.)
-                    const text = displayNameEl.textContent;
-                    const match = text.match(/\s(.+)$/);
-                    return match ? match[1] : 'Anonymous User';
+                    const text = displayNameEl.textContent.trim();
+                    console.log('Display name text:', text);
+                    
+                    // Extract the actual name from different possible formats:
+                    // "You are called Orange Firefly" -> "Orange Firefly"
+                    // "You are known as Orange Firefly" -> "Orange Firefly"
+                    const calledMatch = text.match(/You are called (.+)$/i);
+                    const knownMatch = text.match(/You are known as (.+)$/i);
+                    
+                    if (calledMatch) {
+                        console.log('Found called format:', calledMatch[1]);
+                        return calledMatch[1].trim();
+                    } else if (knownMatch) {
+                        console.log('Found known format:', knownMatch[1]);
+                        return knownMatch[1].trim();
+                    } else {
+                        // Fallback: try to extract last two words (e.g., "Orange Firefly")
+                        const words = text.split(/\s+/);
+                        if (words.length >= 2) {
+                            const lastName = words[words.length - 1];
+                            const secondLastName = words[words.length - 2];
+                            const result = `${secondLastName} ${lastName}`;
+                            console.log('Fallback extraction:', result);
+                            return result;
+                        }
+                        console.log('Using fallback Anonymous User');
+                        return 'Anonymous User';
+                    }
                 }
                 return 'Anonymous User';
             }
@@ -2652,10 +3526,20 @@
             
             // Hide all forms
             hideAllForms() {
+                console.log('=== HIDE ALL FORMS CALLED ===');
+                console.log('Form elements exist:', {
+                    createRoomForm: !!document.getElementById('createRoomForm'),
+                    joinRoomForm: !!document.getElementById('joinRoomForm'),
+                    createRoomError: !!document.getElementById('createRoomError'),
+                    joinRoomError: !!document.getElementById('joinRoomError')
+                });
+                
                 document.getElementById('createRoomForm').classList.remove('active');
                 document.getElementById('joinRoomForm').classList.remove('active');
                 document.getElementById('createRoomError').style.display = 'none';
                 document.getElementById('joinRoomError').style.display = 'none';
+                
+                console.log('Forms hidden successfully');
                 
                 // Clear form content to prevent browser auto-fill
                 this.clearFormFields();
@@ -2677,9 +3561,12 @@
             
             // Create Room
             createRoom() {
+                console.log('=== CREATE ROOM FUNCTION CALLED ===');
                 const roomName = document.getElementById('roomName').value.trim();
                 const roomPassword = document.getElementById('roomPassword').value;
                 const maxMembers = parseInt(document.getElementById('maxMembers').value);
+                
+                console.log('Form values:', { roomName, roomPassword, maxMembers });
                 
                 if (!roomName) {
                                          this.showError('createRoomError', 'Please enter Room Name');
@@ -2695,11 +3582,16 @@
                     isPrivate: !!roomPassword
                 };
                 
+                console.log('Generated room settings:', roomSettings);
+                
                 // Send Create Room request to backend
-                this.sendMessage({
+                const message = {
                     type: 'create-room',
                     roomSettings: roomSettings
-                });
+                };
+                
+                console.log('Sending create room message:', message);
+                this.sendMessage(message);
             }
             
             // Join Room
@@ -2739,46 +3631,73 @@
             
             // Send message to WebSocket
             sendMessage(message) {
+                console.log('=== SEND MESSAGE DEBUG ===');
+                console.log('Message:', message);
+                console.log('Available objects:', {
+                    'window.network': !!window.network,
+                    'window.network.send': !!(window.network && window.network.send),
+                    'window.network.isConnected': !!(window.network && window.network.isConnected),
+                    'isConnected()': window.network ? window.network.isConnected() : 'N/A',
+                    'window.serverConnection': !!window.serverConnection,
+                    'window.serverConnection.send': !!(window.serverConnection && window.serverConnection.send)
+                });
+                
                 // Check if network connection is available
                 if (window.network && window.network.send && window.network.isConnected()) {
+                    console.log('✓ Using window.network.send()');
                     window.network.send(message);
+                } else if (window.serverConnection && window.serverConnection.send) {
+                    console.log('✓ Using window.serverConnection.send()');
+                    window.serverConnection.send(message);
                 } else {
+                    console.error('✗ No available network connection');
                     console.warn('Network connection unavailable, message send failed:', message);
-                    // Can add retry logic or error notification here
                     this.showError('createRoomError', 'Network connection unavailable, please try again later');
                 }
             }
             
             // Handle room-related WebSocket messages
             handleRoomMessage(message) {
+                console.log('=== ROOM MESSAGE RECEIVED ===', message);
                 switch (message.type) {
                     case 'room-created':
+                        console.log('Room created successfully:', message);
                         this.onRoomCreated(message);
                         break;
                     case 'room-joined':
+                        console.log('Room joined successfully:', message);
                         this.onRoomJoined(message);
                         break;
                     case 'room-left':
+                        console.log('Left room:', message);
                         this.onRoomLeft(message);
                         break;
                     case 'room-error':
+                        console.log('Room error received:', message);
                         this.onRoomError(message);
                         break;
                     case 'room-member-joined':
+                        console.log('Member joined room:', message);
                         this.onMemberJoined(message);
                         break;
                     case 'room-member-left':
+                        console.log('Member left room:', message);
                         this.onMemberLeft(message);
                         break;
                     case 'room-disbanded':
+                        console.log('Room disbanded:', message);
                         this.onRoomDisbanded(message);
                         break;
                     case 'room-file-shared':
+                        console.log('File shared to room:', message);
                         this.onFileSharedToRoom(message);
                         break;
                     case 'room-file-removed':
+                        console.log('File removed from room:', message);
                         this.onFileRemovedFromRoom(message);
                         break;
+                    default:
+                        console.log('Unknown room message type:', message.type);
                 }
             }
             
@@ -2787,6 +3706,14 @@
                 this.currentRoom = message.room.code;
                 this.isInRoom = true;
                 this.isHost = true;
+                
+                // Check if this is a reconnection
+                if (this.waitingForReconnect) {
+                    console.log('🎉 Successfully reconnected to room as host!');
+                    showToast('成功重新连接到房间！');
+                    this.waitingForReconnect = false;
+                    this.savedStateForReconnect = null;
+                }
                 
                 // Save room state to local storage
                 this.saveRoomState({
@@ -2822,6 +3749,14 @@
                 this.currentRoom = message.room.code;
                 this.isInRoom = true;
                 this.isHost = false;
+                
+                // Check if this is a reconnection
+                if (this.waitingForReconnect) {
+                    console.log('🎉 Successfully reconnected to room!');
+                    showToast('成功重新连接到房间！');
+                    this.waitingForReconnect = false;
+                    this.savedStateForReconnect = null;
+                }
                 
                 // Save room state to local storage
                 this.saveRoomState({
@@ -2886,8 +3821,14 @@
             // Hide bottom user info area
             hideBottomUserInfo() {
                 const userInfoBottom = document.querySelector('.user-info-bottom');
+                const userInfoBottomById = document.getElementById('userInfoBottom');
                 if (userInfoBottom) {
                     userInfoBottom.style.display = 'none';
+                    console.log('✅ Bottom user info hidden (by class)');
+                }
+                if (userInfoBottomById) {
+                    userInfoBottomById.style.display = 'none';
+                    console.log('✅ Bottom user info hidden (by ID)');
                 }
             }
             
@@ -2901,14 +3842,28 @@
             
             // Room error
             onRoomError(message) {
+                // Check if this is a reconnection failure
+                if (this.waitingForReconnect) {
+                    console.log('🚫 Room reconnection failed:', message.error);
+                    showToast('重连失败: ' + message.error);
+                    this.waitingForReconnect = false;
+                    this.savedStateForReconnect = null;
+                    
+                    // Clear invalid room state
+                    this.clearRoomState();
+                    
+                    // Show room options so user can try again
+                    this.showRoomOptions();
+                    return;
+                }
+                
                 const activeForm = document.querySelector('.room-form.active');
                 if (activeForm) {
                     const errorId = activeForm.id === 'createRoomForm' ? 'createRoomError' : 'joinRoomError';
                     this.showError(errorId, message.error);
                 } else {
-                    // If reconnection failed, show room options
-                    console.log('Room reconnection failed:', message.error);
-                        this.showToast('Room connection failed: ' + message.error);
+                    console.log('Room error without active form:', message.error);
+                    showToast('房间错误: ' + message.error);
                     this.showRoomOptions();
                     this.hideRoomInfo();
                     this.hideFileTransferArea();
@@ -3106,7 +4061,7 @@
             // Update member list
             updateMemberList(members) {
                 const memberList = document.getElementById('memberList');
-                const memberCount = document.getElementById('memberCount');
+                const memberCountNumber = document.getElementById('memberCountNumber');
                 
                 memberList.innerHTML = '';
                 
@@ -3114,22 +4069,27 @@
                     const memberItem = document.createElement('div');
                     memberItem.className = 'member-item';
                     memberItem.innerHTML = `
+                        <div class="member-info">
                         <span class="member-name">${member.displayName}</span>
+                            <span class="member-device">${member.deviceName || 'Unknown Device'}</span>
+                        </div>
                         <span class="member-role">${member.isHost ? 'Host' : 'Member'}</span>
                     `;
                     memberList.appendChild(memberItem);
                     this.members.set(member.id, member);
                 });
                 
-                // Update member count
-                memberCount.textContent = `${members.length} online`;
+                // Update member count number (just the number, not the full text)
+                if (memberCountNumber) {
+                    memberCountNumber.textContent = members.length;
+                }
             }
             
             // Hide room option buttons
             hideRoomOptions() {
                 const roomOptions = document.querySelector('.room-options');
                 if (roomOptions) {
-                    roomOptions.style.display = 'none';
+                    roomOptions.style.cssText = 'display: none !important;';
                 }
             }
             
@@ -3145,7 +4105,7 @@
             showRoomOptions() {
                 const roomOptions = document.querySelector('.room-options');
                 if (roomOptions) {
-                    roomOptions.style.display = 'flex';
+                    roomOptions.style.cssText = 'display: flex !important;';
                 }
             }
             
@@ -3349,10 +4309,58 @@
             
             // Setup before unload confirmation
             setupBeforeUnloadHandler() {
+                // Track if it's a refresh operation
+                this.isRefreshing = false;
+                
+                // Listen for keyboard shortcuts that indicate refresh
+                document.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R')) {
+                        this.isRefreshing = true;
+                        console.log('🔄 Ctrl+R refresh detected, marking as refresh operation');
+                        setTimeout(() => this.isRefreshing = false, 1000); // Reset after 1 second
+                    }
+                    if (e.key === 'F5') {
+                        this.isRefreshing = true;
+                        console.log('🔄 F5 refresh detected');
+                        setTimeout(() => this.isRefreshing = false, 1000); // Reset after 1 second
+                    }
+                });
+                
+                // Track navigation type to detect back/forward vs close
                 this.beforeUnloadHandler = (e) => {
                     if (this.isInRoom) {
-                        // Check if it's a refresh operation (not 100% accurate but can try)
-                        // If user explicitly wants to close tab/window, still warn
+                        if (this.isRefreshing) {
+                            console.log('🔄 Page refresh detected, keeping room state for reconnection');
+                            // Don't clear room state for refresh - it will be used for reconnection
+                            this.isRefreshing = false;
+                            return; // Don't show confirmation for refresh
+                        } else {
+                            console.log('🚪 Page close/navigation detected, leaving room');
+                            
+                            // For immediate page close, send leave message synchronously
+                            if (window.network && window.network.send) {
+                                try {
+                                    // Use navigator.sendBeacon for more reliable delivery during page unload
+                                    const message = JSON.stringify({ type: 'leave-room' });
+                                    if (navigator.sendBeacon) {
+                                        // This is more reliable for page unload
+                                        const blob = new Blob([message], { type: 'application/json' });
+                                        navigator.sendBeacon(window.location.origin + '/leave-room', blob);
+                                        console.log('📤 Sent leave room message via sendBeacon');
+                                    } else {
+                                        // Fallback to regular send
+                                        window.network.send({ type: 'leave-room' });
+                                        console.log('📤 Sent leave room message via WebSocket');
+                                    }
+                                } catch (error) {
+                                    console.error('❌ Failed to send leave room message:', error);
+                                }
+                            }
+                            
+                            // Clear room state since user is leaving
+                            this.clearRoomState();
+                            
+                            // Show confirmation for explicit close
                         const message = this.isHost 
                             ? 'Closing tab will disband the room! Are you sure you want to leave?' 
                             : 'Closing tab will leave the room! Are you sure you want to leave?';
@@ -3360,6 +4368,7 @@
                         e.preventDefault();
                         e.returnValue = message;
                         return message;
+                        }
                     }
                 };
                 
@@ -3423,6 +4432,54 @@
                 }
             }
             
+            // Check and reconnect to room on page load
+            checkAndReconnectRoom() {
+                console.log('🔍 Checking for saved room state...');
+                
+                const savedState = this.loadRoomState();
+                if (savedState && savedState.roomCode) {
+                    console.log('📦 Found saved room state, attempting to reconnect:', savedState);
+                    
+                    // Wait for network to be ready before attempting reconnection
+                    this.waitForNetworkAndReconnect(savedState);
+                } else {
+                    console.log('📝 No saved room state found');
+                }
+            }
+            
+            // Wait for network and reconnect
+            waitForNetworkAndReconnect(savedState) {
+                const attemptReconnect = () => {
+                    if (window.network && window.network.send) {
+                        console.log('🌐 Network ready, attempting to reconnect to room:', savedState.roomCode);
+                        
+                        // Send reconnect message to server
+                        const reconnectMessage = {
+                            type: 'join-room',
+                            roomCode: savedState.roomCode,
+                            password: savedState.password || ''
+                        };
+                        
+                        console.log('📤 Sending room reconnect message:', reconnectMessage);
+                        window.network.send(reconnectMessage);
+                        
+                        // Show connecting message
+                        showToast('正在重新连接房间...');
+                        
+                        // Set up one-time listener for reconnect success
+                        this.waitingForReconnect = true;
+                        this.savedStateForReconnect = savedState;
+                        
+                    } else {
+                        console.log('⏳ Network not ready, retrying in 100ms...');
+                        setTimeout(attemptReconnect, 100);
+                    }
+                };
+                
+                // Start attempting reconnection
+                setTimeout(attemptReconnect, 500); // Wait a bit for everything to be initialized
+            }
+            
             // Setup file transfer event listeners
             setupFileEvents() {
                 // Wait for Events system ready
@@ -3454,11 +4511,86 @@
                 
                 console.log('File received in room:', fileData);
                 
+                // Show receive confirmation dialog (like snapdrop)
+                this.showReceiveDialog(fileData);
+            }
+            
+            // Show receive confirmation dialog
+            showReceiveDialog(fileData) {
+                const receiveDialog = document.getElementById('receiveDialog');
+                const fileName = document.getElementById('fileName');
+                const fileSize = document.getElementById('fileSize');
+                const downloadBtn = document.getElementById('download');
+                
+                if (!receiveDialog || !fileName || !fileSize || !downloadBtn) {
+                    console.error('Receive dialog elements not found');
+                    // Fallback: directly download
+                    this.downloadReceivedFile(fileData);
+                    return;
+                }
+                
+                // Set file information
+                fileName.textContent = fileData.name;
+                fileSize.textContent = this.formatFileSize(fileData.size || 0);
+                
+                // Set up download handler
+                downloadBtn.onclick = () => {
+                    this.downloadReceivedFile(fileData);
+                    receiveDialog.close();
+                };
+                
+                // Show the dialog
+                receiveDialog.show();
+                
+                console.log('📥 Showing receive confirmation dialog for:', fileData.name);
+            }
+            
+            // Download received file
+            downloadReceivedFile(fileData) {
+                try {
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.download = fileData.name;
+                    
+                    if (fileData.blob) {
+                        // If we have blob data
+                        link.href = URL.createObjectURL(fileData.blob);
+                    } else {
+                        console.error('No blob data available for file:', fileData.name);
+                        showToast('文件下载失败：无数据');
+                        return;
+                    }
+                    
+                    // Trigger download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Clean up blob URL
+                    if (fileData.blob) {
+                        URL.revokeObjectURL(link.href);
+                    }
+                
                 // Add to received files list
                 this.addToReceivedFilesList(fileData);
                 
-                // Show notification
-                this.showToast(`Received file: ${fileData.name}`);
+                    // Show success notification
+                    showToast(`文件已保存: ${fileData.name}`);
+                    
+                    console.log('✅ File downloaded:', fileData.name);
+                } catch (error) {
+                    console.error('❌ Download failed:', error);
+                    showToast('文件下载失败');
+                }
+            }
+            
+            // Format file size for display
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024;
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
             }
             
             // Handle file transfer progress
@@ -3674,9 +4806,141 @@
             });
         }
         
+        // DEBUG: Add debug function to manually test room manager
+        window.debugRoomManager = function() {
+            console.log('=== MANUAL DEBUG OF ROOM MANAGER ===');
+            console.log('Available objects:', {
+                network: !!window.network,
+                serverConnection: !!window.serverConnection,
+                Events: !!window.Events,
+                roomManager: !!window.roomManager
+            });
+            
+            if (!window.roomManager && window.network) {
+                console.log('Creating RoomManager manually...');
+                try {
+                    window.roomManager = new RoomManager();
+                    console.log('✅ RoomManager created successfully!');
+                } catch (error) {
+                    console.error('❌ Failed to create RoomManager:', error);
+                }
+            }
+            
+            // Test button binding manually
+                    if (window.roomManager) {
+                const confirmBtn = document.getElementById('confirmCreateRoom');
+                const cancelBtn = document.getElementById('cancelCreateRoom');
+                
+                if (confirmBtn && cancelBtn) {
+                    console.log('Manually binding buttons...');
+                    confirmBtn.onclick = () => {
+                        console.log('=== MANUAL CREATE BUTTON CLICKED ===');
+                        window.roomManager.createRoom();
+                    };
+                    cancelBtn.onclick = () => {
+                        console.log('=== MANUAL CANCEL BUTTON CLICKED ===');
+                        window.roomManager.hideAllForms();
+                    };
+                    console.log('✅ Buttons manually bound!');
+            } else {
+                    console.log('❌ Buttons not found');
+                }
+            }
+        };
+        
+        // DEBUG: Test functions for the buttons
+        window.testCreateRoom = function() {
+            console.log('🔵 === CREATE ROOM BUTTON CLICKED (DIRECT) ===');
+            console.log('Form values:', {
+                roomName: document.getElementById('roomName').value,
+                roomPassword: document.getElementById('roomPassword').value,
+                maxMembers: document.getElementById('maxMembers').value
+            });
+            
+            // Check if roomManager exists
+            if (window.roomManager) {
+                console.log('✅ RoomManager exists, calling createRoom()');
+                window.roomManager.createRoom();
+            } else {
+                console.log('❌ RoomManager not found, creating manually...');
+                if (window.network) {
+                try {
+                    window.roomManager = new RoomManager();
+                        console.log('✅ RoomManager created, calling createRoom()');
+                        window.roomManager.createRoom();
+                } catch (error) {
+                        console.error('❌ Failed to create RoomManager:', error);
+                        
+                        // Manual room creation
+                        console.log('🔧 Attempting manual room creation...');
+                        const roomName = document.getElementById('roomName').value.trim();
+                        if (!roomName) {
+                            alert('Please enter Room Name');
+                            return;
+                        }
+                        
+                        const message = {
+                            type: 'create-room',
+                            roomSettings: {
+                                code: Math.random().toString(36).substr(2, 8).toUpperCase(),
+                                name: roomName,
+                                password: document.getElementById('roomPassword').value,
+                                maxMembers: parseInt(document.getElementById('maxMembers').value),
+                                isPrivate: !!document.getElementById('roomPassword').value
+                            }
+                        };
+                        
+                        console.log('📤 Sending manual room creation message:', message);
+                        if (window.network && window.network.send) {
+                            window.network.send(message);
+            } else {
+                            console.error('❌ No network connection available');
+                        }
+                    }
+                } else {
+                    console.error('❌ No network available');
+                }
+            }
+        };
+        
+        window.testCancelRoom = function() {
+            console.log('🔴 === CANCEL ROOM BUTTON CLICKED (DIRECT) ===');
+            
+            // Check if roomManager exists
+                    if (window.roomManager) {
+                console.log('✅ RoomManager exists, calling hideAllForms()');
+                window.roomManager.hideAllForms();
+            } else {
+                console.log('❌ RoomManager not found, hiding forms manually...');
+                // Manual form hiding
+                const createForm = document.getElementById('createRoomForm');
+                const joinForm = document.getElementById('joinRoomForm');
+                
+                if (createForm) {
+                    createForm.classList.remove('active');
+                    console.log('✅ Create form hidden manually');
+                }
+                if (joinForm) {
+                    joinForm.classList.remove('active');
+                    console.log('✅ Join form hidden manually');
+                }
+                
+                // Clear form fields
+                document.getElementById('roomName').value = '';
+                document.getElementById('roomPassword').value = '';
+                document.getElementById('maxMembers').value = '10';
+                console.log('✅ Form fields cleared manually');
+            }
+        };
+        
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== DOMContentLoaded EVENT TRIGGERED ===');
+            console.log('Document ready state:', document.readyState);
+            
             // Initialize translations - EXACT COPY from main site
             setTimeout(() => {
+                console.log('Starting translation initialization...');
+                
                 // Initialize language selector first
                 initializeLanguageSelector();
                 
@@ -3693,17 +4957,35 @@
             
             // Initialize room manager after language setup
             const initRoomManager = () => {
-                console.log('Initializing room manager...');
+                console.log('=== ATTEMPTING TO INITIALIZE ROOM MANAGER ===');
+                
+                // Check if network is ready before initializing room manager
+                if (!window.network && !window.serverConnection) {
+                    console.log('Network not ready, waiting...');
+                    console.log('Available objects:', {
+                        network: !!window.network,
+                        serverConnection: !!window.serverConnection,
+                        Events: !!window.Events
+                    });
+                    setTimeout(initRoomManager, 100);
+                    return;
+                }
                 
                 // Force initialize RoomManager regardless of DOM state
                 if (!window.roomManager) {
                     console.log('Creating room manager...');
+                    console.log('Network status:', {
+                        network: !!window.network,
+                        serverConnection: !!window.serverConnection,
+                        Events: !!window.Events
+                    });
+                    
                     try {
                         window.roomManager = new RoomManager();
                         roomManager = window.roomManager;
-                        console.log('Room manager initialization completed successfully');
+                        console.log('✅ Room manager initialization completed successfully');
                     } catch (error) {
-                        console.error('Failed to initialize room manager:', error);
+                        console.error('❌ Failed to initialize room manager:', error);
                         // Retry after a delay
                         setTimeout(initRoomManager, 200);
                     }
@@ -3713,6 +4995,7 @@
             };
             
             // Initialize immediately
+            console.log('Calling initRoomManager...');
             initRoomManager();
         });
         

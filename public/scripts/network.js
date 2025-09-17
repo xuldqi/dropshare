@@ -76,7 +76,8 @@ class ServerConnection {
         // hack to detect if deployment or development environment
         const protocol = location.protocol.startsWith('https') ? 'wss' : 'ws';
         const webrtc = window.isRtcSupported ? '/webrtc' : '/fallback';
-        const url = protocol + '://' + location.host + location.pathname + 'server' + webrtc;
+        // Always use root path for WebSocket server to avoid path issues
+        const url = protocol + '://' + location.host + '/server' + webrtc;
         return url;
     }
 
@@ -221,6 +222,7 @@ class Peer {
     }
 
     _onFileReceived(proxyFile) {
+        console.log('📥 File received:', proxyFile.name, 'Size:', proxyFile.size, 'Type:', proxyFile.mime);
         Events.fire('file-received', proxyFile);
         this.sendJSON({ type: 'transfer-complete' });
         
@@ -420,7 +422,13 @@ class PeersManager {
     }
 
     _onFilesSelected(message) {
-        this.peers[message.to].sendFiles(message.files);
+        console.log('📤 PeersManager: Files selected for peer:', message.to, 'Files:', message.files.length);
+        if (this.peers[message.to]) {
+            this.peers[message.to].sendFiles(message.files);
+            console.log('✅ Files sent to peer:', message.to);
+        } else {
+            console.error('❌ Peer not found:', message.to, 'Available peers:', Object.keys(this.peers));
+        }
     }
 
     _onSendText(message) {

@@ -260,20 +260,6 @@ class DropShareServer {
 
     _onConnection(peer) {
         try {
-            // Check and remove existing peer with same ID to avoid duplicates
-            for (const ip in this._rooms) {
-                if (this._rooms[ip] && this._rooms[ip][peer.id]) {
-                    console.log(`Found existing peer ${peer.id} in room ${ip}, removing old connection`);
-                    const oldPeer = this._rooms[ip][peer.id];
-                    this._cancelKeepAlive(oldPeer);
-                    if (oldPeer.socket) {
-                        oldPeer.socket.close();
-                    }
-                    delete this._rooms[ip][peer.id];
-                    this._stats.connections--;
-                }
-            }
-            
             // Update connection statistics
             this._stats.connections++;
             this._stats.totalConnections++;

@@ -132,7 +132,7 @@
     await populateSelector(sel);
   }
 
-  window.DROPSHARE_I18N = { setLanguage, getCurrentLanguage: () => state.current, t: getText, getText };
+  window.DROPSHARE_I18N = { setLanguage, getCurrentLanguage: () => state.current, t: getText, getText, translate: getText };
   document.addEventListener('DOMContentLoaded', init);
 })();
 
