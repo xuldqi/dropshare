@@ -570,17 +570,20 @@ class Dialog {
     show() {
         // Close other dialogs
         DialogManager.closeAll();
+        if (!this.$el) return Promise.resolve();
         this.$el.setAttribute('show', 1);
         return new Promise(resolve => {
             // Optimize dialog animation
             setTimeout(() => {
-                this.$el.querySelector('x-paper').classList.add('dialog-entered');
+                const paper = this.$el.querySelector('x-paper');
+                if (paper) paper.classList.add('dialog-entered');
                 resolve();
             }, 50);
         });
     }
 
     hide() {
+        if (!this.$el) return;
         this.$el.removeAttribute('show');
         // Reset dialog state
         setTimeout(() => {
@@ -776,8 +779,8 @@ class ReceiveTextDialog extends Dialog {
         super('receiveTextDialog');
         Events.on('text-received', e => this._onText(e.detail))
         this.$text = this.$el.querySelector('#text');
-        const $copy = this.$el.querySelector('#copy');
-        copy.addEventListener('click', _ => this._onCopy());
+        const $copy = this.$el ? this.$el.querySelector('#copy') : null;
+        if ($copy) $copy.addEventListener('click', _ => this._onCopy());
     }
 
     _onText(e) {

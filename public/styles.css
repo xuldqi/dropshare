@@ -323,16 +323,30 @@ footer .font-body2 {
 
 /* Dialog */
 
+x-dialog {
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 x-dialog x-background {
-    background: transparent;
-    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
     transition: opacity 300ms;
     will-change: opacity;
     padding: 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 x-dialog x-paper {
-    z-index: 3;
+    z-index: 10000;
     background: white;
     border-radius: 8px;
     padding: 16px 24px;
@@ -343,6 +357,7 @@ x-dialog x-paper {
     will-change: transform;
     white-space: normal;
     word-wrap: break-word;
+    position: relative;
 }
 
 x-dialog:not([show]) {

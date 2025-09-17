@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Room Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-section { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        .status { padding: 5px; margin: 5px 0; }
+        .connected { background: #d4edda; color: #155724; }
+        .disconnected { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        #log { height: 200px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; background: #f9f9f9; font-family: monospace; font-size: 12px; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 DropShare Rooms Debug Test</h1>
+    
+    <div class="debug-section">
+        <h3>📡 WebSocket Connection Status</h3>
+        <div id="wsStatus" class="status disconnected">Disconnected</div>
+        <div id="networkStatus" class="status">Checking network objects...</div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>🏠 Room Operations</h3>
+        <div>
+            <input type="text" id="roomName" placeholder="Room Name" value="TestRoom">
+            <input type="text" id="roomPassword" placeholder="Room Password (optional)">
+            <button onclick="createRoom()">Create Room</button>
+        </div>
+        <div>
+            <input type="text" id="joinRoomCode" placeholder="Room Code">
+            <input type="text" id="joinPassword" placeholder="Password (optional)">
+            <button onclick="joinRoom()">Join Room</button>
+        </div>
+        <div>
+            <button onclick="leaveRoom()">Leave Room</button>
+        </div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>📁 File Upload Test</h3>
+        <input type="file" id="fileInput" multiple>
+        <button onclick="uploadFiles()">Upload Files</button>
+        <div id="uploadStatus"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>📋 Debug Log</h3>
+        <button onclick="clearLog()">Clear Log</button>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        let ws = null;
+        let isConnected = false;
+        let currentRoom = null;
+        
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        function updateStatus() {
+            const wsStatus = document.getElementById('wsStatus');
+            const networkStatus = document.getElementById('networkStatus');
+            
+            if (isConnected) {
+                wsStatus.className = 'status connected';
+                wsStatus.textContent = 'Connected';
+            } else {
+                wsStatus.className = 'status disconnected';
+                wsStatus.textContent = 'Disconnected';
+            }
+            
+            // Check network objects
+            const networkInfo = {
+                'window.network': !!window.network,
+                'window.network.send': !!(window.network && window.network.send),
+                'window.serverConnection': !!window.serverConnection,
+                'isConnected': isConnected
+            };
+            
+            networkStatus.textContent = JSON.stringify(networkInfo, null, 2);
+        }
+        
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/server/webrtc`;
+            
+            log(`Attempting to connect to: ${wsUrl}`);
+            
+            try {
+                ws = new WebSocket(wsUrl);
+                
+                ws.onopen = function(event) {
+                    log('✅ WebSocket connected successfully');
+                    isConnected = true;
+                    updateStatus();
+                };
+                
+                ws.onmessage = function(event) {
+                    try {
+                        const message = JSON.parse(event.data);
+                        log(`📨 Received: ${JSON.stringify(message)}`);
+                        handleMessage(message);
+                    } catch (e) {
+                        log(`❌ Failed to parse message: ${event.data}`);
+                    }
+                };
+                
+                ws.onclose = function(event) {
+                    log(`🔌 WebSocket closed: Code=${event.code}, Reason=${event.reason}`);
+                    isConnected = false;
+                    updateStatus();
+                };
+                
+                ws.onerror = function(error) {
+                    log(`❌ WebSocket error: ${error}`);
+                    isConnected = false;
+                    updateStatus();
+                };
+                
+            } catch (error) {
+                log(`❌ Failed to create WebSocket: ${error}`);
+            }
+        }
+        
+        function handleMessage(message) {
+            switch (message.type) {
+                case 'room-created':
+                    log(`🎉 Room created: ${message.room.code}`);
+                    currentRoom = message.room.code;
+                    break;
+                case 'room-joined':
+                    log(`🚪 Joined room: ${message.room.code}`);
+                    currentRoom = message.room.code;
+                    break;
+                case 'room-error':
+                    log(`❌ Room error: ${message.error}`);
+                    break;
+                case 'room-left':
+                    log(`👋 Left room`);
+                    currentRoom = null;
+                    break;
+                case 'room-file-shared':
+                    log(`📁 File shared: ${message.file.name}`);
+                    break;
+                default:
+                    log(`📩 Unhandled message type: ${message.type}`);
+            }
+        }
+        
+        function sendMessage(message) {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                log(`❌ Cannot send message - WebSocket not connected`);
+                return false;
+            }
+            
+            log(`📤 Sending: ${JSON.stringify(message)}`);
+            ws.send(JSON.stringify(message));
+            return true;
+        }
+        
+        function createRoom() {
+            const roomName = document.getElementById('roomName').value;
+            const password = document.getElementById('roomPassword').value;
+            
+            if (!roomName) {
+                log('❌ Room name is required');
+                return;
+            }
+            
+            const message = {
+                type: 'create-room',
+                roomName: roomName,
+                password: password || undefined,
+                maxMembers: 10
+            };
+            
+            sendMessage(message);
+        }
+        
+        function joinRoom() {
+            const roomCode = document.getElementById('joinRoomCode').value;
+            const password = document.getElementById('joinPassword').value;
+            
+            if (!roomCode) {
+                log('❌ Room code is required');
+                return;
+            }
+            
+            const message = {
+                type: 'join-room',
+                roomCode: roomCode,
+                password: password || undefined
+            };
+            
+            sendMessage(message);
+        }
+        
+        function leaveRoom() {
+            if (!currentRoom) {
+                log('❌ Not in any room');
+                return;
+            }
+            
+            const message = {
+                type: 'leave-room'
+            };
+            
+            sendMessage(message);
+        }
+        
+        function uploadFiles() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+            
+            if (!files || files.length === 0) {
+                log('❌ No files selected');
+                return;
+            }
+            
+            if (!currentRoom) {
+                log('❌ Must be in a room to upload files');
+                return;
+            }
+            
+            log(`📤 Uploading ${files.length} file(s) to room ${currentRoom}`);
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                uploadFile(file);
+            }
+        }
+        
+        async function uploadFile(file) {
+            try {
+                // Convert file to base64
+                const arrayBuffer = await file.arrayBuffer();
+                const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+                
+                const fileInfo = {
+                    id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    lastModified: file.lastModified
+                };
+                
+                const message = {
+                    type: 'room-file-upload',
+                    fileInfo: fileInfo,
+                    fileData: base64
+                };
+                
+                log(`📁 Uploading file: ${file.name} (${file.size} bytes)`);
+                sendMessage(message);
+                
+            } catch (error) {
+                log(`❌ Failed to upload file ${file.name}: ${error}`);
+            }
+        }
+        
+        // Initialize
+        window.addEventListener('load', function() {
+            log('🚀 Debug page loaded');
+            updateStatus();
+            connectWebSocket();
+        });
+    </script>
+</body>
+</html>

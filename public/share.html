@@ -835,6 +835,40 @@
         .room-members {
             margin-top: 20px;
         }
+
+        .member-count-section {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .member-names {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .member-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            background: #f3f4f6;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .member-tag.host {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .member-tag .host-crown {
+            margin-right: 4px;
+            font-size: 10px;
+        }
         
         .member-list {
             display: flex;
@@ -1530,7 +1564,9 @@
         
         // Global handler for file input change
         function handleFileInputChange(event) {
+            console.log('🚀 === handleFileInputChange STARTED ===');
             console.log('📁 handleFileInputChange called, files:', event.target.files.length);
+            console.log('🌍 Current hash:', window.location.hash);
             
             // Prevent multiple rapid calls
             if (handleFileInputChange.processing) {
@@ -1546,17 +1582,64 @@
                 return;
             }
             
+            // Use room debugger if available
+            if (window.roomDebugger) {
+                console.log('🔧 Using room debugger for file handling');
+                window.roomDebugger.handleFileSelection(files)
+                    .finally(() => {
+                        handleFileInputChange.processing = false;
+                        event.target.value = ''; // Clear input
+                    });
+                return;
+            }
+            
+            // Fallback to original logic
+            
+            // 🔒 基本安全验证（保留文件名验证，移除大小限制）
+            let totalSize = 0;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                // 验证文件名（仅检查明显的安全问题）
+                if (window.SecurityUtils && !SecurityUtils.validateFileName(file.name)) {
+                    alert(`❌ Invalid file name: ${SecurityUtils.escapeHtml(file.name)}`);
+                    event.target.value = '';
+                    handleFileInputChange.processing = false;
+                    return;
+                }
+                
+                totalSize += file.size;
+            }
+            
             console.log('🔍 Debug - current URL hash:', window.location.hash);
             
             // Enhanced check - also consider URL hash for room mode
             const isInRoomMode = window.location.hash === '#rooms' || window.location.hash === '#room';
+            const roomInfo = document.getElementById('roomInfo');
+            const isInRoom = roomInfo && roomInfo.classList.contains('active');
+            
+            console.log('Room status check:', { isInRoomMode, isInRoom });
             
             if (isInRoomMode) {
-                console.log('✅ Room mode detected, uploading', files.length, 'files');
+                if (!isInRoom) {
+                    alert('请先加入房间才能上传文件');
+                    console.log('❌ Not in room, cannot upload');
+                    handleFileInputChange.processing = false;
+                    event.target.value = '';
+                    return;
+                }
+                
+                console.log('✅ Room mode detected, uploading', files.length, 'files (total:', Math.round(totalSize / 1024 / 1024), 'MB)');
+                console.log('🎯 Calling uploadFilesToRoom...');
                 try {
                     uploadFilesToRoom(files);
+                    console.log('✅ uploadFilesToRoom call completed');
                 } catch (error) {
                     console.error('❌ Upload error:', error);
+                    alert('❌ Upload failed: ' + error.message);
+                }
+                    alert('❌ Upload failed: ' + error.message);
                 }
             } else {
                 console.log('❌ Not in room mode - hash:', window.location.hash);
@@ -1565,87 +1648,257 @@
             
             // Clear file input and reset processing flag
             setTimeout(() => {
-                event.target.value = '';
+            event.target.value = '';
                 handleFileInputChange.processing = false;
                 console.log('✅ File input reset, ready for next selection');
             }, 500);
         }
         
-        // Global file upload initialization - independent of RoomManager
+        // Progress display functions
+        function showUploadProgress(fileName, progress) {
+            let progressContainer = document.getElementById('uploadProgressContainer');
+            if (!progressContainer) {
+                progressContainer = document.createElement('div');
+                progressContainer.id = 'uploadProgressContainer';
+                progressContainer.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    padding: 16px;
+                    min-width: 300px;
+                    z-index: 10001;
+                    font-family: system-ui, -apple-system, sans-serif;
+                `;
+                document.body.appendChild(progressContainer);
+            }
+            
+            // 使用安全的ID生成方法，避免中文文件名编码问题
+            const safeId = 'progress-' + fileName.replace(/[^a-zA-Z0-9]/g, '_') + '_' + Date.now();
+            let progressItem = document.getElementById(safeId);
+            if (!progressItem) {
+                progressItem = document.createElement('div');
+                progressItem.id = safeId;
+                progressItem.style.cssText = `
+                    margin-bottom: 12px;
+                    padding: 8px 0;
+                    border-bottom: 1px solid #f0f0f0;
+                `;
+                progressItem.setAttribute('data-filename', fileName);
+                progressItem.innerHTML = `
+                    <div style="font-weight: 500; margin-bottom: 8px; font-size: 14px;">${SecurityUtils.escapeHtml(fileName)}</div>
+                    <div style="background: #f3f4f6; height: 6px; border-radius: 3px; overflow: hidden;">
+                        <div class="progress-bar" style="background: #4285f4; height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+                    </div>
+                    <div class="progress-text" style="font-size: 12px; color: #6b7280; margin-top: 4px;">Starting...</div>
+                `;
+                progressContainer.appendChild(progressItem);
+            }
+            
+            const progressBar = progressItem.querySelector('.progress-bar');
+            const progressText = progressItem.querySelector('.progress-text');
+            
+            if (progressBar) {
+                progressBar.style.width = `${Math.round(progress * 100)}%`;
+            }
+        }
+        
+        function updateUploadProgress(fileName, progress, statusText) {
+            // 查找对应的进度项（使用data属性匹配）
+            const progressItems = document.querySelectorAll('[data-filename]');
+            let progressItem = null;
+            
+            for (let item of progressItems) {
+                if (item.getAttribute('data-filename') === fileName) {
+                    progressItem = item;
+                    break;
+                }
+            }
+            
+            if (!progressItem) return;
+            
+            const progressBar = progressItem.querySelector('.progress-bar');
+            const progressText = progressItem.querySelector('.progress-text');
+            
+            if (progressBar) {
+                progressBar.style.width = `${Math.round(progress * 100)}%`;
+            }
+            
+            if (progressText) {
+                progressText.textContent = statusText || `${Math.round(progress * 100)}%`;
+            }
+        }
+        
+        function hideUploadProgress(fileName) {
+            // 查找对应的进度项（使用data属性匹配）
+            const progressItems = document.querySelectorAll('[data-filename]');
+            let progressItem = null;
+            
+            for (let item of progressItems) {
+                if (item.getAttribute('data-filename') === fileName) {
+                    progressItem = item;
+                    break;
+                }
+            }
+            
+            if (progressItem) {
+                progressItem.style.transition = 'opacity 0.3s ease';
+                progressItem.style.opacity = '0';
+                setTimeout(() => {
+                    if (progressItem.parentNode) {
+                        progressItem.parentNode.removeChild(progressItem);
+                    }
+                    
+                    // Remove container if empty
+                    const container = document.getElementById('uploadProgressContainer');
+                    if (container && container.children.length === 0) {
+                        container.remove();
+                    }
+                }, 300);
+            }
+        }
+        
+        // Manual function to add file to shared list
+        function addFileToSharedListManual(fileInfo) {
+            console.log('📁 Adding file to shared list manually:', fileInfo.name);
+            
+            const sharedFilesList = document.getElementById('sharedFilesList');
+            const noFiles = sharedFilesList.querySelector('.no-shared-files');
+            
+            if (noFiles) {
+                noFiles.style.display = 'none';
+            }
+            
+            // Create file item
+            const fileItem = document.createElement('div');
+            fileItem.className = 'shared-file-item';
+            fileItem.setAttribute('data-file-id', fileInfo.id);
+            
+            const uploadTime = new Date(fileInfo.uploadTime || Date.now()).toLocaleString();
+            const fileSize = formatFileSize(fileInfo.size || 0);
+            
+            fileItem.innerHTML = `
+                <div class="shared-file-info">
+                    <div class="shared-file-name">${SecurityUtils.escapeHtml(fileInfo.name)}</div>
+                    <div class="shared-file-details">
+                        <span class="file-size">${fileSize}</span>
+                        <span class="file-uploader">by ${SecurityUtils.escapeHtml(fileInfo.uploader || 'You')}</span>
+                        <span class="upload-time">${uploadTime}</span>
+                    </div>
+                </div>
+                <div class="shared-file-actions">
+                    <button class="action-btn btn-download" onclick="downloadFileManual('${fileInfo.id}')">Download</button>
+                    <button class="action-btn btn-cancel" onclick="removeFileManual('${fileInfo.id}')">Delete</button>
+                </div>
+            `;
+            
+            // Store file data
+            fileItem._fileData = fileInfo;
+            
+            sharedFilesList.appendChild(fileItem);
+            
+            // Update file count
+            updateFileCount();
+        }
+        
+        // Format file size helper
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Update file count
+        function updateFileCount() {
+            const sharedFilesList = document.getElementById('sharedFilesList');
+            const fileItems = sharedFilesList.querySelectorAll('.shared-file-item');
+            const fileCount = document.getElementById('fileCount');
+            if (fileCount) {
+                const count = fileItems.length;
+                fileCount.innerHTML = `${count} <span data-i18n="share_files"> files</span>`;
+            }
+        }
+        
+        // Download file manually
+        function downloadFileManual(fileId) {
+            const fileItem = document.querySelector(`[data-file-id="${fileId}"]`);
+            if (fileItem && fileItem._fileData && fileItem._fileData.file) {
+                const fileData = fileItem._fileData;
+                const url = URL.createObjectURL(fileData.file);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileData.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                console.log('✅ File download started:', fileData.name);
+            } else {
+                alert('File not available for download');
+            }
+        }
+        
+        // Remove file manually
+        function removeFileManual(fileId) {
+            if (confirm('Are you sure you want to delete this file?')) {
+                const fileItem = document.querySelector(`[data-file-id="${fileId}"]`);
+                if (fileItem) {
+                    fileItem.remove();
+                    updateFileCount();
+                    console.log('✅ File removed:', fileId);
+                }
+            }
+        }
+        
+        // Global file upload initialization - simplified
         function initGlobalFileUpload() {
             console.log('🔧 Initializing global file upload functionality...');
             
-            const dropZone = document.getElementById('dropZone');
-            const fileInput = document.getElementById('fileInput');
-            const selectFilesBtn = document.getElementById('selectFilesBtn');
-            
-            if (!dropZone || !fileInput || !selectFilesBtn) {
-                console.log('File transfer elements not found, retrying in 100ms...');
-                setTimeout(initGlobalFileUpload, 100);
-                return;
-            }
-            
             // Prevent multiple initialization
             if (window.globalFileUploadInitialized) {
-                console.log('Global file upload already initialized');
+                console.log('✅ Global file upload already initialized');
                 return;
             }
             
-            console.log('📁 Setting up file upload event listeners...');
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput) {
+                console.log('❌ File input not found, retrying in 200ms...');
+                setTimeout(initGlobalFileUpload, 200);
+                return;
+            }
             
-            // Remove any existing event listeners by cloning elements
-            const newSelectBtn = selectFilesBtn.cloneNode(true);
-            const newDropZone = dropZone.cloneNode(true);
-            const newFileInput = fileInput.cloneNode(true);
-            
-            selectFilesBtn.parentNode.replaceChild(newSelectBtn, selectFilesBtn);
-            dropZone.parentNode.replaceChild(newDropZone, dropZone);
-            fileInput.parentNode.replaceChild(newFileInput, fileInput);
-            
-            // Get fresh references
-            const freshDropZone = document.getElementById('dropZone');
-            const freshFileInput = document.getElementById('fileInput');
-            const freshSelectBtn = document.getElementById('selectFilesBtn');
-            
-            // Add event listeners
-            freshSelectBtn.addEventListener('click', function(e) {
-                console.log('📁 Global - Select files button clicked');
+            // Add only the necessary drag functionality
+            const dropZone = document.getElementById('dropZone');
+            if (dropZone) {
+                dropZone.addEventListener('dragover', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
-                freshFileInput.click();
+                    dropZone.classList.add('dragover');
             });
             
-            freshDropZone.addEventListener('click', function(e) {
-                console.log('📁 Global - Drop zone clicked');
+                dropZone.addEventListener('dragleave', function() {
+                    dropZone.classList.remove('dragover');
+            });
+            
+                dropZone.addEventListener('drop', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
-                freshFileInput.click();
-            });
-            
-            freshFileInput.addEventListener('change', function(e) {
-                console.log('📁 Global - Files selected:', e.target.files.length, 'files');
-                handleGlobalFileSelection(e.target.files);
-                e.target.value = '';
-            });
-            
-            // Drag functionality
-            freshDropZone.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                freshDropZone.classList.add('dragover');
-            });
-            
-            freshDropZone.addEventListener('dragleave', function() {
-                freshDropZone.classList.remove('dragover');
-            });
-            
-            freshDropZone.addEventListener('drop', function(e) {
-                e.preventDefault();
-                freshDropZone.classList.remove('dragover');
-                console.log('📁 Global - Files dropped:', e.dataTransfer.files.length, 'files');
-                handleGlobalFileSelection(e.dataTransfer.files);
-            });
+                    dropZone.classList.remove('dragover');
+                    
+                    const files = e.dataTransfer.files;
+                    if (files && files.length > 0) {
+                        console.log('📁 Files dropped:', files.length, 'files');
+                        // Create fake event for handleFileInputChange
+                        const fakeEvent = { target: { files: files, value: '' } };
+                        handleFileInputChange(fakeEvent);
+                    }
+                });
+            }
             
             window.globalFileUploadInitialized = true;
+            console.log('✅ Global file upload initialized successfully');
             console.log('✅ Global file upload functionality initialized successfully');
         }
         
@@ -1670,31 +1923,13 @@
             // Try to use RoomManager if available, or create it if in room mode
             const isInRoomMode = window.location.hash === '#rooms' || window.location.hash === '#room';
             
-            if (window.roomManager && typeof window.roomManager.uploadFilesToRoom === 'function') {
-                console.log('Using RoomManager to upload files');
-                window.roomManager.uploadFilesToRoom(files);
-            } else if (isInRoomMode) {
-                console.log('Room mode detected, creating RoomManager...');
-                try {
-                    if (!window.roomManager) {
-                        window.roomManager = new RoomManager();
-                    }
-                    setTimeout(() => {
-                        if (window.roomManager && typeof window.roomManager.uploadFilesToRoom === 'function') {
-                            window.roomManager.uploadFilesToRoom(files);
-                        } else {
-                            console.log('RoomManager still not ready, using manual upload');
-                            uploadFilesToRoomManual(files);
-                        }
-                    }, 200);
-                } catch (error) {
-                    console.error('Failed to create RoomManager:', error);
-                    uploadFilesToRoomManual(files);
-                }
-            } else {
-                // Fallback to manual upload
-                console.log('RoomManager not available, using manual upload');
+            if (isInRoomMode) {
+                console.log('✅ Room mode detected, uploading files...');
+                // 直接使用手动上传，避免RoomManager依赖问题
                 uploadFilesToRoomManual(files);
+            } else {
+                console.log('❌ Not in room mode, cannot upload files');
+                alert('Please join a room first to upload files');
             }
         }
         
@@ -1711,14 +1946,18 @@
             uploadFilesToRoomManual(files);
         }
         
-        // Manual file upload function
-        function uploadFilesToRoomManual(files) {
+        // Manual file upload function with progress
+        async function uploadFilesToRoomManual(files) {
             console.log('📤 Manual upload files to room:', files.length, 'files');
             
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 console.log(`Uploading file ${i + 1}:`, file.name, file.size, 'bytes');
                 
+                // Show initial progress
+                showUploadProgress(file.name, 0);
+                
+                try {
                 // Create file info
                 const fileInfo = {
                     id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
@@ -1728,19 +1967,56 @@
                     uploader: 'You',
                     uploadTime: Date.now()
                 };
+                    
+                    updateUploadProgress(file.name, 0.1, 'Preparing upload...');
+                    
+                    // For large files, show processing progress
+                    let fileData = file;
+                    if (file.size > 1024 * 1024) { // Files larger than 1MB
+                        updateUploadProgress(file.name, 0.2, 'Processing large file...');
+                        
+                        // Simulate processing time for large files
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                    
+                    updateUploadProgress(file.name, 0.8, 'Sending to room...');
                 
                 // Send to server
                 if (window.network && window.network.send) {
                     const message = {
                         type: 'room-file-upload',
                         fileInfo: fileInfo,
-                        fileData: file
+                            fileData: fileData
                     };
                     
-                    console.log('📤 Sending file upload message:', message);
+                        console.log('📤 Sending file upload message for:', file.name);
                     window.network.send(message);
+                        
+                        // 立即添加到本地文件列表
+                        if (window.roomManager && typeof window.roomManager.addFileToSharedList === 'function') {
+                            window.roomManager.addFileToSharedList(fileInfo);
+                            console.log('✅ File added to local shared list:', file.name);
+                        } else {
+                            // 手动添加到文件列表
+                            addFileToSharedListManual(fileInfo);
+                            console.log('✅ File added to shared list manually:', file.name);
+                        }
+                        
+                        updateUploadProgress(file.name, 1, 'Upload complete!');
+                        
+                        // Hide progress after 2 seconds
+                        setTimeout(() => hideUploadProgress(file.name), 2000);
+                        
                 } else {
                     console.error('❌ No network connection available for file upload');
+                        hideUploadProgress(file.name);
+                        alert('❌ Network connection not available');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ File upload failed:', error);
+                    hideUploadProgress(file.name);
+                    alert(`❌ Upload failed: ${file.name} - ${error.message}`);
                 }
             }
         }
@@ -2344,7 +2620,10 @@
                                 <span class="current-user-label" data-i18n="share_your_name">Your Name: </span>
                                 <span class="current-user-name" id="currentUserName"></span>
                             </div>
-                            <span class="member-count" id="memberCount"><span id="memberCountNumber">2</span><span data-i18n="share_online"> online</span></span>
+                            <div class="member-count-section" id="memberCount">
+                                <span id="memberCountNumber">1</span><span data-i18n="share_online"> online</span>
+                                <div class="member-names" id="memberNames"></div>
+                            </div>
                         </div>
                         <button class="toggle-details-btn" id="toggleDetailsBtn">
                             <svg class="toggle-icon" viewBox="0 0 24 24" width="16" height="16">
@@ -2384,17 +2663,17 @@
                         <!-- File upload area -->
                         <div class="upload-section">
                             <h3 data-i18n="share_upload_files_to_room">📤 Upload files to room</h3>
-                            <div id="dropZone" class="drop-zone" onclick="document.getElementById('fileInput').click()">
+                            <label for="fileInput" id="dropZone" class="drop-zone" style="cursor: pointer;">
                                 <div class="drop-zone-content">
                                     <svg class="upload-icon" viewBox="0 0 24 24" width="48" height="48">
                                         <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                                     </svg>
                                     <p data-i18n="share_drag_files_here">Drag files here or click to upload</p>
                                     <p class="upload-hint" data-i18n="share_files_shared_with_members">Files will be shared with all room members</p>
-                                    <input type="file" id="fileInput" multiple style="position: absolute; left: -9999px; opacity: 0;" onchange="handleFileInputChange(event)">
-                                    <label for="fileInput" class="select-files-btn" style="cursor: pointer; display: inline-block; padding: 8px 16px; background: #4285f4; color: white; border-radius: 4px; text-align: center; user-select: none;" data-i18n="share_select_files_to_upload">Select Files to Upload</label>
+                                    <button type="button" id="selectFilesBtn" style="cursor: pointer; display: inline-block; padding: 8px 16px; background: #4285f4; color: white; border-radius: 4px; text-align: center; user-select: none; border: none; font-family: inherit;" data-i18n="share_select_files_to_upload">Select Files to Upload</button>
+                                    <input type="file" id="fileInput" multiple style="display: none;">
                                 </div>
-                            </div>
+                            </label>
                         </div>
                         
                         <!-- Shared Room Files list -->
@@ -2590,6 +2869,7 @@
     <!-- Load the language loader first -->
     
     <!-- Load other scripts -->
+    <script src="../security_utils.js"></script>
     <script src="scripts/network.js"></script>
     <script src="scripts/ui.js"></script>
     <script src="scripts/private-rooms.js"></script>
@@ -2931,7 +3211,7 @@
                 };
                 
                 // Start binding process
-                bindEvents();
+            // bindEvents(); // disabled to avoid duplicate upload init
                     
                     // Leave Room
                     document.getElementById('leaveRoomBtn').addEventListener('click', () => {
@@ -2962,8 +3242,10 @@
                 bindEvents();
             }
             
-            // Initialize file transfer functionality
+            // Initialize file transfer functionality (disabled - handled by global init)
             initializeFileTransfer() {
+                // Prevent legacy/duplicate bindings in room UI layer
+                return;
                 const dropZone = document.getElementById('dropZone');
                 const fileInput = document.getElementById('fileInput');
                 const selectFilesBtn = document.getElementById('selectFilesBtn');
@@ -2982,30 +3264,23 @@
                 
                 console.log('🔧 Initializing file transfer functionality...');
                 
-                // Click to select files
-                selectFilesBtn.addEventListener('click', (e) => {
-                    console.log('📁 Select files button clicked');
-                    e.preventDefault();
-                    fileInput.click();
-                });
+            // Add single change event listener for file input
+            fileInput.addEventListener('change', (e) => {
+                console.log('🔥 FILE INPUT CHANGE EVENT TRIGGERED!');
+                console.log('📁 Files selected via input change:', e.target.files.length, 'files');
+                console.log('📂 File details:', Array.from(e.target.files).map(f => ({name: f.name, size: f.size})));
                 
-                dropZone.addEventListener('click', (e) => {
-                    console.log('📁 Drop zone clicked');
-                    e.preventDefault();
-                    // Use label trigger instead of direct click
-                    const fileInput = document.getElementById('fileInput');
-                    if (fileInput) {
-                        fileInput.click();
-                    }
-                });
-                
-                // File selection
-                fileInput.addEventListener('change', (e) => {
-                    console.log('📁 Files selected:', e.target.files.length, 'files');
-                    this.handleFileSelection(e.target.files);
-                    // Clear file input, allow repeated upload of same file
-                    e.target.value = '';
-                });
+                if (e.target.files.length > 0) {
+                    console.log('⚡ Calling handleFileInputChange...');
+                    handleFileInputChange(e);
+                } else {
+                    console.log('❌ No files to process');
+                }
+            });
+            
+            // Mark as initialized to prevent multiple calls
+            window.globalFileUploadInitialized = true;
+            console.log('✅ File upload initialization complete');
                 
                 // Drag functionality
                 dropZone.addEventListener('dragover', (e) => {
@@ -3268,17 +3543,26 @@
                 }
             }
             
-            // Convert file to Base64 format for transfer
-            async fileToBase64(file) {
-                // Limit file size to avoid transferring oversized files
-                const maxSize = 10 * 1024 * 1024; // 10MB
-                if (file.size > maxSize) {
-                    throw new Error('File too large, cannot distribute');
-                }
-                
+            // Convert file to Base64 format for transfer (with progress)
+            async fileToBase64(file, onProgress = null) {
+                // 移除大小限制，支持任意大小文件
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result);
+                    
+                    // 添加进度监听
+                    if (onProgress && reader.addEventListener) {
+                        reader.addEventListener('progress', (e) => {
+                            if (e.lengthComputable) {
+                                const progress = e.loaded / e.total;
+                                onProgress(progress);
+                            }
+                        });
+                    }
+                    
+                    reader.onload = () => {
+                        if (onProgress) onProgress(1); // 完成
+                        resolve(reader.result);
+                    };
                     reader.onerror = reject;
                     reader.readAsDataURL(file);
                 });
@@ -4062,27 +4346,77 @@
             updateMemberList(members) {
                 const memberList = document.getElementById('memberList');
                 const memberCountNumber = document.getElementById('memberCountNumber');
+                const memberNames = document.getElementById('memberNames');
                 
-                memberList.innerHTML = '';
+                // Clear existing content
+                if (memberList) memberList.innerHTML = '';
+                if (memberNames) memberNames.innerHTML = '';
                 
-                members.forEach(member => {
+                // Sort members: host first, then others alphabetically
+                const sortedMembers = members.sort((a, b) => {
+                    if (a.isHost && !b.isHost) return -1;
+                    if (!a.isHost && b.isHost) return 1;
+                    return (a.displayName || a.name || 'Unknown').localeCompare(b.displayName || b.name || 'Unknown');
+                });
+                
+                // Update detailed member list (in dropdown)
+                sortedMembers.forEach(member => {
+                    if (memberList) {
                     const memberItem = document.createElement('div');
                     memberItem.className = 'member-item';
-                    memberItem.innerHTML = `
-                        <div class="member-info">
-                        <span class="member-name">${member.displayName}</span>
-                            <span class="member-device">${member.deviceName || 'Unknown Device'}</span>
-                        </div>
-                        <span class="member-role">${member.isHost ? 'Host' : 'Member'}</span>
-                    `;
+                        // 安全地创建成员项内容
+                        const memberInfo = document.createElement('div');
+                        memberInfo.className = 'member-info';
+                        
+                        const memberName = document.createElement('span');
+                        memberName.className = 'member-name';
+                        memberName.textContent = SecurityUtils.sanitizeDisplayName(member.displayName || member.name);
+                        
+                        const memberDevice = document.createElement('span');
+                        memberDevice.className = 'member-device';
+                        memberDevice.textContent = SecurityUtils.escapeHtml(member.deviceName || 'Unknown Device');
+                        
+                        memberInfo.appendChild(memberName);
+                        memberInfo.appendChild(memberDevice);
+                        
+                        const memberRole = document.createElement('span');
+                        memberRole.className = 'member-role';
+                        memberRole.textContent = member.isHost ? '👑 Host' : 'Member';
+                        
+                        memberItem.appendChild(memberInfo);
+                        memberItem.appendChild(memberRole);
                     memberList.appendChild(memberItem);
+                    }
                     this.members.set(member.id, member);
                 });
                 
-                // Update member count number (just the number, not the full text)
+                // Update compact member tags (main display)
+                if (memberNames) {
+                    sortedMembers.forEach(member => {
+                        const memberTag = document.createElement('span');
+                        memberTag.className = `member-tag ${member.isHost ? 'host' : ''}`;
+                        
+                        const displayName = SecurityUtils.sanitizeDisplayName(member.displayName || member.name);
+                        if (member.isHost) {
+                            const crown = document.createElement('span');
+                            crown.className = 'host-crown';
+                            crown.textContent = '👑';
+                            memberTag.appendChild(crown);
+                            memberTag.appendChild(document.createTextNode(displayName));
+                        } else {
+                            memberTag.textContent = displayName;
+                        }
+                        
+                        memberNames.appendChild(memberTag);
+                    });
+                }
+                
+                // Update member count number
                 if (memberCountNumber) {
                     memberCountNumber.textContent = members.length;
                 }
+                
+                console.log(`👥 Updated member list: ${members.length} members`, sortedMembers.map(m => `${m.displayName || m.name}${m.isHost ? ' (Host)' : ''}`));
             }
             
             // Hide room option buttons
@@ -4381,6 +4715,42 @@
                     window.removeEventListener('beforeunload', this.beforeUnloadHandler);
                     this.beforeUnloadHandler = null;
                 }
+            }
+            
+            // 添加内存清理方法
+            cleanup() {
+                console.log('🧹 Cleaning up RoomManager resources...');
+                
+                // 清理事件监听器
+                this.removeBeforeUnloadHandler();
+                
+                // 清理成员数据
+                if (this.members) {
+                    this.members.clear();
+                }
+                
+                // 清理文件数据
+                if (this.sharedFiles) {
+                    this.sharedFiles.clear();
+                }
+                
+                // 清理WebSocket连接
+                if (window.network && typeof window.network._disconnect === 'function') {
+                    window.network._disconnect();
+                }
+                
+                // 清理IndexedDB连接
+                if (this.fileStorage && typeof this.fileStorage.close === 'function') {
+                    this.fileStorage.close();
+                    this.fileStorage = null;
+                }
+                
+                // 重置状态
+                this.isInRoom = false;
+                this.isHost = false;
+                this.currentRoom = null;
+                
+                console.log('✅ RoomManager cleanup completed');
             }
             
             // Save room state to local storage
