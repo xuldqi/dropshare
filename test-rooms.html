@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DropShare Rooms Test</title>
+</head>
+<body>
+    <h1>Rooms Functionality Test</h1>
+    <div id="status"></div>
+    <button onclick="testRoomsFlow()">Test Complete Rooms Flow</button>
+    
+    <script src="security_utils.js"></script>
+    <script src="room-debugger.js"></script>
+    
+    <script>
+        function log(message) {
+            const status = document.getElementById('status');
+            status.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
+            console.log(message);
+        }
+        
+        function testRoomsFlow() {
+            log('🔧 Starting rooms functionality test...');
+            
+            // Test 1: Check if room debugger exists
+            if (window.roomDebugger) {
+                log('✅ Room debugger found');
+                
+                // Test 2: Check requirements
+                const requirements = window.roomDebugger.checkRoomRequirements();
+                log('📋 Requirements check completed');
+                
+                // Test 3: Try file upload simulation
+                const testFile = new File(['test content'], 'test.txt', {type: 'text/plain'});
+                log('📁 Created test file: ' + testFile.name);
+                
+                // Test 4: Try manual file handling
+                try {
+                    window.roomDebugger.handleFileSelection([testFile])
+                        .then(() => {
+                            log('✅ File selection handling completed');
+                        })
+                        .catch(error => {
+                            log('❌ File selection failed: ' + error.message);
+                        });
+                } catch (error) {
+                    log('❌ File selection error: ' + error.message);
+                }
+                
+            } else {
+                log('❌ Room debugger not found');
+            }
+            
+            // Test security utils
+            if (window.SecurityUtils) {
+                log('✅ Security utils found');
+                const testName = SecurityUtils.validateFileName('test.txt');
+                log('🔒 File name validation: ' + testName);
+            } else {
+                log('❌ Security utils not found');
+            }
+        }
+    </script>
+</body>
+</html>

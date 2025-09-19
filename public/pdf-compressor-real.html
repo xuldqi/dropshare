@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="pdf_compressor_title">PDF Compressor - DropShare</title>
+    <title data-i18n="pdf_compressor_title">PDF Compressor</title>
     <style>
         * {
             margin: 0;
@@ -372,45 +372,94 @@
         .download-btn:hover {
             background: #059669;
         }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .language-selector-container select,
+        .language-selector {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .button-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: #3367d6;
+            text-decoration: none;
+            border: 1px solid #3367d6;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .button-back:hover {
+            background: #3367d6;
+            color: white;
+        }
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
     <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
 </head>
 
 <body>
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                📄 DropShare
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#3367d6"/>
+                    <path d="M8 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>DropShare</span>
             </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html" class="active">Files</a>
-            </nav>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="index.html" data-i18n="nav_home">Home</a>
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" class="active" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons">
+                    <div class="language-selector-container">
+                        <select id="language-selector" class="language-selector"></select>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <div style="margin-bottom: 20px;">
-            <a href="document-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
-            </a>
-        </div>
-        
-        <h1 class="page-title">PDF Compressor</h1>
-        <p class="page-subtitle">Reduce PDF file size while maintaining quality for web and storage optimization</p>
+
+        <h1 class="page-title" data-i18n="pdf_compressor_title">PDF Compressor</h1>
+
+        <p class="page-subtitle" data-i18n="pdf_compressor_subtitle">Reduce PDF file size while maintaining quality for web and storage optimization</p>
         
         <div class="compressor-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🗜️</div>
-                <div class="upload-text">Click or drag to upload a PDF file</div>
-                <div class="upload-hint">Supports all standard PDF formats</div>
+                <div class="upload-text" data-i18n="pdf_upload_text">Click or drag to upload a PDF file</div>
+                <div class="upload-hint" data-i18n="pdf_upload_hint">Supports all standard PDF formats</div>
                 <input type="file" id="fileInput" accept=".pdf,application/pdf">
             </div>
             
@@ -420,62 +469,62 @@
                     <div class="file-meta">
                         <h4 id="fileName">-</h4>
                         <p id="fileSize">-</p>
-                        <p id="pageCount">-</p>
+                        <p id="pageCount" data-i18n="page_count">-</p>
                     </div>
                 </div>
             </div>
             
             <div class="compression-controls" id="compressionControls">
                 <div class="control-section">
-                    <div class="section-title">Compression quality</div>
+                    <div class="section-title" data-i18n="compression_quality">Compression quality</div>
                     <div class="quality-options">
                         <div class="quality-btn" data-quality="low">
-                            <div class="quality-name">Maximum</div>
-                            <div class="quality-desc">Smallest file</div>
+                            <div class="quality-name" data-i18n="quality_maximum">Maximum</div>
+                            <div class="quality-desc" data-i18n="quality_smallest_file">Smallest file</div>
                         </div>
                         <div class="quality-btn active" data-quality="medium">
-                            <div class="quality-name">Recommended</div>
-                            <div class="quality-desc">Balance size and quality</div>
+                            <div class="quality-name" data-i18n="quality_recommended">Recommended</div>
+                            <div class="quality-desc" data-i18n="quality_balance">Balance size and quality</div>
                         </div>
                         <div class="quality-btn" data-quality="high">
-                            <div class="quality-name">High quality</div>
-                            <div class="quality-desc">Quality first</div>
+                            <div class="quality-name" data-i18n="quality_high">High quality</div>
+                            <div class="quality-desc" data-i18n="quality_first">Quality first</div>
                         </div>
                     </div>
                 </div>
                 
-                <button class="toggle-advanced" id="toggleAdvanced">Show advanced options</button>
+                <button class="toggle-advanced" id="toggleAdvanced" data-i18n="toggle_advanced_show">Show advanced options</button>
                 
                 <div class="advanced-settings" id="advancedSettings">
                     <div class="setting-row">
-                        <div class="setting-label">Image quality:</div>
+                        <div class="setting-label" data-i18n="adv_image_quality">Image quality:</div>
                         <select class="setting-input" id="imageQuality">
-                            <option value="0.5">Low (50%)</option>
-                            <option value="0.7" selected>Medium (70%)</option>
-                            <option value="0.9">High (90%)</option>
+                            <option value="0.5" data-i18n="adv_img_low">Low (50%)</option>
+                            <option value="0.7" selected data-i18n="adv_img_medium">Medium (70%)</option>
+                            <option value="0.9" data-i18n="adv_img_high">High (90%)</option>
                         </select>
                     </div>
                     <div class="setting-row">
-                        <div class="setting-label">Color to grayscale:</div>
+                        <div class="setting-label" data-i18n="adv_color_mode">Color to grayscale:</div>
                         <select class="setting-input" id="colorMode">
-                            <option value="keep">Keep color</option>
-                            <option value="grayscale">Convert to grayscale</option>
+                            <option value="keep" data-i18n="adv_color_keep">Keep color</option>
+                            <option value="grayscale" data-i18n="adv_color_grayscale">Convert to grayscale</option>
                         </select>
                     </div>
                     <div class="setting-row">
-                        <div class="setting-label">Remove metadata:</div>
+                        <div class="setting-label" data-i18n="adv_remove_metadata">Remove metadata:</div>
                         <select class="setting-input" id="removeMetadata">
-                            <option value="false">Keep</option>
-                            <option value="true" selected>Remove</option>
+                            <option value="false" data-i18n="adv_meta_keep">Keep</option>
+                            <option value="true" selected data-i18n="adv_meta_remove">Remove</option>
                         </select>
                     </div>
                 </div>
                 
-                <button class="compress-button" id="compressBtn">Start compression</button>
+                <button class="compress-button" id="compressBtn" data-i18n="start_compression">Start compression</button>
             </div>
             
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing...</div>
+                <div id="progressText" data-i18n="progress_preparing">Preparing...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -485,18 +534,18 @@
                 <div class="size-comparison">
                     <div class="size-stat">
                         <div class="size-value" id="originalSize">-</div>
-                        <div class="size-label">Original size</div>
+                        <div class="size-label" data-i18n="original_size">Original size</div>
                     </div>
                     <div class="size-stat">
                         <div class="size-value" id="compressedSize">-</div>
-                        <div class="size-label">Compressed</div>
+                        <div class="size-label" data-i18n="compressed_size">Compressed</div>
                     </div>
                     <div class="size-stat">
                         <div class="size-value" id="savings">-</div>
-                        <div class="size-label">Space saved</div>
+                        <div class="size-label" data-i18n="space_saved">Space saved</div>
                     </div>
                 </div>
-                <button class="download-btn" id="downloadBtn">Download compressed file</button>
+                <button class="download-btn" id="downloadBtn" data-i18n="download_compressed_file">Download compressed file</button>
             </div>
         </div>
     </div>
@@ -518,7 +567,7 @@
             if (file && file.type === 'application/pdf') {
                 loadPdfFile(file);
             } else {
-                alert('Please select a valid PDF file');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_invalid_file') : 'Please select a valid PDF file');
             }
         });
 
@@ -540,7 +589,7 @@
                 
             } catch (error) {
                 console.error('Failed to parse PDF:', error);
-                alert('Failed to parse the PDF file');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_parsing_failed') : 'Failed to parse the PDF file');
             }
         }
 
@@ -558,29 +607,29 @@
             const settings = document.getElementById('advancedSettings');
             if (settings.style.display === 'none' || settings.style.display === '') {
                 settings.style.display = 'block';
-                this.textContent = '隐藏高级选项';
+                this.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('toggle_advanced_hide') : 'Hide advanced options';
             } else {
                 settings.style.display = 'none';
-                this.textContent = '显示高级选项';
+                this.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('toggle_advanced_show') : 'Show advanced options';
             }
         });
 
         document.getElementById('compressBtn').addEventListener('click', async function() {
             if (!pdfFile) {
-                alert('Please select a PDF file first');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_no_file_selected') : 'Please select a PDF file first');
                 return;
             }
             
             this.disabled = true;
             document.getElementById('progressSection').style.display = 'block';
-            document.getElementById('progressText').textContent = 'Loading PDF...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_analyzing') : 'Loading PDF...';
             document.getElementById('progressFill').style.width = '10%';
             
             try {
                 await compressPdf();
             } catch (error) {
                 console.error('压缩失败:', error);
-                alert('压缩失败: ' + error.message);
+                alert((window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_compression_failed') : 'Compression failed') + ': ' + error.message);
             } finally {
                 this.disabled = false;
             }
@@ -589,13 +638,13 @@
         async function compressPdf() {
             const arrayBuffer = await pdfFile.arrayBuffer();
             
-            document.getElementById('progressText').textContent = 'Analyzing PDF structure...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_analyzing') : 'Analyzing PDF structure...';
             document.getElementById('progressFill').style.width = '30%';
             
             // 使用pdf-lib进行PDF处理
             const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
             
-            document.getElementById('progressText').textContent = 'Compressing images...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_compressing_images') : 'Compressing images...';
             document.getElementById('progressFill').style.width = '60%';
             
             // 获取设置
@@ -622,7 +671,7 @@
                 pdfDoc.setCreator('');
             }
             
-            document.getElementById('progressText').textContent = 'Optimizing PDF...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_optimizing') : 'Optimizing PDF...';
             document.getElementById('progressFill').style.width = '80%';
             
             // 获取所有页面
@@ -647,7 +696,7 @@
                 }
             }
             
-            document.getElementById('progressText').textContent = 'Generating compressed file...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_generating') : 'Generating compressed file...';
             document.getElementById('progressFill').style.width = '90%';
             
             // 生成压缩后的PDF
@@ -657,7 +706,7 @@
                 objectsPerTick: 50
             });
             
-            document.getElementById('progressText').textContent = 'Compression complete!';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_compression_complete') : 'Compression complete!';
             document.getElementById('progressFill').style.width = '100%';
             
             // 显示结果
@@ -684,7 +733,7 @@
 
         document.getElementById('downloadBtn').addEventListener('click', function() {
             if (!compressedPdfBytes) {
-                alert('No compressed file to download');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_no_compressed_file') : 'No compressed file to download');
                 return;
             }
             
@@ -729,6 +778,58 @@
             document.getElementById('fileInput').click();
         });
     </script>
+
+    <script>
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                if (languageSelector.value !== currentLang) {
+                    languageSelector.value = currentLang;
+                }
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                });
+            }
+        }
+
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined' || typeof window.DROPSHARE_I18N.t !== 'function') {
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && (element.type === 'button' || element.type === 'submit')) {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const i18n = new I18N();
+            window.DROPSHARE_I18N = i18n;
+            i18n.init().then(() => {
+                translatePage();
+                initializeLanguageSelector();
+            }).catch(error => {
+                console.error('Failed to initialize i18n:', error);
+            });
+        });
+    </script>
+
     <!-- Share Integration -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>

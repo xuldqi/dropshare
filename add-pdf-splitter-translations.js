@@ -1,0 +1,297 @@
+// PDF分割器翻译键批量添加脚本
+const fs = require('fs');
+
+// 新的PDF分割器翻译键
+const pdfSplitterTranslations = {
+  de: {
+    "_comment_pdf_splitter": "PDF Splitter Übersetzungen",
+    
+    "pdf_split_method": "Aufteilemethod",
+    "pdf_method_page_range": "Nach Seitenbereich",
+    "pdf_method_page_range_desc": "Benutzerdefinierte Seitenbereiche",
+    "pdf_method_interval": "Festes Intervall",
+    "pdf_method_interval_desc": "Alle N Seiten pro Datei",
+    "pdf_method_single": "Einzelseiten",
+    "pdf_method_single_desc": "Eine Datei pro Seite",
+    "pdf_page_range_settings": "Seitenbereich-Einstellungen",
+    "pdf_to": "bis",
+    "pdf_start_page": "Startseite",
+    "pdf_end_page": "Endseite",
+    "pdf_range_example": "Beispiel: 1-5 bedeutet Seiten 1 bis 5, 6 bedeutet nur Seite 6",
+    "pdf_interval_settings": "Intervall-Einstellungen",
+    "pdf_pages_per_file": "Seiten pro Datei",
+    "pdf_page_preview": "Seitenvorschau",
+    "pdf_start_splitting": "Aufteilen starten",
+    "pdf_preparing": "Wird vorbereitet...",
+    "pdf_pages_count": "{count} Seiten",
+    "pdf_page_number": "Seite {pageNum}",
+    "pdf_more_pages": "... {remainingPages} weitere Seiten",
+    "pdf_select_valid_file": "Bitte wählen Sie eine gültige PDF-Datei aus",
+    "pdf_parse_failed": "PDF-Datei konnte nicht analysiert werden",
+    "pdf_select_file_first": "Bitte wählen Sie zuerst eine PDF-Datei aus",
+    "pdf_set_valid_range": "Bitte legen Sie einen gültigen Aufteilungsbereich fest",
+    "pdf_analyzing_structure": "PDF-Struktur wird analysiert...",
+    "pdf_splitting_document": "Dokument wird aufgeteilt...",
+    "pdf_processing_file": "Datei {index} wird verarbeitet...",
+    "pdf_download": "Herunterladen",
+    "pdf_download_all": "Alle Dateien herunterladen"
+  },
+  
+  es: {
+    "_comment_pdf_splitter": "Traducciones del divisor de PDF",
+    
+    "pdf_split_method": "Método de división",
+    "pdf_method_page_range": "Por rango de páginas",
+    "pdf_method_page_range_desc": "Rangos de páginas personalizados",
+    "pdf_method_interval": "Intervalo fijo",
+    "pdf_method_interval_desc": "Cada N páginas por archivo",
+    "pdf_method_single": "Páginas individuales",
+    "pdf_method_single_desc": "Un archivo por página",
+    "pdf_page_range_settings": "Configuración de rango de páginas",
+    "pdf_to": "hasta",
+    "pdf_start_page": "Página inicial",
+    "pdf_end_page": "Página final",
+    "pdf_range_example": "Ejemplo: 1-5 significa páginas 1 a 5, 6 significa solo la página 6",
+    "pdf_interval_settings": "Configuración de intervalo",
+    "pdf_pages_per_file": "Páginas por archivo",
+    "pdf_page_preview": "Vista previa de páginas",
+    "pdf_start_splitting": "Iniciar división",
+    "pdf_preparing": "Preparando...",
+    "pdf_pages_count": "{count} páginas",
+    "pdf_page_number": "Página {pageNum}",
+    "pdf_more_pages": "... {remainingPages} páginas más",
+    "pdf_select_valid_file": "Seleccione un archivo PDF válido",
+    "pdf_parse_failed": "Error al analizar el archivo PDF",
+    "pdf_select_file_first": "Seleccione primero un archivo PDF",
+    "pdf_set_valid_range": "Establezca un rango de división válido",
+    "pdf_analyzing_structure": "Analizando estructura del PDF...",
+    "pdf_splitting_document": "Dividiendo documento...",
+    "pdf_processing_file": "Procesando archivo {index}...",
+    "pdf_download": "Descargar",
+    "pdf_download_all": "Descargar todos los archivos"
+  },
+  
+  fr: {
+    "_comment_pdf_splitter": "Traductions du diviseur PDF",
+    
+    "pdf_split_method": "Méthode de division",
+    "pdf_method_page_range": "Par plage de pages",
+    "pdf_method_page_range_desc": "Plages de pages personnalisées",
+    "pdf_method_interval": "Intervalle fixe",
+    "pdf_method_interval_desc": "Toutes les N pages par fichier",
+    "pdf_method_single": "Pages individuelles",
+    "pdf_method_single_desc": "Un fichier par page",
+    "pdf_page_range_settings": "Paramètres de plage de pages",
+    "pdf_to": "à",
+    "pdf_start_page": "Page de début",
+    "pdf_end_page": "Page de fin",
+    "pdf_range_example": "Exemple : 1-5 signifie pages 1 à 5, 6 signifie seulement la page 6",
+    "pdf_interval_settings": "Paramètres d'intervalle",
+    "pdf_pages_per_file": "Pages par fichier",
+    "pdf_page_preview": "Aperçu des pages",
+    "pdf_start_splitting": "Commencer la division",
+    "pdf_preparing": "Préparation...",
+    "pdf_pages_count": "{count} pages",
+    "pdf_page_number": "Page {pageNum}",
+    "pdf_more_pages": "... {remainingPages} pages supplémentaires",
+    "pdf_select_valid_file": "Veuillez sélectionner un fichier PDF valide",
+    "pdf_parse_failed": "Échec de l'analyse du fichier PDF",
+    "pdf_select_file_first": "Veuillez d'abord sélectionner un fichier PDF",
+    "pdf_set_valid_range": "Veuillez définir une plage de division valide",
+    "pdf_analyzing_structure": "Analyse de la structure PDF...",
+    "pdf_splitting_document": "Division du document...",
+    "pdf_processing_file": "Traitement du fichier {index}...",
+    "pdf_download": "Télécharger",
+    "pdf_download_all": "Télécharger tous les fichiers"
+  },
+  
+  ja: {
+    "_comment_pdf_splitter": "PDF分割ツール翻訳",
+    
+    "pdf_split_method": "分割方法",
+    "pdf_method_page_range": "ページ範囲指定",
+    "pdf_method_page_range_desc": "カスタムページ範囲",
+    "pdf_method_interval": "固定間隔",
+    "pdf_method_interval_desc": "N ページごとにファイル分割",
+    "pdf_method_single": "単一ページ",
+    "pdf_method_single_desc": "1ページ1ファイル",
+    "pdf_page_range_settings": "ページ範囲設定",
+    "pdf_to": "から",
+    "pdf_start_page": "開始ページ",
+    "pdf_end_page": "終了ページ",
+    "pdf_range_example": "例：1-5は1〜5ページ、6は6ページのみ",
+    "pdf_interval_settings": "間隔設定",
+    "pdf_pages_per_file": "ファイルあたりのページ数",
+    "pdf_page_preview": "ページプレビュー",
+    "pdf_start_splitting": "分割開始",
+    "pdf_preparing": "準備中...",
+    "pdf_pages_count": "{count}ページ",
+    "pdf_page_number": "ページ{pageNum}",
+    "pdf_more_pages": "... あと{remainingPages}ページ",
+    "pdf_select_valid_file": "有効なPDFファイルを選択してください",
+    "pdf_parse_failed": "PDFファイルの解析に失敗しました",
+    "pdf_select_file_first": "最初にPDFファイルを選択してください",
+    "pdf_set_valid_range": "有効な分割範囲を設定してください",
+    "pdf_analyzing_structure": "PDF構造を解析中...",
+    "pdf_splitting_document": "文書を分割中...",
+    "pdf_processing_file": "ファイル{index}を処理中...",
+    "pdf_download": "ダウンロード",
+    "pdf_download_all": "すべてのファイルをダウンロード"
+  },
+  
+  ko: {
+    "_comment_pdf_splitter": "PDF 분할기 번역",
+    
+    "pdf_split_method": "분할 방법",
+    "pdf_method_page_range": "페이지 범위별",
+    "pdf_method_page_range_desc": "사용자 정의 페이지 범위",
+    "pdf_method_interval": "고정 간격",
+    "pdf_method_interval_desc": "파일당 N 페이지씩",
+    "pdf_method_single": "단일 페이지",
+    "pdf_method_single_desc": "페이지당 하나의 파일",
+    "pdf_page_range_settings": "페이지 범위 설정",
+    "pdf_to": "~",
+    "pdf_start_page": "시작 페이지",
+    "pdf_end_page": "끝 페이지",
+    "pdf_range_example": "예: 1-5는 1~5페이지, 6은 6페이지만",
+    "pdf_interval_settings": "간격 설정",
+    "pdf_pages_per_file": "파일당 페이지 수",
+    "pdf_page_preview": "페이지 미리보기",
+    "pdf_start_splitting": "분할 시작",
+    "pdf_preparing": "준비 중...",
+    "pdf_pages_count": "{count}페이지",
+    "pdf_page_number": "{pageNum}페이지",
+    "pdf_more_pages": "... {remainingPages}페이지 더",
+    "pdf_select_valid_file": "유효한 PDF 파일을 선택하세요",
+    "pdf_parse_failed": "PDF 파일 분석 실패",
+    "pdf_select_file_first": "먼저 PDF 파일을 선택하세요",
+    "pdf_set_valid_range": "유효한 분할 범위를 설정하세요",
+    "pdf_analyzing_structure": "PDF 구조 분석 중...",
+    "pdf_splitting_document": "문서 분할 중...",
+    "pdf_processing_file": "파일 {index} 처리 중...",
+    "pdf_download": "다운로드",
+    "pdf_download_all": "모든 파일 다운로드"
+  },
+  
+  pt: {
+    "_comment_pdf_splitter": "Tradução do divisor de PDF",
+    
+    "pdf_split_method": "Método de divisão",
+    "pdf_method_page_range": "Por intervalo de páginas",
+    "pdf_method_page_range_desc": "Intervalos de páginas personalizados",
+    "pdf_method_interval": "Intervalo fixo",
+    "pdf_method_interval_desc": "A cada N páginas por arquivo",
+    "pdf_method_single": "Páginas individuais",
+    "pdf_method_single_desc": "Um arquivo por página",
+    "pdf_page_range_settings": "Configurações de intervalo de páginas",
+    "pdf_to": "até",
+    "pdf_start_page": "Página inicial",
+    "pdf_end_page": "Página final",
+    "pdf_range_example": "Exemplo: 1-5 significa páginas 1 a 5, 6 significa apenas a página 6",
+    "pdf_interval_settings": "Configurações de intervalo",
+    "pdf_pages_per_file": "Páginas por arquivo",
+    "pdf_page_preview": "Visualização de páginas",
+    "pdf_start_splitting": "Iniciar divisão",
+    "pdf_preparing": "Preparando...",
+    "pdf_pages_count": "{count} páginas",
+    "pdf_page_number": "Página {pageNum}",
+    "pdf_more_pages": "... {remainingPages} páginas a mais",
+    "pdf_select_valid_file": "Selecione um arquivo PDF válido",
+    "pdf_parse_failed": "Falha ao analisar o arquivo PDF",
+    "pdf_select_file_first": "Selecione um arquivo PDF primeiro",
+    "pdf_set_valid_range": "Defina um intervalo de divisão válido",
+    "pdf_analyzing_structure": "Analisando estrutura do PDF...",
+    "pdf_splitting_document": "Dividindo documento...",
+    "pdf_processing_file": "Processando arquivo {index}...",
+    "pdf_download": "Baixar",
+    "pdf_download_all": "Baixar todos os arquivos"
+  },
+  
+  'zh-CN': {
+    "_comment_pdf_splitter": "PDF 分割器翻译",
+    
+    "pdf_split_method": "分割方法",
+    "pdf_method_page_range": "按页面范围",
+    "pdf_method_page_range_desc": "自定义页面范围",
+    "pdf_method_interval": "固定间隔",
+    "pdf_method_interval_desc": "每 N 页一个文件",
+    "pdf_method_single": "单页分割",
+    "pdf_method_single_desc": "每页一个文件",
+    "pdf_page_range_settings": "页面范围设置",
+    "pdf_to": "到",
+    "pdf_start_page": "起始页",
+    "pdf_end_page": "结束页",
+    "pdf_range_example": "示例：1-5 表示第1到5页，6 表示仅第6页",
+    "pdf_interval_settings": "间隔设置",
+    "pdf_pages_per_file": "每个文件的页数",
+    "pdf_page_preview": "页面预览",
+    "pdf_start_splitting": "开始分割",
+    "pdf_preparing": "准备中...",
+    "pdf_pages_count": "{count} 页",
+    "pdf_page_number": "第 {pageNum} 页",
+    "pdf_more_pages": "... 还有 {remainingPages} 页",
+    "pdf_select_valid_file": "请选择有效的 PDF 文件",
+    "pdf_parse_failed": "PDF 文件解析失败",
+    "pdf_select_file_first": "请先选择 PDF 文件",
+    "pdf_set_valid_range": "请设置有效的分割范围",
+    "pdf_analyzing_structure": "正在分析 PDF 结构...",
+    "pdf_splitting_document": "正在分割文档...",
+    "pdf_processing_file": "正在处理文件 {index}...",
+    "pdf_download": "下载",
+    "pdf_download_all": "下载所有文件"
+  },
+  
+  'zh-TW': {
+    "_comment_pdf_splitter": "PDF 分割器翻譯",
+    
+    "pdf_split_method": "分割方法",
+    "pdf_method_page_range": "按頁面範圍",
+    "pdf_method_page_range_desc": "自訂頁面範圍",
+    "pdf_method_interval": "固定間隔",
+    "pdf_method_interval_desc": "每 N 頁一個檔案",
+    "pdf_method_single": "單頁分割",
+    "pdf_method_single_desc": "每頁一個檔案",
+    "pdf_page_range_settings": "頁面範圍設定",
+    "pdf_to": "到",
+    "pdf_start_page": "起始頁",
+    "pdf_end_page": "結束頁",
+    "pdf_range_example": "範例：1-5 表示第1到5頁，6 表示僅第6頁",
+    "pdf_interval_settings": "間隔設定",
+    "pdf_pages_per_file": "每個檔案的頁數",
+    "pdf_page_preview": "頁面預覽",
+    "pdf_start_splitting": "開始分割",
+    "pdf_preparing": "準備中...",
+    "pdf_pages_count": "{count} 頁",
+    "pdf_page_number": "第 {pageNum} 頁",
+    "pdf_more_pages": "... 還有 {remainingPages} 頁",
+    "pdf_select_valid_file": "請選擇有效的 PDF 檔案",
+    "pdf_parse_failed": "PDF 檔案解析失敗",
+    "pdf_select_file_first": "請先選擇 PDF 檔案",
+    "pdf_set_valid_range": "請設定有效的分割範圍",
+    "pdf_analyzing_structure": "正在分析 PDF 結構...",
+    "pdf_splitting_document": "正在分割文件...",
+    "pdf_processing_file": "正在處理檔案 {index}...",
+    "pdf_download": "下載",
+    "pdf_download_all": "下載所有檔案"
+  }
+};
+
+// 批量更新所有语言文件
+Object.keys(pdfSplitterTranslations).forEach(lang => {
+  try {
+    const filePath = `public/locales/${lang}.json`;
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    
+    // 添加新的翻译键
+    Object.assign(data, pdfSplitterTranslations[lang]);
+    
+    // 写回文件
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    console.log(`✅ Updated ${lang}.json with PDF Splitter translations`);
+    
+  } catch (error) {
+    console.error(`❌ Error updating ${lang}.json:`, error.message);
+  }
+});
+
+console.log('\n🎉 PDF Splitter translations added to all languages!');

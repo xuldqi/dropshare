@@ -3,416 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Compressor - DropShare</title>
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.7/dist/umd/ffmpeg.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #ffffff;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .header {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #3367d6;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-links a {
-            color: #6b7280;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .nav-links a:hover {
-            color: #3367d6;
-            background: #f3f4f6;
-        }
-
-        .nav-links a.active {
-            color: #3367d6;
-            background: #e3f2fd;
-            font-weight: 600;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .control-buttons {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .page-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .page-subtitle {
-            font-size: 16px;
-            color: #6b7280;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .compressor-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-
-        .upload-area {
-            border: 3px dashed #d1d5db;
-            border-radius: 12px;
-            padding: 60px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f9fafb;
-            margin-bottom: 30px;
-        }
-
-        .upload-area:hover,
-        .upload-area.dragover {
-            border-color: #3367d6;
-            background: #eff6ff;
-        }
-
-        .upload-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            color: #9ca3af;
-        }
-
-        .upload-text {
-            font-size: 18px;
-            color: #374151;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .upload-hint {
-            font-size: 14px;
-            color: #6b7280;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .compression-controls {
-            background: #f9fafb;
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 24px;
-            display: none;
-        }
-
-        .video-info {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .info-label {
-            font-size: 14px;
-            color: #6b7280;
-            font-weight: 500;
-        }
-
-        .info-value {
-            font-size: 14px;
-            color: #374151;
-            font-weight: 600;
-        }
-
-        .control-section {
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 12px;
-        }
-
-        .quality-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .quality-btn {
-            padding: 10px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 6px;
-            background: white;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .quality-btn:hover {
-            border-color: #3367d6;
-        }
-
-        .quality-btn.active {
-            border-color: #3367d6;
-            background: #3367d6;
-            color: white;
-        }
-
-        .quality-name {
-            font-weight: 600;
-        }
-
-        .quality-desc {
-            font-size: 11px;
-            opacity: 0.8;
-        }
-
-        .resolution-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .resolution-btn {
-            padding: 8px 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 6px;
-            background: white;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-align: center;
-        }
-
-        .resolution-btn:hover {
-            border-color: #3367d6;
-        }
-
-        .resolution-btn.active {
-            border-color: #3367d6;
-            background: #3367d6;
-            color: white;
-        }
-
-        .compress-button {
-            background: #3367d6;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .compress-button:hover {
-            background: #2563eb;
-        }
-
-        .compress-button:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-        }
-
-        .engine-status {
-            background: #fef3c7;
-            color: #92400e;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 14px;
-            display: none;
-        }
-
-        .engine-status.loaded {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .progress-section {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #f3f4f6;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 16px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #3367d6;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .size-comparison {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 16px;
-            display: none;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .size-item {
-            text-align: center;
-        }
-
-        .size-label {
-            font-size: 12px;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-
-        .size-value {
-            font-size: 16px;
-            font-weight: 600;
-            color: #374151;
-        }
-
-        .video-preview {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto 20px;
-            border-radius: 8px;
-        }
-    </style>
-    <link rel="stylesheet" href="share-integration.css">
-    <link rel="stylesheet" href="device-selector.css">
-</head>
-
-<body>
-    <!-- Header -->
-        <header class="header">
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
-            </div>
-
-            <div class="header-controls">
-                <nav class="nav-links">
-                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
-                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
-                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
-                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
-                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
-                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
-                </nav>
-
-                <div class="control-buttons">
-                    <!-- Language Selector -->
-                    <div class="language-selector">
-                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
-                            <option value="en">English</option>
-                            <option value="zh-CN">简体中文</option>
-                            <option value="zh-TW">繁體中文</option>
-                            <option value="ja">日本語</option>
-                            <option value="ko">한국어</option>
-                            <option value="fr">Français</option>
-                            <option value="de">Deutsch</option>
-                            <option value="pt">Português</option>
-                            <option value="es">Español</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <!-- Top-left return button -->
-        
-        <h1 class="page-title" data-i18n="video_compressor_title">Video Compressor</h1>
-        <p class="page-subtitle" data-i18n="video_compressor_subtitle">Reduce video file size while maintaining quality - Real FFmpeg Processing</p>
+    <title>Video Compressor</title>
+    <p class="page-subtitle" data-i18n="video_compressor_subtitle">Reduce video file size while maintaining quality - Real FFmpeg Processing</p>
         
         <div class="compressor-card">
             <div class="engine-status" id="engineStatus">
@@ -421,8 +13,8 @@
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🗜️</div>
-                <div class="upload-text">Click or drag to upload video file</div>
-                <div class="upload-hint">Supports MP4, AVI, MOV, MKV, WebM formats</div>
+                <div class="upload-text" data-i18n="video_compressor_upload_text">Click or drag to upload video file</div>
+                <div class="upload-hint" data-i18n="video_compressor_upload_hint">Supports MP4, AVI, MOV, MKV, WebM formats</div>
                 <input type="file" id="fileInput" accept="video/*">
             </div>
             
@@ -431,49 +23,49 @@
 
                 <div class="video-info">
                     <div class="info-row">
-                        <span class="info-label">Original Format</span>
+                        <span class="info-label" data-i18n="original_format">Original Format</span>
                         <span class="info-value" id="originalFormat">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">File Size</span>
+                        <span class="info-label" data-i18n="file_size">File Size</span>
                         <span class="info-value" id="originalSize">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">Duration</span>
+                        <span class="info-label" data-i18n="duration">Duration</span>
                         <span class="info-value" id="videoDuration">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">Resolution</span>
+                        <span class="info-label" data-i18n="resolution">Resolution</span>
                         <span class="info-value" id="videoResolution">-</span>
                     </div>
                 </div>
 
                 <div class="control-section">
-                    <div class="section-title">Compression Quality</div>
+                    <div class="section-title" data-i18n="compression_quality">Compression Quality</div>
                     <div class="quality-options">
                         <div class="quality-btn" data-crf="18">
-                            <div class="quality-name">Excellent</div>
-                            <div class="quality-desc">Large file</div>
+                            <div class="quality-name" data-i18n="quality_excellent">Excellent</div>
+                            <div class="quality-desc" data-i18n="quality_large_file">Large file</div>
                         </div>
                         <div class="quality-btn active" data-crf="23">
-                            <div class="quality-name">High</div>
-                            <div class="quality-desc">Balanced</div>
+                            <div class="quality-name" data-i18n="quality_high">High</div>
+                            <div class="quality-desc" data-i18n="quality_balanced">Balanced</div>
                         </div>
                         <div class="quality-btn" data-crf="28">
-                            <div class="quality-name">Medium</div>
-                            <div class="quality-desc">Good compression</div>
+                            <div class="quality-name" data-i18n="quality_medium">Medium</div>
+                            <div class="quality-desc" data-i18n="quality_good_compression">Good compression</div>
                         </div>
                         <div class="quality-btn" data-crf="35">
-                            <div class="quality-name">Low</div>
-                            <div class="quality-desc">Small file</div>
+                            <div class="quality-name" data-i18n="quality_low">Low</div>
+                            <div class="quality-desc" data-i18n="quality_small_file">Small file</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="control-section">
-                    <div class="section-title">Output Resolution</div>
+                    <div class="section-title" data-i18n="output_resolution">Output Resolution</div>
                     <div class="resolution-options">
-                        <div class="resolution-btn active" data-resolution="original">Original</div>
+                        <div class="resolution-btn active" data-resolution="original" data-i18n="resolution_original">Original</div>
                         <div class="resolution-btn" data-resolution="1080p">1080p</div>
                         <div class="resolution-btn" data-resolution="720p">720p</div>
                         <div class="resolution-btn" data-resolution="480p">480p</div>
@@ -482,20 +74,20 @@
 
                 <div class="size-comparison" id="sizeComparison">
                     <div class="size-item">
-                        <div class="size-label">Original Size</div>
+                        <div class="size-label" data-i18n="original_size">Original Size</div>
                         <div class="size-value" id="originalSizeDisplay">-</div>
                     </div>
                     <div class="size-item">
-                        <div class="size-label">Estimated Size</div>
+                        <div class="size-label" data-i18n="estimated_size">Estimated Size</div>
                         <div class="size-value" id="estimatedSize">-</div>
                     </div>
                 </div>
                 
-                <button class="compress-button" id="compressBtn" disabled>Loading Engine...</button>
+                <button class="compress-button" id="compressBtn" disabled data-i18n="btn_loading_engine">Loading Engine...</button>
             </div>
 
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing compression...</div>
+                <div id="progressText" data-i18n="progress_preparing">Preparing compression...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -504,7 +96,6 @@
     </div>
 
     <script>
-        const { FFmpeg } = FFmpegWASM;
         let ffmpeg = null;
         let videoFile = null;
         let isEngineLoaded = false;
@@ -512,20 +103,139 @@
         let videoWidth = 0;
         let videoHeight = 0;
         
+        // Function to load FFmpeg from CDN if not already loaded
+        async function loadFFmpegFromCDN() {
+            return new Promise((resolve, reject) => {
+                // Check if already loaded
+                if (typeof FFmpeg !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                let scriptsLoaded = 0;
+                const totalScripts = 2;
+                
+                function checkComplete() {
+                    scriptsLoaded++;
+                    if (scriptsLoaded === totalScripts) {
+                        // Give a moment for scripts to initialize
+                        setTimeout(() => {
+                            if (typeof FFmpeg !== 'undefined') {
+                                resolve();
+                            } else {
+                                reject(new Error('FFmpeg scripts loaded but not available'));
+                            }
+                        }, 100);
+                    }
+                }
+                
+                // Load FFmpeg core
+                const ffmpegScript = document.createElement('script');
+                ffmpegScript.src = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js';
+                ffmpegScript.onload = checkComplete;
+                ffmpegScript.onerror = () => reject(new Error('Failed to load FFmpeg script'));
+                document.head.appendChild(ffmpegScript);
+                
+                // Load FFmpeg util
+                const utilScript = document.createElement('script');
+                utilScript.src = 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/util.js';
+                utilScript.onload = checkComplete;
+                utilScript.onerror = () => reject(new Error('Failed to load FFmpeg util script'));
+                document.head.appendChild(utilScript);
+                
+                // Timeout after 10 seconds
+                setTimeout(() => {
+                    reject(new Error('FFmpeg loading timeout'));
+                }, 10000);
+            });
+        }
+
+        // Improved core loading with multiple fallback strategies
+        async function loadFFmpegCore(statusEl, toBlobURL) {
+            // Define multiple core file sources
+            const coreSources = [
+                // Unpkg CDN (most reliable)
+                'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                // JSDelivr CDN (backup)
+                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                // Local files (if available)
+                `${location.origin}/vendor/ffmpeg`
+            ];
+            
+            for (let i = 0; i < coreSources.length; i++) {
+                const baseURL = coreSources[i];
+                statusEl.textContent = `Loading FFmpeg core from source ${i + 1}/${coreSources.length}...`;
+                
+                try {
+                    // Try to load core files with timeout
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+                    
+                    const coreURL = await toBlobURL(
+                        `${baseURL}/ffmpeg-core.js`, 
+                        'text/javascript',
+                        false, // no progress callback for now
+                        { signal: controller.signal }
+                    );
+                    
+                    const wasmURL = await toBlobURL(
+                        `${baseURL}/ffmpeg-core.wasm`, 
+                        'application/wasm',
+                        false,
+                        { signal: controller.signal }
+                    );
+                    
+                    clearTimeout(timeoutId);
+                    
+                    // Load FFmpeg with the core files
+                    await ffmpeg.load({ coreURL, wasmURL });
+                    
+                    console.log(`✅ FFmpeg core loaded from: ${baseURL}`);
+                    return; // Success, exit the loop
+                    
+                } catch (error) {
+                    console.warn(`⚠️ Failed to load from ${baseURL}:`, error.message);
+                    
+                    if (i === coreSources.length - 1) {
+                        // Last attempt failed
+                        throw new Error(`Failed to load FFmpeg core from all sources. Last error: ${error.message}`);
+                    }
+                    
+                    // Try next source
+                    continue;
+                }
+            }
+        }
+        
         // Initialize FFmpeg when page loads
         async function initFFmpeg() {
             const statusEl = document.getElementById('engineStatus');
+            if (!statusEl) return;
+            
             statusEl.style.display = 'block';
-            statusEl.textContent = 'Loading video processing engine (this may take a moment)...';
+            statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_engine_loading') : 'Loading video processing engine (this may take a moment)...';
+            statusEl.style.background = '#fef3c7';
+            statusEl.style.color = '#92400e';
 
             try {
-                const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL } = FFmpegUtil;
+                // Check if FFmpeg is available from CDN first
+                if (typeof FFmpeg === 'undefined') {
+                    // Try to load from unpkg CDN
+                    await loadFFmpegFromCDN();
+                }
+                
+                // Initialize FFmpeg
+                const { FFmpeg } = window.FFmpeg || window.FFmpegWASM;
+                const { toBlobURL } = window.FFmpegUtil;
+                
+                if (!FFmpeg || !toBlobURL) {
+                    throw new Error('FFmpeg libraries not available');
+                }
                 
                 ffmpeg = new FFmpeg();
                 
                 ffmpeg.on('log', ({ message }) => {
-                    console.log(message);
+                    console.log('FFmpeg:', message);
                 });
                 
                 ffmpeg.on('progress', ({ progress }) => {
@@ -533,18 +243,13 @@
                     updateProgress(percentage);
                 });
                 
-                statusEl.textContent = 'Loading FFmpeg core files...';
-                
-                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
-                
-                await ffmpeg.load({
-                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-                });
+                // Load core files with multiple fallback strategies
+                await loadFFmpegCore(statusEl, toBlobURL);
                 
                 isEngineLoaded = true;
-                statusEl.textContent = '✓ Video processing engine loaded and ready!';
-                statusEl.classList.add('loaded');
+                statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_engine_ready') : '✓ Video processing engine loaded and ready!';
+                statusEl.style.background = '#d1fae5';
+                statusEl.style.color = '#065f46';
                 
                 // Hide status after 3 seconds
                 setTimeout(() => {
@@ -552,18 +257,37 @@
                 }, 3000);
                 
                 // Enable compress button if file is loaded
-                if (videoFile) {
-                    document.getElementById('compressBtn').disabled = false;
-                    document.getElementById('compressBtn').textContent = 'Compress Video';
+                const compressBtn = document.getElementById('compressBtn');
+                if (compressBtn && videoFile) {
+                    compressBtn.disabled = false;
+                    compressBtn.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_compress_button') : 'Compress Video';
                 }
                 
-                console.log('FFmpeg loaded successfully');
+                console.log('✅ FFmpeg loaded successfully');
                 
             } catch (error) {
-                console.error('Failed to load FFmpeg:', error);
-                statusEl.textContent = '✗ Failed to load video processing engine. Please refresh the page.';
+                console.error('❌ Failed to load FFmpeg:', error);
+                statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_engine_failed') : '✗ Failed to load video processing engine. Please refresh the page.';
                 statusEl.style.background = '#fee2e2';
                 statusEl.style.color = '#dc2626';
+                
+                // Add retry button
+                const retryButton = document.createElement('button');
+                retryButton.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_retry_loading') : 'Retry Loading';
+                retryButton.style.marginLeft = '10px';
+                retryButton.style.padding = '4px 8px';
+                retryButton.style.background = '#dc2626';
+                retryButton.style.color = 'white';
+                retryButton.style.border = 'none';
+                retryButton.style.borderRadius = '4px';
+                retryButton.style.cursor = 'pointer';
+                
+                retryButton.onclick = () => {
+                    retryButton.remove();
+                    initFFmpeg();
+                };
+                
+                statusEl.appendChild(retryButton);
             }
         }
         
@@ -603,10 +327,10 @@
                 const compressBtn = document.getElementById('compressBtn');
                 if (isEngineLoaded) {
                     compressBtn.disabled = false;
-                    compressBtn.textContent = 'Compress Video';
+                    compressBtn.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_compress_button') : 'Compress Video';
                 } else {
                     compressBtn.disabled = true;
-                    compressBtn.textContent = 'Loading Engine...';
+                    compressBtn.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('btn_loading_engine') : 'Loading Engine...';
                 }
             }
         });
@@ -697,7 +421,7 @@
                 const inputFileName = 'input.' + fileExtension;
                 const outputFileName = 'compressed.mp4';
                 
-                document.getElementById('progressText').textContent = 'Loading video file...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_loading_file') : 'Loading video file...';
                 await ffmpeg.writeFile(inputFileName, new Uint8Array(await videoFile.arrayBuffer()));
                 
                 // Build FFmpeg command
@@ -725,7 +449,7 @@
                 command.push('-y', outputFileName);
                 
                 console.log('FFmpeg compress command:', command.join(' '));
-                document.getElementById('progressText').textContent = 'Compressing video...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_compressing') : 'Compressing video...';
                 
                 // Execute FFmpeg command
                 await ffmpeg.exec(command);
@@ -762,10 +486,10 @@
                 
             } catch (error) {
                 console.error('Compression failed:', error);
-                document.getElementById('progressText').textContent = 'Compression failed: ' + error.message;
+                document.getElementById('progressText').textContent = (window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_compression_failed') : 'Compression failed: ') + error.message;
             } finally {
                 this.disabled = false;
-                this.textContent = 'Compress Video';
+                this.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_compress_button') : 'Compress Video';
             }
         });
 
@@ -794,7 +518,6 @@
             document.getElementById('fileInput').click();
         });
     </script>
-    <script src="scripts/i18n/languages.js"></script>
     <script>
         // Language selector functions
         function initializeLanguageSelector() {
@@ -806,22 +529,17 @@
                 
                 languageSelector.addEventListener('change', function() {
                     const selectedLang = this.value;
-                    window.DROPSHARE_I18N.changeLanguage(selectedLang);
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
                     translatePage();
                 });
             }
         }
 
-        function syncLanguageSelector() {
-            const languageSelector = document.getElementById('language-selector');
-            if (languageSelector && window.DROPSHARE_I18N) {
-                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
-                languageSelector.value = currentLang;
-            }
-        }
-
+        // Main translation function
         function translatePage() {
-            if (!window.DROPSHARE_I18N) return;
+            if (typeof window.DROPSHARE_I18N === 'undefined' || typeof window.DROPSHARE_I18N.t !== 'function') {
+                return;
+            }
             
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(element => {
@@ -829,9 +547,9 @@
                 const translation = window.DROPSHARE_I18N.t(key);
                 
                 if (translation && translation !== key) {
-                    if (element.tagName === 'INPUT' && element.type === 'text') {
+                    if (element.tagName === 'INPUT' && (element.type === 'button' || element.type === 'submit')) {
                         element.value = translation;
-                    } else if (element.hasAttribute('data-i18n-placeholder')) {
+                    } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
                         element.placeholder = translation;
                     } else {
                         element.textContent = translation;
@@ -840,17 +558,14 @@
             });
         }
 
-        // Initialize language system when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
                     initializeLanguageSelector();
-                    setTimeout(() => {
-                        syncLanguageSelector();
-                        translatePage();
-                    }, 100);
-                }
-            }, 100);
+                });
+            }
         });
     </script>
     <!-- Share Integration -->

@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="background_remover_title">Background Remover</title>
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
     <style>
         * {
             margin: 0;
@@ -433,63 +435,7 @@
             }
         }
     </style>    
-    <!-- Mobile Responsive Styles -->
-    <link rel="stylesheet" href="styles/mobile-responsive.css">
-
-    <link rel="stylesheet" href="share-integration.css">
-    <link rel="stylesheet" href="device-selector.css">
-    <script src="/locales/i18n.js"></script>
-    <script src="scripts/ui.js"></script>
-</head>
-
-<body>
-    <!-- Header -->
-        <header class="header">
-        <div class="header-container">
-            <div class="logo-container">
-                <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
-            </div>
-
-            <div class="header-controls">
-                <nav class="nav-links">
-                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
-                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
-                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
-                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
-                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
-                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
-                </nav>
-
-                <div class="control-buttons">
-                    <!-- Language Selector -->
-                    <div class="language-selector">
-                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
-                            <option value="en">English</option>
-                            <option value="zh-CN">简体中文</option>
-                            <option value="zh-TW">繁體中文</option>
-                            <option value="ja">日本語</option>
-                            <option value="ko">한국어</option>
-                            <option value="fr">Français</option>
-                            <option value="de">Deutsch</option>
-                            <option value="pt">Português</option>
-                            <option value="es">Español</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <!-- Top-left return button -->
-        <div style="margin-bottom: 20px;">
-            <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
-            </a>
-        </div>
-        
-        <h1 class="page-title" data-i18n="image_background_remover_title">Background Remover</h1>
-        <p class="page-subtitle" data-i18n="image_background_remover_subtitle">Intelligently remove image backgrounds with manual precision adjustment support</p>
+    <p class="page-subtitle" data-i18n="image_background_remover_subtitle">Intelligently remove image backgrounds with manual precision adjustment support</p>
 
         <div class="remover-card">
             <!-- Upload area -->
@@ -519,27 +465,27 @@
                     <div class="tools-grid">
                         <!-- Selection tools -->
                         <div class="tool-section">
-                            <div class="tool-title">🪄 Selection Tools</div>
+                            <div class="tool-title" data-i18n="bg_selection_tools">🪄 Selection Tools</div>
                             <div class="tool-buttons">
-                                <button class="tool-btn active" id="magicWand">Magic Wand</button>
-                                <button class="tool-btn" id="eraser">Eraser</button>
-                                <button class="tool-btn" id="restoreBrush">Restore Brush</button>
+                                <button class="tool-btn active" id="magicWand" data-i18n="bg_magic_wand">Magic Wand</button>
+                                <button class="tool-btn" id="eraser" data-i18n="bg_eraser">Eraser</button>
+                                <button class="tool-btn" id="restoreBrush" data-i18n="bg_restore_brush">Restore Brush</button>
                             </div>
                         </div>
 
                         <!-- Auto selection -->
                         <div class="tool-section">
-                            <div class="tool-title">⚡ Quick Actions</div>
+                            <div class="tool-title" data-i18n="bg_quick_actions">⚡ Quick Actions</div>
                             <div class="tool-buttons">
-                                <button class="tool-btn" id="autoRemove">Smart Remove</button>
-                                <button class="tool-btn" id="clearAll">Clear All</button>
-                                <button class="tool-btn" id="restoreAll">Restore All</button>
+                                <button class="tool-btn" id="autoRemove" data-i18n="bg_smart_remove">Smart Remove</button>
+                                <button class="tool-btn" id="clearAll" data-i18n="bg_clear_all">Clear All</button>
+                                <button class="tool-btn" id="restoreAll" data-i18n="bg_restore_all">Restore All</button>
                             </div>
                         </div>
 
                         <!-- Tolerance settings -->
                         <div class="tool-section">
-                            <div class="tool-title">🎯 Tolerance Settings</div>
+                            <div class="tool-title" data-i18n="bg_tolerance_settings">🎯 Tolerance Settings</div>
                             <input type="range" class="tolerance-slider" id="toleranceSlider" 
                                    min="1" max="100" value="20">
                             <div style="text-align: center;">
@@ -549,7 +495,7 @@
 
                         <!-- Brush size -->
                         <div class="tool-section">
-                            <div class="tool-title">🖌️ Brush Size</div>
+                            <div class="tool-title" data-i18n="bg_brush_size">🖌️ Brush Size</div>
                             <input type="range" class="tolerance-slider" id="brushSizeSlider" 
                                    min="5" max="50" value="15">
                             <div style="text-align: center;">
@@ -579,8 +525,8 @@
                             <canvas id="previewCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>Format: <span class="size">PNG (Transparent background)</span></div>
-                            <div>Status: <span class="size" id="editStatus">Waiting for edit</span></div>
+                            <div><span data-i18n="bg_format">Format:</span> <span class="size" data-i18n="bg_png_transparent">PNG (Transparent background)</span></div>
+                            <div><span data-i18n="bg_status">Status:</span> <span class="size" id="editStatus" data-i18n="bg_waiting_edit">Waiting for edit</span></div>
                         </div>
                     </div>
                 </div>
@@ -697,12 +643,12 @@
         // Process file
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('Please select an image file!');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_select_valid') : 'Please select an image file');
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert('File size cannot exceed 10MB!');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_file_too_large') : 'File size cannot exceed 10MB');
                 return;
             }
 
@@ -757,8 +703,8 @@
             undoBtn.style.display = 'inline-flex';
             
             // Update status
-            updateStatus('ready', 'Click background area to start removal...');
-            document.getElementById('editStatus').textContent = 'Ready to edit';
+            updateStatus('ready', window.DROPSHARE_I18N?.t('bg_click_to_start') || 'Click background area to start removal...');
+            document.getElementById('editStatus').textContent = window.DROPSHARE_I18N?.t('bg_ready_edit') || 'Ready to edit';
         }
 
         // Setup canvases function
@@ -856,7 +802,7 @@ function setupCanvases(img) {
             magicWandSelect(x, y);
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = 'Edited';
+            document.getElementById('editStatus').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_edited_status') : 'Edited';
         }
 
         // Brush action handling
@@ -880,7 +826,7 @@ function setupCanvases(img) {
             
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = 'Edited';
+            document.getElementById('editStatus').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_edited_status') : 'Edited';
         }
 
         // Magic wand selection algorithm
@@ -959,7 +905,7 @@ function setupCanvases(img) {
             
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = 'Edited';
+            document.getElementById('editStatus').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_edited_status') : 'Edited';
             updateStatus('processed', 'Auto background removal completed');
         }
 
@@ -971,7 +917,7 @@ function setupCanvases(img) {
             maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = 'Edited';
+            document.getElementById('editStatus').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_edited_status') : 'Edited';
         }
 
         // Restore all masks
@@ -982,7 +928,7 @@ function setupCanvases(img) {
             maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
             updatePreview();
             hasEdits = true;
-            document.getElementById('editStatus').textContent = 'Edited';
+            document.getElementById('editStatus').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_edited_status') : 'Edited';
         }
 
         // Update preview
@@ -1034,7 +980,7 @@ function setupCanvases(img) {
                 
                 if (editHistory.length === 0) {
                     hasEdits = false;
-                    document.getElementById('editStatus').textContent = 'Ready to edit';
+                    document.getElementById('editStatus').textContent = window.DROPSHARE_I18N?.t('bg_ready_edit') || 'Ready to edit';
                 }
             }
         }
@@ -1085,7 +1031,7 @@ function setupCanvases(img) {
             statusInfo.style.display = 'none';
             fileInput.value = '';
             
-            document.getElementById('editStatus').textContent = 'Waiting for edit';
+            document.getElementById('editStatus').textContent = window.DROPSHARE_I18N?.t('bg_waiting_edit') || 'Waiting for edit';
         }
 
         // Format file size
@@ -1145,15 +1091,13 @@ function setupCanvases(img) {
 
         // Initialize language system when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
                     initializeLanguageSelector();
-                    setTimeout(() => {
-                        syncLanguageSelector();
-                        translatePage();
-                    }, 100);
-                }
-            }, 100);
+                });
+            }
         });
     </script>
     <!-- Share Integration -->

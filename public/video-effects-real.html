@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="video_effects_title">Video Effects - DropShare</title>
+    <title>Video Effects</title>
     <style>
         * {
             margin: 0;
@@ -70,6 +70,18 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .container {
@@ -408,28 +420,52 @@
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
     <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
 </head>
 
 <body>
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                🎥 DropShare
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#3367d6"/>
+                    <path d="M8 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>DropShare</span>
             </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html" class="active">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" class="active" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+
+                <div class="control-buttons">
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        
         <h1 class="page-title" data-i18n="video_effects_heading">Video Effects</h1>
         <p class="page-subtitle" data-i18n="video_effects_subtitle">Apply various video effects and filters like brightness, contrast, and artistic styles</p>
         
@@ -449,59 +485,59 @@
                 <div class="effects-grid">
                     <div class="effects-sidebar">
                         <div class="effects-category">
-                            <div class="category-title">Color Adjustment</div>
+                            <div class="category-title" data-i18n="effects_cat_color">Color Adjustment</div>
                             <div class="effect-list">
                                 <div class="effect-item active" data-effect="brightness">
-                                    <div class="effect-name">Brightness</div>
-                                    <div class="effect-desc">Adjust overall video brightness</div>
+                                    <div class="effect-name" data-i18n="effect_brightness">Brightness</div>
+                                    <div class="effect-desc" data-i18n="effect_brightness_desc">Adjust overall video brightness</div>
                                 </div>
                                 <div class="effect-item" data-effect="contrast">
-                                    <div class="effect-name">Contrast</div>
-                                    <div class="effect-desc">Adjust contrast level</div>
+                                    <div class="effect-name" data-i18n="effect_contrast">Contrast</div>
+                                    <div class="effect-desc" data-i18n="effect_contrast_desc">Adjust contrast level</div>
                                 </div>
                                 <div class="effect-item" data-effect="saturation">
-                                    <div class="effect-name">Saturation</div>
-                                    <div class="effect-desc">Adjust color saturation</div>
+                                    <div class="effect-name" data-i18n="effect_saturation">Saturation</div>
+                                    <div class="effect-desc" data-i18n="effect_saturation_desc">Adjust color saturation</div>
                                 </div>
                                 <div class="effect-item" data-effect="hue">
-                                    <div class="effect-name">Hue</div>
-                                    <div class="effect-desc">Adjust hue</div>
+                                    <div class="effect-name" data-i18n="effect_hue">Hue</div>
+                                    <div class="effect-desc" data-i18n="effect_hue_desc">Adjust hue</div>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="effects-category">
-                            <div class="category-title">Filter Effects</div>
+                            <div class="category-title" data-i18n="effects_cat_filters">Filter Effects</div>
                             <div class="effect-list">
                                 <div class="effect-item" data-effect="blur">
-                                    <div class="effect-name">Blur</div>
-                                    <div class="effect-desc">Gaussian blur effect</div>
+                                    <div class="effect-name" data-i18n="effect_blur">Blur</div>
+                                    <div class="effect-desc" data-i18n="effect_blur_desc">Gaussian blur effect</div>
                                 </div>
                                 <div class="effect-item" data-effect="sharpen">
-                                    <div class="effect-name">Sharpen</div>
-                                    <div class="effect-desc">Enhance details</div>
+                                    <div class="effect-name" data-i18n="effect_sharpen">Sharpen</div>
+                                    <div class="effect-desc" data-i18n="effect_sharpen_desc">Enhance details</div>
                                 </div>
                                 <div class="effect-item" data-effect="noise">
-                                    <div class="effect-name">Noise</div>
-                                    <div class="effect-desc">Add noise texture</div>
+                                    <div class="effect-name" data-i18n="effect_noise">Noise</div>
+                                    <div class="effect-desc" data-i18n="effect_noise_desc">Add noise texture</div>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="effects-category">
-                            <div class="category-title">Stylize</div>
+                            <div class="category-title" data-i18n="effects_cat_stylize">Stylize</div>
                             <div class="effect-list">
                                 <div class="effect-item" data-effect="sepia">
-                                    <div class="effect-name">Sepia</div>
-                                    <div class="effect-desc">Retro vintage tone</div>
+                                    <div class="effect-name" data-i18n="effect_sepia">Sepia</div>
+                                    <div class="effect-desc" data-i18n="effect_sepia_desc">Retro vintage tone</div>
                                 </div>
                                 <div class="effect-item" data-effect="grayscale">
-                                    <div class="effect-name">Grayscale</div>
-                                    <div class="effect-desc">Convert to black & white</div>
+                                    <div class="effect-name" data-i18n="effect_grayscale">Grayscale</div>
+                                    <div class="effect-desc" data-i18n="effect_grayscale_desc">Convert to black & white</div>
                                 </div>
                                 <div class="effect-item" data-effect="vintage">
-                                    <div class="effect-name">Vintage</div>
-                                    <div class="effect-desc">Classic film look</div>
+                                    <div class="effect-name" data-i18n="effect_vintage">Vintage</div>
+                                    <div class="effect-desc" data-i18n="effect_vintage_desc">Classic film look</div>
                                 </div>
                             </div>
                         </div>
@@ -509,14 +545,14 @@
                     
                     <div class="effects-workspace">
                         <div class="workspace-header">
-                            <div class="selected-effect-title" id="selectedEffectTitle">Brightness Adjustment</div>
-                            <button class="preview-btn" id="previewBtn">Preview Effect</button>
+                            <div class="selected-effect-title" id="selectedEffectTitle" data-i18n="effects_brightness_adj">Brightness Adjustment</div>
+                            <button class="preview-btn" id="previewBtn" data-i18n="effects_preview_btn">Preview Effect</button>
                         </div>
                         
                         <!-- Brightness Settings -->
                         <div class="effect-settings active" id="brightness-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Brightness</label>
+                                <label class="setting-label" data-i18n="effects_label_brightness">Brightness</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="brightnessValue" min="-100" max="100" value="0">
                                     <span class="range-value" id="brightnessDisplay">0</span>
@@ -527,7 +563,7 @@
                         <!-- Contrast Settings -->
                         <div class="effect-settings" id="contrast-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Contrast</label>
+                                <label class="setting-label" data-i18n="effects_label_contrast">Contrast</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="contrastValue" min="0" max="200" value="100">
                                     <span class="range-value" id="contrastDisplay">100%</span>
@@ -538,7 +574,7 @@
                         <!-- Saturation Settings -->
                         <div class="effect-settings" id="saturation-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Saturation</label>
+                                <label class="setting-label" data-i18n="effects_label_saturation">Saturation</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="saturationValue" min="0" max="200" value="100">
                                     <span class="range-value" id="saturationDisplay">100%</span>
@@ -549,7 +585,7 @@
                         <!-- Hue Settings -->
                         <div class="effect-settings" id="hue-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Hue</label>
+                                <label class="setting-label" data-i18n="effects_label_hue">Hue</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="hueValue" min="-180" max="180" value="0">
                                     <span class="range-value" id="hueDisplay">0°</span>
@@ -560,7 +596,7 @@
                         <!-- Blur Settings -->
                         <div class="effect-settings" id="blur-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Blur strength</label>
+                                <label class="setting-label" data-i18n="effects_label_blur">Blur strength</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="blurValue" min="0" max="20" value="5">
                                     <span class="range-value" id="blurDisplay">5px</span>
@@ -571,7 +607,7 @@
                         <!-- Sharpen Settings -->
                         <div class="effect-settings" id="sharpen-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Sharpen strength</label>
+                                <label class="setting-label" data-i18n="effects_label_sharpen">Sharpen strength</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="sharpenValue" min="0" max="10" value="2">
                                     <span class="range-value" id="sharpenDisplay">2</span>
@@ -582,7 +618,7 @@
                         <!-- Noise Settings -->
                         <div class="effect-settings" id="noise-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Noise strength</label>
+                                <label class="setting-label" data-i18n="effects_label_noise">Noise strength</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="noiseValue" min="1" max="100" value="20">
                                     <span class="range-value" id="noiseDisplay">20</span>
@@ -593,7 +629,7 @@
                         <!-- Sepia Settings -->
                         <div class="effect-settings" id="sepia-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Sepia strength</label>
+                                <label class="setting-label" data-i18n="effects_label_sepia">Sepia strength</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="sepiaValue" min="0" max="100" value="80">
                                     <span class="range-value" id="sepiaDisplay">80%</span>
@@ -604,14 +640,14 @@
                         <!-- Grayscale Settings -->
                         <div class="effect-settings" id="grayscale-settings">
                             <div class="setting-group">
-                                <p style="color: #6b7280; font-size: 14px;">Convert the video to black and white. No extra settings required.</p>
+                                <p style="color: #6b7280; font-size: 14px;" data-i18n="effects_grayscale_note">Convert the video to black and white. No extra settings required.</p>
                             </div>
                         </div>
                         
                         <!-- Vintage Settings -->
                         <div class="effect-settings" id="vintage-settings">
                             <div class="setting-group">
-                                <label class="setting-label">Vintage strength</label>
+                                <label class="setting-label" data-i18n="effects_label_vintage">Vintage strength</label>
                                 <div class="range-control">
                                     <input type="range" class="range-input" id="vintageValue" min="0" max="100" value="60">
                                     <span class="range-value" id="vintageDisplay">60%</span>
@@ -625,61 +661,173 @@
             </div>
             
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing...</div>
+                <div id="progressText" data-i18n="progress_preparing">Preparing...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
             
             <div class="result-section" id="resultSection">
-                <h3>Effects applied successfully!</h3>
+                <h3 data-i18n="effects_result_success">Effects applied successfully!</h3>
                 <div class="result-preview">
-                    <p>Processed video generated. File size: <span id="resultSize">-</span></p>
+                    <p data-i18n-dynamic data-i18n="effects_result_details">Processed video generated. File size: <span id="resultSize">-</span></p>
                 </div>
-                <button class="download-btn" id="downloadBtn">Download processed video</button>
+                <button class="download-btn" id="downloadBtn" data-i18n="effects_download_btn">Download processed video</button>
             </div>
         </div>
     </div>
 
-    <script src="/vendor/ffmpeg/ffmpeg.js"></script>
-    <script src="/vendor/ffmpeg/util.js"></script>
+    <!-- FFmpeg scripts will be loaded dynamically from CDN -->
+    <!-- <script src="/vendor/ffmpeg/ffmpeg.js"></script>
+    <script src="/vendor/ffmpeg/util.js"></script> -->
     <script>
         let videoFile = null;
         let ffmpeg = null;
         let selectedEffect = 'brightness';
         let processedVideoBytes = null;
 
-        async function loadFFmpeg() {
-            if (!ffmpeg) {
-                const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL } = FFmpegUtil;
-                ffmpeg = new FFmpeg();
-                ffmpeg.on('log', ({ message }) => {
-                    console.log(message);
-                });
-                ffmpeg.on('progress', ({ progress }) => {
-                    const percent = Math.round(progress * 100);
-                    document.getElementById('progressFill').style.width = percent + '%';
-                    document.getElementById('progressText').textContent = `Processing... ${percent}%`;
-                });
-                const bases = [
-                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
-                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
-                    `${location.origin}/vendor/ffmpeg`
-                ];
-                let loaded = false;
-                for (const baseURL of bases) {
-                    try {
-                        const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
-                        const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
-                        await ffmpeg.load({ coreURL, wasmURL });
-                        loaded = true;
-                        break;
-                    } catch (e) {
-                        console.warn('FFmpeg load failed from', baseURL, e);
+        // Function to load FFmpeg from CDN if not already loaded
+        async function loadFFmpegFromCDN() {
+            return new Promise((resolve, reject) => {
+                // Check if already loaded
+                if (typeof FFmpeg !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                let scriptsLoaded = 0;
+                const totalScripts = 2;
+                
+                function checkComplete() {
+                    scriptsLoaded++;
+                    if (scriptsLoaded === totalScripts) {
+                        // Give a moment for scripts to initialize
+                        setTimeout(() => {
+                            if (typeof FFmpeg !== 'undefined') {
+                                resolve();
+                            } else {
+                                reject(new Error('FFmpeg scripts loaded but not available'));
+                            }
+                        }, 100);
                     }
                 }
-                if (!loaded) throw new Error('FFmpeg core load failed from all sources');
+                
+                // Load FFmpeg core
+                const ffmpegScript = document.createElement('script');
+                ffmpegScript.src = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js';
+                ffmpegScript.onload = checkComplete;
+                ffmpegScript.onerror = () => reject(new Error('Failed to load FFmpeg script'));
+                document.head.appendChild(ffmpegScript);
+                
+                // Load FFmpeg util
+                const utilScript = document.createElement('script');
+                utilScript.src = 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/util.js';
+                utilScript.onload = checkComplete;
+                utilScript.onerror = () => reject(new Error('Failed to load FFmpeg util script'));
+                document.head.appendChild(utilScript);
+                
+                // Timeout after 10 seconds
+                setTimeout(() => {
+                    reject(new Error('FFmpeg loading timeout'));
+                }, 10000);
+            });
+        }
+
+        // Improved core loading with multiple fallback strategies
+        async function loadFFmpegCore(toBlobURL) {
+            // Define multiple core file sources
+            const coreSources = [
+                // Unpkg CDN (most reliable)
+                'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                // JSDelivr CDN (backup)
+                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                // Local files (if available)
+                `${location.origin}/vendor/ffmpeg`
+            ];
+            
+            for (let i = 0; i < coreSources.length; i++) {
+                const baseURL = coreSources[i];
+                console.log(`Loading FFmpeg core from source ${i + 1}/${coreSources.length}...`);
+                
+                try {
+                    // Try to load core files with timeout
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+                    
+                    const coreURL = await toBlobURL(
+                        `${baseURL}/ffmpeg-core.js`, 
+                        'text/javascript',
+                        false, // no progress callback for now
+                        { signal: controller.signal }
+                    );
+                    
+                    const wasmURL = await toBlobURL(
+                        `${baseURL}/ffmpeg-core.wasm`, 
+                        'application/wasm',
+                        false,
+                        { signal: controller.signal }
+                    );
+                    
+                    clearTimeout(timeoutId);
+                    
+                    // Load FFmpeg with the core files
+                    await ffmpeg.load({ coreURL, wasmURL });
+                    
+                    console.log(`✅ FFmpeg core loaded from: ${baseURL}`);
+                    return; // Success, exit the loop
+                    
+                } catch (error) {
+                    console.warn(`⚠️ Failed to load from ${baseURL}:`, error.message);
+                    
+                    if (i === coreSources.length - 1) {
+                        // Last attempt failed
+                        throw new Error(`Failed to load FFmpeg core from all sources. Last error: ${error.message}`);
+                    }
+                    
+                    // Try next source
+                    continue;
+                }
+            }
+        }
+
+        async function loadFFmpeg() {
+            if (!ffmpeg) {
+                try {
+                    // Check if FFmpeg is available from CDN first
+                    if (typeof FFmpeg === 'undefined') {
+                        // Try to load from unpkg CDN
+                        await loadFFmpegFromCDN();
+                    }
+                    
+                    // Initialize FFmpeg
+                    const { FFmpeg } = window.FFmpeg || window.FFmpegWASM;
+                    const { toBlobURL } = window.FFmpegUtil;
+                    
+                    if (!FFmpeg || !toBlobURL) {
+                        throw new Error('FFmpeg libraries not available');
+                    }
+
+                    ffmpeg = new FFmpeg();
+                    
+                    ffmpeg.on('log', ({ message }) => {
+                        console.log('FFmpeg:', message);
+                    });
+                    
+                    ffmpeg.on('progress', ({ progress }) => {
+                        const percent = Math.round(progress * 100);
+                        document.getElementById('progressFill').style.width = percent + '%';
+                        document.getElementById('progressText').textContent = `Processing... ${percent}%`;
+                    });
+                    
+                    // Load core files with multiple fallback strategies
+                    await loadFFmpegCore(toBlobURL);
+                    
+                    console.log('✅ FFmpeg loaded successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load FFmpeg:', error);
+                    throw error;
+                }
             }
             return ffmpeg;
         }
@@ -713,7 +861,7 @@
                 document.getElementById(selectedEffect + '-settings').classList.add('active');
                 
                 // 更新标题
-                document.getElementById('selectedEffectTitle').textContent = this.querySelector('.effect-name').textContent + '调整';
+                document.getElementById('selectedEffectTitle').textContent = this.querySelector('.effect-name').textContent + (window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_effect_adjustment') : '调整');
             });
         });
 
@@ -760,12 +908,12 @@
         });
 
         async function applyVideoEffect() {
-            document.getElementById('progressText').textContent = 'Loading FFmpeg...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_loading_ffmpeg') : 'Loading FFmpeg...';
             document.getElementById('progressFill').style.width = '10%';
             
             const ffmpeg = await loadFFmpeg();
             
-            document.getElementById('progressText').textContent = 'Preparing files...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_preparing_files') : 'Preparing files...';
             document.getElementById('progressFill').style.width = '20%';
             
             const inputFileName = 'input.' + videoFile.name.split('.').pop();
@@ -841,13 +989,13 @@
             command.push('-c:a', 'copy'); // keep original audio
             command.push('-y', outputFileName);
             
-            document.getElementById('progressText').textContent = 'Applying effects...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_applying_effects') : 'Applying effects...';
             await ffmpeg.exec(command);
             
             const output = await ffmpeg.readFile(outputFileName);
             processedVideoBytes = output;
             
-            document.getElementById('progressText').textContent = 'Processing complete!';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_processing_complete') : 'Processing complete!';
             document.getElementById('progressFill').style.width = '100%';
             
             showResults();
@@ -913,6 +1061,52 @@
         
         uploadArea.addEventListener('click', function() {
             document.getElementById('fileInput').click();
+        });
+    </script>
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                    translatePage();
+                });
+            }
+        }
+
+        // Main translation function
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined' || typeof window.DROPSHARE_I18N.t !== 'function') {
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                
+                if (element.hasAttribute('data-i18n-dynamic')) return;
+                
+                const translation = window.DROPSHARE_I18N.t(key);
+                if (translation && translation !== key) {
+                    element.textContent = translation;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                });
+            }
         });
     </script>
     <!-- Share Integration -->

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="image_cropper_title">Image Cropper - DropShare</title>
+    <title data-i18n="image_cropper_title">Image Cropper</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         body {
@@ -303,10 +303,7 @@
             gap: 12px;
             align-items: center;
         }
-        
-        
-        
-        
+
     </style>    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
@@ -322,7 +319,7 @@
             <div class="control-buttons">
                 
             </div>
-            <a href="image-tools.html" class="back-button">← Images工具</a>
+            
             <a href="index.html" class="back-button">🏠 首页</a>
         </div>
     </div>
@@ -527,7 +524,7 @@
             
             loadImage(file) {
                 if (!file.type.startsWith('image/')) {
-                    alert('请选择ImagesDocuments！');
+                    alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_select_valid') : 'Please select an image file');
                     return;
                 }
                 
@@ -747,7 +744,7 @@
             
             cropImage() {
                 if (this.selection.width === 0 || this.selection.height === 0) {
-                    alert('请先选择裁剪区域！');
+                    alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_select_crop_area') : 'Please select crop area first');
                     return;
                 }
                 
@@ -829,9 +826,9 @@
                 
                 if (window.ui && window.ui.filesQueue) {
                     window.ui.filesQueue.push(file);
-                    alert('裁剪后的Images已添加到分享列表！');
+                    alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_added_share') : 'Cropped image added to share list');
                 } else {
-                    alert('分享功能暂不可用，请先返回分享页面');
+                    alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_share_return') : 'Share function unavailable, please return to share page first');
                 }
             }
             

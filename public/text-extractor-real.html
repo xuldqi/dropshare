@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="text_extractor_title">Text Extractor - DropShare</title>
+    <title data-i18n="text_extractor_title">Text Extractor</title>
     <style>
         * {
             margin: 0;
@@ -453,13 +453,9 @@
     </header>
 
     <div class="container">
-        <div style="margin-bottom: 20px;">
-            <a href="document-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
-            </a>
-        </div>
-        
-        <h1 class="page-title">Text Extractor</h1>
+
+        <h1 class="page-title" data-i18n="text_extractor_title">Text Extractor</h1>
+
         <p class="page-subtitle">Extract text content from PDFs, images, and scanned documents with OCR</p>
         
         <div class="extractor-card">
@@ -652,7 +648,7 @@
 
         document.getElementById('extractBtn').addEventListener('click', async function() {
             if (!currentFile) {
-                alert('请先选择文件');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_select_file') : '请先选择文件');
                 return;
             }
             
@@ -664,7 +660,7 @@
                 await extractTextFromFile();
             } catch (error) {
                 console.error('提取失败:', error);
-                alert('提取失败: ' + error.message);
+                alert((window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_failed') : '提取失败: ') + error.message);
             } finally {
                 this.disabled = false;
             }
@@ -673,7 +669,7 @@
         async function extractTextFromFile() {
             const fileType = currentFile.type || getFileTypeFromName(currentFile.name);
             
-            document.getElementById('progressText').textContent = '正在分析文件...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_analyzing') : '正在分析文件...';
             document.getElementById('progressFill').style.width = '10%';
             
             extractedText = '';
@@ -691,7 +687,7 @@
             // 后处理
             await postProcessText();
             
-            document.getElementById('progressText').textContent = '提取完成！';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_complete') : '提取完成！';
             document.getElementById('progressFill').style.width = '100%';
             
             showResults();
@@ -771,7 +767,7 @@
         }
 
         async function extractFromImage() {
-            document.getElementById('progressText').textContent = '正在加载OCR引擎...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_loading_ocr') : '正在加载OCR引擎...';
             document.getElementById('progressFill').style.width = '20%';
             
             try {
@@ -789,7 +785,7 @@
                 await worker.loadLanguage('chi_sim+eng');
                 await worker.initialize('chi_sim+eng');
                 
-                document.getElementById('progressText').textContent = '正在识别文本...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_recognizing') : '正在识别文本...';
                 const { data: { text } } = await worker.recognize(currentFile);
                 
                 extractedText = text;
@@ -804,7 +800,7 @@
 
         async function extractFromDocx() {
             try {
-                document.getElementById('progressText').textContent = '正在解析DOCX文档...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_parsing_docx') : '正在解析DOCX文档...';
                 document.getElementById('progressFill').style.width = '50%';
                 
                 const arrayBuffer = await currentFile.arrayBuffer();
@@ -818,14 +814,14 @@
         }
 
         async function extractFromTextFile() {
-            document.getElementById('progressText').textContent = '正在读取文本内容...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_reading_content') : '正在读取文本内容...';
             document.getElementById('progressFill').style.width = '50%';
             
             extractedText = await currentFile.text();
         }
 
         async function postProcessText() {
-            document.getElementById('progressText').textContent = '正在处理文本...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_processing') : '正在处理文本...';
             document.getElementById('progressFill').style.width = '90%';
             
             if (!extractedText) {
@@ -864,10 +860,10 @@
 
         function copyText() {
             navigator.clipboard.writeText(extractedText).then(() => {
-                alert('文本已复制到剪贴板');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_copied') : '文本已复制到剪贴板');
             }).catch(err => {
                 console.error('复制失败:', err);
-                alert('复制失败，请手动选择文本复制');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('text_extractor_copy_failed') : '复制失败，请手动选择文本复制');
             });
         }
 

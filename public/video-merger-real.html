@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="video_merger_real_title">Video Merger - DropShare</title>
+    <title>Video Merger</title>
     <style>
         * {
             margin: 0;
@@ -70,6 +70,18 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .container {
@@ -307,370 +319,33 @@
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
     <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
 </head>
 
 <body>
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                🎥 DropShare
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#3367d6"/>
+                    <path d="M8 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>DropShare</span>
             </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html" class="active">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
-        </div>
-    </header>
 
-    <div class="container">
-        
-        <h1 class="page-title" data-i18n="video_merger_real_heading">Video Merger</h1>
-        <p class="page-subtitle" data-i18n="video_merger_real_subtitle">Combine multiple video files into a single file</p>
-        
-        <div class="merger-card">
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-icon">📹</div>
-                <div class="upload-text" data-i18n="video_merger_real_upload_text">Click or drag to upload video files</div>
-                <div class="upload-hint" data-i18n="video_merger_real_upload_hint">Supports multiple selection: MP4, AVI, MOV, WMV and more</div>
-                <input type="file" id="fileInput" accept="video/*" multiple>
-            </div>
-            
-            <div class="video-list" id="videoList">
-                <h3 style="margin-bottom: 16px; color: #374151;">Video list (drag to reorder)</h3>
-                <div id="videoItems"></div>
-            </div>
-            
-            <div class="merge-settings" id="mergeSettings">
-                <div class="setting-group">
-                    <div class="setting-label">Output quality</div>
-                    <div class="setting-options">
-                        <div class="setting-btn active" data-setting="quality" data-value="high">High</div>
-                        <div class="setting-btn" data-setting="quality" data-value="medium">Standard</div>
-                        <div class="setting-btn" data-setting="quality" data-value="low">Fast</div>
-                    </div>
-                </div>
-                
-                <div class="setting-group">
-                    <div class="setting-label">Merge method</div>
-                    <div class="setting-options">
-                        <div class="setting-btn active" data-setting="method" data-value="concat">Concatenate</div>
-                        <div class="setting-btn" data-setting="method" data-value="crossfade">Crossfade</div>
-                    </div>
-                </div>
-                
-                <button class="merge-button" id="mergeBtn" data-i18n="video_merger_real_start_btn">Start Merging</button>
-            </div>
-            
-            <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing...</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" class="active" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
 
-    <script src="/vendor/ffmpeg/ffmpeg.js"></script>
-    <script src="/vendor/ffmpeg/util.js"></script>
-    <script>
-        const { FFmpeg } = FFmpegWASM;
-        const { toBlobURL } = FFmpegUtil;
-        
-        let videoFiles = [];
-        let ffmpeg = null;
-        let settings = {
-            quality: 'high',
-            method: 'concat'
-        };
-
-        async function loadFFmpeg() {
-            if (!ffmpeg) {
-                ffmpeg = new FFmpeg();
-                ffmpeg.on('log', ({ message }) => {
-                    console.log(message);
-                });
-                ffmpeg.on('progress', ({ progress }) => {
-                    const percent = Math.round(progress * 100);
-                    document.getElementById('progressFill').style.width = percent + '%';
-                    document.getElementById('progressText').textContent = `Merging... ${percent}%`;
-                });
-                
-                const bases = [
-                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
-                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
-                    `${location.origin}/vendor/ffmpeg`
-                ];
-                let loaded = false;
-                for (const baseURL of bases) {
-                    try {
-                        const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
-                        const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
-                        await ffmpeg.load({ coreURL, wasmURL });
-                        loaded = true;
-                        break;
-                    } catch (e) {
-                        console.warn('FFmpeg load failed from', baseURL, e);
-                    }
-                }
-                if (!loaded) throw new Error('FFmpeg core load failed from all sources');
-            }
-            return ffmpeg;
-        }
-
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const files = Array.from(e.target.files);
-            addVideoFiles(files);
-        });
-
-        function addVideoFiles(files) {
-            files.forEach(file => {
-                if (file.type.startsWith('video/')) {
-                    videoFiles.push(file);
-                }
-            });
-            updateVideoList();
-            updateUI();
-        }
-
-        function updateVideoList() {
-            const container = document.getElementById('videoItems');
-            container.innerHTML = '';
-            
-            videoFiles.forEach((file, index) => {
-                const item = document.createElement('div');
-                item.className = 'video-item';
-                item.draggable = true;
-                item.dataset.index = index;
-                
-                item.innerHTML = `
-                    <div class="drag-handle">⋮⋮</div>
-                    <div class="video-info">
-                        <div class="video-name">${file.name}</div>
-                        <div class="video-details">${(file.size / (1024 * 1024)).toFixed(1)} MB</div>
-                    </div>
-                    <div class="video-controls">
-                        <button class="control-btn" onclick="moveUp(${index})" ${index === 0 ? 'disabled' : ''}>↑</button>
-                        <button class="control-btn" onclick="moveDown(${index})" ${index === videoFiles.length - 1 ? 'disabled' : ''}>↓</button>
-                        <button class="control-btn remove-btn" onclick="removeVideo(${index})">删除</button>
-                    </div>
-                `;
-                
-                // 添加拖拽事件
-                item.addEventListener('dragstart', handleDragStart);
-                item.addEventListener('dragover', handleDragOver);
-                item.addEventListener('drop', handleDrop);
-                item.addEventListener('dragend', handleDragEnd);
-                
-                container.appendChild(item);
-            });
-        }
-
-        function updateUI() {
-            const hasVideos = videoFiles.length > 0;
-            document.getElementById('videoList').style.display = hasVideos ? 'block' : 'none';
-            document.getElementById('mergeSettings').style.display = videoFiles.length > 1 ? 'block' : 'none';
-        }
-
-        function removeVideo(index) {
-            videoFiles.splice(index, 1);
-            updateVideoList();
-            updateUI();
-        }
-
-        function moveUp(index) {
-            if (index > 0) {
-                [videoFiles[index], videoFiles[index - 1]] = [videoFiles[index - 1], videoFiles[index]];
-                updateVideoList();
-            }
-        }
-
-        function moveDown(index) {
-            if (index < videoFiles.length - 1) {
-                [videoFiles[index], videoFiles[index + 1]] = [videoFiles[index + 1], videoFiles[index]];
-                updateVideoList();
-            }
-        }
-
-        // 拖拽排序
-        let draggedElement = null;
-
-        function handleDragStart(e) {
-            draggedElement = this;
-            this.classList.add('dragging');
-        }
-
-        function handleDragOver(e) {
-            e.preventDefault();
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            if (this !== draggedElement) {
-                const draggedIndex = parseInt(draggedElement.dataset.index);
-                const targetIndex = parseInt(this.dataset.index);
-                
-                const draggedFile = videoFiles[draggedIndex];
-                videoFiles.splice(draggedIndex, 1);
-                videoFiles.splice(targetIndex, 0, draggedFile);
-                
-                updateVideoList();
-            }
-        }
-
-        function handleDragEnd(e) {
-            this.classList.remove('dragging');
-            draggedElement = null;
-        }
-
-        // 设置选择
-        document.querySelectorAll('.setting-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const setting = this.dataset.setting;
-                const value = this.dataset.value;
-                
-                document.querySelectorAll(`[data-setting="${setting}"]`).forEach(b => 
-                    b.classList.remove('active')
-                );
-                this.classList.add('active');
-                settings[setting] = value;
-            });
-        });
-
-        document.getElementById('mergeBtn').addEventListener('click', async function() {
-            if (videoFiles.length < 2) {
-                alert('Please select at least two video files');
-                return;
-            }
-            
-            this.disabled = true;
-            document.getElementById('progressSection').style.display = 'block';
-            document.getElementById('progressText').textContent = '正在加载 FFmpeg...';
-            
-            try {
-                const ffmpeg = await loadFFmpeg();
-                
-                document.getElementById('progressText').textContent = 'Preparing files...';
-                
-                const inputFiles = [];
-                for (let i = 0; i < videoFiles.length; i++) {
-                    const fileName = `input${i}.${videoFiles[i].name.split('.').pop()}`;
-                    await ffmpeg.writeFile(fileName, await videoFiles[i].arrayBuffer());
-                    inputFiles.push(fileName);
-                }
-                
-                const outputFileName = 'merged_video.mp4';
-                
-                let command;
-                if (settings.method === 'concat') {
-                    // Concatenate directly
-                    const filterComplex = inputFiles.map((_, i) => `[${i}:v][${i}:a]`).join('') + 
-                                         `concat=n=${inputFiles.length}:v=1:a=1[outv][outa]`;
-                    command = [
-                        ...inputFiles.flatMap(f => ['-i', f]),
-                        '-filter_complex', filterComplex,
-                        '-map', '[outv]',
-                        '-map', '[outa]'
-                    ];
-                } else {
-                    // Crossfade
-                    if (inputFiles.length === 2) {
-                        command = [
-                            '-i', inputFiles[0],
-                            '-i', inputFiles[1],
-                            '-filter_complex', 
-                            '[0:v][1:v]xfade=transition=fade:duration=1:offset=5[outv];[0:a][1:a]acrossfade=d=1[outa]',
-                            '-map', '[outv]',
-                            '-map', '[outa]'
-                        ];
-                    } else {
-                        // Crossfade for multiple files is complex; fallback to concatenate
-                        const filterComplex = inputFiles.map((_, i) => `[${i}:v][${i}:a]`).join('') + 
-                                             `concat=n=${inputFiles.length}:v=1:a=1[outv][outa]`;
-                        command = [
-                            ...inputFiles.flatMap(f => ['-i', f]),
-                            '-filter_complex', filterComplex,
-                            '-map', '[outv]',
-                            '-map', '[outa]'
-                        ];
-                    }
-                }
-                
-                // Quality settings
-                if (settings.quality === 'high') {
-                    command.push('-c:v', 'libx264', '-crf', '18', '-preset', 'slow');
-                } else if (settings.quality === 'medium') {
-                    command.push('-c:v', 'libx264', '-crf', '23', '-preset', 'medium');
-                } else {
-                    command.push('-c:v', 'libx264', '-crf', '28', '-preset', 'fast');
-                }
-                
-                command.push('-c:a', 'aac', '-b:a', '192k', '-y', outputFileName);
-                
-                document.getElementById('progressText').textContent = 'Merging videos...';
-                await ffmpeg.exec(command);
-                
-                const output = await ffmpeg.readFile(outputFileName);
-                const blob = new Blob([output], { type: 'video/mp4' });
-                
-                // Download file
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `merged_video_${Date.now()}.mp4`;
-                a.click();
-                URL.revokeObjectURL(url);
-                
-                document.getElementById('progressText').textContent = 'Merge complete!';
-                document.getElementById('progressFill').style.width = '100%';
-                
-                // 清理
-                for (const fileName of inputFiles) {
-                    await ffmpeg.deleteFile(fileName);
-                }
-                await ffmpeg.deleteFile(outputFileName);
-                
-            } catch (error) {
-                console.error('Merge failed:', error);
-                alert('Merge failed. Please check file formats and sizes');
-                document.getElementById('progressText').textContent = 'Merge failed';
-            } finally {
-                this.disabled = false;
-                setTimeout(() => {
-                    document.getElementById('progressSection').style.display = 'none';
-                    document.getElementById('progressFill').style.width = '0%';
-                }, 3000);
-            }
-        });
-
-        // 拖拽上传
-        const uploadArea = document.getElementById('uploadArea');
-        uploadArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('dragover');
-        });
-        
-        uploadArea.addEventListener('dragleave', function() {
-            this.classList.remove('dragover');
-        });
-        
-        uploadArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('dragover');
-            const files = Array.from(e.dataTransfer.files);
-            addVideoFiles(files);
-        });
-        
-        uploadArea.addEventListener('click', function() {
-            document.getElementById('fileInput').click();
-        });
-    </script>
-    <!-- Share Integration -->
-    <script src="device-selector.js"></script>
+                <div class="control-buttons">
+                    <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
 </body>
 </html>

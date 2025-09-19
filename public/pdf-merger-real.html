@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="pdf_merger_real_title">PDF Merger - DropShare</title>
+    <title data-i18n="pdf_merger_title">PDF Merger</title>
+    <script src="/locales/i18n.js"></script>
     <style>
         * {
             margin: 0;
@@ -382,57 +383,53 @@
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                📄 DropShare
+                📄 <span data-i18n="site_name">DropShare</span>
             </a>
             <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html" class="active">Files</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                <a href="document-tools.html" class="active" data-i18n="nav_files">Files</a>
             </nav>
         </div>
     </header>
 
     <div class="container">
-        <div style="margin-bottom: 20px;">
-            <a href="document-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
-            </a>
-        </div>
-        
-        <h1 class="page-title">PDF Merger</h1>
-        <p class="page-subtitle">Combine multiple PDF files into one document with custom page ordering</p>
+
+        <h1 class="page-title" data-i18n="pdf_merger_title">PDF Merger</h1>
+
+        <p class="page-subtitle" data-i18n="pdf_merger_subtitle">Combine multiple PDF files into one document with custom page ordering</p>
         
         <div class="merger-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔗</div>
-                <div class="upload-text">Click or drag to upload PDF files</div>
-                <div class="upload-hint">Supports multiple selection; upload multiple PDFs</div>
+                <div class="upload-text" data-i18n="pdf_merger_upload_text">Click or drag to upload PDF files</div>
+                <div class="upload-hint" data-i18n="pdf_merger_upload_hint">Supports multiple selection; upload multiple PDFs</div>
                 <input type="file" id="fileInput" accept=".pdf,application/pdf" multiple>
             </div>
             
             <div class="file-list" id="fileList">
-                <h3 style="margin-bottom: 16px; color: #374151;">File list (drag to reorder)</h3>
+                <h3 style="margin-bottom: 16px; color: #374151;" data-i18n="pdf_merger_file_list">File list (drag to reorder)</h3>
                 <div id="fileItems"></div>
             </div>
             
             <div class="merge-settings" id="mergeSettings">
                 <div class="setting-group">
-                    <div class="setting-label">Merge options</div>
+                    <div class="setting-label" data-i18n="pdf_merger_merge_options">Merge options</div>
                     <div class="setting-options">
-                        <div class="setting-btn active" data-setting="bookmarks" data-value="true">Add bookmarks</div>
-                        <div class="setting-btn" data-setting="bookmarks" data-value="false">No bookmarks</div>
+                        <div class="setting-btn active" data-setting="bookmarks" data-value="true" data-i18n="pdf_merger_add_bookmarks">Add bookmarks</div>
+                        <div class="setting-btn" data-setting="bookmarks" data-value="false" data-i18n="pdf_merger_no_bookmarks">No bookmarks</div>
                     </div>
                 </div>
                 
                 <div class="setting-group">
-                    <div class="setting-label">Page layout</div>
+                    <div class="setting-label" data-i18n="pdf_merger_page_layout">Page layout</div>
                     <div class="setting-options">
-                        <div class="setting-btn active" data-setting="layout" data-value="keep">Keep original</div>
-                        <div class="setting-btn" data-setting="layout" data-value="optimize">Optimize layout</div>
+                        <div class="setting-btn active" data-setting="layout" data-value="keep" data-i18n="pdf_merger_keep_original">Keep original</div>
+                        <div class="setting-btn" data-setting="layout" data-value="optimize" data-i18n="pdf_merger_optimize_layout">Optimize layout</div>
                     </div>
                 </div>
                 
@@ -464,7 +461,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="download-btn" id="downloadBtn">Download merged file</button>
+                <button class="download-btn" id="downloadBtn" data-i18n="pdf_merger_download_merged">Download merged file</button>
             </div>
         </div>
     </div>
@@ -623,7 +620,7 @@
 
         document.getElementById('mergeBtn').addEventListener('click', async function() {
             if (pdfFiles.length < 2) {
-                alert('Please select at least two PDF files');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('pdf_select_two_files') : 'Please select at least two PDF files');
                 return;
             }
             
@@ -634,14 +631,14 @@
                 await mergePdfs();
             } catch (error) {
                 console.error('合并失败:', error);
-                alert('合并失败: ' + error.message);
+                alert((window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('pdf_merge_failed') : '合并失败: ') + error.message);
             } finally {
                 this.disabled = false;
             }
         });
 
         async function mergePdfs() {
-            document.getElementById('progressText').textContent = 'Creating merged document...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('pdf_creating_merged') : 'Creating merged document...';
             document.getElementById('progressFill').style.width = '10%';
             
             // 创建新的PDF文档
@@ -673,13 +670,13 @@
                 }
             }
             
-            document.getElementById('progressText').textContent = 'Generating final document...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('pdf_generating_final') : 'Generating final document...';
             document.getElementById('progressFill').style.width = '90%';
             
             // 生成合并后的PDF
             mergedPdfBytes = await mergedPdf.save();
             
-            document.getElementById('progressText').textContent = 'Merge complete!';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('pdf_merge_complete') : 'Merge complete!';
             document.getElementById('progressFill').style.width = '100%';
             
             // 显示结果
@@ -702,7 +699,7 @@
 
         document.getElementById('downloadBtn').addEventListener('click', function() {
             if (!mergedPdfBytes) {
-                alert('No merged file to download');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('pdf_no_merged_download') : 'No merged file to download');
                 return;
             }
             
@@ -745,6 +742,29 @@
             document.getElementById('fileInput').click();
         });
     </script>
+    
+    <!-- Translation initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize translations
+            setTimeout(() => {
+                if (typeof window.translations !== 'undefined') {
+                    // Apply translations after a short delay to ensure all elements are loaded
+                    const elementsToTranslate = document.querySelectorAll('[data-i18n]');
+                    elementsToTranslate.forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        if (window.translations[key]) {
+                            element.textContent = window.translations[key];
+                        }
+                    });
+                    console.log('Translations applied to PDF Merger page');
+                } else {
+                    console.warn('Translations not loaded yet for PDF Merger page');
+                }
+            }, 100);
+        });
+    </script>
+    
     <!-- Share Integration -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>

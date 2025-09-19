@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="audio_effects_real_title">Audio Effects - DropShare</title>
+    <title>Audio Effects</title>
     <style>
         * {
             margin: 0;
@@ -66,6 +66,18 @@
         .nav-links a:hover {
             color: #ff6b6b;
             background: rgba(255, 107, 107, 0.1);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .container {
@@ -438,26 +450,47 @@
 <body>
     <header class="header">
         <div class="header-container">
-            <div class="logo">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+            <a href="/" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#3367d6"/>
+                    <path d="M8 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+                <span>DropShare</span>
+            </a>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" class="active" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons">
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
         </div>
     </header>
 
     <div class="container">
+        <h1 class="page-title" data-i18n="audio_effects_real_heading">Audio Effects</h1>
+        <p class="page-subtitle" data-i18n="audio_effects_real_subtitle">Apply various audio effects like reverb, echo, bass boost, and equalizer settings</p>
         <div class="page-header">
-            <h1 class="page-title" data-i18n="audio_effects_real_heading">Audio Effects</h1>
+            
             <p class="page-subtitle" data-i18n="audio_effects_real_subtitle">Apply various audio effects like reverb, echo, bass boost, and equalizer settings</p>
         </div>
 
@@ -465,10 +498,10 @@
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎵</div>
-                <h3>Upload Audio File</h3>
-                <p>Drag and drop your audio file here or click to browse</p>
+                <h3 data-i18n="audio_upload_title">Upload Audio File</h3>
+                <p data-i18n="audio_upload_hint">Drag and drop your audio file here or click to browse</p>
                 <input type="file" id="fileInput" class="file-input" accept="audio/*">
-                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Audio File</button>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()" data-i18n="audio_choose_file">Choose Audio File</button>
             </div>
 
             <!-- Audio Player -->
@@ -488,45 +521,45 @@
                 <!-- Sidebar -->
                 <div class="effects-sidebar">
                     <div class="effects-category">
-                        <div class="category-title">🎛️ Equalizer</div>
-                        <div class="effect-item" data-effect="equalizer">Graphic EQ</div>
-                        <div class="effect-item" data-effect="bass">Bass Boost</div>
-                        <div class="effect-item" data-effect="treble">Treble Boost</div>
+                        <div class="category-title" data-i18n="audio_effects_equalizer">🎛️ Equalizer</div>
+                        <div class="effect-item" data-effect="equalizer" data-i18n="audio_effects_graphic_eq">Graphic EQ</div>
+                        <div class="effect-item" data-effect="bass" data-i18n="audio_effects_bass_boost">Bass Boost</div>
+                        <div class="effect-item" data-effect="treble" data-i18n="audio_effects_treble_boost">Treble Boost</div>
                     </div>
 
                     <div class="effects-category">
-                        <div class="category-title">🔊 Volume</div>
-                        <div class="effect-item" data-effect="volume">Volume Control</div>
-                        <div class="effect-item" data-effect="compressor">Compressor</div>
-                        <div class="effect-item" data-effect="limiter">Limiter</div>
+                        <div class="category-title" data-i18n="audio_effects_volume">🔊 Volume</div>
+                        <div class="effect-item" data-effect="volume" data-i18n="audio_effects_volume_control">Volume Control</div>
+                        <div class="effect-item" data-effect="compressor" data-i18n="audio_effects_compressor">Compressor</div>
+                        <div class="effect-item" data-effect="limiter" data-i18n="audio_effects_limiter">Limiter</div>
                     </div>
 
                     <div class="effects-category">
-                        <div class="category-title">🌊 Reverb & Delay</div>
-                        <div class="effect-item" data-effect="reverb">Reverb</div>
-                        <div class="effect-item" data-effect="echo">Echo</div>
-                        <div class="effect-item" data-effect="delay">Delay</div>
+                        <div class="category-title" data-i18n="audio_effects_reverb_delay">🌊 Reverb & Delay</div>
+                        <div class="effect-item" data-effect="reverb" data-i18n="audio_effects_reverb">Reverb</div>
+                        <div class="effect-item" data-effect="echo" data-i18n="audio_effects_echo">Echo</div>
+                        <div class="effect-item" data-effect="delay" data-i18n="audio_effects_delay">Delay</div>
                     </div>
 
                     <div class="effects-category">
-                        <div class="category-title">🎨 Creative</div>
-                        <div class="effect-item" data-effect="chorus">Chorus</div>
-                        <div class="effect-item" data-effect="flanger">Flanger</div>
-                        <div class="effect-item" data-effect="phaser">Phaser</div>
-                        <div class="effect-item" data-effect="distortion">Distortion</div>
+                        <div class="category-title" data-i18n="audio_effects_creative">🎨 Creative</div>
+                        <div class="effect-item" data-effect="chorus" data-i18n="audio_effects_chorus">Chorus</div>
+                        <div class="effect-item" data-effect="flanger" data-i18n="audio_effects_flanger">Flanger</div>
+                        <div class="effect-item" data-effect="phaser" data-i18n="audio_effects_phaser">Phaser</div>
+                        <div class="effect-item" data-effect="distortion" data-i18n="audio_effects_distortion">Distortion</div>
                     </div>
                 </div>
 
                 <!-- Workspace -->
                 <div class="effects-workspace">
                     <div id="welcomeMessage">
-                        <h3>Select an effect from the sidebar to get started</h3>
-                        <p>Choose from equalizer, reverb, echo, and many more professional audio effects.</p>
+                        <h3 data-i18n="audio_effects_welcome_title">Select an effect from the sidebar to get started</h3>
+                        <p data-i18n="audio_effects_welcome_desc">Choose from equalizer, reverb, echo, and many more professional audio effects.</p>
                     </div>
 
                     <!-- Equalizer Controls -->
                     <div class="effect-controls" id="equalizerControls">
-                        <h3>Graphic Equalizer</h3>
+                        <h3 data-i18n="audio_effects_graphic_equalizer">Graphic Equalizer</h3>
                         <div class="control-group">
                             <label class="control-label">32 Hz</label>
                             <input type="range" class="slider" id="eq32" min="-20" max="20" value="0">
@@ -582,9 +615,9 @@
 
                     <!-- Reverb Controls -->
                     <div class="effect-controls" id="reverbControls">
-                        <h3>Reverb</h3>
+                        <h3 data-i18n="audio_effects_reverb">Reverb</h3>
                         <div class="control-group">
-                            <label class="control-label">Room Size</label>
+                            <label class="control-label" data-i18n="audio_effects_room_size">Room Size</label>
                             <input type="range" class="slider" id="reverbSize" min="0" max="100" value="50">
                             <div class="value-display">
                                 <span>Small</span>
@@ -593,7 +626,7 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label class="control-label">Decay Time</label>
+                            <label class="control-label" data-i18n="audio_effects_decay_time">Decay Time</label>
                             <input type="range" class="slider" id="reverbDecay" min="0.1" max="10" step="0.1" value="2">
                             <div class="value-display">
                                 <span>0.1s</span>
@@ -619,9 +652,9 @@
 
                     <!-- Echo Controls -->
                     <div class="effect-controls" id="echoControls">
-                        <h3>Echo</h3>
+                        <h3 data-i18n="audio_effects_echo">Echo</h3>
                         <div class="control-group">
-                            <label class="control-label">Delay Time</label>
+                            <label class="control-label" data-i18n="audio_effects_delay_time">Delay Time</label>
                             <input type="range" class="slider" id="echoDelay" min="50" max="2000" value="300">
                             <div class="value-display">
                                 <span>50ms</span>
@@ -651,9 +684,9 @@
 
                     <!-- Bass Boost Controls -->
                     <div class="effect-controls" id="bassControls">
-                        <h3>Bass Boost</h3>
+                        <h3 data-i18n="audio_effects_bass_boost">Bass Boost</h3>
                         <div class="control-group">
-                            <label class="control-label">Frequency</label>
+                            <label class="control-label" data-i18n="audio_effects_frequency">Frequency</label>
                             <input type="range" class="slider" id="bassFreq" min="20" max="250" value="80">
                             <div class="value-display">
                                 <span>20 Hz</span>
@@ -683,9 +716,9 @@
 
                     <!-- Volume Controls -->
                     <div class="effect-controls" id="volumeControls">
-                        <h3>Volume Control</h3>
+                        <h3 data-i18n="audio_effects_volume_control">Volume Control</h3>
                         <div class="control-group">
-                            <label class="control-label">Volume</label>
+                            <label class="control-label" data-i18n="audio_effects_volume">Volume</label>
                             <input type="range" class="slider" id="volumeLevel" min="0" max="200" value="100">
                             <div class="value-display">
                                 <span>0%</span>
@@ -727,7 +760,7 @@
             </div>
 
             <!-- Download Button -->
-            <button class="download-btn" id="downloadBtn">Download Processed Audio</button>
+            <button class="download-btn" id="downloadBtn" data-i18n="audio_download_processed">Download Processed Audio</button>
         </div>
     </div>
 
@@ -955,7 +988,7 @@
                 ffmpeg.on('progress', ({ progress }) => {
                     const percent = Math.round(progress * 100);
                     document.getElementById('progressFill').style.width = percent + '%';
-                    document.getElementById('status').textContent = `Applying ${currentEffect}... ${percent}%`;
+                    document.getElementById('status').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_applying_effect').replace('{effect}', currentEffect).replace('{percent}', percent) : `Applying ${currentEffect}... ${percent}%`;
                 });
 
                 await ffmpeg.exec(command);
@@ -973,11 +1006,11 @@
                 };
                 
                 downloadBtn.classList.add('active');
-                document.getElementById('status').textContent = 'Effect applied successfully!';
+                document.getElementById('status').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_effect_applied') : 'Effect applied successfully!';
                 
             } catch (error) {
                 console.error('Effect application failed:', error);
-                document.getElementById('status').textContent = 'Effect application failed. Please try again.';
+                document.getElementById('status').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_effect_failed') : 'Effect application failed. Please try again.';
             } finally {
                 applyBtn.disabled = false;
             }
@@ -1077,5 +1110,58 @@
     <!-- Share Integration -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                    translatePage();
+                });
+            }
+        }
+
+        function syncLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+            }
+        }
+
+        function translatePage() {
+            if (!window.DROPSHARE_I18N) return;
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.textContent = translation;
+                }
+            });
+        }
+
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                    initializeLanguageSelector();
+                    translatePage();
+                    setTimeout(() => {
+                        syncLanguageSelector();
+                    }, 100);
+                }
+            }, 100);
+        });
+    </script>
 </body>
 </html>

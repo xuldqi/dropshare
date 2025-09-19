@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="volume_normalizer_title">Volume Normalizer - DropShare</title>
+    <title>Volume Normalizer</title>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
     <style>
         * {
@@ -318,34 +318,7 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                🎵 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
-        </div>
-    </header>
-
-    <div class="container">
-        <!-- Top-left return button -->
-        <div style="margin-bottom: 20px;">
-            <a href="audio-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← Back
-            </a>
-        </div>
-        
-        <h1 class="page-title" data-i18n="volume_normalizer_heading">Volume Normalizer</h1>
-        <p class="page-subtitle" data-i18n="volume_normalizer_subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
+    <p class="page-subtitle" data-i18n="volume_normalizer_subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
         
         <div class="normalizer-card">
             <div class="engine-status" id="engineStatus">

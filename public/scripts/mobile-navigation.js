@@ -75,15 +75,10 @@ class MobileNavigationManager {
             mobileLangSelector.className = 'mobile-lang-selector';
             
             const langLabel = document.createElement('label');
-            langLabel.textContent = '选择语言 / Language';
-            langLabel.style.display = 'block';
-            langLabel.style.marginBottom = '8px';
-            langLabel.style.fontSize = '14px';
-            langLabel.style.fontWeight = '500';
-            langLabel.style.color = 'var(--gray-600)';
+            langLabel.htmlFor = 'language-selector-mobile-select';
             
-            const mobileSelect = languageSelector.cloneNode(true);
-            mobileSelect.id = 'mobile-language-selector';
+            const langSelect = document.createElement('select');
+            langSelect.id = 'language-selector-mobile-select';
             
             // 同步语言选择
             mobileSelect.addEventListener('change', (e) => {

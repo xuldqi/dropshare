@@ -3,32 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="subtitle_editor_real_title">Subtitle Editor - DropShare</title>
+    <title>Subtitle Editor</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/themes.css">
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            color: #333;
-        }
-
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -37,142 +33,155 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
+            gap: 12px;
+            font-size: 20px;
             font-weight: bold;
-            color: #667eea;
-        }
-
-        .logo svg {
-            width: 32px;
-            height: 32px;
-            fill: #667eea;
+            color: #3367d6;
+            text-decoration: none;
         }
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 16px;
         }
 
         .nav-links a {
-            color: #666;
+            color: #6b7280;
             text-decoration: none;
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
 
         .nav-links a:hover {
-            color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
+            padding: 40px 20px;
         }
 
         .page-title {
-            font-size: 3rem;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 700;
             color: #1f2937;
-            margin-bottom: 1rem;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
         .page-subtitle {
-            font-size: 1.2rem;
+            font-size: 16px;
             color: #6b7280;
-            opacity: 0.9;
+            text-align: center;
+            margin-bottom: 40px;
         }
 
         .tool-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
         }
 
         .upload-area {
-            border: 2px dashed #ddd;
+            border: 3px dashed #d1d5db;
             border-radius: 12px;
-            padding: 3rem;
+            padding: 40px 20px;
             text-align: center;
+            cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 2rem;
+            background: #f9fafb;
+            margin-bottom: 30px;
         }
 
+        .upload-area:hover,
         .upload-area.dragover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            border-color: #4f46e5;
+            background: #f0f9ff;
         }
 
         .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.7;
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
         }
 
         .file-input {
             display: none;
         }
-
+        
         .upload-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-color: #4f46e5;
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-size: 1rem;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0.5rem;
+            transition: all 0.2s ease;
+            margin-top: 16px;
         }
 
         .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            background-color: #4338ca;
         }
 
         .controls {
             display: flex;
-            gap: 1rem;
+            gap: 24px;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 24px;
             flex-wrap: wrap;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
         }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
         .control-group label {
-            font-weight: 600;
-            color: #333;
-            font-size: 0.9rem;
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
         }
 
         .control-group input, .control-group select {
-            padding: 0.75rem;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
         }
-
-        .control-group input:focus, .control-group select:focus {
-            outline: none;
-            border-color: #667eea;
+        
+        .control-group input[type="range"] {
+            padding: 0;
         }
 
         .workspace {
@@ -209,7 +218,7 @@
         }
 
         .play-btn {
-            background: #667eea;
+            background: #4f46e5;
             color: white;
             border: none;
             padding: 0.5rem 1rem;
@@ -221,7 +230,7 @@
         .timeline {
             flex: 1;
             height: 6px;
-            background: #333;
+            background: #4b5563;
             border-radius: 3px;
             position: relative;
             cursor: pointer;
@@ -229,13 +238,13 @@
 
         .timeline-progress {
             height: 100%;
-            background: #667eea;
+            background: #4f46e5;
             border-radius: 3px;
             width: 0%;
         }
 
         .subtitle-editor {
-            background: #f8f9fa;
+            background: #f9fafb;
             border-radius: 12px;
             padding: 1rem;
             height: 500px;
@@ -246,7 +255,7 @@
         .subtitle-list {
             flex: 1;
             overflow-y: auto;
-            border: 1px solid #e1e5e9;
+            border: 1px solid #e5e7eb;
             border-radius: 8px;
             padding: 1rem;
             background: white;
@@ -255,32 +264,32 @@
 
         .subtitle-item {
             padding: 1rem;
-            border: 1px solid #e1e5e9;
+            border: 1px solid #e5e7eb;
             border-radius: 8px;
             margin-bottom: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .subtitle-item:hover {
-            background: #f0f2f5;
+            background: #f3f4f6;
         }
 
         .subtitle-item.active {
-            background: rgba(102, 126, 234, 0.1);
-            border-color: #667eea;
+            background: #eff6ff;
+            border-color: #4f46e5;
         }
 
         .subtitle-time {
             font-size: 0.9rem;
-            color: #666;
+            color: #6b7280;
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
 
         .subtitle-text {
             font-size: 1rem;
-            color: #333;
+            color: #374151;
             line-height: 1.4;
         }
 
@@ -290,83 +299,35 @@
         }
 
         .subtitle-btn {
-            background: #667eea;
+            background: #4f46e5;
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1.25rem;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
+            transition: background 0.2s ease;
         }
 
         .subtitle-btn:hover {
-            background: #5a6fd8;
+            background: #4338ca;
         }
 
         .subtitle-btn.danger {
-            background: #ff6b6b;
+            background: #ef4444;
         }
 
         .subtitle-btn.danger:hover {
-            background: #ff5252;
-        }
-
-        .add-subtitle {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-        }
-
-        .add-subtitle:hover {
-            background: #218838;
-        }
-
-        .progress-container {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 12px;
-            display: none;
-        }
-
-        .progress-container.active {
-            display: block;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e1e5e9;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 1rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .status {
-            font-weight: 600;
-            color: #333;
-            text-align: center;
+            background: #dc2626;
         }
 
         .download-btn {
-            background: linear-gradient(135deg, #28a745, #34ce57);
+            background: #10b981;
             color: white;
             border: none;
             padding: 1rem 2rem;
-            border-radius: 12px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
@@ -380,8 +341,7 @@
         }
 
         .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+            background: #059669;
         }
 
         .modal {
@@ -407,6 +367,7 @@
             border-radius: 12px;
             max-width: 500px;
             width: 90%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .modal-header {
@@ -423,7 +384,7 @@
 
         .modal-form input, .modal-form textarea {
             padding: 0.75rem;
-            border: 2px solid #e1e5e9;
+            border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 1rem;
         }
@@ -437,6 +398,7 @@
             display: flex;
             gap: 1rem;
             justify-content: flex-end;
+            margin-top: 1rem;
         }
 
         .modal-btn {
@@ -448,13 +410,42 @@
         }
 
         .modal-btn.primary {
-            background: #667eea;
+            background: #4f46e5;
             color: white;
+        }
+        
+        .modal-btn.primary:hover {
+            background: #4338ca;
         }
 
         .modal-btn.secondary {
-            background: #e1e5e9;
-            color: #333;
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .modal-btn.secondary:hover {
+            background: #d1d5db;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .language-selector-container select,
+        .language-selector {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
         }
 
         @media (max-width: 768px) {
@@ -462,60 +453,68 @@
                 grid-template-columns: 1fr;
             }
             
-            .page-title {
-                font-size: 2rem;
-            }
-            
             .controls {
                 flex-direction: column;
                 align-items: stretch;
             }
+            .header-controls {
+                display: none;
+            }
         }
     </style>
-    <link rel="stylesheet" href="share-integration.css">
-    <link rel="stylesheet" href="device-selector.css">
-    <script src="/locales/i18n.js"></script>
 </head>
 <body>
     <header class="header">
         <div class="header-container">
-            <div class="logo">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+            <a href="/" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#3367d6"/>
+                    <path d="M8 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+                <span>DropShare</span>
+            </a>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="index.html" data-i18n="nav_home">Home</a>
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" class="active" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons">
+                    <div class="language-selector-container">
+                        <select id="language-selector"></select>
+                    </div>
+                </div>
             </div>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
         </div>
+        <div class="mobile-nav" id="mobile-nav"></div>
     </header>
 
     <div class="container">
+        <h1 class="page-title" data-i18n="subtitle_editor_title">Subtitle Editor</h1>
+        <p class="page-subtitle" data-i18n="subtitle_editor_subtitle">Add, edit, and synchronize subtitles for your videos with precision timing</p>
         <div class="page-header">
-            <h1 class="page-title">Subtitle Editor</h1>
-            <p class="page-subtitle">Add, edit, and synchronize subtitles for your videos with precision timing</p>
+            
+            <p class="page-subtitle" data-i18n="subtitle_editor_subtitle">Add, edit, and synchronize subtitles for your videos with precision timing</p>
         </div>
 
         <div class="tool-container">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎬</div>
-                <h3>Upload Video or Subtitle File</h3>
-                <p>Drag and drop your video file or existing subtitle file (.srt, .vtt) here</p>
+                <h3 class="upload-text" data-i18n="subtitle_upload_title">Upload Video or Subtitle File</h3>
+                <p class="upload-hint" data-i18n="subtitle_upload_hint">Drag and drop your video file or existing subtitle file (.srt, .vtt) here</p>
                 <input type="file" id="fileInput" class="file-input" accept="video/*,.srt,.vtt" multiple>
-                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Files</button>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()" data-i18n="subtitle_choose_files">Choose Files</button>
             </div>
 
             <!-- Controls -->
             <div class="controls">
                 <div class="control-group">
-                    <label>Export Format</label>
+                    <label for="outputFormat" data-i18n="subtitle_export_format">Export Format</label>
                     <select id="outputFormat">
                         <option value="srt">SRT</option>
                         <option value="vtt">WebVTT</option>
@@ -523,16 +522,16 @@
                     </select>
                 </div>
                 <div class="control-group">
-                    <label>Font Size</label>
+                    <label for="fontSize" data-i18n="subtitle_font_size">Font Size</label>
                     <input type="range" id="fontSize" min="12" max="32" value="16">
                     <span id="fontSizeValue">16px</span>
                 </div>
                 <div class="control-group">
-                    <label>Position</label>
+                    <label for="subtitlePosition" data-i18n="subtitle_position">Position</label>
                     <select id="subtitlePosition">
-                        <option value="bottom">Bottom</option>
-                        <option value="top">Top</option>
-                        <option value="middle">Middle</option>
+                        <option value="bottom" data-i18n="subtitle_pos_bottom">Bottom</option>
+                        <option value="top" data-i18n="subtitle_pos_top">Top</option>
+                        <option value="middle" data-i18n="subtitle_pos_middle">Middle</option>
                     </select>
                 </div>
             </div>
@@ -542,10 +541,10 @@
                 <!-- Video Player -->
                 <div class="video-container">
                     <video id="videoPlayer" class="video-player" controls>
-                        Your browser does not support the video tag.
+                        <span data-i18n="browser_not_support_video">Your browser does not support the video tag.</span>
                     </video>
                     <div class="video-controls">
-                        <button class="play-btn" id="playBtn">Play</button>
+                        <button class="play-btn" id="playBtn" data-i18n="subtitle_play">Play</button>
                         <div class="timeline" id="timeline">
                             <div class="timeline-progress" id="timelineProgress"></div>
                         </div>
@@ -559,45 +558,45 @@
                         <!-- Subtitles will be added here -->
                     </div>
                     <div class="subtitle-controls">
-                        <button class="subtitle-btn" id="addSubtitle">Add Subtitle</button>
-                        <button class="subtitle-btn" id="deleteSubtitle">Delete Selected</button>
-                        <button class="subtitle-btn" id="exportSubtitles">Export Subtitles</button>
+                        <button class="subtitle-btn" id="addSubtitle" data-i18n="subtitle_add">Add Subtitle</button>
+                        <button class="subtitle-btn danger" id="deleteSubtitle" data-i18n="subtitle_delete">Delete Selected</button>
+                        <button class="subtitle-btn" id="exportSubtitles" data-i18n="subtitle_export">Export Subtitles</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Progress -->
-            <div class="progress-container" id="progressContainer">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="status" id="status">Processing...</div>
-            </div>
-
-            <!-- Download Button -->
-            <button class="download-btn" id="downloadBtn">Download Subtitle File</button>
+            <button class="download-btn" id="downloadBtn" data-i18n="subtitle_download_file">Download Subtitle File</button>
         </div>
     </div>
 
     <!-- Add/Edit Subtitle Modal -->
     <div class="modal" id="subtitleModal">
         <div class="modal-content">
-            <div class="modal-header">Add/Edit Subtitle</div>
+            <div class="modal-header" data-i18n="subtitle_modal_header">Add/Edit Subtitle</div>
             <div class="modal-form">
-                <input type="text" id="startTime" placeholder="Start time (00:00:00,000)">
-                <input type="text" id="endTime" placeholder="End time (00:00:00,000)">
-                <textarea id="subtitleTextArea" placeholder="Subtitle text"></textarea>
+                <input type="text" id="startTime" data-i18n="subtitle_modal_start" placeholder="Start time (00:00:00,000)">
+                <input type="text" id="endTime" data-i18n="subtitle_modal_end" placeholder="End time (00:00:00,000)">
+                <textarea id="subtitleTextArea" data-i18n="subtitle_modal_text" placeholder="Subtitle text"></textarea>
                 <div class="modal-buttons">
-                    <button class="modal-btn secondary" id="cancelBtn">Cancel</button>
-                    <button class="modal-btn primary" id="saveBtn">Save</button>
+                    <button class="modal-btn secondary" id="cancelBtn" data-i18n="subtitle_modal_cancel">Cancel</button>
+                    <button class="modal-btn primary" id="saveBtn" data-i18n="subtitle_modal_save">Save</button>
                 </div>
             </div>
         </div>
+    </div>
+    
+    <div class="progress-container" style="display: none;">
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+        </div>
+        <div class="progress-text"></div>
+        <div class="eta-text"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <script>
+        // Existing subtitle editor script logic...
         let ffmpeg = null;
         let videoFile = null;
         let subtitleFile = null;
@@ -608,7 +607,6 @@
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const workspace = document.getElementById('workspace');
-        const progressContainer = document.getElementById('progressContainer');
         const downloadBtn = document.getElementById('downloadBtn');
         const subtitleModal = document.getElementById('subtitleModal');
         const subtitleList = document.getElementById('subtitleList');
@@ -709,8 +707,8 @@
                     
                     subtitles.push({
                         index: parseInt(index),
-                        startTime: timeToSeconds(startTime.replace(',', '.')),
-                        endTime: timeToSeconds(endTime.replace(',', '.')),
+                        startTime: timeToSeconds(startTime),
+                        endTime: timeToSeconds(endTime),
                         text: text
                     });
                 }
@@ -750,11 +748,13 @@
 
         function timeToSeconds(timeString) {
             const parts = timeString.split(':');
-            const seconds = parts.pop();
+            const secondsWithMs = parts.pop();
             const minutes = parts.pop() || 0;
             const hours = parts.pop() || 0;
             
-            return parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseFloat(seconds);
+            const [seconds, milliseconds] = secondsWithMs.replace(',', '.').split('.');
+            
+            return (parseInt(hours) * 3600) + (parseInt(minutes) * 60) + parseInt(seconds) + (parseInt(milliseconds || 0) / 1000);
         }
 
         function secondsToTime(seconds) {
@@ -774,7 +774,7 @@
                 subtitleItem.className = 'subtitle-item';
                 subtitleItem.innerHTML = `
                     <div class="subtitle-time">${secondsToTime(subtitle.startTime)} --> ${secondsToTime(subtitle.endTime)}</div>
-                    <div class="subtitle-text">${subtitle.text}</div>
+                    <div class="subtitle-text">${subtitle.text.replace(/\n/g, '<br>')}</div>
                 `;
                 
                 subtitleItem.addEventListener('click', () => {
@@ -799,6 +799,8 @@
             if (index >= 0 && index < items.length) {
                 items[index].classList.add('active');
                 currentSubtitleIndex = index;
+            } else {
+                currentSubtitleIndex = -1;
             }
         }
 
@@ -816,6 +818,10 @@
             
             if (activeIndex !== currentSubtitleIndex) {
                 selectSubtitle(activeIndex);
+                const activeElement = subtitleList.querySelector('.subtitle-item.active');
+                if (activeElement) {
+                    activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }
         }
 
@@ -839,7 +845,6 @@
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Subtitle editing
         document.getElementById('addSubtitle').addEventListener('click', () => {
             const currentTime = videoElement ? videoElement.currentTime : 0;
             editSubtitle(-1, currentTime);
@@ -895,7 +900,6 @@
             subtitleModal.classList.remove('active');
         });
 
-        // Export subtitles
         document.getElementById('exportSubtitles').addEventListener('click', exportSubtitles);
 
         function exportSubtitles() {
@@ -910,7 +914,7 @@
                 content = generateASS();
             }
             
-            const blob = new Blob([content], { type: 'text/plain' });
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             
             const a = document.createElement('a');
@@ -955,7 +959,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             ass += subtitles.map(subtitle => {
                 const startTime = secondsToASSTime(subtitle.startTime);
                 const endTime = secondsToASSTime(subtitle.endTime);
-                return `Dialogue: 0,${startTime},${endTime},Default,,0,0,0,,${subtitle.text}`;
+                return `Dialogue: 0,${startTime},${endTime},Default,,0,0,0,,${subtitle.text.replace(/\n/g, '\\N')}`;
             }).join('\n');
             
             return ass;
@@ -964,25 +968,27 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         function secondsToASSTime(seconds) {
             const hours = Math.floor(seconds / 3600);
             const minutes = Math.floor((seconds % 3600) / 60);
-            const secs = (seconds % 60).toFixed(2);
-            
-            return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.padStart(5, '0')}`;
+            const secsWithMs = (seconds % 60).toFixed(2);
+            const [secs, ms] = secsWithMs.split('.');
+
+            return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${ms}`;
         }
 
-        // Video controls
-        document.getElementById('playBtn').addEventListener('click', () => {
+        const playBtn = document.getElementById('playBtn');
+        playBtn.addEventListener('click', () => {
             if (videoElement) {
                 if (videoElement.paused) {
                     videoElement.play();
-                    document.getElementById('playBtn').textContent = 'Pause';
+                    playBtn.textContent = window.DROPSHARE_I18N.t('subtitle_pause');
                 } else {
                     videoElement.pause();
-                    document.getElementById('playBtn').textContent = 'Play';
+                    playBtn.textContent = window.DROPSHARE_I18N.t('subtitle_play');
                 }
             }
         });
-
-        document.getElementById('timeline').addEventListener('click', (e) => {
+        
+        const timeline = document.getElementById('timeline');
+        timeline.addEventListener('click', (e) => {
             if (videoElement) {
                 const rect = e.target.getBoundingClientRect();
                 const percent = (e.clientX - rect.left) / rect.width;
@@ -990,7 +996,6 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             }
         });
 
-        // Font size control
         document.getElementById('fontSize').addEventListener('input', (e) => {
             document.getElementById('fontSizeValue').textContent = e.target.value + 'px';
         });
@@ -998,18 +1003,33 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         downloadBtn.addEventListener('click', () => {
             exportSubtitles();
         });
+    </script>
+    <script src="device-selector.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                    
+                    // Also update the play/pause button text on initial load
+                    const playBtn = document.getElementById('playBtn');
+                    if(videoElement && videoElement.paused) {
+                        playBtn.textContent = window.DROPSHARE_I18N.t('subtitle_play');
+                    } else {
+                         playBtn.textContent = window.DROPSHARE_I18N.t('subtitle_pause');
+                    }
+                });
+            }
 
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', async () => {
             try {
-                await initFFmpeg();
+                initFFmpeg();
             } catch (error) {
                 console.error('Failed to initialize FFmpeg:', error);
             }
         });
     </script>
-    <!-- Share Integration -->
-    <script src="device-selector.js"></script>
-    <script src="add-share-integration.js"></script>
 </body>
+</html>
+</html>
 </html>

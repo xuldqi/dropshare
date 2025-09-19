@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="document_converter_real_title">Format Converter - DropShare</title>
+    <title>Format Converter</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/themes.css">
     <style>
         * {
             margin: 0;
@@ -70,6 +72,30 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        /* Keep header controls consistent across pages */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Language selector unified styling */
+        .language-selector-container select,
+        .language-selector {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #374151;
+            font-size: 14px;
         }
 
         .container {
@@ -402,41 +428,57 @@
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
     <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
 </head>
 
 <body>
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                📄 DropShare
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#3367d6"/>
+                    <path d="M8 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>DropShare</span>
             </a>
             <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html" class="active">Files</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                <a href="document-tools.html" data-i18n="nav_files" class="active">Files</a>
             </nav>
+            <div class="header-controls">
+                <div class="control-buttons">
+                    <!-- Language Selector -->
+                    <div class="language-selector-container">
+                        <select id="language-selector" class="language-selector"></select>
+                    </div>
+                </div>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </div>
+        <div class="mobile-nav" id="mobile-nav"></div>
     </header>
 
     <div class="container">
-        <div style="margin-bottom: 20px;">
-            <a href="document-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
-            </a>
-        </div>
-        
-        <h1 class="page-title">Format Converter</h1>
-        <p class="page-subtitle">Convert documents between PDF, DOCX, TXT, HTML, EPUB and other formats</p>
+        <h1 class="page-title" data-i18n="doc_converter_title">Format Converter</h1>
+        <p class="page-subtitle" data-i18n="doc_converter_subtitle">Convert documents between PDF, DOCX, TXT, HTML, EPUB and other formats</p>
+
+        <p class="page-subtitle" data-i18n="doc_converter_subtitle">Convert documents between PDF, DOCX, TXT, HTML, EPUB and other formats</p>
         
         <div class="converter-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔄</div>
-                <div class="upload-text">Click or drag to upload a document</div>
-                <div class="upload-hint">Supports PDF, DOCX, TXT, RTF, HTML, MD and more</div>
+                <div class="upload-text" data-i18n="doc_drag_upload">Click or drag to upload a document</div>
+                <div class="upload-hint" data-i18n="doc_supports_formats">Supports PDF, DOCX, TXT, RTF, HTML, MD and more</div>
                 <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt,.rtf,.html,.htm,.md">
             </div>
             
@@ -452,46 +494,46 @@
             </div>
             
             <div class="preview-section" id="previewSection">
-                <div class="section-title">Document preview</div>
+                <div class="section-title" data-i18n="doc_preview_title">Document preview</div>
                 <div class="preview-content" id="previewContent"></div>
             </div>
             
             <div class="conversion-controls" id="conversionControls">
                 <div class="control-section">
-                    <div class="section-title">Select output format</div>
+                    <div class="section-title" data-i18n="doc_select_output">Select output format</div>
                     <div class="format-grid">
                         <div class="format-btn active" data-format="pdf">
                             <div class="format-name">PDF</div>
-                            <div class="format-desc">Portable document</div>
+                            <div class="format-desc" data-i18n="doc_format_pdf">Portable document</div>
                         </div>
                         <div class="format-btn" data-format="docx">
                             <div class="format-name">DOCX</div>
-                            <div class="format-desc">Word document</div>
+                            <div class="format-desc" data-i18n="doc_format_docx">Word document</div>
                         </div>
                         <div class="format-btn" data-format="txt">
                             <div class="format-name">TXT</div>
-                            <div class="format-desc">Plain text</div>
+                            <div class="format-desc" data-i18n="doc_format_txt">Plain text</div>
                         </div>
                         <div class="format-btn" data-format="html">
                             <div class="format-name">HTML</div>
-                            <div class="format-desc">Web page</div>
+                            <div class="format-desc" data-i18n="doc_format_html">Web page</div>
                         </div>
                         <div class="format-btn" data-format="md">
                             <div class="format-name">Markdown</div>
-                            <div class="format-desc">Markdown</div>
+                            <div class="format-desc" data-i18n="doc_format_md">Markdown</div>
                         </div>
                         <div class="format-btn" data-format="rtf">
                             <div class="format-name">RTF</div>
-                            <div class="format-desc">Rich Text</div>
+                            <div class="format-desc" data-i18n="doc_format_rtf">Rich Text</div>
                         </div>
                     </div>
                 </div>
                 
-                <button class="toggle-quality" id="toggleQuality">Show conversion options</button>
+                <button class="toggle-quality" id="toggleQuality" data-i18n="doc_show_options">Show conversion options</button>
                 
                 <div class="quality-settings" id="qualitySettings">
                     <div class="setting-row">
-                        <div class="setting-label">Page size:</div>
+                        <div class="setting-label" data-i18n="doc_page_size">Page size:</div>
                         <select class="setting-input" id="pageSize">
                             <option value="A4">A4</option>
                             <option value="Letter">Letter</option>
@@ -500,7 +542,7 @@
                         </select>
                     </div>
                     <div class="setting-row">
-                        <div class="setting-label">Font size:</div>
+                        <div class="setting-label" data-i18n="doc_font_size">Font size:</div>
                         <select class="setting-input" id="fontSize">
                             <option value="10">10pt</option>
                             <option value="12" selected>12pt</option>
@@ -509,43 +551,43 @@
                         </select>
                     </div>
                     <div class="setting-row">
-                        <div class="setting-label">Preserve formatting:</div>
+                        <div class="setting-label" data-i18n="doc_preserve_formatting">Preserve formatting:</div>
                         <select class="setting-input" id="preserveFormatting">
-                            <option value="true" selected>是</option>
-                            <option value="false">否</option>
+                            <option value="true" selected data-i18n="doc_yes">Yes</option>
+                            <option value="false" data-i18n="doc_no">No</option>
                         </select>
                     </div>
                 </div>
                 
-                <button class="convert-button" id="convertBtn">Start conversion</button>
+                <button class="convert-button" id="convertBtn" data-i18n="doc_start_conversion">Start conversion</button>
             </div>
             
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing...</div>
+                <div id="progressText" data-i18n="progress_preparing">Preparing...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
             
             <div class="result-section" id="resultSection">
-                <h3>Conversion complete!</h3>
+                <h3 data-i18n="doc_conversion_complete">Conversion complete!</h3>
                 <div class="conversion-info">
                     <div class="conversion-stats">
                         <div class="stat-item">
                             <div class="stat-value" id="originalFormat">-</div>
-                            <div class="stat-label">Original format</div>
+                            <div class="stat-label" data-i18n="doc_original_format">Original format</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-value" id="targetFormat">-</div>
-                            <div class="stat-label">Target format</div>
+                            <div class="stat-label" data-i18n="doc_target_format">Target format</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-value" id="resultSize">-</div>
-                            <div class="stat-label">File size</div>
+                            <div class="stat-label" data-i18n="file_size">File size</div>
                         </div>
                     </div>
                 </div>
-                <button class="download-btn" id="downloadBtn">Download converted file</button>
+                <button class="download-btn" id="downloadBtn" data-i18n="doc_download_converted">Download converted file</button>
             </div>
         </div>
     </div>
@@ -597,7 +639,7 @@
                 
             } catch (error) {
                 console.error('Document parsing failed:', error);
-                alert('Document parsing failed: ' + error.message);
+                alert((window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('document_parsing_failed') : 'Document parsing failed: ') + error.message);
             }
         }
 
@@ -669,21 +711,24 @@
             });
         });
 
-        // 质量设置切换
+        // 质量设置切换（使用 i18n 文案）
         document.getElementById('toggleQuality').addEventListener('click', function() {
             const settings = document.getElementById('qualitySettings');
+            const i18n = window.DROPSHARE_I18N;
+            const showText = i18n ? i18n.t('doc_show_options') : '显示转换选项';
+            const hideText = i18n ? i18n.t('doc_hide_options') : '隐藏转换选项';
             if (settings.style.display === 'none' || settings.style.display === '') {
                 settings.style.display = 'block';
-                this.textContent = '隐藏转换选项';
+                this.textContent = hideText;
             } else {
                 settings.style.display = 'none';
-                this.textContent = '显示转换选项';
+                this.textContent = showText;
             }
         });
 
         document.getElementById('convertBtn').addEventListener('click', async function() {
             if (!documentFile) {
-                alert('请先选择文档');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('document_select_first') : '请先选择文档');
                 return;
             }
             
@@ -694,14 +739,14 @@
                 await convertDocument();
             } catch (error) {
                 console.error('转换失败:', error);
-                alert('转换失败: ' + error.message);
+                alert((window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('document_conversion_failed') : '转换失败: ') + error.message);
             } finally {
                 this.disabled = false;
             }
         });
 
         async function convertDocument() {
-            document.getElementById('progressText').textContent = 'Preparing conversion...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('document_preparing_conversion') : 'Preparing conversion...';
             document.getElementById('progressFill').style.width = '20%';
             
             await new Promise(resolve => setTimeout(resolve, 500));
@@ -710,7 +755,7 @@
             let mimeType;
             let fileName = documentFile.name.split('.').slice(0, -1).join('.');
             
-            document.getElementById('progressText').textContent = 'Converting format...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('document_converting_format') : 'Converting format...';
             document.getElementById('progressFill').style.width = '60%';
             
             switch (selectedFormat) {
@@ -748,14 +793,14 @@
                     throw new Error('不支持的输出格式');
             }
             
-            document.getElementById('progressText').textContent = 'Generating file...';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('document_generating_file') : 'Generating file...';
             document.getElementById('progressFill').style.width = '90%';
             
             // 创建文件
             const blob = new Blob([convertedContent], { type: mimeType });
             convertedFile = new File([blob], fileName, { type: mimeType });
             
-            document.getElementById('progressText').textContent = 'Conversion complete!';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('document_conversion_complete') : 'Conversion complete!';
             document.getElementById('progressFill').style.width = '100%';
             
             showConversionResults();
@@ -830,9 +875,6 @@
         }
         ${preserveFormatting ? 'pre { white-space: pre-wrap; font-family: inherit; }' : ''}
     </style>
-    <link rel="stylesheet" href="share-integration.css">
-    <link rel="stylesheet" href="device-selector.css">
-    <script src="/locales/i18n.js"></script>
 </head>
 <body>`;
             
@@ -842,10 +884,6 @@
                 const paragraphs = documentContent.split('\n\n');
                 htmlContent += paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('\n');
             }
-            
-    <!-- Share Integration -->
-    <script src="device-selector.js"></script>
-    <script src="add-share-integration.js"></script>
             htmlContent += `</body></html>`;
             return htmlContent;
         }
@@ -887,7 +925,7 @@
 
         document.getElementById('downloadBtn').addEventListener('click', function() {
             if (!convertedFile) {
-                alert('没有转换文件可下载');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('document_no_file_download') : '没有转换文件可下载');
                 return;
             }
             
@@ -931,8 +969,18 @@
             document.getElementById('fileInput').click();
         });
     </script>
-    <!-- Share Integration -->
-    <script src="device-selector.js"></script>
-    <script src="add-share-integration.js"></script>
+     <!-- Share Integration -->
+     <script src="device-selector.js"></script>
+     <script src="add-share-integration.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const i18n = new I18N();
+            window.DROPSHARE_I18N = i18n;
+            i18n.init().then(() => {
+                i18n.translatePage();
+                initializeLanguageSelector();
+            });
+        });
+    </script>
 </body>
 </html>
