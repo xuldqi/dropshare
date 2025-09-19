@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subtitle Editor</title>
+    <title data-i18n="subtitle_editor_title">Subtitle Editor - DropShare</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/themes.css">
     <link rel="stylesheet" href="share-integration.css">
@@ -494,10 +494,8 @@
     </header>
 
     <div class="container">
-        <h1 class="page-title" data-i18n="subtitle_editor_title">Subtitle Editor</h1>
-        <p class="page-subtitle" data-i18n="subtitle_editor_subtitle">Add, edit, and synchronize subtitles for your videos with precision timing</p>
         <div class="page-header">
-            
+            <h1 class="page-title" data-i18n="subtitle_editor_title">Subtitle Editor</h1>
             <p class="page-subtitle" data-i18n="subtitle_editor_subtitle">Add, edit, and synchronize subtitles for your videos with precision timing</p>
         </div>
 
@@ -756,6 +754,7 @@
             
             return (parseInt(hours) * 3600) + (parseInt(minutes) * 60) + parseInt(seconds) + (parseInt(milliseconds || 0) / 1000);
         }
+
 
         function secondsToTime(seconds) {
             const hours = Math.floor(seconds / 3600);

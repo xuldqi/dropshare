@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="metadata_editor_title">Metadata Editor</title>
-    <script src="/locales/i18n.js"></script>
+    <title data-i18n="metadata_editor_real_title">Metadata Editor - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -20,18 +19,16 @@
         }
 
         .header {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
 
         .header-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -40,70 +37,59 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 20px;
+            gap: 0.5rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #3367d6;
-            text-decoration: none;
+            color: #43e97b;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #43e97b;
         }
 
         .nav-links {
             display: flex;
-            gap: 16px;
+            gap: 1.5rem;
         }
 
         .nav-links a {
-            color: #6b7280;
+            color: #666;
             text-decoration: none;
             font-weight: 500;
-            font-size: 14px;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: #3367d6;
-            background: #f3f4f6;
-        }
-
-        .nav-links a.active {
-            color: #3367d6;
-            background: #e3f2fd;
-            font-weight: 600;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .control-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+            color: #43e97b;
+            background: rgba(67, 233, 123, 0.1);
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
         .page-title {
-            font-size: 32px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 8px;
-            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 1rem;
         }
 
         .page-subtitle {
-            font-size: 16px;
-            color: #6b7280;
-            text-align: center;
-            margin-bottom: 40px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            opacity: 0.9;
         }
 
         .tool-container {
@@ -235,12 +221,8 @@
         }
 
         .metadata-value:empty::after {
-            content: attr(data-i18n-empty);
+            content: 'Not set';
             opacity: 0.5;
-        }
-        
-        .metadata-value[data-i18n-empty]:empty::before {
-            content: "";
         }
 
         .edit-metadata {
@@ -452,11 +434,14 @@
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                🏷️ <span data-i18n="site_name">DropShare</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#3367d6"/>
+                    <path d="M8 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>DropShare</span>
             </a>
             <div class="header-controls">
                 <nav class="nav-links">
-                    <a href="index.html" data-i18n="nav_home">Home</a>
                     <a href="share.html" data-i18n="nav_transfer">Transfer</a>
                     <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
                     <a href="image-tools.html" data-i18n="nav_images">Images</a>
@@ -480,20 +465,24 @@
                         </select>
                     </div>
                 </div>
+            </div>
+        </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title" data-i18n="metadata_editor_title">Metadata Editor</h1>
-        <p class="page-subtitle" data-i18n="metadata_editor_subtitle">Edit audio metadata including title, artist, album, and cover art information</p>
+        <div class="page-header">
+            <h1 class="page-title">Metadata Editor</h1>
+            <p class="page-subtitle">Edit audio metadata including title, artist, album, and cover art information</p>
+        </div>
 
         <div class="tool-container">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🏷️</div>
-                <h3 data-i18n="metadata_upload_title">Upload Audio File</h3>
-                <p data-i18n="metadata_upload_desc">Drag and drop your audio file here or click to browse</p>
+                <h3>Upload Audio File</h3>
+                <p>Drag and drop your audio file here or click to browse</p>
                 <input type="file" id="fileInput" class="file-input" accept="audio/*">
-                <button class="upload-btn" onclick="document.getElementById('fileInput').click()" data-i18n="metadata_choose_file">Choose Audio File</button>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Audio File</button>
             </div>
 
             <!-- Metadata Editor -->
@@ -503,8 +492,8 @@
                     <div class="audio-controls">
                         <button class="play-btn" id="playBtn">▶</button>
                         <div class="audio-info">
-                            <div class="audio-title" id="audioTitle" data-i18n="metadata_unknown_title">Unknown Title</div>
-                            <div class="audio-details" id="audioDetails"><span data-i18n="metadata_unknown_artist">Unknown Artist</span> • <span data-i18n="metadata_unknown_album">Unknown Album</span></div>
+                            <div class="audio-title" id="audioTitle">Unknown Title</div>
+                            <div class="audio-details" id="audioDetails">Unknown Artist • Unknown Album</div>
                         </div>
                     </div>
                     <audio id="audioElement" style="display: none;"></audio>
@@ -512,69 +501,69 @@
 
                 <!-- Current Metadata -->
                 <div class="current-metadata">
-                    <h3 class="section-title" data-i18n="metadata_current_title">📋 Current Metadata</h3>
+                    <h3 class="section-title">📋 Current Metadata</h3>
                     
                     <div class="artwork-container">
                         <div class="artwork-image" id="currentArtwork">🎵</div>
-                        <button class="artwork-upload" id="artworkUpload" data-i18n="metadata_upload_artwork">Upload Artwork</button>
+                        <button class="artwork-upload" id="artworkUpload">Upload Artwork</button>
                         <input type="file" id="artworkInput" accept="image/*" style="display: none;">
                     </div>
 
                     <ul class="metadata-list">
                         <li class="metadata-item">
-                            <span class="metadata-label" data-i18n="metadata_display_title">Title:</span>
-                            <span class="metadata-value" id="currentTitle" data-i18n-empty="metadata_not_set"></span>
+                            <span class="metadata-label">Title:</span>
+                            <span class="metadata-value" id="currentTitle"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label" data-i18n="metadata_display_artist">Artist:</span>
-                            <span class="metadata-value" id="currentArtist" data-i18n-empty="metadata_not_set"></span>
+                            <span class="metadata-label">Artist:</span>
+                            <span class="metadata-value" id="currentArtist"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label" data-i18n="metadata_display_album">Album:</span>
-                            <span class="metadata-value" id="currentAlbum" data-i18n-empty="metadata_not_set"></span>
+                            <span class="metadata-label">Album:</span>
+                            <span class="metadata-value" id="currentAlbum"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label" data-i18n="metadata_display_year">Year:</span>
-                            <span class="metadata-value" id="currentYear" data-i18n-empty="metadata_not_set"></span>
+                            <span class="metadata-label">Year:</span>
+                            <span class="metadata-value" id="currentYear"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label" data-i18n="metadata_display_genre">Genre:</span>
-                            <span class="metadata-value" id="currentGenre" data-i18n-empty="metadata_not_set"></span>
+                            <span class="metadata-label">Genre:</span>
+                            <span class="metadata-value" id="currentGenre"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label" data-i18n="metadata_display_track">Track:</span>
-                            <span class="metadata-value" id="currentTrack" data-i18n-empty="metadata_not_set"></span>
+                            <span class="metadata-label">Track:</span>
+                            <span class="metadata-value" id="currentTrack"></span>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Edit Metadata -->
                 <div class="edit-metadata">
-                    <h3 class="section-title" data-i18n="metadata_edit_title">✏️ Edit Metadata</h3>
+                    <h3 class="section-title">✏️ Edit Metadata</h3>
                     
                     <div class="form-group">
-                        <label class="form-label" data-i18n="metadata_label_title">Title</label>
-                        <input type="text" class="form-input" id="newTitle" data-i18n-placeholder="metadata_placeholder_title" placeholder="Enter song title">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-input" id="newTitle" placeholder="Enter song title">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" data-i18n="metadata_label_artist">Artist</label>
-                        <input type="text" class="form-input" id="newArtist" data-i18n-placeholder="metadata_placeholder_artist" placeholder="Enter artist name">
+                        <label class="form-label">Artist</label>
+                        <input type="text" class="form-input" id="newArtist" placeholder="Enter artist name">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" data-i18n="metadata_label_album">Album</label>
-                        <input type="text" class="form-input" id="newAlbum" data-i18n-placeholder="metadata_placeholder_album" placeholder="Enter album name">
+                        <label class="form-label">Album</label>
+                        <input type="text" class="form-input" id="newAlbum" placeholder="Enter album name">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" data-i18n="metadata_label_year">Year</label>
+                        <label class="form-label">Year</label>
                         <input type="number" class="form-input" id="newYear" placeholder="2024" min="1900" max="2100">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" data-i18n="metadata_label_genre">Genre</label>
-                        <input type="text" class="form-input" id="newGenre" data-i18n-placeholder="metadata_placeholder_genre" placeholder="Enter genre">
+                        <label class="form-label">Genre</label>
+                        <input type="text" class="form-input" id="newGenre" placeholder="Enter genre">
                         <div class="genre-tags">
                             <span class="genre-tag">Pop</span>
                             <span class="genre-tag">Rock</span>
@@ -588,16 +577,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" data-i18n="metadata_label_track">Track Number</label>
-                        <input type="text" class="form-input" id="newTrack" data-i18n-placeholder="metadata_placeholder_track" placeholder="1 or 1/12">
+                        <label class="form-label">Track Number</label>
+                        <input type="text" class="form-input" id="newTrack" placeholder="1 or 1/12">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" data-i18n="metadata_label_comment">Comment</label>
-                        <textarea class="form-input form-textarea" id="newComment" data-i18n-placeholder="metadata_placeholder_comment" placeholder="Add a comment..."></textarea>
+                        <label class="form-label">Comment</label>
+                        <textarea class="form-input form-textarea" id="newComment" placeholder="Add a comment..."></textarea>
                     </div>
 
-                    <button class="save-btn" id="saveBtn" data-i18n="metadata_save_changes">Save Metadata Changes</button>
+                    <button class="save-btn" id="saveBtn">Save Metadata Changes</button>
                 </div>
             </div>
 
@@ -606,11 +595,11 @@
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="status" id="status" data-i18n="metadata_processing">Processing...</div>
+                <div class="status" id="status">Processing...</div>
             </div>
 
             <!-- Download Button -->
-            <button class="download-btn" id="downloadBtn" data-i18n="metadata_download_file">Download Updated Audio File</button>
+            <button class="download-btn" id="downloadBtn">Download Updated Audio File</button>
         </div>
     </div>
 

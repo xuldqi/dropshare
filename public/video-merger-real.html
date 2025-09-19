@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Merger</title>
+    <title data-i18n="video_merger_real_title">Video Merger - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -345,7 +345,548 @@
                 </nav>
 
                 <div class="control-buttons">
-                    <script src="device-selector.js"></script>
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <h1 class="page-title" data-i18n="video_merger_real_heading">Video Merger</h1>
+        <p class="page-subtitle" data-i18n="video_merger_real_subtitle">Combine multiple video files into a single file</p>
+        
+        <div class="merger-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📹</div>
+                <div class="upload-text" data-i18n="video_merger_real_upload_text">Click or drag to upload video files</div>
+                <div class="upload-hint" data-i18n="video_merger_real_upload_hint">Supports multiple selection: MP4, AVI, MOV, WMV and more</div>
+                <input type="file" id="fileInput" accept="video/*" multiple>
+            </div>
+            
+            <div class="video-list" id="videoList">
+                <h3 style="margin-bottom: 16px; color: #374151;" data-i18n="merge_video_list_header">Video list (drag to reorder)</h3>
+                <div id="videoItems"></div>
+            </div>
+            
+            <div class="merge-settings" id="mergeSettings">
+                <div class="setting-group">
+                    <div class="setting-label" data-i18n="merge_output_quality">Output quality</div>
+                    <div class="setting-options">
+                        <div class="setting-btn active" data-setting="quality" data-value="high" data-i18n="quality_high_label">High</div>
+                        <div class="setting-btn" data-setting="quality" data-value="medium" data-i18n="quality_standard_label">Standard</div>
+                        <div class="setting-btn" data-setting="quality" data-value="low" data-i18n="quality_fast_label">Fast</div>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <div class="setting-label" data-i18n="merge_method">Merge method</div>
+                    <div class="setting-options">
+                        <div class="setting-btn active" data-setting="method" data-value="concat" data-i18n="merge_method_concat">Concatenate</div>
+                        <div class="setting-btn" data-setting="method" data-value="crossfade" data-i18n="merge_method_crossfade">Crossfade</div>
+                    </div>
+                </div>
+                
+                <button class="merge-button" id="mergeBtn" data-i18n="video_merger_real_start_btn">Start Merging</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <div id="progressText" data-i18n="progress_preparing">Preparing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FFmpeg scripts will be loaded dynamically from CDN -->
+    <!-- <script src="/vendor/ffmpeg/ffmpeg.js"></script>
+    <script src="/vendor/ffmpeg/util.js"></script> -->
+    <script>
+        let videoFiles = [];
+        let ffmpeg = null;
+        let settings = {
+            quality: 'high',
+            method: 'concat'
+        };
+
+        // Function to load FFmpeg from CDN if not already loaded
+        async function loadFFmpegFromCDN() {
+            return new Promise((resolve, reject) => {
+                // Check if already loaded
+                if (typeof FFmpeg !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                let scriptsLoaded = 0;
+                const totalScripts = 2;
+                
+                function checkComplete() {
+                    scriptsLoaded++;
+                    if (scriptsLoaded === totalScripts) {
+                        // Give a moment for scripts to initialize
+                        setTimeout(() => {
+                            if (typeof FFmpeg !== 'undefined') {
+                                resolve();
+                            } else {
+                                reject(new Error('FFmpeg scripts loaded but not available'));
+                            }
+                        }, 100);
+                    }
+                }
+                
+                // Load FFmpeg core
+                const ffmpegScript = document.createElement('script');
+                ffmpegScript.src = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js';
+                ffmpegScript.onload = checkComplete;
+                ffmpegScript.onerror = () => reject(new Error('Failed to load FFmpeg script'));
+                document.head.appendChild(ffmpegScript);
+                
+                // Load FFmpeg util
+                const utilScript = document.createElement('script');
+                utilScript.src = 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/util.js';
+                utilScript.onload = checkComplete;
+                utilScript.onerror = () => reject(new Error('Failed to load FFmpeg util script'));
+                document.head.appendChild(utilScript);
+                
+                // Timeout after 10 seconds
+                setTimeout(() => {
+                    reject(new Error('FFmpeg loading timeout'));
+                }, 10000);
+            });
+        }
+
+        // Improved core loading with multiple fallback strategies
+        async function loadFFmpegCore(toBlobURL) {
+            // Define multiple core file sources
+            const coreSources = [
+                // Unpkg CDN (most reliable)
+                'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                // JSDelivr CDN (backup)
+                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                // Local files (if available)
+                `${location.origin}/vendor/ffmpeg`
+            ];
+            
+            for (let i = 0; i < coreSources.length; i++) {
+                const baseURL = coreSources[i];
+                console.log(`Loading FFmpeg core from source ${i + 1}/${coreSources.length}...`);
+                
+                try {
+                    // Try to load core files with timeout
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+                    
+                    const coreURL = await toBlobURL(
+                        `${baseURL}/ffmpeg-core.js`, 
+                        'text/javascript',
+                        false, // no progress callback for now
+                        { signal: controller.signal }
+                    );
+                    
+                    const wasmURL = await toBlobURL(
+                        `${baseURL}/ffmpeg-core.wasm`, 
+                        'application/wasm',
+                        false,
+                        { signal: controller.signal }
+                    );
+                    
+                    clearTimeout(timeoutId);
+                    
+                    // Load FFmpeg with the core files
+                    await ffmpeg.load({ coreURL, wasmURL });
+                    
+                    console.log(`✅ FFmpeg core loaded from: ${baseURL}`);
+                    return; // Success, exit the loop
+                    
+                } catch (error) {
+                    console.warn(`⚠️ Failed to load from ${baseURL}:`, error.message);
+                    
+                    if (i === coreSources.length - 1) {
+                        // Last attempt failed
+                        throw new Error(`Failed to load FFmpeg core from all sources. Last error: ${error.message}`);
+                    }
+                    
+                    // Try next source
+                    continue;
+                }
+            }
+        }
+
+        async function loadFFmpeg() {
+            if (!ffmpeg) {
+                try {
+                    // Check if FFmpeg is available from CDN first
+                    if (typeof FFmpeg === 'undefined') {
+                        // Try to load from unpkg CDN
+                        await loadFFmpegFromCDN();
+                    }
+                    
+                    // Initialize FFmpeg
+                    const { FFmpeg } = window.FFmpeg || window.FFmpegWASM;
+                    const { toBlobURL } = window.FFmpegUtil;
+                    
+                    if (!FFmpeg || !toBlobURL) {
+                        throw new Error('FFmpeg libraries not available');
+                    }
+
+                    ffmpeg = new FFmpeg();
+                    
+                    ffmpeg.on('log', ({ message }) => {
+                        console.log('FFmpeg:', message);
+                    });
+                    
+                    ffmpeg.on('progress', ({ progress }) => {
+                        const percent = Math.round(progress * 100);
+                        document.getElementById('progressFill').style.width = percent + '%';
+                        document.getElementById('progressText').textContent = `Merging... ${percent}%`;
+                    });
+                    
+                    // Load core files with multiple fallback strategies
+                    await loadFFmpegCore(toBlobURL);
+                    
+                    console.log('✅ FFmpeg loaded successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load FFmpeg:', error);
+                    throw error;
+                }
+            }
+            return ffmpeg;
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            addVideoFiles(files);
+        });
+
+        function addVideoFiles(files) {
+            files.forEach(file => {
+                if (file.type.startsWith('video/')) {
+                    videoFiles.push(file);
+                }
+            });
+            updateVideoList();
+            updateUI();
+        }
+
+        function updateVideoList() {
+            const container = document.getElementById('videoItems');
+            container.innerHTML = '';
+            
+            videoFiles.forEach((file, index) => {
+                const item = document.createElement('div');
+                item.className = 'video-item';
+                item.draggable = true;
+                item.dataset.index = index;
+                
+                item.innerHTML = `
+                    <div class="drag-handle">⋮⋮</div>
+                    <div class="video-info">
+                        <div class="video-name">${file.name}</div>
+                        <div class="video-details">${(file.size / (1024 * 1024)).toFixed(1)} MB</div>
+                    </div>
+                    <div class="video-controls">
+                        <button class="control-btn" onclick="moveUp(${index})" ${index === 0 ? 'disabled' : ''}>↑</button>
+                        <button class="control-btn" onclick="moveDown(${index})" ${index === videoFiles.length - 1 ? 'disabled' : ''}>↓</button>
+                        <button class="control-btn remove-btn" onclick="removeVideo(${index})" data-i18n="remove_btn">Remove</button>
+                    </div>
+                `;
+                
+                // 添加拖拽事件
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+                
+                container.appendChild(item);
+            });
+        }
+
+        function updateUI() {
+            const hasVideos = videoFiles.length > 0;
+            document.getElementById('videoList').style.display = hasVideos ? 'block' : 'none';
+            document.getElementById('mergeSettings').style.display = videoFiles.length > 1 ? 'block' : 'none';
+        }
+
+        function removeVideo(index) {
+            videoFiles.splice(index, 1);
+            updateVideoList();
+            updateUI();
+        }
+
+        function moveUp(index) {
+            if (index > 0) {
+                [videoFiles[index], videoFiles[index - 1]] = [videoFiles[index - 1], videoFiles[index]];
+                updateVideoList();
+            }
+        }
+
+        function moveDown(index) {
+            if (index < videoFiles.length - 1) {
+                [videoFiles[index], videoFiles[index + 1]] = [videoFiles[index + 1], videoFiles[index]];
+                updateVideoList();
+            }
+        }
+
+        // 拖拽排序
+        let draggedElement = null;
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            if (this !== draggedElement) {
+                const draggedIndex = parseInt(draggedElement.dataset.index);
+                const targetIndex = parseInt(this.dataset.index);
+                
+                const draggedFile = videoFiles[draggedIndex];
+                videoFiles.splice(draggedIndex, 1);
+                videoFiles.splice(targetIndex, 0, draggedFile);
+                
+                updateVideoList();
+            }
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            draggedElement = null;
+        }
+
+        // 设置选择
+        document.querySelectorAll('.setting-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const setting = this.dataset.setting;
+                const value = this.dataset.value;
+                
+                document.querySelectorAll(`[data-setting="${setting}"]`).forEach(b => 
+                    b.classList.remove('active')
+                );
+                this.classList.add('active');
+                settings[setting] = value;
+            });
+        });
+
+        document.getElementById('mergeBtn').addEventListener('click', async function() {
+            if (videoFiles.length < 2) {
+                alert('Please select at least two video files');
+                return;
+            }
+            
+            this.disabled = true;
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_loading_ffmpeg') : '正在加载 FFmpeg...';
+            
+            try {
+                const ffmpeg = await loadFFmpeg();
+                
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_preparing_files') : 'Preparing files...';
+                
+                const inputFiles = [];
+                for (let i = 0; i < videoFiles.length; i++) {
+                    const fileName = `input${i}.${videoFiles[i].name.split('.').pop()}`;
+                    await ffmpeg.writeFile(fileName, await videoFiles[i].arrayBuffer());
+                    inputFiles.push(fileName);
+                }
+                
+                const outputFileName = 'merged_video.mp4';
+                
+                let command;
+                if (settings.method === 'concat') {
+                    // Concatenate directly
+                    const filterComplex = inputFiles.map((_, i) => `[${i}:v][${i}:a]`).join('') + 
+                                         `concat=n=${inputFiles.length}:v=1:a=1[outv][outa]`;
+                    command = [
+                        ...inputFiles.flatMap(f => ['-i', f]),
+                        '-filter_complex', filterComplex,
+                        '-map', '[outv]',
+                        '-map', '[outa]'
+                    ];
+                } else {
+                    // Crossfade
+                    if (inputFiles.length === 2) {
+                        command = [
+                            '-i', inputFiles[0],
+                            '-i', inputFiles[1],
+                            '-filter_complex', 
+                            '[0:v][1:v]xfade=transition=fade:duration=1:offset=5[outv];[0:a][1:a]acrossfade=d=1[outa]',
+                            '-map', '[outv]',
+                            '-map', '[outa]'
+                        ];
+                    } else {
+                        // Crossfade for multiple files is complex; fallback to concatenate
+                        const filterComplex = inputFiles.map((_, i) => `[${i}:v][${i}:a]`).join('') + 
+                                             `concat=n=${inputFiles.length}:v=1:a=1[outv][outa]`;
+                        command = [
+                            ...inputFiles.flatMap(f => ['-i', f]),
+                            '-filter_complex', filterComplex,
+                            '-map', '[outv]',
+                            '-map', '[outa]'
+                        ];
+                    }
+                }
+                
+                // Quality settings
+                if (settings.quality === 'high') {
+                    command.push('-c:v', 'libx264', '-crf', '18', '-preset', 'slow');
+                } else if (settings.quality === 'medium') {
+                    command.push('-c:v', 'libx264', '-crf', '23', '-preset', 'medium');
+                } else {
+                    command.push('-c:v', 'libx264', '-crf', '28', '-preset', 'fast');
+                }
+                
+                command.push('-c:a', 'aac', '-b:a', '192k', '-y', outputFileName);
+                
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_merging') : 'Merging videos...';
+                await ffmpeg.exec(command);
+                
+                const output = await ffmpeg.readFile(outputFileName);
+                const blob = new Blob([output], { type: 'video/mp4' });
+                
+                // Download file
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `merged_video_${Date.now()}.mp4`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_merge_complete') : 'Merge complete!';
+                document.getElementById('progressFill').style.width = '100%';
+                
+                // 清理
+                for (const fileName of inputFiles) {
+                    await ffmpeg.deleteFile(fileName);
+                }
+                await ffmpeg.deleteFile(outputFileName);
+                
+            } catch (error) {
+                console.error('Merge failed:', error);
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_merge_check_formats') : 'Merge failed. Please check file formats and sizes');
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_merge_failed_short') : 'Merge failed';
+            } finally {
+                this.disabled = false;
+                setTimeout(() => {
+                    document.getElementById('progressSection').style.display = 'none';
+                    document.getElementById('progressFill').style.width = '0%';
+                }, 3000);
+            }
+        });
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            addVideoFiles(files);
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                    translatePage();
+                });
+            }
+        }
+
+        // Main translation function
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined' || typeof window.DROPSHARE_I18N.t !== 'function') {
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && (element.type === 'button' || element.type === 'submit')) {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+
+            // Translate dynamically added buttons
+            const removeButtons = document.querySelectorAll('.remove-btn');
+            removeButtons.forEach(button => {
+                button.textContent = window.DROPSHARE_I18N.t('remove_btn') || 'Remove';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                });
+            }
+        });
+
+        // Override updateVideoList to re-translate after render
+        const originalUpdateVideoList = window.updateVideoList;
+        window.updateVideoList = function() {
+            originalUpdateVideoList.apply(this, arguments);
+            // Re-translate remove buttons after they are re-rendered
+            if (window.DROPSHARE_I18N) {
+                const removeButtons = document.querySelectorAll('.remove-btn');
+                removeButtons.forEach(button => {
+                    button.textContent = window.DROPSHARE_I18N.t('remove_btn') || 'Remove';
+                });
+            }
+        };
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
 </body>
 </html>

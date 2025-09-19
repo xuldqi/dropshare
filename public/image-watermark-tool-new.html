@@ -472,10 +472,738 @@
             }
         }
     </style>    
-    <p class="page-subtitle" data-i18n="image_watermark_desc">Add text or image watermarks to protect your copyright</p>
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <!-- Share Integration Styles -->
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+
+    <script src="/locales/i18n.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+            <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                💧 <span data-i18n="site_name">DropShare</span>
+            </a>
+
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="index.html" data-i18n="nav_home">Home</a>
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" class="active" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+
+                <div class="control-buttons">
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button (hidden by CSS) -->
+        <div style="margin-bottom: 20px; display: none;">
+            <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                ← Back
+            </a>
+        </div>
+        
+        <h1 class="page-title" data-i18n="image_watermark">Image Watermark Tool</h1>
+        <p class="page-subtitle" data-i18n="image_watermark_desc">Add text or image watermarks to protect your copyright</p>
 
         <div class="watermark-card">
-            <script src="device-selector.js"></script>
+            <!-- 上传区域 -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">💧</div>
+                <div class="upload-text" data-i18n="upload_image_click_drag">Click to select image or drag here</div>
+                <div class="upload-hint" data-i18n="upload_image_hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <!-- 进度条 -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- 水印控制 -->
+            <div class="watermark-controls" id="watermarkControls">
+                <div class="controls-layout">
+                    <!-- 控制面板 -->
+                    <div class="control-panel">
+                        <div class="panel-title" data-i18n="watermark_settings">💧 Watermark Settings</div>
+
+                        <!-- 水印类型标签 -->
+                        <div class="watermark-tabs">
+                            <button class="tab-btn active" data-tab="text" data-i18n="text_watermark">Text Watermark</button>
+                            <button class="tab-btn" data-tab="image" data-i18n="image_watermark">Image Watermark</button>
+                        </div>
+
+                        <!-- 文字水印设置 -->
+                        <div class="tab-content active" id="textTab">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="watermark_text">Watermark Text</label>
+                                <input type="text" class="form-input" id="watermarkText" data-i18n-placeholder="enter_watermark_text" placeholder="Enter watermark text" value="© DropShare">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="font">Font</label>
+                                <select class="form-select" id="fontFamily">
+                                    <option value="Arial">Arial</option>
+                                    <option value="'Microsoft YaHei'">Microsoft YaHei</option>
+                                    <option value="'PingFang SC'">PingFang SC</option>
+                                    <option value="Georgia">Georgia</option>
+                                    <option value="'Times New Roman'">Times New Roman</option>
+                                    <option value="'Courier New'">Courier New</option>
+                                    <option value="Impact">Impact</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label"><span data-i18n="font_size">Font Size:</span> <span class="range-display" id="fontSizeDisplay">24px</span></label>
+                                <input type="range" class="form-range" id="fontSize" 
+                                       min="12" max="120" value="24">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="font_color">Font Color</label>
+                                <input type="color" class="color-input" id="textColor" value="#ffffff">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="font_style">Font Style</label>
+                                <select class="form-select" id="fontStyle">
+                                    <option value="normal" data-i18n="normal">Normal</option>
+                                    <option value="bold" data-i18n="bold">Bold</option>
+                                    <option value="italic" data-i18n="italic">Italic</option>
+                                    <option value="bold italic" data-i18n="bold_italic">Bold Italic</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 图片水印设置 -->
+                        <div class="tab-content" id="imageTab">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="select_watermark_image">Select Watermark Image</label>
+                                <div class="file-upload-btn" id="logoUploadBtn">
+                                    <span data-i18n="click_to_select_image">📁 Click to select image</span>
+                                </div>
+                                <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label"><span data-i18n="watermark_size">Watermark Size:</span> <span class="range-display" id="logoSizeDisplay">100px</span></label>
+                                <input type="range" class="form-range" id="logoSize" 
+                                       min="20" max="300" value="100">
+                            </div>
+                        </div>
+
+                        <!-- 位置设置 -->
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="watermark_position">Watermark Position</label>
+                            <div class="position-grid">
+                                <button class="position-btn" data-position="top-left" data-i18n="top_left">Top Left</button>
+                                <button class="position-btn" data-position="top-center" data-i18n="top_center">Top Center</button>
+                                <button class="position-btn" data-position="top-right" data-i18n="top_right">Top Right</button>
+                                <button class="position-btn" data-position="middle-left" data-i18n="middle_left">Middle Left</button>
+                                <button class="position-btn active" data-position="center" data-i18n="center">Center</button>
+                                <button class="position-btn" data-position="middle-right" data-i18n="middle_right">Middle Right</button>
+                                <button class="position-btn" data-position="bottom-left" data-i18n="bottom_left">Bottom Left</button>
+                                <button class="position-btn" data-position="bottom-center" data-i18n="bottom_center">Bottom Center</button>
+                                <button class="position-btn" data-position="bottom-right" data-i18n="bottom_right">Bottom Right</button>
+                            </div>
+                        </div>
+
+                        <!-- 透明度设置 -->
+                        <div class="form-group">
+                            <label class="form-label">Opacity: <span class="range-display" id="opacityDisplay">70%</span></label>
+                            <input type="range" class="form-range" id="opacity" 
+                                   min="10" max="100" value="70">
+                        </div>
+
+                        <!-- 偏移设置 -->
+                        <div class="form-group">
+                            <label class="form-label">Horizontal Offset: <span class="range-display" id="offsetXDisplay">0px</span></label>
+                            <input type="range" class="form-range" id="offsetX" 
+                                   min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Vertical Offset: <span class="range-display" id="offsetYDisplay">0px</span></label>
+                            <input type="range" class="form-range" id="offsetY" 
+                                   min="-100" max="100" value="0">
+                        </div>
+                    </div>
+
+                    <!-- 工作区 -->
+                    <div class="watermark-workspace">
+                        <div class="workspace-title" data-i18n="watermark_preview">🖼️ Watermark Preview</div>
+                        <div class="canvas-container">
+                            <canvas id="workspaceCanvas" class="workspace-canvas"></canvas>
+                        </div>
+                        <div class="image-info">
+                            <div><span data-i18n="label_dimensions">Size:</span> <span class="size" id="imageSize"></span></div>
+                            <div><span data-i18n="label_file_size">File Size:</span> <span class="size" id="fileSize"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons result-actions">
+                <button class="btn btn-success" id="downloadBtn" style="display: none;">
+                    <span data-i18n="download_watermarked_image">📥 Download Watermarked Image</span>
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    <span data-i18n="reset">🔄 Reset</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let originalFile = null;
+        let originalImage = null;
+        let logoImage = null;
+        let canvas = null;
+        let ctx = null;
+        let currentPosition = 'center';
+        let currentTab = 'text';
+
+        // 水印设置
+        let watermarkSettings = {
+            text: '© DropShare',
+            fontFamily: 'Arial',
+            fontSize: 24,
+            textColor: '#ffffff',
+            fontStyle: 'normal',
+            logoSize: 100,
+            opacity: 0.7,
+            offsetX: 0,
+            offsetY: 0
+        };
+
+        // DOM 元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const watermarkControls = document.getElementById('watermarkControls');
+        const workspaceCanvas = document.getElementById('workspaceCanvas');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+
+        // 控制元素
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const positionBtns = document.querySelectorAll('.position-btn');
+        const logoUploadBtn = document.getElementById('logoUploadBtn');
+        const logoInput = document.getElementById('logoInput');
+
+        // 事件监听器
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // 标签切换
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => switchTab(e.target.dataset.tab));
+        });
+
+        // 位置按钮
+        positionBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => selectPosition(e.target.dataset.position));
+        });
+
+        // Logo上传
+        logoUploadBtn.addEventListener('click', () => logoInput.click());
+        logoInput.addEventListener('change', handleLogoSelect);
+
+        // 表单控件事件
+        setupFormControls();
+
+        downloadBtn.addEventListener('click', downloadWatermarkedImage);
+        resetBtn.addEventListener('click', resetWatermark);
+
+        // 设置表单控件事件
+        function setupFormControls() {
+            // 文字输入
+            document.getElementById('watermarkText').addEventListener('input', (e) => {
+                watermarkSettings.text = e.target.value;
+                updateWatermark();
+            });
+
+            // 字体设置
+            document.getElementById('fontFamily').addEventListener('change', (e) => {
+                watermarkSettings.fontFamily = e.target.value;
+                updateWatermark();
+            });
+
+            document.getElementById('fontSize').addEventListener('input', (e) => {
+                watermarkSettings.fontSize = parseInt(e.target.value);
+                document.getElementById('fontSizeDisplay').textContent = e.target.value + 'px';
+                updateWatermark();
+            });
+
+            document.getElementById('textColor').addEventListener('change', (e) => {
+                watermarkSettings.textColor = e.target.value;
+                updateWatermark();
+            });
+
+            document.getElementById('fontStyle').addEventListener('change', (e) => {
+                watermarkSettings.fontStyle = e.target.value;
+                updateWatermark();
+            });
+
+            // Logo大小
+            document.getElementById('logoSize').addEventListener('input', (e) => {
+                watermarkSettings.logoSize = parseInt(e.target.value);
+                document.getElementById('logoSizeDisplay').textContent = e.target.value + 'px';
+                updateWatermark();
+            });
+
+            // 透明度
+            document.getElementById('opacity').addEventListener('input', (e) => {
+                watermarkSettings.opacity = parseInt(e.target.value) / 100;
+                document.getElementById('opacityDisplay').textContent = e.target.value + '%';
+                updateWatermark();
+            });
+
+            // 偏移
+            document.getElementById('offsetX').addEventListener('input', (e) => {
+                watermarkSettings.offsetX = parseInt(e.target.value);
+                document.getElementById('offsetXDisplay').textContent = e.target.value + 'px';
+                updateWatermark();
+            });
+
+            document.getElementById('offsetY').addEventListener('input', (e) => {
+                watermarkSettings.offsetY = parseInt(e.target.value);
+                document.getElementById('offsetYDisplay').textContent = e.target.value + 'px';
+                updateWatermark();
+            });
+        }
+
+        // 拖拽处理
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        // 文件选择处理
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // Logo选择处理
+        function handleLogoSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                loadLogoImage(file);
+            }
+        }
+
+        // 处理文件
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_select_valid') : 'Please select an image file');
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_file_too_large') : 'File size cannot exceed 10MB');
+                return;
+            }
+
+            originalFile = file;
+            showProgress();
+            loadImage(file);
+        }
+
+        // 显示进度条
+        function showProgress() {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // 加载图片
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                originalImage = new Image();
+                originalImage.onload = function() {
+                    setupWatermark(this, file);
+                };
+                originalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 加载Logo图片
+        function loadLogoImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                logoImage = new Image();
+                logoImage.onload = function() {
+                    logoUploadBtn.textContent = '✅ Logo loaded';
+                    logoUploadBtn.style.borderColor = '#10b981';
+                    logoUploadBtn.style.color = '#10b981';
+                    updateWatermark();
+                };
+                logoImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 设置水印器
+        function setupWatermark(img, file) {
+            // 显示图片信息
+            document.getElementById('imageSize').textContent = `${img.width} × ${img.height}`;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            
+            // 设置画布
+            canvas = workspaceCanvas;
+            ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            
+            // 显示控制区域
+            watermarkControls.style.display = 'block';
+            downloadBtn.style.display = 'inline-flex';
+            
+            // 初始化水印
+            updateWatermark();
+        }
+
+        // 切换标签
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            tabBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tab);
+            });
+            
+            tabContents.forEach(content => {
+                content.classList.toggle('active', content.id === tab + 'Tab');
+            });
+            
+            updateWatermark();
+        }
+
+        // 选择位置
+        function selectPosition(position) {
+            currentPosition = position;
+            
+            positionBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.position === position);
+            });
+            
+            updateWatermark();
+        }
+
+        // 更新水印
+        function updateWatermark() {
+            if (!originalImage || !canvas) return;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制原图
+            ctx.drawImage(originalImage, 0, 0);
+            
+            // 设置透明度
+            ctx.globalAlpha = watermarkSettings.opacity;
+            
+            if (currentTab === 'text') {
+                drawTextWatermark();
+            } else if (currentTab === 'image' && logoImage) {
+                drawImageWatermark();
+            }
+            
+            // 重置透明度
+            ctx.globalAlpha = 1;
+        }
+
+        // 绘制文字水印
+        function drawTextWatermark() {
+            if (!watermarkSettings.text) return;
+            
+            // 设置字体
+            const fontWeight = watermarkSettings.fontStyle.includes('bold') ? 'bold' : 'normal';
+            const fontStyle = watermarkSettings.fontStyle.includes('italic') ? 'italic' : 'normal';
+            ctx.font = `${fontStyle} ${fontWeight} ${watermarkSettings.fontSize}px ${watermarkSettings.fontFamily}`;
+            ctx.fillStyle = watermarkSettings.textColor;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // 添加描边效果
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.lineWidth = 1;
+            
+            // 计算位置
+            const position = calculateWatermarkPosition(watermarkSettings.fontSize, watermarkSettings.fontSize);
+            
+            // 绘制文字
+            ctx.strokeText(watermarkSettings.text, position.x, position.y);
+            ctx.fillText(watermarkSettings.text, position.x, position.y);
+        }
+
+        // 绘制图片水印
+        function drawImageWatermark() {
+            if (!logoImage) return;
+            
+            const logoWidth = watermarkSettings.logoSize;
+            const logoHeight = (logoImage.height / logoImage.width) * logoWidth;
+            
+            // 计算位置
+            const position = calculateWatermarkPosition(logoWidth, logoHeight);
+            
+            // 绘制Logo
+            ctx.drawImage(logoImage, 
+                position.x - logoWidth / 2, 
+                position.y - logoHeight / 2, 
+                logoWidth, 
+                logoHeight);
+        }
+
+        // 计算水印位置
+        function calculateWatermarkPosition(width, height) {
+            let x, y;
+            
+            const padding = 20;
+            const offsetX = watermarkSettings.offsetX;
+            const offsetY = watermarkSettings.offsetY;
+            
+            switch (currentPosition) {
+                case 'top-left':
+                    x = padding + width / 2 + offsetX;
+                    y = padding + height / 2 + offsetY;
+                    break;
+                case 'top-center':
+                    x = canvas.width / 2 + offsetX;
+                    y = padding + height / 2 + offsetY;
+                    break;
+                case 'top-right':
+                    x = canvas.width - padding - width / 2 + offsetX;
+                    y = padding + height / 2 + offsetY;
+                    break;
+                case 'middle-left':
+                    x = padding + width / 2 + offsetX;
+                    y = canvas.height / 2 + offsetY;
+                    break;
+                case 'center':
+                    x = canvas.width / 2 + offsetX;
+                    y = canvas.height / 2 + offsetY;
+                    break;
+                case 'middle-right':
+                    x = canvas.width - padding - width / 2 + offsetX;
+                    y = canvas.height / 2 + offsetY;
+                    break;
+                case 'bottom-left':
+                    x = padding + width / 2 + offsetX;
+                    y = canvas.height - padding - height / 2 + offsetY;
+                    break;
+                case 'bottom-center':
+                    x = canvas.width / 2 + offsetX;
+                    y = canvas.height - padding - height / 2 + offsetY;
+                    break;
+                case 'bottom-right':
+                    x = canvas.width - padding - width / 2 + offsetX;
+                    y = canvas.height - padding - height / 2 + offsetY;
+                    break;
+                default:
+                    x = canvas.width / 2 + offsetX;
+                    y = canvas.height / 2 + offsetY;
+            }
+            
+            return { x, y };
+        }
+
+        // 下载水印图片
+        function downloadWatermarkedImage() {
+            if (!canvas) return;
+            
+            const format = originalFile.type.includes('png') ? 'image/png' : 'image/jpeg';
+            const quality = format === 'image/jpeg' ? 0.9 : undefined;
+            
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `watermarked_${originalFile.name}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, format, quality);
+        }
+
+        // 重置水印工具
+        function resetWatermark() {
+            originalFile = null;
+            originalImage = null;
+            logoImage = null;
+            canvas = null;
+            ctx = null;
+            currentPosition = 'center';
+            currentTab = 'text';
+            
+            // 重置水印设置
+            watermarkSettings = {
+                text: '© DropShare',
+                fontFamily: 'Arial',
+                fontSize: 24,
+                textColor: '#ffffff',
+                fontStyle: 'normal',
+                logoSize: 100,
+                opacity: 0.7,
+                offsetX: 0,
+                offsetY: 0
+            };
+            
+            watermarkControls.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            fileInput.value = '';
+            logoInput.value = '';
+            
+            // 重置UI
+            document.getElementById('watermarkText').value = '© DropShare';
+            document.getElementById('fontFamily').value = 'Arial';
+            document.getElementById('fontSize').value = 24;
+            document.getElementById('textColor').value = '#ffffff';
+            document.getElementById('fontStyle').value = 'normal';
+            document.getElementById('logoSize').value = 100;
+            document.getElementById('opacity').value = 70;
+            document.getElementById('offsetX').value = 0;
+            document.getElementById('offsetY').value = 0;
+            
+            // 重置显示
+            document.getElementById('fontSizeDisplay').textContent = '24px';
+            document.getElementById('logoSizeDisplay').textContent = '100px';
+            document.getElementById('opacityDisplay').textContent = '70%';
+            document.getElementById('offsetXDisplay').textContent = '0px';
+            document.getElementById('offsetYDisplay').textContent = '0px';
+            
+            // 重置标签和位置
+            switchTab('text');
+            selectPosition('center');
+            
+            // 重置Logo按钮
+            logoUploadBtn.innerHTML = '<span data-i18n="click_to_select_image">📁 Click to select image</span>';
+            logoUploadBtn.style.borderColor = '#d1d5db';
+            logoUploadBtn.style.color = '#6b7280';
+        }
+
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+    
+    <script>
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.setLanguage(newLang);
+                        translatePage();
+                    }
+                });
+            }
+        }
+
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined') return;
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && element.type === 'button') {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'password')) {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                });
+            }
+        });
+    </script>
+    
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="volume_normalizer_title">Volume Normalizer</title>
+    <title data-i18n="volume_normalizer_stable_title">Volume Normalizer - DropShare</title>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
     <style>
         * {
@@ -391,7 +391,339 @@
                 </nav>
 
                 <div class="control-buttons">
-                    <script src="device-selector.js"></script>
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="audio-tools.html" class="back-btn">← Back</a>
+        
+        <h1 class="page-title" data-i18n="volume_normalizer_stable_heading">Volume Normalizer</h1>
+        <p class="page-subtitle" data-i18n="volume_normalizer_stable_subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
+        
+        <div class="converter-card">
+            <div class="engine-status" id="engineStatus">
+                Loading audio processing engine...
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text" data-i18n="volume_normalizer_stable_upload_text">Upload Audio File</div>
+                <div class="upload-hint" data-i18n="volume_normalizer_stable_upload_hint">Drag and drop your audio file here or click to browse</div>
+                <button class="choose-file-btn" onclick="document.getElementById('fileInput').click()">Choose Audio File</button>
+                <input type="file" id="fileInput" accept="audio/*">
+            </div>
+            
+            <div class="file-info" id="fileInfo">
+                <div class="file-info-row">
+                    <span>File:</span>
+                    <span id="fileName">-</span>
+                </div>
+                <div class="file-info-row">
+                    <span>Size:</span>
+                    <span id="fileSize">-</span>
+                </div>
+                <div class="file-info-row">
+                    <span>Duration:</span>
+                    <span id="fileDuration">-</span>
+                </div>
+            </div>
+
+            <div class="conversion-controls" id="conversionControls">
+                <div class="control-section">
+                    <div class="section-title">Normalization Preset</div>
+                    <div class="preset-options">
+                        <div class="preset-btn active" data-method="peak" data-target="0">Peak (0 dB)</div>
+                        <div class="preset-btn" data-method="peak" data-target="-3">Peak (-3 dB)</div>
+                        <div class="preset-btn" data-method="rms" data-target="-12">RMS (-12 dB)</div>
+                        <div class="preset-btn" data-method="loudness" data-target="-23">Loudness (-23 LUFS)</div>
+                        <div class="preset-btn" data-method="custom">Custom</div>
+                    </div>
+                    
+                    <div class="custom-controls" id="customControls">
+                        <div class="input-group">
+                            <label>Method:</label>
+                            <select id="customMethod">
+                                <option value="peak">Peak Normalization</option>
+                                <option value="rms">RMS Normalization</option>
+                                <option value="loudness">Loudness Normalization</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Target Level:</label>
+                            <input type="number" id="customTarget" value="-3" step="0.1" min="-50" max="0">
+                            <span>dB/LUFS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="normalizeBtn" data-i18n="volume_normalizer_stable_normalize_btn">Normalize Audio</button>
+                </div>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-text" id="progressText">Processing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ffmpeg = null;
+        let audioFile = null;
+        let isEngineLoaded = false;
+        
+        // Initialize FFmpeg when page loads
+        async function initFFmpeg() {
+            const statusEl = document.getElementById('engineStatus');
+            statusEl.style.display = 'block';
+            statusEl.textContent = 'Loading audio processing engine...';
+            try {
+                const { createFFmpeg, fetchFile } = FFmpeg;
+                ffmpeg = createFFmpeg({
+                    log: true,
+                    corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+                });
+                
+                ffmpeg.setProgress(({ ratio }) => {
+                    const percentage = Math.round(ratio * 100);
+                    updateProgress(percentage);
+                });
+                
+                await ffmpeg.load();
+                
+                isEngineLoaded = true;
+                statusEl.textContent = '✓ Audio processing engine loaded and ready!';
+                statusEl.classList.add('loaded');
+                
+                console.log('FFmpeg loaded successfully');
+                
+            } catch (error) {
+                console.error('Failed to load FFmpeg:', error);
+                statusEl.textContent = '✗ Failed to load audio processing engine. Please refresh the page.';
+                statusEl.style.background = '#fee2e2';
+                statusEl.style.color = '#dc2626';
+            }
+        }
+
+        function updateProgress(percentage) {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+            }
+            
+            if (progressText && percentage > 0) {
+                progressText.textContent = `Processing... ${percentage}%`;
+            }
+        }
+
+        window.addEventListener('load', initFFmpeg);
+        
+        // File upload handlers
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+
+        function handleFileUpload(file) {
+            if (!file.type.startsWith('audio/')) {
+                alert('Please select a valid audio file.');
+                return;
+            }
+
+            audioFile = file;
+            
+            // Show file info
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileInfo').style.display = 'block';
+            
+            // Get audio duration
+            const audio = new Audio();
+            audio.src = URL.createObjectURL(file);
+            audio.addEventListener('loadedmetadata', () => {
+                document.getElementById('fileDuration').textContent = formatDuration(audio.duration);
+                URL.revokeObjectURL(audio.src);
+            });
+            
+            // Show conversion controls
+            document.getElementById('conversionControls').style.display = 'block';
+            
+            // Hide engine status
+            document.getElementById('engineStatus').style.display = 'none';
+        }
+
+        function formatFileSize(bytes) {
+            const units = ['B', 'KB', 'MB', 'GB'];
+            let size = bytes;
+            let unitIndex = 0;
+            
+            while (size >= 1024 && unitIndex < units.length - 1) {
+                size /= 1024;
+                unitIndex++;
+            }
+            
+            return `${size.toFixed(1)} ${units[unitIndex]}`;
+        }
+
+        function formatDuration(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Preset selection
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const customControls = document.getElementById('customControls');
+                if (this.dataset.method === 'custom') {
+                    customControls.style.display = 'block';
+                } else {
+                    customControls.style.display = 'none';
+                }
+            });
+        });
+
+        // Normalize button
+        document.getElementById('normalizeBtn').addEventListener('click', async function() {
+            if (!audioFile || !ffmpeg || !isEngineLoaded) {
+                alert('Please upload an audio file and wait for the engine to load.');
+                return;
+            }
+
+            const normalizeBtn = this;
+            normalizeBtn.disabled = true;
+            
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('conversionControls').style.display = 'none';
+            
+            try {
+                const selectedPreset = document.querySelector('.preset-btn.active');
+                const method = selectedPreset.dataset.method === 'custom' ? 
+                    document.getElementById('customMethod').value : selectedPreset.dataset.method;
+                const target = selectedPreset.dataset.method === 'custom' ? 
+                    document.getElementById('customTarget').value : selectedPreset.dataset.target;
+
+                // Write input file to FFmpeg filesystem
+                const fileExtension = audioFile.name.split('.').pop().toLowerCase();
+                const inputFileName = `input.${fileExtension}`;
+                const outputFileName = `normalized.${fileExtension}`;
+                
+                document.getElementById('progressText').textContent = 'Loading file...';
+                ffmpeg.FS('writeFile', inputFileName, await fetchFile(audioFile));
+                
+                // Build FFmpeg command based on normalization method
+                let filterArgs = [];
+                
+                if (method === 'peak') {
+                    // Peak normalization
+                    filterArgs = ['-af', `volume=${target}dB`];
+                } else if (method === 'rms') {
+                    // RMS normalization (approximate)
+                    filterArgs = ['-af', `volume=${target}dB:precision=fixed`];
+                } else if (method === 'loudness') {
+                    // Loudness normalization (EBU R128)
+                    filterArgs = ['-af', `loudnorm=I=${target}:LRA=11:TP=-1.5`];
+                }
+                
+                const command = ['-i', inputFileName, ...filterArgs, '-y', outputFileName];
+                
+                console.log('FFmpeg normalize command:', command.join(' '));
+                document.getElementById('progressText').textContent = 'Analyzing and normalizing audio...';
+                
+                // Execute FFmpeg command
+                await ffmpeg.run(...command);
+                
+                // Read the output file
+                const outputData = ffmpeg.FS('readFile', outputFileName);
+                
+                // Create download link
+                const blob = new Blob([outputData.buffer], { type: audioFile.type });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `normalized_${audioFile.name}`;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Clean up
+                try {
+                    ffmpeg.FS('unlink', inputFileName);
+                    ffmpeg.FS('unlink', outputFileName);
+                } catch (e) {
+                    console.warn('Cleanup warning:', e);
+                }
+                
+                document.getElementById('progressFill').style.width = '100%';
+                document.getElementById('progressText').textContent = 'Normalization complete! File downloaded.';
+                
+                setTimeout(() => {
+                    document.getElementById('progressSection').style.display = 'none';
+                    document.getElementById('conversionControls').style.display = 'block';
+                    normalizeBtn.disabled = false;
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Normalization error:', error);
+                document.getElementById('progressText').textContent = 'Error during normalization. Please try again.';
+                document.getElementById('progressSection').style.display = 'none';
+                document.getElementById('conversionControls').style.display = 'block';
+                normalizeBtn.disabled = false;
+            }
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
     <script src="scripts/i18n/languages.js"></script>
     <script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frame Rate Converter</title>
+    <title data-i18n="frame_rate_converter_real_title">Frame Rate Converter - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -457,7 +457,485 @@
                 </nav>
 
                 <div class="control-buttons">
-                    <script src="device-selector.js"></script>
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title" data-i18n="frame_rate_converter_real_heading">Frame Rate Converter</h1>
+        <p class="page-subtitle" data-i18n="frame_rate_converter_real_subtitle">Convert video frame rates for smooth playback and compatibility</p>
+
+        <div class="tool-container">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎬</div>
+                <h3 class="upload-text" data-i18n="frame_rate_converter_real_upload_text">Upload Video File</h3>
+                <p class="upload-hint" data-i18n="frame_rate_converter_real_upload_hint">Drag and drop your video file here or click to browse</p>
+                <input type="file" id="fileInput" class="file-input" accept="video/*">
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()" data-i18n="frame_rate_converter_real_choose_btn">Choose Video File</button>
+            </div>
+
+            <!-- Video Preview -->
+            <div class="video-preview" id="videoPreview">
+                <video id="previewVideo" class="preview-video" controls>
+                    <span data-i18n="browser_not_support_video">Your browser does not support the video tag.</span>
+                </video>
+                <div class="video-info" id="videoInfo">
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="fps_current_rate">Current Frame Rate</div>
+                        <div class="info-value" id="currentFPS">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="duration">Duration</div>
+                        <div class="info-value" id="duration">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="res_resolution">Resolution</div>
+                        <div class="info-value" id="resolution">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="file_size">File Size</div>
+                        <div class="info-value" id="fileSize">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <!-- Frame Rate Settings -->
+                <div class="control-section">
+                    <h4 data-i18n="fps_target_rate">Target Frame Rate</h4>
+                    <div class="frame-rate-presets">
+                        <button class="preset-btn" data-fps="23.98">23.98</button>
+                        <button class="preset-btn" data-fps="24">24</button>
+                        <button class="preset-btn active" data-fps="25">25</button>
+                        <button class="preset-btn" data-fps="29.97">29.97</button>
+                        <button class="preset-btn" data-fps="30">30</button>
+                        <button class="preset-btn" data-fps="50">50</button>
+                        <button class="preset-btn" data-fps="59.94">59.94</button>
+                        <button class="preset-btn" data-fps="60">60</button>
+                    </div>
+                    <div class="control-group">
+                        <label data-i18n="fps_custom_rate">Custom Frame Rate</label>
+                        <input type="number" id="customFPS" data-i18n-placeholder="fps_custom_placeholder" placeholder="e.g., 48" step="0.01" min="1" max="120">
+                    </div>
+                </div>
+
+                <!-- Conversion Method -->
+                <div class="control-section">
+                    <h4 data-i18n="fps_conversion_method">Conversion Method</h4>
+                    <div class="control-group">
+                        <label data-i18n="fps_interpolation">Frame Interpolation</label>
+                        <select id="interpolation">
+                            <option value="fps" data-i18n="fps_inter_std">Standard FPS Filter</option>
+                            <option value="minterpolate" data-i18n="fps_inter_motion">Motion Interpolation</option>
+                            <option value="telecine" data-i18n="fps_inter_telecine">Telecine (24→30)</option>
+                            <option value="framestep" data-i18n="fps_inter_step">Frame Step</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label data-i18n="fps_motion_estimation">Motion Estimation</label>
+                        <select id="motionEstimation">
+                            <option value="bilat" data-i18n="fps_motion_bilat">Bilateral</option>
+                            <option value="bidir" data-i18n="fps_motion_bidir">Bidirectional</option>
+                            <option value="epzs" data-i18n="fps_motion_epzs">EPZS</option>
+                            <option value="hex" data-i18n="fps_motion_hex">Hexagonal</option>
+                        </select>
+                    </div>
+                    <button class="toggle-advanced" onclick="toggleAdvanced()" data-i18n="toggle_advanced_show">Advanced Options ▼</button>
+                    <div class="advanced-options" id="advancedOptions">
+                        <div class="control-group">
+                            <label data-i18n="fps_scene_detection">Scene Detection</label>
+                            <input type="range" id="sceneThreshold" min="0" max="1" step="0.01" value="0.2">
+                            <span id="sceneValue">0.2</span>
+                        </div>
+                        <div class="control-group">
+                            <label data-i18n="fps_search_param">Search Parameter</label>
+                            <input type="range" id="searchParam" min="4" max="64" step="1" value="32">
+                            <span id="searchValue">32</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Output Settings -->
+                <div class="control-section">
+                    <h4 data-i18n="merge_output_quality">Output Settings</h4>
+                    <div class="control-group">
+                        <label data-i18n="fps_video_codec">Video Codec</label>
+                        <select id="videoCodec">
+                            <option value="libx264">H.264</option>
+                            <option value="libx265">H.265/HEVC</option>
+                            <option value="libvpx-vp9">VP9</option>
+                            <option value="libaom-av1">AV1</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label data-i18n="fps_quality_crf">Quality (CRF)</label>
+                        <input type="range" id="quality" min="18" max="30" value="23">
+                        <span id="qualityValue">23</span>
+                    </div>
+                    <div class="control-group">
+                        <label data-i18n="fps_audio_processing">Audio Processing</label>
+                        <select id="audioProcessing">
+                            <option value="copy" data-i18n="fps_audio_copy">Copy Original</option>
+                            <option value="aac" data-i18n="fps_audio_reencode">Re-encode AAC</option>
+                            <option value="remove" data-i18n="fps_audio_remove">Remove Audio</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="info-section">
+                <h5 data-i18n="fps_tips_title">Frame Rate Conversion Tips:</h5>
+                <ul>
+                    <li data-i18n="fps_tip_1">• Use motion interpolation for smooth slow-motion effects</li>
+                    <li data-i18n="fps_tip_2">• 24 fps is standard for films, 30/60 fps for web content</li>
+                    <li data-i18n="fps_tip_3">• Higher frame rates increase file size significantly</li>
+                    <li data-i18n="fps_tip_4">• Scene detection helps maintain quality during cuts</li>
+                </ul>
+            </div>
+
+            <!-- Process Button -->
+            <button class="process-btn" id="processBtn" data-i18n="frame_rate_converter_real_process_btn">Convert Frame Rate</button>
+
+            <!-- Progress -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="status" id="status" data-i18n="progress_processing">Processing...</div>
+                <div class="eta" id="eta" data-i18n="progress_eta_calculating">Estimated time remaining: calculating...</div>
+            </div>
+
+            <!-- Download Button -->
+            <button class="download-btn" id="downloadBtn" data-i18n="res_download_btn">Download Converted Video</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <script>
+        let ffmpeg = null;
+        let videoFile = null;
+        let videoMetadata = {};
+
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const videoPreview = document.getElementById('videoPreview');
+        const previewVideo = document.getElementById('previewVideo');
+        const processBtn = document.getElementById('processBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // Initialize FFmpeg
+        async function initFFmpeg() {
+            if (!ffmpeg) {
+                const { FFmpeg } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
+                
+                ffmpeg = new FFmpeg();
+                
+                const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+                
+                await ffmpeg.load({
+                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                });
+            }
+        }
+
+        // File upload handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        async function handleFile(file) {
+            if (!file.type.startsWith('video/')) {
+                alert('Please select a video file.');
+                return;
+            }
+
+            videoFile = file;
+            
+            // Show video preview
+            const url = URL.createObjectURL(file);
+            previewVideo.src = url;
+            videoPreview.classList.add('active');
+
+            // Update file info
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+
+            // Get video metadata
+            previewVideo.onloadedmetadata = () => {
+                videoMetadata = {
+                    duration: previewVideo.duration,
+                    width: previewVideo.videoWidth,
+                    height: previewVideo.videoHeight
+                };
+
+                document.getElementById('duration').textContent = formatDuration(previewVideo.duration);
+                document.getElementById('resolution').textContent = `${previewVideo.videoWidth}×${previewVideo.videoHeight}`;
+                
+                // Estimate frame rate (rough approximation)
+                estimateFrameRate(file);
+            };
+
+            processBtn.disabled = false;
+        }
+
+        async function estimateFrameRate(file) {
+            try {
+                await initFFmpeg();
+                const inputName = 'input.mp4';
+                await ffmpeg.writeFile(inputName, new Uint8Array(await file.arrayBuffer()));
+
+                // Use ffprobe-like functionality to get frame rate
+                const command = ['-i', inputName, '-f', 'null', '-'];
+                
+                let output = '';
+                ffmpeg.on('log', ({ message }) => {
+                    if (message.includes('fps')) {
+                        const fpsMatch = message.match(/(\d+\.?\d*)\s*fps/);
+                        if (fpsMatch) {
+                            document.getElementById('currentFPS').textContent = fpsMatch[1] + ' fps';
+                        }
+                    }
+                });
+
+                await ffmpeg.exec(command);
+                
+            } catch (error) {
+                console.error('Failed to estimate frame rate:', error);
+                document.getElementById('currentFPS').textContent = 'Unknown';
+            }
+        }
+
+        // Frame rate preset buttons
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('customFPS').value = '';
+            });
+        });
+
+        // Range input updates
+        document.getElementById('sceneThreshold').addEventListener('input', (e) => {
+            document.getElementById('sceneValue').textContent = e.target.value;
+        });
+
+        document.getElementById('searchParam').addEventListener('input', (e) => {
+            document.getElementById('searchValue').textContent = e.target.value;
+        });
+
+        document.getElementById('quality').addEventListener('input', (e) => {
+            document.getElementById('qualityValue').textContent = e.target.value;
+        });
+
+        function toggleAdvanced() {
+            const advanced = document.getElementById('advancedOptions');
+            const btn = document.querySelector('.toggle-advanced');
+            
+            if (advanced.classList.contains('active')) {
+                advanced.classList.remove('active');
+                btn.textContent = 'Advanced Options ▼';
+            } else {
+                advanced.classList.add('active');
+                btn.textContent = 'Advanced Options ▲';
+            }
+        }
+
+        // Process video
+        processBtn.addEventListener('click', async () => {
+            if (!videoFile) {
+                alert('Please select a video file first.');
+                return;
+            }
+
+            try {
+                processBtn.disabled = true;
+                progressContainer.classList.add('active');
+                
+                await initFFmpeg();
+                
+                const inputName = 'input.mp4';
+                const outputName = 'output.mp4';
+                
+                await ffmpeg.writeFile(inputName, new Uint8Array(await videoFile.arrayBuffer()));
+                
+                // Build FFmpeg command
+                const command = buildFFmpegCommand(inputName, outputName);
+                
+                // Track progress
+                let startTime = Date.now();
+                ffmpeg.on('progress', ({ progress, time }) => {
+                    const percent = Math.round(progress * 100);
+                    document.getElementById('progressFill').style.width = percent + '%';
+                    
+                    if (percent > 0) {
+                        const elapsed = (Date.now() - startTime) / 1000;
+                        const estimated = (elapsed / progress) - elapsed;
+                        document.getElementById('eta').textContent = 
+                            `Estimated time remaining: ${Math.round(estimated)}s`;
+                    }
+                    
+                    document.getElementById('status').textContent = 
+                        `Converting frame rate... ${percent}%`;
+                });
+
+                await ffmpeg.exec(command);
+                
+                const outputData = await ffmpeg.readFile(outputName);
+                const outputBlob = new Blob([outputData.buffer], { type: 'video/mp4' });
+                
+                // Create download link
+                const url = URL.createObjectURL(outputBlob);
+                downloadBtn.onclick = () => {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `converted_${getTargetFrameRate()}fps_${videoFile.name}`;
+                    a.click();
+                };
+                
+                downloadBtn.classList.add('active');
+                document.getElementById('status').textContent = 'Conversion completed successfully!';
+                
+            } catch (error) {
+                console.error('Conversion failed:', error);
+                document.getElementById('status').textContent = 'Conversion failed. Please try again.';
+            } finally {
+                processBtn.disabled = false;
+            }
+        });
+
+        function buildFFmpegCommand(inputName, outputName) {
+            const command = ['-i', inputName];
+            
+            const targetFPS = getTargetFrameRate();
+            const interpolation = document.getElementById('interpolation').value;
+            const videoCodec = document.getElementById('videoCodec').value;
+            const quality = document.getElementById('quality').value;
+            const audioProcessing = document.getElementById('audioProcessing').value;
+            
+            // Video filters
+            let videoFilters = [];
+            
+            if (interpolation === 'fps') {
+                videoFilters.push(`fps=${targetFPS}`);
+            } else if (interpolation === 'minterpolate') {
+                const motionEstimation = document.getElementById('motionEstimation').value;
+                const sceneThreshold = document.getElementById('sceneThreshold').value;
+                const searchParam = document.getElementById('searchParam').value;
+                
+                videoFilters.push(`minterpolate=fps=${targetFPS}:mi_mode=mci:mc_mode=${motionEstimation}:scd=scene:scd_threshold=${sceneThreshold}:search_param=${searchParam}`);
+            } else if (interpolation === 'telecine') {
+                if (targetFPS == 30 || targetFPS == 29.97) {
+                    videoFilters.push('telecine');
+                } else {
+                    videoFilters.push(`fps=${targetFPS}`);
+                }
+            } else if (interpolation === 'framestep') {
+                // Calculate frame step for target FPS
+                videoFilters.push(`fps=${targetFPS}`);
+            }
+            
+            if (videoFilters.length > 0) {
+                command.push('-vf', videoFilters.join(','));
+            }
+            
+            // Video codec and quality
+            command.push('-c:v', videoCodec);
+            command.push('-crf', quality);
+            
+            // Audio processing
+            if (audioProcessing === 'copy') {
+                command.push('-c:a', 'copy');
+            } else if (audioProcessing === 'aac') {
+                command.push('-c:a', 'aac');
+                command.push('-b:a', '128k');
+            } else if (audioProcessing === 'remove') {
+                command.push('-an');
+            }
+            
+            // Output settings
+            command.push('-movflags', '+faststart');
+            command.push('-preset', 'medium');
+            command.push(outputName);
+            
+            return command;
+        }
+
+        function getTargetFrameRate() {
+            const customFPS = document.getElementById('customFPS').value;
+            if (customFPS && customFPS > 0) {
+                return parseFloat(customFPS);
+            }
+            
+            const activePreset = document.querySelector('.preset-btn.active');
+            return activePreset ? parseFloat(activePreset.dataset.fps) : 25;
+        }
+
+        function formatDuration(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                await initFFmpeg();
+            } catch (error) {
+                console.error('Failed to initialize FFmpeg:', error);
+            }
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
     <script>
         // Language selector functions

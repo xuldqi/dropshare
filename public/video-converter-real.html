@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="video_converter_title">Video Format Converter</title>
+    <title data-i18n="video_format_converter_title">Video Format Converter - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -392,7 +392,529 @@
                 </nav>
 
                 <div class="control-buttons">
-                    <script src="device-selector.js"></script>
+                    <!-- Language Selector -->
+                    <div class="language-selector">
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <h1 class="page-title" data-i18n="video_format_converter_heading">Video Format Converter</h1>
+        <p class="page-subtitle" data-i18n="video_format_converter_subtitle">Convert videos to different formats and codecs</p>
+        
+        <div class="converter-card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🔄</div>
+                <div class="upload-text" data-i18n="video_format_converter_upload_text">Click or drag to upload a video file</div>
+                <div class="upload-hint" data-i18n="video_format_converter_upload_hint">Supports MP4, AVI, MOV, WMV, MKV, WebM and more</div>
+                <input type="file" id="fileInput" accept="video/*">
+            </div>
+            
+            <div class="conversion-controls" id="conversionControls">
+                <div class="current-file" id="currentFile"></div>
+                
+                <div class="format-selection">
+                    <div class="section-title" data-i18n="select_output_format">Select output format</div>
+                    <div class="format-grid">
+                        <div class="format-btn active" data-format="mp4">
+                            <div class="format-name">MP4</div>
+                            <div class="format-desc" data-i18n="format_mp4_desc">Widely compatible</div>
+                        </div>
+                        <div class="format-btn" data-format="avi">
+                            <div class="format-name">AVI</div>
+                            <div class="format-desc" data-i18n="format_avi_desc">Classic format</div>
+                        </div>
+                        <div class="format-btn" data-format="mov">
+                            <div class="format-name">MOV</div>
+                            <div class="format-desc" data-i18n="format_mov_desc">Apple format</div>
+                        </div>
+                        <div class="format-btn" data-format="mkv">
+                            <div class="format-name">MKV</div>
+                            <div class="format-desc" data-i18n="format_mkv_desc">Open format</div>
+                        </div>
+                        <div class="format-btn" data-format="webm">
+                            <div class="format-name">WebM</div>
+                            <div class="format-desc" data-i18n="format_webm_desc">Web optimized</div>
+                        </div>
+                        <div class="format-btn" data-format="wmv">
+                            <div class="format-name">WMV</div>
+                            <div class="format-desc" data-i18n="format_wmv_desc">Windows format</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quality-settings">
+                    <div class="section-title" data-i18n="conversion_quality">Conversion quality</div>
+                    <div class="quality-grid">
+                        <div class="quality-btn" data-quality="high" data-i18n="quality_high_label">High</div>
+                        <div class="quality-btn active" data-quality="medium" data-i18n="quality_standard_label">Standard</div>
+                        <div class="quality-btn" data-quality="low" data-i18n="quality_fast_label">Fast</div>
+                        <div class="quality-btn" data-quality="custom" data-i18n="quality_custom_label">Custom</div>
+                    </div>
+                </div>
+                
+                <button class="toggle-advanced" id="toggleAdvanced" data-i18n="toggle_advanced_show">Show advanced settings</button>
+                
+                <div class="advanced-settings" id="advancedSettings" style="display: none;">
+                    <div class="setting-row">
+                        <div class="setting-label" data-i18n="adv_resolution">Resolution:</div>
+                        <select class="setting-input" id="resolution">
+                            <option value="original" data-i18n="adv_keep_original">Keep original</option>
+                            <option value="1920x1080">1920x1080 (1080p)</option>
+                            <option value="1280x720">1280x720 (720p)</option>
+                            <option value="854x480">854x480 (480p)</option>
+                            <option value="640x360">640x360 (360p)</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label" data-i18n="adv_video_bitrate">Video bitrate:</div>
+                        <input type="text" class="setting-input" id="videoBitrate" data-i18n-placeholder="adv_example_2000k" placeholder="e.g., 2000k">
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label" data-i18n="adv_audio_bitrate">Audio bitrate:</div>
+                        <input type="text" class="setting-input" id="audioBitrate" data-i18n-placeholder="adv_example_192k" placeholder="e.g., 192k">
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label" data-i18n="adv_frame_rate">Frame rate:</div>
+                        <input type="text" class="setting-input" id="frameRate" data-i18n-placeholder="adv_example_30" placeholder="e.g., 30">
+                    </div>
+                </div>
+                
+                <button class="convert-button" id="convertBtn" data-i18n="video_format_converter_start_btn">Start conversion</button>
+            </div>
+            
+            <div class="progress-section" id="progressSection">
+                <div id="progressText" data-i18n="progress_preparing">Preparing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FFmpeg scripts will be loaded dynamically from CDN -->
+    <!-- <script src="/vendor/ffmpeg/ffmpeg.js"></script>
+    <script src="/vendor/ffmpeg/util.js"></script> -->
+    <script>
+        let videoFile = null;
+        let ffmpeg = null;
+        let selectedFormat = 'mp4';
+        let selectedQuality = 'medium';
+
+        // Function to load FFmpeg from CDN if not already loaded
+        async function loadFFmpegFromCDN() {
+            return new Promise((resolve, reject) => {
+                // Check if already loaded
+                if (typeof FFmpeg !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                
+                let scriptsLoaded = 0;
+                const totalScripts = 2;
+                
+                function checkComplete() {
+                    scriptsLoaded++;
+                    if (scriptsLoaded === totalScripts) {
+                        // Give a moment for scripts to initialize
+                        setTimeout(() => {
+                            if (typeof FFmpeg !== 'undefined') {
+                                resolve();
+                            } else {
+                                reject(new Error('FFmpeg scripts loaded but not available'));
+                            }
+                        }, 100);
+                    }
+                }
+                
+                // Load FFmpeg core
+                const ffmpegScript = document.createElement('script');
+                ffmpegScript.src = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js';
+                ffmpegScript.onload = checkComplete;
+                ffmpegScript.onerror = () => reject(new Error('Failed to load FFmpeg script'));
+                document.head.appendChild(ffmpegScript);
+                
+                // Load FFmpeg util
+                const utilScript = document.createElement('script');
+                utilScript.src = 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/util.js';
+                utilScript.onload = checkComplete;
+                utilScript.onerror = () => reject(new Error('Failed to load FFmpeg util script'));
+                document.head.appendChild(utilScript);
+                
+                // Timeout after 10 seconds
+                setTimeout(() => {
+                    reject(new Error('FFmpeg loading timeout'));
+                }, 10000);
+            });
+        }
+
+        // Improved core loading with multiple fallback strategies
+        async function loadFFmpegCore(toBlobURL) {
+            // Define multiple core file sources
+            const coreSources = [
+                // Unpkg CDN (most reliable)
+                'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                // JSDelivr CDN (backup)
+                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                // Local files (if available)
+                `${location.origin}/vendor/ffmpeg`
+            ];
+            
+            for (let i = 0; i < coreSources.length; i++) {
+                const baseURL = coreSources[i];
+                console.log(`Loading FFmpeg core from source ${i + 1}/${coreSources.length}...`);
+                
+                try {
+                    // Try to load core files with timeout
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+                    
+                    const coreURL = await toBlobURL(
+                        `${baseURL}/ffmpeg-core.js`, 
+                        'text/javascript',
+                        false, // no progress callback for now
+                        { signal: controller.signal }
+                    );
+                    
+                    const wasmURL = await toBlobURL(
+                        `${baseURL}/ffmpeg-core.wasm`, 
+                        'application/wasm',
+                        false,
+                        { signal: controller.signal }
+                    );
+                    
+                    clearTimeout(timeoutId);
+                    
+                    // Load FFmpeg with the core files
+                    await ffmpeg.load({ coreURL, wasmURL });
+                    
+                    console.log(`✅ FFmpeg core loaded from: ${baseURL}`);
+                    return; // Success, exit the loop
+                    
+                } catch (error) {
+                    console.warn(`⚠️ Failed to load from ${baseURL}:`, error.message);
+                    
+                    if (i === coreSources.length - 1) {
+                        // Last attempt failed
+                        throw new Error(`Failed to load FFmpeg core from all sources. Last error: ${error.message}`);
+                    }
+                    
+                    // Try next source
+                    continue;
+                }
+            }
+        }
+
+        async function loadFFmpeg() {
+            if (!ffmpeg) {
+                try {
+                    // Check if FFmpeg is available from CDN first
+                    if (typeof FFmpeg === 'undefined') {
+                        // Try to load from unpkg CDN
+                        await loadFFmpegFromCDN();
+                    }
+                    
+                    // Initialize FFmpeg
+                    const { FFmpeg } = window.FFmpeg || window.FFmpegWASM;
+                    const { toBlobURL } = window.FFmpegUtil;
+                    
+                    if (!FFmpeg || !toBlobURL) {
+                        throw new Error('FFmpeg libraries not available');
+                    }
+
+                    ffmpeg = new FFmpeg();
+                    
+                    ffmpeg.on('log', ({ message }) => {
+                        console.log('FFmpeg:', message);
+                    });
+                    
+                    ffmpeg.on('progress', ({ progress }) => {
+                        const percent = Math.round(progress * 100);
+                        document.getElementById('progressFill').style.width = percent + '%';
+                        document.getElementById('progressText').textContent = `Converting... ${percent}%`;
+                    });
+                    
+                    // Load core files with multiple fallback strategies
+                    await loadFFmpegCore(toBlobURL);
+                    
+                    console.log('✅ FFmpeg loaded successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load FFmpeg:', error);
+                    throw error;
+                }
+            }
+            return ffmpeg;
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                videoFile = file;
+                showFileInfo(file);
+                document.getElementById('conversionControls').style.display = 'block';
+            }
+        });
+
+        function showFileInfo(file) {
+            const container = document.getElementById('currentFile');
+            const size = (file.size / (1024 * 1024)).toFixed(1);
+            const extension = file.name.split('.').pop().toUpperCase();
+            
+            container.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">${extension}</div>
+                    <div class="file-details">
+                        <h4>${file.name}</h4>
+                        <p>大小: ${size} MB | 格式: ${extension}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 格式选择
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedFormat = this.dataset.format;
+            });
+        });
+
+        // 质量选择
+        document.querySelectorAll('.quality-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedQuality = this.dataset.quality;
+            });
+        });
+
+        // 高级设置切换
+        document.getElementById('toggleAdvanced').addEventListener('click', function() {
+            const settings = document.getElementById('advancedSettings');
+            if (settings.style.display === 'none') {
+                settings.style.display = 'block';
+                this.textContent = window.DROPSHARE_I18N.t('toggle_advanced_hide') || 'Hide advanced settings';
+            } else {
+                settings.style.display = 'none';
+                this.textContent = window.DROPSHARE_I18N.t('toggle_advanced_show') || 'Show advanced settings';
+            }
+        });
+
+        document.getElementById('convertBtn').addEventListener('click', async function() {
+            if (!videoFile) {
+                alert('Please select a video file first');
+                return;
+            }
+            
+            this.disabled = true;
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_loading_ffmpeg') : 'Loading FFmpeg...';
+            
+            try {
+                const ffmpeg = await loadFFmpeg();
+                
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_preparing_files') : 'Preparing files...';
+                
+                const inputFileName = 'input.' + videoFile.name.split('.').pop();
+                const outputFileName = `converted_video.${selectedFormat}`;
+                
+                await ffmpeg.writeFile(inputFileName, await videoFile.arrayBuffer());
+                
+                const command = ['-i', inputFileName];
+                
+                // Codec settings
+                const codecSettings = {
+                    'mp4': ['-c:v', 'libx264', '-c:a', 'aac'],
+                    'avi': ['-c:v', 'libx264', '-c:a', 'mp3'],
+                    'mov': ['-c:v', 'libx264', '-c:a', 'aac'],
+                    'mkv': ['-c:v', 'libx264', '-c:a', 'aac'],
+                    'webm': ['-c:v', 'libvpx-vp9', '-c:a', 'libvorbis'],
+                    'wmv': ['-c:v', 'msmpeg4v3', '-c:a', 'wmav2']
+                };
+                
+                command.push(...(codecSettings[selectedFormat] || codecSettings['mp4']));
+                
+                // Quality settings
+                if (selectedQuality === 'high') {
+                    command.push('-crf', '18', '-preset', 'slow');
+                } else if (selectedQuality === 'medium') {
+                    command.push('-crf', '23', '-preset', 'medium');
+                } else if (selectedQuality === 'low') {
+                    command.push('-crf', '28', '-preset', 'fast');
+                }
+                
+                // Advanced settings
+                const resolution = document.getElementById('resolution').value;
+                if (resolution !== 'original') {
+                    command.push('-s', resolution);
+                }
+                
+                const videoBitrate = document.getElementById('videoBitrate').value;
+                if (videoBitrate) {
+                    command.push('-b:v', videoBitrate);
+                }
+                
+                const audioBitrate = document.getElementById('audioBitrate').value;
+                if (audioBitrate) {
+                    command.push('-b:a', audioBitrate);
+                }
+                
+                const frameRate = document.getElementById('frameRate').value;
+                if (frameRate) {
+                    command.push('-r', frameRate);
+                }
+                
+                command.push('-y', outputFileName);
+                
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_converting') : 'Converting video...';
+                await ffmpeg.exec(command);
+                
+                const output = await ffmpeg.readFile(outputFileName);
+                const mimeTypes = {
+                    'mp4': 'video/mp4',
+                    'avi': 'video/x-msvideo',
+                    'mov': 'video/quicktime',
+                    'mkv': 'video/x-matroska',
+                    'webm': 'video/webm',
+                    'wmv': 'video/x-ms-wmv'
+                };
+                
+                const blob = new Blob([output], { type: mimeTypes[selectedFormat] || 'video/mp4' });
+                
+                // Download file
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `converted_${Date.now()}.${selectedFormat}`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_conversion_complete') : 'Conversion complete!';
+                document.getElementById('progressFill').style.width = '100%';
+                
+                // 清理
+                await ffmpeg.deleteFile(inputFileName);
+                await ffmpeg.deleteFile(outputFileName);
+                
+            } catch (error) {
+                console.error('Conversion failed:', error);
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_conversion_check_format') : 'Conversion failed. Please check file format and settings');
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('video_conversion_failed_short') : 'Conversion failed';
+            } finally {
+                this.disabled = false;
+                setTimeout(() => {
+                    document.getElementById('progressSection').style.display = 'none';
+                    document.getElementById('progressFill').style.width = '0%';
+                }, 3000);
+            }
+        });
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('video/')) {
+                document.getElementById('fileInput').files = files;
+                const event = new Event('change');
+                document.getElementById('fileInput').dispatchEvent(event);
+            }
+        });
+        
+        uploadArea.addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    </script>
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                    translatePage();
+                });
+            }
+        }
+
+        // Main translation function
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined' || typeof window.DROPSHARE_I18N.t !== 'function') {
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && (element.type === 'button' || element.type === 'submit')) {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translation;
+                    } else if (element.hasAttribute('data-i18n-placeholder')) {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+
+            // Manually translate placeholders for inputs that don't use the special attribute
+            const videoBitrateEl = document.getElementById('videoBitrate');
+            if (videoBitrateEl) videoBitrateEl.placeholder = window.DROPSHARE_I18N.t('adv_example_2000k') || 'e.g., 2000k';
+
+            const audioBitrateEl = document.getElementById('audioBitrate');
+            if (audioBitrateEl) audioBitrateEl.placeholder = window.DROPSHARE_I18N.t('adv_example_192k') || 'e.g., 192k';
+
+            const frameRateEl = document.getElementById('frameRate');
+            if (frameRateEl) frameRateEl.placeholder = window.DROPSHARE_I18N.t('adv_example_30') || 'e.g., 30';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                });
+            }
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
 </body>
 </html>

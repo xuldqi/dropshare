@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volume Normalizer</title>
+    <title data-i18n="volume_normalizer_title">Volume Normalizer - DropShare</title>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
     <style>
         * {
@@ -318,7 +318,33 @@
 </head>
 
 <body>
-    <p class="page-subtitle" data-i18n="volume_normalizer_subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="#3367d6"/>
+                    <path d="M8 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>DropShare</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="share.html">Transfer</a>
+                <a href="share.html#rooms">Rooms</a>
+                <a href="image-tools.html">Images</a>
+                <a href="audio-tools.html" class="active">Audio</a>
+                <a href="video-tools.html">Video</a>
+                <a href="document-tools.html">Files</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        
+        <h1 class="page-title" data-i18n="volume_normalizer_heading">Volume Normalizer</h1>
+        <p class="page-subtitle" data-i18n="volume_normalizer_subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
         
         <div class="normalizer-card">
             <div class="engine-status" id="engineStatus">

@@ -1,3 +1,30 @@
+# macOS
+.DS_Store
+
+# Logs
+*.log
+server.log
+
+# Backups / temporaries
+*.bak
+*.old
+*.tmp
+
+# Node / package caches
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+
+# Caches
+.cache/
+*.cache
+
+# Vendor (optional, re-fetch/CDN)
+public/vendor/
+
 # Dependencies
 node_modules/
 npm-debug.log*
