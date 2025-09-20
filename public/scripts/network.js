@@ -61,6 +61,11 @@ class ServerConnection {
                 if (window.roomManager) {
                     window.roomManager.handleRoomMessage(msg);
                 }
+                
+                // Also call the global room response handler
+                if (window.handleRoomResponse) {
+                    window.handleRoomResponse(msg);
+                }
                 break;
             default:
                 console.error('WS: unkown message type', msg);

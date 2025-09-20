@@ -76,10 +76,402 @@
             const joinForm = document.getElementById('joinRoomForm');
             
             if (createForm) createForm.classList.remove('active');
-            if (joinForm) joinForm.classList.add('active');
+            if (joinForm) {
+                joinForm.classList.add('active');
+                
+                // Focus on room code input after a short delay
+                setTimeout(() => {
+                    const roomCodeInput = document.getElementById('roomCode');
+                    if (roomCodeInput) {
+                        roomCodeInput.focus();
+                        roomCodeInput.click(); // Force click to ensure it's focusable
+                        console.log('✅ Room code input focused');
+                    }
+                }, 200);
+            }
+        };
+        
+        window.handleJoinRoom = function() {
+            console.log('🚪 handleJoinRoom called');
+            const roomCode = document.getElementById('roomCode')?.value?.trim();
+            const roomPassword = document.getElementById('joinRoomPassword')?.value;
+            
+            if (!roomCode) {
+                alert('Please enter Room Code');
+                return;
+            }
+            
+            const message = {
+                type: 'join-room',
+                roomCode: roomCode,
+                password: roomPassword
+            };
+            
+            console.log('📤 Sending join room message:', message);
+            
+            if (window.network?.send) {
+                window.network.send(message);
+            } else if (window.serverConnection?.send) {
+                window.serverConnection.send(message);
+            } else {
+                console.error('❌ No network connection available');
+            }
+        };
+        
+        window.copyRoomCodeSimple = function() {
+            console.log('📋 copyRoomCodeSimple called');
+            const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+            if (roomCodeDisplay) {
+                const roomCodeText = roomCodeDisplay.textContent.replace('Room Code: ', '');
+                navigator.clipboard.writeText(roomCodeText).then(() => {
+                    console.log('✅ Room code copied:', roomCodeText);
+                    // Show toast instead of alert
+                    if (window.showToast) {
+                        window.showToast('房间码已复制到剪贴板');
+                    }
+                }).catch(err => {
+                    console.error('❌ Failed to copy room code:', err);
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = roomCodeText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    // Show toast instead of alert
+                    if (window.showToast) {
+                        window.showToast('房间码已复制到剪贴板');
+                    }
+                });
+            }
         };
         
         // Add room creation success handler
+        // Handle room member updates
+        window.updateRoomMembers = function(members) {
+            console.log('🧑‍🤝‍🧑 Updating room members:', members);
+            
+            const memberCountNumber = document.getElementById('memberCountNumber');
+            const memberNames = document.getElementById('memberNames');
+            
+            if (memberCountNumber) {
+                memberCountNumber.textContent = members.length;
+            }
+            
+            if (memberNames) {
+                const memberList = members.map(member => {
+                    const isHost = member.isHost ? ' (Host)' : '';
+                    const className = member.isHost ? 'member-host' : 'member-regular';
+                    return `<span class="${className}">${member.displayName}${isHost}</span>`;
+                }).join(', ');
+                
+                memberNames.innerHTML = memberList;
+            }
+        };
+        
+        // Handle new member joining
+        window.handleMemberJoined = function(memberData) {
+            console.log('👋 Member joined:', memberData);
+            
+            // Get current member list and add new member
+            const memberNames = document.getElementById('memberNames');
+            const memberCountNumber = document.getElementById('memberCountNumber');
+            
+            if (memberNames && memberCountNumber) {
+                const currentCount = parseInt(memberCountNumber.textContent) || 0;
+                memberCountNumber.textContent = currentCount + 1;
+                
+                const isHost = memberData.member.isHost ? ' (Host)' : '';
+                const className = memberData.member.isHost ? 'member-host' : 'member-regular';
+                const newMemberSpan = `<span class="${className}">${memberData.member.displayName}${isHost}</span>`;
+                
+                // Add to existing member list
+                const currentContent = memberNames.innerHTML;
+                if (currentContent.trim()) {
+                    memberNames.innerHTML = currentContent + ', ' + newMemberSpan;
+                } else {
+                    memberNames.innerHTML = newMemberSpan;
+                }
+            }
+        };
+        
+        // Handle file selection from upload button
+        window.handleFileSelection = function(input) {
+            console.log('📁 Files selected:', input.files);
+            
+            if (input.files && input.files.length > 0) {
+                // Process each selected file
+                Array.from(input.files).forEach(file => {
+                    console.log('Processing file:', file.name, file.size);
+                    
+                    // Share file directly in room mode
+                    shareFileInRoom(file);
+                });
+                
+                // Clear the input so the same file can be selected again
+                input.value = '';
+            }
+        };
+        
+        // Function to share file in room
+        window.shareFileInRoom = function(file) {
+            console.log('🚀 Sharing file in room:', file.name);
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const fileData = e.target.result;
+                
+                // Get current room code (assume we're in a room)
+                const roomCodeElement = document.getElementById('roomCodeDisplay');
+                const roomCode = roomCodeElement ? roomCodeElement.textContent.replace('Room Code: ', '') : null;
+                
+                if (!roomCode) {
+                    console.error('❌ No room code found, cannot share file');
+                    return;
+                }
+                
+                // Prepare file info
+                const fileInfo = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    id: Date.now() + '_' + file.name
+                };
+                
+                // Send file sharing message via WebSocket
+                if (window.network && window.network.send) {
+                    const message = {
+                        type: 'room-file-shared',
+                        roomCode: roomCode,
+                        fileInfo: fileInfo,
+                        fileData: fileData
+                    };
+                    
+                    console.log('📤 Sending room file share message:', message);
+                    window.network.send(message);
+                    
+                    // Also add file to local UI immediately
+                    addFileToLocalUI(fileInfo, fileData);
+                } else if (window.websocket && window.websocket.send) {
+                    // Fallback to direct WebSocket
+                    const message = {
+                        type: 'room-file-shared',
+                        roomCode: roomCode,
+                        fileInfo: fileInfo,
+                        fileData: fileData
+                    };
+                    
+                    console.log('📤 Sending room file share via WebSocket:', message);
+                    window.websocket.send(JSON.stringify(message));
+                    
+                    // Also add file to local UI immediately
+                    addFileToLocalUI(fileInfo, fileData);
+                } else {
+                    console.error('❌ No network system available');
+                    // Try to find the WebSocket in the network module
+                    setTimeout(() => {
+                        console.log('🔄 Retrying to find network system...');
+                        if (window.network) {
+                            console.log('✅ Network system found, retrying send');
+                            shareFileInRoom(file);
+                        }
+                    }, 1000);
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        };
+        
+        // Add file to local UI
+        window.addFileToLocalUI = function(fileInfo, fileData) {
+            const sharedFilesList = document.getElementById('sharedFilesList');
+            if (!sharedFilesList) {
+                console.error('❌ Shared files list element not found');
+                return;
+            }
+            
+            const fileElement = document.createElement('div');
+            fileElement.className = 'shared-file-item';
+            fileElement.innerHTML = `
+                <div class="file-info">
+                    <span class="file-name">${fileInfo.name}</span>
+                    <span class="file-size">${formatFileSize(fileInfo.size)}</span>
+                </div>
+                <button onclick="downloadFile('${fileInfo.id}', '${fileData}')" class="download-btn">📥 Download</button>
+            `;
+            
+            // Hide no files message
+            const noFiles = sharedFilesList.querySelector('.no-shared-files');
+            if (noFiles) {
+                noFiles.style.display = 'none';
+            }
+            
+            sharedFilesList.appendChild(fileElement);
+            
+            // Update file count
+            updateFileCount();
+        };
+        
+        // Format file size
+        window.formatFileSize = function(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        };
+        
+        // Download file
+        window.downloadFile = function(fileId, fileData) {
+            console.log('📥 Downloading file:', fileId);
+            
+            if (!fileData) {
+                console.error('❌ No file data available for download');
+                return;
+            }
+            
+            // Extract filename from fileId if needed
+            let fileName = fileId;
+            if (fileId.includes('_')) {
+                fileName = fileId.split('_').slice(1).join('_');
+            }
+            
+            const link = document.createElement('a');
+            link.href = fileData;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+        
+        // Update file count
+        window.updateFileCount = function() {
+            const fileCount = document.getElementById('fileCount');
+            const sharedFilesList = document.getElementById('sharedFilesList');
+            if (fileCount && sharedFilesList) {
+                const count = sharedFilesList.children.length;
+                fileCount.textContent = count + ' files';
+            }
+        };
+        
+        // Handle leaving room
+        window.handleLeaveRoom = function() {
+            console.log('🚪 Leaving room...');
+            
+            // Get current room code
+            const roomCodeElement = document.getElementById('roomCodeDisplay');
+            const roomCode = roomCodeElement ? roomCodeElement.textContent.replace('Room Code: ', '') : null;
+            
+            if (roomCode && window.network && window.network.send) {
+                // Send leave room message
+                const message = {
+                    type: 'leave-room',
+                    roomCode: roomCode
+                };
+                
+                console.log('📤 Sending leave room message:', message);
+                window.network.send(message);
+            }
+            
+            // Clear room UI immediately
+            clearRoomUI();
+        };
+        
+        // Clear room UI
+        window.clearRoomUI = function() {
+            console.log('🧹 Clearing room UI');
+            
+            // Hide room info
+            const roomInfo = document.getElementById('roomInfo');
+            if (roomInfo) {
+                roomInfo.style.display = 'none';
+                roomInfo.classList.remove('active');
+            }
+            
+            // Hide file transfer area
+            const fileTransferArea = document.getElementById('fileTransferArea');
+            if (fileTransferArea) {
+                fileTransferArea.style.display = 'none';
+                fileTransferArea.classList.remove('active');
+            }
+            
+            // Show room selection again
+            const roomContainer = document.getElementById('roomContainer');
+            if (roomContainer) {
+                roomContainer.classList.remove('active');
+            }
+            
+            // Clear shared files
+            const sharedFilesList = document.getElementById('sharedFilesList');
+            if (sharedFilesList) {
+                const fileItems = sharedFilesList.querySelectorAll('.shared-file-item');
+                fileItems.forEach(item => item.remove());
+                
+                // Show empty state
+                const noFiles = sharedFilesList.querySelector('.no-shared-files');
+                if (noFiles) {
+                    noFiles.style.display = 'block';
+                }
+            }
+            
+            // Reset file count
+            const fileCount = document.getElementById('fileCount');
+            if (fileCount) {
+                fileCount.textContent = '0 files';
+            }
+            
+            // Reset member count
+            const memberCountNumber = document.getElementById('memberCountNumber');
+            const memberNames = document.getElementById('memberNames');
+            if (memberCountNumber) memberCountNumber.textContent = '1';
+            if (memberNames) memberNames.innerHTML = '';
+            
+            console.log('✅ Room UI cleared');
+        };
+        
+        // Handle room left response
+        window.handleRoomLeft = function(message) {
+            console.log('👋 Room left successfully:', message);
+            clearRoomUI();
+        };
+        
+        // Handle room file sharing
+        window.handleRoomFileShared = function(message) {
+            console.log('📁 Handling room file shared:', message);
+            
+            // Add file to the shared files list
+            if (message.fileInfo) {
+                addFileToLocalUI(message.fileInfo, message.fileData);
+                console.log('✅ File added to shared list:', message.fileInfo.name);
+            } else {
+                console.error('❌ No file info in room file shared message');
+            }
+        };
+        
+        // Handle room file removal
+        window.handleRoomFileRemoved = function(message) {
+            console.log('🗑️ Handling room file removed:', message);
+            
+            // Find and remove the file from the UI
+            if (window.ui && window.ui.removeFile) {
+                window.ui.removeFile(message.fileId);
+            }
+        };
+        
+        // Handle member leaving
+        window.handleMemberLeft = function(memberData) {
+            console.log('👋 Member left:', memberData);
+            
+            const memberCountNumber = document.getElementById('memberCountNumber');
+            if (memberCountNumber) {
+                const currentCount = parseInt(memberCountNumber.textContent) || 0;
+                memberCountNumber.textContent = Math.max(0, currentCount - 1);
+            }
+            
+            // In a real implementation, you'd want to remove the specific member from the list
+            // For now, we'll just update the count
+        };
+        
         window.handleRoomCreated = function(roomData) {
             console.log('✅ Room created successfully!', roomData);
             
@@ -100,6 +492,19 @@
                 const roomCodeDisplay = document.getElementById('roomCodeDisplay');
                 if (roomNameDisplay) roomNameDisplay.textContent = roomData.name || 'Untitled Room';
                 if (roomCodeDisplay) roomCodeDisplay.textContent = `Room Code: ${roomData.code || 'Unknown'}`;
+                
+                // Update member count and list
+                const memberCountNumber = document.getElementById('memberCountNumber');
+                const memberNames = document.getElementById('memberNames');
+                
+                if (memberCountNumber) {
+                    memberCountNumber.textContent = '1'; // Start with just the host
+                }
+                
+                if (memberNames) {
+                    const hostInfo = roomData.hostInfo || { displayName: 'Host', isHost: true };
+                    memberNames.innerHTML = `<span class="member-host">${hostInfo.displayName} (Host)</span>`;
+                }
             }
             
             // Force room container to show
@@ -109,7 +514,66 @@
                 roomContainer.classList.add('active');
             }
             
+            // Show file transfer area
+            const fileTransferArea = document.getElementById('fileTransferArea');
+            if (fileTransferArea) {
+                fileTransferArea.classList.add('active');
+                fileTransferArea.style.display = 'block';
+                console.log('✅ File transfer area activated');
+            }
+            
             console.log('🏠 Room interface should now be visible');
+        };
+        
+        // Add global room response handler
+        window.handleRoomResponse = function(message) {
+            console.log('🏠 === GLOBAL ROOM RESPONSE ===', message);
+            
+            if (message.type === 'room-created') {
+                console.log('✅ Room created successfully!', message.room);
+                window.handleRoomCreated(message.room);
+            } else if (message.type === 'room-joined') {
+                console.log('✅ Room joined successfully!', message.room || message);
+                // Hide join form and show room interface
+                const joinForm = document.getElementById('joinRoomForm');
+                const createForm = document.getElementById('createRoomForm');
+                if (joinForm) joinForm.classList.remove('active');
+                if (createForm) createForm.classList.remove('active');
+                
+                // Show room interface with joined room data
+                if (message.room) {
+                    console.log('🏠 Showing room interface for joined room');
+                    window.handleRoomCreated(message.room);
+                    
+                    // Update member list with all current members
+                    if (message.members) {
+                        window.updateRoomMembers(message.members);
+                    }
+                } else {
+                    console.error('❌ No room data in join response');
+                }
+            } else if (message.type === 'room-member-joined') {
+                console.log('👋 New member joined room:', message);
+                window.handleMemberJoined(message);
+            } else if (message.type === 'room-member-left') {
+                console.log('👋 Member left room:', message);
+                window.handleMemberLeft(message);
+            } else if (message.type === 'room-file-shared') {
+                console.log('📁 File shared in room:', message);
+                window.handleRoomFileShared(message);
+            } else if (message.type === 'room-file-removed') {
+                console.log('🗑️ File removed from room:', message);
+                window.handleRoomFileRemoved(message);
+            } else if (message.type === 'room-left') {
+                console.log('👋 Left room successfully:', message);
+                window.handleRoomLeft(message);
+            } else if (message.type === 'room-disbanded') {
+                console.log('💥 Room disbanded:', message);
+                window.handleRoomLeft(message);
+            } else if (message.type === 'room-error') {
+                console.log('❌ Room error:', message.error);
+                alert('Room error: ' + message.error);
+            }
         };
         
         console.log('✅ All critical functions defined in HEAD');
@@ -454,9 +918,11 @@
         /* Message area in the center */
         .center-message {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px; /* Increased from 1200px to match room container */
             margin: 0 auto;
             padding: 40px 24px;
+            min-height: calc(100vh - 120px); /* Ensure enough height */
+            overflow: visible; /* Prevent content clipping */
         }
         
         /* User info at bottom */
@@ -534,9 +1000,10 @@
             flex-direction: column;
             gap: 24px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1400px; /* Increased from 1200px */
             margin: 0 auto;
             padding: 24px;
+            overflow: visible; /* Prevent clipping */
         }
         
         .room-container.active {
@@ -975,6 +1442,20 @@
             font-size: 14px;
             color: #6b7280;
         }
+        
+        .member-names {
+            margin-top: 4px;
+            font-size: 13px;
+        }
+        
+        .member-host {
+            color: #059669;
+            font-weight: 600;
+        }
+        
+        .member-regular {
+            color: #4b5563;
+        }
 
         .member-names {
             margin-top: 8px;
@@ -1127,17 +1608,17 @@
         }
         
         .drop-zone {
-            border: 2px dashed #d1d5db;
+            border: none;
             border-radius: 8px;
-            padding: 40px;
+            padding: 20px;
             text-align: center;
-            background: #f9fafb;
+            background: transparent;
             transition: all 0.3s ease;
             cursor: pointer;
         }
         
         .drop-zone:hover, .drop-zone.dragover {
-            border-color: #3367d6;
+            background: #f3f4f6;
             background: #f0f9ff;
         }
         
@@ -2321,6 +2802,11 @@
             if (message.type === 'room-created') {
                 console.log('✅ Room created successfully!', message.room);
                 
+                // Call the global room created handler
+                if (window.handleRoomCreated) {
+                    window.handleRoomCreated(message.room);
+                }
+                
                 // Hide the create form
                 const createForm = document.getElementById('createRoomForm');
                 if (createForm) {
@@ -2807,17 +3293,10 @@
                         <!-- File upload area -->
                         <div class="upload-section">
                             <h3 data-i18n="share_upload_files_to_room">📤 Upload files to room</h3>
-                            <label for="fileInput" id="dropZone" class="drop-zone" style="cursor: pointer;">
-                                <div class="drop-zone-content">
-                                    <svg class="upload-icon" viewBox="0 0 24 24" width="48" height="48">
-                                        <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                                    </svg>
-                                    <p data-i18n="share_drag_files_here">Drag files here or click to upload</p>
-                                    <p class="upload-hint" data-i18n="share_files_shared_with_members">Files will be shared with all room members</p>
-                                    <button type="button" id="selectFilesBtn" style="cursor: pointer; display: inline-block; padding: 8px 16px; background: #4285f4; color: white; border-radius: 4px; text-align: center; user-select: none; border: none; font-family: inherit;" data-i18n="share_select_files_to_upload">Select Files to Upload</button>
-                                    <input type="file" id="fileInput" multiple style="display: none;">
-                                </div>
-                            </label>
+                            <div style="text-align: center; padding: 10px;">
+                                <button type="button" id="selectFilesBtn" onclick="document.getElementById('fileInput').click()" style="cursor: pointer; display: inline-block; padding: 12px 24px; background: #4285f4; color: white; border-radius: 6px; text-align: center; user-select: none; border: none; font-family: inherit; font-weight: 600; font-size: 14px;" data-i18n="share_select_files_to_upload">Select Files to Upload</button>
+                                <input type="file" id="fileInput" multiple style="display: none;" onchange="handleFileSelection(this)">
+                            </div>
                         </div>
                         
                         <!-- Shared Room Files list -->
@@ -4473,9 +4952,20 @@
             
             // Show room info
             showRoomInfo(room) {
+                console.log('🏠 showRoomInfo called with room:', room);
+                
                 // Update room info header
-                document.getElementById('roomNameDisplay').textContent = room.name;
-                document.getElementById('roomCodeDisplay').textContent = `Room Code: ${room.code}`;
+                const roomNameDisplay = document.getElementById('roomNameDisplay');
+                const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+                
+                if (roomNameDisplay) {
+                    roomNameDisplay.textContent = room.name;
+                    console.log('✅ Room name set to:', room.name);
+                }
+                if (roomCodeDisplay) {
+                    roomCodeDisplay.textContent = `Room Code: ${room.code}`;
+                    console.log('✅ Room code set to:', room.code);
+                }
                 
                 // Update current user name
                 const currentUserName = this.getCurrentUserDisplayName();
@@ -4484,7 +4974,35 @@
                     currentUserNameEl.textContent = currentUserName;
                 }
                 
-                document.getElementById('roomInfo').classList.add('active');
+                // Show room info section
+                const roomInfo = document.getElementById('roomInfo');
+                if (roomInfo) {
+                    roomInfo.classList.add('active');
+                    roomInfo.style.display = 'block';
+                    console.log('✅ Room info activated');
+                }
+                
+                // Make sure the room container is visible
+                const roomContainer = document.getElementById('roomContainer');
+                if (roomContainer) {
+                    roomContainer.style.display = 'flex';
+                    roomContainer.classList.add('active');
+                    console.log('✅ Room container shown');
+                }
+                
+                // Hide create/join forms
+                const createForm = document.getElementById('createRoomForm');
+                const joinForm = document.getElementById('joinRoomForm');
+                if (createForm) {
+                    createForm.classList.remove('active');
+                    console.log('✅ Create form hidden');
+                }
+                if (joinForm) {
+                    joinForm.classList.remove('active');
+                    console.log('✅ Join form hidden');
+                }
+                
+                console.log('🎉 Room info display complete!');
             }
             
             // Update member list

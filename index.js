@@ -267,10 +267,12 @@ class DropShareServer {
                     const oldPeer = this._rooms[ip][peer.id];
                     this._cancelKeepAlive(oldPeer);
                     if (oldPeer.socket) {
+                        // Mark as cleanup to avoid double-decrement in close event
+                        oldPeer._isBeingReplaced = true;
                         oldPeer.socket.close();
                     }
                     delete this._rooms[ip][peer.id];
-                    this._stats.connections--;
+                    // Don't decrement here, it will be handled by the close event or is already counted
                 }
             }
             
@@ -295,7 +297,10 @@ class DropShareServer {
             
             peer.socket.on('close', () => {
                 try {
-                    this._stats.connections--;
+                    // Only decrement if this wasn't a replaced connection
+                    if (!peer._isBeingReplaced) {
+                        this._stats.connections--;
+                    }
                     console.log(`Connection closed: ${peer.id} (remaining: ${this._stats.connections})`);
                     this._leaveRoom(peer);
                 } catch (error) {
@@ -629,6 +634,7 @@ class DropShareServer {
             isPrivate: roomSettings.isPrivate,
             hostId: host.id,
             members: new Map(),
+            files: new Map(), // 存储房间文件
             createdAt: Date.now()
         };
 
@@ -648,6 +654,9 @@ class DropShareServer {
         this._deduplicateRoomMembers(roomCode);
 
         // 通知房主房间创建成功
+        console.log(`🚀 准备发送房间创建成功消息给 ${host.id}`);
+        console.log(`房间代码: ${room.code}, 房间名称: ${room.name}`);
+        
         this._send(host, {
             type: 'room-created',
             room: {
@@ -659,6 +668,8 @@ class DropShareServer {
             hostId: host.id,
             hostInfo: room.members.get(host.id)
         });
+        
+        console.log(`✅ 房间创建成功消息已发送给 ${host.id}`);
     }
 
     _joinPrivateRoom(peer, roomCode, password) {
@@ -725,6 +736,20 @@ class DropShareServer {
                 members: Array.from(room.members.values())
             });
             
+            // 发送房间历史文件给重连用户
+            if (room.files && room.files.size > 0) {
+                console.log(`Sending ${room.files.size} historical files to reconnected user ${peer.id}`);
+                room.files.forEach(fileRecord => {
+                    this._send(peer, {
+                        type: 'room-file-shared',
+                        roomCode: roomCode,
+                        fileInfo: fileRecord.info,
+                        fileData: fileRecord.data,
+                        isHistorical: true
+                    });
+                });
+            }
+            
             // 通知其他成员用户重新上线
             this._broadcastToRoom(roomCode, {
                 type: 'room-member-joined',
@@ -765,6 +790,20 @@ class DropShareServer {
                 members: Array.from(room.members.values())
             });
             
+            // 发送房间历史文件给重连用户
+            if (room.files && room.files.size > 0) {
+                console.log(`Sending ${room.files.size} historical files to reconnected user ${peer.id}`);
+                room.files.forEach(fileRecord => {
+                    this._send(peer, {
+                        type: 'room-file-shared',
+                        roomCode: roomCode,
+                        fileInfo: fileRecord.info,
+                        fileData: fileRecord.data,
+                        isHistorical: true
+                    });
+                });
+            }
+            
             return;
         }
 
@@ -794,6 +833,20 @@ class DropShareServer {
             },
             members: Array.from(room.members.values())
         });
+
+        // 发送房间历史文件给新成员
+        if (room.files && room.files.size > 0) {
+            console.log(`Sending ${room.files.size} historical files to new member ${peer.id}`);
+            room.files.forEach(fileRecord => {
+                this._send(peer, {
+                    type: 'room-file-shared',
+                    roomCode: roomCode,
+                    fileInfo: fileRecord.info,
+                    fileData: fileRecord.data,
+                    isHistorical: true
+                });
+            });
+        }
 
         // 通知其他成员有新成员加入
         this._broadcastToRoom(roomCode, {
@@ -919,15 +972,35 @@ class DropShareServer {
         const activePeers = new Set();
         const toRemove = [];
         
-        // 收集所有活跃的peer ID
+        // 收集所有活跃的peer ID（包括WebSocket连接）
         for (const ip in this._rooms) {
             for (const peerId in this._rooms[ip]) {
-                activePeers.add(peerId);
+                const peer = this._rooms[ip][peerId];
+                // 只有WebSocket连接正常的才算活跃
+                if (peer && peer.socket && peer.socket.readyState === 1) {
+                    activePeers.add(peerId);
+                }
             }
         }
         
-        // 检查房间成员，移除不活跃的
+        console.log(`发现活跃连接: ${Array.from(activePeers)}`);
+        
+        // 检查房间成员，移除不活跃的（但要保留最近创建的成员）
+        const now = Date.now();
         for (const [memberId, memberInfo] of room.members) {
+            // 如果成员是最近加入的（2分钟内），不要移除
+            const memberAge = now - (memberInfo.joinedAt || 0);
+            if (memberAge < 120000) {
+                console.log(`保留新成员: ${memberId} (加入时间: ${memberAge}ms 前)`);
+                continue;
+            }
+            
+            // 如果是房主，更加保守，保留更长时间（5分钟）
+            if (memberInfo.isHost && memberAge < 300000) {
+                console.log(`保留房主: ${memberId} (房主，加入时间: ${memberAge}ms 前)`);
+                continue;
+            }
+            
             if (!activePeers.has(memberId)) {
                 console.log(`发现不活跃成员: ${memberId}, 将被移除`);
                 toRemove.push(memberId);
@@ -1056,6 +1129,21 @@ class DropShareServer {
             return;
         }
         
+        // 保存文件到房间
+        if (!room.files) {
+            room.files = new Map();
+        }
+        
+        const fileRecord = {
+            id: message.fileInfo.id,
+            info: message.fileInfo,
+            data: message.fileData,
+            uploadedBy: sender.id,
+            uploadedAt: Date.now()
+        };
+        
+        room.files.set(message.fileInfo.id, fileRecord);
+        
         // 检查文件数据大小，避免传输过大的数据
         const fileDataSize = message.fileData ? message.fileData.length : 0;
         const maxSize = 15 * 1024 * 1024; // 15MB limit for WebSocket message
@@ -1079,6 +1167,7 @@ class DropShareServer {
         }
         
         console.log(`Room ${message.roomCode}: ${sender.name.displayName} shared file: ${message.fileInfo.name} (${fileDataSize > 0 ? 'with data' : 'metadata only'})`);
+        console.log(`Room ${message.roomCode} now has ${room.files.size} files`);
     }
     
     // 处理房间文件删除
