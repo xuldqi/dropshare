@@ -752,9 +752,11 @@ body {
 
 /* Colored Elements */
 body {
-    color: var(--text-color);
-    background-color: var(--bg-color);
-    transition: background-color 0.5s ease;
+    color: var(--text-color) !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    /* 强制单一背景色，移除所有特效 */
 }
 
 x-dialog x-paper {
@@ -878,37 +880,6 @@ body.light-theme {
         left: 8px;
     }
 }
-
-/* 背景动画已移除，使用 JavaScript Canvas 实现 */
-/*
-.background-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: radial-gradient(circle at center, var(--bg-color) 0%, var(--bg-color) 50%, var(--bg-color-secondary) 100%);
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-.background-animation.animate {
-    animation: pulse 8s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0% {
-        opacity: 0.3;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 0.3;
-    }
-}
-*/
 
 /* Add responsive button styles for mobile */
 @media (max-width: 480px) {

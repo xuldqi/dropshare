@@ -537,24 +537,18 @@
                 <span data-i18n="site_name">DropShare</span>
             </a>
             <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html" class="active">Files</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                <a href="document-tools.html" class="active" data-i18n="nav_files">Files</a>
             </nav>
         </div>
     </header>
     
     <div class="container">
-        <!-- Top-left return button -->
-        <div style="margin-bottom: 20px;">
-            <a href="document-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
-            </a>
-        </div>
         
         <h1 class="page-title" data-i18n="document_processor_heading">📄 Document Processor</h1>
         <p class="page-subtitle" data-i18n="document_processor_subtitle">Process, convert, split, merge, and extract text from documents</p>
@@ -575,11 +569,11 @@
             <div class="document-preview">
                 <div class="preview-header">
                     <div class="document-info">
-                        <h4 id="documentFileName">No file selected</h4>
+                        <h4 id="documentFileName" data-i18n="no_file_selected">No file selected</h4>
                         <p id="documentFileInfo">-</p>
                     </div>
                     <div class="document-actions">
-                        <span id="documentPageInfo">Page: - / -</span>
+                        <span id="documentPageInfo" data-i18n="page_info_format">Page: - / -</span>
                     </div>
                 </div>
                 <div class="preview-controls">
@@ -597,7 +591,7 @@
                     </div>
                 </div>
                 <div class="preview-area" id="previewArea">
-                    <p style="text-align: center; color: #6b7280; margin: 40px 0;">Select a document file to preview</p>
+                    <p style="text-align: center; color: #6b7280; margin: 40px 0;" data-i18n="select_document_to_preview">Select a document file to preview</p>
                 </div>
             </div>
             
@@ -611,35 +605,35 @@
             <!-- 文本提取 -->
             <div class="tab-content active" id="extractTab">
                 <div class="tool-group">
-                    <h4>📝 Text Extraction Settings</h4>
+                    <h4 data-i18n="text_extraction_settings">📝 Text Extraction Settings</h4>
                     <div class="page-range">
-                        <label>Extract pages:</label>
-                        <input type="number" id="extractStartPage" placeholder="Start page" min="1" value="1">
-                        <span>to</span>
-                        <input type="number" id="extractEndPage" placeholder="End page" min="1">
-                        <button class="page-btn" id="extractAllPagesBtn">All Pages</button>
+                        <label data-i18n="extract_pages">Extract pages:</label>
+                        <input type="number" id="extractStartPage" data-i18n-placeholder="start_page" placeholder="Start page" min="1" value="1">
+                        <span data-i18n="to">to</span>
+                        <input type="number" id="extractEndPage" data-i18n-placeholder="end_page" placeholder="End page" min="1">
+                        <button class="page-btn" id="extractAllPagesBtn" data-i18n="all_pages">All Pages</button>
                     </div>
                     
                     <div class="checkbox-group">
                         <div class="checkbox-item">
                             <input type="checkbox" id="preserveFormatting" checked>
-                            <label for="preserveFormatting">Preserve formatting</label>
+                            <label for="preserveFormatting" data-i18n="preserve_formatting">Preserve formatting</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="extractImages">
-                            <label for="extractImages">Extract image links</label>
+                            <label for="extractImages" data-i18n="extract_image_links">Extract image links</label>
                         </div>
                         <div class="checkbox-item">
                             <input type="checkbox" id="removeBlankLines">
-                            <label for="removeBlankLines">Remove blank lines</label>
+                            <label for="removeBlankLines" data-i18n="remove_blank_lines">Remove blank lines</label>
                         </div>
                     </div>
                 </div>
                 
                 <div id="extractedTextArea" class="text-extraction-result" style="display: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <strong>Extracted text:</strong>
-                        <button class="page-btn" id="copyTextBtn">Copy Text</button>
+                        <strong data-i18n="extracted_text">Extracted text:</strong>
+                        <button class="page-btn" id="copyTextBtn" data-i18n="copy_text">Copy Text</button>
                     </div>
                     <div id="extractedText"></div>
                 </div>
@@ -648,25 +642,25 @@
             <!-- Document Split -->
             <div class="tab-content" id="splitTab">
                 <div class="tool-group">
-                    <h4>✂️ Document Split Settings</h4>
+                    <h4 data-i18n="document_split_settings">✂️ Document Split Settings</h4>
                     <div class="settings-panel">
                         <div class="setting-item">
-                            <label>Split method:</label>
+                            <label data-i18n="split_method">Split method:</label>
                             <select id="splitMethod">
-                                <option value="pages">By page range</option>
-                                <option value="interval">By interval pages</option>
-                                <option value="bookmarks">By bookmarks</option>
+                                <option value="pages" data-i18n="by_page_range">By page range</option>
+                                <option value="interval" data-i18n="by_interval_pages">By interval pages</option>
+                                <option value="bookmarks" data-i18n="by_bookmarks">By bookmarks</option>
                             </select>
                         </div>
                         
                         <div class="setting-item" id="intervalSetting">
-                            <label>Pages per file:</label>
+                            <label data-i18n="pages_per_file">Pages per file:</label>
                             <input type="number" id="splitInterval" value="10" min="1">
                         </div>
                     </div>
                     
                     <div id="pageRangesSetting" style="display: none;">
-                        <label>Page ranges (comma separated, e.g., 1-5, 10-15, 20):</label>
+                        <label data-i18n="page_ranges_comma">Page ranges (comma separated, e.g., 1-5, 10-15, 20):</label>
                         <input type="text" id="pageRanges" placeholder="1-5, 10-15, 20" style="width: 100%; margin-top: 8px;">
                     </div>
                 </div>
@@ -675,14 +669,14 @@
             <!-- Document Merge -->
             <div class="tab-content" id="mergeTab">
                 <div class="tool-group">
-                    <h4>🔗 Document Merge Settings</h4>
-                    <p style="margin-bottom: 15px; color: #6b7280;">
+                    <h4 data-i18n="document_merge_settings">🔗 Document Merge Settings</h4>
+                    <p style="margin-bottom: 15px; color: #6b7280;" data-i18n="merge_multiple_pdf">
                         Merge multiple PDF documents into one. Please upload multiple files.
                     </p>
                     
                     <div style="margin: 15px 0;">
                         <input type="file" id="mergeFilesInput" accept=".pdf" multiple style="display: none;">
-                        <button class="btn btn-secondary" onclick="document.getElementById('mergeFilesInput').click()">
+                        <button class="btn btn-secondary" onclick="document.getElementById('mergeFilesInput').click()" data-i18n="select_documents_to_merge">
                             Select Documents to Merge
                         </button>
                     </div>
@@ -691,7 +685,7 @@
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="addBookmarks" checked>
-                        <label for="addBookmarks">Add bookmarks for each document</label>
+                        <label for="addBookmarks" data-i18n="add_bookmarks_each_doc">Add bookmarks for each document</label>
                     </div>
                 </div>
             </div>
@@ -699,22 +693,22 @@
             <!-- Format Convert -->
             <div class="tab-content" id="convertTab">
                 <div class="tool-group">
-                    <h4>🔄 Format Convert Settings</h4>
+                    <h4 data-i18n="format_convert_settings">🔄 Format Convert Settings</h4>
                     <div class="settings-panel">
                         <div class="setting-item">
-                            <label>Output format:</label>
+                            <label data-i18n="output_format">Output format:</label>
                             <select id="outputFormat">
                                 <option value="pdf">PDF</option>
-                                <option value="docx">Word Document (.docx)</option>
-                                <option value="txt">Plain Text (.txt)</option>
-                                <option value="html">HTML Webpage</option>
-                                <option value="rtf">RTF Document</option>
-                                <option value="images">Images (JPG/PNG)</option>
+                                <option value="docx" data-i18n="word_document">Word Document (.docx)</option>
+                                <option value="txt" data-i18n="plain_text">Plain Text (.txt)</option>
+                                <option value="html" data-i18n="html_webpage">HTML Webpage</option>
+                                <option value="rtf" data-i18n="rtf_document">RTF Document</option>
+                                <option value="images" data-i18n="images_jpg_png">Images (JPG/PNG)</option>
                             </select>
                         </div>
                         
                         <div class="setting-item" id="imageQualitySetting" style="display: none;">
-                            <label>Image quality:</label>
+                            <label data-i18n="image_quality">Image quality:</label>
                             <div class="range-input">
                                 <input type="range" id="imageQuality" min="50" max="100" value="90">
                                 <span class="range-value" id="imageQualityValue">90%</span>
@@ -722,12 +716,12 @@
                         </div>
                         
                         <div class="setting-item" id="imageDpiSetting" style="display: none;">
-                            <label>Image DPI:</label>
+                            <label data-i18n="image_dpi">Image DPI:</label>
                             <select id="imageDpi">
-                                <option value="72">72 DPI (Web)</option>
-                                <option value="150" selected>150 DPI (Standard)</option>
-                                <option value="300">300 DPI (High Quality)</option>
-                                <option value="600">600 DPI (Print)</option>
+                                <option value="72" data-i18n="web_72_dpi">72 DPI (Web)</option>
+                                <option value="150" selected data-i18n="standard_150_dpi">150 DPI (Standard)</option>
+                                <option value="300" data-i18n="high_quality_300_dpi">300 DPI (High Quality)</option>
+                                <option value="600" data-i18n="print_600_dpi">600 DPI (Print)</option>
                             </select>
                         </div>
                     </div>
@@ -735,37 +729,37 @@
             </div>
             
             <div class="process-actions">
-                <button class="btn btn-primary" id="processBtn" disabled>Start Processing</button>
-                <button class="btn btn-secondary" id="resetBtn">Reset Settings</button>
-                <button class="btn btn-secondary" id="newFileBtn">Select New Document</button>
+                <button class="btn btn-primary" id="processBtn" disabled data-i18n="start_processing">Start Processing</button>
+                <button class="btn btn-secondary" id="resetBtn" data-i18n="reset_settings">Reset Settings</button>
+                <button class="btn btn-secondary" id="newFileBtn" data-i18n="select_new_document">Select New Document</button>
             </div>
             
             <div class="progress-section" id="progressSection">
-                <h4>Processing Progress:</h4>
+                <h4 data-i18n="processing_progress">Processing Progress:</h4>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div id="progressText">Ready to process...</div>
+                <div id="progressText" data-i18n="ready_to_process">Ready to process...</div>
             </div>
             
             <div class="result-section" id="resultSection">
-                <h3>🎉 Processing Results</h3>
+                <h3 data-i18n="processing_results">🎉 Processing Results</h3>
                 
                 <div class="result-stats">
                     <div class="stat-item">
-                        <span class="stat-label">Original Size</span>
+                        <span class="stat-label" data-i18n="original_size">Original Size</span>
                         <span class="stat-value" id="originalFileSize">-</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">Processed Size</span>
+                        <span class="stat-label" data-i18n="processed_size">Processed Size</span>
                         <span class="stat-value" id="resultFileSize">-</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">Page Count</span>
+                        <span class="stat-label" data-i18n="page_count">Page Count</span>
                         <span class="stat-value" id="pageCount">-</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">Processing Time</span>
+                        <span class="stat-label" data-i18n="processing_time">Processing Time</span>
                         <span class="stat-value" id="processingTime">-</span>
                     </div>
                 </div>
@@ -773,9 +767,9 @@
                 <div id="resultFilesList"></div>
                 
                 <div class="process-actions">
-                    <button class="btn btn-success" id="downloadAllBtn">📥 Download All Files</button>
-                    <button class="btn btn-secondary" id="shareAllBtn">📤 Share All Files</button>
-                    <button class="btn btn-secondary" id="processAnotherBtn">🔄 Process Another Document</button>
+                    <button class="btn btn-success" id="downloadAllBtn" data-i18n="download_all_files">📥 Download All Files</button>
+                    <button class="btn btn-secondary" id="shareAllBtn" data-i18n="share_all_files">📤 Share All Files</button>
+                    <button class="btn btn-secondary" id="processAnotherBtn" data-i18n="process_another_document">🔄 Process Another Document</button>
                 </div>
             </div>
         </div>
@@ -793,7 +787,8 @@
     <script>
         // 国际化辅助函数
         function getI18nText(key) {
-            if (window.DROPSHARE_I18N && typeof 
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.getText === 'function') {
+                return window.DROPSHARE_I18N.getText(key);
             }
             return null;
         }
@@ -914,7 +909,7 @@
             
             async loadDocument(file) {
                 if (!this.isSupportedFormat(file)) {
-                    const unsupportedFormatText = "alert unsupported document format" || '不支持的文档格式！请选择 PDF, DOCX, TXT, RTF 或 HTML 文件。';
+                    const unsupportedFormatText = getI18nText('alert_unsupported_format') || 'Unsupported document format! Please select PDF, DOCX, TXT, RTF or HTML files.';
                     alert(unsupportedFormatText);
                     return;
                 }
@@ -928,7 +923,7 @@
                     this.enableProcessButton();
                 } catch (error) {
                     console.error('文档解析失败:', error);
-                    const parseFailedText = "alert document parse failed" || '文档解析失败: ';
+                    const parseFailedText = getI18nText('alert_parse_failed') || 'Document parsing failed: ';
                     alert(parseFailedText + error.message);
                 }
             }
@@ -958,8 +953,8 @@
                     await this.parseHTMLFile(file);
                 } else {
                     // For other formats, display basic information
-                    const docTypeText = "text document type" || 'Document Type';
-                    const fileSizeText = "text file size" || 'File Size';
+                    const docTypeText = getI18nText('text_document_type') || 'Document Type';
+                    const fileSizeText = getI18nText('text_file_size') || 'File Size';
                     this.documentContent = `${docTypeText}: ${fileType}\n${fileSizeText}: ${this.formatFileSize(file.size)}`;
                     this.totalPages = 1;
                     this.updatePreview();
@@ -968,7 +963,7 @@
             
             async parsePDF(file) {
                 try {
-                    const pdfLoadingText = "text pdf loading" || 'PDF document loaded, parsing...';
+                    const pdfLoadingText = getI18nText('text_pdf_loading') || 'PDF document loaded, parsing...';
                     this.documentContent = pdfLoadingText;
                     this.updatePreview();
                     
@@ -1072,7 +1067,7 @@
             
             updatePreview() {
                 const previewArea = document.getElementById('previewArea');
-                const noPreviewText = "text no preview available" || 'Unable to preview this document content';
+                const noPreviewText = getI18nText('text_no_preview') || 'Unable to preview this document content';
                 const content = this.documentContent || noPreviewText;
                 
                 // Simple pagination display
@@ -1085,7 +1080,7 @@
                 previewArea.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${pageContent}</pre>`;
                 
                 // Update page information
-                const pageInfoText = "text page format" || 'Page: {current} / {total}';
+                const pageInfoText = getI18nText('text_page_format') || 'Page: {current} / {total}';
                 document.getElementById('documentPageInfo').textContent = pageInfoText.replace('{current}', this.currentPage).replace('{total}', this.totalPages);
                 document.getElementById('currentPageInput').value = this.currentPage;
                 document.getElementById('currentPageInput').max = this.totalPages;
@@ -1199,7 +1194,7 @@
                     item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--surface-color); border-radius: 4px; margin-bottom: 8px;';
                     item.innerHTML = `
                         <span>${file.name}</span>
-                        <button onclick="documentProcessor.removeMergeFile(${index})" style="background: var(--error-color); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">Remove</button>
+                        <button onclick="documentProcessor.removeMergeFile(${index})" style="background: var(--error-color); color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer;">${getI18nText('remove') || 'Remove'}</button>
                     `;
                     list.appendChild(item);
                 });
@@ -1251,7 +1246,7 @@
                     }
                 } catch (error) {
                     console.error('Document processing failed:', error);
-                    const processingFailedText = "alert processing failed" || 'Processing failed: ';
+                    const processingFailedText = getI18nText('alert_processing_failed') || 'Processing failed: ';
                     alert(processingFailedText + error.message);
                 } finally {
                     document.getElementById('processBtn').disabled = false;
@@ -1259,7 +1254,7 @@
             }
             
             async extractText() {
-                const extractingText = "progress extracting text" || 'Extracting text...';
+                const extractingText = getI18nText('progress_extracting_text') || 'Extracting text...';
                 this.updateProgress(30, extractingText);
                 
                 const startPage = parseInt(document.getElementById('extractStartPage').value) || 1;
@@ -1278,7 +1273,7 @@
                         
                         for (let pageNum = startPage; pageNum <= totalPages; pageNum++) {
                             this.updateProgress(30 + (pageNum - startPage) / (totalPages - startPage + 1) * 60, 
-                                             "progress extracting page" ? "progress extracting page".replace('{pageNum}', pageNum) : `Extracting page ${pageNum}...`);
+                                             getI18nText('progress_extracting_page') ? getI18nText('progress_extracting_page').replace('{pageNum}', pageNum) : `Extracting page ${pageNum}...`);
                             
                             try {
                                 const page = await this.pdfDocument.getPage(pageNum);
@@ -1346,24 +1341,24 @@
                     
                     // 添加图片链接信息
                     if (imageLinks.length > 0) {
-                        const foundImagesText = "text found images" || '=== 发现的图片 ===';
+                        const foundImagesText = getI18nText('text_found_images') || '=== Found Images ===';
                         extractedText += `\n\n${foundImagesText}\n`;
                         extractedText += imageLinks.join('\n');
                     }
                     
                     if (!extractedText.trim()) {
-                        const noTextExtractedText = "text no text extracted" || '未能提取到文本内容。这可能是一个图片型PDF或扫描文档。';
+                        const noTextExtractedText = getI18nText('text_no_text_extracted') || 'Unable to extract text content. This may be an image-based PDF or scanned document.';
                         extractedText = noTextExtractedText;
                     }
                     
-                    const extractionCompleteText = "progress extraction complete" || '文本提取完成！';
+                    const extractionCompleteText = getI18nText('progress_extraction_complete') || 'Text extraction complete!';
                     this.updateProgress(100, extractionCompleteText);
                     
                 } catch (error) {
                     console.error('文本提取失败:', error);
-                    const extractionFailedText = "text extraction failed" || '文本提取失败';
+                    const extractionFailedText = getI18nText('text_extraction_failed') || 'Text extraction failed';
                     extractedText = `${extractionFailedText}: ${error.message}`;
-                    const extractionFailedProgressText = "progress extraction failed" || '提取失败！';
+                    const extractionFailedProgressText = getI18nText('progress_extraction_failed') || 'Extraction failed!';
                     this.updateProgress(100, extractionFailedProgressText);
                 }
                 
@@ -1373,7 +1368,7 @@
             }
             
             async splitDocument() {
-                const splittingText = "progress splitting document" || '正在拆分文档...';
+                const splittingText = getI18nText('progress_splitting_document') || 'Splitting document...';
                 this.updateProgress(30, splittingText);
                 
                 const method = document.getElementById('splitMethod').value;
@@ -1390,51 +1385,51 @@
                 // 模拟文档拆分
                 for (let i = 0; i < fileCount; i++) {
                     await new Promise(resolve => setTimeout(resolve, 500));
-                    const creatingDocText = "progress creating document" ? "progress creating document".replace('{num}', i + 1) : `正在创建第 ${i + 1} 个文档...`;
+                    const creatingDocText = getI18nText('progress_creating_document') ? getI18nText('progress_creating_document').replace('{num}', i + 1) : `Creating document ${i + 1}...`;
                     this.updateProgress(30 + (i + 1) / fileCount * 60, creatingDocText);
                     
                     // 创建模拟文件
                     const fileName = this.documentFile.name.replace(/\.[^.]+$/, `_part${i + 1}.pdf`);
-                    const simulatedPdfContent = "text simulated pdf content" || '模拟PDF内容';
+                    const simulatedPdfContent = getI18nText('text_simulated_pdf_content') || 'Simulated PDF content';
                     const blob = new Blob([simulatedPdfContent], { type: 'application/pdf' });
                     this.processedFiles.push(new File([blob], fileName, { type: 'application/pdf' }));
                 }
                 
-                const splittingCompleteText = "progress splitting complete" || '文档拆分完成！';
+                const splittingCompleteText = getI18nText('progress_splitting_complete') || 'Document splitting complete!';
                 this.updateProgress(100, splittingCompleteText);
             }
             
             async mergeDocuments() {
-                const mergingText = "progress merging documents" || '正在合并文档...';
+                const mergingText = getI18nText('progress_merging_documents') || 'Merging documents...';
                 this.updateProgress(30, mergingText);
                 
                 // 模拟文档合并
                 for (let i = 0; i < this.mergeFiles.length; i++) {
                     await new Promise(resolve => setTimeout(resolve, 300));
-                    const processingDocText = "progress processing document" ? "progress processing document".replace('{num}', i + 1) : `正在处理第 ${i + 1} 个文档...`;
+                    const processingDocText = getI18nText('progress_processing_document') ? getI18nText('progress_processing_document').replace('{num}', i + 1) : `Processing document ${i + 1}...`;
                     this.updateProgress(30 + (i + 1) / this.mergeFiles.length * 60, processingDocText);
                 }
                 
                 // 创建合并后的文件
                 const mergedFileName = 'merged_document.pdf';
-                const mergedPdfContent = "text merged pdf content" || '合并后的PDF内容';
+                const mergedPdfContent = getI18nText('text_merged_pdf_content') || 'Merged PDF content';
                 const blob = new Blob([mergedPdfContent], { type: 'application/pdf' });
                 this.processedFiles.push(new File([blob], mergedFileName, { type: 'application/pdf' }));
                 
-                const mergingCompleteText = "progress merging complete" || '文档合并完成！';
+                const mergingCompleteText = getI18nText('progress_merging_complete') || 'Document merging complete!';
                 this.updateProgress(100, mergingCompleteText);
             }
             
             async convertDocument() {
                 const outputFormat = document.getElementById('outputFormat').value;
-                const convertingToText = "progress converting to" ? "progress converting to".replace('{format}', outputFormat.toUpperCase()) : `正在转换为 ${outputFormat.toUpperCase()}...`;
+                const convertingToText = getI18nText('progress_converting_to') ? getI18nText('progress_converting_to').replace('{format}', outputFormat.toUpperCase()) : `Converting to ${outputFormat.toUpperCase()}...`;
                 this.updateProgress(30, convertingToText);
                 
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 
                 let fileName = this.documentFile.name.replace(/\.[^.]+$/, '');
                 let mimeType = 'application/octet-stream';
-                let content = "text converted document content" || '转换后的文档内容';
+                let content = getI18nText('text_converted_document_content') || 'Converted document content';
                 
                 switch (outputFormat) {
                     case 'pdf':
@@ -1448,24 +1443,24 @@
                     case 'txt':
                         fileName += '.txt';
                         mimeType = 'text/plain';
-                        const convertedTextContent = "text converted text content" || '转换后的文本内容';
+                        const convertedTextContent = getI18nText('text_converted_text_content') || 'Converted text content';
                         content = this.documentContent || convertedTextContent;
                         break;
                     case 'html':
                         fileName += '.html';
                         mimeType = 'text/html';
-                        const convertedHtmlContent = "text converted html content" || '转换后的HTML内容';
+                        const convertedHtmlContent = getI18nText('text_converted_html_content') || 'Converted HTML content';
                         content = `<html><body><p>${this.documentContent || convertedHtmlContent}</p></body></html>`;
                         break;
                     case 'images':
                         // 对于图片，创建多个文件
                         for (let i = 1; i <= this.totalPages; i++) {
                             const imageFileName = `${fileName}_page${i}.jpg`;
-                            const simulatedImageContent = "text simulated image content" || '模拟图片内容';
+                            const simulatedImageContent = getI18nText('text_simulated_image_content') || 'Simulated image content';
                             const blob = new Blob([simulatedImageContent], { type: 'image/jpeg' });
                             this.processedFiles.push(new File([blob], imageFileName, { type: 'image/jpeg' }));
                         }
-                        const conversionCompleteText = "progress conversion complete" || '格式转换完成！';
+                        const conversionCompleteText = getI18nText('progress_conversion_complete') || 'Format conversion complete!';
                         this.updateProgress(100, conversionCompleteText);
                         return;
                 }
@@ -1473,7 +1468,7 @@
                 const blob = new Blob([content], { type: mimeType });
                 this.processedFiles.push(new File([blob], fileName, { type: mimeType }));
                 
-                const conversionCompleteText2 = "progress conversion complete" || '格式转换完成！';
+                const conversionCompleteText2 = getI18nText('progress_conversion_complete') || 'Format conversion complete!';
                 this.updateProgress(100, conversionCompleteText2);
             }
             
@@ -1511,8 +1506,8 @@
                             <small style="color: var(--text-secondary);">${this.formatFileSize(file.size)} • ${file.type}</small>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button onclick="documentProcessor.downloadFile(${index})" class="page-btn">下载</button>
-                            <button onclick="documentProcessor.shareFile(${index})" class="page-btn">分享</button>
+                            <button onclick="documentProcessor.downloadFile(${index})" class="page-btn">${getI18nText('download') || 'Download'}</button>
+                            <button onclick="documentProcessor.shareFile(${index})" class="page-btn">${getI18nText('share') || 'Share'}</button>
                         </div>
                     `;
                     list.appendChild(item);
@@ -1534,10 +1529,10 @@
                 
                 if (window.ui && window.ui.filesQueue) {
                     window.ui.filesQueue.push(file);
-                    const fileAddedToShareText = "alert file added to share" || '已添加到分享列表！';
+                    const fileAddedToShareText = getI18nText('alert_file_added_to_share') || 'added to share list!';
                     alert(`${file.name} ${fileAddedToShareText}`);
                 } else {
-                    const shareUnavailableText = "alert share unavailable" || '分享功能暂不可用，请先返回分享页面';
+                    const shareUnavailableText = getI18nText('alert_share_unavailable') || 'Share function is temporarily unavailable, please return to the share page first';
                     alert(shareUnavailableText);
                 }
             }
@@ -1553,10 +1548,10 @@
                     this.processedFiles.forEach(file => {
                         window.ui.filesQueue.push(file);
                     });
-                    const filesAddedToShareText = "alert files added to share" || '个文件已添加到分享列表！';
+                    const filesAddedToShareText = getI18nText('alert_files_added_to_share') || 'files added to share list!';
                     alert(`${this.processedFiles.length} ${filesAddedToShareText}`);
                 } else {
-                    const shareUnavailableText2 = "alert share unavailable" || '分享功能暂不可用，请先返回分享页面';
+                    const shareUnavailableText2 = getI18nText('alert_share_unavailable') || 'Share function is temporarily unavailable, please return to the share page first';
                     alert(shareUnavailableText2);
                 }
             }
@@ -1564,11 +1559,11 @@
             copyExtractedText() {
                 const text = document.getElementById('extractedText').textContent;
                 navigator.clipboard.writeText(text).then(() => {
-                    const textCopiedText = "alert text copied" || '文本已复制到剪贴板！';
+                    const textCopiedText = getI18nText('alert_text_copied') || 'Text copied to clipboard!';
                     alert(textCopiedText);
                 }).catch(err => {
                     console.error('复制失败:', err);
-                    const copyFailedText = "alert copy failed" || '复制失败，请手动选择文本复制';
+                    const copyFailedText = getI18nText('alert_copy_failed') || 'Copy failed, please manually select text to copy';
                     alert(copyFailedText);
                 });
             }
@@ -1617,17 +1612,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             documentProcessor = new DocumentProcessor();
             // Initialize i18n after document processor
-            if (typeof initializeI18n === 'function') {
-                initializeI18n();
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.setLanguage === 'function') {
+                // Force i18n refresh after DOM is ready
+                setTimeout(() => {
+                    const currentLang = window.DROPSHARE_I18N.getCurrentLanguage() || 'en';
+                    window.DROPSHARE_I18N.setLanguage(currentLang);
+                }, 100);
             }
-        });
-    </script>
-
-    <script>
-        // Initialize document processor on page load
-        let documentProcessor;
-        document.addEventListener('DOMContentLoaded', () => {
-            documentProcessor = new DocumentProcessor();
         });
     </script>
     <!-- Share Integration -->

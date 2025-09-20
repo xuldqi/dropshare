@@ -241,19 +241,12 @@ x-peer[transfer]::before {
   right: 0;
   bottom: 0;
   background: linear-gradient(90deg, transparent, rgba(66, 133, 244, 0.3), transparent);
-  animation: transfer-pulse 2s infinite;
+  /* 移除重复的 transfer-pulse 动画，使用 transfer-animations.css 中的定义 */
   border-radius: var(--radius-xl);
   pointer-events: none;
 }
 
-@keyframes transfer-pulse {
-  0%, 100% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(100%);
-  }
-}
+/* 移除重复的 transfer-pulse 动画定义，避免冲突 */
 
 /* ===== 对话框增强 ===== */
 
@@ -539,25 +532,21 @@ x-dialog h3::after {
   animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
+/* 移除重复的 pulse 动画，使用 private-rooms.css 中的定义 */
 
 /* ===== 主题切换动画 ===== */
 
 body {
-  transition: background-color var(--duration-slow) var(--ease-out),
-              color var(--duration-slow) var(--ease-out);
+  /* 强制使用纯白色背景，移除所有动画和特效 */
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  transition: color var(--duration-slow) var(--ease-out);
 }
 
-/* 主题切换时的平滑过渡 */
+/* 主题切换时的平滑过渡 - 移除背景颜色过渡 */
 * {
-  transition-property: background-color, border-color, color, fill, stroke;
+  transition-property: border-color, color, fill, stroke;
   transition-duration: var(--duration-normal);
   transition-timing-function: var(--ease-out);
 }
