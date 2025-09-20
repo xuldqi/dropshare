@@ -78,6 +78,8 @@
     state.current = lang;
     document.documentElement.setAttribute('lang', lang);
     translateDom();
+    // Fire event for other scripts to hook into
+    document.dispatchEvent(new CustomEvent('language-changed', { detail: { language: lang } }));
   }
 
   async function setLanguage(lang){
@@ -135,4 +137,3 @@
   window.DROPSHARE_I18N = { setLanguage, getCurrentLanguage: () => state.current, t: getText, getText, translate: getText };
   document.addEventListener('DOMContentLoaded', init);
 })();
-

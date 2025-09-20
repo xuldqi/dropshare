@@ -722,6 +722,8 @@
   "share_room_password_if_required": "Room Password (if required)",
   "share_enter_room_password": "Enter Room Password",
   "share_your_name": "Your Name:",
+  "you_are_known_as": "You are known as",
+  "you_are_known_as": "You are known as",
   "share_online": "Online",
   "share_room_members": "Room Members:",
   "share_leave_room": "Leave Room",
@@ -735,8 +737,11 @@
   "share_after_upload_hint": "After uploading, all room members can download the files",
   "share_ask_save_before_download": "Ask where to save each file before downloading",
   "share_easiest_way_transfer": "The easiest way to transfer files across your devices",
-  "share_open_dropshare_other_devices": "Open DropShare on other devices to send files",
-  "share_discoverable_network": "You are discoverable by everyone on this network",
+  "share_discoverable_network": "You can be discovered by everyone on this network",
+  "share_send_message_placeholder": "Send a message",
+  "share_modified_version_by": "Modified version by",
+  "share_enable_javascript": "Enable JavaScript",
+  "share_javascript_required": "DropShare works only with JavaScript",overable by everyone on this network",
   "share_enter_room_name": "Enter room name",
   "copy_room_code": "Copy Room Code",
   "download_watermarked_image": "Download Watermarked Image",
@@ -1087,5 +1092,4 @@
   "volume_normalizer_peak_method": "Peak Normalization",
   "volume_normalizer_rms_method": "RMS Normalization",
   "volume_normalizer_loudness_method": "Loudness Normalization",
-  "bitrate_converter_custom_desc": "Set your own"
-}
+ 
