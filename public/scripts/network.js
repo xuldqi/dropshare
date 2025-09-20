@@ -237,7 +237,7 @@ class Peer {
         this._reader = null;
         this._busy = false;
         this._dequeueFile();
-        Events.fire('notify-user', 'File transfer completed.');
+        // Events.fire('notify-user', 'File transfer completed.'); // Removed to prevent false notifications
     }
 
     sendText(text) {

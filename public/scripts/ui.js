@@ -812,6 +812,15 @@ class Toast extends Dialog {
     }
 
     _onNotfiy(message) {
+        // Block specific unwanted notifications
+        if (message === 'File transfer completed.' || 
+            message === '文件传输完成' || 
+            message.includes('transfer completed') || 
+            message.includes('传输完成')) {
+            console.log('Blocked unwanted notification:', message);
+            return;
+        }
+        
         this.$el.querySelector('#toast-text').textContent = message;
         this.show();
         

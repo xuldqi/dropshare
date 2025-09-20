@@ -2,6 +2,119 @@
 <html lang="en">
 
 <head>
+    <script>
+        // CRITICAL: Define all room functions immediately to prevent undefined errors
+        console.log('=== DEFINING CRITICAL FUNCTIONS IN HEAD ===');
+        
+        window.handleCreateRoom = function() {
+            console.log('🔵 handleCreateRoom called');
+            const roomName = document.getElementById('roomName')?.value?.trim();
+            const roomPassword = document.getElementById('roomPassword')?.value;
+            const maxMembers = parseInt(document.getElementById('maxMembers')?.value) || 10;
+            
+            if (!roomName) {
+                alert('Please enter Room Name');
+                return;
+            }
+            
+            const message = {
+                type: 'create-room',
+                roomSettings: {
+                    code: Math.random().toString(36).substr(2, 8).toUpperCase(),
+                    name: roomName,
+                    password: roomPassword,
+                    maxMembers: maxMembers,
+                    isPrivate: !!roomPassword
+                }
+            };
+            
+            console.log('📤 Sending room creation message:', message);
+            
+            if (window.network?.send) {
+                window.network.send(message);
+            } else if (window.serverConnection?.send) {
+                window.serverConnection.send(message);
+            } else {
+                console.error('❌ No network connection available');
+            }
+        };
+        
+        window.handleCancelRoom = function() {
+            console.log('🔴 handleCancelRoom called');
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            
+            if (createForm) createForm.classList.remove('active');
+            if (joinForm) joinForm.classList.remove('active');
+            
+            // Clear form fields
+            const roomName = document.getElementById('roomName');
+            const roomPassword = document.getElementById('roomPassword');
+            const maxMembers = document.getElementById('maxMembers');
+            const roomCode = document.getElementById('roomCode');
+            const joinPassword = document.getElementById('joinRoomPassword');
+            
+            if (roomName) roomName.value = '';
+            if (roomPassword) roomPassword.value = '';
+            if (maxMembers) maxMembers.value = '10';
+            if (roomCode) roomCode.value = '';
+            if (joinPassword) joinPassword.value = '';
+        };
+        
+        window.showCreateForm = function() {
+            console.log('📝 showCreateForm called');
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            
+            if (createForm) createForm.classList.add('active');
+            if (joinForm) joinForm.classList.remove('active');
+        };
+        
+        window.showJoinForm = function() {
+            console.log('🚪 showJoinForm called');
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            
+            if (createForm) createForm.classList.remove('active');
+            if (joinForm) joinForm.classList.add('active');
+        };
+        
+        // Add room creation success handler
+        window.handleRoomCreated = function(roomData) {
+            console.log('✅ Room created successfully!', roomData);
+            
+            // Hide forms
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            if (createForm) createForm.classList.remove('active');
+            if (joinForm) joinForm.classList.remove('active');
+            
+            // Show room info
+            const roomInfo = document.getElementById('roomInfo');
+            if (roomInfo) {
+                roomInfo.style.display = 'block';
+                roomInfo.classList.add('active');
+                
+                // Fill room details
+                const roomNameDisplay = document.getElementById('roomNameDisplay');
+                const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+                if (roomNameDisplay) roomNameDisplay.textContent = roomData.name || 'Untitled Room';
+                if (roomCodeDisplay) roomCodeDisplay.textContent = `Room Code: ${roomData.code || 'Unknown'}`;
+            }
+            
+            // Force room container to show
+            const roomContainer = document.getElementById('roomContainer');
+            if (roomContainer) {
+                roomContainer.style.display = 'flex';
+                roomContainer.classList.add('active');
+            }
+            
+            console.log('🏠 Room interface should now be visible');
+        };
+        
+        console.log('✅ All critical functions defined in HEAD');
+    </script>
+    
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!-- Web App Config -->
@@ -41,6 +154,28 @@
     <link rel="manifest" href="manifest.json">
     
     <script>
+        // Emergency function definitions to prevent undefined errors
+        window.handleCreateRoom = window.handleCreateRoom || function() {
+            console.log('Emergency handleCreateRoom called - page still loading');
+            // Don't show alert, just return silently
+            return;
+        };
+        
+        window.handleCancelRoom = window.handleCancelRoom || function() {
+            console.log('Emergency handleCancelRoom called - page still loading');
+            return;
+        };
+        
+        window.showCreateForm = window.showCreateForm || function() {
+            console.log('Emergency showCreateForm called - page still loading');
+            return;
+        };
+        
+        window.showJoinForm = window.showJoinForm || function() {
+            console.log('Emergency showJoinForm called - page still loading');
+            return;
+        };
+        
         // Immediate hash check and mode setting - runs before DOM is ready
         (function() {
             console.log('=== IMMEDIATE MODE SETUP ===');
@@ -2104,7 +2239,7 @@
             }
         }
         
-        function handleCancelRoom() {
+        window.handleCancelRoom = function() {
             console.log('🔴 === CANCEL ROOM BUTTON CLICKED ===');
             
             const createForm = document.getElementById('createRoomForm');
@@ -2126,10 +2261,18 @@
             if (roomCodeInput) roomCodeInput.value = '';
             if (joinPasswordInput) joinPasswordInput.value = '';
             
+            // Also clear create form fields
+            const roomNameInput = document.getElementById('roomName');
+            const roomPasswordInput = document.getElementById('roomPassword'); 
+            const maxMembersInput = document.getElementById('maxMembers');
+            if (roomNameInput) roomNameInput.value = '';
+            if (roomPasswordInput) roomPasswordInput.value = '';
+            if (maxMembersInput) maxMembersInput.value = '10';
+            
             console.log('✅ Join form fields cleared');
-        }
+        };
         
-        function handleCreateRoom() {
+        window.handleCreateRoom = function() {
             console.log('🔵 === CREATE ROOM BUTTON CLICKED ===');
             
             const roomName = document.getElementById('roomName').value.trim();
@@ -2169,29 +2312,7 @@
                     serverConnection: !!window.serverConnection
                 });
             }
-        }
-        
-        function handleCancelRoom() {
-            console.log('🔴 === CANCEL ROOM BUTTON CLICKED ===');
-            
-            const createForm = document.getElementById('createRoomForm');
-            const joinForm = document.getElementById('joinRoomForm');
-            
-            if (createForm) {
-                createForm.classList.remove('active');
-                console.log('✅ Create form hidden');
-            }
-            if (joinForm) {
-                joinForm.classList.remove('active');
-                console.log('✅ Join form hidden');
-            }
-            
-            // Clear form fields
-            document.getElementById('roomName').value = '';
-            document.getElementById('roomPassword').value = '';
-            document.getElementById('maxMembers').value = '10';
-            console.log('✅ Form fields cleared');
-        }
+        };
         
         // Handle room creation response
         function handleRoomResponse(message) {
@@ -2365,6 +2486,29 @@
             if (roomControls) {
                 roomControls.style.display = 'none';
             }
+            
+            // Show room info section
+            const roomInfo = document.getElementById('roomInfo');
+            if (roomInfo) {
+                roomInfo.style.display = 'block';
+                roomInfo.classList.add('active');
+                console.log('Room info section shown');
+            }
+            
+            // Hide create/join forms
+            const createForm = document.getElementById('createRoomForm');
+            const joinForm = document.getElementById('joinRoomForm');
+            if (createForm) createForm.classList.remove('active');
+            if (joinForm) joinForm.classList.remove('active');
+            
+            // Make sure room container is visible
+            const roomContainer = document.getElementById('roomContainer');
+            if (roomContainer) {
+                roomContainer.style.display = 'flex';
+                roomContainer.classList.add('active');
+            }
+            
+            console.log('✅ Room mode activated for room:', room.code);
         }
         
         function leaveRoom() {
@@ -2769,7 +2913,7 @@
     <!-- Toast -->
     <div class="toast-container full center">
         <x-toast class="row" shadow="1" id="toast">
-            <span id="toast-text" data-i18n="share_file_transfer_completed">File Transfer Completed</span>
+            <span id="toast-text">Notification</span>
         </x-toast>
     </div>
     <!-- About Page -->
