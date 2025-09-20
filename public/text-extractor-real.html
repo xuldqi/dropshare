@@ -438,7 +438,10 @@
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                📄 DropShare
+                <svg viewBox="0 0 24 24" style="width: 32px; height: 32px; margin-right: 8px; fill: #3367d6;">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                </svg>
+                <span data-i18n="site_name">DropShare</span>
             </a>
             <nav class="nav-links">
                 <a href="index.html">Home</a>
@@ -456,13 +459,13 @@
 
         <h1 class="page-title" data-i18n="text_extractor_title">Text Extractor</h1>
 
-        <p class="page-subtitle">Extract text content from PDFs, images, and scanned documents with OCR</p>
+        <p class="page-subtitle" data-i18n="text_extractor_subtitle">Extract text content from PDFs, images, and scanned documents with OCR</p>
         
         <div class="extractor-card">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📄</div>
-                <div class="upload-text">Click or drag to upload a file</div>
-                <div class="upload-hint">Supports PDF, images (JPG, PNG), and document formats</div>
+                <div class="upload-text" data-i18n="text_extractor_upload_text">Click or drag to upload a file</div>
+                <div class="upload-hint" data-i18n="text_extractor_upload_hint">Supports PDF, images (JPG, PNG), and document formats</div>
                 <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.bmp,.tiff,.docx,.doc,.txt,.rtf">
             </div>
             
@@ -498,40 +501,40 @@
                         </div>
                         
                         <div class="option-group">
-                            <div class="option-title">Content types</div>
+                            <div class="option-title" data-i18n="text_extractor_content_types">Content types</div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="extractText" checked>
-                                <label for="extractText">Extract text</label>
+                                <label for="extractText" data-i18n="text_extractor_extract_text">Extract text</label>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="extractTables">
-                                <label for="extractTables">Detect tables</label>
+                                <label for="extractTables" data-i18n="text_extractor_detect_tables">Detect tables</label>
                             </div>
                             <div class="checkbox-item">
                                 <input type="checkbox" id="extractImages">
-                                <label for="extractImages">Image info</label>
+                                <label for="extractImages" data-i18n="text_extractor_image_info">Image info</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="page-range" id="pageRangeSection" style="display: none;">
-                    <div class="option-title">Page range (PDF)</div>
+                    <div class="option-title" data-i18n="text_extractor_page_range">Page range (PDF)</div>
                     <div class="range-inputs">
-                        <label>From</label>
+                        <label data-i18n="text_extractor_from">From</label>
                         <input type="number" id="startPage" class="range-input" min="1" value="1">
-                        <label>to</label>
+                        <label data-i18n="text_extractor_to">to</label>
                         <input type="number" id="endPage" class="range-input" min="1" value="1">
-                        <label>pages</label>
-                        <button type="button" onclick="setAllPages()" style="margin-left: 12px; padding: 6px 12px; border: 1px solid #3367d6; border-radius: 4px; background: white; color: #3367d6; cursor: pointer;">All pages</button>
+                        <label data-i18n="text_extractor_pages">pages</label>
+                        <button type="button" onclick="setAllPages()" style="margin-left: 12px; padding: 6px 12px; border: 1px solid #3367d6; border-radius: 4px; background: white; color: #3367d6; cursor: pointer;" data-i18n="text_extractor_all_pages">All pages</button>
                     </div>
                 </div>
                 
-                <div class="ocr-notice" id="ocrNotice" style="display: none;">
+                <div class="ocr-notice" id="ocrNotice" style="display: none;" data-i18n="text_extractor_ocr_notice">
                     💡 Image detected. OCR will be used to extract text. Accuracy depends on image quality.
                 </div>
                 
-                <button class="extract-button" id="extractBtn">Start extraction</button>
+                <button class="extract-button" id="extractBtn" data-i18n="text_extractor_start_extraction">Start extraction</button>
             </div>
             
             <div class="progress-section" id="progressSection">
@@ -545,19 +548,19 @@
                 <div class="result-stats">
                     <div class="stat-item">
                         <div class="stat-value" id="characterCount">0</div>
-                        <div class="stat-label">Characters</div>
+                        <div class="stat-label" data-i18n="text_extractor_characters">Characters</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="wordCount">0</div>
-                        <div class="stat-label">Words</div>
+                        <div class="stat-label" data-i18n="text_extractor_words">Words</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="lineCount">0</div>
-                        <div class="stat-label">Lines</div>
+                        <div class="stat-label" data-i18n="text_extractor_lines">Lines</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value" id="pageProcessed">0</div>
-                        <div class="stat-label">Pages processed</div>
+                        <div class="stat-label" data-i18n="text_extractor_pages_processed">Pages processed</div>
                     </div>
                 </div>
                 
@@ -581,6 +584,7 @@
         </div>
     </div>
 
+    <script src="/locales/i18n.js"></script>
     <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
     <script src="https://unpkg.com/tesseract.js@2.1.5/dist/tesseract.min.js"></script>
     <script src="https://unpkg.com/mammoth@1.4.21/mammoth.browser.min.js"></script>

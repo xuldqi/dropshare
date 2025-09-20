@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="pdf_compressor_title">PDF Compressor - DropShare</title>
+    <title data-i18n="pdf_compressor_title">PDF Compressor</title>
     <style>
         * {
             margin: 0;
@@ -417,7 +417,6 @@
     <link rel="stylesheet" href="device-selector.css">
     <script src="/locales/i18n.js"></script>
     <script src="scripts/mobile-navigation.js"></script>
-    <script src="scripts/i18n/languages.js"></script>
 </head>
 
 <body>
@@ -432,13 +431,13 @@
             </a>
             <div class="header-controls">
                 <nav class="nav-links">
-                    <a href="index.html" data-i18n="nav_home">Home</a>
-                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
-                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
-                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
-                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
-                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
-                    <a href="document-tools.html" class="active" data-i18n="nav_files">Files</a>
+                    
+                    <a href="share.html" data-i18n="nav.transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav.rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav.images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav.audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav.video">Video</a>
+                    <a href="document-tools.html" class="active" data-i18n="nav.documents">Files</a>
                 </nav>
                 <div class="control-buttons">
                     <div class="language-selector-container">
@@ -549,22 +548,73 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <!-- PDF库将在需要时动态加载 -->
     <script>
-        // PDF.js worker setup
-        if (typeof pdfjsLib !== 'undefined') {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+        // 动态加载PDF库
+        let librariesLoaded = false;
+        
+        async function loadPDFLibraries() {
+            if (librariesLoaded) return;
+            
+            // 显示加载提示
+            const statusDiv = document.getElementById('status');
+            if (statusDiv) {
+                statusDiv.innerHTML = '<p>正在加载PDF处理库...</p>';
+                statusDiv.style.display = 'block';
+            }
+            
+            try {
+                // 加载 PDF.js
+                await new Promise((resolve, reject) => {
+                    const script1 = document.createElement('script');
+                    script1.src = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js';
+                    script1.onload = resolve;
+                    script1.onerror = reject;
+                    document.head.appendChild(script1);
+                });
+                
+                // 设置 PDF.js worker
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+                
+                // 加载 PDF-lib
+                await new Promise((resolve, reject) => {
+                    const script2 = document.createElement('script');
+                    script2.src = 'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+                    script2.onload = resolve;
+                    script2.onerror = reject;
+                    document.head.appendChild(script2);
+                });
+                
+                librariesLoaded = true;
+                
+                // 隐藏加载提示
+                if (statusDiv) {
+                    statusDiv.style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Failed to load PDF libraries:', error);
+                if (statusDiv) {
+                    statusDiv.innerHTML = '<p style="color: red;">加载PDF处理库失败，请刷新页面重试</p>';
+                }
+                throw error;
+            }
         }
 
         let pdfFile = null;
         let compressedPdfBytes = null;
         let selectedQuality = 'medium';
 
-        document.getElementById('fileInput').addEventListener('change', function(e) {
+        document.getElementById('fileInput').addEventListener('change', async function(e) {
             const file = e.target.files[0];
             if (file && file.type === 'application/pdf') {
-                loadPdfFile(file);
+                try {
+                    await loadPDFLibraries();
+                    loadPdfFile(file);
+                } catch (error) {
+                    console.error('Error loading PDF libraries:', error);
+                    alert('加载PDF处理库失败，请刷新页面重试');
+                }
             } else {
                 alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.t('pdf_invalid_file') : 'Please select a valid PDF file');
             }
