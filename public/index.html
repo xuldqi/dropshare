@@ -915,6 +915,12 @@
                 justify-content: center;
             }
 
+            .language-selector-container select,
+            .language-selector select {
+                padding: 4px 8px;
+                font-size: 13px;
+            }
+
             .site-footer {
                 padding: 40px 20px 30px;
                 margin-top: 60px;
@@ -1003,8 +1009,8 @@
 
             <div class="control-buttons">
                 <!-- Language Selector -->
-                <div class="language-selector">
-                    <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                <div class="language-selector-container">
+                    <select id="language-selector" class="language-selector">
                         <option value="en">English</option>
                         <option value="zh-CN">简体中文</option>
                         <option value="zh-TW">繁體中文</option>
