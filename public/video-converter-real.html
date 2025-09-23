@@ -940,6 +940,7 @@
                 return;
             }
             
+            // 翻译普通文本元素
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(element => {
                 const key = element.getAttribute('data-i18n');
@@ -950,23 +951,22 @@
                         element.value = translation;
                     } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
                         element.placeholder = translation;
-                    } else if (element.hasAttribute('data-i18n-placeholder')) {
-                        element.placeholder = translation;
                     } else {
                         element.textContent = translation;
                     }
                 }
             });
-
-            // Manually translate placeholders for inputs that don't use the special attribute
-            const videoBitrateEl = document.getElementById('videoBitrate');
-            if (videoBitrateEl) videoBitrateEl.placeholder = window.DROPSHARE_I18N.t('adv_example_2000k') || 'e.g., 2000k';
-
-            const audioBitrateEl = document.getElementById('audioBitrate');
-            if (audioBitrateEl) audioBitrateEl.placeholder = window.DROPSHARE_I18N.t('adv_example_192k') || 'e.g., 192k';
-
-            const frameRateEl = document.getElementById('frameRate');
-            if (frameRateEl) frameRateEl.placeholder = window.DROPSHARE_I18N.t('adv_example_30') || 'e.g., 30';
+            
+            // 翻译placeholder属性
+            const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
+            placeholderElements.forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.placeholder = translation;
+                }
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function() {

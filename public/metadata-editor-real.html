@@ -130,18 +130,35 @@
             fill: #43e97b;
         }
 
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 0.8rem;
+            flex-wrap: nowrap;
         }
 
         .nav-links a {
             color: #666;
             text-decoration: none;
             font-weight: 500;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.7rem;
             border-radius: 8px;
             transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 0.85rem;
         }
 
         .nav-links a:hover {
@@ -163,13 +180,13 @@
         .page-title {
             font-size: 3rem;
             font-weight: 800;
-            color: #ffffff;
+            color: #333333;
             margin-bottom: 1rem;
         }
 
         .page-subtitle {
             font-size: 1.2rem;
-            color: #ffffff;
+            color: #666666;
             opacity: 0.9;
         }
 
@@ -497,7 +514,44 @@
             box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
         }
 
+        @media (max-width: 1024px) {
+            .header-controls {
+                gap: 0.5rem;
+            }
+            
+            .nav-links {
+                gap: 0.6rem;
+            }
+            
+            .nav-links a {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+
         @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+            
+            .nav-links a {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
+            }
+            
             .metadata-editor {
                 grid-template-columns: 1fr;
             }
@@ -552,18 +606,18 @@
 
     <div class="container">
         <div class="page-header">
-            <h1 class="page-title">Metadata Editor</h1>
-            <p class="page-subtitle">Edit audio metadata including title, artist, album, and cover art information</p>
+            <h1 class="page-title" data-i18n="metadata_editor_title">Metadata Editor</h1>
+            <p class="page-subtitle" data-i18n="metadata_editor_subtitle">Edit audio metadata including title, artist, album, and cover art information</p>
         </div>
 
         <div class="tool-container">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🏷️</div>
-                <h3>Upload Audio File</h3>
-                <p>Drag and drop your audio file here or click to browse</p>
+                <h3 data-i18n="upload_audio_file">Upload Audio File</h3>
+                <p data-i18n="upload_audio_hint">Drag and drop your audio file here or click to browse</p>
                 <input type="file" id="fileInput" class="file-input" accept="audio/*">
-                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Audio File</button>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()" data-i18n="choose_audio_file">Choose Audio File</button>
             </div>
 
             <!-- Metadata Editor -->
@@ -582,37 +636,37 @@
 
                 <!-- Current Metadata -->
                 <div class="current-metadata">
-                    <h3 class="section-title">📋 Current Metadata</h3>
+                    <h3 class="section-title" data-i18n="current_metadata">📋 Current Metadata</h3>
                     
                     <div class="artwork-container">
                         <div class="artwork-image" id="currentArtwork">🎵</div>
-                        <button class="artwork-upload" id="artworkUpload">Upload Artwork</button>
+                        <button class="artwork-upload" id="artworkUpload" data-i18n="upload_artwork">Upload Artwork</button>
                         <input type="file" id="artworkInput" accept="image/*" style="display: none;">
                     </div>
 
                     <ul class="metadata-list">
                         <li class="metadata-item">
-                            <span class="metadata-label">Title:</span>
+                            <span class="metadata-label" data-i18n="label_title">Title:</span>
                             <span class="metadata-value" id="currentTitle"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label">Artist:</span>
+                            <span class="metadata-label" data-i18n="label_artist">Artist:</span>
                             <span class="metadata-value" id="currentArtist"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label">Album:</span>
+                            <span class="metadata-label" data-i18n="label_album">Album:</span>
                             <span class="metadata-value" id="currentAlbum"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label">Year:</span>
+                            <span class="metadata-label" data-i18n="label_year">Year:</span>
                             <span class="metadata-value" id="currentYear"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label">Genre:</span>
+                            <span class="metadata-label" data-i18n="label_genre">Genre:</span>
                             <span class="metadata-value" id="currentGenre"></span>
                         </li>
                         <li class="metadata-item">
-                            <span class="metadata-label">Track:</span>
+                            <span class="metadata-label" data-i18n="label_track">Track:</span>
                             <span class="metadata-value" id="currentTrack"></span>
                         </li>
                     </ul>
@@ -620,54 +674,54 @@
 
                 <!-- Edit Metadata -->
                 <div class="edit-metadata">
-                    <h3 class="section-title">✏️ Edit Metadata</h3>
+                    <h3 class="section-title" data-i18n="edit_metadata">✏️ Edit Metadata</h3>
                     
                     <div class="form-group">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-input" id="newTitle" placeholder="Enter song title">
+                        <label class="form-label" data-i18n="label_title">Title</label>
+                        <input type="text" class="form-input" id="newTitle" data-i18n-placeholder="placeholder_title">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Artist</label>
-                        <input type="text" class="form-input" id="newArtist" placeholder="Enter artist name">
+                        <label class="form-label" data-i18n="label_artist">Artist</label>
+                        <input type="text" class="form-input" id="newArtist" data-i18n-placeholder="placeholder_artist">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Album</label>
-                        <input type="text" class="form-input" id="newAlbum" placeholder="Enter album name">
+                        <label class="form-label" data-i18n="label_album">Album</label>
+                        <input type="text" class="form-input" id="newAlbum" data-i18n-placeholder="placeholder_album">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Year</label>
-                        <input type="number" class="form-input" id="newYear" placeholder="2024" min="1900" max="2100">
+                        <label class="form-label" data-i18n="label_year">Year</label>
+                        <input type="number" class="form-input" id="newYear" data-i18n-placeholder="placeholder_year" min="1900" max="2100">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Genre</label>
-                        <input type="text" class="form-input" id="newGenre" placeholder="Enter genre">
+                        <label class="form-label" data-i18n="label_genre">Genre</label>
+                        <input type="text" class="form-input" id="newGenre" data-i18n-placeholder="placeholder_genre">
                         <div class="genre-tags">
-                            <span class="genre-tag">Pop</span>
-                            <span class="genre-tag">Rock</span>
-                            <span class="genre-tag">Jazz</span>
-                            <span class="genre-tag">Classical</span>
-                            <span class="genre-tag">Electronic</span>
-                            <span class="genre-tag">Hip Hop</span>
-                            <span class="genre-tag">Country</span>
-                            <span class="genre-tag">R&B</span>
+                            <span class="genre-tag" data-i18n="genre_pop">Pop</span>
+                            <span class="genre-tag" data-i18n="genre_rock">Rock</span>
+                            <span class="genre-tag" data-i18n="genre_jazz">Jazz</span>
+                            <span class="genre-tag" data-i18n="genre_classical">Classical</span>
+                            <span class="genre-tag" data-i18n="genre_electronic">Electronic</span>
+                            <span class="genre-tag" data-i18n="genre_hip_hop">Hip Hop</span>
+                            <span class="genre-tag" data-i18n="genre_country">Country</span>
+                            <span class="genre-tag" data-i18n="genre_rb">R&B</span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Track Number</label>
-                        <input type="text" class="form-input" id="newTrack" placeholder="1 or 1/12">
+                        <label class="form-label" data-i18n="label_track_number">Track Number</label>
+                        <input type="text" class="form-input" id="newTrack" data-i18n-placeholder="placeholder_track">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Comment</label>
-                        <textarea class="form-input form-textarea" id="newComment" placeholder="Add a comment..."></textarea>
+                        <label class="form-label" data-i18n="label_comment">Comment</label>
+                        <textarea class="form-input form-textarea" id="newComment" data-i18n-placeholder="placeholder_comment"></textarea>
                     </div>
 
-                    <button class="save-btn" id="saveBtn">Save Metadata Changes</button>
+                    <button class="save-btn" id="saveBtn" data-i18n="save_metadata_changes">Save Metadata Changes</button>
                 </div>
             </div>
 
@@ -676,11 +730,11 @@
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="status" id="status">Processing...</div>
+                <div class="status" id="status" data-i18n="processing">Processing...</div>
             </div>
 
             <!-- Download Button -->
-            <button class="download-btn" id="downloadBtn">Download Updated Audio File</button>
+            <button class="download-btn" id="downloadBtn" data-i18n="download_updated_audio">Download Updated Audio File</button>
         </div>
     </div>
 
@@ -1032,6 +1086,7 @@
         function translatePage() {
             if (!window.DROPSHARE_I18N) return;
             
+            // 翻译普通文本元素
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(element => {
                 const key = element.getAttribute('data-i18n');
@@ -1039,6 +1094,17 @@
                 
                 if (translation && translation !== key) {
                     element.textContent = translation;
+                }
+            });
+            
+            // 翻译placeholder属性
+            const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
+            placeholderElements.forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.placeholder = translation;
                 }
             });
         }

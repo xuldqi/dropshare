@@ -515,8 +515,8 @@
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">Bitrate Converter</h1>
-        <p class="page-subtitle">Change audio bitrate and quality settings - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="bitrate_converter_title">Bitrate Converter</h1>
+        <p class="page-subtitle" data-i18n="bitrate_converter_subtitle">Change audio bitrate and quality settings - Real FFmpeg Processing</p>
         
         <div class="converter-card">
             <div class="engine-status" id="engineStatus">
@@ -525,49 +525,49 @@
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">⚙️</div>
-                <div class="upload-text">Click or drag to upload audio file</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="click_drag_upload_audio">Click or drag to upload audio file</div>
+                <div class="upload-hint" data-i18n="supports_audio_formats">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
             <div class="bitrate-controls" id="bitrateControls">
                 <div class="current-info">
                     <div class="info-row">
-                        <span class="info-label">Current Format</span>
+                        <span class="info-label" data-i18n="current_format">Current Format</span>
                         <span class="info-value" id="currentFormat">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">File Size</span>
+                        <span class="info-label" data-i18n="file_size">File Size</span>
                         <span class="info-value" id="currentSize">-</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">Duration</span>
+                        <span class="info-label" data-i18n="duration">Duration</span>
                         <span class="info-value" id="currentDuration">-</span>
                     </div>
                 </div>
 
                 <div class="control-section">
-                    <div class="section-title">Target Bitrate</div>
+                    <div class="section-title" data-i18n="target_bitrate">Target Bitrate</div>
                     <div class="bitrate-presets">
                         <div class="bitrate-btn" data-bitrate="96">
                             <div class="bitrate-value">96 kbps</div>
-                            <div class="bitrate-desc">Low quality</div>
+                            <div class="bitrate-desc" data-i18n="quality_low">Low quality</div>
                         </div>
                         <div class="bitrate-btn" data-bitrate="128">
                             <div class="bitrate-value">128 kbps</div>
-                            <div class="bitrate-desc">Standard</div>
+                            <div class="bitrate-desc" data-i18n="quality_standard">Standard</div>
                         </div>
                         <div class="bitrate-btn" data-bitrate="192">
                             <div class="bitrate-value">192 kbps</div>
-                            <div class="bitrate-desc">Good quality</div>
+                            <div class="bitrate-desc" data-i18n="quality_good">Good quality</div>
                         </div>
                         <div class="bitrate-btn active" data-bitrate="320">
                             <div class="bitrate-value">320 kbps</div>
-                            <div class="bitrate-desc">High quality</div>
+                            <div class="bitrate-desc" data-i18n="quality_high">High quality</div>
                         </div>
                         <div class="bitrate-btn" data-bitrate="custom">
                             <div class="bitrate-value">Custom</div>
-                            <div class="bitrate-desc">Set your own</div>
+                            <div class="bitrate-desc" data-i18n="quality_custom">Set your own</div>
                         </div>
                     </div>
 
@@ -581,7 +581,7 @@
                 </div>
 
                 <div class="control-section">
-                    <div class="section-title">Output Format</div>
+                    <div class="section-title" data-i18n="output_format">Output Format</div>
                     <div class="format-options">
                         <div class="format-btn active" data-format="mp3">MP3</div>
                         <div class="format-btn" data-format="aac">AAC</div>
@@ -591,15 +591,15 @@
                 </div>
 
                 <div class="size-estimate">
-                    <div class="estimate-label">Estimated Output Size</div>
+                    <div class="estimate-label" data-i18n="estimated_output_size">Estimated Output Size</div>
                     <div class="estimate-value" id="estimatedSize">-</div>
                 </div>
                 
-                <button class="convert-button" id="convertBtn" disabled>Loading Engine...</button>
+                <button class="convert-button" id="convertBtn" disabled data-i18n="loading_engine">Loading Engine...</button>
             </div>
 
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing conversion...</div>
+                <div id="progressText" data-i18n="preparing_conversion">Preparing conversion...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -961,6 +961,7 @@
         function translatePage() {
             if (!window.DROPSHARE_I18N) return;
             
+            // 翻译普通文本元素
             const elements = document.querySelectorAll('[data-i18n]');
             elements.forEach(element => {
                 const key = element.getAttribute('data-i18n');
@@ -968,6 +969,17 @@
                 
                 if (translation && translation !== key) {
                     element.textContent = translation;
+                }
+            });
+            
+            // 翻译placeholder属性
+            const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
+            placeholderElements.forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.placeholder = translation;
                 }
             });
         }

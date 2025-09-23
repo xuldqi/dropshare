@@ -619,7 +619,7 @@
             </div>
             
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing...</div>
+                <div id="progressText" data-i18n="preparing">Preparing...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -650,7 +650,7 @@
                         <h4>Extracted text</h4>
                         <div class="text-actions">
                             <button class="action-btn" onclick="copyText()">Copy</button>
-                            <button class="action-btn" onclick="selectAll()">Select all</button>
+                            <button class="action-btn" onclick="selectAll()" data-i18n="select_all">Select all</button>
                             <button class="action-btn" onclick="clearText()">Clear</button>
                         </div>
                     </div>
@@ -658,8 +658,8 @@
                 </div>
                 
                 <div class="download-buttons">
-                    <button class="download-btn" onclick="downloadText()">Download TXT</button>
-                    <button class="download-btn secondary" onclick="downloadJson()">Download JSON</button>
+                    <button class="download-btn" onclick="downloadText()" data-i18n="download_txt">Download TXT</button>
+                    <button class="download-btn secondary" onclick="downloadJson()" data-i18n="download_json">Download JSON</button>
                 </div>
             </div>
         </div>
