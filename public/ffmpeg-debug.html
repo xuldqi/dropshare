@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFmpeg Debug Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        #log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 FFmpeg Loading Diagnostic Tool</h1>
+    
+    <div class="test-section">
+        <h2>Environment Check</h2>
+        <div id="env-results"></div>
+        <button onclick="checkEnvironment()">Check Environment</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Network Test</h2>
+        <div id="network-results"></div>
+        <button onclick="testNetwork()">Test CDN Access</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Script Loading Test</h2>
+        <div id="script-results"></div>
+        <button onclick="testScriptLoading()">Load FFmpeg Scripts</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>FFmpeg Loading Test</h2>
+        <div id="ffmpeg-results"></div>
+        <button onclick="testFFmpegLoading()" id="ffmpeg-btn">Load FFmpeg Core</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Debug Log</h2>
+        <div id="log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'color: red' : type === 'success' ? 'color: green' : 'color: black';
+            log.innerHTML += `<div style="${className}">[${timestamp}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            log.innerHTML = '';
+        }
+        
+        function setStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        async function checkEnvironment() {
+            addLog('Checking browser environment...');
+            
+            const checks = {
+                'WebAssembly Support': typeof WebAssembly !== 'undefined',
+                'Fetch API': typeof fetch !== 'undefined',
+                'Worker Support': typeof Worker !== 'undefined',
+                'SharedArrayBuffer': typeof SharedArrayBuffer !== 'undefined',
+                'HTTPS': location.protocol === 'https:' || location.hostname === 'localhost'
+            };
+            
+            let results = '<h3>Environment Results:</h3>';
+            let allGood = true;
+            
+            for (const [check, result] of Object.entries(checks)) {
+                const status = result ? '✅' : '❌';
+                const color = result ? 'green' : 'red';
+                results += `<div style="color: ${color}">${status} ${check}: ${result}</div>`;
+                
+                if (!result) allGood = false;
+                addLog(`${check}: ${result}`, result ? 'success' : 'error');
+            }
+            
+            setStatus('env-results', results, allGood ? 'success' : 'error');
+        }
+        
+        async function testNetwork() {
+            addLog('Testing network access to CDNs...');
+            
+            const cdns = [
+                'https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/package.json',
+                'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/package.json'
+            ];
+            
+            let results = '<h3>Network Test Results:</h3>';
+            let hasWorkingCDN = false;
+            
+            for (const url of cdns) {
+                try {
+                    const startTime = Date.now();
+                    const response = await fetch(url, { method: 'HEAD' });
+                    const time = Date.now() - startTime;
+                    
+                    if (response.ok) {
+                        results += `<div style="color: green">✅ ${url} - ${time}ms</div>`;
+                        addLog(`CDN accessible: ${url} (${time}ms)`, 'success');
+                        hasWorkingCDN = true;
+                    } else {
+                        results += `<div style="color: orange">⚠️ ${url} - HTTP ${response.status}</div>`;
+                        addLog(`CDN warning: ${url} - HTTP ${response.status}`, 'error');
+                    }
+                } catch (error) {
+                    results += `<div style="color: red">❌ ${url} - ${error.message}</div>`;
+                    addLog(`CDN failed: ${url} - ${error.message}`, 'error');
+                }
+            }
+            
+            setStatus('network-results', results, hasWorkingCDN ? 'success' : 'error');
+        }
+        
+        async function testScriptLoading() {
+            addLog('Testing script loading...');
+            
+            const scripts = [
+                {
+                    url: 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js',
+                    check: () => typeof window.FFmpegWASM !== 'undefined'
+                },
+                {
+                    url: 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js',
+                    check: () => typeof window.FFmpegUtil !== 'undefined'
+                }
+            ];
+            
+            let results = '<h3>Script Loading Results:</h3>';
+            let allLoaded = true;
+            
+            for (const script of scripts) {
+                if (script.check()) {
+                    results += `<div style="color: green">✅ ${script.url.split('/').pop()} - Already loaded</div>`;
+                    addLog(`Script already loaded: ${script.url}`, 'success');
+                    continue;
+                }
+                
+                try {
+                    await loadScript(script.url);
+                    
+                    // Wait for global to be available
+                    await new Promise((resolve, reject) => {
+                        let attempts = 0;
+                        const check = () => {
+                            if (script.check()) {
+                                resolve();
+                            } else if (attempts++ > 50) {
+                                reject(new Error('Global not available after loading'));
+                            } else {
+                                setTimeout(check, 100);
+                            }
+                        };
+                        check();
+                    });
+                    
+                    results += `<div style="color: green">✅ ${script.url.split('/').pop()} - Loaded successfully</div>`;
+                    addLog(`Script loaded: ${script.url}`, 'success');
+                } catch (error) {
+                    results += `<div style="color: red">❌ ${script.url.split('/').pop()} - ${error.message}</div>`;
+                    addLog(`Script failed: ${script.url} - ${error.message}`, 'error');
+                    allLoaded = false;
+                }
+            }
+            
+            setStatus('script-results', results, allLoaded ? 'success' : 'error');
+        }
+        
+        async function testFFmpegLoading() {
+            const btn = document.getElementById('ffmpeg-btn');
+            btn.disabled = true;
+            
+            addLog('Testing FFmpeg core loading...');
+            
+            try {
+                if (!window.FFmpegWASM || !window.FFmpegUtil) {
+                    throw new Error('FFmpeg scripts not loaded. Run script loading test first.');
+                }
+                
+                const { FFmpeg } = window.FFmpegWASM;
+                const { toBlobURL } = window.FFmpegUtil;
+                
+                const ffmpeg = new FFmpeg();
+                
+                ffmpeg.on('log', ({ message }) => {
+                    addLog(`FFmpeg: ${message}`, 'info');
+                });
+                
+                addLog('Creating FFmpeg instance...', 'success');
+                
+                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+                
+                addLog('Loading core files...', 'info');
+                
+                const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
+                const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
+                
+                addLog('Core files downloaded, initializing...', 'info');
+                
+                await ffmpeg.load({ coreURL, wasmURL });
+                
+                addLog('FFmpeg loaded successfully!', 'success');
+                setStatus('ffmpeg-results', '<div class="status success">✅ FFmpeg loaded successfully!</div>', 'success');
+                
+                // Test basic functionality
+                addLog('Testing basic FFmpeg functionality...', 'info');
+                await ffmpeg.writeFile('test.txt', new TextEncoder().encode('Hello FFmpeg!'));
+                const data = await ffmpeg.readFile('test.txt');
+                
+                if (data.length > 0) {
+                    addLog('FFmpeg file operations working!', 'success');
+                } else {
+                    addLog('FFmpeg file operations failed', 'error');
+                }
+                
+            } catch (error) {
+                addLog(`FFmpeg loading failed: ${error.message}`, 'error');
+                setStatus('ffmpeg-results', `<div class="status error">❌ Failed: ${error.message}</div>`, 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+        
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+                document.head.appendChild(script);
+            });
+        }
+        
+        // Auto-run environment check
+        window.addEventListener('load', checkEnvironment);
+    </script>
+</body>
+</html>

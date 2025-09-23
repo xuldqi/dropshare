@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Format Converter</title>
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/ffmpeg.min.js"></script>
-    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/index.min.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <style>
         * {
             margin: 0;
@@ -433,7 +433,7 @@
                 ffmpeg = new FFmpeg();
                 
                 statusEl.textContent = 'Loading FFmpeg core...';
-                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
                 await ffmpeg.load({
                     coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
                     wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')

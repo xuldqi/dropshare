@@ -620,7 +620,7 @@
                 
                 // Load FFmpeg util
                 const utilScript = document.createElement('script');
-                utilScript.src = 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/util.js';
+                utilScript.src = 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js';
                 utilScript.onload = checkComplete;
                 utilScript.onerror = () => reject(new Error('Failed to load FFmpeg util script'));
                 document.head.appendChild(utilScript);
