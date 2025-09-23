@@ -701,12 +701,12 @@
             </a>
             <div class="header-controls">
                 <nav class="nav-links">
-                    <a href="share.html">Transfer</a>
-                    <a href="share.html#rooms">Rooms</a>
-                    <a href="image-tools.html" class="active">Images</a>
-                    <a href="audio-tools.html">Audio</a>
-                    <a href="video-tools.html">Video</a>
-                    <a href="document-tools.html">Files</a>
+                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" class="active" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
                 </nav>
                 <div class="control-buttons">
                     <!-- Language Selector -->
@@ -859,12 +859,44 @@
         // 支持 JPEG 质量调节的格式
         const qualityFormats = ['jpeg', 'webp'];
 
-        // 事件监听器
-        uploadArea.addEventListener('click', () => fileInput.click());
-        uploadArea.addEventListener('dragover', handleDragOver);
-        uploadArea.addEventListener('drop', handleDrop);
-        uploadArea.addEventListener('dragleave', handleDragLeave);
-        fileInput.addEventListener('change', handleFileSelect);
+        // 初始化事件监听器
+        function initializeEventListeners() {
+            console.log('Initializing event listeners...');
+            console.log('uploadArea:', uploadArea);
+            console.log('fileInput:', fileInput);
+            
+            // 检查元素是否存在
+            if (!uploadArea || !fileInput) {
+                console.error('Upload elements not found!');
+                console.error('uploadArea:', uploadArea);
+                console.error('fileInput:', fileInput);
+                return;
+            }
+            
+            // 添加点击事件
+            uploadArea.addEventListener('click', function(e) {
+                console.log('Upload area clicked!', e);
+                e.preventDefault();
+                fileInput.click();
+            });
+            
+            // 添加其他事件
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleDrop);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            console.log('Event listeners initialized successfully');
+        }
+
+        // 等待DOM加载完成再初始化 - 延迟执行确保所有脚本都加载完
+        setTimeout(() => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeEventListeners);
+            } else {
+                initializeEventListeners();
+            }
+        }, 500);
         
         formatOptions.forEach(option => {
             option.addEventListener('click', handleFormatChange);
@@ -903,7 +935,8 @@
             const imageFiles = files.filter(file => file.type.startsWith('image/'));
             
             if (imageFiles.length === 0) {
-                alert('Please select image files only');
+                const message = window.DROPSHARE_I18N?.t('error_select_image_files') || 'Please select image files only';
+                alert(message);
                 return;
             }
 
@@ -1202,9 +1235,9 @@
             } else {
                 sendBtn.disabled = false;
                 if (shareMode === 'all') {
-                    sendBtn.textContent = `${" || '个文件到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('send_files_to') || '个文件到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
                 } else {
-                    sendBtn.textContent = `${" || '个设备'}`;
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('send_to') || '传送到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
                 }
             }
         }
@@ -1366,24 +1399,79 @@
         // Initialize language system when page loads
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize the i18n system
-            if (window.DROPSHARE_I18N) {
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
                 window.DROPSHARE_I18N.init().then(() => {
                     initializeLanguageSelector();
                 });
             } else {
                 // Fallback: try to initialize after a short delay
                 setTimeout(() => {
-                    if (window.DROPSHARE_I18N) {
+                    if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
                         window.DROPSHARE_I18N.init().then(() => {
                             initializeLanguageSelector();
                         });
+                    } else {
+                        console.warn('DROPSHARE_I18N not available or init method not found');
+                        initializeLanguageSelector();
                     }
                 }, 100);
             }
         });
     </script>
-    <!-- Share Integration -->
+    <!-- Legacy Share Integration (keeping for compatibility) -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
+    
+    <!-- New Unified Transfer System -->
+    <script src="scripts/unified-transfer-integration.js"></script>
+    <script>
+        // Test the new unified transfer system
+        document.addEventListener('unified-transfer-ready', function() {
+            console.log('🎉 Unified transfer system is ready!');
+            console.log('📱 Available devices:', window.DropShareTransfer.getDevices().length);
+            
+            // Add custom transfer button for testing
+            setTimeout(() => {
+                const downloadSection = document.querySelector('.download-section');
+                if (downloadSection && downloadSection.style.display !== 'none') {
+                    const testButton = document.createElement('button');
+                    testButton.className = 'unified-transfer-btn test-transfer';
+                    testButton.innerHTML = `
+                        <span class="transfer-icon">🧪</span>
+                        <span class="transfer-text">测试新传送系统</span>
+                    `;
+                    testButton.style.marginLeft = '12px';
+                    
+                    testButton.addEventListener('click', () => {
+                        // Get the converted image file
+                        const downloadLink = document.querySelector('#downloadLink');
+                        if (downloadLink && downloadLink.href) {
+                            // Create a test file object
+                            fetch(downloadLink.href)
+                                .then(response => response.blob())
+                                .then(blob => {
+                                    const file = new File([blob], downloadLink.download || 'converted-image.png', {
+                                        type: blob.type
+                                    });
+                                    window.DropShareTransfer.showDeviceSelector(file);
+                                })
+                                .catch(error => {
+                                    console.error('❌ Failed to prepare test file:', error);
+                                    alert('测试失败: 无法准备文件');
+                                });
+                        } else {
+                            alert('请先转换一张图片再测试传送功能');
+                        }
+                    });
+                    
+                    // Find download button container and add test button
+                    const downloadButton = document.querySelector('#downloadBtn');
+                    if (downloadButton && downloadButton.parentNode) {
+                        downloadButton.parentNode.appendChild(testButton);
+                    }
+                }
+            }, 2000);
+        });
+    </script>
 </body>
 </html>

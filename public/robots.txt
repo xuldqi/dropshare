@@ -5,7 +5,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://dropshare.com/sitemap.xml
+Sitemap: https://dropshare.tech/sitemap.xml
 
 # Crawl-delay for responsible crawling
 Crawl-delay: 1
@@ -116,5 +116,5 @@ User-agent: Claude-Web
 Disallow: /
 
 # Host directive (if applicable)
-# Host: dropshare.com
+# Host: dropshare.tech
  
