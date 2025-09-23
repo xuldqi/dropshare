@@ -1,0 +1,12 @@
+  "current_format": "現在の形式",
+  "file_size": "ファイルサイズ",
+  "duration": "再生時間",
+  "target_bitrate": "ターゲットビットレート",
+  "quality_low": "低品質",
+  "quality_standard": "標準",
+  "quality_good": "高品質",
+  "quality_high": "高品質",
+  "quality_custom": "カスタム",
+  "click_drag_upload_audio": "オーディオファイルをクリックまたはドラッグしてアップロード",
+  "supports_audio_formats": "MP3, WAV, FLAC, AAC, OGG形式をサポート",
+  "preparing": "準備中..."

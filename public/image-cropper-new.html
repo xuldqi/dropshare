@@ -568,9 +568,9 @@
                     <div class="control-group">
                         <label class="control-label">Custom Dimensions:</label>
                         <div class="dimension-inputs">
-                            <input type="number" class="dimension-input" id="cropWidth" placeholder="Width">
+                            <input type="number" class="dimension-input" id="cropWidth" data-i18n-placeholder="width" placeholder="Width">
                             <span>×</span>
-                            <input type="number" class="dimension-input" id="cropHeight" placeholder="Height">
+                            <input type="number" class="dimension-input" id="cropHeight" data-i18n-placeholder="height" placeholder="Height">
                             <button class="btn btn-primary" id="applySizeBtn" style="padding: 8px 16px; font-size: 14px;">
                                 <span>Apply</span>
                             </button>
@@ -699,12 +699,14 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert(";
+                const message = window.DROPSHARE_I18N?.t('error_select_image_file') || 'Please select an image file.';
+                alert(message);
                 return;
             }
 
             if (file.size > 10 * 1024 * 1024) {
-                alert(";
+                const message = window.DROPSHARE_I18N?.t('error_file_size_limit') || 'File size exceeds 10MB limit.';
+                alert(message);
                 return;
             }
 
@@ -963,7 +965,8 @@
             const height = parseInt(cropHeightInput.value);
             
             if (!width || !height || width <= 0 || height <= 0) {
-                alert(";
+                const message = window.DROPSHARE_I18N?.t('error_invalid_dimensions') || 'Please enter valid dimensions.';
+                alert(message);
                 return;
             }
             
