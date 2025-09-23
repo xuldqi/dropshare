@@ -6,6 +6,7 @@
     <title>Audio Format Converter</title>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <script src="/js/ffmpeg-singlethread.js"></script>
     <style>
         * {
             margin: 0;
@@ -419,28 +420,15 @@
         let audioFile = null;
         let isEngineLoaded = false;
         
-        // Initialize FFmpeg with older, more stable version
+        // Initialize FFmpeg with single-thread mode (CORS-safe)
         async function initFFmpeg() {
             const statusEl = document.getElementById('engineStatus');
             statusEl.style.display = 'block';
             statusEl.textContent = 'Loading audio processing engine...';
 
             try {
-                // Use newer version of FFmpeg
-                const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL, fetchFile } = FFmpegUtil;
-                
-                ffmpeg = new FFmpeg();
-                
-                statusEl.textContent = 'Loading FFmpeg core...';
-                
-                // 使用本地代理解决CORS问题
-                const baseURL = '/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
-                
-                await ffmpeg.load({
-                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm')
-                });
+                // 使用单线程加载器，避免Worker CORS问题
+                ffmpeg = await loadFFmpegSingleThread();
                 
                 isEngineLoaded = true;
                 statusEl.textContent = '✓ Audio processing engine loaded and ready!';
