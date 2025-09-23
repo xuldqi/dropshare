@@ -6,7 +6,7 @@
     <title>Audio Format Converter</title>
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
-    <script src="/js/ffmpeg-singlethread.js"></script>
+    <script src="/js/ffmpeg-reliable.js"></script>
     <style>
         * {
             margin: 0;
@@ -420,19 +420,17 @@
         let audioFile = null;
         let isEngineLoaded = false;
         
-        // Initialize FFmpeg with single-thread mode (CORS-safe)
+        // Initialize FFmpeg with reliable loading strategy
         async function initFFmpeg() {
             const statusEl = document.getElementById('engineStatus');
             statusEl.style.display = 'block';
             statusEl.textContent = 'Loading audio processing engine...';
 
             try {
-                // 使用单线程加载器，避免Worker CORS问题
-                ffmpeg = await loadFFmpegSingleThread();
+                // 使用可靠的加载器
+                ffmpeg = await loadFFmpegReliable();
                 
                 isEngineLoaded = true;
-                statusEl.textContent = '✓ Audio processing engine loaded and ready!';
-                statusEl.classList.add('loaded');
                 
                 // Hide status after 3 seconds
                 setTimeout(() => {
