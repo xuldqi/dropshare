@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Format Converter</title>
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
-    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
-    <script src="/js/ffmpeg-reliable.js"></script>
+    <title data-i18n="audio_converter_title">Audio Format Converter</title>
+    <!-- Working single-thread FFmpeg loader -->
+    <script src="/js/ffmpeg-working.js"></script>
     <style>
         * {
             margin: 0;
@@ -370,20 +369,20 @@
         
         <div class="converter-card">
             <div class="engine-status" id="engineStatus">
-                Loading audio processing engine...
+                <span data-i18n="audio_converter_loading_engine">Loading audio processing engine...</span>
             </div>
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📁</div>
-                <div class="upload-text">Upload Audio File</div>
-                <div class="upload-hint">Drag and drop your audio file here or click to browse</div>
-                <button class="choose-file-btn" onclick="document.getElementById('fileInput').click()">Choose Audio File</button>
+                <div class="upload-text" data-i18n="audio_converter_upload_text">Upload Audio File</div>
+                <div class="upload-hint" data-i18n="audio_converter_upload_hint">Drag and drop your audio file here or click to browse</div>
+                <button class="choose-file-btn" onclick="document.getElementById('fileInput').click()" data-i18n="audio_converter_choose_file">Choose Audio File</button>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
             <div class="conversion-controls" id="conversionControls">
                 <div class="control-section">
-                    <div class="section-title">Output Format</div>
+                    <div class="section-title" data-i18n="audio_converter_output_format">Output Format</div>
                     <div class="format-options">
                         <div class="format-btn active" data-format="mp3">MP3</div>
                         <div class="format-btn" data-format="wav">WAV</div>
@@ -395,19 +394,19 @@
                 </div>
 
                 <div class="control-section">
-                    <div class="section-title">Quality</div>
+                    <div class="section-title" data-i18n="audio_converter_quality">Quality</div>
                     <div class="quality-options">
-                        <div class="quality-btn" data-quality="high">High Quality</div>
-                        <div class="quality-btn active" data-quality="medium">Standard</div>
-                        <div class="quality-btn" data-quality="low">Compressed</div>
+                        <div class="quality-btn" data-quality="high" data-i18n="audio_converter_quality_high">High Quality</div>
+                        <div class="quality-btn active" data-quality="medium" data-i18n="audio_converter_quality_standard">Standard</div>
+                        <div class="quality-btn" data-quality="low" data-i18n="audio_converter_quality_compressed">Compressed</div>
                     </div>
                 </div>
                 
-                <button class="convert-button" id="convertBtn" disabled>Loading Engine...</button>
+                <button class="convert-button" id="convertBtn" disabled data-i18n="audio_converter_loading_engine_btn">Loading Engine...</button>
             </div>
             
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing conversion...</div>
+                <div id="progressText" data-i18n="audio_converter_preparing">Preparing conversion...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -420,15 +419,15 @@
         let audioFile = null;
         let isEngineLoaded = false;
         
-        // Initialize FFmpeg with reliable loading strategy
+        // Initialize FFmpeg with ColleTools method
         async function initFFmpeg() {
             const statusEl = document.getElementById('engineStatus');
             statusEl.style.display = 'block';
-            statusEl.textContent = 'Loading audio processing engine...';
+            statusEl.textContent = window.DROPSHARE_I18N?.t('audio_converter_loading_engine') || 'Loading audio processing engine...';
 
             try {
-                // 使用可靠的加载器
-                ffmpeg = await loadFFmpegReliable();
+                // Use ColleTools-based loader
+                ffmpeg = await loadFFmpegColleTools();
                 
                 isEngineLoaded = true;
                 
@@ -440,20 +439,20 @@
                 // Enable convert button if file is loaded
                 if (audioFile) {
                     document.getElementById('convertBtn').disabled = false;
-                    document.getElementById('convertBtn').textContent = 'Convert Audio';
+                    document.getElementById('convertBtn').textContent = window.DROPSHARE_I18N?.t('audio_converter_convert_btn') || 'Convert Audio';
                 }
                 
                 console.log('FFmpeg loaded successfully');
                 
             } catch (error) {
                 console.error('Failed to load FFmpeg:', error);
-                statusEl.textContent = '✗ Failed to load audio processing engine. Please refresh the page.';
+                statusEl.textContent = window.DROPSHARE_I18N?.t('audio_converter_load_failed') || '✗ Failed to load audio processing engine. Please refresh the page.';
                 statusEl.classList.add('error');
                 
                 // Try alternative CDN after 5 seconds
                 setTimeout(async () => {
                     try {
-                        statusEl.textContent = 'Trying alternative method...';
+                        statusEl.textContent = window.DROPSHARE_I18N?.t('audio_converter_trying_alternative') || 'Trying alternative method...';
                         statusEl.classList.remove('error');
                         
                         ffmpeg = new FFmpeg();
@@ -465,16 +464,16 @@
                         });
                         
                         isEngineLoaded = true;
-                        statusEl.textContent = '✓ Audio processing engine loaded (alternative method)!';
+                        statusEl.textContent = window.DROPSHARE_I18N?.t('audio_converter_loaded_alternative') || '✓ Audio processing engine loaded (alternative method)!';
                         statusEl.classList.add('loaded');
                         
                         if (audioFile) {
                             document.getElementById('convertBtn').disabled = false;
-                            document.getElementById('convertBtn').textContent = 'Convert Audio';
+                            document.getElementById('convertBtn').textContent = window.DROPSHARE_I18N?.t('audio_converter_convert_btn') || 'Convert Audio';
                         }
                     } catch (altError) {
                         console.error('Alternative method failed:', altError);
-                        statusEl.textContent = '✗ Unable to load processing engine. Please check internet connection.';
+                        statusEl.textContent = window.DROPSHARE_I18N?.t('audio_converter_unable_to_load') || '✗ Unable to load processing engine. Please check internet connection.';
                         statusEl.classList.add('error');
                     }
                 }, 5000);
@@ -491,13 +490,13 @@
                 const convertBtn = document.getElementById('convertBtn');
                 if (isEngineLoaded) {
                     convertBtn.disabled = false;
-                    convertBtn.textContent = 'Convert Audio';
+                    convertBtn.textContent = window.DROPSHARE_I18N?.t('audio_converter_convert_btn') || 'Convert Audio';
                 } else {
                     convertBtn.disabled = true;
-                    convertBtn.textContent = 'Loading Engine...';
+                    convertBtn.textContent = window.DROPSHARE_I18N?.t('audio_converter_loading_engine_btn') || 'Loading Engine...';
                 }
             } else {
-                alert('Please select an audio file.');
+                alert(window.DROPSHARE_I18N?.t('audio_converter_select_file') || 'Please select an audio file.');
             }
         });
         
@@ -526,7 +525,7 @@
             // Check if already in target format
             const currentFormat = audioFile.name.split('.').pop().toLowerCase();
             if (currentFormat === format) {
-                alert('File is already in the target format!');
+                alert(window.DROPSHARE_I18N?.t('audio_converter_already_target_format') || 'File is already in the target format!');
                 return;
             }
             
@@ -540,13 +539,13 @@
                 const inputFileName = 'input.' + currentFormat;
                 const outputFileName = 'output.' + format;
                 
-                document.getElementById('progressText').textContent = 'Loading file...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N?.t('audio_converter_loading_file') || 'Loading file...';
                 document.getElementById('progressFill').style.width = '20%';
                 
                 // Write input file
                 await ffmpeg.writeFile(inputFileName, await fetchFile(audioFile));
                 
-                document.getElementById('progressText').textContent = 'Converting...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N?.t('audio_converter_converting') || 'Converting...';
                 document.getElementById('progressFill').style.width = '50%';
                 
                 // Build command based on format and quality
@@ -601,7 +600,7 @@
                 // Execute conversion
                 await ffmpeg.exec(command);
                 
-                document.getElementById('progressText').textContent = 'Creating download...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N?.t('audio_converter_creating_download') || 'Creating download...';
                 document.getElementById('progressFill').style.width = '90%';
                 
                 // Read output file
@@ -627,14 +626,14 @@
                 }
                 
                 document.getElementById('progressFill').style.width = '100%';
-                document.getElementById('progressText').textContent = '✓ Conversion complete! File downloaded.';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N?.t('audio_converter_complete') || '✓ Conversion complete! File downloaded.';
                 
             } catch (error) {
                 console.error('Conversion failed:', error);
-                document.getElementById('progressText').textContent = 'Conversion failed: ' + error.message;
+                document.getElementById('progressText').textContent = (window.DROPSHARE_I18N?.t('audio_converter_failed') || 'Conversion failed: ') + error.message;
             } finally {
                 this.disabled = false;
-                this.textContent = 'Convert Audio';
+                this.textContent = window.DROPSHARE_I18N?.t('audio_converter_convert_btn') || 'Convert Audio';
             }
         });
 
