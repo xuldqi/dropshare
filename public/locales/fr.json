@@ -836,9 +836,9 @@
   "text_ocr_recognizing": "Reconnaissance OCR... {progress}%",
   "text_recognizing_text": "Reconnaissance du texte...",
   "text_parsing_docx": "Analyse du document DOCX...",
-  "text_reading_content": "Lecture du contenu texte...",
+  "text_reading_content": "Lecture du contenu textuel...",
   "text_processing_text": "Traitement du texte...",
-  "text_no_content": "[Aucun contenu texte n'a pu être extrait]",
+  "text_no_content": "[Aucun contenu textuel n'a pu être extrait]",
   "text_copied_clipboard": "Texte copié dans le presse-papiers",
   "text_copy_failed": "Échec de la copie, veuillez sélectionner le texte manuellement",
   "text_ocr_failed": "[Reconnaissance OCR échouée : {error}]\\n\\nInformations du fichier :\\n- Nom : {filename}\\n- Taille : {size}\\n- Type : {type}",
@@ -1539,5 +1539,11 @@
   "download_all_files": "Télécharger tous les fichiers",
   "select_all": "Tout sélectionner",
   "download_txt": "Télécharger TXT",
-  "download_json": "Télécharger JSON"
+  "download_json": "Télécharger JSON",
+  "nav_privacy": "Privacy",
+  "nav_terms": "Terms",
+  "text_extractor_subtitle": "Extraire le contenu textuel des PDF, des images et des documents numérisés avec l'OCR",
+  "Made with": "Made with",
+  "by the creator of": "by the creator of",
+  "Snapdrop": "Snapdrop"
 }

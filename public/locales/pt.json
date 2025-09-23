@@ -1546,5 +1546,6 @@
   "download_all_files": "Baixar todos os arquivos",
   "select_all": "Selecionar tudo",
   "download_txt": "Baixar TXT",
-  "download_json": "Baixar JSON"
+  "download_json": "Baixar JSON",
+  "text_extractor_subtitle": "Extrair conteúdo de texto de PDFs, imagens e documentos digitalizados com OCR"
 }

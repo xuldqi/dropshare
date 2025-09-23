@@ -1210,7 +1210,6 @@
     </footer>
 
     <!-- Simple English-only language system -->
-    <script src="scripts/i18n/languages.js"></script>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -1250,8 +1249,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📄 Homepage loaded successfully');
             
-            // Initialize language selector
-            setTimeout(initializeLanguageSelector, 100);
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                });
+            } else {
+                 // Fallback for older script versions
+                 setTimeout(initializeLanguageSelector, 150);
+            }
             
             // Update navigation active state based on current page
             updateNavActiveState();

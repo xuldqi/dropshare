@@ -440,9 +440,17 @@
                     <a href="document-tools.html" class="active" data-i18n="nav.documents">Files</a>
                 </nav>
                 <div class="control-buttons">
-                    <div class="language-selector-container">
-                        <select id="language-selector" class="language-selector"></select>
-                    </div>
+                    <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                        <option value="en">English</option>
+                        <option value="zh-CN">简体中文</option>
+                        <option value="zh-TW">繁體中文</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="es">Español</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -829,22 +837,6 @@
     </script>
 
     <script>
-        function initializeLanguageSelector() {
-            const languageSelector = document.getElementById('language-selector');
-            
-            if (languageSelector && window.DROPSHARE_I18N) {
-                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
-                if (languageSelector.value !== currentLang) {
-                    languageSelector.value = currentLang;
-                }
-                
-                languageSelector.addEventListener('change', function() {
-                    const selectedLang = this.value;
-                    window.DROPSHARE_I18N.setLanguage(selectedLang);
-                });
-            }
-        }
-
         function translatePage() {
             if (typeof window.DROPSHARE_I18N === 'undefined' || typeof window.DROPSHARE_I18N.t !== 'function') {
                 return;
@@ -868,14 +860,13 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const i18n = new I18N();
-            window.DROPSHARE_I18N = i18n;
-            i18n.init().then(() => {
-                translatePage();
-                initializeLanguageSelector();
-            }).catch(error => {
-                console.error('Failed to initialize i18n:', error);
-            });
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                }).catch(error => {
+                    console.error('Failed to initialize i18n:', error);
+                });
+            }
         });
     </script>
 

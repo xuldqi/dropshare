@@ -1549,26 +1549,8 @@
   "apply_effect": "효과 적용",
   "start_merging": "병합 시작",
   "download_all_files": "모든 파일 다운로드",
-  "select_all": "모두 선택",
+  "select_all": "전체 선택",
   "download_txt": "TXT 다운로드",
-  "download_json": "JSON 다운로드"
-,
-  "bitrate_converter_title": "비트레이트 변환기",
-  "bitrate_converter_subtitle": "오디오 비트레이트 및 품질 설정 변경 - 실제 FFmpeg 처리",
-  "estimated_output_size": "예상 출력 크기",
-  "loading_engine": "엔진 로딩 중...",
-  "preparing_conversion": "변환 준비 중..."
-,
-  "current_format": "현재 형식",
-  "file_size": "파일 크기",
-  "duration": "재생 시간",
-  "target_bitrate": "목표 비트레이트",
-  "quality_low": "낮은 품질",
-  "quality_standard": "표준",
-  "quality_good": "좋은 품질",
-  "quality_high": "높은 품질",
-  "quality_custom": "사용자 정의",
-  "click_drag_upload_audio": "오디오 파일을 클릭하거나 드래그하여 업로드",
-  "supports_audio_formats": "MP3, WAV, FLAC, AAC, OGG 형식 지원",
-  "preparing": "준비 중..."
+  "download_json": "JSON 다운로드",
+  "text_extractor_subtitle": "OCR을 사용하여 PDF, 이미지 및 스캔한 문서에서 텍스트 콘텐츠 추출"
 }
