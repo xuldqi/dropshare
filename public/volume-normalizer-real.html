@@ -410,13 +410,13 @@
                 <span>DropShare</span>
             </a>
             <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
+                <a href="index.html" data-i18n="nav_home">Home</a>
+                <a href="share.html" data-i18n="nav_transfer">Transfer</a>
+                <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                <a href="audio-tools.html" class="active" data-i18n="nav_audio">Audio</a>
+                <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                <a href="document-tools.html" data-i18n="nav_files">Files</a>
             </nav>
         </div>
     </header>
@@ -428,7 +428,7 @@
         <p class="page-subtitle" data-i18n="volume_normalizer_subtitle">Normalize audio levels to consistent standards - Real FFmpeg Processing</p>
         
         <div class="normalizer-card">
-            <div class="engine-status" id="engineStatus">
+            <div class="engine-status" id="engineStatus" data-i18n="loading_audio_engine">
                 Loading audio processing engine...
             </div>
 
@@ -441,12 +441,12 @@
             
             <div class="normalize-controls" id="normalizeControls">
                 <div class="control-section">
-                    <div class="section-title">Normalization Method</div>
+                    <div class="section-title" data-i18n="normalization_method">Normalization Method</div>
                     <div class="normalization-presets">
-                        <div class="preset-btn active" data-method="peak" data-target="0">Peak (0 dB)</div>
-                        <div class="preset-btn" data-method="rms" data-target="-20">RMS (-20 dB)</div>
-                        <div class="preset-btn" data-method="loudness" data-target="-23">Broadcast (-23 LUFS)</div>
-                        <div class="preset-btn" data-method="loudness" data-target="-16">Streaming (-16 LUFS)</div>
+                        <div class="preset-btn active" data-method="peak" data-target="0" data-i18n="preset_peak">Peak (0 dB)</div>
+                        <div class="preset-btn" data-method="rms" data-target="-20" data-i18n="preset_rms">RMS (-20 dB)</div>
+                        <div class="preset-btn" data-method="loudness" data-target="-23" data-i18n="preset_broadcast">Broadcast (-23 LUFS)</div>
+                        <div class="preset-btn" data-method="loudness" data-target="-16" data-i18n="preset_streaming">Streaming (-16 LUFS)</div>
                         <div class="preset-btn" data-method="custom" data-target="0">Custom</div>
                     </div>
 
