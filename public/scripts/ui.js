@@ -175,8 +175,10 @@ class PeersUI {
     _onPeers(peers) {
         this._clearPeers();
         console.log('Received peers:', peers, 'Current peer ID:', window.currentPeerId);
-        // Show all peers like the original project
-        peers.forEach(peer => this._onPeerJoined(peer));
+        // Filter out current user's device - only show other devices
+        const otherPeers = peers.filter(peer => peer.id !== window.currentPeerId);
+        console.log('Filtered peers (excluding self):', otherPeers);
+        otherPeers.forEach(peer => this._onPeerJoined(peer));
     }
 
     _onPeerLeft(peerId) {

@@ -197,6 +197,7 @@
   "upload_image_hint": "支持 JPG、PNG、GIF、WebP 格式，最大 10MB",
   "download_compressed_image": "📥 下载压缩图片",
   "download_converted_image": "📥 下载转换图片",
+  "send_image": "📤 发送图片",
   "download_cropped_image": "📥 下载裁剪图片",
   "download_resized_image": "📥 下载调整图片",
   "preset_ratios": "预设比例",
