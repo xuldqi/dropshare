@@ -3,74 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="image_compressor_title">Image Compressor</title>
-    <meta name="description" content="Professional image compression tool to reduce file size while maintaining quality. Compress JPEG, PNG, WebP images online for free with advanced optimization.">
-
-    <!-- SEO Meta Tags -->
-    <meta name="keywords" content="image compressor, compress images, reduce image size, optimize images, jpeg compression, png compression, webp compression, image optimization, resize images, photo compressor, image size reducer, lossless compression, lossy compression, web optimization">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="DropShare">
-    <meta name="theme-color" content="#3367d6">
-    <meta name="color-scheme" content="light dark">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Image Compressor - Professional Image Optimization Online | DropShare">
-    <meta property="og:description" content="Professional image compression tool to reduce file size while maintaining quality. Compress JPEG, PNG, WebP images online for free with advanced optimization.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://dropshare.com/image-compressor-new.html">
-    <meta property="og:site_name" content="DropShare">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:image" content="https://dropshare.com/images/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Image Compressor - Professional Image Optimization Online | DropShare">
-    <meta name="twitter:description" content="Professional image compression tool to reduce file size while maintaining quality. Compress JPEG, PNG, WebP images online for free with advanced optimization.">
-    <meta name="twitter:image" content="https://dropshare.com/images/og-image.png">
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://dropshare.com/image-compressor-new.html">
-
-    <!-- Icons and Mobile Meta Tags -->
-    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="DropShare">
-    <meta name="format-detection" content="telephone=no">
-
-    <!-- Performance -->
-    <link rel="dns-prefetch" href="//www.gstatic.com">
-    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Image Compressor - DropShare",
-        "description": "Professional image compression tool to reduce file size while maintaining quality. Supports JPEG, PNG, WebP formats with advanced optimization algorithms.",
-        "url": "https://dropshare.com/image-compressor-new.html",
-        "applicationCategory": "Multimedia",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "featureList": [
-            "Lossless and lossy compression",
-            "JPEG, PNG, WebP support",
-            "Quality adjustment controls",
-            "Batch compression",
-            "Privacy-focused local processing",
-            "No file size limits"
-        ]
-    }
-    </script>
+    <title data-i18n="image_compressor_title">Image Compressor - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -118,6 +51,43 @@
             gap: 16px;
         }
 
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Language selector unified styling */
+        .language-selector-container select,
+        .language-selector select {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .language-selector-container select:hover,
+        .language-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .language-selector-container select:focus,
+        .language-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
         .nav-links a {
             color: #6b7280;
             text-decoration: none;
@@ -137,18 +107,6 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .control-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
         }
 
         .container {
@@ -426,22 +384,15 @@
         }
 
         @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 12px;
+            .preview-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
-            
-            .header-controls {
-                width: 100%;
-                justify-content: center;
-            }
-            
+
             .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 12px;
+                display: none;
             }
-            
+
             .container {
                 padding: 20px 16px;
             }
@@ -453,26 +404,411 @@
             .format-options {
                 justify-content: center;
             }
+
+            .language-selector-container select,
+            .language-selector select {
+                padding: 4px 8px;
+                font-size: 13px;
+            }
         }
     </style>    
-    <p class="page-subtitle" data-i18n="image_compressor_desc">Smartly compress images to reduce file size while preserving quality</p>
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                📷 DropShare
+            </a>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Rooms</a>
+                    <a href="image-tools.html" class="active">Images</a>
+                    <a href="audio-tools.html">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html">Files</a>
+                </nav>
+                <div class="control-buttons">
+                    <!-- Language Selector -->
+                    <div class="language-selector-container">
+                        <select id="language-selector" class="language-selector">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                <span data-i18n="back">← back</span>
+            </a>
+        </div>
+        
+        <h1 class="page-title" data-i18n="image_compressor">Image Compressor</h1>
+        <p class="page-subtitle" data-i18n="image_compressor_desc">Smartly compress images to reduce file size while preserving quality</p>
 
         <div class="compressor-card">
-            <!-- Mobile Navigation and Touch Optimization -->
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📸</div>
+                <div class="upload-text" data-i18n="upload_image_click_drag">Click to choose images or drag them here</div>
+                <div class="upload-hint" data-i18n="upload_image_hint">Supports JPG, PNG, WebP; up to 10MB</div>
+                <input type="file" id="fileInput" accept="image/*" multiple>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Image Preview and Compression Controls -->
+            <div class="image-preview" id="imagePreview">
+                <div class="preview-container">
+                    <div class="preview-item">
+                        <h3 data-i18n="common_original_image">Original Image</h3>
+                        <img id="originalImage" class="preview-image" alt="Original image">
+                        <div class="image-info">
+                            <div><span>Dimensions:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="originalFileSize"></span></div>
+                        </div>
+                    </div>
+                    <div class="preview-item">
+                        <h3 data-i18n="compressed_image">Compressed Image</h3>
+                        <img id="compressedImage" class="preview-image" alt="Compressed image">
+                        <div class="image-info">
+                            <div><span>Dimensions:</span> <span class="size" id="compressedSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="compressedFileSize"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size Reduction Display -->
+                <div class="size-reduction" id="sizeReduction" style="display: none;">
+                    <span>File size reduced by</span> <span id="reductionPercentage"></span>
+                </div>
+
+                <!-- Compression Controls -->
+                <div class="compression-controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Image quality:</span> <span class="quality-value" id="qualityValue">80%</span>
+                        </label>
+                        <input type="range" class="quality-slider" id="qualitySlider" 
+                               min="10" max="100" value="80">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Output format:</label>
+                        <div class="format-options">
+                            <div class="format-option selected" data-format="jpeg">JPEG</div>
+                            <div class="format-option" data-format="png">PNG</div>
+                            <div class="format-option" data-format="webp">WebP</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-success" id="downloadBtn">
+                        <span data-i18n="download_compressed_image">📥 Download compressed image</span>
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <span data-i18n="reset">🔄 Reset</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let originalFile = null;
+        let originalCanvas = null;
+        let compressedCanvas = null;
+
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const originalImage = document.getElementById('originalImage');
+        const compressedImage = document.getElementById('compressedImage');
+        const qualitySlider = document.getElementById('qualitySlider');
+        const qualityValue = document.getElementById('qualityValue');
+        const formatOptions = document.querySelectorAll('.format-option');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+
+        // Event listeners
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+        qualitySlider.addEventListener('input', handleQualityChange);
+        formatOptions.forEach(option => {
+            option.addEventListener('click', handleFormatChange);
+        });
+        downloadBtn.addEventListener('click', downloadCompressedImage);
+        resetBtn.addEventListener('click', resetCompressor);
+
+        // Drag & Drop handlers
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        // File selection handler
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // Process file
+        function processFile(file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file.');
+                return;
+            }
+
+            // Validate file size
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size exceeds 10MB limit.');
+                return;
+            }
+
+            originalFile = file;
+            showProgress();
+            loadImage(file);
+        }
+
+        // Show progress bar
+        function showProgress() {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // Load image
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    displayOriginalImage(img, file);
+                    compressImage();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Display original image
+        function displayOriginalImage(img, file) {
+            originalImage.src = img.src;
+            
+            // Show original image info
+            document.getElementById('originalSize').textContent = `${img.width} × ${img.height}`;
+            document.getElementById('originalFileSize').textContent = formatFileSize(file.size);
+            
+            // Create canvas for original image
+            originalCanvas = document.createElement('canvas');
+            const ctx = originalCanvas.getContext('2d');
+            originalCanvas.width = img.width;
+            originalCanvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            
+            // Show preview area
+            imagePreview.style.display = 'block';
+        }
+
+        // Compress image
+        function compressImage() {
+            if (!originalCanvas) return;
+
+            const quality = qualitySlider.value / 100;
+            const format = getSelectedFormat();
+            
+            // Create canvas for compressed image
+            compressedCanvas = document.createElement('canvas');
+            const ctx = compressedCanvas.getContext('2d');
+            compressedCanvas.width = originalCanvas.width;
+            compressedCanvas.height = originalCanvas.height;
+            
+            // Draw image
+            ctx.drawImage(originalCanvas, 0, 0);
+            
+            // Convert to specified format and quality
+            const mimeType = `image/${format}`;
+            const dataUrl = compressedCanvas.toDataURL(mimeType, quality);
+            
+            // Show compressed image
+            compressedImage.src = dataUrl;
+            
+            // Estimate compressed file size
+            const compressedSize = Math.round((dataUrl.length - 22) * 3 / 4); // 估算大小
+            document.getElementById('compressedSize').textContent = 
+                `${compressedCanvas.width} × ${compressedCanvas.height}`;
+            document.getElementById('compressedFileSize').textContent = formatFileSize(compressedSize);
+            
+            // Show reduction percentage
+            const originalSize = originalFile.size;
+            const reduction = Math.round((1 - compressedSize / originalSize) * 100);
+            if (reduction > 0) {
+                document.getElementById('reductionPercentage').textContent = `${reduction}%`;
+                document.getElementById('sizeReduction').style.display = 'block';
+            } else {
+                document.getElementById('sizeReduction').style.display = 'none';
+            }
+        }
+
+        // Get selected output format
+        function getSelectedFormat() {
+            const selected = document.querySelector('.format-option.selected');
+            return selected.dataset.format;
+        }
+
+        // Quality slider change
+        function handleQualityChange(e) {
+            const value = e.target.value;
+            qualityValue.textContent = value + '%';
+            compressImage();
+        }
+
+        // Format option change
+        function handleFormatChange(e) {
+            formatOptions.forEach(option => option.classList.remove('selected'));
+            e.target.classList.add('selected');
+            compressImage();
+        }
+
+        // Download compressed image
+        function downloadCompressedImage() {
+            if (!compressedCanvas) return;
+
+            const format = getSelectedFormat();
+            const quality = qualitySlider.value / 100;
+            const mimeType = `image/${format}`;
+            
+            compressedCanvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `compressed_${originalFile.name.split('.')[0]}.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, mimeType, quality);
+        }
+
+        // Reset compressor
+        function resetCompressor() {
+            originalFile = null;
+            originalCanvas = null;
+            compressedCanvas = null;
+            imagePreview.style.display = 'none';
+            fileInput.value = '';
+            document.getElementById('sizeReduction').style.display = 'none';
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="locales/i18n.js"></script>
+        
+    <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
     <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                    }
+                });
+            }
+        }
+
         // Initialize language system when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize language selector - standard way
-            setTimeout(() => {
-                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init().then(() => {
                     initializeLanguageSelector();
-                    translatePage();
-                    setTimeout(() => {
-                        syncLanguageSelector();
-                    }, 100);
-                }
-            }, 100);
+                });
+            } else {
+                // Fallback: try to initialize after a short delay
+                setTimeout(() => {
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.init().then(() => {
+                            initializeLanguageSelector();
+                        });
+                    }
+                }, 100);
+            }
         });
     </script>
     <!-- Share Integration -->

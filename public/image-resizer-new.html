@@ -3,74 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="image_resizer_title">Image Resizer</title>
-    <meta name="description" content="Free online image resizer tool. Resize images by pixels, percentage, or custom dimensions. Maintain aspect ratio with professional quality image scaling.">
-
-    <!-- SEO Meta Tags -->
-    <meta name="keywords" content="image resizer, resize images, image scaling, image dimensions, photo resizer, picture resizer, resize photos, image size changer, scale images, thumbnail generator, bulk resize, aspect ratio, pixel resize, percentage resize">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="DropShare">
-    <meta name="theme-color" content="#3367d6">
-    <meta name="color-scheme" content="light dark">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Image Resizer - Professional Image Scaling Online | DropShare">
-    <meta property="og:description" content="Free online image resizer tool. Resize images by pixels, percentage, or custom dimensions. Maintain aspect ratio with professional quality image scaling.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://dropshare.com/image-resizer-new.html">
-    <meta property="og:site_name" content="DropShare">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:image" content="https://dropshare.com/images/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Image Resizer - Professional Image Scaling Online | DropShare">
-    <meta name="twitter:description" content="Free online image resizer tool. Resize images by pixels, percentage, or custom dimensions. Maintain aspect ratio with professional quality image scaling.">
-    <meta name="twitter:image" content="https://dropshare.com/images/og-image.png">
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://dropshare.com/image-resizer-new.html">
-
-    <!-- Icons and Mobile Meta Tags -->
-    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="DropShare">
-    <meta name="format-detection" content="telephone=no">
-
-    <!-- Performance -->
-    <link rel="dns-prefetch" href="//www.gstatic.com">
-    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Image Resizer - DropShare",
-        "description": "Professional image resizer tool with pixel-perfect scaling, aspect ratio preservation, and multiple resize modes for web optimization and print preparation.",
-        "url": "https://dropshare.com/image-resizer-new.html",
-        "applicationCategory": "Multimedia",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "featureList": [
-            "Pixel and percentage-based resizing",
-            "Aspect ratio preservation",
-            "Custom dimension input",
-            "Batch processing",
-            "High-quality scaling algorithms",
-            "Thumbnail generation"
-        ]
-    }
-    </script>
+    <title data-i18n="image_resizer_title">Image Resizer - DropShare</title>
     <style>
         * {
             margin: 0;
@@ -118,6 +51,43 @@
             gap: 16px;
         }
 
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Language selector unified styling */
+        .language-selector-container select,
+        .language-selector select {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .language-selector-container select:hover,
+        .language-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .language-selector-container select:focus,
+        .language-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
         .nav-links a {
             color: #6b7280;
             text-decoration: none;
@@ -137,18 +107,6 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .control-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
         }
 
         .container {
@@ -446,47 +404,609 @@
             transition: width 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .header-controls {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 12px;
-            }
+            @media (max-width: 768px) {
+                .nav-links {
+                    display: none;
+                }
 
-            .container {
-                padding: 20px 16px;
-            }
+                .container {
+                    padding: 20px 16px;
+                }
 
-            .preview-container,
-            .controls-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
+                .preview-container,
+                .controls-grid {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+                }
 
-            .action-buttons {
-                flex-direction: column;
-            }
+                .action-buttons {
+                    flex-direction: column;
+                }
 
-            .preset-buttons {
-                grid-template-columns: 1fr;
+                .preset-buttons {
+                    grid-template-columns: 1fr;
+                }
+
+                .language-selector-container select,
+                .language-selector select {
+                    padding: 4px 8px;
+                    font-size: 13px;
+                }
             }
-        }
     </style>    
-    <h1 class="page-title" data-i18n="image_resizer_title">Image Resizer</h1>
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                📏 DropShare
+            </a>
+            <div class="header-controls">
+                <nav class="nav-links">
+                    <a href="share.html">Transfer</a>
+                    <a href="share.html#rooms">Multi-Room</a>
+                    <a href="image-tools.html" class="active">Images</a>
+                    <a href="audio-tools.html">Audio</a>
+                    <a href="video-tools.html">Video</a>
+                    <a href="document-tools.html">Files</a>
+                </nav>
+                <div class="control-buttons">
+                    <!-- Language Selector -->
+                    <div class="language-selector-container">
+                        <select id="language-selector" class="language-selector">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                <span data-i18n="back">← back</span>
+            </a>
+        </div>
+        
+        <h1 class="page-title" data-i18n="image_resizer">Image Resizer</h1>
         <p class="page-subtitle" data-i18n="image_resizer_desc">Intelligently resize images with multiple presets and custom options</p>
 
         <div class="resizer-card">
-            <script src="device-selector.js"></script>
+            <!-- Upload area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📏</div>
+                <div class="upload-text" data-i18n="upload_image_click_drag">Click to select image or drag here</div>
+                <div class="upload-hint" data-i18n="upload_image_formats_hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <!-- Progress bar -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Resize controls -->
+            <div class="resize-controls" id="resizeControls">
+                <div class="controls-grid">
+                    <!-- Size settings -->
+                    <div class="control-section">
+                        <div class="section-title" data-i18n="size_settings">📐 Size Settings</div>
+                        
+                        <div class="preset-buttons">
+                            <button class="preset-btn" data-size="320,240">320×240</button>
+                            <button class="preset-btn" data-size="640,480">640×480</button>
+                            <button class="preset-btn" data-size="800,600">800×600</button>
+                            <button class="preset-btn" data-size="1024,768">1024×768</button>
+                            <button class="preset-btn" data-size="1920,1080">1920×1080</button>
+                            <button class="preset-btn" data-size="custom" data-i18n="custom">Custom</button>
+                        </div>
+
+                        <div class="custom-inputs">
+                            <input type="number" class="dimension-input" id="widthInput" data-i18n-placeholder="width" placeholder="Width" min="1">
+                            <span>×</span>
+                            <input type="number" class="dimension-input" id="heightInput" data-i18n-placeholder="height" placeholder="Height" min="1">
+                        </div>
+
+                        <div class="lock-aspect">
+                            <input type="checkbox" class="checkbox" id="lockAspect" checked>
+                            <label for="lockAspect" data-i18n="lock_aspect_ratio">Lock aspect ratio</label>
+                        </div>
+                    </div>
+
+                    <!-- Scale settings -->
+                    <div class="control-section">
+                        <div class="section-title">🔍 Scale Settings</div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">Scale percentage:</label>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <input type="range" id="scaleSlider" min="10" max="500" value="100" 
+                                       style="flex: 1; height: 6px; border-radius: 3px; background: #e5e7eb; outline: none; -webkit-appearance: none;">
+                                <input type="number" class="percentage-input" id="scaleInput" value="100" min="10" max="500">
+                                <span>%</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500;">Resampling method:</label>
+                            <select class="resampling-select" id="resamplingMethod">
+                                <option value="auto">Auto select</option>
+                                <option value="smooth">Smooth (for enlarging)</option>
+                                <option value="pixelated">Pixelated (keep sharp)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="btn btn-primary" id="resizeBtn">
+                        <span data-i18n="start_resize">📏 Start Resize</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Image preview -->
+            <div class="image-preview" id="imagePreview">
+                <div class="preview-container">
+                    <div class="preview-item">
+                        <h3 data-i18n="common_original_image">Original Image</h3>
+                        <img id="originalImage" class="preview-image" alt="Original Image">
+                        <div class="image-info">
+                            <div><span>Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="originalFileSize"></span></div>
+                        </div>
+                    </div>
+                    <div class="preview-item">
+                        <h3 data-i18n="resized_image">Resized Image</h3>
+                        <canvas id="resizedImage" class="preview-image"></canvas>
+                        <div class="image-info">
+                            <div><span>Size:</span> <span class="size" id="resizedSize"></span></div>
+                            <div><span>Estimated size:</span> <span class="size" id="resizedFileSize"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size comparison -->
+                <div class="size-comparison" id="sizeComparison"></div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-success" id="downloadBtn" style="display: none;">
+                    <span data-i18n="download_resized_image">📥 Download Resized Image</span>
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    <span data-i18n="select_again">🔄 Select Again</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let originalFile = null;
+        let originalCanvas = null;
+        let resizedCanvas = null;
+        let originalAspectRatio = 1;
+
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const resizeControls = document.getElementById('resizeControls');
+        const imagePreview = document.getElementById('imagePreview');
+        const originalImage = document.getElementById('originalImage');
+        const resizedImage = document.getElementById('resizedImage');
+        const widthInput = document.getElementById('widthInput');
+        const heightInput = document.getElementById('heightInput');
+        const lockAspect = document.getElementById('lockAspect');
+        const scaleSlider = document.getElementById('scaleSlider');
+        const scaleInput = document.getElementById('scaleInput');
+        const resamplingMethod = document.getElementById('resamplingMethod');
+        const resizeBtn = document.getElementById('resizeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+
+        // Event listeners
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        widthInput.addEventListener('input', handleDimensionChange);
+        heightInput.addEventListener('input', handleDimensionChange);
+        scaleSlider.addEventListener('input', handleScaleChange);
+        scaleInput.addEventListener('input', handleScaleInputChange);
+
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', handlePresetChange);
+        });
+
+        resizeBtn.addEventListener('click', performResize);
+        downloadBtn.addEventListener('click', downloadResizedImage);
+        resetBtn.addEventListener('click', resetResizer);
+
+        // Drag and drop handling
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        // File selection handling
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // Process file
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert("Please select an image file");
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert("File size cannot exceed 10MB");
+                return;
+            }
+
+            originalFile = file;
+            showProgress();
+            loadImage(file);
+        }
+
+        // Show progress bar
+        function showProgress() {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // Load image
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    setupResizer(this, file);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Setup resizer
+        function setupResizer(img, file) {
+            originalImage.src = img.src;
+            originalAspectRatio = img.width / img.height;
+            
+            // Display original image info
+            document.getElementById('originalSize').textContent = `${img.width} × ${img.height}`;
+            document.getElementById('originalFileSize').textContent = formatFileSize(file.size);
+            
+            // Create canvas for original image
+            originalCanvas = document.createElement('canvas');
+            const ctx = originalCanvas.getContext('2d');
+            originalCanvas.width = img.width;
+            originalCanvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            
+            // Initialize input fields
+            widthInput.value = img.width;
+            heightInput.value = img.height;
+            
+            // Show control area
+            resizeControls.style.display = 'block';
+        }
+
+        // Dimension input change
+        function handleDimensionChange(e) {
+            if (lockAspect.checked) {
+                if (e.target === widthInput) {
+                    const width = parseInt(widthInput.value) || 0;
+                    heightInput.value = Math.round(width / originalAspectRatio);
+                } else {
+                    const height = parseInt(heightInput.value) || 0;
+                    widthInput.value = Math.round(height * originalAspectRatio);
+                }
+            }
+            updateScaleFromDimensions();
+        }
+
+        // Scale slider change
+        function handleScaleChange(e) {
+            const scale = e.target.value;
+            scaleInput.value = scale;
+            updateDimensionsFromScale(scale);
+        }
+
+        // Scale input change
+        function handleScaleInputChange(e) {
+            const scale = Math.max(10, Math.min(500, parseInt(e.target.value) || 100));
+            scaleSlider.value = scale;
+            scaleInput.value = scale;
+            updateDimensionsFromScale(scale);
+        }
+
+        // Update dimensions from scale
+        function updateDimensionsFromScale(scale) {
+            if (!originalCanvas) return;
+            
+            const newWidth = Math.round(originalCanvas.width * scale / 100);
+            const newHeight = Math.round(originalCanvas.height * scale / 100);
+            
+            widthInput.value = newWidth;
+            heightInput.value = newHeight;
+        }
+
+        // Update scale from dimensions
+        function updateScaleFromDimensions() {
+            if (!originalCanvas) return;
+            
+            const width = parseInt(widthInput.value) || 0;
+            const scale = Math.round((width / originalCanvas.width) * 100);
+            
+            scaleSlider.value = scale;
+            scaleInput.value = scale;
+        }
+
+        // Preset size change
+        function handlePresetChange(e) {
+            presetBtns.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            const sizeData = e.target.dataset.size;
+            if (sizeData !== 'custom') {
+                const [width, height] = sizeData.split(',').map(Number);
+                widthInput.value = width;
+                heightInput.value = height;
+                updateScaleFromDimensions();
+            }
+        }
+
+        // Perform resize
+        function performResize() {
+            if (!originalCanvas) return;
+            
+            const targetWidth = parseInt(widthInput.value) || originalCanvas.width;
+            const targetHeight = parseInt(heightInput.value) || originalCanvas.height;
+            
+            if (targetWidth <= 0 || targetHeight <= 0) {
+                alert("Please set valid dimensions");
+                return;
+            }
+            
+            // Create resized canvas
+            resizedCanvas = document.createElement('canvas');
+            const ctx = resizedCanvas.getContext('2d');
+            resizedCanvas.width = targetWidth;
+            resizedCanvas.height = targetHeight;
+            
+            // Set resampling method
+            const method = resamplingMethod.value;
+            if (method === 'smooth') {
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+            } else if (method === 'pixelated') {
+                ctx.imageSmoothingEnabled = false;
+            } else {
+                // Auto select
+                ctx.imageSmoothingEnabled = targetWidth > originalCanvas.width || targetHeight > originalCanvas.height;
+                ctx.imageSmoothingQuality = 'high';
+            }
+            
+            // Draw resized image
+            ctx.drawImage(originalCanvas, 0, 0, targetWidth, targetHeight);
+            
+            // Show preview
+            showPreview();
+        }
+
+        // Show preview function
+        function showPreview() {
+            if (!resizedCanvas) return;
+            
+            // Set canvas styles
+            resizedImage.width = resizedCanvas.width;
+            resizedImage.height = resizedCanvas.height;
+            const ctx = resizedImage.getContext('2d');
+            ctx.drawImage(resizedCanvas, 0, 0);
+            
+            // Update info
+            document.getElementById('resizedSize').textContent = 
+                `${resizedCanvas.width} × ${resizedCanvas.height}`;
+            
+            // Estimate file size
+            const estimatedSize = Math.round(resizedCanvas.width * resizedCanvas.height * 3 * 0.7);
+            document.getElementById('resizedFileSize').textContent = formatFileSize(estimatedSize);
+            
+            // Show size comparison
+            const originalPixels = originalCanvas.width * originalCanvas.height;
+            const newPixels = resizedCanvas.width * resizedCanvas.height;
+            const changePercent = Math.round((newPixels / originalPixels) * 100);
+            
+            const sizeComparison = document.getElementById('sizeComparison');
+            if (changePercent > 100) {
+                sizeComparison.textContent = `Image size increased by ${changePercent - 100}%`;
+            } else if (changePercent < 100) {
+                sizeComparison.textContent = `Image size reduced by ${100 - changePercent}%`;
+            } else {
+                sizeComparison.textContent = 'Image size unchanged';
+            }
+            sizeComparison.style.display = 'block';
+            
+            // Show preview area and download button
+            imagePreview.style.display = 'block';
+            downloadBtn.style.display = 'inline-flex';
+        }
+
+        // Download resized image
+        function downloadResizedImage() {
+            if (!resizedCanvas) return;
+            
+            const format = originalFile.type.includes('png') ? 'image/png' : 'image/jpeg';
+            const quality = format === 'image/jpeg' ? 0.9 : undefined;
+            
+            resizedCanvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `resized_${originalFile.name}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, format, quality);
+        }
+
+        // Reset resizer
+        function resetResizer() {
+            originalFile = null;
+            originalCanvas = null;
+            resizedCanvas = null;
+            originalAspectRatio = 1;
+            
+            resizeControls.style.display = 'none';
+            imagePreview.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            fileInput.value = '';
+            
+            // Reset input fields
+            widthInput.value = '';
+            heightInput.value = '';
+            scaleSlider.value = 100;
+            scaleInput.value = 100;
+            
+            // Reset preset buttons
+            presetBtns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('sizeComparison').style.display = 'none';
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Slider styles
+        const style = document.createElement('style');
+        style.textContent = `
+            #scaleSlider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #3367d6;
+                cursor: pointer;
+            }
+            
+            #scaleSlider::-moz-range-thumb {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #3367d6;
+                cursor: pointer;
+                border: none;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    
+    <!-- Load i18n system -->
+    <script src="locales/i18n.js"></script>
+        
+    <!-- Mobile Navigation and Touch Optimization -->
+    <script src="scripts/mobile-navigation.js"></script>
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                    }
+                });
+            }
+        }
+
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init().then(() => {
+                    initializeLanguageSelector();
+                });
+            } else {
+                // Fallback: try to initialize after a short delay
+                setTimeout(() => {
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.init().then(() => {
+                            initializeLanguageSelector();
+                        });
+                    }
+                }, 100);
+            }
+        });
+    </script>
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
 </body>
 </html>
