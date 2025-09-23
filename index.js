@@ -58,6 +58,49 @@ const publicRun = process.argv[2];
 
 app.use(limiter);
 
+// FFmpeg 代理路由，解决CORS问题
+app.get('/ffmpeg-proxy/*', async (req, res) => {
+    try {
+        const targetUrl = req.params[0]; // 获取 * 匹配的部分
+        
+        // 安全检查：只允许访问已知的FFmpeg CDN
+        const allowedDomains = [
+            'unpkg.com',
+            'cdn.jsdelivr.net',
+            'fastly.jsdelivr.net'
+        ];
+        
+        const urlObj = new URL(targetUrl.startsWith('http') ? targetUrl : `https://${targetUrl}`);
+        if (!allowedDomains.includes(urlObj.hostname)) {
+            return res.status(403).json({ error: 'Domain not allowed' });
+        }
+        
+        // 代理请求到目标URL
+        const https = require('https');
+        const request = https.get(targetUrl, (response) => {
+            // 设置适当的CORS头
+            res.set({
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Content-Type': response.headers['content-type'] || 'application/javascript',
+                'Cache-Control': 'public, max-age=3600' // 缓存1小时
+            });
+            
+            response.pipe(res);
+        });
+        
+        request.on('error', (error) => {
+            console.error('FFmpeg proxy error:', error);
+            res.status(500).json({ error: 'Proxy request failed' });
+        });
+        
+    } catch (error) {
+        console.error('FFmpeg proxy error:', error);
+        res.status(500).json({ error: 'Invalid request' });
+    }
+});
+
 // ensure correct client ip and not the ip of the reverse proxy is used for rate limiting on render.com
 // see https://github.com/express-rate-limit/express-rate-limit#troubleshooting-proxy-issues
 app.set('trust proxy', 5);

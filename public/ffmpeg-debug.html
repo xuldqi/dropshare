@@ -71,6 +71,12 @@
     </div>
     
     <div class="test-section">
+        <h2>FFmpeg Proxy Test</h2>
+        <div id="proxy-results"></div>
+        <button onclick="testFFmpegProxy()" id="proxy-btn">Test Proxy Loading</button>
+    </div>
+    
+    <div class="test-section">
         <h2>FFmpeg Loading Test</h2>
         <div id="ffmpeg-results"></div>
         <button onclick="testFFmpegLoading()" id="ffmpeg-btn">Load FFmpeg Core</button>
@@ -214,6 +220,69 @@
             }
             
             setStatus('script-results', results, allLoaded ? 'success' : 'error');
+        }
+        
+        async function testFFmpegProxy() {
+            const btn = document.getElementById('proxy-btn');
+            btn.disabled = true;
+            
+            addLog('Testing FFmpeg proxy loading...', 'info');
+            
+            try {
+                // 测试代理端点
+                addLog('Testing proxy endpoint...', 'info');
+                const proxyResponse = await fetch('/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js');
+                
+                if (!proxyResponse.ok) {
+                    throw new Error(`Proxy request failed: ${proxyResponse.status}`);
+                }
+                
+                addLog('Proxy endpoint working!', 'success');
+                
+                if (!window.FFmpegWASM || !window.FFmpegUtil) {
+                    throw new Error('FFmpeg scripts not loaded. Run script loading test first.');
+                }
+                
+                const { FFmpeg } = window.FFmpegWASM;
+                const { toBlobURL } = window.FFmpegUtil;
+                
+                const ffmpeg = new FFmpeg();
+                
+                ffmpeg.on('log', ({ message }) => {
+                    addLog(`FFmpeg: ${message}`, 'info');
+                });
+                
+                addLog('Loading via proxy...', 'info');
+                
+                const proxyBaseURL = '/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+                
+                const coreURL = await toBlobURL(`${proxyBaseURL}/ffmpeg-core.js`, 'text/javascript');
+                const wasmURL = await toBlobURL(`${proxyBaseURL}/ffmpeg-core.wasm`, 'application/wasm');
+                
+                addLog('Core files downloaded via proxy, initializing...', 'info');
+                
+                await ffmpeg.load({ coreURL, wasmURL });
+                
+                addLog('FFmpeg loaded successfully via proxy!', 'success');
+                setStatus('proxy-results', '<div class="status success">✅ Proxy loading successful!</div>', 'success');
+                
+                // Test basic functionality
+                addLog('Testing proxy-loaded FFmpeg functionality...', 'info');
+                await ffmpeg.writeFile('test.txt', new TextEncoder().encode('Hello Proxy FFmpeg!'));
+                const data = await ffmpeg.readFile('test.txt');
+                
+                if (data.length > 0) {
+                    addLog('Proxy FFmpeg file operations working!', 'success');
+                } else {
+                    addLog('Proxy FFmpeg file operations failed', 'error');
+                }
+                
+            } catch (error) {
+                addLog(`Proxy loading failed: ${error.message}`, 'error');
+                setStatus('proxy-results', `<div class="status error">❌ Proxy failed: ${error.message}</div>`, 'error');
+            } finally {
+                btn.disabled = false;
+            }
         }
         
         async function testFFmpegLoading() {
