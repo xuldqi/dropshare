@@ -178,8 +178,11 @@ class Peer {
     _setPeerId(request) {
         if (request.peerId) {
             this.id = request.peerId;
-        } else {
+        } else if (request.headers.cookie) {
             this.id = request.headers.cookie.replace('peerid=', '');
+        } else {
+            // Generate a random peer ID if no cookie is present
+            this.id = Math.random().toString(36).substr(2, 16);
         }
     }
 
