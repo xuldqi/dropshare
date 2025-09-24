@@ -769,6 +769,8 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
             margin-bottom: 40px;
+            /* 统一三列左对齐 */
+            justify-items: start;
         }
 
         .footer-section h3 {
@@ -783,6 +785,9 @@
             padding: 0;
             margin: 0;
         }
+
+        /* 确保每个区块文本左对齐 */
+        .footer-section { text-align: left; }
 
         .footer-links li {
             margin-bottom: 12px;
@@ -940,7 +945,9 @@
             .footer-grid {
                 grid-template-columns: 1fr;
                 gap: 30px;
-                text-align: center;
+                /* 移动端也保持左对齐 */
+                text-align: left;
+                justify-items: start;
             }
 
             .footer-bottom {
