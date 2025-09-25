@@ -373,6 +373,37 @@
             gap: 16px;
         }
 
+        /* Hamburger (hidden on desktop) */
+        .hamburger {
+            display: none;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+        }
+        .hamburger span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: #374151;
+            position: relative;
+        }
+        .hamburger span::before,
+        .hamburger span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 18px;
+            height: 2px;
+            background: #374151;
+        }
+        .hamburger span::before { top: -6px; }
+        .hamburger span::after { top: 6px; }
+
         .nav-links {
             display: flex;
             gap: 20px;
@@ -668,6 +699,11 @@
             line-height: 1.6;
         }
 
+        /* 移动端隐藏首页三个说明模块（footer 上方） */
+        @media (max-width: 768px) {
+            .features { display: none; }
+        }
+
         /* Popular Tools */
         .popular {
             padding: 100px 0;
@@ -855,6 +891,26 @@
             font-size: 14px;
         }
 
+        /* 自定义语言菜单（移动端定位在按钮下方） */
+        .lang-menu {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            margin-top: 6px;
+            width: 200px;
+            max-height: 60vh;
+            overflow: auto;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            display: none;
+        }
+        .lang-menu.open { display: block; }
+        .lang-item { padding: 10px 12px; font-size: 14px; color: #374151; cursor: pointer; }
+        .lang-item:hover { background: #f3f4f6; }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-container {
@@ -867,6 +923,39 @@
                 padding: 16px 0;
             }
             
+            .hamburger { display: inline-flex; }
+
+            /* 折叠导航：默认隐藏，展开时纵向显示 */
+            .nav-links { display: none; width: 100%; }
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 16px;
+                position: fixed;
+                top: 64px; /* header 高度附近 */
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                border-bottom: 1px solid #e5e7eb;
+                z-index: 2001;
+            }
+
+            .menu-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.35);
+                z-index: 1999;
+                display: none;
+            }
+            .menu-backdrop.show { display: block; }
+
+            /* 顶部控制条：左汉堡右语言按钮 */
+            .header-controls { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+            .control-buttons { min-width: auto !important; justify-content: flex-end !important; }
+            .hamburger { background: rgba(255,255,255,0.95); border: 1px solid #e5e7eb; border-radius: 10px; }
+
             .hero {
                 padding-top: 120px;
             }
@@ -911,11 +1000,13 @@
                 gap: 8px;
             }
             
-            .nav-links {
-                display: flex;
+            /* 覆盖旧样式：移动端默认隐藏导航，使用汉堡展开 */
+            .nav-links { display: none !important; }
+            .nav-links.mobile-open {
+                display: flex !important;
+                flex-direction: column;
                 gap: 8px;
-                flex-wrap: wrap;
-                justify-content: center;
+                width: 100%;
             }
             
             .nav-links a {
@@ -931,11 +1022,7 @@
                 justify-content: center;
             }
 
-            .language-selector-container select,
-            .language-selector select {
-                padding: 4px 8px;
-                font-size: 13px;
-            }
+            .language-selector select { display: none; }
 
             .site-footer {
                 padding: 40px 20px 30px;
@@ -997,11 +1084,127 @@
                 font-size: 15px;
             }
         }
+        
+        /* 移动端按钮修复 - 内嵌确保加载 */
+        @media (max-width: 768px) {
+            .btn, .btn-primary, .btn-secondary {
+                pointer-events: auto !important;
+                touch-action: manipulation !important;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+                cursor: pointer !important;
+                position: relative !important;
+                z-index: 10 !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                background-color: inherit !important;
+                min-height: 44px !important;
+                min-width: 44px !important;
+                user-select: none !important;
+                -webkit-user-select: none !important;
+            }
+            
+            .hero-buttons .btn {
+                display: block !important;
+                width: 100% !important;
+                max-width: 280px !important;
+                margin: 0 auto !important;
+                padding: 16px 24px !important;
+                text-align: center !important;
+                text-decoration: none !important;
+                border-radius: 8px !important;
+                font-weight: 600 !important;
+                font-size: 16px !important;
+                line-height: 1.4 !important;
+            }
+            
+            .btn-primary {
+                background: white !important;
+                color: #1e40af !important;
+                border: none !important;
+            }
+            
+            .btn-secondary {
+                background: transparent !important;
+                color: white !important;
+                border: 2px solid white !important;
+            }
+            
+            .btn:active {
+                transform: scale(0.98) !important;
+                transition: transform 0.1s ease !important;
+            }
+            
+            .category-card {
+                pointer-events: auto !important;
+                touch-action: manipulation !important;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+                cursor: pointer !important;
+            }
+        }
     </style>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
     <script src="/locales/i18n.js"></script>
+    <script src="mobile-button-fix.js"></script>
+    <script>
+        // 强制移动端按钮修复 - 内嵌确保执行
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 强制移动端按钮修复');
+            
+            const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                console.log('📱 移动设备检测到，应用按钮修复');
+                
+                function forceFixButtons() {
+                    const selectors = ['.btn', '.btn-primary', '.btn-secondary', '.category-card', 'a[href]'];
+                    
+                    selectors.forEach(selector => {
+                        document.querySelectorAll(selector).forEach(element => {
+                            // 强制样式修复
+                            element.style.pointerEvents = 'auto';
+                            element.style.touchAction = 'manipulation';
+                            element.style.webkitTapHighlightColor = 'rgba(0, 0, 0, 0.1)';
+                            element.style.cursor = 'pointer';
+                            element.style.opacity = '1';
+                            element.style.visibility = 'visible';
+                            element.style.position = 'relative';
+                            element.style.zIndex = '10';
+                            
+                            // 强制事件处理
+                            element.addEventListener('click', function(e) {
+                                console.log('🎯 按钮点击:', this.textContent?.trim() || this.tagName);
+                                if (this.href && this.tagName === 'A') {
+                                    e.preventDefault();
+                                    window.location.href = this.href;
+                                }
+                            }, true);
+                            
+                            // 触摸反馈
+                            element.addEventListener('touchstart', function() {
+                                this.style.transform = 'scale(0.98)';
+                            }, {passive: true});
+                            
+                            element.addEventListener('touchend', function() {
+                                this.style.transform = 'scale(1)';
+                            }, {passive: true});
+                        });
+                    });
+                    
+                    console.log('✅ 强制按钮修复完成');
+                }
+                
+                // 立即执行
+                forceFixButtons();
+                
+                // 延迟执行确保所有元素都加载
+                setTimeout(forceFixButtons, 500);
+                setTimeout(forceFixButtons, 1000);
+            }
+        });
+    </script>
 </head>
 
 <body style="display: block; overflow-y: auto;">
@@ -1016,7 +1219,8 @@
             </div>
 
             <div class="header-controls">
-                <nav class="nav-links">
+                <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                <nav class="nav-links" id="mobileNavLinks">
                     <a href="share.html" data-i18n="nav_transfer">Transfer</a>
                     <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
                     <a href="image-tools.html" data-i18n="nav_images">Images</a>
@@ -1024,8 +1228,9 @@
                     <a href="video-tools.html" data-i18n="nav_video">Video</a>
                     <a href="document-tools.html" data-i18n="nav_files">Files</a>
                 </nav>
-                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end;">
-                    <div class="language-selector">
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">Language</button>
                         <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
                             <option value="en">English</option>
                             <option value="zh-CN">简体中文</option>
@@ -1037,11 +1242,13 @@
                             <option value="pt">Português</option>
                             <option value="es">Español</option>
                         </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
+    <div class="menu-backdrop" id="menuBackdrop"></div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1280,6 +1487,96 @@
                     this.classList.add('active');
                 });
             });
+
+            // 移动端汉堡菜单展开/收起
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNav = document.getElementById('mobileNavLinks');
+            const menuBackdrop = document.getElementById('menuBackdrop');
+            if (hamburgerBtn && mobileNav) {
+                const closeMenu = () => {
+                    mobileNav.classList.remove('mobile-open');
+                    if (menuBackdrop) menuBackdrop.classList.remove('show');
+                    if (langMenu) langMenu.classList.remove('open');
+                    if (langToggle) langToggle.setAttribute('aria-expanded','false');
+                };
+                hamburgerBtn.addEventListener('click', () => {
+                    const willOpen = !mobileNav.classList.contains('mobile-open');
+                    mobileNav.classList.toggle('mobile-open');
+                    if (menuBackdrop) menuBackdrop.classList.toggle('show', willOpen);
+                    // 打开菜单时关闭语言菜单
+                    if (willOpen && langMenu) langMenu.classList.remove('open');
+                });
+                if (menuBackdrop) menuBackdrop.addEventListener('click', closeMenu);
+                // 路由或哈希变化时关闭
+                window.addEventListener('hashchange', closeMenu);
+                window.addEventListener('popstate', closeMenu);
+                // 点击任一链接后关闭
+                navLinks.forEach(a => a.addEventListener('click', closeMenu));
+                // 尺寸变化到桌面端时强制关闭
+                const mql = window.matchMedia('(min-width: 769px)');
+                mql.addEventListener('change', e => { if (e.matches) closeMenu(); });
+            }
+
+            // 自定义语言菜单：移动端按钮定位弹出，宽度200px、最大高60vh
+            const langSelect = document.getElementById('language-selector');
+            const langToggle = document.getElementById('langToggle');
+            const langMenu = document.getElementById('langMenu');
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            if (langSelect && langToggle && langMenu) {
+            const syncToggleLabel = () => {
+                    if (!langSelect || langSelect.selectedIndex < 0) return;
+                    const opt = langSelect.options[langSelect.selectedIndex];
+                    const text = opt ? opt.textContent : 'Language';
+                    langToggle.textContent = text;
+                };
+                const buildMenu = () => {
+                    langMenu.innerHTML = '';
+                    Array.from(langSelect.options).forEach(opt => {
+                        const item = document.createElement('div');
+                        item.className = 'lang-item';
+                        item.setAttribute('role','option');
+                        item.dataset.value = opt.value;
+                        item.textContent = opt.textContent;
+                        item.addEventListener('click', () => {
+                            langSelect.value = opt.value;
+                            syncToggleLabel();
+                            if (window.DROPSHARE_I18N) {
+                                window.DROPSHARE_I18N.setLanguage(opt.value);
+                                translatePage();
+                            }
+                            langMenu.classList.remove('open');
+                            langToggle.setAttribute('aria-expanded','false');
+                        });
+                        langMenu.appendChild(item);
+                    });
+                };
+                const positionMenu = () => {
+                    const rect = langToggle.getBoundingClientRect();
+                    langMenu.style.left = '0px';
+                    langMenu.style.top = '100%';
+                };
+                const openMenu = () => {
+                    buildMenu(); positionMenu();
+                    langMenu.classList.add('open');
+                    langToggle.setAttribute('aria-expanded','true');
+                };
+                const closeMenu = () => {
+                    langMenu.classList.remove('open');
+                    langToggle.setAttribute('aria-expanded','false');
+                };
+                document.addEventListener('click', (e) => {
+                    if (!langMenu.contains(e.target) && !langToggle.contains(e.target)) closeMenu();
+                });
+                // 仅移动端启用自定义菜单并隐藏原生 select
+                if (isMobile) {
+                    langToggle.style.display = 'inline-flex';
+                    syncToggleLabel();
+                    langToggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (langMenu.classList.contains('open')) closeMenu(); else openMenu();
+                    });
+                }
+            }
         });
         
         function updateNavActiveState() {

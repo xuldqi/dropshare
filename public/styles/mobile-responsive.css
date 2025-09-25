@@ -8,6 +8,69 @@
     --mobile-padding: 16px;
     --mobile-font-size: 14px;
     --mobile-button-height: 44px;
+    /* 视高变量 - JS可在启动时更新为真实innerHeight值做回退 */
+    --app-vh: 100dvh;
+    --page-padding-x: clamp(16px, 4vw, 24px);
+}
+
+/* 安全区域工具类 */
+.safe-top { 
+    padding-top: max(16px, env(safe-area-inset-top)); 
+}
+
+.safe-bottom { 
+    padding-bottom: max(16px, env(safe-area-inset-bottom)); 
+}
+
+.safe-x { 
+    padding-left: max(16px, env(safe-area-inset-left)); 
+    padding-right: max(16px, env(safe-area-inset-right)); 
+}
+
+.safe-all {
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+}
+
+/* 视高单位工具类 */
+.app-full-height { 
+    min-height: var(--app-vh); 
+}
+
+.app-viewport-height {
+    height: var(--app-vh);
+}
+
+/* 容器工具类 */
+.container { 
+    padding-left: var(--page-padding-x); 
+    padding-right: var(--page-padding-x); 
+}
+
+/* 触控尺寸工具类 */
+.tap-target, button, .mobile-button { 
+    min-height: var(--mobile-button-height); 
+    min-width: var(--mobile-button-height); 
+}
+
+/* iOS键盘弹出时的样式调整 */
+body.keyboard-visible {
+    --app-vh: 100vh; /* 键盘弹出时回退到传统vh */
+}
+
+body.keyboard-visible .mobile-nav {
+    max-height: 50vh; /* 限制导航菜单高度 */
+}
+
+body.keyboard-visible .modal,
+body.keyboard-visible .popup {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 /* 汉堡菜单样式 */

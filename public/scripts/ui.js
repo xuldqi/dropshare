@@ -44,6 +44,24 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, triggering load event for dialog initialization');
     // Trigger the load event to initialize dialogs
     Events.fire('load');
+    // 设置 --app-vh 变量以修复 iOS 100vh 视高问题
+    try {
+        const setAppVhVar = () => {
+            const vh = window.innerHeight;
+            document.documentElement.style.setProperty('--app-vh', vh + 'px');
+        };
+        const throttle = (fn, wait = 120) => {
+            let last = 0; let timer;
+            return (...args) => {
+                const now = Date.now();
+                if (now - last >= wait) { last = now; fn.apply(null, args); }
+                else { clearTimeout(timer); timer = setTimeout(() => { last = Date.now(); fn.apply(null, args); }, wait - (now - last)); }
+            };
+        };
+        setAppVhVar();
+        window.addEventListener('resize', throttle(setAppVhVar, 120), { passive: true });
+        window.addEventListener('orientationchange', () => setTimeout(setAppVhVar, 200));
+    } catch (e) { /* noop */ }
 });
 
 // set display name
@@ -969,10 +987,19 @@ class Snapdrop {
         const peers = new PeersManager(server);
         const peersUI = new PeersUI();
         Events.on('load', e => {
-            const receiveDialog = new ReceiveDialog();
-            const sendTextDialog = new SendTextDialog();
-            const receiveTextDialog = new ReceiveTextDialog();
-            const toast = new Toast();
+            // 仅在页面包含对应元素时才初始化，避免空页面报错
+            if (document.getElementById('receiveDialog')) {
+                const receiveDialog = new ReceiveDialog();
+            }
+            if (document.getElementById('sendTextDialog')) {
+                const sendTextDialog = new SendTextDialog();
+            }
+            if (document.getElementById('receiveTextDialog')) {
+                const receiveTextDialog = new ReceiveTextDialog();
+            }
+            if (document.getElementById('toast')) {
+                const toast = new Toast();
+            }
             const notifications = new Notifications();
             const networkStatusUI = new NetworkStatusUI();
             const webShareTargetUI = new WebShareTargetUI();
@@ -1061,10 +1088,14 @@ const snapdrop = new Snapdrop();
 
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
+    navigator.serviceWorker.register('/service-worker.js?v=' + Date.now())
         .then(serviceWorker => {
             console.log('Service Worker registered');
             window.serviceWorker = serviceWorker
+            // Ensure immediate activation on update
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage('SKIP_WAITING');
+            }
         });
 }
 

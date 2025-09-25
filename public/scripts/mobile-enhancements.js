@@ -30,6 +30,7 @@ class MobileEnhancements {
     init() {
         if (!this.isMobile) return;
         
+        this.setupViewportHeight();
         this.setupGestureHandlers();
         this.setupAdvancedGestures();
         this.setupHapticFeedback();
@@ -43,6 +44,60 @@ class MobileEnhancements {
         
         // 显示手势提示（仅首次访问）
         this.showGestureHints();
+    }
+
+    setupViewportHeight() {
+        // 视高回退和节流功能
+        const setAppVhVar = () => {
+            const vh = window.innerHeight;
+            document.documentElement.style.setProperty('--app-vh', vh + 'px');
+        };
+
+        const throttle = (fn, wait = 100) => {
+            let last = 0; 
+            let timer;
+            return (...args) => {
+                const now = Date.now();
+                if (now - last >= wait) { 
+                    last = now; 
+                    fn.apply(null, args); 
+                } else { 
+                    clearTimeout(timer); 
+                    timer = setTimeout(() => { 
+                        last = Date.now(); 
+                        fn.apply(null, args); 
+                    }, wait - (now - last)); 
+                }
+            };
+        };
+
+        // 初始设置
+        setAppVhVar();
+
+        // 节流处理窗口尺寸变化
+        window.addEventListener('resize', throttle(setAppVhVar, 120));
+        window.addEventListener('orientationchange', () => {
+            // 延迟执行，等待浏览器完成方向改变
+            setTimeout(setAppVhVar, 200);
+        });
+
+        // iOS Safari键盘弹出处理
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+            let initialHeight = window.innerHeight;
+            
+            window.addEventListener('resize', throttle(() => {
+                const currentHeight = window.innerHeight;
+                const heightDifference = initialHeight - currentHeight;
+                
+                // 键盘弹出（高度显著减少）
+                if (heightDifference > 150) {
+                    document.body.classList.add('keyboard-visible');
+                    // 可以在这里调整UI布局
+                } else {
+                    document.body.classList.remove('keyboard-visible');
+                }
+            }, 50));
+        }
     }
 
     setupGestureHandlers() {

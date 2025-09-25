@@ -1,0 +1,111 @@
+/* 移动端按钮点击修复 CSS */
+
+/* 全局移动端触摸优化 */
+@media (max-width: 768px) {
+    /* 修复按钮无法点击问题 */
+    .btn, .btn-primary, .btn-secondary {
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        z-index: 10 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        background-color: inherit !important;
+        
+        /* 确保按钮大小足够触摸 */
+        min-height: 44px;
+        min-width: 44px;
+        
+        /* 移除可能阻止点击的样式 */
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+    
+    /* 主要按钮样式强制覆盖 */
+    .hero-buttons .btn {
+        display: block !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 0 auto !important;
+        padding: 16px 24px !important;
+        text-align: center !important;
+        text-decoration: none !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        font-size: 16px !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* 确保主按钮颜色正确 */
+    .btn-primary {
+        background: white !important;
+        color: var(--primary-800, #1e40af) !important;
+        border: none !important;
+    }
+    
+    .btn-secondary {
+        background: transparent !important;
+        color: white !important;
+        border: 2px solid white !important;
+    }
+    
+    /* 移动端点击反馈 */
+    .btn:active {
+        transform: scale(0.98) !important;
+        transition: transform 0.1s ease !important;
+    }
+    
+    /* 修复分类卡片点击 */
+    .category-card {
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+    }
+    
+    /* 移除可能干扰的hover效果 */
+    .btn:hover {
+        transform: none !important;
+    }
+    
+    /* 确保链接可点击 */
+    a.btn, a.category-card {
+        display: block !important;
+        text-decoration: none !important;
+    }
+    
+    /* 修复容器可能的问题 */
+    .hero-buttons {
+        pointer-events: auto !important;
+        z-index: 1 !important;
+    }
+    
+    .categories-grid {
+        pointer-events: auto !important;
+    }
+    
+    /* 移动端导航链接修复 */
+    .nav-links a {
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+}
+
+/* iOS Safari 特殊修复 */
+@supports (-webkit-touch-callout: none) {
+    @media (max-width: 768px) {
+        .btn, .category-card {
+            -webkit-touch-callout: default !important;
+            -webkit-user-select: none !important;
+        }
+    }
+}

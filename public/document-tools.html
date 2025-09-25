@@ -429,31 +429,100 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .header {
+                padding: 8px 0;
+            }
+            
             .header-container {
                 flex-direction: column;
                 gap: 12px;
+                padding: 0 16px;
             }
             
             .nav-links {
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 12px;
+                gap: 8px;
+            }
+            
+            .nav-links a {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+            
+            .main-content {
+                padding-top: 120px;
+                padding-left: 16px;
+                padding-right: 16px;
             }
             
             .page-title {
                 font-size: 2rem;
             }
             
+            .page-subtitle {
+                font-size: 1rem;
+            }
+            
             .tools-grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .tool-card {
+                padding: 20px;
+            }
+            
+            .tool-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            .tool-title {
+                font-size: 16px;
+            }
+            
+            .tool-description {
+                font-size: 13px;
+            }
+            
+            /* Ensure buttons are properly sized for touch */
+            .tool-card {
+                min-height: 44px;
+                cursor: pointer;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-header {
+                margin-bottom: 40px;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+                margin-bottom: 12px;
+            }
+            
+            .page-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .tool-card {
+                padding: 16px;
             }
         }
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
     <script src="/locales/i18n.js"></script>
     <script src="scripts/mobile-navigation.js"></script>
     <script src="scripts/ui.js"></script>
+    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
 </head>
 <body>
     <!-- 背景装饰图形 -->

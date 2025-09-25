@@ -5,6 +5,8 @@
     --primary-color: #4285f4;
     --peer-width: 120px;
     color-scheme: light dark;
+    /* 视高回退变量，JS 将在运行时设置为 window.innerHeight */
+    --app-vh: 100dvh;
 }
 
 /* Layout */
@@ -28,6 +30,14 @@ body {
     justify-content: center;
     overflow-y: hidden;
 }
+
+/* 安全区域工具类（移动端刘海/底部兼容） */
+.safe-top { padding-top: max(16px, env(safe-area-inset-top)); }
+.safe-bottom { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+.safe-x { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+
+/* 使用应用视高变量以避免 iOS 100vh 问题 */
+.app-full-height { min-height: var(--app-vh); }
 
 .row-reverse {
     display: flex;

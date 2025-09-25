@@ -1,3 +1,30 @@
+/* Simple SW focused on freshness for development/mobile adaptation rollout */
+const VERSION = 'v20250905_1';
+
+self.addEventListener('install', (event) => {
+  // Activate immediately
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  // Take control of uncontrolled clients ASAP
+  event.waitUntil(self.clients.claim());
+});
+
+// Network-first to always fetch latest resources during iteration
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  // Bypass opaque cross-origin requests default handling
+  event.respondWith(fetch(req, { cache: 'no-store' }).catch(() => caches.match(req)));
+});
+
+// Expose a message hook to force update from the page if needed
+self.addEventListener('message', (event) => {
+  if (event.data === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 // Bump cache to invalidate old entries when deploying UI changes
 var CACHE_NAME = 'dropshare-cache-v4';
 var urlsToCache = [
