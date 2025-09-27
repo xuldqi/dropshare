@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DropShare Test</title>
+    <meta charset="utf-8">
+    <style>
+        body { 
+            font-family: sans-serif; 
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .status {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .log {
+            background: #222;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            height: 400px;
+            overflow-y: auto;
+        }
+        .error { color: #f00; }
+        .success { color: #0f0; }
+        .info { color: #0ff; }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>DropShare WebRTC Test</h1>
+    <div class="status">
+        <h3>Test Controls</h3>
+        <button onclick="testConnection()">Test Connection</button>
+        <button onclick="clearLog()">Clear Log</button>
+        <button onclick="location.reload()">Reload</button>
+    </div>
+    <div class="status">
+        <h3>Connection Status</h3>
+        <div id="status">Initializing...</div>
+    </div>
+    <div class="status">
+        <h3>Console Log</h3>
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+        const status = document.getElementById('status');
+        
+        function addLog(msg, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.textContent = `[${timestamp}] ${msg}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function clearLog() {
+            log.innerHTML = '';
+            addLog('Log cleared', 'info');
+        }
+
+        // Override console methods to capture logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog(args.join(' '), 'info');
+        };
+
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog(args.join(' '), 'error');
+        };
+
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addLog(args.join(' '), 'error');
+        };
+
+        // Load DropShare scripts
+        addLog('Loading DropShare scripts...', 'info');
+        
+        const scripts = [
+            '/scripts/network.js',
+            '/scripts/ui.js'
+        ];
+
+        let loadedCount = 0;
+        scripts.forEach(src => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => {
+                addLog(`Loaded: ${src}`, 'success');
+                loadedCount++;
+                if (loadedCount === scripts.length) {
+                    initializeDropShare();
+                }
+            };
+            script.onerror = () => {
+                addLog(`Failed to load: ${src}`, 'error');
+            };
+            document.head.appendChild(script);
+        });
+
+        function initializeDropShare() {
+            addLog('Initializing DropShare...', 'info');
+            
+            // Check if network module is loaded
+            if (typeof ServerConnection === 'undefined') {
+                addLog('ServerConnection not found!', 'error');
+                status.textContent = 'Failed: ServerConnection not loaded';
+                return;
+            }
+
+            if (typeof PeersManager === 'undefined') {
+                addLog('PeersManager not found!', 'error');
+                status.textContent = 'Failed: PeersManager not loaded';
+                return;
+            }
+
+            try {
+                // Initialize network connection
+                window.serverConnection = new ServerConnection();
+                window.peersManager = new PeersManager(window.serverConnection);
+                
+                addLog('Network initialized', 'success');
+                status.textContent = 'Connected - Waiting for peers...';
+                
+                // Listen for events
+                window.addEventListener('peers', (e) => {
+                    const peers = e.detail;
+                    addLog(`Peers received: ${peers.length} peer(s)`, 'success');
+                    peers.forEach(p => {
+                        addLog(`  - Peer: ${p.id.substring(0,8)}...`, 'info');
+                    });
+                    status.textContent = `Connected - ${peers.length} peer(s) in room`;
+                });
+
+                window.addEventListener('peer-joined', (e) => {
+                    const peer = e.detail;
+                    addLog(`Peer joined: ${peer.id.substring(0,8)}...`, 'success');
+                });
+
+                window.addEventListener('peer-left', (e) => {
+                    const peerId = e.detail;
+                    addLog(`Peer left: ${peerId.substring(0,8)}...`, 'info');
+                });
+
+                window.addEventListener('signal', (e) => {
+                    const msg = e.detail;
+                    let signalType = 'unknown';
+                    if (msg.sdp) signalType = msg.sdp.type;
+                    else if (msg.ice) signalType = 'ice';
+                    addLog(`Signal: ${msg.sender.substring(0,8)}... → ${signalType}`, 'info');
+                });
+
+            } catch (error) {
+                addLog(`Initialization error: ${error.message}`, 'error');
+                status.textContent = 'Failed: ' + error.message;
+            }
+        }
+
+        function testConnection() {
+            addLog('Testing connection...', 'info');
+            
+            if (!window.serverConnection) {
+                addLog('No server connection!', 'error');
+                return;
+            }
+
+            if (!window.peersManager) {
+                addLog('No peers manager!', 'error');
+                return;
+            }
+
+            const peers = window.peersManager.peers;
+            const peerIds = Object.keys(peers);
+            
+            if (peerIds.length === 0) {
+                addLog('No peers connected', 'error');
+                addLog('Open this page in another browser tab', 'info');
+                return;
+            }
+
+            addLog(`Found ${peerIds.length} peer(s):`, 'success');
+            peerIds.forEach(id => {
+                addLog(`  - ${id.substring(0,8)}...`, 'info');
+                const peer = peers[id];
+                if (peer._conn) {
+                    addLog(`    Connection state: ${peer._conn.connectionState}`, 'info');
+                    addLog(`    ICE state: ${peer._conn.iceConnectionState}`, 'info');
+                    addLog(`    Channel ready: ${peer._channel ? peer._channel.readyState : 'no channel'}`, 'info');
+                }
+            });
+
+            // Try to send test message
+            if (peerIds.length > 0) {
+                const targetId = peerIds[0];
+                addLog(`Sending test message to ${targetId.substring(0,8)}...`, 'info');
+                try {
+                    peers[targetId].sendText('Hello from test page!');
+                    addLog('Test message sent!', 'success');
+                } catch (error) {
+                    addLog(`Send failed: ${error.message}`, 'error');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

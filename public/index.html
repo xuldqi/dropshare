@@ -339,7 +339,7 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--gray-200);
-            z-index: 1000;
+            z-index: 3000; /* keep above overlays */
             padding: 12px 0;
         }
 
@@ -351,6 +351,7 @@
             justify-content: space-between;
             align-items: center;
         }
+        .brand-left { display: flex; align-items: center; gap: 12px; }
 
         .logo {
             display: flex;
@@ -370,7 +371,31 @@
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 16px;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* 桌面端导航链接居中 */
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-600);
+            background: var(--primary-50);
         }
 
         /* Hamburger (hidden on desktop) */
@@ -448,16 +473,7 @@
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.1"><circle cx="30" cy="30" r="2"/></g></g></svg>');
-            opacity: 0.5;
-        }
+
 
         .hero-container {
             max-width: 1200px;
@@ -891,32 +907,36 @@
             font-size: 14px;
         }
 
-        /* 自定义语言菜单（移动端定位在按钮下方） */
+        /* Custom dropdown (placed right under current language control) */
+        .language-selector { position: relative; }
         .lang-menu {
             position: absolute;
-            left: 0;
-            top: 100%;
-            margin-top: 6px;
+            right: 0;
+            top: calc(100% + 6px);
             width: 200px;
             max-height: 60vh;
             overflow: auto;
-            background: white;
+            background: #ffffff;
             border: 1px solid #e5e7eb;
             border-radius: 10px;
-            box-shadow: var(--shadow-lg);
-            z-index: 2000;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+            z-index: 3000;
             display: none;
         }
         .lang-menu.open { display: block; }
         .lang-item { padding: 10px 12px; font-size: 14px; color: #374151; cursor: pointer; }
         .lang-item:hover { background: #f3f4f6; }
 
+        /* 保留通用语言选择器样式（与 share.html 一致） */
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-container {
                 padding: 0 16px;
-                flex-direction: column;
-                gap: 12px;
+                /* 保持水平布局，不要改为竖直 */
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
             }
             
             .header {
@@ -924,6 +944,26 @@
             }
             
             .hamburger { display: inline-flex; }
+            
+            /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+            .nav-links { display: none; }
+            
+            /* 移动端header-controls重新布局：汉堡菜单在左，语言选择器在右 */
+            .header-controls {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+            .brand-left .logo a { display: none; }
+            
+            /* 语言选择器保持在右侧 */
+            .control-buttons { 
+                min-width: auto !important; 
+                justify-content: flex-end !important; 
+            }
 
             /* 折叠导航：默认隐藏，展开时纵向显示 */
             .nav-links { display: none; width: 100%; }
@@ -939,22 +979,18 @@
                 background: #ffffff;
                 box-shadow: 0 8px 20px rgba(0,0,0,0.15);
                 border-bottom: 1px solid #e5e7eb;
-                z-index: 2001;
+                z-index: 3001;
             }
 
             .menu-backdrop {
                 position: fixed;
                 inset: 0;
                 background: rgba(0,0,0,0.35);
-                z-index: 1999;
+                z-index: 2000;
                 display: none;
+                pointer-events: auto;
             }
             .menu-backdrop.show { display: block; }
-
-            /* 顶部控制条：左汉堡右语言按钮 */
-            .header-controls { width: 100%; display: flex; align-items: center; justify-content: space-between; }
-            .control-buttons { min-width: auto !important; justify-content: flex-end !important; }
-            .hamburger { background: rgba(255,255,255,0.95); border: 1px solid #e5e7eb; border-radius: 10px; }
 
             .hero {
                 padding-top: 120px;
@@ -1022,7 +1058,19 @@
                 justify-content: center;
             }
 
+            /* 移动端采用自定义下拉：隐藏原生 select，使用按钮 + 自定义菜单 */
             .language-selector select { display: none; }
+            #langToggle {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 10px;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                background: white;
+                color: #374151;
+                font-size: 14px;
+            }
 
             .site-footer {
                 padding: 40px 20px 30px;
@@ -1211,15 +1259,16 @@
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <div class="logo">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
-                </svg>
-                <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
-            </div>
-
             <div class="header-controls">
-                <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
                 <nav class="nav-links" id="mobileNavLinks">
                     <a href="share.html" data-i18n="nav_transfer">Transfer</a>
                     <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
@@ -1230,7 +1279,7 @@
                 </nav>
                 <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
                     <div class="language-selector" id="languageSelector">
-                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">Language</button>
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
                         <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
                             <option value="en">English</option>
                             <option value="zh-CN">简体中文</option>
@@ -1423,7 +1472,8 @@
         </div>
     </footer>
 
-    <!-- Simple English-only language system -->
+    <!-- Load i18n system -->
+    <script src="locales/i18n.js"></script>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -1464,8 +1514,8 @@
             console.log('📄 Homepage loaded successfully');
             
             // Initialize i18n and translate the page
-            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
-                window.DROPSHARE_I18N.initialize().then(() => {
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
+                window.DROPSHARE_I18N.init().then(() => {
                     translatePage();
                     initializeLanguageSelector();
                 });
@@ -1524,8 +1574,15 @@
             const isMobile = window.matchMedia('(max-width: 768px)').matches;
             if (langSelect && langToggle && langMenu) {
             const syncToggleLabel = () => {
-                    if (!langSelect || langSelect.selectedIndex < 0) return;
-                    const opt = langSelect.options[langSelect.selectedIndex];
+                    if (!langSelect) return;
+                    // 若没有选中，尽力根据当前语言设置
+                    if (langSelect.selectedIndex < 0) {
+                        const cur = (window.DROPSHARE_I18N && window.DROPSHARE_I18N.getCurrentLanguage && window.DROPSHARE_I18N.getCurrentLanguage()) ||
+                                    localStorage.getItem('preferred_language') || 'en';
+                        const match = Array.from(langSelect.options).find(o => o.value === cur);
+                        if (match) langSelect.value = cur;
+                    }
+                    const opt = langSelect.options[langSelect.selectedIndex] || Array.from(langSelect.options)[0];
                     const text = opt ? opt.textContent : 'Language';
                     langToggle.textContent = text;
                 };
@@ -1570,11 +1627,22 @@
                 // 仅移动端启用自定义菜单并隐藏原生 select
                 if (isMobile) {
                     langToggle.style.display = 'inline-flex';
+                    // 尝试立即同步一次按钮文案
                     syncToggleLabel();
                     langToggle.addEventListener('click', (e) => {
                         e.preventDefault();
                         if (langMenu.classList.contains('open')) closeMenu(); else openMenu();
                     });
+                    // 当 i18n 初始化完成或语言切换时，同步按钮文案
+                    document.addEventListener('language-changed', syncToggleLabel);
+                    const afterInit = () => syncToggleLabel();
+                    if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                        // 在现有 initialize 完成后再次同步
+                        // 不重复初始化，只挂载回调
+                        setTimeout(afterInit, 400);
+                    } else {
+                        setTimeout(afterInit, 600);
+                    }
                 }
             }
         });

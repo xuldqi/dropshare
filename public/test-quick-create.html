@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速创建测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.warning { background: #fff3cd; color: #856404; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover { background: #0056b3; }
+        #log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>快速创建房间功能测试</h1>
+    
+    <div class="test-section">
+        <h3>网络状态检查</h3>
+        <div id="networkStatus" class="status">检查中...</div>
+        <button onclick="checkNetworkStatus()">重新检查网络</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>快速创建测试</h3>
+        <button id="testQuickCreate" onclick="testQuickCreate()">测试快速创建</button>
+        <button onclick="testDirectFunction()">直接调用函数</button>
+    </div>
+    
+    <div class="test-section">
+        <h3>调试日志</h3>
+        <button onclick="clearLog()">清空日志</button>
+        <div id="log"></div>
+    </div>
+    
+    <script src="scripts/network.js"></script>
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        function checkNetworkStatus() {
+            const statusDiv = document.getElementById('networkStatus');
+            
+            log('🔍 检查网络状态...');
+            
+            // 检查 window.network 对象
+            if (!window.network) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ window.network 对象不存在';
+                log('❌ window.network 对象不存在');
+                return;
+            }
+            
+            log('✅ window.network 对象存在');
+            
+            // 检查 send 方法
+            if (!window.network.send) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ window.network.send 方法不存在';
+                log('❌ window.network.send 方法不存在');
+                return;
+            }
+            
+            log('✅ window.network.send 方法存在');
+            
+            // 检查连接状态
+            const isConnected = window.network.isConnected ? window.network.isConnected() : false;
+            
+            if (isConnected) {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ 网络已连接，可以发送消息';
+                log('✅ 网络连接正常');
+            } else {
+                statusDiv.className = 'status warning';
+                statusDiv.textContent = '⚠️ 网络未连接，但对象存在';
+                log('⚠️ 网络对象存在但未连接');
+            }
+        }
+        
+        function testQuickCreate() {
+            log('🧪 开始测试快速创建功能...');
+            
+            // 模拟点击快速创建按钮
+            try {
+                // 检查函数是否存在
+                if (typeof handleQuickCreateRoom === 'function') {
+                    log('✅ handleQuickCreateRoom 函数存在');
+                    handleQuickCreateRoom();
+                    log('✅ handleQuickCreateRoom 函数调用完成');
+                } else {
+                    log('❌ handleQuickCreateRoom 函数不存在');
+                }
+            } catch (error) {
+                log('❌ 调用 handleQuickCreateRoom 时出错: ' + error.message);
+            }
+        }
+        
+        function testDirectFunction() {
+            log('🧪 直接测试快速创建逻辑...');
+            
+            try {
+                // 检查网络连接
+                if (!window.network || !window.network.send) {
+                    log('❌ 网络连接不可用');
+                    return;
+                }
+                
+                // 生成随机房间信息
+                const adjectives = ['快乐', '温馨', '舒适', '明亮', '安静'];
+                const nouns = ['房间', '空间', '聚会', '会议', '工作室'];
+                const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+                const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+                const roomName = randomAdjective + randomNoun;
+                const roomCode = Math.random().toString(36).substr(2, 8).toUpperCase();
+                
+                const message = {
+                    type: 'create-room',
+                    roomSettings: {
+                        code: roomCode,
+                        name: roomName,
+                        password: undefined,
+                        maxMembers: 10,
+                        isPrivate: false
+                    }
+                };
+                
+                log('📤 准备发送消息: ' + JSON.stringify(message, null, 2));
+                
+                window.network.send(message);
+                log('✅ 消息发送成功');
+                
+            } catch (error) {
+                log('❌ 直接测试失败: ' + error.message);
+            }
+        }
+        
+        // 定义 handleQuickCreateRoom 函数（从 share.html 复制）
+        window.handleQuickCreateRoom = function() {
+            log('🔵 快速创建房间函数被调用');
+            
+            // 检查网络连接
+            if (!window.network || !window.network.send) {
+                log('❌ 网络连接不可用，请刷新页面重试');
+                return;
+            }
+            
+            // 生成随机房间名称
+            const adjectives = ['快乐', '温馨', '舒适', '明亮', '安静', '友好', '活跃', '创意', '神秘', '梦幻'];
+            const nouns = ['房间', '空间', '聚会', '会议', '工作室', '咖啡厅', '书房', '客厅', '花园', '天地'];
+            const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+            const roomName = randomAdjective + randomNoun;
+            
+            // 生成房间代码
+            const roomCode = Math.random().toString(36).substr(2, 8).toUpperCase();
+            
+            const message = {
+                type: 'create-room',
+                roomSettings: {
+                    code: roomCode,
+                    name: roomName,
+                    password: undefined, // 无密码
+                    maxMembers: 10,
+                    isPrivate: false
+                }
+            };
+            
+            log('📤 发送快速创建房间消息: ' + JSON.stringify(message, null, 2));
+            
+            try {
+                window.network.send(message);
+                log('✅ 正在创建房间: ' + roomName);
+            } catch (error) {
+                log('❌ 发送快速创建房间消息失败: ' + error.message);
+            }
+        };
+        
+        // 页面加载完成后检查状态
+        document.addEventListener('DOMContentLoaded', () => {
+            log('📄 页面加载完成');
+            
+            // 等待网络初始化
+            setTimeout(() => {
+                checkNetworkStatus();
+            }, 1000);
+        });
+        
+        // 监听网络事件
+        if (window.Events) {
+            window.Events.on('message', (event) => {
+                log('📨 收到网络消息: ' + JSON.stringify(event.detail));
+            });
+        }
+    </script>
+</body>
+</html>

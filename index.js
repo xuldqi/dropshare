@@ -260,19 +260,35 @@ class DropShareServer {
 
     _onConnection(peer) {
         try {
-            // Check and remove existing peer with same ID to avoid duplicates
+            // Check for recent disconnection to prevent rapid reconnections
+            const now = Date.now();
+            const recentDisconnectKey = `${peer.id}-${peer.ip}`;
+            const lastDisconnect = this._recentlyDisconnected.get(recentDisconnectKey);
+            
+            if (lastDisconnect && (now - lastDisconnect < 500)) { // 减少到0.5秒
+                console.log(`Ignoring rapid reconnection from ${peer.id} (${now - lastDisconnect}ms ago)`);
+                peer.socket.close();
+                return;
+            }
+            
+            // Remove from recently disconnected list
+            this._recentlyDisconnected.delete(recentDisconnectKey);
+            
+            // Check and remove ALL existing peers with same ID across all rooms
             for (const ip in this._rooms) {
                 if (this._rooms[ip] && this._rooms[ip][peer.id]) {
                     console.log(`Found existing peer ${peer.id} in room ${ip}, removing old connection`);
                     const oldPeer = this._rooms[ip][peer.id];
+                    
+                    // Immediately remove from room to prevent self-connections
+                    delete this._rooms[ip][peer.id];
+                    
+                    // Then clean up the old connection
                     this._cancelKeepAlive(oldPeer);
                     if (oldPeer.socket) {
-                        // Mark as cleanup to avoid double-decrement in close event
                         oldPeer._isBeingReplaced = true;
                         oldPeer.socket.close();
                     }
-                    delete this._rooms[ip][peer.id];
-                    // Don't decrement here, it will be handled by the close event or is already counted
                 }
             }
             
@@ -319,6 +335,7 @@ class DropShareServer {
             this._keepAlive(peer);
 
             // send displayName
+            console.log(`📝 Sending display-name to ${peer.id}: ${peer.name.displayName}`);
             this._send(peer, {
                 type: 'display-name',
                 message: {
@@ -373,6 +390,14 @@ class DropShareServer {
             case 'pong':
                 sender.lastBeat = Date.now();
                 break;
+            case 'ping':
+                // 处理客户端主动发送的ping
+                this._send(sender, { type: 'pong' });
+                break;
+            case 'signal':
+                // 关键的WebRTC信令消息处理
+                this._handleSignal(sender, message);
+                break;
             case 'create-room':
                 this._createPrivateRoom(sender, message.roomSettings);
                 break;
@@ -391,9 +416,11 @@ class DropShareServer {
             case 'room-file-removed':
                 this._handleRoomFileRemoved(sender, message);
                 break;
+            default:
+                console.log(`未知消息类型: ${message.type} from ${sender.id.substring(0,8)}...`);
         }
 
-        // relay message to recipient
+        // relay message to recipient - 这部分对WebRTC信令至关重要
         if (message.to && this._rooms[sender.ip]) {
             const recipientId = message.to; // TODO: sanitize
             const recipient = this._rooms[sender.ip][recipientId];
@@ -422,9 +449,14 @@ class DropShareServer {
             });
         }
 
-        // notify peer about the other peers
+        // notify peer about the other peers (excluding self)
         const otherPeers = [];
         for (const otherPeerId in this._rooms[peer.ip]) {
+            // Skip if it's the same peer ID (prevents self-connection)
+            if (otherPeerId === peer.id) {
+                console.log(`⚠️  Skipping duplicate peer with same ID: ${peer.id.substring(0,8)}...`);
+                continue;
+            }
             otherPeers.push(this._rooms[peer.ip][otherPeerId].getInfo());
         }
 
@@ -440,6 +472,10 @@ class DropShareServer {
     _leaveRoom(peer) {
         if (!this._rooms[peer.ip] || !this._rooms[peer.ip][peer.id]) return;
         this._cancelKeepAlive(this._rooms[peer.ip][peer.id]);
+
+        // Record disconnection time for debouncing
+        const recentDisconnectKey = `${peer.id}-${peer.ip}`;
+        this._recentlyDisconnected.set(recentDisconnectKey, Date.now());
 
         // delete the peer
         delete this._rooms[peer.ip][peer.id];
@@ -514,6 +550,20 @@ class DropShareServer {
         if (peer && peer.timerId) {
             clearTimeout(peer.timerId);
         }
+    }
+
+    _handleSignal(sender, message) {
+        // 这是WebRTC信令处理 - 文件传输的核心
+        let signalType = 'unknown';
+        if (message.sdp) {
+            signalType = message.sdp.type; // offer, answer
+        } else if (message.ice) {
+            signalType = 'ice-candidate';
+        }
+        console.log(`📡 Signal ${sender.id.substring(0,8)}... → ${message.to.substring(0,8)}...: ${signalType}`);
+        
+        // 继续原有的消息转发逻辑
+        // 这个函数主要是为了调试，实际转发在后面的通用逻辑中进行
     }
 
     // 私密房间功能方法

@@ -1,0 +1,4 @@
+Hello DropShare! 
+This is a test file to verify that WebRTC file transfer is working correctly.
+测试中文内容。
+✅ Success!

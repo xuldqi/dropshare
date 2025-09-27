@@ -43,7 +43,9 @@ window.addEventListener('error', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, triggering load event for dialog initialization');
     // Trigger the load event to initialize dialogs
-    Events.fire('load');
+    if (window.Events) {
+        window.Events.fire('load');
+    }
     // 设置 --app-vh 变量以修复 iOS 100vh 视高问题
     try {
         const setAppVhVar = () => {
@@ -67,27 +69,29 @@ document.addEventListener('DOMContentLoaded', () => {
 // set display name
 let currentDisplayName = ''; // Store current display name
 
-Events.on('display-name', e => {
-    const me = e.detail.message;
-    currentDisplayName = me.displayName; // Store current name
-    
-    // Store current user's peer ID to global variable
-    if (me.peerId) {
-        window.currentPeerId = me.peerId;
-        console.log('Current peer ID stored:', me.peerId);
+if (window.Events) {
+    window.Events.on('display-name', e => {
+        const me = e.detail.message;
+        currentDisplayName = me.displayName; // Store current name
         
-        // Also store in displayName element's dataset for room manager use
-        const displayNameEl = document.getElementById('displayName');
-        if (displayNameEl) {
-            displayNameEl.dataset.peerId = me.peerId;
+        // Store current user's peer ID to global variable
+        if (me.peerId) {
+            window.currentPeerId = me.peerId;
+            console.log('Current peer ID stored:', me.peerId);
+            
+            // Also store in displayName element's dataset for room manager use
+            const displayNameEl = document.getElementById('displayName');
+            if (displayNameEl) {
+                displayNameEl.dataset.peerId = me.peerId;
+            }
         }
-    }
-    
-    updateDisplayName(me.displayName, me.deviceName);
-    
-    // Also update room area user name display
-    updateRoomUserName(me.displayName);
-});
+        
+        updateDisplayName(me.displayName, me.deviceName);
+        
+        // Also update room area user name display
+        updateRoomUserName(me.displayName);
+    });
+}
 
 // Update room area user name display
 function updateRoomUserName(displayName) {
@@ -1104,9 +1108,11 @@ window.addEventListener('beforeinstallprompt', e => {
         // don't display install banner when installed
         return e.preventDefault();
     } else {
-        const btn = document.querySelector('#install')
-        btn.hidden = false;
-        btn.onclick = _ => e.prompt();
+        const btn = document.querySelector('#install');
+        if (btn) {
+            btn.hidden = false;
+            btn.onclick = _ => e.prompt();
+        }
         return e.preventDefault();
     }
 });

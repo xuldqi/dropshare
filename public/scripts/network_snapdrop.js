@@ -287,12 +287,7 @@ class RTCPeer extends Peer {
                 })
                 .catch(e => this._onError(e));
         } else if (message.ice) {
-            if (this._conn.remoteDescription) {
-                this._conn.addIceCandidate(new RTCIceCandidate(message.ice))
-                    .catch(e => console.warn('Failed to add ICE candidate:', e));
-            } else {
-                console.warn('⚠️ Ignoring ICE candidate - no remote description set yet');
-            }
+            this._conn.addIceCandidate(new RTCIceCandidate(message.ice));
         }
     }
 
@@ -307,32 +302,19 @@ class RTCPeer extends Peer {
 
     _onChannelClosed() {
         console.log('RTC: channel closed', this._peerId);
-        // Only reconnect if we're the caller and haven't explicitly closed
-        if (!this._isCaller || !this._conn) return;
-        // Add a small delay to avoid rapid reconnection attempts
-        setTimeout(() => {
-            if (this._conn && this._conn.connectionState === 'failed') {
-                this._connect(this._peerId, true);
-            }
-        }, 1000);
+        if (!this.isCaller) return;
+        this._connect(this._peerId, true); // reopen the channel
     }
 
     _onConnectionStateChange(e) {
-        if (!this._conn) return; // Guard against null connection
         console.log('RTC: state changed:', this._conn.connectionState);
         switch (this._conn.connectionState) {
             case 'disconnected':
-                // Don't immediately reconnect on disconnect
+                this._onChannelClosed();
                 break;
             case 'failed':
                 this._conn = null;
-                this._channel = null;
-                // Only attempt reconnect for callers after a delay
-                if (this._isCaller) {
-                    setTimeout(() => {
-                        this._connect(this._peerId, true);
-                    }, 2000);
-                }
+                this._onChannelClosed();
                 break;
         }
     }
@@ -431,15 +413,10 @@ class PeersManager {
 
 }
 
-class WSPeer extends Peer {
-
+class WSPeer {
     _send(message) {
         message.to = this._peerId;
         this._server.send(message);
-    }
-
-    refresh() {
-        // WebSocket peers don't need refreshing
     }
 }
 
@@ -545,45 +522,7 @@ class Events {
 
 RTCPeer.config = {
     'sdpSemantics': 'unified-plan',
-    'iceServers': [
-        {
-            urls: 'stun:stun.l.google.com:19302'
-        },
-        {
-            urls: 'stun:stun1.l.google.com:19302'
-        },
-        {
-            urls: 'stun:stun2.l.google.com:19302'
-        },
-        {
-            urls: 'stun:stun.cloudflare.com:3478'
-        }
-    ]
+    'iceServers': [{
+        urls: 'stun:stun.l.google.com:19302'
+    }]
 }
-
-// Initialize network connection
-let serverConnection, peersManager;
-
-window.addEventListener('DOMContentLoaded', () => {
-    serverConnection = new ServerConnection();
-    peersManager = new PeersManager(serverConnection);
-    
-    // Expose network connection and event system globally for room manager use
-    window.network = {
-        serverConnection: serverConnection,
-        peersManager: peersManager,
-        Events: Events,
-        send: function(message) {
-            if (serverConnection && serverConnection.send) {
-                serverConnection.send(message);
-            } else {
-                console.error('ServerConnection not available for sending message:', message);
-            }
-        },
-        isConnected: function() {
-            return serverConnection && serverConnection._isConnected();
-        }
-    };
-    
-    console.log('Network system initialization completed, Events and network exposed globally');
-});

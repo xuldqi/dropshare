@@ -81,7 +81,7 @@ class MobileNavigationManager {
             langSelect.id = 'language-selector-mobile-select';
             
             // 同步语言选择
-            mobileSelect.addEventListener('change', (e) => {
+            langSelect.addEventListener('change', (e) => {
                 languageSelector.value = e.target.value;
                 languageSelector.dispatchEvent(new Event('change'));
                 
@@ -99,11 +99,11 @@ class MobileNavigationManager {
             
             // 同步桌面端语言变化到移动端
             languageSelector.addEventListener('change', (e) => {
-                mobileSelect.value = e.target.value;
+                langSelect.value = e.target.value;
             });
             
             mobileLangSelector.appendChild(langLabel);
-            mobileLangSelector.appendChild(mobileSelect);
+            mobileLangSelector.appendChild(langSelect);
             mobileNav.appendChild(mobileLangSelector);
         }
 
@@ -356,5 +356,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // 导出以供其他模块使用
-window.MobileNavigationManager = MobileNavigationManager;
 window.MobileTouchOptimizer = MobileTouchOptimizer;

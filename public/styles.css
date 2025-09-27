@@ -733,6 +733,11 @@ screen and (min-width: 1100px) {
     }
 }
 
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    header .logo svg { display: none; }
+}
+
 /* 
     iOS specific styles
 */

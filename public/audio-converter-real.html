@@ -109,14 +109,14 @@
                 }
                 
                 // Initialize FFmpeg
-                const { FFmpeg } = window.FFmpeg || window.FFmpegWASM;
-                const { toBlobURL } = window.FFmpegUtil;
+                const FFmpegClass = (window.FFmpeg && window.FFmpeg.FFmpeg) || (window.FFmpegWASM && window.FFmpegWASM.FFmpeg);
+                const { toBlobURL } = window.FFmpegUtil || window.FFmpeg;
                 
-                if (!FFmpeg || !toBlobURL) {
+                if (!FFmpegClass || !toBlobURL) {
                     throw new Error('FFmpeg libraries not available');
                 }
                 
-                ffmpeg = new FFmpeg();
+                ffmpeg = new FFmpegClass();
                 
                 // Set up event handlers
                 ffmpeg.on('log', ({ message }) => {

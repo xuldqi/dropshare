@@ -117,10 +117,13 @@ class MobileEnhancements {
             });
         });
         
-        observer.observe(document.querySelector('x-peers') || document.body, {
-            childList: true,
-            subtree: true
-        });
+        const targetElement = document.querySelector('x-peers') || document.body;
+        if (targetElement) {
+            observer.observe(targetElement, {
+                childList: true,
+                subtree: true
+            });
+        }
     }
 
     enhancePeerInteractions() {
@@ -507,6 +510,12 @@ class MobileEnhancements {
     }
 
     optimizeForMobile() {
+        // 确保document.body存在
+        if (!document.body) {
+            console.warn('Document body not available, skipping mobile optimization');
+            return;
+        }
+        
         // 添加移动端特定的CSS类
         document.body.classList.add('mobile-enhanced');
         

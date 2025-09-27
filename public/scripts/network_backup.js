@@ -1,9 +1,14 @@
+// DropShare Network Module - Version 2.1 (Updated with WebRTC fixes)
 window.URL = window.URL || window.webkitURL;
 window.isRtcSupported = !!(window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection);
 
 class ServerConnection {
 
     constructor() {
+        this._reconnectAttempts = 0;
+        this._maxReconnectAttempts = 10;
+        this._heartbeatInterval = null;
+        this._isManualDisconnect = false;
         this._connect();
         Events.on('beforeunload', e => this._disconnect());
         Events.on('pagehide', e => this._disconnect());
@@ -13,13 +18,46 @@ class ServerConnection {
     _connect() {
         clearTimeout(this._reconnectTimer);
         if (this._isConnected() || this._isConnecting()) return;
+        
+        console.log(`WS: Connecting... (attempt ${this._reconnectAttempts + 1}/${this._maxReconnectAttempts})`);
+        
         const ws = new WebSocket(this._endpoint());
         ws.binaryType = 'arraybuffer';
-        ws.onopen = e => console.log('WS: server connected');
+        ws.onopen = e => this._onOpen();
         ws.onmessage = e => this._onMessage(e.data);
-        ws.onclose = e => this._onDisconnect();
-        ws.onerror = e => console.error(e);
+        ws.onclose = e => this._onDisconnect(e);
+        ws.onerror = e => this._onError(e);
         this._socket = ws;
+    }
+    
+    _onOpen() {
+        console.log('WS: server connected');
+        this._reconnectAttempts = 0;
+        this._isManualDisconnect = false;
+        this._startHeartbeat();
+        Events.fire('notify-user', '');
+    }
+    
+    _startHeartbeat() {
+        this._stopHeartbeat();
+        this._heartbeatInterval = setInterval(() => {
+            if (this._isConnected()) {
+                this.send({ type: 'ping' });
+            } else {
+                this._stopHeartbeat();
+            }
+        }, 30000); // 30秒心跳
+    }
+    
+    _stopHeartbeat() {
+        if (this._heartbeatInterval) {
+            clearInterval(this._heartbeatInterval);
+            this._heartbeatInterval = null;
+        }
+    }
+    
+    _onError(error) {
+        console.error('WS: connection error', error);
     }
 
     _onMessage(msg) {
@@ -43,6 +81,38 @@ class ServerConnection {
                 break;
             case 'display-name':
                 Events.fire('display-name', msg);
+                // Store current user's peer ID
+                window.currentPeerId = msg.message.peerId || this._peerId;
+                break;
+            case 'pong':
+                // Handle pong response from server
+                break;
+            case 'keep-alive':
+                // Handle keep-alive messages
+                break;
+            case 'error':
+                console.error('Server error:', msg.message);
+                break;
+            // Room-related message handling
+            case 'room-created':
+            case 'room-joined':
+            case 'room-left':
+            case 'room-error':
+            case 'room-member-joined':
+            case 'room-member-left':
+            case 'room-disbanded':
+            case 'room-kicked':
+            case 'room-file-shared':
+            case 'room-file-removed':
+                // Forward room messages to room manager
+                if (window.roomManager) {
+                    window.roomManager.handleRoomMessage(msg);
+                }
+                
+                // Also call the global room response handler
+                if (window.handleRoomResponse) {
+                    window.handleRoomResponse(msg);
+                }
                 break;
             default:
                 console.error('WS: unkown message type', msg);
@@ -58,26 +128,58 @@ class ServerConnection {
         // hack to detect if deployment or development environment
         const protocol = location.protocol.startsWith('https') ? 'wss' : 'ws';
         const webrtc = window.isRtcSupported ? '/webrtc' : '/fallback';
-        const url = protocol + '://' + location.host + location.pathname + 'server' + webrtc;
+        // Always use root path for WebSocket server to avoid path issues
+        const url = protocol + '://' + location.host + '/server' + webrtc;
         return url;
     }
 
     _disconnect() {
-        this.send({ type: 'disconnect' });
-        this._socket.onclose = null;
-        this._socket.close();
+        this._isManualDisconnect = true;
+        this._stopHeartbeat();
+        if (this._socket) {
+            this.send({ type: 'disconnect' });
+            this._socket.onclose = null;
+            this._socket.close();
+        }
     }
 
-    _onDisconnect() {
-        console.log('WS: server disconnected');
-        Events.fire('notify-user', 'Connection lost. Retry in 5 seconds...');
+    _onDisconnect(event) {
+        console.log('WS: server disconnected', event?.code, event?.reason);
+        this._stopHeartbeat();
+        
+        if (this._isManualDisconnect) {
+            console.log('WS: Manual disconnect, not reconnecting');
+            return;
+        }
+        
+        if (this._reconnectAttempts >= this._maxReconnectAttempts) {
+            Events.fire('notify-user', 'Connection failed. Please refresh the page.');
+            return;
+        }
+        
+        this._reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, this._reconnectAttempts - 1), 30000); // 指数退避，最多30秒
+        
+        Events.fire('notify-user', `Connection lost. Reconnecting in ${Math.ceil(delay/1000)} seconds... (${this._reconnectAttempts}/${this._maxReconnectAttempts})`);
+        
         clearTimeout(this._reconnectTimer);
-        this._reconnectTimer = setTimeout(_ => this._connect(), 5000);
+        this._reconnectTimer = setTimeout(() => this._connect(), delay);
     }
 
     _onVisibilityChange() {
-        if (document.hidden) return;
-        this._connect();
+        if (document.hidden) {
+            // 页面隐藏时停止心跳，但保持连接
+            console.log('WS: Page hidden, reducing activity');
+            this._stopHeartbeat();
+        } else {
+            // 页面重新可见时恢复连接和心跳
+            console.log('WS: Page visible, restoring connection');
+            if (!this._isConnected()) {
+                this._connect();
+            } else {
+                this._startHeartbeat();
+            }
+        }
     }
 
     _isConnected() {
@@ -203,8 +305,14 @@ class Peer {
     }
 
     _onFileReceived(proxyFile) {
+        console.log('📥 File received:', proxyFile.name, 'Size:', proxyFile.size, 'Type:', proxyFile.mime);
         Events.fire('file-received', proxyFile);
         this.sendJSON({ type: 'transfer-complete' });
+        
+        // Track file receiving event
+        if (window.trackFileReceived && proxyFile) {
+            window.trackFileReceived(proxyFile.mime || 'unknown', proxyFile.size || 0);
+        }
     }
 
     _onTransferCompleted() {
@@ -212,7 +320,7 @@ class Peer {
         this._reader = null;
         this._busy = false;
         this._dequeueFile();
-        Events.fire('notify-user', 'File transfer completed.');
+        // Events.fire('notify-user', 'File transfer completed.'); // Removed to prevent false notifications
     }
 
     sendText(text) {
@@ -245,6 +353,18 @@ class RTCPeer extends Peer {
     }
 
     _openConnection(peerId, isCaller) {
+        console.log('🔧 Opening connection to:', peerId?.substring(0,8), 'as caller:', isCaller);
+        
+        // 如果存在旧连接，先清理
+        if (this._conn) {
+            if (this._conn.connectionState !== 'closed' && this._conn.connectionState !== 'failed') {
+                console.log('🔄 Connection already exists in state:', this._conn.connectionState);
+                return;
+            }
+            console.log('🧹 Cleaning up old connection');
+            this._conn.close();
+        }
+        
         this._isCaller = isCaller;
         this._peerId = peerId;
         this._conn = new RTCPeerConnection(RTCPeer.config);
@@ -258,15 +378,23 @@ class RTCPeer extends Peer {
             ordered: true,
             reliable: true // Obsolete. See https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/reliable
         });
+        channel.binaryType = 'arraybuffer';
         channel.onopen = e => this._onChannelOpened(e);
         this._conn.createOffer().then(d => this._onDescription(d)).catch(e => this._onError(e));
     }
 
     _onDescription(description) {
         // description.sdp = description.sdp.replace('b=AS:30', 'b=AS:1638400');
+        console.log('🔧 Setting local description:', description.type, 'in state:', this._conn?.signalingState);
+        
         this._conn.setLocalDescription(description)
-            .then(_ => this._sendSignal({ sdp: description }))
-            .catch(e => this._onError(e));
+            .then(_ => {
+                console.log('✅ Local description set successfully');
+                this._sendSignal({ sdp: description });
+            })
+            .catch(e => {
+                console.error('❌ Failed to set local description:', e);
+            });
     }
 
     _onIceCandidate(event) {
@@ -275,18 +403,47 @@ class RTCPeer extends Peer {
     }
 
     onServerMessage(message) {
-        if (!this._conn) this._connect(message.sender, false);
+        console.log('📨 Server message:', message.type || 'unknown', 'from:', message.sender?.substring(0,8));
+        
+        if (!this._conn) {
+            console.log('🔧 No connection exists, creating new one');
+            this._connect(message.sender, false);
+        } else {
+            console.log('🔄 Connection exists in state:', this._conn.signalingState);
+        }
 
         if (message.sdp) {
+            console.log('📡 Received SDP:', message.sdp.type, 'current state:', this._conn.signalingState);
+            
             this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
                 .then( _ => {
+                    console.log('✅ Remote description set successfully');
                     if (message.sdp.type === 'offer') {
                         return this._conn.createAnswer()
                             .then(d => this._onDescription(d));
                     }
                 })
-                .catch(e => this._onError(e));
+                .catch(e => {
+                    console.error('❌ Failed to set remote description:', e);
+                    if (e.name === 'InvalidStateError' && message.sdp.type === 'offer') {
+                        console.log('🔄 Restarting connection due to state error');
+                        this._conn.close();
+                        this._openConnection(this._peerId, false);
+                        // Retry setting remote description
+                        setTimeout(() => {
+                            if (this._conn && this._conn.signalingState === 'stable') {
+                                this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
+                                    .then(_ => {
+                                        return this._conn.createAnswer()
+                                            .then(d => this._onDescription(d));
+                                    })
+                                    .catch(e => console.error('Retry failed:', e));
+                            }
+                        }, 100);
+                    }
+                });
         } else if (message.ice) {
+            console.log('📡 Received ICE candidate');
             if (this._conn.remoteDescription) {
                 this._conn.addIceCandidate(new RTCIceCandidate(message.ice))
                     .catch(e => console.warn('Failed to add ICE candidate:', e));
@@ -299,7 +456,6 @@ class RTCPeer extends Peer {
     _onChannelOpened(event) {
         console.log('RTC: channel opened with', this._peerId);
         const channel = event.channel || event.target;
-        channel.binaryType = 'arraybuffer';
         channel.onmessage = e => this._onMessage(e.data);
         channel.onclose = e => this._onChannelClosed();
         this._channel = channel;
@@ -307,43 +463,59 @@ class RTCPeer extends Peer {
 
     _onChannelClosed() {
         console.log('RTC: channel closed', this._peerId);
-        // Only reconnect if we're the caller and haven't explicitly closed
-        if (!this._isCaller || !this._conn) return;
-        // Add a small delay to avoid rapid reconnection attempts
-        setTimeout(() => {
-            if (this._conn && this._conn.connectionState === 'failed') {
-                this._connect(this._peerId, true);
-            }
-        }, 1000);
+        if (!this.isCaller) return;
+        this._connect(this._peerId, true); // reopen the channel
     }
 
     _onConnectionStateChange(e) {
-        if (!this._conn) return; // Guard against null connection
-        console.log('RTC: state changed:', this._conn.connectionState);
-        switch (this._conn.connectionState) {
+        const state = this._conn.connectionState;
+        console.log('🔗 RTC Connection state:', state, 'for peer:', this._peerId?.substring(0,8));
+        switch (state) {
+            case 'connecting':
+                console.log('🔄 WebRTC connecting...');
+                break;
+            case 'connected':
+                console.log('✅ WebRTC connection established!');
+                break;
             case 'disconnected':
-                // Don't immediately reconnect on disconnect
+                console.log('🔌 WebRTC disconnected');
+                this._onChannelClosed();
                 break;
             case 'failed':
+                console.error('❌ WebRTC connection failed');
                 this._conn = null;
-                this._channel = null;
-                // Only attempt reconnect for callers after a delay
-                if (this._isCaller) {
-                    setTimeout(() => {
-                        this._connect(this._peerId, true);
-                    }, 2000);
-                }
+                this._onChannelClosed();
+                break;
+            case 'closed':
+                console.log('🔒 WebRTC connection closed');
+                this._onChannelClosed();
                 break;
         }
     }
 
     _onIceConnectionStateChange() {
-        switch (this._conn.iceConnectionState) {
+        const iceState = this._conn.iceConnectionState;
+        console.log('🧊 ICE Connection state:', iceState, 'for peer:', this._peerId?.substring(0,8));
+        switch (iceState) {
+            case 'checking':
+                console.log('🔍 ICE checking candidates...');
+                break;
+            case 'connected':
+            case 'completed':
+                console.log('✅ ICE connection established!');
+                break;
             case 'failed':
-                console.error('ICE Gathering failed');
+                console.error('❌ ICE connection failed - retrying...');
+                this._conn.restartIce();
+                break;
+            case 'disconnected':
+                console.log('🔌 ICE disconnected');
+                break;
+            case 'closed':
+                console.log('🔒 ICE connection closed');
                 break;
             default:
-                console.log('ICE Gathering', this._conn.iceConnectionState);
+                console.log('🧊 ICE Gathering:', iceState);
         }
     }
 
@@ -415,7 +587,13 @@ class PeersManager {
     }
 
     _onFilesSelected(message) {
-        this.peers[message.to].sendFiles(message.files);
+        console.log('📤 PeersManager: Files selected for peer:', message.to, 'Files:', message.files.length);
+        if (this.peers[message.to]) {
+            this.peers[message.to].sendFiles(message.files);
+            console.log('✅ Files sent to peer:', message.to);
+        } else {
+            console.error('❌ Peer not found:', message.to, 'Available peers:', Object.keys(this.peers));
+        }
     }
 
     _onSendText(message) {
@@ -431,15 +609,10 @@ class PeersManager {
 
 }
 
-class WSPeer extends Peer {
-
+class WSPeer {
     _send(message) {
         message.to = this._peerId;
         this._server.send(message);
-    }
-
-    refresh() {
-        // WebSocket peers don't need refreshing
     }
 }
 
@@ -471,8 +644,7 @@ class FileChunker {
         this._offset += chunk.byteLength;
         this._partitionSize += chunk.byteLength;
         this._onChunk(chunk);
-        if (this.isFileEnd()) return;
-        if (this._isPartitionEnd()) {
+        if (this._isPartitionEnd() || this.isFileEnd()) {
             this._onPartitionEnd(this._offset);
             return;
         }
@@ -536,10 +708,6 @@ class Events {
     static on(type, callback) {
         return window.addEventListener(type, callback, false);
     }
-
-    static off(type, callback) {
-        return window.removeEventListener(type, callback, false);
-    }
 }
 
 
@@ -550,15 +718,10 @@ RTCPeer.config = {
             urls: 'stun:stun.l.google.com:19302'
         },
         {
-            urls: 'stun:stun1.l.google.com:19302'
-        },
-        {
-            urls: 'stun:stun2.l.google.com:19302'
-        },
-        {
-            urls: 'stun:stun.cloudflare.com:3478'
+            urls: 'stun:stun1.l.google.com:19302'  
         }
-    ]
+    ],
+    'iceCandidatePoolSize': 10
 }
 
 // Initialize network connection
@@ -570,20 +733,14 @@ window.addEventListener('DOMContentLoaded', () => {
     
     // Expose network connection and event system globally for room manager use
     window.network = {
+        send: (message) => serverConnection.send(message),
+        isConnected: () => serverConnection._isConnected(),
         serverConnection: serverConnection,
-        peersManager: peersManager,
-        Events: Events,
-        send: function(message) {
-            if (serverConnection && serverConnection.send) {
-                serverConnection.send(message);
-            } else {
-                console.error('ServerConnection not available for sending message:', message);
-            }
-        },
-        isConnected: function() {
-            return serverConnection && serverConnection._isConnected();
-        }
+        peersManager: peersManager
     };
+    
+    // Expose Events system
+    window.Events = Events;
     
     console.log('Network system initialization completed, Events and network exposed globally');
 });
