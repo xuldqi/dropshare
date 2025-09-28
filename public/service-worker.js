@@ -26,7 +26,7 @@ self.addEventListener('message', (event) => {
 });
 
 // Bump cache to invalidate old entries when deploying UI changes
-var CACHE_NAME = 'dropshare-cache-v4';
+var CACHE_NAME = 'dropshare-cache-v5';
 var urlsToCache = [
   './',
   'styles.css',

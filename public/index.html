@@ -340,7 +340,10 @@
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--gray-200);
             z-index: 3000; /* keep above overlays */
-            padding: 12px 0;
+            padding: 20px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
         }
 
         .header-container {
@@ -350,6 +353,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
         .brand-left { display: flex; align-items: center; gap: 12px; }
 
@@ -913,19 +917,30 @@
             position: absolute;
             right: 0;
             top: calc(100% + 6px);
-            width: 200px;
+            width: auto;
+            min-width: 100%;
             max-height: 60vh;
             overflow: auto;
             background: #ffffff;
             border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+            border-radius: 12px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
             z-index: 3000;
             display: none;
         }
         .lang-menu.open { display: block; }
-        .lang-item { padding: 10px 12px; font-size: 14px; color: #374151; cursor: pointer; }
+        .lang-item { 
+            padding: 12px 16px; 
+            font-size: 14px; 
+            color: #374151; 
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+        }
         .lang-item:hover { background: #f3f4f6; }
+        .lang-item.selected { background: #e5e7eb; }
 
         /* 保留通用语言选择器样式（与 share.html 一致） */
 
@@ -940,7 +955,8 @@
             }
             
             .header {
-                padding: 16px 0;
+                padding: 20px 0;
+                min-height: 60px;
             }
             
             .hamburger { display: inline-flex; }
@@ -956,13 +972,20 @@
                 justify-content: space-between;
             }
             
-            /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
-            .brand-left .logo a { display: none; }
+            /* 品牌区域显示汉堡菜单和logo文字 */
+            .brand-left .logo { display: flex; align-items: center; gap: 8px; }
+            .brand-left .logo a { display: inline; }
             
             /* 语言选择器保持在右侧 */
             .control-buttons { 
                 min-width: auto !important; 
                 justify-content: flex-end !important; 
+                display: flex !important;
+            }
+            
+            /* 确保语言选择器在移动端可见 */
+            .language-selector select { 
+                display: block !important; 
             }
 
             /* 折叠导航：默认隐藏，展开时纵向显示 */
@@ -1054,22 +1077,40 @@
             }
 
             .control-buttons {
-                display: flex;
-                justify-content: center;
+                display: flex !important;
+                justify-content: flex-end !important;
+                width: auto;
             }
 
             /* 移动端采用自定义下拉：隐藏原生 select，使用按钮 + 自定义菜单 */
-            .language-selector select { display: none; }
+            .language-selector select { display: none !important; }
             #langToggle {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px;
-                padding: 8px 10px;
-                border: 1px solid #d1d5db;
-                border-radius: 6px;
+                gap: 8px;
+                padding: 10px 16px;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
                 background: white;
                 color: #374151;
                 font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                white-space: nowrap;
+                min-width: fit-content;
+            }
+            
+            #langToggle::after {
+                content: '▼';
+                font-size: 10px;
+                color: #6b7280;
+                transition: transform 0.2s ease;
+            }
+            
+            #langToggle[aria-expanded="true"]::after {
+                transform: rotate(180deg);
             }
 
             .site-footer {
@@ -1193,66 +1234,6 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
-    <link rel="stylesheet" href="mobile-button-fix.css">
-    <script src="/locales/i18n.js"></script>
-    <script src="mobile-button-fix.js"></script>
-    <script>
-        // 强制移动端按钮修复 - 内嵌确保执行
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔧 强制移动端按钮修复');
-            
-            const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                console.log('📱 移动设备检测到，应用按钮修复');
-                
-                function forceFixButtons() {
-                    const selectors = ['.btn', '.btn-primary', '.btn-secondary', '.category-card', 'a[href]'];
-                    
-                    selectors.forEach(selector => {
-                        document.querySelectorAll(selector).forEach(element => {
-                            // 强制样式修复
-                            element.style.pointerEvents = 'auto';
-                            element.style.touchAction = 'manipulation';
-                            element.style.webkitTapHighlightColor = 'rgba(0, 0, 0, 0.1)';
-                            element.style.cursor = 'pointer';
-                            element.style.opacity = '1';
-                            element.style.visibility = 'visible';
-                            element.style.position = 'relative';
-                            element.style.zIndex = '10';
-                            
-                            // 强制事件处理
-                            element.addEventListener('click', function(e) {
-                                console.log('🎯 按钮点击:', this.textContent?.trim() || this.tagName);
-                                if (this.href && this.tagName === 'A') {
-                                    e.preventDefault();
-                                    window.location.href = this.href;
-                                }
-                            }, true);
-                            
-                            // 触摸反馈
-                            element.addEventListener('touchstart', function() {
-                                this.style.transform = 'scale(0.98)';
-                            }, {passive: true});
-                            
-                            element.addEventListener('touchend', function() {
-                                this.style.transform = 'scale(1)';
-                            }, {passive: true});
-                        });
-                    });
-                    
-                    console.log('✅ 强制按钮修复完成');
-                }
-                
-                // 立即执行
-                forceFixButtons();
-                
-                // 延迟执行确保所有元素都加载
-                setTimeout(forceFixButtons, 500);
-                setTimeout(forceFixButtons, 1000);
-            }
-        });
-    </script>
 </head>
 
 <body style="display: block; overflow-y: auto;">
@@ -1277,9 +1258,9 @@
                     <a href="video-tools.html" data-i18n="nav_video">Video</a>
                     <a href="document-tools.html" data-i18n="nav_files">Files</a>
                 </nav>
-                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                <div class="control-buttons" style="display: flex; justify-content: flex-end; position: relative;">
                     <div class="language-selector" id="languageSelector">
-                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:inline-flex;">Language</button>
                         <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
                             <option value="en">English</option>
                             <option value="zh-CN">简体中文</option>
@@ -1594,6 +1575,7 @@
                         item.setAttribute('role','option');
                         item.dataset.value = opt.value;
                         item.textContent = opt.textContent;
+                        
                         item.addEventListener('click', () => {
                             langSelect.value = opt.value;
                             syncToggleLabel();
@@ -1611,9 +1593,11 @@
                     const rect = langToggle.getBoundingClientRect();
                     langMenu.style.left = '0px';
                     langMenu.style.top = '100%';
+                    langMenu.style.width = langToggle.offsetWidth + 'px';
                 };
                 const openMenu = () => {
-                    buildMenu(); positionMenu();
+                    buildMenu(); 
+                    positionMenu();
                     langMenu.classList.add('open');
                     langToggle.setAttribute('aria-expanded','true');
                 };
@@ -1627,6 +1611,8 @@
                 // 仅移动端启用自定义菜单并隐藏原生 select
                 if (isMobile) {
                     langToggle.style.display = 'inline-flex';
+                    // 构建自定义菜单
+                    buildMenu();
                     // 尝试立即同步一次按钮文案
                     syncToggleLabel();
                     langToggle.addEventListener('click', (e) => {
@@ -1635,7 +1621,10 @@
                     });
                     // 当 i18n 初始化完成或语言切换时，同步按钮文案
                     document.addEventListener('language-changed', syncToggleLabel);
-                    const afterInit = () => syncToggleLabel();
+                    const afterInit = () => {
+                        syncToggleLabel();
+                        buildMenu(); // 重新构建菜单以更新对勾标记
+                    };
                     if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
                         // 在现有 initialize 完成后再次同步
                         // 不重复初始化，只挂载回调

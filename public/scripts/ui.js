@@ -53,11 +53,20 @@ document.addEventListener('DOMContentLoaded', () => {
             document.documentElement.style.setProperty('--app-vh', vh + 'px');
         };
         const throttle = (fn, wait = 120) => {
-            let last = 0; let timer;
+            let last = 0;
+            let timer;
             return (...args) => {
                 const now = Date.now();
-                if (now - last >= wait) { last = now; fn.apply(null, args); }
-                else { clearTimeout(timer); timer = setTimeout(() => { last = Date.now(); fn.apply(null, args); }, wait - (now - last)); }
+                if (now - last >= wait) {
+                    last = now;
+                    fn.apply(null, args);
+                } else {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        last = Date.now();
+                        fn.apply(null, args);
+                    }, wait - (now - last));
+                }
             };
         };
         setAppVhVar();
@@ -987,8 +996,7 @@ class WebShareTargetUI {
 
 class Snapdrop {
     constructor() {
-        const server = new ServerConnection();
-        const peers = new PeersManager(server);
+        // Use the globally initialized network instances instead of creating new ones
         const peersUI = new PeersUI();
         Events.on('load', e => {
             // 仅在页面包含对应元素时才初始化，避免空页面报错
@@ -1087,7 +1095,11 @@ class Snapdrop {
     }
 }
 
-const snapdrop = new Snapdrop();
+// Initialize Snapdrop when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    const snapdrop = new Snapdrop();
+    window.snapdrop = snapdrop; // Make it globally accessible if needed
+});
 
 
 
