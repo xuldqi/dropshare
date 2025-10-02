@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropShare - Rooms</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- 添加i18n支持 -->
+    <script src="locales/i18n.js"></script>
+    
+    <script>
+        // 生成并设置peerid cookie
+        function generatePeerId() {
+            const cookies = document.cookie.split(';');
+            let hasPeerId = false;
+            for (let cookie of cookies) {
+                if (cookie.trim().startsWith('peerid=')) {
+                    hasPeerId = true;
+                    const peerId = cookie.trim().split('=')[1];
+                    console.log('🔑 找到现有peerid:', peerId);
+                    return peerId;
+                }
+            }
+            
+            if (!hasPeerId) {
+                const peerId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                document.cookie = `peerid=${peerId}; path=/`;
+                console.log('🔑 生成新peerid:', peerId);
+                return peerId;
+            }
+        }
+        
+        generatePeerId();
+    </script>
+
+    <style>
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3367d6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-800: #1e40af;
+            --primary-900: #1e3a8a;
+            
+            --red-500: #ef4444;
+            --green-500: #10b981;
+            --purple-500: #8b5cf6;
+            --blue-500: #06b6d4;
+            --orange-500: #f59e0b;
+            --pink-500: #ec4899;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        /* Ensure page is scrollable on small screens */
+        html, body {
+            min-height: 100%;
+            overflow-y: auto;
+        }
+
+        /* 统一导航样式 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 64px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-600);
+            background: var(--primary-50);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-600);
+            background: var(--primary-50);
+            font-weight: 600;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-600);
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-600);
+        }
+
+        .language-selector select {
+            padding: 6px 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            background: white;
+            color: var(--gray-700);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            padding: 40px 20px;
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 房间选项卡片 */
+        .room-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .room-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px;
+        }
+
+        .room-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .room-card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .room-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+        }
+
+        .room-card p {
+            color: var(--gray-600);
+            margin-bottom: 24px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-600);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-700);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .btn-success {
+            background: var(--green-500);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--red-500);
+            color: white;
+        }
+
+        /* 模态窗口样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-500);
+            padding: 4px;
+        }
+
+        .close-btn:hover {
+            color: var(--gray-700);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        /* 房间状态区域 */
+        .room-status {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 30px;
+        }
+
+        .room-status.show {
+            display: block;
+        }
+
+        .room-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .room-info-item {
+            text-align: center;
+            padding: 16px;
+            background: var(--gray-50);
+            border-radius: 8px;
+        }
+
+        .room-info-label {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 4px;
+        }
+
+        .room-info-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        /* 文件管理区域 */
+        .file-management {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .file-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--gray-200);
+        }
+
+        .file-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-upload-area {
+            border: 2px dashed var(--gray-300);
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        .file-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: transparent;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        .file-size {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        /* 成员列表 */
+        .members-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 30px;
+        }
+
+        .member-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: transparent;
+        }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        .member-status {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        /* 连接状态样式 */
+        .connection-status {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin: 24px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid var(--gray-300);
+            transition: all 0.3s ease;
+        }
+
+        .connection-status.connected {
+            border-left-color: var(--green-500);
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        }
+
+        .connection-status.disconnected {
+            border-left-color: var(--red-500);
+            background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+        }
+
+        .connection-status.connecting {
+            border-left-color: var(--blue-500);
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+        }
+
+        .connection-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gray-400);
+            transition: all 0.3s ease;
+        }
+
+        .connection-status.connected .connection-indicator {
+            background: var(--green-500);
+            animation: pulse 2s infinite;
+        }
+
+        .connection-status.disconnected .connection-indicator {
+            background: var(--red-500);
+        }
+
+        .connection-status.connecting .connection-indicator {
+            background: var(--blue-500);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .connection-text {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .connection-status.connected .connection-text {
+            color: var(--green-700);
+        }
+
+        .connection-status.disconnected .connection-text {
+            color: var(--red-700);
+        }
+
+        .connection-status.connecting .connection-text {
+            color: var(--blue-700);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .room-options {
+                grid-template-columns: 1fr;
+            }
+
+            .file-management {
+                grid-template-columns: 1fr;
+            }
+
+            .room-info {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 24px;
+                margin: 20px;
+            }
+
+            .connection-status {
+                padding: 12px 16px;
+                margin: 16px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- DropShare 统一导航 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-controls">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                    </svg>
+                    <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                </div>
+                <nav class="nav-links">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" class="active" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="language-selector">
+                    <select id="language-selector">
+                        <option value="en">English</option>
+                        <option value="zh-CN">中文简体</option>
+                        <option value="zh-TW">中文繁體</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 英雄区域 -->
+            <div class="hero-section">
+                <h1 class="hero-title" data-i18n="rooms_title">Rooms</h1>
+                <p class="hero-subtitle" data-i18n="rooms_subtitle">快速与同一网络或远程用户通过房间代码共享文件</p>
+            </div>
+
+            <!-- 连接状态 -->
+            <div class="connection-status" id="connectionStatus">
+                <div class="connection-indicator"></div>
+                <div class="connection-text" id="connectionText" data-i18n="connection_disconnected">未连接</div>
+            </div>
+
+            <!-- 房间选项 -->
+            <div class="room-options" id="roomOptions">
+                <div class="room-card">
+                    <div class="room-card-icon">🏠</div>
+                    <h3 data-i18n="create_room_title">创建房间</h3>
+                    <p data-i18n="create_room_desc">创建一个新的房间，邀请其他用户加入并共享文件</p>
+                    <button class="btn btn-primary" onclick="showCreateRoomModal()" data-i18n="create_room_btn">创建房间</button>
+                </div>
+                
+                <div class="room-card">
+                    <div class="room-card-icon">🚪</div>
+                    <h3 data-i18n="join_room_title">加入房间</h3>
+                    <p data-i18n="join_room_desc">使用房间代码加入已存在的房间</p>
+                    <button class="btn btn-secondary" onclick="showJoinRoomModal()" data-i18n="join_room_btn">加入房间</button>
+                </div>
+            </div>
+
+            <!-- 房间状态区域 -->
+            <div class="room-status" id="roomStatus">
+                <div class="room-info">
+                    <div class="room-info-item">
+                        <div class="room-info-label" data-i18n="room_name">房间名称</div>
+                        <div class="room-info-value" id="currentRoomName">-</div>
+                    </div>
+                    <div class="room-info-item">
+                        <div class="room-info-label" data-i18n="room_code">房间代码</div>
+                        <div class="room-info-value" id="currentRoomCode">-</div>
+                    </div>
+                    <div class="room-info-item">
+                        <div class="room-info-label" data-i18n="member_count">成员数量</div>
+                        <div class="room-info-value" id="currentMemberCount">0</div>
+                    </div>
+                    <div class="room-info-item">
+                        <div class="room-info-label" data-i18n="your_role">您的角色</div>
+                        <div class="room-info-value" id="currentUserRole">-</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button class="btn btn-danger" onclick="leaveRoom()" data-i18n="leave_room">离开房间</button>
+                </div>
+            </div>
+
+            <!-- 成员列表 -->
+            <div class="members-section" id="membersSection" style="display: none;">
+                <h3>👥 <span data-i18n="room_members">房间成员</span> (<span id="memberCount">0</span>)</h3>
+                <div id="membersList"></div>
+            </div>
+
+            <!-- 文件管理区域 -->
+            <div class="file-management" id="fileManagement" style="display: none;">
+                <!-- 文件上传 -->
+                <div class="file-section">
+                    <h3>📤 <span data-i18n="upload_files">上传文件</span></h3>
+                    <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('fileInput').click()">
+                        <div style="font-size: 2rem; margin-bottom: 12px;">📁</div>
+                        <div style="font-weight: 500; margin-bottom: 8px;" data-i18n="drag_drop_files">拖拽文件到此处或点击选择</div>
+                        <div style="color: var(--gray-500); font-size: 0.875rem;" data-i18n="supported_formats">支持所有文件格式</div>
+                    </div>
+                    <input type="file" id="fileInput" multiple style="display: none;">
+                    
+                    <div id="uploadProgress" style="display: none; margin-top: 16px;">
+                        <div style="margin-bottom: 8px; font-weight: 500;">上传进度</div>
+                        <div style="background: var(--gray-200); border-radius: 4px; height: 8px;">
+                            <div id="progressBar" style="background: var(--primary-500); height: 100%; border-radius: 4px; width: 0%; transition: width 0.3s;"></div>
+                        </div>
+                        <div id="progressText" style="margin-top: 4px; font-size: 0.875rem; color: var(--gray-600);">0%</div>
+                    </div>
+                </div>
+
+                <!-- 文件列表 -->
+                <div class="file-section">
+                    <h3>📋 <span data-i18n="shared_files">共享文件</span> (<span id="fileCount">0</span>)</h3>
+                    <div class="file-list" id="fileList">
+                        <div style="text-align: center; color: var(--gray-500); padding: 20px;" data-i18n="no_files">暂无文件</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 创建房间模态窗口 -->
+    <div class="modal" id="createRoomModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" data-i18n="create_new_room">创建新房间</h2>
+                <button class="close-btn" onclick="hideCreateRoomModal()">&times;</button>
+            </div>
+            
+            <form id="createRoomForm">
+                <div class="form-group">
+                    <label for="roomPassword" data-i18n="room_password_optional">房间密码（可选）</label>
+                    <input type="password" id="roomPassword" placeholder="" data-i18n-placeholder="room_password_optional_placeholder">
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxMembers" data-i18n="maximum_members">最大成员数</label>
+                    <select id="maxMembers">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideCreateRoomModal()" data-i18n="cancel">取消</button>
+                    <button type="submit" class="btn btn-primary" data-i18n="create_room">创建房间</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 加入房间模态窗口 -->
+    <div class="modal" id="joinRoomModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" data-i18n="join_room">加入房间</h2>
+                <button class="close-btn" onclick="hideJoinRoomModal()">&times;</button>
+            </div>
+            
+            <form id="joinRoomForm">
+                <div class="form-group">
+                    <label for="roomCode" data-i18n="room_code">房间代码</label>
+                    <input type="text" id="roomCode" placeholder="" data-i18n-placeholder="room_code_placeholder" required style="text-transform: uppercase;">
+                </div>
+                
+                <div class="form-group">
+                    <label for="joinPassword" data-i18n="room_password_if_required">房间密码（如果需要）</label>
+                    <input type="password" id="joinPassword" placeholder="" data-i18n-placeholder="room_password_placeholder">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="hideJoinRoomModal()" data-i18n="cancel">取消</button>
+                    <button type="submit" class="btn btn-primary" data-i18n="join_room">加入房间</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 必需的Dialog元素 -->
+    <x-dialog id="receiveDialog">
+        <x-background class="full center">
+            <x-paper shadow="2">
+                <h3 data-i18n="file_received">File Received</h3>
+                <div class="font-subheading" id="fileName" data-i18n=""></div>
+                <div class="font-body2" id="fileSize"></div>
+                <div class='preview' style="visibility: hidden;">
+                    <img id='img-preview' src="">
+                </div>
+                <div class="row">
+                    <label for="autoDownload" class="grow" data-i18n="ask_save_files">Ask to save each file before downloading</label>
+                    <input type="checkbox" id="autoDownload" checked="">
+                </div>
+                <div class="row-reverse">
+                    <a class="button" close id="download" title="Download File" autofocus data-i18n="save">Save</a>
+                    <button class="button" close data-i18n="ignore">Ignore</button>
+                </div>
+            </x-paper>
+        </x-background>
+    </x-dialog>
+    
+    <!-- Send Text Dialog -->
+    <x-dialog id="sendTextDialog">
+        <form action="#">
+            <x-background class="full center">
+                <x-paper shadow="2">
+                    <h3 data-i18n="send_message">Send a Message</h3>
+                    <div id="textInput" class="textarea" role="textbox" data-placeholder="Send a message" autocomplete="off" autofocus contenteditable></div>
+                    <div class="row-reverse">
+                        <button class="button" type="submit" close data-i18n="send">Send</button>
+                        <a class="button" close data-i18n="cancel">Cancel</a>
+                    </div>
+                </x-paper>
+            </x-background>
+        </form>
+    </x-dialog>
+    
+    <!-- Receive Text Dialog -->
+    <x-dialog id="receiveTextDialog">
+        <x-background class="full center">
+            <x-paper shadow="2">
+                <h3 data-i18n="message_received">Message Received</h3>
+                <div class="font-subheading" id="text"></div>
+                <div class="row-reverse">
+                    <button class="button" id="copy" close autofocus data-i18n="copy">Copy</button>
+                    <button class="button" close data-i18n="close">Close</button>
+                </div>
+            </x-paper>
+        </x-background>
+    </x-dialog>
+    
+    <!-- Toast -->
+    <div class="toast-container full center">
+        <x-toast class="row" shadow="1" id="toast">
+            <div class="grow">
+                <span id="toast-text"></span>
+            </div>
+        </x-toast>
+    </div>
+
+    <!-- 脚本 -->
+    <script src="scripts/network.js"></script>
+    <script src="scripts/ui.js"></script>
+    
+    <script>
+        // 全局变量
+        let currentRoom = null;
+        let isInRoom = false;
+        let roomMembers = [];
+        let sharedFiles = [];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeI18n();
+            initializeEventListeners();
+            initializeNetworkConnection();
+        });
+
+        // 获取首选显示名称（设备名/用户生成名）
+        function getPreferredDisplayName() {
+            try {
+                const stored = localStorage.getItem('displayName');
+                if (stored && stored.trim()) return stored.trim();
+            } catch (e) {}
+
+            const el = document.getElementById('displayName');
+            if (el && el.textContent && el.textContent.trim()) {
+                return el.textContent.trim();
+            }
+
+            const adjectives = ['Blue','Red','Green','Orange','Purple','Yellow','Silver','Golden'];
+            const animals = ['Bear','Wolf','Eagle','Lion','Tiger','Fox','Hawk','Shark'];
+            const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+            const animal = animals[Math.floor(Math.random() * animals.length)];
+            return `${adj} ${animal}`;
+        }
+
+        function initializeI18n() {
+            // 简化的国际化处理，避免依赖外部i18n文件
+            const languageSelector = document.getElementById('language-selector');
+            if (languageSelector) {
+                // 设置默认语言
+                const savedLang = localStorage.getItem('dropshare-language') || 'zh-CN';
+                languageSelector.value = savedLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLanguage = this.value;
+                    localStorage.setItem('dropshare-language', selectedLanguage);
+                    // 这里可以添加实际的语言切换逻辑
+                    console.log('语言切换到:', selectedLanguage);
+                });
+            }
+        }
+
+        function initializeEventListeners() {
+            // 创建房间表单
+            document.getElementById('createRoomForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                createRoom();
+            });
+
+            // 加入房间表单
+            document.getElementById('joinRoomForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                joinRoom();
+            });
+            
+            // 立即设置房间事件监听器，不等待网络连接
+            setupRoomEventHandlers();
+
+            // 文件上传
+            const fileInput = document.getElementById('fileInput');
+            const fileUploadArea = document.getElementById('fileUploadArea');
+
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // 拖拽上传
+            fileUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            fileUploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+
+            fileUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+            });
+
+            // 模态窗口点击外部关闭
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    hideAllModals();
+                }
+            });
+        }
+
+        // 模态窗口控制
+        function showCreateRoomModal() {
+            document.getElementById('createRoomModal').classList.add('show');
+        }
+
+        function hideCreateRoomModal() {
+            document.getElementById('createRoomModal').classList.remove('show');
+            document.getElementById('createRoomForm').reset();
+        }
+
+        function showJoinRoomModal() {
+            document.getElementById('joinRoomModal').classList.add('show');
+        }
+
+        function hideJoinRoomModal() {
+            document.getElementById('joinRoomModal').classList.remove('show');
+            document.getElementById('joinRoomForm').reset();
+        }
+
+        function hideAllModals() {
+            hideCreateRoomModal();
+            hideJoinRoomModal();
+        }
+
+        // 房间功能
+        function createRoom() {
+            const roomPassword = document.getElementById('roomPassword').value;
+            const maxMembers = parseInt(document.getElementById('maxMembers').value);
+            const roomCode = generateRoomCode();
+            
+            if (!window.network || !window.network.send) {
+                alert(window.i18n ? window.i18n.t('network_unavailable') : '网络连接不可用，请刷新页面重试');
+                return;
+            }
+
+            const roomData = {
+                type: 'create-room',
+                roomSettings: {
+                    code: roomCode,
+                    name: roomCode, // 使用房间码作为房间名称
+                    password: roomPassword || undefined,
+                    maxMembers: maxMembers,
+                    isPrivate: !!roomPassword
+                },
+                userInfo: {
+                    displayName: getPreferredDisplayName(),
+                    deviceName: navigator.userAgent.includes('Mobile') ? 'Mobile Device' : 'Computer'
+                }
+            };
+
+            console.log('创建房间:', roomData);
+            window.network.send(roomData);
+            hideCreateRoomModal();
+        }
+
+        function joinRoom() {
+            const roomCode = document.getElementById('roomCode').value.trim().toUpperCase();
+            const password = document.getElementById('joinPassword').value;
+
+            if (!roomCode) {
+                alert(window.i18n ? window.i18n.t('please_enter_room_code') : '请输入房间代码');
+                return;
+            }
+            
+            if (!window.network || !window.network.send) {
+                alert(window.i18n ? window.i18n.t('network_unavailable') : '网络连接不可用，请刷新页面重试');
+                return;
+            }
+
+            const joinData = {
+                type: 'join-room',
+                roomCode: roomCode,
+                password: password || undefined,
+                userInfo: {
+                    displayName: getPreferredDisplayName(),
+                    deviceName: navigator.userAgent.includes('Mobile') ? 'Mobile Device' : 'Computer'
+                }
+            };
+
+            console.log('加入房间:', joinData);
+            window.network.send(joinData);
+            hideJoinRoomModal();
+        }
+
+        function leaveRoom() {
+            if (!isInRoom) return;
+
+            if (confirm(window.i18n ? window.i18n.t('confirm_leave_room') : '确定要离开房间吗？')) {
+                const leaveData = {
+                    type: 'leave-room'
+                };
+
+                console.log('离开房间:', leaveData);
+                
+                if (window.network && window.network.send) {
+                    window.network.send(leaveData);
+                }
+                
+                // 重置UI
+                handleRoomLeft();
+            }
+        }
+
+        // 房间状态处理
+        function handleRoomCreated(event) {
+            const data = event.detail;
+            console.log('房间创建成功:', data);
+            const hostInfo = data.hostInfo || { displayName: '房主', name: '房主', isHost: true };
+            // 确保hostInfo有name属性
+            if (!hostInfo.name && hostInfo.displayName) {
+                hostInfo.name = hostInfo.displayName;
+            }
+            currentRoom = {
+                roomCode: data.room.code,
+                roomName: data.room.name,
+                isHost: true,
+                members: [hostInfo]
+            };
+            isInRoom = true;
+            updateRoomUI();
+            showRoomInterface();
+        }
+
+        function handleRoomJoined(event) {
+            const data = event.detail;
+            console.log('加入房间成功:', data);
+            // 确保所有成员都有name属性
+            const members = (data.members || []).map(member => {
+                if (!member.name && member.displayName) {
+                    member.name = member.displayName;
+                }
+                return member;
+            });
+            currentRoom = {
+                roomCode: data.room.code,
+                roomName: data.room.name,
+                isHost: false,
+                members: members
+            };
+            isInRoom = true;
+            updateRoomUI();
+            showRoomInterface();
+        }
+
+        function handleRoomLeft() {
+            currentRoom = null;
+            isInRoom = false;
+            hideRoomInterface();
+        }
+
+        function updateRoomUI() {
+            if (!currentRoom) return;
+
+            document.getElementById('currentRoomName').textContent = currentRoom.roomName;
+            document.getElementById('currentRoomCode').textContent = currentRoom.roomCode;
+            document.getElementById('currentMemberCount').textContent = currentRoom.members.length;
+            document.getElementById('currentUserRole').textContent = currentRoom.isHost ? (window.i18n ? window.i18n.t('role_host') : 'Host') : (window.i18n ? window.i18n.t('role_member') : 'Member');
+            
+            updateMembersList();
+        }
+
+        function showRoomInterface() {
+            document.getElementById('roomOptions').style.display = 'none';
+            document.getElementById('roomStatus').classList.add('show');
+            document.getElementById('membersSection').style.display = 'block';
+            document.getElementById('fileManagement').style.display = 'grid';
+        }
+
+        function hideRoomInterface() {
+            document.getElementById('roomOptions').style.display = 'grid';
+            document.getElementById('roomStatus').classList.remove('show');
+            document.getElementById('membersSection').style.display = 'none';
+            document.getElementById('fileManagement').style.display = 'none';
+            
+            // 清空文件列表
+            sharedFiles = [];
+            updateFilesList();
+        }
+
+        function updateMembersList() {
+            if (!currentRoom) return;
+
+            const membersList = document.getElementById('membersList');
+            const memberCount = document.getElementById('memberCount');
+            
+            memberCount.textContent = currentRoom.members.length;
+            membersList.innerHTML = '';
+
+            currentRoom.members.forEach(member => {
+                const memberElement = document.createElement('div');
+                memberElement.className = 'member-item';
+                const memberName = member.displayName || member.deviceName || member.name || (window.i18n ? window.i18n.t('unknown_user') : 'Unknown');
+                memberElement.innerHTML = `
+                    <div class="member-avatar">${memberName.charAt(0).toUpperCase()}</div>
+                    <div class="member-info">
+                        <div class="member-name">${memberName}${member.isHost ? ' 👑' : ''}</div>
+                        <div class="member-status">${member.isHost ? (window.i18n ? window.i18n.t('role_host') : 'Host') : (window.i18n ? window.i18n.t('role_member') : 'Member')}</div>
+                    </div>
+                `;
+                membersList.appendChild(memberElement);
+            });
+        }
+
+        // 文件处理
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            if (!isInRoom) {
+                alert(window.i18n ? window.i18n.t('please_create_or_join_room') : '请先创建或加入房间');
+                return;
+            }
+
+            for (let file of files) {
+                uploadFile(file);
+            }
+        }
+
+        function uploadFile(file) {
+            console.log('上传文件:', file.name);
+            
+            if (!currentRoom || !currentRoom.roomCode) {
+                alert(window.i18n ? window.i18n.t('please_join_room_first') : '请先加入房间');
+                return;
+            }
+            
+            // 显示上传进度
+            showUploadProgress();
+            
+            // 创建文件信息对象
+            const fileInfo = {
+                id: Date.now(),
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                uploadTime: new Date()
+            };
+            
+            // 读取文件内容并发送到房间
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (window.network && window.network.send) {
+                    const shareMessage = {
+                        type: 'room-file-shared',
+                        roomCode: currentRoom.roomCode,
+                        fileInfo: {
+                            ...fileInfo,
+                            uploader: (function(){
+                                try { const s = window.localStorage.getItem('displayName'); if (s && s.trim()) return s.trim(); } catch(e) {}
+                                return getPreferredDisplayName();
+                            })(),
+                            uploaderId: window.network.peerId || 'unknown'
+                        },
+                        fileData: e.target.result // base64编码的文件数据
+                    };
+                    
+                    console.log('发送文件共享消息:', shareMessage.fileInfo.name);
+                    window.network.send(shareMessage);
+                }
+            };
+            reader.readAsDataURL(file);
+            
+            // 模拟上传进度
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 20;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    hideUploadProgress();
+                    addFileToList(file);
+                }
+                updateUploadProgress(progress);
+            }, 200);
+        }
+
+        function showUploadProgress() {
+            document.getElementById('uploadProgress').style.display = 'block';
+        }
+
+        function hideUploadProgress() {
+            document.getElementById('uploadProgress').style.display = 'none';
+        }
+
+        function updateUploadProgress(progress) {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            progressBar.style.width = progress + '%';
+            progressText.textContent = Math.round(progress) + '%';
+        }
+
+        function addFileToList(file) {
+            const fileInfo = {
+                id: Date.now(),
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                uploadTime: new Date()
+            };
+            
+            sharedFiles.push(fileInfo);
+            updateFilesList();
+        }
+
+        function updateFilesList() {
+            const fileList = document.getElementById('fileList');
+            const fileCount = document.getElementById('fileCount');
+            
+            fileCount.textContent = sharedFiles.length;
+            
+            if (sharedFiles.length === 0) {
+                fileList.innerHTML = '<div style="text-align: center; color: var(--gray-500); padding: 20px;">暂无文件</div>';
+                return;
+            }
+            
+            fileList.innerHTML = '';
+            
+            sharedFiles.forEach(file => {
+                const fileElement = document.createElement('div');
+                fileElement.className = 'file-item';
+                fileElement.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn btn-primary btn-small" onclick="downloadFile('${file.id}')">下载</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteFile('${file.id}')">删除</button>
+                    </div>
+                `;
+                fileList.appendChild(fileElement);
+            });
+        }
+
+        function downloadFile(fileId) {
+            const file = sharedFiles.find(f => f.id == fileId);
+            if (file && file.fileData) {
+                console.log('下载文件:', file.name);
+                
+                // 创建下载链接
+                const link = document.createElement('a');
+                link.href = file.fileData; // base64数据URL
+                link.download = file.name;
+                link.style.display = 'none';
+                
+                // 触发下载
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showNotification(`下载完成: ${file.name}`, 'success');
+            } else {
+                showNotification('文件数据不可用', 'error');
+            }
+        }
+
+        function deleteFile(fileId) {
+            if (confirm(window.i18n ? window.i18n.t('confirm_delete_file') : '确定要删除这个文件吗？')) {
+                sharedFiles = sharedFiles.filter(f => f.id != fileId);
+                updateFilesList();
+            }
+        }
+
+        // 工具函数
+        function generateRoomCode() {
+            // 生成4位数字房间码
+            return Math.floor(1000 + Math.random() * 9000).toString();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function initializeNetworkConnection() {
+            // 初始化网络连接
+            console.log('初始化网络连接...');
+            setConnectionStatus('connecting');
+            
+            // 等待网络脚本加载完成并建立连接
+            let attempts = 0;
+            const maxAttempts = 10;
+            
+            function checkConnection() {
+                attempts++;
+                
+                if (window.network && window.network.isConnected && window.network.isConnected()) {
+                    console.log('✅ 网络连接已建立');
+                    setConnectionStatus('connected');
+                    setupRoomEventHandlers();
+                } else if (window.network && window.network.serverConnection) {
+                    console.log('🔄 网络对象存在，等待连接建立...');
+                    setConnectionStatus('connecting');
+                    if (attempts < maxAttempts) {
+                        setTimeout(checkConnection, 500);
+                    } else {
+                        console.error('❌ 网络连接超时');
+                        setConnectionStatus('disconnected');
+                    }
+                } else {
+                    console.log('⏳ 等待网络对象初始化...');
+                    setConnectionStatus('connecting');
+                    if (attempts < maxAttempts) {
+                        setTimeout(checkConnection, 500);
+                    } else {
+                        console.error('❌ 网络连接失败');
+                        setConnectionStatus('disconnected');
+                    }
+                }
+            }
+            
+            // 开始检查连接
+            setTimeout(checkConnection, 100);
+        }
+        
+        function setupRoomEventHandlers() {
+            // 监听房间相关事件
+            const Events = window.network?.Events || window.Events;
+            
+            if (Events) {
+                // 移除可能存在的旧监听器
+                Events.off('room-created', handleRoomCreated);
+                Events.off('room-joined', handleRoomJoined);
+                Events.off('room-left', handleRoomLeft);
+                Events.off('room-error', handleRoomError);
+                Events.off('room-member-joined', handleMemberJoined);
+                Events.off('room-member-left', handleMemberLeft);
+                Events.off('room-file-shared', handleFileShared);
+                Events.off('peer-connected', handleConnectionEstablished);
+                Events.off('peer-disconnected', handleConnectionLost);
+                
+                // 添加新的监听器
+                Events.on('room-created', handleRoomCreated);
+                Events.on('room-joined', handleRoomJoined);
+                Events.on('room-left', handleRoomLeft);
+                Events.on('room-error', handleRoomError);
+                Events.on('room-member-joined', handleMemberJoined);
+                Events.on('room-member-left', handleMemberLeft);
+                Events.on('room-file-shared', handleFileShared);
+                
+                // 监听连接状态事件
+                Events.on('peer-connected', handleConnectionEstablished);
+                Events.on('peer-disconnected', handleConnectionLost);
+                
+                console.log('✅ 房间事件监听器已设置');
+            } else {
+                console.log('⏳ Events对象尚未加载，1秒后重试...');
+                setTimeout(setupRoomEventHandlers, 1000);
+            }
+            
+            // 初始化连接状态显示
+            updateConnectionStatus();
+        }
+        
+        function handleRoomError(event) {
+            const error = event.detail;
+            console.error('房间错误:', error);
+            alert((window.i18n ? window.i18n.t('room_operation_failed') : '房间操作失败') + ': ' + (error.error || error.message || error));
+        }
+        
+        function handleMemberJoined(event) {
+            const data = event.detail;
+            console.log('新成员加入:', data);
+            if (currentRoom && data.member) {
+                currentRoom.members.push(data.member);
+                updateRoomUI();
+            }
+            // 如果消息包含完整的成员列表，使用它
+            if (currentRoom && data.room && data.room.members) {
+                currentRoom.members = data.room.members;
+                updateRoomUI();
+            }
+        }
+        
+        function handleMemberLeft(event) {
+            const data = event.detail;
+            console.log('成员离开:', data);
+            if (currentRoom && data.memberId) {
+                currentRoom.members = currentRoom.members.filter(m => m.id !== data.memberId);
+                updateRoomUI();
+            }
+            // 如果消息包含完整的成员列表，使用它
+            if (currentRoom && data.room && data.room.members) {
+                currentRoom.members = data.room.members;
+                updateRoomUI();
+            }
+        }
+        
+        function handleFileShared(event) {
+            const data = event.detail;
+            console.log('收到共享文件:', data);
+            if (data.fileInfo && data.fileData) {
+                // 保存文件信息和数据
+                const fileWithData = {
+                    ...data.fileInfo,
+                    fileData: data.fileData // base64编码的文件数据
+                };
+                sharedFiles.push(fileWithData);
+                updateFilesList();
+                
+                // 显示通知
+                showNotification((window.i18n ? window.i18n.t('received_file') : '收到文件') + `: ${data.fileInfo.name}`, 'success');
+            }
+        }
+        
+        // 连接状态处理函数
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            const textElement = document.getElementById('connectionText');
+            
+            if (!statusElement || !textElement) return;
+            
+            // 移除所有状态类
+            statusElement.classList.remove('connected', 'disconnected', 'connecting');
+            
+            if (window.network && window.network.isConnected && window.network.isConnected()) {
+                statusElement.classList.add('connected');
+                textElement.textContent = window.i18n ? window.i18n.t('connection_connected') : 'Connected';
+                textElement.setAttribute('data-i18n', 'connection_connected');
+            } else {
+                statusElement.classList.add('disconnected');
+                textElement.textContent = window.i18n ? window.i18n.t('connection_disconnected') : 'Disconnected';
+                textElement.setAttribute('data-i18n', 'connection_disconnected');
+            }
+        }
+        
+        function handleConnectionEstablished(event) {
+            console.log('✅ 连接已建立');
+            updateConnectionStatus();
+        }
+        
+        function handleConnectionLost(event) {
+            console.log('❌ 连接已断开');
+            updateConnectionStatus();
+        }
+        
+        function setConnectionStatus(status) {
+            const statusElement = document.getElementById('connectionStatus');
+            const textElement = document.getElementById('connectionText');
+            
+            if (!statusElement || !textElement) return;
+            
+            // 移除所有状态类
+            statusElement.classList.remove('connected', 'disconnected', 'connecting');
+            
+            switch (status) {
+                case 'connected':
+                    statusElement.classList.add('connected');
+                    textElement.textContent = window.i18n ? window.i18n.t('connection_connected') : 'Connected';
+                    textElement.setAttribute('data-i18n', 'connection_connected');
+                    break;
+                case 'connecting':
+                    statusElement.classList.add('connecting');
+                    textElement.textContent = window.i18n ? window.i18n.t('connection_connecting') : 'Connecting...';
+                    textElement.setAttribute('data-i18n', 'connection_connecting');
+                    break;
+                case 'disconnected':
+                default:
+                    statusElement.classList.add('disconnected');
+                    textElement.textContent = window.i18n ? window.i18n.t('connection_disconnected') : 'Disconnected';
+                    textElement.setAttribute('data-i18n', 'connection_disconnected');
+                    break;
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面加载完成，开始初始化...');
+            
+            // 初始化语言选择器
+            initializeLanguageSelector();
+            
+            console.log('✅ 页面初始化完成');
+        });
+    </script>
+</body>
+</html>

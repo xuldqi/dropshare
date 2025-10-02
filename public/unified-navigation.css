@@ -1,0 +1,392 @@
+/* Unified Navigation Styles - Based on index.html */
+:root {
+    --primary-50: #eff6ff;
+    --primary-100: #dbeafe;
+    --primary-500: #3367d6;
+    --primary-600: #2563eb;
+    --primary-700: #1d4ed8;
+    --primary-800: #1e40af;
+    --primary-900: #1e3a8a;
+    
+    --red-500: #ef4444;
+    --green-500: #10b981;
+    --purple-500: #8b5cf6;
+    --blue-500: #06b6d4;
+    --orange-500: #f59e0b;
+    --pink-500: #ec4899;
+    
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray-200);
+    z-index: 3000;
+    padding: 20px 0;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.brand-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-600);
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--primary-600);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Desktop Navigation Links - Centered */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: var(--gray-600);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-600);
+    background: var(--primary-50);
+}
+
+.nav-links a.active {
+    color: var(--primary-600);
+    background: var(--primary-50);
+    font-weight: 600;
+}
+
+/* Hamburger Menu (hidden on desktop) */
+.hamburger {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+}
+
+.hamburger span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--gray-700);
+    position: relative;
+}
+
+.hamburger span::before,
+.hamburger span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 18px;
+    height: 2px;
+    background: var(--gray-700);
+}
+
+.hamburger span::before {
+    top: -6px;
+}
+
+.hamburger span::after {
+    top: 6px;
+}
+
+/* Control Buttons (Language Selector) */
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Language Selector Styles */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    padding: 6px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    background: white;
+    color: var(--gray-700);
+    font-size: 14px;
+}
+
+/* Custom Dropdown Menu */
+.lang-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    width: auto;
+    min-width: 100%;
+    max-height: 60vh;
+    overflow: auto;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    z-index: 3000;
+    display: none;
+}
+
+.lang-menu.open {
+    display: block;
+}
+
+.lang-item {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--gray-700);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.lang-item:hover {
+    background: var(--gray-100);
+}
+
+.lang-item.selected {
+    background: var(--gray-200);
+}
+
+/* Mobile Toggle Button */
+#langToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: white;
+    color: var(--gray-700);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+    min-width: fit-content;
+}
+
+#langToggle:hover {
+    border-color: var(--gray-300);
+    box-shadow: var(--shadow-md);
+}
+
+/* Menu Backdrop */
+.menu-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 2000;
+    display: none;
+    pointer-events: auto;
+}
+
+.menu-backdrop.show {
+    display: block;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .header {
+        padding: 20px 0;
+        min-height: 60px;
+    }
+    
+    .hamburger {
+        display: inline-flex;
+    }
+    
+    /* Hide navigation links on mobile, show via hamburger */
+    .nav-links {
+        display: none;
+    }
+    
+    /* Mobile header-controls layout */
+    .header-controls {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    /* Brand area with hamburger and logo */
+    .brand-left .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .brand-left .logo a {
+        display: inline;
+    }
+    
+    /* Language selector on the right */
+    .control-buttons {
+        min-width: auto !important;
+        justify-content: flex-end !important;
+        display: flex !important;
+    }
+    
+    /* Mobile navigation - vertical when expanded */
+    .nav-links.mobile-open {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px 16px;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: white;
+        box-shadow: var(--shadow-lg);
+        border-bottom: 1px solid var(--gray-200);
+        z-index: 3001;
+    }
+    
+    .nav-links.mobile-open a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Mobile language selector - hide native select, use custom */
+    .language-selector select {
+        display: none !important;
+    }
+    
+    #langToggle {
+        display: inline-flex;
+    }
+    
+    /* Ensure proper spacing for mobile */
+    .control-buttons {
+        display: flex !important;
+        justify-content: flex-end !important;
+        width: auto;
+    }
+}
+
+/* Additional mobile responsive adjustments */
+@media (max-width: 480px) {
+    .header-container {
+        padding: 0 12px;
+    }
+    
+    .logo {
+        font-size: 20px;
+    }
+    
+    .logo svg {
+        width: 28px;
+        height: 28px;
+    }
+    
+    #langToggle {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .nav-links.mobile-open a {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}
+
+/* Body padding to account for fixed header */
+body {
+    padding-top: 80px;
+}
+
+/* Ensure proper display for pages using this stylesheet */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--gray-800);
+    overflow-x: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: inherit;
+}

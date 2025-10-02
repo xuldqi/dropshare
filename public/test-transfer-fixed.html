@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件传输修复测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #555;
+        }
+        .device-list {
+            margin: 15px 0;
+        }
+        .peer-card {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 15px;
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .peer-card:hover {
+            background: #bbdefb;
+        }
+        .peer-card.selected {
+            background: #2196f3;
+            color: white;
+        }
+        .controls {
+            margin: 15px 0;
+        }
+        button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
+            background: #45a049;
+        }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .log .error {
+            color: #ff6b6b;
+        }
+        .log .success {
+            color: #51cf66;
+        }
+        .log .warning {
+            color: #ffd43b;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 文件传输修复测试</h1>
+        
+        <div class="test-section">
+            <h3>📱 在线设备</h3>
+            <div id="deviceList" class="device-list">
+                <p>正在搜索设备...</p>
+            </div>
+            <button onclick="refreshDevices()">🔄 刷新设备列表</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📁 文件传输测试</h3>
+            <input type="file" id="fileInput" multiple>
+            <div class="controls">
+                <button id="transferBtn" onclick="testFileTransfer()" disabled>📤 发送文件</button>
+                <button onclick="createTestFile()">📄 创建测试文件</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📝 文本传输测试</h3>
+            <textarea id="textInput" placeholder="输入要发送的文本..." rows="3" style="width: 100%; margin: 10px 0;"></textarea>
+            <div class="controls">
+                <button id="textBtn" onclick="testTextTransfer()" disabled>💬 发送文本</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 实时日志</h3>
+            <div id="log" class="log"></div>
+            <button onclick="clearLog()">🗑️ 清空日志</button>
+        </div>
+    </div>
+
+    <script src="scripts/network.js"></script>
+    <script>
+        let selectedPeerId = null;
+        let discoveredPeers = {};
+        
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : '';
+            logDiv.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        // 事件监听器将在网络初始化完成后设置
+        
+        function updateDeviceList() {
+            const deviceListDiv = document.getElementById('deviceList');
+            const peerIds = Object.keys(discoveredPeers);
+            
+            if (peerIds.length === 0) {
+                deviceListDiv.innerHTML = '<p>未发现其他设备</p>';
+                return;
+            }
+            
+            deviceListDiv.innerHTML = '';
+            peerIds.forEach(peerId => {
+                const peer = discoveredPeers[peerId];
+                const peerCard = document.createElement('div');
+                peerCard.className = 'peer-card';
+                peerCard.textContent = `${peer.displayName || peer.name || '未知设备'} (${peerId.substring(0, 8)}...)`;
+                peerCard.onclick = () => selectDevice(peerId, peerCard);
+                deviceListDiv.appendChild(peerCard);
+            });
+        }
+        
+        function selectDevice(peerId, element) {
+            selectedPeerId = peerId;
+            
+            // 更新选中状态
+            document.querySelectorAll('.peer-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            // 启用按钮
+            document.getElementById('transferBtn').disabled = false;
+            document.getElementById('textBtn').disabled = false;
+            
+            log(`👆 选择了设备: ${peerId.substring(0, 8)}...`);
+        }
+        
+        function refreshDevices() {
+            log('🔄 刷新设备列表...');
+            // 触发设备发现
+            if (window.serverConnection && window.serverConnection._isConnected()) {
+                // 服务器会自动发送peers列表
+                log('📡 已连接到服务器，等待设备列表更新...');
+            } else if (window.serverConnection) {
+                // 重新连接
+                window.serverConnection._connect();
+                log('🔄 重新连接到服务器...');
+            } else {
+                log('❌ 网络连接未初始化', 'error');
+            }
+        }
+        
+        function testFileTransfer() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+            
+            if (!selectedPeerId) {
+                log('❌ 请先选择一个设备', 'error');
+                return;
+            }
+            
+            if (!files || files.length === 0) {
+                log('❌ 请选择要发送的文件', 'error');
+                return;
+            }
+            
+            log(`📤 开始发送 ${files.length} 个文件到设备 ${selectedPeerId.substring(0, 8)}...`);
+            
+            // 触发文件发送事件
+            window.Events.fire('files-selected', {
+                files: files,
+                to: selectedPeerId
+            });
+            
+            log('✅ 文件发送请求已发送', 'success');
+        }
+        
+        function testTextTransfer() {
+            const textInput = document.getElementById('textInput');
+            const text = textInput.value.trim();
+            
+            if (!selectedPeerId) {
+                log('❌ 请先选择一个设备', 'error');
+                return;
+            }
+            
+            if (!text) {
+                log('❌ 请输入要发送的文本', 'error');
+                return;
+            }
+            
+            log(`💬 发送文本到设备 ${selectedPeerId.substring(0, 8)}...`);
+            
+            // 触发文本发送事件
+            window.Events.fire('send-text', {
+                text: text,
+                to: selectedPeerId
+            });
+            
+            log('✅ 文本发送请求已发送', 'success');
+            textInput.value = '';
+        }
+        
+        function createTestFile() {
+            // 创建一个测试文件
+            const content = `这是一个测试文件\n创建时间: ${new Date().toLocaleString()}\n文件大小: 约1KB\n\n${'测试内容 '.repeat(50)}`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const file = new File([blob], `test-${Date.now()}.txt`, { type: 'text/plain' });
+            
+            // 创建一个临时的文件输入来模拟文件选择
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            document.getElementById('fileInput').files = dt.files;
+            
+            log(`📄 创建了测试文件: ${file.name} (${file.size} bytes)`, 'success');
+        }
+        
+        // 页面加载完成后的初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            log('🚀 文件传输修复测试页面已加载');
+            log('📡 正在连接到信令服务器...');
+            
+            // 等待网络初始化完成
+            function waitForNetworkInit() {
+                if (window.network && window.network.serverConnection && window.network.peersManager && window.Events) {
+                    log('✅ 网络系统已初始化', 'success');
+                    
+                    // 监听peers事件
+                    window.Events.on('peers', function(peers) {
+                        discoveredPeers = {};
+                        Object.keys(peers).forEach(peerId => {
+                            if (peerId !== window.currentPeerId) {
+                                discoveredPeers[peerId] = peers[peerId];
+                            }
+                        });
+                        updateDeviceList();
+                        log(`🔍 发现 ${Object.keys(discoveredPeers).length} 台设备`);
+                    });
+                    
+                    // 监听display-name事件
+                    window.Events.on('display-name', function(msg) {
+                        log(`📝 收到设备名称: ${msg.displayName} (${msg.peerId.substring(0, 8)}...)`);
+                        // 更新设备列表中的显示名称
+                        if (discoveredPeers[msg.peerId]) {
+                            discoveredPeers[msg.peerId].displayName = msg.displayName;
+                            updateDeviceList();
+                        }
+                    });
+                    
+                    // 监听其他事件
+                    window.Events.on('peer-connected', function(detail) {
+                        const { peerId, connectionType } = detail;
+                        log(`✅ 与设备 ${peerId.substring(0, 8)}... 建立${connectionType.toUpperCase()}连接`, 'success');
+                    });
+                    
+                    window.Events.on('file-progress', function(detail) {
+                        const { sender, progress } = detail;
+                        log(`📊 文件传输进度: ${Math.round(progress * 100)}% (来自 ${sender.substring(0, 8)}...)`);
+                    });
+                    
+                    window.Events.on('file-received', function(file) {
+                        log(`📥 收到文件: ${file.name} (${file.size} bytes)`, 'success');
+                    });
+                    
+                    refreshDevices();
+                } else {
+                    log('❌ 网络系统初始化失败', 'error');
+                    // 重试
+                    setTimeout(waitForNetworkInit, 1000);
+                }
+            }
+            
+            // 延迟等待网络初始化
+            setTimeout(waitForNetworkInit, 2000);
+        });
+    </script>
+</body>
+</html>

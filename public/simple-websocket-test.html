@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单WebSocket测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #007bff; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>简单WebSocket连接测试</h1>
+        <p>测试直接WebSocket连接到服务器</p>
+        
+        <button onclick="testDirectConnection()">测试直接连接</button>
+        <button onclick="clearLog()">清空日志</button>
+        
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}\n`;
+            
+            const span = document.createElement('span');
+            span.className = type;
+            span.textContent = logEntry;
+            
+            logDiv.appendChild(span);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        function testDirectConnection() {
+            log('开始测试直接WebSocket连接...', 'info');
+            
+            // 生成peerid cookie
+            const peerId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            document.cookie = `peerid=${peerId}; path=/`;
+            log(`设置peerid: ${peerId}`, 'info');
+            
+            // 测试不同的WebSocket URL
+            const urls = [
+                `ws://localhost:8001/`,
+                `ws://localhost:8001/server/webrtc`,
+                `ws://localhost:8001/webrtc`,
+                `ws://localhost:8001/fallback`
+            ];
+            
+            urls.forEach((url, index) => {
+                setTimeout(() => {
+                    testSingleConnection(url, `测试${index + 1}`);
+                }, index * 2000);
+            });
+        }
+        
+        function testSingleConnection(url, description) {
+            log(`\n${description}: 连接到 ${url}`, 'info');
+            
+            const ws = new WebSocket(url);
+            let connected = false;
+            
+            const timeout = setTimeout(() => {
+                if (!connected) {
+                    log(`${description}: 连接超时`, 'error');
+                    ws.close();
+                }
+            }, 5000);
+            
+            ws.onopen = function(event) {
+                connected = true;
+                clearTimeout(timeout);
+                log(`${description}: ✅ 连接成功!`, 'success');
+                log(`${description}: readyState=${ws.readyState}, protocol='${ws.protocol}'`, 'info');
+                
+                // 发送测试消息
+                try {
+                    ws.send(JSON.stringify({type: 'ping', data: 'test'}));
+                    log(`${description}: 发送测试消息`, 'info');
+                } catch (e) {
+                    log(`${description}: 发送消息失败: ${e.message}`, 'error');
+                }
+                
+                // 3秒后关闭连接
+                setTimeout(() => {
+                    ws.close(1000, 'test completed');
+                }, 3000);
+            };
+            
+            ws.onmessage = function(event) {
+                log(`${description}: 收到消息: ${event.data}`, 'success');
+            };
+            
+            ws.onerror = function(error) {
+                connected = true; // 防止超时处理
+                clearTimeout(timeout);
+                log(`${description}: ❌ 连接错误`, 'error');
+                log(`${description}: readyState=${ws.readyState}`, 'error');
+                console.error(`${description} WebSocket error:`, error);
+            };
+            
+            ws.onclose = function(event) {
+                connected = true; // 防止超时处理
+                clearTimeout(timeout);
+                log(`${description}: 🔒 连接关闭`, 'info');
+                log(`${description}: code=${event.code}, reason='${event.reason}', wasClean=${event.wasClean}`, 'info');
+                
+                const closeReasons = {
+                    1000: '正常关闭',
+                    1001: '端点离开',
+                    1002: '协议错误',
+                    1003: '不支持的数据类型',
+                    1006: '异常关闭（无关闭帧）',
+                    1011: '服务器错误',
+                    1012: '服务重启',
+                    1013: '稍后重试',
+                    1014: '网关错误',
+                    1015: 'TLS握手失败'
+                };
+                
+                if (closeReasons[event.code]) {
+                    log(`${description}: 关闭原因: ${closeReasons[event.code]}`, 'info');
+                }
+            };
+        }
+        
+        // 页面加载后自动开始测试
+        window.addEventListener('load', () => {
+            log('页面加载完成', 'info');
+            log('点击"测试直接连接"按钮开始测试', 'info');
+        });
+    </script>
+</body>
+</html>
