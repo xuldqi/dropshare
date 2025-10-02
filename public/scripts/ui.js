@@ -42,8 +42,17 @@ window.addEventListener('error', (event) => {
 // Initialize dialogs when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, triggering load event for dialog initialization');
-    // Trigger the load event to initialize dialogs
-    Events.fire('load');
+    // Trigger the load event to initialize dialogs only if Events is available
+    if (window.Events) {
+        Events.fire('load');
+    } else {
+        // Wait for Events to be available
+        setTimeout(() => {
+            if (window.Events) {
+                Events.fire('load');
+            }
+        }, 1000);
+    }
 });
 
 // set display name

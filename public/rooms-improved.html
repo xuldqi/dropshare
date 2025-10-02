@@ -943,18 +943,38 @@
         }
 
         function initializeI18n() {
-            // 简化的国际化处理，避免依赖外部i18n文件
             const languageSelector = document.getElementById('language-selector');
+            const savedLang = localStorage.getItem('dropshare-language') || 'en';
+            if (languageSelector) languageSelector.value = savedLang;
+
+            // 初始化通用 i18n 并翻译整页
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
+                window.DROPSHARE_I18N.init(savedLang).then(() => {
+                    if (typeof window.DROPSHARE_I18N.translatePage === 'function') {
+                        window.DROPSHARE_I18N.translatePage();
+                    }
+                });
+            }
+
+            // 切换语言时实时翻译
             if (languageSelector) {
-                // 设置默认语言
-                const savedLang = localStorage.getItem('dropshare-language') || 'zh-CN';
-                languageSelector.value = savedLang;
-                
                 languageSelector.addEventListener('change', function() {
-                    const selectedLanguage = this.value;
-                    localStorage.setItem('dropshare-language', selectedLanguage);
-                    // 这里可以添加实际的语言切换逻辑
-                    console.log('语言切换到:', selectedLanguage);
+                    const lang = this.value;
+                    localStorage.setItem('dropshare-language', lang);
+                    if (window.DROPSHARE_I18N) {
+                        if (typeof window.DROPSHARE_I18N.changeLanguage === 'function') {
+                            window.DROPSHARE_I18N.changeLanguage(lang).then(() => {
+                                if (typeof window.DROPSHARE_I18N.translatePage === 'function') {
+                                    window.DROPSHARE_I18N.translatePage();
+                                }
+                            });
+                        } else if (typeof window.DROPSHARE_I18N.setLanguage === 'function') {
+                            window.DROPSHARE_I18N.setLanguage(lang);
+                            if (typeof window.DROPSHARE_I18N.translatePage === 'function') {
+                                window.DROPSHARE_I18N.translatePage();
+                            }
+                        }
+                    }
                 });
             }
         }

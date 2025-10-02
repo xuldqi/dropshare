@@ -182,8 +182,25 @@ class Peer {
     _setPeerId(request) {
         if (request.peerId) {
             this.id = request.peerId;
-        } else if (request.headers.cookie) {
-            this.id = request.headers.cookie.replace('peerid=', '');
+            return;
+        }
+        const cookieHeader = request.headers.cookie || '';
+        // Properly parse cookies to extract ONLY the 'peerid' key
+        // Example cookie header: "a=1; peerid=abc123; b=2"
+        let parsedPeerId = '';
+        if (cookieHeader) {
+            try {
+                const parts = cookieHeader.split(';').map(s => s.trim());
+                const match = parts.find(p => p.startsWith('peerid='));
+                if (match) {
+                    parsedPeerId = decodeURIComponent(match.split('=')[1] || '');
+                }
+            } catch (e) {
+                // ignore and fallback
+            }
+        }
+        if (parsedPeerId && parsedPeerId.length > 0) {
+            this.id = parsedPeerId;
         } else {
             // Generate a random peer ID if no cookie is present
             this.id = Math.random().toString(36).substr(2, 16);

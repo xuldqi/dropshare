@@ -713,6 +713,9 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     };
     
+    // Also expose Events globally for backward compatibility
+    window.Events = Events;
+    
     console.log('Network system initialization completed, Events and network exposed globally');
 });
 
