@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebRTC连接测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #ccc;
+        }
+        .status.success { background: #d4edda; border-color: #28a745; color: #155724; }
+        .status.error { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+        .status.info { background: #d1ecf1; border-color: #17a2b8; color: #0c5460; }
+        .status.warning { background: #fff3cd; border-color: #ffc107; color: #856404; }
+        
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        
+        .test-section {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 WebRTC连接诊断测试</h1>
+    
+    <div id="browserSupport" class="status info">
+        🔍 正在检查浏览器支持...
+    </div>
+    
+    <div class="test-section">
+        <h2>🌐 STUN服务器测试</h2>
+        <button onclick="testSTUNServers()" id="stunBtn">测试STUN服务器连接</button>
+        <div id="stunResults"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🔗 WebRTC连接测试</h2>
+        <button onclick="testWebRTCConnection()" id="webrtcBtn">创建WebRTC连接测试</button>
+        <div id="webrtcResults"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📡 网络连接测试</h2>
+        <button onclick="testNetworkConnectivity()" id="networkBtn">测试网络连接</button>
+        <div id="networkResults"></div>
+    </div>
+    
+    <div>
+        <h2>📝 详细日志</h2>
+        <button onclick="clearLog()">清空日志</button>
+        <div id="debugLog" class="log"></div>
+    </div>
+
+    <script>
+        let debugLog = [];
+        
+        // 日志记录函数
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            debugLog.push(logEntry);
+            
+            const logElement = document.getElementById('debugLog');
+            logElement.textContent = debugLog.join('\n');
+            logElement.scrollTop = logElement.scrollHeight;
+            
+            console.log(logEntry);
+        }
+        
+        function clearLog() {
+            debugLog = [];
+            document.getElementById('debugLog').textContent = '';
+        }
+        
+        // 检查浏览器支持
+        function checkBrowserSupport() {
+            const supportElement = document.getElementById('browserSupport');
+            const support = {
+                webrtc: !!(window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection),
+                websocket: !!window.WebSocket,
+                getUserMedia: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
+                dataChannel: !!(window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection)
+            };
+            
+            const supported = Object.values(support).every(s => s);
+            
+            if (supported) {
+                supportElement.className = 'status success';
+                supportElement.textContent = '✅ 浏览器支持WebRTC和所有必需功能';
+            } else {
+                supportElement.className = 'status error';
+                supportElement.textContent = '❌ 浏览器不支持某些WebRTC功能';
+            }
+            
+            log(`WebRTC支持: ${support.webrtc}`);
+            log(`WebSocket支持: ${support.websocket}`);
+            log(`getUserMedia支持: ${support.getUserMedia}`);
+            log(`DataChannel支持: ${support.dataChannel}`);
+        }
+        
+        // 测试STUN服务器
+        async function testSTUNServers() {
+            const btn = document.getElementById('stunBtn');
+            const results = document.getElementById('stunResults');
+            
+            btn.disabled = true;
+            btn.textContent = '测试中...';
+            results.innerHTML = '<div class="status info">正在测试STUN服务器...</div>';
+            
+            const stunServers = [
+                'stun:stun.l.google.com:19302',
+                'stun:stun1.l.google.com:19302',
+                'stun:stun2.l.google.com:19302',
+                'stun:stun.cloudflare.com:3478'
+            ];
+            
+            const resultsHtml = [];
+            
+            for (const stunServer of stunServers) {
+                try {
+                    log(`测试STUN服务器: ${stunServer}`);
+                    
+                    const pc = new RTCPeerConnection({
+                        iceServers: [{ urls: stunServer }]
+                    });
+                    
+                    const result = await new Promise((resolve, reject) => {
+                        const timeout = setTimeout(() => {
+                            reject(new Error('超时'));
+                        }, 5000);
+                        
+                        pc.onicecandidate = (event) => {
+                            if (event.candidate) {
+                                clearTimeout(timeout);
+                                resolve('成功');
+                                pc.close();
+                            }
+                        };
+                        
+                        pc.onicegatheringstatechange = () => {
+                            if (pc.iceGatheringState === 'complete') {
+                                clearTimeout(timeout);
+                                resolve('完成');
+                                pc.close();
+                            }
+                        };
+                        
+                        pc.createDataChannel('test');
+                        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+                    });
+                    
+                    resultsHtml.push(`<div class="status success">✅ ${stunServer}: ${result}</div>`);
+                    log(`✅ ${stunServer}: ${result}`);
+                    
+                } catch (error) {
+                    resultsHtml.push(`<div class="status error">❌ ${stunServer}: ${error.message}</div>`);
+                    log(`❌ ${stunServer}: ${error.message}`);
+                }
+            }
+            
+            results.innerHTML = resultsHtml.join('');
+            btn.disabled = false;
+            btn.textContent = '测试STUN服务器连接';
+        }
+        
+        // 测试WebRTC连接
+        async function testWebRTCConnection() {
+            const btn = document.getElementById('webrtcBtn');
+            const results = document.getElementById('webrtcResults');
+            
+            btn.disabled = true;
+            btn.textContent = '创建连接中...';
+            results.innerHTML = '<div class="status info">正在创建WebRTC连接...</div>';
+            
+            try {
+                const config = {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' },
+                        { urls: 'stun:stun.cloudflare.com:3478' }
+                    ],
+                    iceCandidatePoolSize: 10
+                };
+                
+                log('创建RTCPeerConnection...');
+                const pc = new RTCPeerConnection(config);
+                
+                let connectionEstablished = false;
+                let iceCandidates = [];
+                
+                // 监听连接状态变化
+                pc.onconnectionstatechange = () => {
+                    log(`连接状态: ${pc.connectionState}`);
+                    if (pc.connectionState === 'connected' && !connectionEstablished) {
+                        connectionEstablished = true;
+                        results.innerHTML = '<div class="status success">✅ WebRTC连接测试成功</div>';
+                        btn.disabled = false;
+                        btn.textContent = '创建WebRTC连接测试';
+                    } else if (pc.connectionState === 'failed') {
+                        results.innerHTML = '<div class="status error">❌ WebRTC连接失败</div>';
+                        btn.disabled = false;
+                        btn.textContent = '创建WebRTC连接测试';
+                    } else if (pc.connectionState === 'disconnected') {
+                        results.innerHTML = '<div class="status warning">⚠️ WebRTC连接已断开</div>';
+                        btn.disabled = false;
+                        btn.textContent = '创建WebRTC连接测试';
+                    }
+                };
+                
+                // 设置超时机制
+                const connectionTimeout = setTimeout(() => {
+                    if (!connectionEstablished) {
+                        log('❌ WebRTC连接超时');
+                        results.innerHTML = '<div class="status error">❌ WebRTC连接超时 - 可能由于网络环境限制</div>';
+                        btn.disabled = false;
+                        btn.textContent = '创建WebRTC连接测试';
+                        pc.close();
+                    }
+                }, 15000); // 15秒超时
+                
+                // 监听ICE连接状态
+                pc.oniceconnectionstatechange = () => {
+                    log(`ICE连接状态: ${pc.iceConnectionState}`);
+                };
+                
+                // 监听ICE候选
+                pc.onicecandidate = (event) => {
+                    if (event.candidate) {
+                        iceCandidates.push(event.candidate);
+                        log(`ICE候选: ${event.candidate.candidate}`);
+                    }
+                };
+                
+                // 创建数据通道
+                log('创建数据通道...');
+                const dataChannel = pc.createDataChannel('test', {
+                    ordered: true
+                });
+                
+                dataChannel.onopen = () => {
+                    log('✅ 数据通道已打开');
+                    results.innerHTML = '<div class="status success">✅ 数据通道创建成功</div>';
+                    btn.disabled = false;
+                    btn.textContent = '创建WebRTC连接测试';
+                };
+                
+                dataChannel.onerror = (error) => {
+                    log(`❌ 数据通道错误: ${error}`);
+                    results.innerHTML = '<div class="status error">❌ 数据通道创建失败</div>';
+                    btn.disabled = false;
+                    btn.textContent = '创建WebRTC连接测试';
+                };
+                
+                // 创建offer
+                log('创建offer...');
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+                log('✅ Offer已设置');
+                
+                // 模拟远程描述
+                setTimeout(() => {
+                    if (pc.signalingState === 'have-local-offer') {
+                        log('设置模拟远程描述...');
+                        pc.setRemoteDescription(offer).then(() => {
+                            log('✅ 远程描述已设置');
+                        }).catch(error => {
+                            log(`❌ 设置远程描述失败: ${error}`);
+                        });
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                log(`❌ WebRTC连接测试失败: ${error.message}`);
+                results.innerHTML = `<div class="status error">❌ WebRTC连接测试失败: ${error.message}</div>`;
+                btn.disabled = false;
+                btn.textContent = '创建WebRTC连接测试';
+            }
+        }
+        
+        // 测试网络连接
+        async function testNetworkConnectivity() {
+            const btn = document.getElementById('networkBtn');
+            const results = document.getElementById('networkResults');
+            
+            btn.disabled = true;
+            btn.textContent = '测试中...';
+            results.innerHTML = '<div class="status info">正在测试网络连接...</div>';
+            
+            const tests = [];
+            
+            // 测试本地WebSocket服务器连接
+            try {
+                log('测试本地WebSocket服务器连接...');
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const wsUrl = `${protocol}//${window.location.host}/server/webrtc`;
+                
+                await new Promise((resolve, reject) => {
+                    const ws = new WebSocket(wsUrl);
+                    const timeout = setTimeout(() => {
+                        ws.close();
+                        reject(new Error('WebSocket连接超时'));
+                    }, 5000);
+                    
+                    ws.onopen = () => {
+                        clearTimeout(timeout);
+                        ws.close();
+                        resolve();
+                    };
+                    
+                    ws.onerror = (error) => {
+                        clearTimeout(timeout);
+                        reject(error);
+                    };
+                });
+                
+                tests.push('<div class="status success">✅ 本地WebSocket服务器连接正常</div>');
+                log('✅ 本地WebSocket服务器连接正常');
+            } catch (error) {
+                tests.push(`<div class="status error">❌ 本地WebSocket服务器连接失败: ${error.message}</div>`);
+                log(`❌ 本地WebSocket服务器连接失败: ${error.message}`);
+            }
+            
+            // 测试外部网络连接
+            try {
+                log('测试外部网络连接...');
+                const response = await fetch('https://httpbin.org/get', { mode: 'no-cors' });
+                tests.push('<div class="status success">✅ 外部网络连接正常</div>');
+                log('✅ 外部网络连接正常');
+            } catch (error) {
+                tests.push(`<div class="status warning">⚠️ 外部网络连接失败: ${error.message}</div>`);
+                log(`⚠️ 外部网络连接失败: ${error.message}`);
+            }
+            
+            results.innerHTML = tests.join('');
+            btn.disabled = false;
+            btn.textContent = '测试网络连接';
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 WebRTC诊断页面初始化完成');
+            checkBrowserSupport();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="site_name">DropShare</title>
+    <meta name="description" data-i18n-content="home_meta_description" content="Free online tools for file sharing, image editing, audio/video conversion, PDF processing, and document tools. No registration required.">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" data-i18n-content="home_meta_keywords" content="file sharing, image tools, video converter, audio tools, document processor, PDF tools, image compressor, online tools">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="DropShare">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="light dark">
+    
+    <!-- Search Engine Verification (add when available) -->
+    <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE"> -->
+    <!-- <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE"> -->
+    <!-- <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE"> -->
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" data-i18n-content="site_name" content="DropShare - Free Online Tools">
+    <meta property="og:description" data-i18n-content="home_meta_description" content="Free online tools for file sharing, image editing, audio/video conversion, PDF processing, and document tools. No registration required.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dropshare.tech">
+    <meta property="og:site_name" data-i18n-content="site_name" content="DropShare">
+    <meta property="og:locale" content="en_US" id="og-locale">
+    <meta property="og:locale:alternate" content="zh_CN">
+    <meta property="og:locale:alternate" content="zh_TW">
+    <meta property="og:locale:alternate" content="ja_JP">
+    <meta property="og:locale:alternate" content="ko_KR">
+    <meta property="og:locale:alternate" content="de_DE">
+    <meta property="og:locale:alternate" content="fr_FR">
+    <meta property="og:locale:alternate" content="es_ES">
+    <meta property="og:locale:alternate" content="pt_PT">
+    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" data-i18n-content="home_meta_description" content="DropShare - Free Online Tools">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" data-i18n-content="site_name" content="DropShare - Free Online Tools">
+    <meta name="twitter:description" data-i18n-content="home_meta_description" content="Free online tools for file sharing, image editing, audio/video conversion, PDF processing, and document tools. No registration required.">
+    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
+    <meta name="twitter:image:alt" data-i18n-content="home_meta_description" content="DropShare - Free Online Tools">
+    <meta name="twitter:site" content="@dropshare">
+    <meta name="twitter:creator" content="@dropshare">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dropshare.tech">
+    
+    <!-- Alternate Language Links -->
+    <link rel="alternate" hreflang="en" href="https://dropshare.tech">
+    <link rel="alternate" hreflang="zh-CN" href="https://dropshare.tech/?lang=zh-CN">
+    <link rel="alternate" hreflang="zh-TW" href="https://dropshare.tech/?lang=zh-TW">
+    <link rel="alternate" hreflang="ja" href="https://dropshare.tech/?lang=ja">
+    <link rel="alternate" hreflang="ko" href="https://dropshare.tech/?lang=ko">
+    <link rel="alternate" hreflang="de" href="https://dropshare.tech/?lang=de">
+    <link rel="alternate" hreflang="fr" href="https://dropshare.tech/?lang=fr">
+    <link rel="alternate" hreflang="es" href="https://dropshare.tech/?lang=es">
+    <link rel="alternate" hreflang="pt" href="https://dropshare.tech/?lang=pt">
+    <link rel="alternate" hreflang="x-default" href="https://dropshare.tech">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "DropShare",
+        "description": "Free online tools for file sharing, image editing, audio/video conversion, PDF processing, and document tools. No registration required.",
+        "url": "https://dropshare.tech",
+        "applicationCategory": "Utility",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "DropShare",
+            "url": "https://dropshare.tech"
+        },
+        "featureList": [
+            "File sharing and transfer",
+            "Image editing and conversion",
+            "Audio format conversion", 
+            "Video format conversion",
+            "PDF processing tools",
+            "Document tools",
+            "Image compression and optimization",
+            "Peer-to-peer file sharing"
+        ],
+        "browserRequirements": "HTML5, WebRTC support",
+        "inLanguage": [
+            "en",
+            "zh-CN", 
+            "zh-TW",
+            "ja",
+            "ko", 
+            "de",
+            "fr",
+            "es",
+            "pt"
+        ],
+        "availableLanguage": [
+            {
+                "@type": "Language",
+                "name": "English",
+                "alternateName": "en"
+            },
+            {
+                "@type": "Language", 
+                "name": "Chinese Simplified",
+                "alternateName": "zh-CN"
+            },
+            {
+                "@type": "Language",
+                "name": "Chinese Traditional", 
+                "alternateName": "zh-TW"
+            },
+            {
+                "@type": "Language",
+                "name": "Japanese",
+                "alternateName": "ja"
+            },
+            {
+                "@type": "Language",
+                "name": "Korean",
+                "alternateName": "ko"
+            },
+            {
+                "@type": "Language",
+                "name": "German", 
+                "alternateName": "de"
+            },
+            {
+                "@type": "Language",
+                "name": "French",
+                "alternateName": "fr"
+            },
+            {
+                "@type": "Language",
+                "name": "Spanish",
+                "alternateName": "es"
+            },
+            {
+                "@type": "Language",
+                "name": "Portuguese",
+                "alternateName": "pt"
+            }
+        ],
+        "potentialAction": [
+            {
+                "@type": "UseAction",
+                "target": "https://dropshare.tech/share.html",
+                "name": "Share Files"
+            },
+            {
+                "@type": "UseAction", 
+                "target": "https://dropshare.tech/image-tools.html",
+                "name": "Edit Images"
+            },
+            {
+                "@type": "UseAction",
+                "target": "https://dropshare.tech/audio-tools.html", 
+                "name": "Convert Audio"
+            },
+            {
+                "@type": "UseAction",
+                "target": "https://dropshare.tech/video-tools.html",
+                "name": "Convert Video"
+            },
+            {
+                "@type": "UseAction",
+                "target": "https://dropshare.tech/document-tools.html",
+                "name": "Process Documents"
+            }
+        ],
+        "sameAs": [
+            "https://github.com/dropshare",
+            "https://twitter.com/dropshare"
+        ],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "1250",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "numberOfItems": 4,
+            "itemListElement": [
+                {
+                    "@type": "SoftwareApplication",
+                    "position": 1,
+                    "name": "File Sharing Tools",
+                    "description": "Peer-to-peer file sharing and transfer tools",
+                    "url": "https://dropshare.tech/share.html",
+                    "applicationCategory": "Productivity"
+                },
+                {
+                    "@type": "SoftwareApplication", 
+                    "position": 2,
+                    "name": "Image Tools",
+                    "description": "Image editing, conversion, compression and optimization tools",
+                    "url": "https://dropshare.tech/image-tools.html",
+                    "applicationCategory": "Multimedia"
+                },
+                {
+                    "@type": "SoftwareApplication",
+                    "position": 3, 
+                    "name": "Audio & Video Tools",
+                    "description": "Audio and video format conversion tools",
+                    "url": "https://dropshare.tech/audio-tools.html",
+                    "applicationCategory": "Multimedia"
+                },
+                {
+                    "@type": "SoftwareApplication",
+                    "position": 4,
+                    "name": "Document Tools", 
+                    "description": "PDF processing and document conversion tools",
+                    "url": "https://dropshare.tech/document-tools.html",
+                    "applicationCategory": "Productivity"
+                }
+            ]
+        }
+    }
+    </script>
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4803558716082981" 
+            crossorigin="anonymous"></script>
+
+    <!-- Icons and Mobile Meta Tags -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#3367d6">
+    <meta name="msapplication-TileImage" content="images/mstile-150x150.png">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- Safari Specific -->
+    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#3367d6">
+    
+    <!-- Mobile Web App Meta -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="DropShare">
+    
+    <!-- Prevent iOS Phone Number Detection -->
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Performance and Security -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
+    <!-- DNS Prefetch and Preconnect for Performance -->
+    <link rel="dns-prefetch" href="//www.gstatic.com">
+    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+    
+    <style>
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-500: #3367d6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-800: #1e40af;
+            --primary-900: #1e3a8a;
+            
+            --red-500: #ef4444;
+            --green-500: #10b981;
+            --purple-500: #8b5cf6;
+            --blue-500: #06b6d4;
+            --orange-500: #f59e0b;
+            --pink-500: #ec4899;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            overflow-x: hidden;
+        }
+        
+        /* Layout Fixes for Homepage after using styles.css */
+        /* body {
+            display: block !important;
+            overflow-y: auto !important;
+            justify-content: unset !important;
+            align-items: unset !important;
+        } */
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 3000; /* keep above overlays */
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand-left { display: flex; align-items: center; gap: 12px; }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-600);
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--primary-600);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* 桌面端导航链接居中 */
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-600);
+            background: var(--primary-50);
+        }
+
+        /* Hamburger (hidden on desktop) */
+        .hamburger {
+            display: none;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+        }
+        .hamburger span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: #374151;
+            position: relative;
+        }
+        .hamburger span::before,
+        .hamburger span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 18px;
+            height: 2px;
+            background: #374151;
+        }
+        .hamburger span::before { top: -6px; }
+        .hamburger span::after { top: 6px; }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            min-width: 140px; /* keep selector from shrinking */
+            justify-content: flex-end;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-900) 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-800);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-800);
+        }
+
+        /* Tool Categories */
+        .categories {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .categories-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+        }
+
+        .section-description {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-100);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            min-height: 280px;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover .category-icon {
+            transform: scale(1.1);
+        }
+
+        .category-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--gray-900);
+        }
+
+        .category-description {
+            color: var(--gray-600);
+            margin-bottom: 16px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .category-tools {
+            margin-bottom: 16px;
+        }
+
+        .category-tool {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+
+        .category-tool::before {
+            content: '•';
+            color: var(--primary-500);
+            font-weight: bold;
+        }
+
+        .category-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-600);
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: auto;
+        }
+
+        .category-link:hover {
+            color: var(--primary-700);
+        }
+
+        /* Color variants */
+        .icon-share { background: var(--gray-100); }
+        .icon-image { background: var(--gray-100); }
+        .icon-audio { background: var(--gray-100); }
+        .icon-document { background: var(--gray-100); }
+        .icon-video { background: var(--gray-100); }
+        .icon-rooms { background: var(--gray-100); }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: var(--gray-50);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 24px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--gray-900);
+        }
+
+        .feature-text {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        /* 移动端隐藏首页三个说明模块（footer 上方） */
+        @media (max-width: 768px) {
+            .features { display: none; }
+        }
+
+        /* Popular Tools */
+        .popular {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .popular-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .popular-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .popular-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .popular-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .popular-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .popular-category {
+            background: var(--primary-100);
+            color: var(--primary-800);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .popular-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #fbbf24;
+        }
+
+        .popular-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .popular-usage {
+            color: var(--gray-600);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .popular-btn {
+            width: 100%;
+            background: var(--primary-600);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .popular-btn:hover {
+            background: var(--primary-700);
+        }
+
+        /* Footer */
+        .site-footer {
+            background: #3c4043;
+            color: #e8eaed;
+            padding: 60px 40px 40px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            /* 统一三列左对齐 */
+            justify-items: start;
+        }
+
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 确保每个区块文本左对齐 */
+        .footer-section { text-align: left; }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #9aa0a6;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .footer-links a.external::after {
+            content: '↗';
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #5f6368;
+            padding-top: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-600);
+        }
+
+        .footer-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-600);
+        }
+
+        .footer-copyright {
+            font-size: 13px;
+            color: #9aa0a6;
+            line-height: 1.5;
+        }
+
+        /* Language selector unified styling */
+        .language-selector-container select,
+        .language-selector select {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        /* Custom dropdown (placed right under current language control) */
+        .language-selector { position: relative; }
+        .lang-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 6px);
+            width: 200px;
+            max-height: 60vh;
+            overflow: auto;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+            z-index: 3000;
+            display: none;
+        }
+        .lang-menu.open { display: block; }
+        .lang-item { padding: 10px 12px; font-size: 14px; color: #374151; cursor: pointer; }
+        .lang-item:hover { background: #f3f4f6; }
+
+        /* 保留通用语言选择器样式（与 share.html 一致） */
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 16px;
+                /* 保持水平布局，不要改为竖直 */
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .header {
+                padding: 16px 0;
+            }
+            
+            .hamburger { display: inline-flex; }
+            
+            /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+            .nav-links { display: none; }
+            
+            /* 移动端header-controls重新布局：汉堡菜单在左，语言选择器在右 */
+            .header-controls {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+            .brand-left .logo a { display: none; }
+            
+            /* 语言选择器保持在右侧 */
+            .control-buttons { 
+                min-width: auto !important; 
+                justify-content: flex-end !important; 
+            }
+
+            /* 折叠导航：默认隐藏，展开时纵向显示 */
+            .nav-links { display: none; width: 100%; }
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 16px;
+                position: fixed;
+                top: 64px; /* header 高度附近 */
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                border-bottom: 1px solid #e5e7eb;
+                z-index: 3001;
+            }
+
+            .menu-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.35);
+                z-index: 2000;
+                display: none;
+                pointer-events: auto;
+            }
+            .menu-backdrop.show { display: block; }
+
+            .hero {
+                padding-top: 120px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+                margin-bottom: 32px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 16px 24px;
+                font-size: 16px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                max-width: none;
+                padding: 0 16px;
+            }
+            
+            .category-card {
+                padding: 24px 20px;
+            }
+            
+            .category-tools {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            /* 覆盖旧样式：移动端默认隐藏导航，使用汉堡展开 */
+            .nav-links { display: none !important; }
+            .nav-links.mobile-open {
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+            }
+            
+            .nav-links a {
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            .control-buttons {
+                display: flex;
+                justify-content: center;
+            }
+
+            /* 移动端采用自定义下拉：隐藏原生 select，使用按钮 + 自定义菜单 */
+            .language-selector select { display: none; }
+            #langToggle {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 10px;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                background: white;
+                color: #374151;
+                font-size: 14px;
+            }
+
+            .site-footer {
+                padding: 40px 20px 30px;
+                margin-top: 60px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                /* 移动端也保持左对齐 */
+                text-align: left;
+                justify-items: start;
+            }
+
+            .footer-bottom {
+                gap: 15px;
+                flex-direction: column;
+            }
+            
+            .hero-container,
+            .categories-container {
+                padding: 0 16px;
+            }
+            
+            .section-header {
+                text-align: center;
+                margin-bottom: 32px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .category-card {
+                padding: 20px 16px;
+            }
+            
+            .category-icon {
+                font-size: 2.5rem;
+            }
+            
+            .btn {
+                padding: 14px 20px;
+                font-size: 15px;
+            }
+        }
+        
+        /* 移动端按钮修复 - 内嵌确保加载 */
+        @media (max-width: 768px) {
+            .btn, .btn-primary, .btn-secondary {
+                pointer-events: auto !important;
+                touch-action: manipulation !important;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+                cursor: pointer !important;
+                position: relative !important;
+                z-index: 10 !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                background-color: inherit !important;
+                min-height: 44px !important;
+                min-width: 44px !important;
+                user-select: none !important;
+                -webkit-user-select: none !important;
+            }
+            
+            .hero-buttons .btn {
+                display: block !important;
+                width: 100% !important;
+                max-width: 280px !important;
+                margin: 0 auto !important;
+                padding: 16px 24px !important;
+                text-align: center !important;
+                text-decoration: none !important;
+                border-radius: 8px !important;
+                font-weight: 600 !important;
+                font-size: 16px !important;
+                line-height: 1.4 !important;
+            }
+            
+            .btn-primary {
+                background: white !important;
+                color: #1e40af !important;
+                border: none !important;
+            }
+            
+            .btn-secondary {
+                background: transparent !important;
+                color: white !important;
+                border: 2px solid white !important;
+            }
+            
+            .btn:active {
+                transform: scale(0.98) !important;
+                transition: transform 0.1s ease !important;
+            }
+            
+            .category-card {
+                pointer-events: auto !important;
+                touch-action: manipulation !important;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+                cursor: pointer !important;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
+    <script src="/locales/i18n.js"></script>
+    <script src="mobile-button-fix.js"></script>
+    <script>
+        // 强制移动端按钮修复 - 内嵌确保执行
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 强制移动端按钮修复');
+            
+            const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                console.log('📱 移动设备检测到，应用按钮修复');
+                
+                function forceFixButtons() {
+                    const selectors = ['.btn', '.btn-primary', '.btn-secondary', '.category-card', 'a[href]'];
+                    
+                    selectors.forEach(selector => {
+                        document.querySelectorAll(selector).forEach(element => {
+                            // 强制样式修复
+                            element.style.pointerEvents = 'auto';
+                            element.style.touchAction = 'manipulation';
+                            element.style.webkitTapHighlightColor = 'rgba(0, 0, 0, 0.1)';
+                            element.style.cursor = 'pointer';
+                            element.style.opacity = '1';
+                            element.style.visibility = 'visible';
+                            element.style.position = 'relative';
+                            element.style.zIndex = '10';
+                            
+                            // 强制事件处理
+                            element.addEventListener('click', function(e) {
+                                console.log('🎯 按钮点击:', this.textContent?.trim() || this.tagName);
+                                if (this.href && this.tagName === 'A') {
+                                    e.preventDefault();
+                                    window.location.href = this.href;
+                                }
+                            }, true);
+                            
+                            // 触摸反馈
+                            element.addEventListener('touchstart', function() {
+                                this.style.transform = 'scale(0.98)';
+                            }, {passive: true});
+                            
+                            element.addEventListener('touchend', function() {
+                                this.style.transform = 'scale(1)';
+                            }, {passive: true});
+                        });
+                    });
+                    
+                    console.log('✅ 强制按钮修复完成');
+                }
+                
+                // 立即执行
+                forceFixButtons();
+                
+                // 延迟执行确保所有元素都加载
+                setTimeout(forceFixButtons, 500);
+                setTimeout(forceFixButtons, 1000);
+            }
+        });
+    </script>
+</head>
+
+<body style="display: block; overflow-y: auto;">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <nav class="nav-links" id="mobileNavLinks">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="menu-backdrop" id="menuBackdrop"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title" data-i18n="home.hero_title">Fast Local File Sharing Across Devices on Your Network</h1>
+            <p class="hero-subtitle">
+                <span data-i18n="home.hero_subtitle">Instantly share files with nearby devices. No setup required, completely peer-to-peer.</span>
+            </p>
+            <div class="hero-buttons">
+                <a href="share.html" class="btn btn-primary" data-i18n="home.cta_share">Start Sharing Files</a>
+                <a href="share.html#rooms" class="btn btn-secondary" data-i18n="home.cta_rooms">Multi-user Rooms</a>
+            </div>
+        </div>
+        </section>
+
+    <!-- Tool Categories -->
+    <section id="tools" class="categories">
+        <div class="categories-container">
+            <div class="section-header">
+                <h2 class="section-title" data-i18n="home.choose_category">Choose Your Tool Category</h2>
+                <p class="section-description">
+                    <span data-i18n="home.choose_category_desc">Select from our comprehensive collection of tools organized by category</span>
+                </p>
+                    </div>
+
+            <div class="categories-grid">
+                <!-- Image Tools -->
+                <a href="image-tools.html" class="category-card">
+                    <div class="category-icon icon-image">🖼️</div>
+                    <h3 class="category-title" data-i18n="category.image_title">Image Tools</h3>
+                    <p class="category-description">
+                        <span data-i18n="category.image_desc">Edit, convert, and optimize images</span>
+                    </p>
+                    <div class="category-tools">
+                        <div class="category-tool" data-i18n="tools.format_converter">Format Converter</div>
+                        <div class="category-tool" data-i18n="tools.image_cropper">Image Cropper</div>
+                        <div class="category-tool" data-i18n="tools.background_remover">Background Remover</div>
+                </div>
+                    <div class="category-link">
+                        <span data-i18n="category_view_tools">View Tools →</span>
+                    </div>
+                </a>
+
+                <!-- Audio Tools -->
+                <a href="audio-tools.html" class="category-card">
+                    <div class="category-icon icon-audio">🎵</div>
+                    <h3 class="category-title" data-i18n="category.audio_title">Audio Tools</h3>
+                    <p class="category-description">
+                        <span data-i18n="category.audio_desc">Convert audio between different formats</span>
+                    </p>
+                    <div class="category-tools">
+                        <div class="category-tool" data-i18n="tools.audio_format_converter">Format Converter</div>
+                        <div class="category-tool" data-i18n="tools.audio_formats">MP3, WAV, AAC, OGG, FLAC</div>
+                        <div class="category-tool" data-i18n="tools.high_quality">High Quality Output</div>
+                    </div>
+                    <div class="category-link">
+                        <span data-i18n="category_view_tools">View Tools →</span>
+                    </div>
+                </a>
+
+                <!-- Document Tools -->
+                <a href="document-tools.html" class="category-card">
+                    <div class="category-icon icon-document">📄</div>
+                    <h3 class="category-title" data-i18n="category.document_title">Document Tools</h3>
+                    <p class="category-description">
+                        <span data-i18n="category.document_desc">Convert, merge, split, and extract text</span>
+                    </p>
+                    <div class="category-tools">
+                        <div class="category-tool" data-i18n="tools.pdf_processor">PDF Processor</div>
+                        <div class="category-tool" data-i18n="tools.text_extractor">Text Extractor</div>
+                        <div class="category-tool" data-i18n="tools.document_merger">Document Merger</div>
+                </div>
+                    <div class="category-link">
+                        <span data-i18n="category_view_tools">View Tools →</span>
+                </div>
+                </a>
+
+                <!-- Video Tools -->
+                <a href="video-tools.html" class="category-card">
+                    <div class="category-icon icon-video">🎥</div>
+                    <h3 class="category-title" data-i18n="category.video_title">Video Tools</h3>
+                    <p class="category-description">
+                        <span data-i18n="category.video_desc">Convert videos between different formats</span>
+                    </p>
+                    <div class="category-tools">
+                        <div class="category-tool" data-i18n="tools.video_converter">Video Converter</div>
+                        <div class="category-tool" data-i18n="tools.video_formats">MP4, AVI, MOV, WebM, MKV</div>
+                        <div class="category-tool" data-i18n="tools.professional_quality">Professional Quality</div>
+            </div>
+                    <div class="category-link">
+                        <span data-i18n="category_view_tools">View Tools →</span>
+                    </div>
+                </a>
+
+                    </div>
+                </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="features-container">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🆓</div>
+                    <h3 class="feature-title" data-i18n="features.free_title">100% Free</h3>
+                    <p class="feature-text">
+                        <span data-i18n="features.free_desc">All tools are completely free to use with no hidden charges or subscriptions required.</span>
+                    </p>
+                    </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title" data-i18n="features.secure_title">Secure & Private</h3>
+                    <p class="feature-text">
+                        <span data-i18n="features.secure_desc">Your files are processed locally and securely. No data is stored on our servers.</span>
+                    </p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title" data-i18n="features.fast_title">Fast & Easy</h3>
+                    <p class="feature-text">
+                        <span data-i18n="features.fast_desc">No registration required. Simply upload your file and get results in seconds.</span>
+                    </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3 data-i18n="footer.navigate">Navigate</h3>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html" data-i18n="footer.privacy_policy">Privacy Policy</a></li>
+                        <li><a href="terms.html" data-i18n="footer.terms_service">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3 data-i18n="footer.tools">Tools</h3>
+                    <ul class="footer-links">
+                        <li><a href="image-tools.html" data-i18n="footer.image_tools">Image Tools</a></li>
+                        <li><a href="audio-tools.html" data-i18n="footer.audio_tools">Audio Tools</a></li>
+                        <li><a href="video-tools.html" data-i18n="footer.video_tools">Video Tools</a></li>
+                        <li><a href="document-tools.html" data-i18n="footer.document_tools">Document Tools</a></li>
+                        <li><a href="share.html" data-i18n="footer.file_transfer">File Transfer</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3 data-i18n="footer.links">LINKS</h3>
+                    <ul class="footer-links">
+                        <li><a href="https://zipic.online" target="_blank">ZiPic</a></li>
+                        <li><a href="https://colletools.com" target="_blank">ColleTools</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-logo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                    </svg>
+                    <span>DropShare</span>
+                </div>
+                <div class="footer-copyright">
+                    <p><span data-i18n="footer.copyright">Copyright © 2024 DropShare and contributors.</span><br>
+                    <span data-i18n="footer.open_source">Open source file sharing solution.</span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Load i18n system -->
+    <script src="locales/i18n.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Analytics Configuration -->
+    <script src="scripts/firebase-analytics.js"></script>
+    
+    <!-- Load network module first (contains Events class) -->
+    <script src="scripts/network.js"></script>
+    <script src="scripts/ui.js"></script>
+    
+    <!-- Simplified initialization -->
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                    translatePage();
+                });
+            }
+        }
+
+        function translatePage() {
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.translatePage();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 Homepage loaded successfully');
+            
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
+                window.DROPSHARE_I18N.init().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                });
+            } else {
+                 // Fallback for older script versions
+                 setTimeout(initializeLanguageSelector, 150);
+            }
+            
+            // Update navigation active state based on current page
+            updateNavActiveState();
+            
+            // Listen for navigation clicks to update active states
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // Remove active class from all links
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                });
+            });
+
+            // 移动端汉堡菜单展开/收起
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileNav = document.getElementById('mobileNavLinks');
+            const menuBackdrop = document.getElementById('menuBackdrop');
+            if (hamburgerBtn && mobileNav) {
+                const closeMenu = () => {
+                    mobileNav.classList.remove('mobile-open');
+                    if (menuBackdrop) menuBackdrop.classList.remove('show');
+                    if (langMenu) langMenu.classList.remove('open');
+                    if (langToggle) langToggle.setAttribute('aria-expanded','false');
+                };
+                hamburgerBtn.addEventListener('click', () => {
+                    const willOpen = !mobileNav.classList.contains('mobile-open');
+                    mobileNav.classList.toggle('mobile-open');
+                    if (menuBackdrop) menuBackdrop.classList.toggle('show', willOpen);
+                    // 打开菜单时关闭语言菜单
+                    if (willOpen && langMenu) langMenu.classList.remove('open');
+                });
+                if (menuBackdrop) menuBackdrop.addEventListener('click', closeMenu);
+                // 路由或哈希变化时关闭
+                window.addEventListener('hashchange', closeMenu);
+                window.addEventListener('popstate', closeMenu);
+                // 点击任一链接后关闭
+                navLinks.forEach(a => a.addEventListener('click', closeMenu));
+                // 尺寸变化到桌面端时强制关闭
+                const mql = window.matchMedia('(min-width: 769px)');
+                mql.addEventListener('change', e => { if (e.matches) closeMenu(); });
+            }
+
+            // 自定义语言菜单：移动端按钮定位弹出，宽度200px、最大高60vh
+            const langSelect = document.getElementById('language-selector');
+            const langToggle = document.getElementById('langToggle');
+            const langMenu = document.getElementById('langMenu');
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            if (langSelect && langToggle && langMenu) {
+            const syncToggleLabel = () => {
+                    if (!langSelect) return;
+                    // 若没有选中，尽力根据当前语言设置
+                    if (langSelect.selectedIndex < 0) {
+                        const cur = (window.DROPSHARE_I18N && window.DROPSHARE_I18N.getCurrentLanguage && window.DROPSHARE_I18N.getCurrentLanguage()) ||
+                                    localStorage.getItem('preferred_language') || 'en';
+                        const match = Array.from(langSelect.options).find(o => o.value === cur);
+                        if (match) langSelect.value = cur;
+                    }
+                    const opt = langSelect.options[langSelect.selectedIndex] || Array.from(langSelect.options)[0];
+                    const text = opt ? opt.textContent : 'Language';
+                    langToggle.textContent = text;
+                };
+                const buildMenu = () => {
+                    langMenu.innerHTML = '';
+                    Array.from(langSelect.options).forEach(opt => {
+                        const item = document.createElement('div');
+                        item.className = 'lang-item';
+                        item.setAttribute('role','option');
+                        item.dataset.value = opt.value;
+                        item.textContent = opt.textContent;
+                        item.addEventListener('click', () => {
+                            langSelect.value = opt.value;
+                            syncToggleLabel();
+                            if (window.DROPSHARE_I18N) {
+                                window.DROPSHARE_I18N.setLanguage(opt.value);
+                                translatePage();
+                            }
+                            langMenu.classList.remove('open');
+                            langToggle.setAttribute('aria-expanded','false');
+                        });
+                        langMenu.appendChild(item);
+                    });
+                };
+                const positionMenu = () => {
+                    const rect = langToggle.getBoundingClientRect();
+                    langMenu.style.left = '0px';
+                    langMenu.style.top = '100%';
+                };
+                const openMenu = () => {
+                    buildMenu(); positionMenu();
+                    langMenu.classList.add('open');
+                    langToggle.setAttribute('aria-expanded','true');
+                };
+                const closeMenu = () => {
+                    langMenu.classList.remove('open');
+                    langToggle.setAttribute('aria-expanded','false');
+                };
+                document.addEventListener('click', (e) => {
+                    if (!langMenu.contains(e.target) && !langToggle.contains(e.target)) closeMenu();
+                });
+                // 仅移动端启用自定义菜单并隐藏原生 select
+                if (isMobile) {
+                    langToggle.style.display = 'inline-flex';
+                    // 尝试立即同步一次按钮文案
+                    syncToggleLabel();
+                    langToggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (langMenu.classList.contains('open')) closeMenu(); else openMenu();
+                    });
+                    // 当 i18n 初始化完成或语言切换时，同步按钮文案
+                    document.addEventListener('language-changed', syncToggleLabel);
+                    const afterInit = () => syncToggleLabel();
+                    if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                        // 在现有 initialize 完成后再次同步
+                        // 不重复初始化，只挂载回调
+                        setTimeout(afterInit, 400);
+                    } else {
+                        setTimeout(afterInit, 600);
+                    }
+                }
+            }
+        });
+        
+        function updateNavActiveState() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const currentHash = window.location.hash;
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                
+                const linkHref = link.getAttribute('href');
+                const linkPage = linkHref.split('#')[0].split('/').pop();
+                const linkHash = linkHref.includes('#') ? '#' + linkHref.split('#')[1] : '';
+                
+                // Check if this link matches current page and hash
+                if (linkPage === currentPage) {
+                    if ((linkHash === '' && currentHash === '') || 
+                        (linkHash === currentHash)) {
+                        link.classList.add('active');
+                    }
+                }
+            });
+        }
+        
+        // Listen for hash changes (when navigating within share.html)
+        window.addEventListener('hashchange', updateNavActiveState);
+        window.addEventListener('popstate', updateNavActiveState);
+    </script>
+    
+    <!-- Share Integration -->
+    <script src="device-selector.js"></script>
+    <script src="add-share-integration.js"></script>
+</body>
+</html>

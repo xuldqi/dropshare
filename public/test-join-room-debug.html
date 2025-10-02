@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加入房间调试测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+        .log-error {
+            color: #dc3545;
+        }
+        .log-success {
+            color: #28a745;
+        }
+        .log-info {
+            color: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <h1>加入房间功能调试测试</h1>
+    
+    <div class="test-container">
+        <h2>测试加入房间表单</h2>
+        <form id="joinRoomForm">
+            <div class="form-group">
+                <label for="roomCode">房间代码</label>
+                <input type="text" id="roomCode" placeholder="输入房间代码" required style="text-transform: uppercase;">
+            </div>
+            
+            <div class="form-group">
+                <label for="joinPassword">房间密码（如果需要）</label>
+                <input type="password" id="joinPassword" placeholder="输入房间密码">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">加入房间</button>
+            <button type="button" class="btn btn-secondary" onclick="clearForm()">清空表单</button>
+            <button type="button" class="btn btn-secondary" onclick="testValidation()">测试验证逻辑</button>
+        </form>
+    </div>
+    
+    <div class="test-container">
+        <h2>调试信息</h2>
+        <div id="debugLog" class="log"></div>
+        <button class="btn btn-secondary" onclick="clearLog()">清空日志</button>
+    </div>
+
+    <script>
+        let logCount = 0;
+        
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('debugLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            logCount++;
+            
+            // 限制日志条数
+            if (logCount > 100) {
+                logDiv.removeChild(logDiv.firstChild);
+                logCount--;
+            }
+        }
+        
+        function clearLog() {
+            document.getElementById('debugLog').innerHTML = '';
+            logCount = 0;
+        }
+        
+        function clearForm() {
+            document.getElementById('roomCode').value = '';
+            document.getElementById('joinPassword').value = '';
+            log('表单已清空', 'info');
+        }
+        
+        function testValidation() {
+            log('开始测试验证逻辑...', 'info');
+            
+            const roomCodeElement = document.getElementById('roomCode');
+            const passwordElement = document.getElementById('joinPassword');
+            
+            log(`roomCode元素: ${roomCodeElement ? '找到' : '未找到'}`, roomCodeElement ? 'success' : 'error');
+            log(`joinPassword元素: ${passwordElement ? '找到' : '未找到'}`, passwordElement ? 'success' : 'error');
+            
+            if (roomCodeElement) {
+                const roomCode = roomCodeElement.value.trim().toUpperCase();
+                log(`房间代码值: "${roomCode}"`, 'info');
+                log(`房间代码长度: ${roomCode.length}`, 'info');
+                log(`房间代码是否为空: ${!roomCode}`, !roomCode ? 'error' : 'success');
+            }
+            
+            if (passwordElement) {
+                const password = passwordElement.value;
+                log(`密码值: "${password}"`, 'info');
+                log(`密码长度: ${password.length}`, 'info');
+            }
+        }
+        
+        function joinRoom() {
+            log('joinRoom函数被调用', 'info');
+            
+            const roomCodeElement = document.getElementById('roomCode');
+            const passwordElement = document.getElementById('joinPassword');
+            
+            if (!roomCodeElement) {
+                log('错误: 找不到roomCode元素', 'error');
+                alert('错误: 找不到roomCode元素');
+                return;
+            }
+            
+            if (!passwordElement) {
+                log('错误: 找不到joinPassword元素', 'error');
+                alert('错误: 找不到joinPassword元素');
+                return;
+            }
+            
+            const roomCode = roomCodeElement.value.trim().toUpperCase();
+            const password = passwordElement.value;
+            
+            log(`获取到的房间代码: "${roomCode}"`, 'info');
+            log(`获取到的密码: "${password}"`, 'info');
+            
+            if (!roomCode) {
+                log('验证失败: 房间代码为空', 'error');
+                alert('请输入房间代码');
+                return;
+            }
+            
+            log('验证通过: 房间代码不为空', 'success');
+            
+            // 模拟网络检查
+            if (!window.network || !window.network.send) {
+                log('网络连接检查: 网络不可用（这是正常的，因为这是测试页面）', 'info');
+                alert('网络连接不可用，请刷新页面重试');
+                return;
+            }
+            
+            const joinData = {
+                type: 'join-room',
+                roomCode: roomCode,
+                password: password || undefined,
+                userInfo: {
+                    displayName: '测试用户',
+                    deviceName: navigator.userAgent.includes('Mobile') ? '手机设备' : '电脑设备'
+                }
+            };
+            
+            log('准备发送加入房间数据: ' + JSON.stringify(joinData), 'success');
+            log('加入房间逻辑执行完成', 'success');
+        }
+        
+        // 表单提交事件监听
+        document.getElementById('joinRoomForm').addEventListener('submit', function(e) {
+            log('表单提交事件被触发', 'info');
+            e.preventDefault();
+            joinRoom();
+        });
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            log('页面加载完成，开始调试测试', 'success');
+            log('请在房间代码输入框中输入测试代码，然后点击"加入房间"按钮', 'info');
+        });
+        
+        // 输入框变化监听
+        document.getElementById('roomCode').addEventListener('input', function(e) {
+            log(`房间代码输入变化: "${e.target.value}"`, 'info');
+        });
+        
+        document.getElementById('joinPassword').addEventListener('input', function(e) {
+            log(`密码输入变化: "${e.target.value}"`, 'info');
+        });
+    </script>
+</body>
+</html>

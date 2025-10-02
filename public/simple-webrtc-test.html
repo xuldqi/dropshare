@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简化WebRTC测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #ccc;
+        }
+        .status.success { background: #d4edda; border-color: #28a745; color: #155724; }
+        .status.error { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+        .status.info { background: #d1ecf1; border-color: #17a2b8; color: #0c5460; }
+        .status.warning { background: #fff3cd; border-color: #ffc107; color: #856404; }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 16px;
+        }
+        
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 简化WebRTC连接测试</h1>
+    
+    <div id="status" class="status info">
+        🔍 准备开始测试...
+    </div>
+    
+    <div>
+        <button onclick="startSimpleTest()" id="testBtn">开始简单测试</button>
+        <button onclick="clearLog()">清空日志</button>
+    </div>
+    
+    <div id="debugLog" class="log"></div>
+
+    <script>
+        let debugLog = [];
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            debugLog.push(logEntry);
+            
+            const logElement = document.getElementById('debugLog');
+            logElement.textContent = debugLog.join('\n');
+            logElement.scrollTop = logElement.scrollHeight;
+            
+            console.log(logEntry);
+        }
+        
+        function clearLog() {
+            debugLog = [];
+            document.getElementById('debugLog').textContent = '';
+        }
+        
+        function updateStatus(message, type = 'info') {
+            const statusElement = document.getElementById('status');
+            statusElement.textContent = message;
+            statusElement.className = `status ${type}`;
+        }
+        
+        async function startSimpleTest() {
+            const btn = document.getElementById('testBtn');
+            btn.disabled = true;
+            btn.textContent = '测试中...';
+            
+            log('🚀 开始简化WebRTC测试');
+            updateStatus('🔄 正在测试WebRTC连接...', 'info');
+            
+            try {
+                // 1. 检查WebRTC支持
+                log('1. 检查WebRTC支持...');
+                if (!window.RTCPeerConnection) {
+                    throw new Error('浏览器不支持WebRTC');
+                }
+                log('✅ WebRTC支持正常');
+                
+                // 2. 创建简单的RTCPeerConnection
+                log('2. 创建RTCPeerConnection...');
+                const config = {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' },
+                        { urls: 'stun:stun.cloudflare.com:3478' }
+                    ],
+                    iceCandidatePoolSize: 10
+                };
+                
+                const pc = new RTCPeerConnection(config);
+                log('✅ RTCPeerConnection创建成功');
+                
+                // 3. 设置事件监听器
+                let connectionSuccess = false;
+                let iceGatheringComplete = false;
+                
+                pc.onicecandidate = (event) => {
+                    if (event.candidate) {
+                        log(`ICE候选: ${event.candidate.candidate.substring(0, 50)}...`);
+                    } else {
+                        log('✅ ICE候选收集完成');
+                        iceGatheringComplete = true;
+                        if (!connectionSuccess) {
+                            updateStatus('✅ ICE候选收集成功', 'success');
+                        }
+                    }
+                };
+                
+                pc.oniceconnectionstatechange = () => {
+                    log(`ICE连接状态: ${pc.iceConnectionState}`);
+                    if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
+                        connectionSuccess = true;
+                        updateStatus('✅ WebRTC连接成功建立！', 'success');
+                        log('🎉 WebRTC连接测试成功！');
+                        btn.disabled = false;
+                        btn.textContent = '测试完成 - 再次测试';
+                        pc.close();
+                    } else if (pc.iceConnectionState === 'failed') {
+                        updateStatus('❌ WebRTC连接失败', 'error');
+                        log('❌ ICE连接失败');
+                        btn.disabled = false;
+                        btn.textContent = '连接失败 - 重试';
+                        pc.close();
+                    }
+                };
+                
+                // 4. 创建数据通道
+                log('3. 创建数据通道...');
+                const dataChannel = pc.createDataChannel('test', { ordered: true });
+                
+                dataChannel.onopen = () => {
+                    log('✅ 数据通道已打开');
+                };
+                
+                dataChannel.onerror = (error) => {
+                    log(`❌ 数据通道错误: ${error}`);
+                };
+                
+                // 5. 创建offer
+                log('4. 创建offer...');
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+                log('✅ Offer创建并设置成功');
+                
+                // 6. 设置超时
+                setTimeout(() => {
+                    if (!connectionSuccess && !iceGatheringComplete) {
+                        updateStatus('⚠️ 连接超时 - 可能是网络环境限制', 'warning');
+                        log('⚠️ 连接超时，但ICE候选收集可能仍在进行');
+                        btn.disabled = false;
+                        btn.textContent = '超时 - 重试';
+                        pc.close();
+                    } else if (!connectionSuccess && iceGatheringComplete) {
+                        updateStatus('⚠️ ICE收集完成但连接未建立 - 可能需要TURN服务器', 'warning');
+                        log('⚠️ 这可能是因为NAT环境需要TURN服务器进行中继');
+                        btn.disabled = false;
+                        btn.textContent = '需要TURN - 重试';
+                        pc.close();
+                    }
+                }, 10000); // 10秒超时
+                
+            } catch (error) {
+                log(`❌ 测试失败: ${error.message}`);
+                updateStatus(`❌ 测试失败: ${error.message}`, 'error');
+                btn.disabled = false;
+                btn.textContent = '测试失败 - 重试';
+            }
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('📄 简化WebRTC测试页面已加载');
+            log('💡 提示: 这个测试会尝试建立WebRTC连接');
+            log('💡 如果连接失败，可能是因为网络环境需要TURN服务器');
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

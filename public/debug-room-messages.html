@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房间消息调试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>房间消息调试工具</h1>
+        
+        <div id="connectionStatus" class="status disconnected">
+            ❌ 未连接
+        </div>
+        
+        <div>
+            <button class="button" onclick="testCreateRoom()">测试创建房间</button>
+            <button class="button" onclick="clearLog()">清空日志</button>
+        </div>
+        
+        <h3>消息日志:</h3>
+        <div id="messageLog" class="log"></div>
+        
+        <h3>事件监听状态:</h3>
+        <div id="eventStatus" class="log"></div>
+    </div>
+
+    <!-- 加载网络模块 -->
+    <script src="/scripts/network.js"></script>
+    <script src="/scripts/ui.js"></script>
+    
+    <script>
+        let messageCount = 0;
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.getElementById('messageLog');
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️';
+            logElement.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            logElement.scrollTop = logElement.scrollHeight;
+            messageCount++;
+        }
+        
+        function clearLog() {
+            document.getElementById('messageLog').textContent = '';
+            messageCount = 0;
+        }
+        
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            if (window.network && window.network.isConnected && window.network.isConnected()) {
+                statusElement.className = 'status connected';
+                statusElement.textContent = '✅ 已连接到服务器';
+                return true;
+            } else {
+                statusElement.className = 'status disconnected';
+                statusElement.textContent = '❌ 未连接到服务器';
+                return false;
+            }
+        }
+        
+        function testCreateRoom() {
+            log('开始测试房间创建...');
+            
+            if (!updateConnectionStatus()) {
+                log('网络连接不可用，无法创建房间', 'error');
+                return;
+            }
+            
+            const roomCode = Math.floor(1000 + Math.random() * 9000).toString();
+            const roomData = {
+                type: 'create-room',
+                roomSettings: {
+                    code: roomCode,
+                    name: roomCode,
+                    password: undefined,
+                    maxMembers: 4,
+                    isPrivate: false
+                },
+                userInfo: {
+                    displayName: '调试用户',
+                    deviceName: '调试设备'
+                }
+            };
+            
+            log(`发送房间创建请求: ${JSON.stringify(roomData, null, 2)}`);
+            
+            try {
+                window.network.send(roomData);
+                log('房间创建请求已发送', 'success');
+            } catch (error) {
+                log(`发送请求失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function checkEventListeners() {
+            const statusElement = document.getElementById('eventStatus');
+            let status = '';
+            
+            status += `window.Events 存在: ${!!window.Events}\n`;
+            status += `window.network 存在: ${!!window.network}\n`;
+            
+            if (window.Events) {
+                status += `Events.fire 方法存在: ${typeof window.Events.fire === 'function'}\n`;
+                status += `Events.on 方法存在: ${typeof window.Events.on === 'function'}\n`;
+            }
+            
+            if (window.network) {
+                status += `network.send 方法存在: ${typeof window.network.send === 'function'}\n`;
+                status += `network.isConnected 方法存在: ${typeof window.network.isConnected === 'function'}\n`;
+            }
+            
+            statusElement.textContent = status;
+        }
+        
+        // 设置事件监听器
+        function setupEventListeners() {
+            if (window.Events) {
+                log('设置事件监听器...', 'info');
+                
+                // 监听所有房间相关事件
+                window.Events.on('room-created', (data) => {
+                    log(`🎉 收到 room-created 事件: ${JSON.stringify(data, null, 2)}`, 'success');
+                });
+                
+                window.Events.on('room-error', (data) => {
+                    log(`❌ 收到 room-error 事件: ${JSON.stringify(data, null, 2)}`, 'error');
+                });
+                
+                window.Events.on('room-joined', (data) => {
+                    log(`✅ 收到 room-joined 事件: ${JSON.stringify(data, null, 2)}`, 'success');
+                });
+                
+                // 监听连接事件
+                window.Events.on('peer-connected', () => {
+                    log('🔗 连接已建立', 'success');
+                    updateConnectionStatus();
+                });
+                
+                window.Events.on('peer-disconnected', () => {
+                    log('🔌 连接已断开', 'warning');
+                    updateConnectionStatus();
+                });
+                
+                log('事件监听器设置完成', 'success');
+            } else {
+                log('Events 对象不存在，1秒后重试...', 'warning');
+                setTimeout(setupEventListeners, 1000);
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            log('页面加载完成，开始初始化...');
+            
+            // 等待网络模块加载
+            setTimeout(() => {
+                checkEventListeners();
+                setupEventListeners();
+                updateConnectionStatus();
+                
+                // 定期更新连接状态
+                setInterval(updateConnectionStatus, 5000);
+                setInterval(checkEventListeners, 10000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

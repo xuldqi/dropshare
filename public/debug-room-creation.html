@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房间创建调试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .debug-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 3px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #logs {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>房间创建调试工具</h1>
+    
+    <div class="debug-section">
+        <h3>网络连接状态</h3>
+        <div id="network-status" class="status info">检查中...</div>
+        <button onclick="checkNetworkStatus()">重新检查网络</button>
+    </div>
+    
+    <div class="debug-section">
+        <h3>房间创建测试</h3>
+        <input type="text" id="roomName" placeholder="房间名称" value="测试房间">
+        <button onclick="testCreateRoom()">创建房间</button>
+        <div id="room-status" class="status info">等待测试...</div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>调试日志</h3>
+        <button onclick="clearLogs()">清空日志</button>
+        <div id="logs"></div>
+    </div>
+    
+    <script src="scripts/network.js"></script>
+    <script>
+        let debugLogs = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            debugLogs.push(logEntry);
+            
+            const logsDiv = document.getElementById('logs');
+            const logElement = document.createElement('div');
+            logElement.textContent = logEntry;
+            logElement.style.color = type === 'error' ? 'red' : type === 'success' ? 'green' : 'black';
+            logsDiv.appendChild(logElement);
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+            
+            console.log(logEntry);
+        }
+        
+        function updateStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `status ${type}`;
+        }
+        
+        function checkNetworkStatus() {
+            log('开始检查网络状态...');
+            
+            if (typeof window.network === 'undefined') {
+                updateStatus('network-status', '❌ window.network 未定义', 'error');
+                log('window.network 未定义', 'error');
+                return;
+            }
+            
+            if (!window.network.serverConnection) {
+                updateStatus('network-status', '❌ ServerConnection 未初始化', 'error');
+                log('ServerConnection 未初始化', 'error');
+                return;
+            }
+            
+            if (!window.network.isConnected()) {
+                updateStatus('network-status', '❌ WebSocket 未连接', 'error');
+                log('WebSocket 未连接', 'error');
+                return;
+            }
+            
+            updateStatus('network-status', '✅ 网络连接正常', 'success');
+            log('网络连接正常', 'success');
+        }
+        
+        function testCreateRoom() {
+            const roomName = document.getElementById('roomName').value;
+            if (!roomName.trim()) {
+                updateStatus('room-status', '❌ 请输入房间名称', 'error');
+                return;
+            }
+            
+            log(`开始创建房间: ${roomName}`);
+            updateStatus('room-status', '🔄 正在创建房间...', 'warning');
+            
+            // 检查网络连接
+            if (!window.network || !window.network.isConnected()) {
+                updateStatus('room-status', '❌ 网络未连接', 'error');
+                log('房间创建失败: 网络未连接', 'error');
+                return;
+            }
+            
+            // 设置事件监听器
+            if (window.Events) {
+                // 移除之前的监听器
+                window.Events.off('room-created');
+                window.Events.off('room-error');
+                
+                // 添加新的监听器
+                window.Events.on('room-created', (data) => {
+                    log(`房间创建成功: ${JSON.stringify(data)}`, 'success');
+                    updateStatus('room-status', `✅ 房间创建成功: ${data.roomId}`, 'success');
+                });
+                
+                window.Events.on('room-error', (data) => {
+                    log(`房间创建失败: ${JSON.stringify(data)}`, 'error');
+                    updateStatus('room-status', `❌ 房间创建失败: ${data.error}`, 'error');
+                });
+            }
+            
+            // 发送创建房间请求
+            try {
+                const message = {
+                    type: 'create-room',
+                    roomName: roomName,
+                    isPrivate: false
+                };
+                
+                log(`发送消息: ${JSON.stringify(message)}`);
+                window.network.send(message);
+                
+                // 设置超时
+                setTimeout(() => {
+                    if (document.getElementById('room-status').textContent.includes('正在创建')) {
+                        updateStatus('room-status', '❌ 房间创建超时', 'error');
+                        log('房间创建超时', 'error');
+                    }
+                }, 10000);
+                
+            } catch (error) {
+                log(`发送消息失败: ${error.message}`, 'error');
+                updateStatus('room-status', `❌ 发送失败: ${error.message}`, 'error');
+            }
+        }
+        
+        function clearLogs() {
+            debugLogs = [];
+            document.getElementById('logs').innerHTML = '';
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            log('调试页面加载完成');
+            
+            // 等待网络初始化
+            let attempts = 0;
+            const maxAttempts = 20;
+            
+            function waitForNetwork() {
+                attempts++;
+                
+                if (window.network) {
+                    log('网络对象已初始化');
+                    checkNetworkStatus();
+                } else {
+                    log(`等待网络初始化... (${attempts}/${maxAttempts})`);
+                    if (attempts < maxAttempts) {
+                        setTimeout(waitForNetwork, 500);
+                    } else {
+                        log('网络初始化超时', 'error');
+                        updateStatus('network-status', '❌ 网络初始化超时', 'error');
+                    }
+                }
+            }
+            
+            setTimeout(waitForNetwork, 100);
+        });
+    </script>
+</body>
+</html>

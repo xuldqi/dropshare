@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房间创建测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status.connected {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+        .log-entry.info {
+            color: #0066cc;
+        }
+        .log-entry.success {
+            color: #28a745;
+        }
+        .log-entry.error {
+            color: #dc3545;
+        }
+        .log-entry.warning {
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>房间创建功能测试</h1>
+        
+        <div id="connectionStatus" class="status disconnected">
+            连接状态: 未连接
+        </div>
+        
+        <div class="form-group">
+            <label for="roomCode">房间代码:</label>
+            <input type="text" id="roomCode" placeholder="输入4位房间代码" maxlength="4">
+        </div>
+        
+        <div class="form-group">
+            <label for="roomPassword">房间密码 (可选):</label>
+            <input type="password" id="roomPassword" placeholder="设置房间密码">
+        </div>
+        
+        <div class="form-group">
+            <label for="maxMembers">最大成员数:</label>
+            <select id="maxMembers">
+                <option value="2">2人</option>
+                <option value="4" selected>4人</option>
+                <option value="6">6人</option>
+                <option value="8">8人</option>
+                <option value="10">10人</option>
+            </select>
+        </div>
+        
+        <button onclick="createRoom()">创建房间</button>
+        <button onclick="clearLog()">清空日志</button>
+        
+        <div id="log" class="log">
+            <div class="log-entry info">等待操作...</div>
+        </div>
+    </div>
+    
+    <script src="scripts/network.js"></script>
+    <script>
+        let logContainer = document.getElementById('log');
+        let connectionStatus = document.getElementById('connectionStatus');
+        
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        function clearLog() {
+            logContainer.innerHTML = '<div class="log-entry info">日志已清空</div>';
+        }
+        
+        function updateConnectionStatus(connected) {
+            if (connected) {
+                connectionStatus.className = 'status connected';
+                connectionStatus.textContent = '连接状态: 已连接';
+                addLog('WebSocket连接已建立', 'success');
+            } else {
+                connectionStatus.className = 'status disconnected';
+                connectionStatus.textContent = '连接状态: 未连接';
+                addLog('WebSocket连接已断开', 'error');
+            }
+        }
+        
+        function createRoom() {
+            const roomCode = document.getElementById('roomCode').value.trim().toUpperCase();
+            const roomPassword = document.getElementById('roomPassword').value;
+            const maxMembers = parseInt(document.getElementById('maxMembers').value);
+            
+            if (!roomCode) {
+                addLog('请输入房间代码', 'error');
+                return;
+            }
+            
+            if (roomCode.length !== 4) {
+                addLog('房间代码必须是4位', 'error');
+                return;
+            }
+            
+            if (!window.network || !window.network.send) {
+                addLog('网络连接不可用，请刷新页面重试', 'error');
+                return;
+            }
+            
+            const roomData = {
+                type: 'create-room',
+                roomSettings: {
+                    code: roomCode,
+                    name: roomCode,
+                    password: roomPassword || undefined,
+                    maxMembers: maxMembers,
+                    isPrivate: !!roomPassword
+                },
+                userInfo: {
+                    displayName: '测试用户',
+                    deviceName: navigator.userAgent.includes('Mobile') ? '手机设备' : '电脑设备'
+                }
+            };
+            
+            addLog(`准备创建房间: ${roomCode}`, 'info');
+            addLog(`房间设置: ${JSON.stringify(roomData.roomSettings)}`, 'info');
+            addLog(`用户信息: ${JSON.stringify(roomData.userInfo)}`, 'info');
+            
+            try {
+                window.network.send(roomData);
+                addLog('房间创建请求已发送', 'success');
+            } catch (error) {
+                addLog(`发送请求失败: ${error.message}`, 'error');
+            }
+        }
+        
+        // 等待网络模块加载
+        function initializeNetwork() {
+            if (window.network) {
+                addLog('网络模块已加载', 'success');
+                
+                // 监听连接状态
+                window.addEventListener('peer-connected', () => {
+                    updateConnectionStatus(true);
+                });
+                
+                window.addEventListener('peer-disconnected', () => {
+                    updateConnectionStatus(false);
+                });
+                
+                // 监听房间事件
+                window.addEventListener('room-created', (event) => {
+                    addLog(`房间创建成功! 房间代码: ${event.detail.room.code}`, 'success');
+                    addLog(`房间信息: ${JSON.stringify(event.detail.room)}`, 'info');
+                });
+                
+                window.addEventListener('room-error', (event) => {
+                    addLog(`房间创建失败: ${event.detail.error}`, 'error');
+                });
+                
+                // 监听所有消息
+                window.addEventListener('message-received', (event) => {
+                    addLog(`收到消息: ${JSON.stringify(event.detail)}`, 'info');
+                });
+                
+                // 检查初始连接状态
+                if (window.network.isConnected && window.network.isConnected()) {
+                    updateConnectionStatus(true);
+                } else {
+                    updateConnectionStatus(false);
+                }
+            } else {
+                addLog('网络模块未加载，1秒后重试...', 'warning');
+                setTimeout(initializeNetwork, 1000);
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            addLog('页面加载完成，初始化网络模块...', 'info');
+            initializeNetwork();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>简单快速创建测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; font-size: 16px; }
+        #log { background: #f8f9fa; padding: 15px; border: 1px solid #ddd; height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>快速创建房间测试</h1>
+    
+    <div id="status" class="status info">准备测试...</div>
+    
+    <button onclick="testQuickCreate()">测试快速创建房间</button>
+    <button onclick="checkNetwork()">检查网络状态</button>
+    <button onclick="clearLog()">清空日志</button>
+    
+    <h3>日志:</h3>
+    <div id="log"></div>
+    
+    <script src="scripts/network.js"></script>
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${time}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        function checkNetwork() {
+            log('检查网络状态...');
+            
+            if (typeof window.network === 'undefined') {
+                log('❌ window.network 不存在');
+                updateStatus('网络对象不存在', 'error');
+                return false;
+            }
+            
+            log('✅ window.network 存在');
+            
+            if (typeof window.network.send !== 'function') {
+                log('❌ window.network.send 不是函数');
+                updateStatus('网络发送函数不存在', 'error');
+                return false;
+            }
+            
+            log('✅ window.network.send 存在');
+            
+            if (window.network.isConnected) {
+                log('✅ 网络已连接');
+                updateStatus('网络连接正常', 'success');
+                return true;
+            } else {
+                log('⚠️ 网络未连接');
+                updateStatus('网络未连接', 'error');
+                return false;
+            }
+        }
+        
+        function testQuickCreate() {
+            log('开始测试快速创建房间...');
+            
+            if (!checkNetwork()) {
+                log('❌ 网络检查失败，停止测试');
+                return;
+            }
+            
+            // 生成房间信息
+            const roomCode = 'TEST' + Math.random().toString(36).substr(2, 4).toUpperCase();
+            const roomName = '测试房间' + Math.floor(Math.random() * 1000);
+            
+            log(`生成房间代码: ${roomCode}`);
+            log(`生成房间名称: ${roomName}`);
+            
+            const message = {
+                type: 'create-room',
+                roomSettings: {
+                    code: roomCode,
+                    name: roomName,
+                    password: undefined,
+                    maxMembers: 10,
+                    isPrivate: false
+                }
+            };
+            
+            log(`准备发送消息: ${JSON.stringify(message, null, 2)}`);
+            
+            try {
+                window.network.send(message);
+                log('✅ 消息发送成功');
+                updateStatus('消息发送成功，等待服务器响应...', 'success');
+            } catch (error) {
+                log(`❌ 消息发送失败: ${error.message}`);
+                updateStatus('消息发送失败', 'error');
+            }
+        }
+        
+        // 监听服务器消息
+        if (window.Events) {
+            window.Events.on('message', (event) => {
+                const message = event.detail;
+                log(`收到服务器消息: ${JSON.stringify(message)}`);
+                
+                if (message.type === 'room-created') {
+                    log(`🎉 房间创建成功! 房间代码: ${message.room.code}`);
+                    updateStatus(`房间创建成功: ${message.room.code}`, 'success');
+                } else if (message.type === 'room-error') {
+                    log(`❌ 房间创建失败: ${message.error}`);
+                    updateStatus(`房间创建失败: ${message.error}`, 'error');
+                }
+            });
+        }
+        
+        // 页面加载后自动检查网络
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                log('页面加载完成，自动检查网络状态...');
+                checkNetwork();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

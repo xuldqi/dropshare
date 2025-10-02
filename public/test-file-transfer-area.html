@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件传输区域测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        .test-button:hover {
+            background: #0056b3;
+        }
+        
+        .log-area {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+        
+        /* 复制 share.html 中的文件传输区域样式 */
+        .file-transfer-area {
+            display: none;
+            width: 100%;
+            margin-top: 24px;
+            border: 2px solid #007bff;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .file-transfer-area.active {
+            display: block;
+        }
+        
+        .room-file-sharing {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .upload-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .shared-files-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .shared-files-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .shared-files-list {
+            min-height: 100px;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-hidden { background: #dc3545; }
+        .status-visible { background: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 文件传输区域显示测试</h1>
+        
+        <div class="test-section">
+            <h3>📊 当前状态</h3>
+            <div id="statusDisplay">
+                <div>文件传输区域状态: <span class="status-indicator status-hidden"></span><span id="areaStatus">检查中...</span></div>
+                <div>Display 样式: <span id="displayStyle">-</span></div>
+                <div>Active 类: <span id="activeClass">-</span></div>
+                <div>可见性: <span id="visibility">-</span></div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎛️ 测试控制</h3>
+            <button class="test-button" onclick="checkStatus()">检查状态</button>
+            <button class="test-button" onclick="showArea()">显示区域</button>
+            <button class="test-button" onclick="hideArea()">隐藏区域</button>
+            <button class="test-button" onclick="toggleArea()">切换显示</button>
+            <button class="test-button" onclick="simulateRoomJoin()">模拟加入房间</button>
+            <button class="test-button" onclick="clearLog()">清空日志</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📝 测试日志</h3>
+            <div id="logArea" class="log-area"></div>
+        </div>
+        
+        <!-- 文件传输区域 -->
+        <div id="fileTransferArea" class="file-transfer-area">
+            <div class="room-file-sharing">
+                <!-- 文件上传区域 -->
+                <div class="upload-section">
+                    <h3>📤 上传文件到房间</h3>
+                    <div style="text-align: center; padding: 10px;">
+                        <button type="button" id="selectFilesBtn" style="cursor: pointer; display: inline-block; padding: 12px 24px; background: #4285f4; color: white; border-radius: 6px; text-align: center; user-select: none; border: none; font-family: inherit; font-weight: 600; font-size: 14px;">选择文件上传</button>
+                        <input type="file" id="fileInput" multiple style="display: none;">
+                    </div>
+                </div>
+                
+                <!-- 共享文件列表 -->
+                <div class="shared-files-section">
+                    <div class="shared-files-header">
+                        <h3>📁 房间共享文件</h3>
+                        <span class="file-count" id="fileCount">0 <span>个文件</span></span>
+                    </div>
+                    <div id="sharedFilesList" class="shared-files-list">
+                        <div class="no-shared-files">
+                            <p>房间内暂无共享文件</p>
+                            <p class="hint">上传文件后，所有房间成员都可以下载</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 日志函数
+        function log(message) {
+            const logArea = document.getElementById('logArea');
+            const timestamp = new Date().toLocaleTimeString();
+            logArea.innerHTML += `[${timestamp}] ${message}\n`;
+            logArea.scrollTop = logArea.scrollHeight;
+            console.log(message);
+        }
+        
+        // 清空日志
+        function clearLog() {
+            document.getElementById('logArea').innerHTML = '';
+        }
+        
+        // 检查文件传输区域状态
+        function checkStatus() {
+            const area = document.getElementById('fileTransferArea');
+            
+            if (!area) {
+                log('❌ fileTransferArea 元素不存在');
+                return;
+            }
+            
+            const computedStyle = window.getComputedStyle(area);
+            const hasActiveClass = area.classList.contains('active');
+            const isVisible = computedStyle.display !== 'none';
+            
+            log('📊 文件传输区域状态检查:');
+            log(`- 元素存在: ${!!area}`);
+            log(`- display 样式: ${computedStyle.display}`);
+            log(`- visibility 样式: ${computedStyle.visibility}`);
+            log(`- opacity 样式: ${computedStyle.opacity}`);
+            log(`- 是否有 active 类: ${hasActiveClass}`);
+            log(`- 所有类名: ${area.className}`);
+            log(`- 内联样式: ${area.style.cssText}`);
+            log(`- 是否可见: ${isVisible}`);
+            
+            // 更新状态显示
+            updateStatusDisplay();
+            
+            return { area, hasActiveClass, isVisible };
+        }
+        
+        // 更新状态显示
+        function updateStatusDisplay() {
+            const area = document.getElementById('fileTransferArea');
+            const computedStyle = window.getComputedStyle(area);
+            const hasActiveClass = area.classList.contains('active');
+            const isVisible = computedStyle.display !== 'none';
+            
+            document.getElementById('areaStatus').textContent = isVisible ? '可见' : '隐藏';
+            document.getElementById('displayStyle').textContent = computedStyle.display;
+            document.getElementById('activeClass').textContent = hasActiveClass ? '是' : '否';
+            document.getElementById('visibility').textContent = computedStyle.visibility;
+            
+            // 更新状态指示器
+            const indicator = document.querySelector('.status-indicator');
+            indicator.className = `status-indicator ${isVisible ? 'status-visible' : 'status-hidden'}`;
+        }
+        
+        // 显示文件传输区域
+        function showArea() {
+            const area = document.getElementById('fileTransferArea');
+            
+            if (area) {
+                log('🔧 显示文件传输区域...');
+                
+                // 添加 active 类
+                area.classList.add('active');
+                
+                // 设置内联样式确保显示
+                area.style.display = 'block';
+                area.style.visibility = 'visible';
+                area.style.opacity = '1';
+                
+                log('✅ 已显示文件传输区域');
+                
+                // 更新状态
+                setTimeout(updateStatusDisplay, 100);
+            }
+        }
+        
+        // 隐藏文件传输区域
+        function hideArea() {
+            const area = document.getElementById('fileTransferArea');
+            
+            if (area) {
+                log('🔧 隐藏文件传输区域...');
+                
+                // 移除 active 类
+                area.classList.remove('active');
+                
+                // 清除内联样式
+                area.style.display = '';
+                area.style.visibility = '';
+                area.style.opacity = '';
+                
+                log('❌ 已隐藏文件传输区域');
+                
+                // 更新状态
+                setTimeout(updateStatusDisplay, 100);
+            }
+        }
+        
+        // 切换显示状态
+        function toggleArea() {
+            const area = document.getElementById('fileTransferArea');
+            const isVisible = window.getComputedStyle(area).display !== 'none';
+            
+            if (isVisible) {
+                hideArea();
+            } else {
+                showArea();
+            }
+        }
+        
+        // 模拟加入房间
+        function simulateRoomJoin() {
+            log('🏠 模拟加入房间...');
+            
+            // 模拟 onRoomJoined 方法中的逻辑
+            setTimeout(() => {
+                log('📡 收到 room-joined 消息');
+                
+                // 调用显示文件传输区域
+                showFileTransferArea();
+                
+                log('✅ 房间加入完成');
+            }, 500);
+        }
+        
+        // 模拟 share.html 中的 showFileTransferArea 方法
+        function showFileTransferArea() {
+            const fileTransferArea = document.getElementById('fileTransferArea');
+            if (fileTransferArea) {
+                fileTransferArea.classList.add('active');
+                fileTransferArea.style.display = 'block';
+                log('✅ File transfer area activated via showFileTransferArea');
+                
+                // 更新状态
+                setTimeout(updateStatusDisplay, 100);
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 文件传输区域测试页面已加载');
+            checkStatus();
+        });
+        
+        // 定期更新状态显示
+        setInterval(updateStatusDisplay, 2000);
+    </script>
+</body>
+</html>

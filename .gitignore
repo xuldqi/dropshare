@@ -122,3 +122,6 @@ output/
 
 # Embedded git repositories
 snapdrop-source/
+# Allow tracking app public sources
+!public/
+!public/**
