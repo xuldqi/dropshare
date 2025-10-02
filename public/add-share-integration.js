@@ -151,8 +151,25 @@ function addShareEntryToHomepage() {
 
 // 6. 修改导航菜单，添加分享链接
 function addShareToNavigation() {
-    // 不再向导航栏自动添加“Share”入口
-    return;
+    const nav = document.querySelector('nav, .nav-links');
+    if (!nav) return;
+    
+    // 检查是否已经有分享链接
+    if (nav.querySelector('a[href*="share"]')) return;
+    
+    // 创建分享链接
+    const shareLink = document.createElement('a');
+    shareLink.href = '/share.html';
+    shareLink.textContent = 'Share';
+    shareLink.style.cssText = `
+        color: #10b981;
+        text-decoration: none;
+        font-weight: 500;
+        margin: 0 15px;
+    `;
+    
+    // 添加到导航菜单
+    nav.appendChild(shareLink);
 }
 
 // 7. 初始化函数
@@ -166,7 +183,8 @@ function initShareIntegration() {
     console.log('🔗 初始化分享功能集成...');
     
     // 添加各种分享功能
-    // 取消自动向导航/首页添加“Share”入口
+    addShareToNavigation();
+    addShareEntryToHomepage();
     
     // 延迟添加分享按钮，等待页面工具加载完成
     setTimeout(() => {

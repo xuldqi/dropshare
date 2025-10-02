@@ -1508,16 +1508,8 @@
             // Update navigation active state based on current page
             updateNavActiveState();
             
-            // Listen for navigation clicks to update active states
-            const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    // Remove active class from all links
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    // Add active class to clicked link
-                    this.classList.add('active');
-                });
-            });
+            // 不在点击时手动设置 active，避免首页误高亮；
+            // 各页面加载后由 updateNavActiveState 自动计算。
 
             // 移动端汉堡菜单展开/收起
             const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -1643,7 +1635,14 @@
             
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                
+            });
+
+            // 在首页不高亮任何导航项，避免“Share/Transfer”显示为绿色
+            if (currentPage === 'index.html') {
+                return;
+            }
+
+            navLinks.forEach(link => {
                 const linkHref = link.getAttribute('href');
                 const linkPage = linkHref.split('#')[0].split('/').pop();
                 const linkHash = linkHref.includes('#') ? '#' + linkHref.split('#')[1] : '';

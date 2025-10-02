@@ -757,45 +757,13 @@ body {
                 
                 const { FFmpeg } = FFmpegWASM;
                 const { toBlobURL } = FFmpegWASM;
-
-                // Helper: timeout wrapper
-                const withTimeout = (p, ms) => new Promise((resolve, reject) => {
-                    const t = setTimeout(() => reject(new Error('FFmpeg load timeout')), ms);
-                    p.then(v => { clearTimeout(t); resolve(v); }).catch(e => { clearTimeout(t); reject(e); });
+                
+                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd';
+                
+                await ffmpeg.load({
+                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
                 });
-
-                // Try multiple CDN mirrors sequentially
-                const mirrors = [
-                    'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd',
-                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.4/dist/umd',
-                    'https://fastly.jsdelivr.net/npm/@ffmpeg/core@0.12.4/dist/umd',
-                    'https://gcore.jsdelivr.net/npm/@ffmpeg/core@0.12.4/dist/umd',
-                    // Fallback older version
-                    'https://unpkg.com/@ffmpeg/core@0.11.1/dist/umd',
-                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.1/dist/umd'
-                ];
-
-                let loadedFrom = null;
-                let lastError = null;
-                for (const baseURL of mirrors) {
-                    try {
-                        statusEl.textContent = `Loading audio processing engine... (${baseURL})`;
-                        await withTimeout(ffmpeg.load({
-                            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-                        }), 20000);
-                        loadedFrom = baseURL;
-                        break;
-                    } catch (e) {
-                        console.warn('FFmpeg mirror failed:', baseURL, e);
-                        lastError = e;
-                        continue;
-                    }
-                }
-
-                if (!loadedFrom) {
-                    throw lastError || new Error('All FFmpeg mirrors failed');
-                }
                 
                 isEngineLoaded = true;
                 statusEl.textContent = '✓ Audio processing engine loaded and ready!';
