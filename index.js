@@ -53,7 +53,7 @@ const limiter = RateLimit({
 })
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 const publicRun = process.argv[2];
 
 app.use(limiter);
@@ -111,9 +111,14 @@ class DropShareServer {
 
     constructor() {
         const WebSocket = require('ws');
+        
+        // 主要的 WebRTC WebSocket 服务器 (移除maxPayload限制，支持任意大小的文件)
         this._wss = new WebSocket.Server({ server });
         this._wss.on('connection', (socket, request) => this._onConnection(new Peer(socket, request)));
         this._wss.on('headers', (headers, response) => this._onHeaders(headers, response));
+        this._wss.on('error', (error) => {
+            console.error('🔴 WebRTC WebSocket服务器错误:', error);
+        });
 
         this._rooms = {};
         this._privateRooms = {}; // Private room storage
@@ -280,22 +285,27 @@ class DropShareServer {
                     console.log(`Found existing peer ${peer.id} in room ${ip}, removing old connection`);
                     const oldPeer = this._rooms[ip][peer.id];
                     
-                    // Immediately remove from room to prevent self-connections
-                    delete this._rooms[ip][peer.id];
-                    
-                    // Then clean up the old connection
+                    // Clean up the old connection first
                     this._cancelKeepAlive(oldPeer);
                     if (oldPeer.socket) {
                         oldPeer._isBeingReplaced = true;
                         oldPeer.socket.close();
                     }
+                    
+                    // Then remove from room to prevent self-connections
+                    delete this._rooms[ip][peer.id];
                 }
             }
+            
+            // 为每个WebSocket连接生成唯一的连接ID
+            const connectionId = Peer.uuid();
+            peer.connectionId = connectionId;
+            peer.socket.connectionId = connectionId;
             
             // Update connection statistics
             this._stats.connections++;
             this._stats.totalConnections++;
-            console.log(`New connection: ${peer.id} (total: ${this._stats.connections})`);
+            console.log(`New connection: ${peer.id} (conn: ${connectionId.substring(0,8)}..., total: ${this._stats.connections})`);
 
             this._joinRoom(peer);
             
@@ -393,6 +403,8 @@ class DropShareServer {
             case 'ping':
                 // 处理客户端主动发送的ping
                 this._send(sender, { type: 'pong' });
+                // 同时发送当前peers列表
+                this._sendPeersList(sender);
                 break;
             case 'signal':
                 // 关键的WebRTC信令消息处理
@@ -416,6 +428,69 @@ class DropShareServer {
             case 'room-file-removed':
                 this._handleRoomFileRemoved(sender, message);
                 break;
+            case 'text':
+                // 处理文本消息转发
+                console.log(`📤 转发 text 消息 from ${sender.id.substring(0,8)}...`);
+                break;
+            case 'file':
+                // 处理文件消息转发
+                console.log(`📤 转发 file 消息 from ${sender.id.substring(0,8)}...`);
+                break;
+            case 'file-done':
+                // 处理文件传输完成消息
+                console.log(`📤 转发 file-done 消息 from ${sender.id.substring(0,8)}...`);
+                break;
+            case 'header':
+                // 处理文件头信息
+                console.log(`📁 转发文件头信息 from ${sender.id.substring(0,8)}... 文件名: ${message.name}`);
+                // 为文件传输消息添加转发逻辑
+                if (message.to && this._rooms[sender.ip]) {
+                    const recipientId = message.to;
+                    const recipient = this._rooms[sender.ip][recipientId];
+                    if (recipient) {
+                        delete message.to;
+                        message.sender = sender.id;
+                        this._send(recipient, message);
+                        console.log(`✅ 文件头信息已转发到 ${recipientId.substring(0,8)}...`);
+                    } else {
+                        console.log(`❌ 目标 peer ${recipientId.substring(0,8)}... 未找到`);
+                    }
+                }
+                break;
+            case 'partition':
+                // 处理文件分区结束消息
+                console.log(`📁 转发文件分区结束 from ${sender.id.substring(0,8)}... offset: ${message.offset}`);
+                // 为文件传输消息添加转发逻辑
+                if (message.to && this._rooms[sender.ip]) {
+                    const recipientId = message.to;
+                    const recipient = this._rooms[sender.ip][recipientId];
+                    if (recipient) {
+                        delete message.to;
+                        message.sender = sender.id;
+                        this._send(recipient, message);
+                        console.log(`✅ 文件分区结束已转发到 ${recipientId.substring(0,8)}...`);
+                    } else {
+                        console.log(`❌ 目标 peer ${recipientId.substring(0,8)}... 未找到`);
+                    }
+                }
+                break;
+            case 'peer-message':
+                // 处理本地环境的 WebSocket 回退消息
+                console.log(`📤 转发 peer-message from ${sender.id.substring(0,8)}... to ${message.target.substring(0,8)}...`);
+                if (message.target && this._rooms[sender.ip]) {
+                    const recipient = this._rooms[sender.ip][message.target];
+                    if (recipient) {
+                        this._send(recipient, {
+                            type: 'peer-message',
+                            data: message.data,
+                            sender: sender.id
+                        });
+                        console.log(`✅ peer-message 已转发到 ${message.target.substring(0,8)}...`);
+                    } else {
+                        console.log(`❌ 目标 peer ${message.target.substring(0,8)}... 未找到`);
+                    }
+                }
+                break;
             default:
                 console.log(`未知消息类型: ${message.type} from ${sender.id.substring(0,8)}...`);
         }
@@ -435,42 +510,68 @@ class DropShareServer {
     }
 
     _joinRoom(peer) {
+        console.log(`🏠 Peer ${peer.id.substring(0,8)}... 加入房间 ${peer.ip}`);
+        
         // if room doesn't exist, create it
         if (!this._rooms[peer.ip]) {
             this._rooms[peer.ip] = {};
+            console.log(`✅ 创建新房间: ${peer.ip}`);
         }
 
-        // notify all other peers
+        // Check if this peer already exists in the room (reconnection)
+        if (this._rooms[peer.ip][peer.id]) {
+            console.log(`🔄 Found existing peer ${peer.id.substring(0,8)}... in room ${peer.ip}, replacing connection`);
+            this._cancelKeepAlive(this._rooms[peer.ip][peer.id]);
+            // Mark old connection as being replaced to avoid double cleanup
+            this._rooms[peer.ip][peer.id]._isBeingReplaced = true;
+            this._rooms[peer.ip][peer.id].socket.terminate();
+        }
+
+        // 先添加peer到房间
+        this._rooms[peer.ip][peer.id] = peer;
+        console.log(`✅ Peer ${peer.id.substring(0,8)}... 已添加到房间 ${peer.ip} (房间现在有 ${Object.keys(this._rooms[peer.ip]).filter(id => !this._rooms[peer.ip][id]._isBeingReplaced).length} 个活跃peers)`);
+
+        // notify all other peers about new peer (excluding self)
         for (const otherPeerId in this._rooms[peer.ip]) {
             const otherPeer = this._rooms[peer.ip][otherPeerId];
-            this._send(otherPeer, {
-                type: 'peer-joined',
-                peer: peer.getInfo()
-            });
+            if (otherPeer && otherPeer.id !== peer.id && !otherPeer._isBeingReplaced) {
+                console.log(`📢 通知 ${otherPeer.id.substring(0,8)}... 有新peer加入: ${peer.id.substring(0,8)}...`);
+                this._send(otherPeer, {
+                    type: 'peer-joined',
+                    peer: peer.getInfo()
+                });
+            }
         }
 
-        // notify peer about the other peers (excluding self)
+        // Send peers list to the new peer
+        this._sendPeersList(peer);
+    }
+
+    _sendPeersList(peer) {
+        // notify peer about the other peers (excluding self and replaced connections)
         const otherPeers = [];
         for (const otherPeerId in this._rooms[peer.ip]) {
-            // Skip if it's the same peer ID (prevents self-connection)
-            if (otherPeerId === peer.id) {
-                console.log(`⚠️  Skipping duplicate peer with same ID: ${peer.id.substring(0,8)}...`);
+            const otherPeer = this._rooms[peer.ip][otherPeerId];
+            // Skip if it's the same peer ID or being replaced or doesn't exist
+            if (otherPeerId === peer.id || !otherPeer || otherPeer._isBeingReplaced) {
                 continue;
             }
-            otherPeers.push(this._rooms[peer.ip][otherPeerId].getInfo());
+            otherPeers.push(otherPeer.getInfo());
         }
 
+        console.log(`📋 向 ${peer.id.substring(0,8)}... 发送 ${otherPeers.length} 个peers列表`);
+        console.log(`📋 Peers详情:`, otherPeers.map(p => `${p.id.substring(0,8)}...`));
         this._send(peer, {
             type: 'peers',
             peers: otherPeers
         });
-
-        // add peer to room
-        this._rooms[peer.ip][peer.id] = peer;
     }
 
     _leaveRoom(peer) {
         if (!this._rooms[peer.ip] || !this._rooms[peer.ip][peer.id]) return;
+        
+        console.log(`Connection closed: ${peer.id.substring(0,8)}... (remaining: ${this._getTotalConnections()})`);
+        
         this._cancelKeepAlive(this._rooms[peer.ip][peer.id]);
 
         // Record disconnection time for debouncing
@@ -483,7 +584,9 @@ class DropShareServer {
         // 清理私密房间成员身份
         this._cleanupPrivateRoomMembership(peer);
 
-        peer.socket.terminate();
+        // Don't terminate socket here as it's already closed
+        // peer.socket.terminate();
+        
         //if room is empty, delete the room
         if (!Object.keys(this._rooms[peer.ip]).length) {
             delete this._rooms[peer.ip];
@@ -1194,27 +1297,16 @@ class DropShareServer {
         
         room.files.set(message.fileInfo.id, fileRecord);
         
-        // 检查文件数据大小，避免传输过大的数据
+        // 移除文件大小限制，支持任意大小的文件传输
         const fileDataSize = message.fileData ? message.fileData.length : 0;
-        const maxSize = 15 * 1024 * 1024; // 15MB limit for WebSocket message
         
-        if (fileDataSize > maxSize) {
-            console.log(`File ${message.fileInfo.name} is too large (${fileDataSize} bytes), sending metadata only`);
-            // 只广播文件信息，不包含文件数据
-            this._broadcastToRoom(message.roomCode, {
-                type: 'room-file-shared',
-                roomCode: message.roomCode,
-                fileInfo: message.fileInfo
-            }, sender.id);
-        } else {
-            // 广播文件共享消息和数据给房间内其他成员
-            this._broadcastToRoom(message.roomCode, {
-                type: 'room-file-shared',
-                roomCode: message.roomCode,
-                fileInfo: message.fileInfo,
-                fileData: message.fileData // 包含文件数据
-            }, sender.id);
-        }
+        // 广播文件共享消息和数据给房间内其他成员
+        this._broadcastToRoom(message.roomCode, {
+            type: 'room-file-shared',
+            roomCode: message.roomCode,
+            fileInfo: message.fileInfo,
+            fileData: message.fileData // 包含文件数据
+        }, sender.id);
         
         console.log(`Room ${message.roomCode}: ${sender.name.displayName} shared file: ${message.fileInfo.name} (${fileDataSize > 0 ? 'with data' : 'metadata only'})`);
         console.log(`Room ${message.roomCode} now has ${room.files.size} files`);
@@ -1240,6 +1332,18 @@ class DropShareServer {
         }, sender.id);
         
         console.log(`Room ${message.roomCode}: ${sender.name.displayName} removed file: ${message.fileId}`);
+    }
+    
+    _getTotalConnections() {
+        let total = 0;
+        for (const ip in this._rooms) {
+            for (const peerId in this._rooms[ip]) {
+                if (!this._rooms[ip][peerId]._isBeingReplaced) {
+                    total++;
+                }
+            }
+        }
+        return total;
     }
 }
 
@@ -1276,14 +1380,30 @@ class Peer {
         if (this.ip == '::1' || this.ip == '::ffff:127.0.0.1') {
             this.ip = '127.0.0.1';
         }
+        console.log(`🔍 Peer IP设置为: ${this.ip}`);
     }
 
     _setPeerId(request) {
         if (request.peerId) {
             this.id = request.peerId;
         } else {
-            this.id = request.headers.cookie.replace('peerid=', '');
+            // 正确解析cookie中的peerid，避免包含其他cookie信息
+            const cookies = request.headers.cookie || '';
+            console.log(`🍪 原始cookie字符串: ${cookies}`);
+            
+            const peerIdMatch = cookies.match(/(?:^|;\s*)peerid=([^;]+)/);
+            console.log(`🔍 Cookie匹配结果:`, peerIdMatch);
+            
+            if (peerIdMatch) {
+                this.id = peerIdMatch[1];
+                console.log(`✅ 提取的Peer ID: ${this.id}`);
+            } else {
+                // 如果没有找到peerid cookie，生成一个新的
+                this.id = Peer.uuid();
+                console.log(`🆕 生成新Peer ID: ${this.id}`);
+            }
         }
+        console.log(`🔑 Peer ID设置为: ${this.id}`);
     }
 
     toString() {
@@ -1374,4 +1494,5 @@ Object.defineProperty(String.prototype, 'hashCode', {
   }
 });
 
+// Start the server
 new DropShareServer();

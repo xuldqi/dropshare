@@ -1,11 +1,21 @@
 {
-  "supported_languages": ["en", "zh-CN", "zh-TW", "ja", "ko", "fr", "de", "pt", "es"],
-  "default_language": "en",
-  "fallback_language": "en",
+  "defaultLanguage": "zh-CN",
+  "supportedLanguages": [
+    "en",
+    "zh-CN", 
+    "zh-TW",
+    "ja",
+    "ko",
+    "fr",
+    "de",
+    "pt",
+    "es"
+  ],
+  "fallbackLanguage": "en",
   "language_names": {
     "en": "English",
-    "zh-CN": "简体中文",
-    "zh-TW": "繁體中文",
+    "zh-CN": "中文简体",
+    "zh-TW": "中文繁體",
     "ja": "日本語",
     "ko": "한국어",
     "fr": "Français",
@@ -14,4 +24,3 @@
     "es": "Español"
   }
 }
-
