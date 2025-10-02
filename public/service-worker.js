@@ -28,18 +28,18 @@ self.addEventListener('message', (event) => {
 // Bump cache to invalidate old entries when deploying UI changes
 var CACHE_NAME = 'dropshare-cache-v5';
 var urlsToCache = [
-  './',
-  'styles.css',
-  'scripts/network.js',
-  'scripts/ui.js',
-  'scripts/clipboard.js',
-  'scripts/theme.js',
-  'scripts/page-theme.js',
-  'sounds/blop.mp3',
-  'images/favicon-96x96.png',
-  'images/apple-touch-icon.png',
-  'images/android-chrome-192x192.png',
-  'images/android-chrome-512x512.png'
+  '/',
+  '/styles.css',
+  '/scripts/network.js',
+  '/scripts/ui.js',
+  '/scripts/clipboard.js',
+  '/scripts/theme.js',
+  '/scripts/page-theme.js',
+  '/sounds/blop.mp3',
+  '/images/favicon-96x96.png',
+  '/images/apple-touch-icon.png',
+  '/images/android-chrome-192x192.png',
+  '/images/android-chrome-512x512.png'
   // Intentionally omit HTML files here; we will use a network-first strategy for them
 ];
 

@@ -1,6 +1,6 @@
 {
-  "defaultLanguage": "zh-CN",
-  "supportedLanguages": [
+  "default_language": "zh-CN",
+  "supported_languages": [
     "en",
     "zh-CN", 
     "zh-TW",
@@ -11,7 +11,7 @@
     "pt",
     "es"
   ],
-  "fallbackLanguage": "en",
+  "fallback_language": "en",
   "language_names": {
     "en": "English",
     "zh-CN": "中文简体",
@@ -24,3 +24,4 @@
     "es": "Español"
   }
 }
+

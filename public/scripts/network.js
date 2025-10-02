@@ -15,7 +15,10 @@ class ServerConnection {
         if (this._isConnected() || this._isConnecting()) return;
         const ws = new WebSocket(this._endpoint());
         ws.binaryType = 'arraybuffer';
-        ws.onopen = e => console.log('WS: server connected');
+        ws.onopen = e => {
+            console.log('WS: server connected');
+            Events.fire('peer-connected');
+        };
         ws.onmessage = e => this._onMessage(e.data);
         ws.onclose = e => this._onDisconnect();
         ws.onerror = e => console.error(e);
@@ -44,6 +47,37 @@ class ServerConnection {
             case 'display-name':
                 Events.fire('display-name', msg);
                 break;
+            // 房间相关消息处理
+            case 'room-created':
+                Events.fire('room-created', msg);
+                break;
+            case 'room-joined':
+                Events.fire('room-joined', msg);
+                break;
+            case 'room-left':
+                Events.fire('room-left', msg);
+                break;
+            case 'room-error':
+                Events.fire('room-error', msg);
+                break;
+            case 'room-member-joined':
+                Events.fire('room-member-joined', msg);
+                break;
+            case 'room-member-left':
+                Events.fire('room-member-left', msg);
+                break;
+            case 'room-disbanded':
+                Events.fire('room-disbanded', msg);
+                break;
+            case 'room-kicked':
+                Events.fire('room-kicked', msg);
+                break;
+            case 'room-file-shared':
+                Events.fire('room-file-shared', msg);
+                break;
+            case 'room-file-removed':
+                Events.fire('room-file-removed', msg);
+                break;
             default:
                 console.error('WS: unkown message type', msg);
         }
@@ -58,7 +92,9 @@ class ServerConnection {
         // hack to detect if deployment or development environment
         const protocol = location.protocol.startsWith('https') ? 'wss' : 'ws';
         const webrtc = window.isRtcSupported ? '/webrtc' : '/fallback';
-        const url = protocol + '://' + location.host + location.pathname + 'server' + webrtc;
+        // Always use root path for WebSocket server to avoid path issues
+        const url = protocol + '://' + location.host + '/server' + webrtc;
+        console.log('🔗 WebSocket endpoint:', url);
         return url;
     }
 
@@ -70,9 +106,10 @@ class ServerConnection {
 
     _onDisconnect() {
         console.log('WS: server disconnected');
-        Events.fire('notify-user', 'Connection lost. Retry in 5 seconds...');
+        Events.fire('peer-disconnected');
+        Events.fire('notify-user', 'Connection lost. Retry in 3 seconds...');
         clearTimeout(this._reconnectTimer);
-        this._reconnectTimer = setTimeout(_ => this._connect(), 5000);
+        this._reconnectTimer = setTimeout(_ => this._connect(), 3000);
     }
 
     _onVisibilityChange() {
@@ -319,31 +356,81 @@ class RTCPeer extends Peer {
 
     _onConnectionStateChange(e) {
         if (!this._conn) return; // Guard against null connection
-        console.log('RTC: state changed:', this._conn.connectionState);
+        console.log('🔗 RTC Connection State:', this._conn.connectionState);
         switch (this._conn.connectionState) {
-            case 'disconnected':
-                // Don't immediately reconnect on disconnect
+            case 'connected':
+                console.log('✅ RTC: peer connection established');
                 break;
-            case 'failed':
-                this._conn = null;
-                this._channel = null;
+            case 'connecting':
+                console.log('🔄 RTC: connecting to peer...');
+                break;
+            case 'disconnected':
+                console.log('🔌 RTC: peer connection disconnected - attempting restart');
+                this._resetConnection();
                 // Only attempt reconnect for callers after a delay
                 if (this._isCaller) {
                     setTimeout(() => {
+                        console.log('🔄 RTC: attempting reconnection...');
                         this._connect(this._peerId, true);
-                    }, 2000);
+                    }, 3000);
                 }
                 break;
+            case 'failed':
+                console.log('❌ RTC: peer connection failed');
+                this._resetConnection();
+                // Only attempt reconnect for callers after a delay
+                if (this._isCaller) {
+                    setTimeout(() => {
+                        console.log('🔄 RTC: attempting reconnection...');
+                        this._connect(this._peerId, true);
+                    }, 5000);
+                }
+                break;
+            case 'closed':
+                console.log('🔒 RTC: peer connection closed');
+                break;
+            default:
+                console.log('🔍 RTC Connection State:', this._conn.connectionState);
         }
     }
 
     _onIceConnectionStateChange() {
+        console.log('🔗 ICE Connection State:', this._conn.iceConnectionState);
         switch (this._conn.iceConnectionState) {
+            case 'connected':
+                console.log('✅ ICE connection established');
+                break;
+            case 'completed':
+                console.log('✅ ICE gathering completed');
+                break;
+            case 'disconnected':
+                console.log('🔌 ICE connection disconnected - attempting restart');
+                // Reset connection and try again for disconnected state
+                this._resetConnection();
+                setTimeout(() => {
+                    if (this._isCaller) {
+                        this._connect(this._peerId, true);
+                    }
+                }, 3000);
+                break;
             case 'failed':
-                console.error('ICE Gathering failed');
+                console.error('❌ ICE connection failed - attempting restart');
+                // Reset connection and try again
+                this._resetConnection();
+                setTimeout(() => {
+                    if (this._isCaller) {
+                        this._connect(this._peerId, true);
+                    }
+                }, 5000);
+                break;
+            case 'checking':
+                console.log('🔄 ICE connection checking...');
+                break;
+            case 'new':
+                console.log('🆕 ICE connection new');
                 break;
             default:
-                console.log('ICE Gathering', this._conn.iceConnectionState);
+                console.log('🔍 ICE Connection State:', this._conn.iceConnectionState);
         }
     }
 
@@ -353,7 +440,20 @@ class RTCPeer extends Peer {
 
     _send(message) {
         if (!this._channel) return this.refresh();
-        this._channel.send(message);
+        
+        // Check if the channel is in a ready state before sending
+        if (this._channel.readyState !== 'open') {
+            console.warn('WebRTC channel not ready, state:', this._channel.readyState);
+            return;
+        }
+        
+        try {
+            this._channel.send(message);
+        } catch (error) {
+            console.error('Error sending message through WebRTC channel:', error);
+            // If sending fails, try to refresh the connection
+            this.refresh();
+        }
     }
 
     _sendSignal(signal) {
@@ -374,6 +474,30 @@ class RTCPeer extends Peer {
 
     _isConnecting() {
         return this._channel && this._channel.readyState === 'connecting';
+    }
+    
+    _resetConnection() {
+        console.log('🔄 Resetting WebRTC connection');
+        
+        // Close data channel first
+        if (this._channel) {
+            try {
+                this._channel.close();
+            } catch (e) {
+                console.warn('Error closing data channel:', e);
+            }
+            this._channel = null;
+        }
+        
+        // Close peer connection
+        if (this._conn) {
+            try {
+                this._conn.close();
+            } catch (e) {
+                console.warn('Error closing peer connection:', e);
+            }
+            this._conn = null;
+        }
     }
 }
 
@@ -557,8 +681,12 @@ RTCPeer.config = {
         },
         {
             urls: 'stun:stun.cloudflare.com:3478'
+        },
+        {
+            urls: 'stun:stun3.l.google.com:19302'
         }
-    ]
+    ],
+    'iceCandidatePoolSize': 10
 }
 
 // Initialize network connection
@@ -587,3 +715,4 @@ window.addEventListener('DOMContentLoaded', () => {
     
     console.log('Network system initialization completed, Events and network exposed globally');
 });
+

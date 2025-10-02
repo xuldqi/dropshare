@@ -43,64 +43,33 @@ window.addEventListener('error', (event) => {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, triggering load event for dialog initialization');
     // Trigger the load event to initialize dialogs
-    if (window.Events) {
-        window.Events.fire('load');
-    }
-    // 设置 --app-vh 变量以修复 iOS 100vh 视高问题
-    try {
-        const setAppVhVar = () => {
-            const vh = window.innerHeight;
-            document.documentElement.style.setProperty('--app-vh', vh + 'px');
-        };
-        const throttle = (fn, wait = 120) => {
-            let last = 0;
-            let timer;
-            return (...args) => {
-                const now = Date.now();
-                if (now - last >= wait) {
-                    last = now;
-                    fn.apply(null, args);
-                } else {
-                    clearTimeout(timer);
-                    timer = setTimeout(() => {
-                        last = Date.now();
-                        fn.apply(null, args);
-                    }, wait - (now - last));
-                }
-            };
-        };
-        setAppVhVar();
-        window.addEventListener('resize', throttle(setAppVhVar, 120), { passive: true });
-        window.addEventListener('orientationchange', () => setTimeout(setAppVhVar, 200));
-    } catch (e) { /* noop */ }
+    Events.fire('load');
 });
 
 // set display name
 let currentDisplayName = ''; // Store current display name
 
-if (window.Events) {
-    window.Events.on('display-name', e => {
-        const me = e.detail.message;
-        currentDisplayName = me.displayName; // Store current name
+Events.on('display-name', e => {
+    const me = e.detail.message;
+    currentDisplayName = me.displayName; // Store current name
+    
+    // Store current user's peer ID to global variable
+    if (me.peerId) {
+        window.currentPeerId = me.peerId;
+        console.log('Current peer ID stored:', me.peerId);
         
-        // Store current user's peer ID to global variable
-        if (me.peerId) {
-            window.currentPeerId = me.peerId;
-            console.log('Current peer ID stored:', me.peerId);
-            
-            // Also store in displayName element's dataset for room manager use
-            const displayNameEl = document.getElementById('displayName');
-            if (displayNameEl) {
-                displayNameEl.dataset.peerId = me.peerId;
-            }
+        // Also store in displayName element's dataset for room manager use
+        const displayNameEl = document.getElementById('displayName');
+        if (displayNameEl) {
+            displayNameEl.dataset.peerId = me.peerId;
         }
-        
-        updateDisplayName(me.displayName, me.deviceName);
-        
-        // Also update room area user name display
-        updateRoomUserName(me.displayName);
-    });
-}
+    }
+    
+    updateDisplayName(me.displayName, me.deviceName);
+    
+    // Also update room area user name display
+    updateRoomUserName(me.displayName);
+});
 
 // Update room area user name display
 function updateRoomUserName(displayName) {
@@ -996,22 +965,14 @@ class WebShareTargetUI {
 
 class Snapdrop {
     constructor() {
-        // Use the globally initialized network instances instead of creating new ones
+        const server = new ServerConnection();
+        const peers = new PeersManager(server);
         const peersUI = new PeersUI();
         Events.on('load', e => {
-            // 仅在页面包含对应元素时才初始化，避免空页面报错
-            if (document.getElementById('receiveDialog')) {
-                const receiveDialog = new ReceiveDialog();
-            }
-            if (document.getElementById('sendTextDialog')) {
-                const sendTextDialog = new SendTextDialog();
-            }
-            if (document.getElementById('receiveTextDialog')) {
-                const receiveTextDialog = new ReceiveTextDialog();
-            }
-            if (document.getElementById('toast')) {
-                const toast = new Toast();
-            }
+            const receiveDialog = new ReceiveDialog();
+            const sendTextDialog = new SendTextDialog();
+            const receiveTextDialog = new ReceiveTextDialog();
+            const toast = new Toast();
             const notifications = new Notifications();
             const networkStatusUI = new NetworkStatusUI();
             const webShareTargetUI = new WebShareTargetUI();
@@ -1095,23 +1056,15 @@ class Snapdrop {
     }
 }
 
-// Initialize Snapdrop when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    const snapdrop = new Snapdrop();
-    window.snapdrop = snapdrop; // Make it globally accessible if needed
-});
+const snapdrop = new Snapdrop();
 
 
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js?v=' + Date.now())
+    navigator.serviceWorker.register('/service-worker.js')
         .then(serviceWorker => {
             console.log('Service Worker registered');
             window.serviceWorker = serviceWorker
-            // Ensure immediate activation on update
-            if (navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage('SKIP_WAITING');
-            }
         });
 }
 
@@ -1120,11 +1073,9 @@ window.addEventListener('beforeinstallprompt', e => {
         // don't display install banner when installed
         return e.preventDefault();
     } else {
-        const btn = document.querySelector('#install');
-        if (btn) {
-            btn.hidden = false;
-            btn.onclick = _ => e.prompt();
-        }
+        const btn = document.querySelector('#install')
+        btn.hidden = false;
+        btn.onclick = _ => e.prompt();
         return e.preventDefault();
     }
 });

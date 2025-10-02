@@ -53,7 +53,7 @@ const limiter = RateLimit({
 })
 
 const app = express();
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8080;
 const publicRun = process.argv[2];
 
 app.use(limiter);
@@ -74,6 +74,18 @@ app.use(express.static('public', {
         }
     }
 }));
+
+// Handle WebSocket connection path for client connections
+app.get('/server/webrtc', (req, res) => {
+    // This route is specifically for WebSocket upgrade requests
+    // The actual WebSocket handling is done by the WebSocket server
+    res.status(200).send('WebSocket server ready');
+});
+
+app.get('/server/fallback', (req, res) => {
+    // Fallback WebSocket connection path
+    res.status(200).send('WebSocket fallback server ready');
+});
 
 // Fallback: only redirect for HTML navigations; return 404 for missing assets to avoid HTML-as-JS
 app.use(function(req, res) {
@@ -111,14 +123,27 @@ class DropShareServer {
 
     constructor() {
         const WebSocket = require('ws');
-        
-        // 主要的 WebRTC WebSocket 服务器 (移除maxPayload限制，支持任意大小的文件)
+        console.log('正在初始化WebSocket服务器...');
         this._wss = new WebSocket.Server({ server });
-        this._wss.on('connection', (socket, request) => this._onConnection(new Peer(socket, request)));
-        this._wss.on('headers', (headers, response) => this._onHeaders(headers, response));
-        this._wss.on('error', (error) => {
-            console.error('🔴 WebRTC WebSocket服务器错误:', error);
+        console.log('WebSocket服务器已创建，绑定到HTTP服务器');
+        
+        this._wss.on('connection', (socket, request) => {
+            console.log('收到新的WebSocket连接请求');
+            console.log('请求URL:', request.url);
+            console.log('请求头:', request.headers);
+            this._onConnection(new Peer(socket, request));
         });
+        
+        this._wss.on('headers', (headers, response) => {
+            console.log('WebSocket握手头部事件');
+            this._onHeaders(headers, response);
+        });
+        
+        this._wss.on('error', (error) => {
+            console.error('WebSocket服务器错误:', error);
+        });
+        
+        console.log('WebSocket事件监听器已设置');
 
         this._rooms = {};
         this._privateRooms = {}; // Private room storage
@@ -193,14 +218,15 @@ class DropShareServer {
         const uptime = Math.round((Date.now() - this._stats.startTime) / 1000 / 60); // minutes
         const memUsage = process.memoryUsage();
         
-        console.log('=== Server Stats ===');
-        console.log(`Uptime: ${uptime} minutes`);
-        console.log(`Current connections: ${this._stats.connections}`);
-        console.log(`Total connections: ${this._stats.totalConnections}`);
-        console.log(`Active rooms: ${Object.keys(this._rooms).length}`);
-        console.log(`Private rooms: ${Object.keys(this._privateRooms).length}`);
-        console.log(`Memory: ${Math.round(memUsage.heapUsed / 1024 / 1024)} MB`);
-        console.log('===================');
+        // Debug info hidden - uncomment below lines to show server stats
+        // console.log('=== Server Stats ===');
+        // console.log(`Uptime: ${uptime} minutes`);
+        // console.log(`Current connections: ${this._stats.connections}`);
+        // console.log(`Total connections: ${this._stats.totalConnections}`);
+        // console.log(`Active rooms: ${Object.keys(this._rooms).length}`);
+        // console.log(`Private rooms: ${Object.keys(this._privateRooms).length}`);
+        // console.log(`Memory: ${Math.round(memUsage.heapUsed / 1024 / 1024)} MB`);
+        // console.log('===================');
     }
 
     // Clean up expired data to prevent memory leaks
@@ -285,27 +311,26 @@ class DropShareServer {
                     console.log(`Found existing peer ${peer.id} in room ${ip}, removing old connection`);
                     const oldPeer = this._rooms[ip][peer.id];
                     
-                    // Clean up the old connection first
+                    // Immediately remove from room to prevent self-connections
+                    delete this._rooms[ip][peer.id];
+                    
+                    // Then clean up the old connection
                     this._cancelKeepAlive(oldPeer);
                     if (oldPeer.socket) {
                         oldPeer._isBeingReplaced = true;
                         oldPeer.socket.close();
                     }
-                    
-                    // Then remove from room to prevent self-connections
-                    delete this._rooms[ip][peer.id];
                 }
             }
-            
-            // 为每个WebSocket连接生成唯一的连接ID
-            const connectionId = Peer.uuid();
-            peer.connectionId = connectionId;
-            peer.socket.connectionId = connectionId;
             
             // Update connection statistics
             this._stats.connections++;
             this._stats.totalConnections++;
-            console.log(`New connection: ${peer.id} (conn: ${connectionId.substring(0,8)}..., total: ${this._stats.connections})`);
+            console.log(`New connection: ${peer.id} (total: ${this._stats.connections})`);
+
+            // 🔧 FIX: Assign peer object to WebSocket for _findPeerById to work
+            peer.socket.peer = peer;
+            console.log(`🔗 Peer object assigned to WebSocket: ${peer.id.substring(0, 8)}...`);
 
             this._joinRoom(peer);
             
@@ -403,7 +428,9 @@ class DropShareServer {
             case 'ping':
                 // 处理客户端主动发送的ping
                 this._send(sender, { type: 'pong' });
-                // 同时发送当前peers列表
+                break;
+            case 'get-peers':
+                // 处理客户端请求当前房间的peer列表
                 this._sendPeersList(sender);
                 break;
             case 'signal':
@@ -411,10 +438,10 @@ class DropShareServer {
                 this._handleSignal(sender, message);
                 break;
             case 'create-room':
-                this._createPrivateRoom(sender, message.roomSettings);
+                this._createPrivateRoom(sender, message.roomSettings, message.userInfo);
                 break;
             case 'join-room':
-                this._joinPrivateRoom(sender, message.roomCode, message.password);
+                this._joinPrivateRoom(sender, message.roomCode, message.password, message.userInfo);
                 break;
             case 'leave-room':
                 this._leavePrivateRoom(sender, message.roomCode);
@@ -427,69 +454,6 @@ class DropShareServer {
                 break;
             case 'room-file-removed':
                 this._handleRoomFileRemoved(sender, message);
-                break;
-            case 'text':
-                // 处理文本消息转发
-                console.log(`📤 转发 text 消息 from ${sender.id.substring(0,8)}...`);
-                break;
-            case 'file':
-                // 处理文件消息转发
-                console.log(`📤 转发 file 消息 from ${sender.id.substring(0,8)}...`);
-                break;
-            case 'file-done':
-                // 处理文件传输完成消息
-                console.log(`📤 转发 file-done 消息 from ${sender.id.substring(0,8)}...`);
-                break;
-            case 'header':
-                // 处理文件头信息
-                console.log(`📁 转发文件头信息 from ${sender.id.substring(0,8)}... 文件名: ${message.name}`);
-                // 为文件传输消息添加转发逻辑
-                if (message.to && this._rooms[sender.ip]) {
-                    const recipientId = message.to;
-                    const recipient = this._rooms[sender.ip][recipientId];
-                    if (recipient) {
-                        delete message.to;
-                        message.sender = sender.id;
-                        this._send(recipient, message);
-                        console.log(`✅ 文件头信息已转发到 ${recipientId.substring(0,8)}...`);
-                    } else {
-                        console.log(`❌ 目标 peer ${recipientId.substring(0,8)}... 未找到`);
-                    }
-                }
-                break;
-            case 'partition':
-                // 处理文件分区结束消息
-                console.log(`📁 转发文件分区结束 from ${sender.id.substring(0,8)}... offset: ${message.offset}`);
-                // 为文件传输消息添加转发逻辑
-                if (message.to && this._rooms[sender.ip]) {
-                    const recipientId = message.to;
-                    const recipient = this._rooms[sender.ip][recipientId];
-                    if (recipient) {
-                        delete message.to;
-                        message.sender = sender.id;
-                        this._send(recipient, message);
-                        console.log(`✅ 文件分区结束已转发到 ${recipientId.substring(0,8)}...`);
-                    } else {
-                        console.log(`❌ 目标 peer ${recipientId.substring(0,8)}... 未找到`);
-                    }
-                }
-                break;
-            case 'peer-message':
-                // 处理本地环境的 WebSocket 回退消息
-                console.log(`📤 转发 peer-message from ${sender.id.substring(0,8)}... to ${message.target.substring(0,8)}...`);
-                if (message.target && this._rooms[sender.ip]) {
-                    const recipient = this._rooms[sender.ip][message.target];
-                    if (recipient) {
-                        this._send(recipient, {
-                            type: 'peer-message',
-                            data: message.data,
-                            sender: sender.id
-                        });
-                        console.log(`✅ peer-message 已转发到 ${message.target.substring(0,8)}...`);
-                    } else {
-                        console.log(`❌ 目标 peer ${message.target.substring(0,8)}... 未找到`);
-                    }
-                }
                 break;
             default:
                 console.log(`未知消息类型: ${message.type} from ${sender.id.substring(0,8)}...`);
@@ -509,69 +473,65 @@ class DropShareServer {
         }
     }
 
-    _joinRoom(peer) {
-        console.log(`🏠 Peer ${peer.id.substring(0,8)}... 加入房间 ${peer.ip}`);
-        
-        // if room doesn't exist, create it
-        if (!this._rooms[peer.ip]) {
-            this._rooms[peer.ip] = {};
-            console.log(`✅ 创建新房间: ${peer.ip}`);
-        }
-
-        // Check if this peer already exists in the room (reconnection)
-        if (this._rooms[peer.ip][peer.id]) {
-            console.log(`🔄 Found existing peer ${peer.id.substring(0,8)}... in room ${peer.ip}, replacing connection`);
-            this._cancelKeepAlive(this._rooms[peer.ip][peer.id]);
-            // Mark old connection as being replaced to avoid double cleanup
-            this._rooms[peer.ip][peer.id]._isBeingReplaced = true;
-            this._rooms[peer.ip][peer.id].socket.terminate();
-        }
-
-        // 先添加peer到房间
-        this._rooms[peer.ip][peer.id] = peer;
-        console.log(`✅ Peer ${peer.id.substring(0,8)}... 已添加到房间 ${peer.ip} (房间现在有 ${Object.keys(this._rooms[peer.ip]).filter(id => !this._rooms[peer.ip][id]._isBeingReplaced).length} 个活跃peers)`);
-
-        // notify all other peers about new peer (excluding self)
-        for (const otherPeerId in this._rooms[peer.ip]) {
-            const otherPeer = this._rooms[peer.ip][otherPeerId];
-            if (otherPeer && otherPeer.id !== peer.id && !otherPeer._isBeingReplaced) {
-                console.log(`📢 通知 ${otherPeer.id.substring(0,8)}... 有新peer加入: ${peer.id.substring(0,8)}...`);
-                this._send(otherPeer, {
-                    type: 'peer-joined',
-                    peer: peer.getInfo()
-                });
-            }
-        }
-
-        // Send peers list to the new peer
-        this._sendPeersList(peer);
-    }
-
     _sendPeersList(peer) {
-        // notify peer about the other peers (excluding self and replaced connections)
+        if (!this._rooms[peer.ip]) {
+            this._send(peer, { type: 'peers', peers: [] });
+            return;
+        }
+
         const otherPeers = [];
         for (const otherPeerId in this._rooms[peer.ip]) {
-            const otherPeer = this._rooms[peer.ip][otherPeerId];
-            // Skip if it's the same peer ID or being replaced or doesn't exist
-            if (otherPeerId === peer.id || !otherPeer || otherPeer._isBeingReplaced) {
+            // Skip if it's the same peer ID (prevents self-connection)
+            if (otherPeerId === peer.id) {
                 continue;
             }
-            otherPeers.push(otherPeer.getInfo());
+            otherPeers.push(this._rooms[peer.ip][otherPeerId].getInfo());
         }
 
-        console.log(`📋 向 ${peer.id.substring(0,8)}... 发送 ${otherPeers.length} 个peers列表`);
-        console.log(`📋 Peers详情:`, otherPeers.map(p => `${p.id.substring(0,8)}...`));
+        console.log(`📋 Sending peers list to ${peer.id.substring(0,8)}...: ${otherPeers.length} peers`);
         this._send(peer, {
             type: 'peers',
             peers: otherPeers
         });
     }
 
+    _joinRoom(peer) {
+        // if room doesn't exist, create it
+        if (!this._rooms[peer.ip]) {
+            this._rooms[peer.ip] = {};
+        }
+
+        // notify all other peers
+        for (const otherPeerId in this._rooms[peer.ip]) {
+            const otherPeer = this._rooms[peer.ip][otherPeerId];
+            this._send(otherPeer, {
+                type: 'peer-joined',
+                peer: peer.getInfo()
+            });
+        }
+
+        // notify peer about the other peers (excluding self)
+        const otherPeers = [];
+        for (const otherPeerId in this._rooms[peer.ip]) {
+            // Skip if it's the same peer ID (prevents self-connection)
+            if (otherPeerId === peer.id) {
+                console.log(`⚠️  Skipping duplicate peer with same ID: ${peer.id.substring(0,8)}...`);
+                continue;
+            }
+            otherPeers.push(this._rooms[peer.ip][otherPeerId].getInfo());
+        }
+
+        this._send(peer, {
+            type: 'peers',
+            peers: otherPeers
+        });
+
+        // add peer to room
+        this._rooms[peer.ip][peer.id] = peer;
+    }
+
     _leaveRoom(peer) {
         if (!this._rooms[peer.ip] || !this._rooms[peer.ip][peer.id]) return;
-        
-        console.log(`Connection closed: ${peer.id.substring(0,8)}... (remaining: ${this._getTotalConnections()})`);
-        
         this._cancelKeepAlive(this._rooms[peer.ip][peer.id]);
 
         // Record disconnection time for debouncing
@@ -584,9 +544,7 @@ class DropShareServer {
         // 清理私密房间成员身份
         this._cleanupPrivateRoomMembership(peer);
 
-        // Don't terminate socket here as it's already closed
-        // peer.socket.terminate();
-        
+        peer.socket.terminate();
         //if room is empty, delete the room
         if (!Object.keys(this._rooms[peer.ip]).length) {
             delete this._rooms[peer.ip];
@@ -670,8 +628,18 @@ class DropShareServer {
     }
 
     // 私密房间功能方法
-    _createPrivateRoom(host, roomSettings) {
+    _createPrivateRoom(host, roomSettings, userInfo) {
         const roomCode = roomSettings.code;
+        
+        // 如果提供了userInfo，更新host的显示信息
+        if (userInfo) {
+            if (userInfo.displayName) {
+                host.name.displayName = userInfo.displayName;
+            }
+            if (userInfo.deviceName) {
+                host.name.deviceName = userInfo.deviceName;
+            }
+        }
         
         console.log(`=== 创建房间请求 ===`);
         console.log(`Host ID: ${host.id}, Room Code: ${roomCode}`);
@@ -825,7 +793,17 @@ class DropShareServer {
         console.log(`✅ 房间创建成功消息已发送给 ${host.id}`);
     }
 
-    _joinPrivateRoom(peer, roomCode, password) {
+    _joinPrivateRoom(peer, roomCode, password, userInfo) {
+        // 如果提供了userInfo，更新peer的显示信息
+        if (userInfo) {
+            if (userInfo.displayName) {
+                peer.name.displayName = userInfo.displayName;
+            }
+            if (userInfo.deviceName) {
+                peer.name.deviceName = userInfo.deviceName;
+            }
+        }
+        
         const room = this._privateRooms[roomCode];
         
         if (!room) {
@@ -1004,7 +982,14 @@ class DropShareServer {
         // 通知其他成员有新成员加入
         this._broadcastToRoom(roomCode, {
             type: 'room-member-joined',
-            member: memberInfo
+            member: memberInfo,
+            room: {
+                code: room.code,
+                name: room.name,
+                maxMembers: room.maxMembers,
+                isPrivate: room.isPrivate,
+                members: Array.from(room.members.values())
+            }
         }, peer.id);
     }
 
@@ -1022,7 +1007,14 @@ class DropShareServer {
         // 通知其他成员有成员离开
         this._broadcastToRoom(roomCode, {
             type: 'room-member-left',
-            memberId: peer.id
+            memberId: peer.id,
+            room: {
+                code: room.code,
+                name: room.name,
+                maxMembers: room.maxMembers,
+                isPrivate: room.isPrivate,
+                members: Array.from(room.members.values())
+            }
         });
 
         // 如果房主离开，解散房间
@@ -1087,30 +1079,67 @@ class DropShareServer {
         this._broadcastToRoom(roomCode, {
             type: 'room-member-left',
             memberId: memberId,
-            reason: 'kicked'
+            reason: 'kicked',
+            room: {
+                code: room.code,
+                name: room.name,
+                maxMembers: room.maxMembers,
+                isPrivate: room.isPrivate,
+                members: Array.from(room.members.values())
+            }
         });
     }
 
     _broadcastToRoom(roomCode, message, excludePeerId = null) {
         const room = this._privateRooms[roomCode];
-        if (!room) return;
+        if (!room) {
+            console.log(`⚠️ Attempted to broadcast to non-existent room: ${roomCode}`);
+            return;
+        }
 
+        console.log(`📢 Broadcasting to room ${roomCode}: ${message.type}`);
+        console.log(`📊 Room has ${room.members.size} members`);
+        
+        let sentCount = 0;
         room.members.forEach((member, memberId) => {
             if (memberId !== excludePeerId) {
                 const peer = this._findPeerById(memberId);
                 if (peer) {
+                    console.log(`📤 Sending ${message.type} to member ${memberId} (${member.displayName})`);
                     this._send(peer, message);
+                    sentCount++;
+                } else {
+                    console.log(`⚠️ Could not find peer for member ${memberId}`);
                 }
             }
         });
+        
+        console.log(`✅ Broadcast complete: sent to ${sentCount} members`);
     }
 
     _findPeerById(peerId) {
+        console.log(`🔍 Looking for peer: ${peerId.substring(0, 8)}...`);
+        
+        // 首先在普通房间中查找
         for (const ip in this._rooms) {
             if (this._rooms[ip][peerId]) {
+                console.log(`✅ Found peer in regular room (IP: ${ip})`);
                 return this._rooms[ip][peerId];
             }
         }
+        
+        // 然后在WebSocket连接中查找（私有房间用户）
+        let wsCount = 0;
+        for (const ws of this._wss.clients) {
+            wsCount++;
+            console.log(`🔍 Checking WebSocket ${wsCount}: state=${ws.readyState}, peerId=${ws.peer ? ws.peer.id.substring(0, 8) + '...' : 'none'}`);
+            if (ws.readyState === ws.OPEN && ws.peer && ws.peer.id === peerId) {
+                console.log(`✅ Found peer in WebSocket connections`);
+                return ws.peer;
+            }
+        }
+        
+        console.log(`❌ Peer not found. Checked ${Object.keys(this._rooms).length} regular rooms and ${wsCount} WebSocket connections`);
         return null;
     }
     
@@ -1216,7 +1245,14 @@ class DropShareServer {
         this._broadcastToRoom(roomCode, {
             type: 'room-member-left',
             memberId: peer.id,
-            reason: 'disconnected'
+            reason: 'disconnected',
+            room: {
+                code: room.code,
+                name: room.name,
+                maxMembers: room.maxMembers,
+                isPrivate: room.isPrivate,
+                members: Array.from(room.members.values())
+            }
         });
         
         // 如果房主断开连接，暂时不解散房间，给5分钟重连时间
@@ -1297,10 +1333,7 @@ class DropShareServer {
         
         room.files.set(message.fileInfo.id, fileRecord);
         
-        // 移除文件大小限制，支持任意大小的文件传输
-        const fileDataSize = message.fileData ? message.fileData.length : 0;
-        
-        // 广播文件共享消息和数据给房间内其他成员
+        // 广播文件共享消息和数据给房间内其他成员（无文件大小限制）
         this._broadcastToRoom(message.roomCode, {
             type: 'room-file-shared',
             roomCode: message.roomCode,
@@ -1308,7 +1341,8 @@ class DropShareServer {
             fileData: message.fileData // 包含文件数据
         }, sender.id);
         
-        console.log(`Room ${message.roomCode}: ${sender.name.displayName} shared file: ${message.fileInfo.name} (${fileDataSize > 0 ? 'with data' : 'metadata only'})`);
+        const fileDataSize = message.fileData ? message.fileData.length : 0;
+        console.log(`Room ${message.roomCode}: ${sender.name.displayName} shared file: ${message.fileInfo.name} (${fileDataSize} bytes)`);
         console.log(`Room ${message.roomCode} now has ${room.files.size} files`);
     }
     
@@ -1332,18 +1366,6 @@ class DropShareServer {
         }, sender.id);
         
         console.log(`Room ${message.roomCode}: ${sender.name.displayName} removed file: ${message.fileId}`);
-    }
-    
-    _getTotalConnections() {
-        let total = 0;
-        for (const ip in this._rooms) {
-            for (const peerId in this._rooms[ip]) {
-                if (!this._rooms[ip][peerId]._isBeingReplaced) {
-                    total++;
-                }
-            }
-        }
-        return total;
     }
 }
 
@@ -1380,30 +1402,17 @@ class Peer {
         if (this.ip == '::1' || this.ip == '::ffff:127.0.0.1') {
             this.ip = '127.0.0.1';
         }
-        console.log(`🔍 Peer IP设置为: ${this.ip}`);
     }
 
     _setPeerId(request) {
         if (request.peerId) {
             this.id = request.peerId;
         } else {
-            // 正确解析cookie中的peerid，避免包含其他cookie信息
+            // 正确解析cookie中的peerid
             const cookies = request.headers.cookie || '';
-            console.log(`🍪 原始cookie字符串: ${cookies}`);
-            
             const peerIdMatch = cookies.match(/(?:^|;\s*)peerid=([^;]+)/);
-            console.log(`🔍 Cookie匹配结果:`, peerIdMatch);
-            
-            if (peerIdMatch) {
-                this.id = peerIdMatch[1];
-                console.log(`✅ 提取的Peer ID: ${this.id}`);
-            } else {
-                // 如果没有找到peerid cookie，生成一个新的
-                this.id = Peer.uuid();
-                console.log(`🆕 生成新Peer ID: ${this.id}`);
-            }
+            this.id = peerIdMatch ? peerIdMatch[1] : Peer.uuid();
         }
-        console.log(`🔑 Peer ID设置为: ${this.id}`);
     }
 
     toString() {
@@ -1434,7 +1443,7 @@ class Peer {
             separator: ' ',
             dictionaries: [colors, animals],
             style: 'capital',
-            seed: this.id.hashCode()
+            seed: Date.now() + Math.random() * 1000000  // 使用时间戳+随机数作为种子，每次都不同
         })
 
         this.name = {
@@ -1494,5 +1503,4 @@ Object.defineProperty(String.prototype, 'hashCode', {
   }
 });
 
-// Start the server
 new DropShareServer();

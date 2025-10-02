@@ -24,18 +24,22 @@ class SimpleDropShareServer {
 
     _onConnection(peer) {
         console.log(`New connection: ${peer.id}`);
+        console.log(`📱 Generated device name: ${peer.name.displayName} (${peer.name.deviceName})`);
         this._joinRoom(peer);
         peer.socket.on('message', message => this._onMessage(peer, message));
         this._keepAlive(peer);
 
         // send displayName
-        this._send(peer, {
+        const displayNameMessage = {
             type: 'display-name',
             message: {
                 displayName: peer.name.displayName,
-                deviceName: peer.name.deviceName
+                deviceName: peer.name.deviceName,
+                peerId: peer.id
             }
-        });
+        };
+        console.log(`📡 Sending display-name message:`, displayNameMessage);
+        this._send(peer, displayNameMessage);
     }
 
     _onMessage(sender, message) {

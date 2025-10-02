@@ -6,6 +6,32 @@
         // CRITICAL: Define all room functions immediately to prevent undefined errors
         console.log('=== DEFINING CRITICAL FUNCTIONS IN HEAD ===');
         
+        // 生成并设置peerid cookie
+        function generatePeerId() {
+            // 检查是否已有peerid cookie
+            const cookies = document.cookie.split(';');
+            let hasPeerId = false;
+            for (let cookie of cookies) {
+                if (cookie.trim().startsWith('peerid=')) {
+                    hasPeerId = true;
+                    const peerId = cookie.trim().split('=')[1];
+                    console.log('🔑 找到现有peerid:', peerId);
+                    return peerId;
+                }
+            }
+            
+            if (!hasPeerId) {
+                // 生成新的peerid
+                const peerId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                document.cookie = `peerid=${peerId}; path=/`;
+                console.log('🔑 生成新peerid:', peerId);
+                return peerId;
+            }
+        }
+        
+        // 页面加载时立即生成peerid
+        generatePeerId();
+        
         window.handleCreateRoom = function() {
             console.log('🔵 handleCreateRoom called');
             const roomName = document.getElementById('roomName')?.value?.trim();
@@ -922,7 +948,7 @@
                 // Initialize global file upload functionality
                 setTimeout(() => {
                     if (typeof initGlobalFileUpload === 'function') {
-                        initGlobalFileUpload();
+                    initGlobalFileUpload();
                     } else {
                         console.log('initGlobalFileUpload not yet defined, skipping...');
                     }
@@ -3902,16 +3928,16 @@
             <div class="header-controls">
                 <div class="brand-left">
                     <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
-                    <div class="logo">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
-                        </svg>
-                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
-                    </div>
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+            </svg>
+                <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+            </div>
                 </div>
                 <nav class="nav-links" id="mobileNavLinks">
-                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
-                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
                     <a href="image-tools.html" data-i18n="nav_images">Images</a>
                     <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
                     <a href="video-tools.html" data-i18n="nav_video">Video</a>
@@ -4601,36 +4627,35 @@
                     
                     console.log('✅ ALL ROOM BUTTON EVENTS BOUND SUCCESSFULLY!');
                 };
-                
-                // Leave Room
-                document.getElementById('leaveRoomBtn').addEventListener('click', () => {
-                    this.leaveRoom();
-                });
-                
-                // Room Code input auto-uppercase
-                document.getElementById('roomCode').addEventListener('input', (e) => {
-                    e.target.value = e.target.value.toUpperCase();
-                });
-                
-                // Room info expand/collapse
-                document.getElementById('toggleDetailsBtn').addEventListener('click', () => {
-                    this.toggleRoomDetails();
-                });
-                
-                // CopyRoom Code
-                document.getElementById('copyRoomCode').addEventListener('click', () => {
-                    this.copyRoomCode();
-                });
-                
-                // File selection and drag
-                this.initializeFileTransfer();
-                
-                console.log('Room UI event binding completed');
+                    
+                    // Leave Room
+                    document.getElementById('leaveRoomBtn').addEventListener('click', () => {
+                        this.leaveRoom();
+                    });
+                    
+                    // Room Code input auto-uppercase
+                    document.getElementById('roomCode').addEventListener('input', (e) => {
+                        e.target.value = e.target.value.toUpperCase();
+                    });
+                    
+                    // Room info expand/collapse
+                    document.getElementById('toggleDetailsBtn').addEventListener('click', () => {
+                        this.toggleRoomDetails();
+                    });
+                    
+                    // CopyRoom Code
+                    document.getElementById('copyRoomCode').addEventListener('click', () => {
+                        this.copyRoomCode();
+                    });
+                    
+                    // File selection and drag
+                    this.initializeFileTransfer();
+                    
+                    console.log('Room UI event binding completed');
             }
                 
             // Start binding process
             bindEvents();
-        }
             
             // Initialize file transfer functionality (disabled - handled by global init)
             initializeFileTransfer() {
@@ -4654,23 +4679,23 @@
                 
                 console.log('🔧 Initializing file transfer functionality...');
                 
-                // Add single change event listener for file input
-                fileInput.addEventListener('change', (e) => {
-                    console.log('🔥 FILE INPUT CHANGE EVENT TRIGGERED!');
-                    console.log('📁 Files selected via input change:', e.target.files.length, 'files');
-                    console.log('📂 File details:', Array.from(e.target.files).map(f => ({name: f.name, size: f.size})));
-                    
-                    if (e.target.files.length > 0) {
-                        console.log('⚡ Calling handleFileInputChange...');
-                        handleFileInputChange(e);
-                    } else {
-                        console.log('❌ No files to process');
-                    }
-                });
+            // Add single change event listener for file input
+            fileInput.addEventListener('change', (e) => {
+                console.log('🔥 FILE INPUT CHANGE EVENT TRIGGERED!');
+                console.log('📁 Files selected via input change:', e.target.files.length, 'files');
+                console.log('📂 File details:', Array.from(e.target.files).map(f => ({name: f.name, size: f.size})));
                 
-                // Mark as initialized to prevent multiple calls
-                window.globalFileUploadInitialized = true;
-                console.log('✅ File upload initialization complete');
+                if (e.target.files.length > 0) {
+                    console.log('⚡ Calling handleFileInputChange...');
+                    handleFileInputChange(e);
+                } else {
+                    console.log('❌ No files to process');
+                }
+            });
+            
+            // Mark as initialized to prevent multiple calls
+            window.globalFileUploadInitialized = true;
+            console.log('✅ File upload initialization complete');
                 
                 // Drag functionality
                 dropZone.addEventListener('dragover', (e) => {
@@ -6747,7 +6772,7 @@
                         window.roomManager.hideAllForms();
                     };
                     console.log('✅ Buttons manually bound!');
-                } else {
+            } else {
                     console.log('❌ Buttons not found');
                 }
             }
@@ -6769,11 +6794,11 @@
             } else {
                 console.log('❌ RoomManager not found, creating manually...');
                 if (window.network) {
-                    try {
-                        window.roomManager = new RoomManager();
+                try {
+                    window.roomManager = new RoomManager();
                         console.log('✅ RoomManager created, calling createRoom()');
                         window.roomManager.createRoom();
-                    } catch (error) {
+                } catch (error) {
                         console.error('❌ Failed to create RoomManager:', error);
                         
                         // Manual room creation
@@ -6798,7 +6823,7 @@
                         console.log('📤 Sending manual room creation message:', message);
                         if (window.network && window.network.send) {
                             window.network.send(message);
-                        } else {
+            } else {
                             console.error('❌ No network connection available');
                         }
                     }
@@ -6812,7 +6837,7 @@
             console.log('🔴 === CANCEL ROOM BUTTON CLICKED (DIRECT) ===');
             
             // Check if roomManager exists
-            if (window.roomManager) {
+                    if (window.roomManager) {
                 console.log('✅ RoomManager exists, calling hideAllForms()');
                 window.roomManager.hideAllForms();
             } else {
@@ -6960,7 +6985,7 @@
         // Initialize navigation bar function links
         function initNavbarFunctionLinks() {
             // Multi-user Rooms link
-            const roomsLink = document.querySelector('a[href="/share.html#rooms"]');
+            const roomsLink = document.querySelector('a[href="/rooms-improved.html"]');
             if (roomsLink) {
                 roomsLink.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -6971,7 +6996,7 @@
             }
 
             // Transfer link  
-            const transferLink = document.querySelector('a[href="/share.html"]');
+            const transferLink = document.querySelector('a[href="/transer.html"]');
             if (transferLink) {
                 transferLink.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -7010,7 +7035,7 @@
                 }
             });
         }
-        
+
         // Show file type filter (temporary notification, can expand functionality later)
         function showFileTypeFilter(type) {
             const typeNames = {
@@ -7154,6 +7179,108 @@
     
     <!-- 快速创建调试脚本 -->
     <script src="debug-quick-create.js"></script>
+    
+    <!-- UI管理器初始化 -->
+    <script>
+        // 初始化UI管理器来处理设备发现和显示
+        document.addEventListener('DOMContentLoaded', function() {
+            // 等待网络模块初始化
+            setTimeout(() => {
+                if (window.UI && !window.ui) {
+                    window.ui = new UI();
+                    console.log('✅ UI管理器已初始化');
+                } else if (window.ui) {
+                    console.log('✅ UI管理器已存在');
+                } else {
+                    console.log('⚠️ UI类未找到，尝试手动处理peers事件');
+                    
+                    // 手动处理peers事件
+                    if (window.network && window.network.Events) {
+                        window.network.Events.on('peers', function(e) {
+                            console.log('📱 收到peers列表:', e.detail);
+                            
+                            // 清空现有设备列表
+                            const peersContainer = document.querySelector('x-peers');
+                            if (peersContainer) {
+                                peersContainer.innerHTML = '';
+                            }
+                            
+                            // 显示每个设备
+                            if (e.detail && Array.isArray(e.detail)) {
+                                e.detail.forEach(peer => {
+                                    console.log('📱 添加设备:', peer);
+                                    addPeerToUI(peer);
+                                });
+                            }
+                        });
+                        
+                        window.network.Events.on('peer-joined', function(e) {
+                            console.log('📱 新设备加入:', e.detail);
+                            if (e.detail && e.detail.peer) {
+                                addPeerToUI(e.detail.peer);
+                            }
+                        });
+                        
+                        window.network.Events.on('peer-left', function(e) {
+                            console.log('📱 设备离开:', e.detail);
+                            removePeerFromUI(e.detail);
+                        });
+                        
+                        console.log('✅ 手动peers事件监听器已设置');
+                    }
+                }
+            }, 2000);
+        });
+        
+        // 添加设备到UI的函数
+        function addPeerToUI(peer) {
+            if (!peer || !peer.id) return;
+            
+            const peersContainer = document.querySelector('x-peers');
+            if (!peersContainer) {
+                console.log('❌ 找不到peers容器');
+                return;
+            }
+            
+            // 检查是否已存在
+            if (document.getElementById(peer.id)) {
+                console.log('📱 设备已存在，跳过:', peer.id);
+                return;
+            }
+            
+            // 创建设备元素
+            const peerElement = document.createElement('x-peer');
+            peerElement.id = peer.id;
+            peerElement.innerHTML = `
+                <div class="peer-info">
+                    <div class="peer-name">${peer.name || peer.id.substring(0, 8)}</div>
+                    <div class="peer-type">${peer.deviceType || 'Computer'}</div>
+                </div>
+                <div class="peer-actions">
+                    <button class="send-btn" onclick="sendToPeer('${peer.id}')">发送文件</button>
+                </div>
+            `;
+            
+            peersContainer.appendChild(peerElement);
+            console.log('✅ 设备已添加到UI:', peer.name || peer.id);
+        }
+        
+        // 从UI移除设备的函数
+        function removePeerFromUI(peerId) {
+            const peerElement = document.getElementById(peerId);
+            if (peerElement) {
+                peerElement.remove();
+                console.log('✅ 设备已从UI移除:', peerId);
+            }
+        }
+        
+        // 发送文件到指定设备的函数
+        function sendToPeer(peerId) {
+            console.log('📤 发送文件到设备:', peerId);
+            // 这里可以添加文件选择逻辑
+            alert('选择文件功能待实现');
+        }
+    </script>
 </body>
 
 </html>

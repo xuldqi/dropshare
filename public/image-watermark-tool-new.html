@@ -786,8 +786,8 @@ body {
                     </div>
                 </div>
                 <nav class="nav-links" id="mobileNavLinks">
-                    <a href="share.html" data-i18n="nav_transfer">Transfer</a>
-                    <a href="share.html#rooms" data-i18n="nav_rooms">Rooms</a>
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
                     <a href="image-tools.html" data-i18n="nav_images">Images</a>
                     <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
                     <a href="video-tools.html" data-i18n="nav_video">Video</a>
@@ -1142,10 +1142,7 @@ body {
                 return;
             }
 
-            if (file.size > 10 * 1024 * 1024) {
-                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_file_too_large') : 'File size cannot exceed 10MB');
-                return;
-            }
+            // 文件大小限制已移除
 
             originalFile = file;
             showProgress();
