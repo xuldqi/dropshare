@@ -3,7 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frame Rate Converter - DropShare</title>
+    <title data-i18n="frame_rate_converter_real_title">Frame Rate Converter</title>
+    <meta name="description" content="Professional frame rate converter: convert video frame rates for smooth playback and compatibility. Change FPS to 24, 30, 60, or custom rates. Real-time video processing.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="frame rate converter, FPS converter, video frame rate, change FPS, 24fps, 30fps, 60fps, video conversion, motion interpolation, video editing">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="DropShare">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Frame Rate Converter - Professional FPS Conversion Online | DropShare">
+    <meta property="og:description" content="Professional frame rate converter: convert video frame rates for smooth playback and compatibility. Change FPS to 24, 30, 60, or custom rates. Real-time video processing.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dropshare.tech/frame-rate-converter-real.html">
+    <meta property="og:site_name" content="DropShare">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Multilingual alternate pages -->
+    <link rel="alternate" hreflang="en" href="https://dropshare.tech/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="es" href="https://dropshare.tech/es/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="fr" href="https://dropshare.tech/fr/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="de" href="https://dropshare.tech/de/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="it" href="https://dropshare.tech/it/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="pt" href="https://dropshare.tech/pt/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="ru" href="https://dropshare.tech/ru/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="ja" href="https://dropshare.tech/ja/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="zh" href="https://dropshare.tech/zh/frame-rate-converter-real.html">
+    <link rel="alternate" hreflang="x-default" href="https://dropshare.tech/frame-rate-converter-real.html">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Frame Rate Converter - Professional FPS Conversion Online | DropShare">
+    <meta name="twitter:description" content="Professional frame rate converter: convert video frame rates for smooth playback and compatibility. Change FPS to 24, 30, 60, or custom rates. Real-time video processing.">
+    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dropshare.tech/frame-rate-converter-real.html">
+
+    <!-- Icons and Mobile Meta Tags -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="DropShare">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Performance -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//www.gstatic.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Frame Rate Converter",
+        "description": "Professional frame rate converter for changing video FPS and motion interpolation",
+        "url": "https://dropshare.tech/frame-rate-converter-real.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "permissions": "browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Convert video frame rates",
+            "Motion interpolation",
+            "Custom FPS settings",
+            "Professional codecs",
+            "Real-time processing"
+        ]
+    }
+    </script>
     <style>
         * {
             margin: 0;
@@ -14,21 +95,23 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #ffffff;
-            min-height: 100vh;
             color: #333;
+            line-height: 1.6;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -37,10 +120,11 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
+            gap: 12px;
+            font-size: 20px;
             font-weight: bold;
-            color: #667eea;
+            color: #3367d6;
+            text-decoration: none;
         }
 
         .logo svg {
@@ -51,73 +135,104 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 16px;
         }
 
         .nav-links a {
-            color: #666;
+            color: #6b7280;
             text-decoration: none;
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
 
         .nav-links a:hover {
-            color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 3rem;
+            padding: 40px 20px;
         }
 
         .page-title {
-            font-size: 3rem;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 1rem;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
         .page-subtitle {
-            font-size: 1.2rem;
-            color: #ffffff;
-            opacity: 0.9;
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
         }
 
         .tool-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
         }
 
         .upload-area {
-            border: 2px dashed #ddd;
+            border: 3px dashed #d1d5db;
             border-radius: 12px;
-            padding: 3rem;
+            padding: 60px 20px;
             text-align: center;
+            cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 2rem;
+            background: #f9fafb;
+            margin-bottom: 30px;
         }
 
+        .upload-area:hover,
         .upload-area.dragover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            border-color: #3367d6;
+            background: #eff6ff;
         }
 
         .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.7;
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
         }
 
         .file-input {
@@ -125,108 +240,96 @@
         }
 
         .upload-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #3367d6;
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-size: 1rem;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0.5rem;
+            transition: all 0.2s ease;
+            margin-top: 16px;
         }
 
         .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            background: #2563eb;
         }
 
         .controls {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
         }
 
         .control-section {
-            background: #f8f9fa;
-            padding: 1.5rem;
+            background: #f9fafb;
+            padding: 20px;
             border-radius: 12px;
-            border: 1px solid #e1e5e9;
         }
 
         .control-section h4 {
-            margin-bottom: 1rem;
-            color: #333;
-            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: #1f2937;
+            font-size: 16px;
             font-weight: 600;
         }
 
         .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .control-group:last-child {
-            margin-bottom: 0;
+            margin-bottom: 16px;
         }
 
         .control-group label {
-            font-weight: 600;
-            color: #333;
-            font-size: 0.9rem;
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
         }
 
-        .control-group input, .control-group select {
-            padding: 0.75rem;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .control-group input:focus, .control-group select:focus {
-            outline: none;
-            border-color: #667eea;
+        .control-group input[type="number"],
+        .control-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
         }
 
         .frame-rate-presets {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .preset-btn {
             background: white;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
         }
 
         .preset-btn:hover {
-            border-color: #667eea;
-            color: #667eea;
+            border-color: #3367d6;
         }
 
         .preset-btn.active {
-            background: #667eea;
+            background: #3367d6;
             color: white;
-            border-color: #667eea;
+            border-color: #3367d6;
         }
 
         .advanced-options {
             display: none;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #e1e5e9;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
         }
 
         .advanced-options.active {
@@ -236,66 +339,65 @@
         .toggle-advanced {
             background: none;
             border: none;
-            color: #667eea;
+            color: #3367d6;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             text-decoration: underline;
-            font-size: 0.9rem;
+            font-size: 14px;
+            margin-top: 8px;
         }
 
         .info-section {
-            background: rgba(102, 126, 234, 0.1);
-            padding: 1rem;
+            background: #f3f4f6;
+            padding: 16px;
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            margin-top: 24px;
         }
 
         .info-section h5 {
-            color: #333;
-            margin-bottom: 0.5rem;
+            color: #1f2937;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .info-section ul {
-            list-style: none;
-            padding: 0;
+            list-style-position: inside;
+            padding-left: 0;
         }
 
         .info-section li {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 0.25rem;
+            color: #4b5563;
+            font-size: 14px;
+            margin-bottom: 4px;
         }
 
         .process-btn {
-            background: linear-gradient(135deg, #28a745, #34ce57);
+            background: #2563eb;
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-size: 1.1rem;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
-            margin-top: 2rem;
-            transition: all 0.3s ease;
+            margin-top: 24px;
+            transition: all 0.2s ease;
         }
 
         .process-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+            background: #1d4ed8;
         }
 
         .process-btn:disabled {
-            background: #ccc;
+            background: #9ca3af;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
         .progress-container {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(102, 126, 234, 0.1);
+            margin-top: 24px;
+            padding: 20px;
+            background: #f9fafb;
             border-radius: 12px;
             display: none;
         }
@@ -307,42 +409,42 @@
         .progress-bar {
             width: 100%;
             height: 8px;
-            background: #e1e5e9;
+            background: #e5e7eb;
             border-radius: 4px;
             overflow: hidden;
-            margin-bottom: 1rem;
+            margin-bottom: 12px;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #3367d6;
             width: 0%;
             transition: width 0.3s ease;
         }
 
         .status {
             font-weight: 600;
-            color: #333;
+            color: #374151;
             text-align: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 4px;
         }
 
         .eta {
-            font-size: 0.9rem;
-            color: #666;
+            font-size: 14px;
+            color: #6b7280;
             text-align: center;
         }
 
         .download-btn {
-            background: linear-gradient(135deg, #28a745, #34ce57);
+            background: #10b981;
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-size: 1rem;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 2rem;
+            margin-top: 16px;
             width: 100%;
             display: none;
         }
@@ -352,15 +454,14 @@
         }
 
         .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+            background: #059669;
         }
 
         .video-preview {
             display: none;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: #f8f9fa;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: #f9fafb;
             border-radius: 12px;
         }
 
@@ -377,12 +478,13 @@
 
         .video-info {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-            padding: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+            padding: 16px;
             background: white;
             border-radius: 8px;
+            border: 1px solid #e5e7eb;
         }
 
         .info-item {
@@ -390,90 +492,329 @@
         }
 
         .info-label {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.25rem;
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 4px;
         }
 
         .info-value {
-            font-size: 1.1rem;
+            font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: #374151;
         }
 
         @media (max-width: 768px) {
             .controls {
                 grid-template-columns: 1fr;
             }
-            
-            .page-title {
-                font-size: 2rem;
-            }
-            
-            .frame-rate-presets {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
+
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="unified-navigation.css">    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
+    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
+    
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+
+/* 确保页面内容不被固定header遮挡 */
+body {
+    padding-top: 80px;
+}
+</style>
 </head>
 <body>
+        <!-- Unified Header -->
     <header class="header">
         <div class="header-container">
-            <div class="logo">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
-                </svg>
-                <a href="index.html" style="text-decoration: none; color: inherit;">DropShare</a>
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <nav class="nav-links" id="mobileNavLinks">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
             </div>
-            <nav class="nav-links">
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
         </div>
     </header>
 
     <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Frame Rate Converter</h1>
-            <p class="page-subtitle">Convert video frame rates for smooth playback and compatibility</p>
-        </div>
+        <h1 class="page-title" data-i18n="frame_rate_converter_real_heading">Frame Rate Converter</h1>
+        <p class="page-subtitle" data-i18n="frame_rate_converter_real_subtitle">Convert video frame rates for smooth playback and compatibility</p>
 
         <div class="tool-container">
             <!-- Upload Area -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎬</div>
-                <h3>Upload Video File</h3>
-                <p>Drag and drop your video file here or click to browse</p>
+                <h3 class="upload-text" data-i18n="frame_rate_converter_real_upload_text">Upload Video File</h3>
+                <p class="upload-hint" data-i18n="frame_rate_converter_real_upload_hint">Drag and drop your video file here or click to browse</p>
                 <input type="file" id="fileInput" class="file-input" accept="video/*">
-                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose Video File</button>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()" data-i18n="frame_rate_converter_real_choose_btn">Choose Video File</button>
             </div>
 
             <!-- Video Preview -->
             <div class="video-preview" id="videoPreview">
                 <video id="previewVideo" class="preview-video" controls>
-                    Your browser does not support the video tag.
+                    <span data-i18n="browser_not_support_video">Your browser does not support the video tag.</span>
                 </video>
                 <div class="video-info" id="videoInfo">
                     <div class="info-item">
-                        <div class="info-label">Current Frame Rate</div>
+                        <div class="info-label" data-i18n="fps_current_rate">Current Frame Rate</div>
                         <div class="info-value" id="currentFPS">-</div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label">Duration</div>
+                        <div class="info-label" data-i18n="duration">Duration</div>
                         <div class="info-value" id="duration">-</div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label">Resolution</div>
+                        <div class="info-label" data-i18n="res_resolution">Resolution</div>
                         <div class="info-value" id="resolution">-</div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label">File Size</div>
+                        <div class="info-label" data-i18n="file_size">File Size</div>
                         <div class="info-value" id="fileSize">-</div>
                     </div>
                 </div>
@@ -483,7 +824,7 @@
             <div class="controls">
                 <!-- Frame Rate Settings -->
                 <div class="control-section">
-                    <h4>🎯 Target Frame Rate</h4>
+                    <h4 data-i18n="fps_target_rate">Target Frame Rate</h4>
                     <div class="frame-rate-presets">
                         <button class="preset-btn" data-fps="23.98">23.98</button>
                         <button class="preset-btn" data-fps="24">24</button>
@@ -495,41 +836,41 @@
                         <button class="preset-btn" data-fps="60">60</button>
                     </div>
                     <div class="control-group">
-                        <label>Custom Frame Rate</label>
-                        <input type="number" id="customFPS" placeholder="e.g., 48" step="0.01" min="1" max="120">
+                        <label data-i18n="fps_custom_rate">Custom Frame Rate</label>
+                        <input type="number" id="customFPS" data-i18n-placeholder="fps_custom_placeholder" placeholder="e.g., 48" step="0.01" min="1" max="120">
                     </div>
                 </div>
 
                 <!-- Conversion Method -->
                 <div class="control-section">
-                    <h4>⚙️ Conversion Method</h4>
+                    <h4 data-i18n="fps_conversion_method">Conversion Method</h4>
                     <div class="control-group">
-                        <label>Frame Interpolation</label>
+                        <label data-i18n="fps_interpolation">Frame Interpolation</label>
                         <select id="interpolation">
-                            <option value="fps">Standard FPS Filter</option>
-                            <option value="minterpolate">Motion Interpolation</option>
-                            <option value="telecine">Telecine (24→30)</option>
-                            <option value="framestep">Frame Step</option>
+                            <option value="fps" data-i18n="fps_inter_std">Standard FPS Filter</option>
+                            <option value="minterpolate" data-i18n="fps_inter_motion">Motion Interpolation</option>
+                            <option value="telecine" data-i18n="fps_inter_telecine">Telecine (24→30)</option>
+                            <option value="framestep" data-i18n="fps_inter_step">Frame Step</option>
                         </select>
                     </div>
                     <div class="control-group">
-                        <label>Motion Estimation</label>
+                        <label data-i18n="fps_motion_estimation">Motion Estimation</label>
                         <select id="motionEstimation">
-                            <option value="bilat">Bilateral</option>
-                            <option value="bidir">Bidirectional</option>
-                            <option value="epzs">EPZS</option>
-                            <option value="hex">Hexagonal</option>
+                            <option value="bilat" data-i18n="fps_motion_bilat">Bilateral</option>
+                            <option value="bidir" data-i18n="fps_motion_bidir">Bidirectional</option>
+                            <option value="epzs" data-i18n="fps_motion_epzs">EPZS</option>
+                            <option value="hex" data-i18n="fps_motion_hex">Hexagonal</option>
                         </select>
                     </div>
-                    <button class="toggle-advanced" onclick="toggleAdvanced()">Advanced Options ▼</button>
+                    <button class="toggle-advanced" onclick="toggleAdvanced()" data-i18n="toggle_advanced_show">Advanced Options ▼</button>
                     <div class="advanced-options" id="advancedOptions">
                         <div class="control-group">
-                            <label>Scene Detection</label>
+                            <label data-i18n="fps_scene_detection">Scene Detection</label>
                             <input type="range" id="sceneThreshold" min="0" max="1" step="0.01" value="0.2">
                             <span id="sceneValue">0.2</span>
                         </div>
                         <div class="control-group">
-                            <label>Search Parameter</label>
+                            <label data-i18n="fps_search_param">Search Parameter</label>
                             <input type="range" id="searchParam" min="4" max="64" step="1" value="32">
                             <span id="searchValue">32</span>
                         </div>
@@ -538,9 +879,9 @@
 
                 <!-- Output Settings -->
                 <div class="control-section">
-                    <h4>📤 Output Settings</h4>
+                    <h4 data-i18n="merge_output_quality">Output Settings</h4>
                     <div class="control-group">
-                        <label>Video Codec</label>
+                        <label data-i18n="fps_video_codec">Video Codec</label>
                         <select id="videoCodec">
                             <option value="libx264">H.264</option>
                             <option value="libx265">H.265/HEVC</option>
@@ -549,16 +890,16 @@
                         </select>
                     </div>
                     <div class="control-group">
-                        <label>Quality (CRF)</label>
+                        <label data-i18n="fps_quality_crf">Quality (CRF)</label>
                         <input type="range" id="quality" min="18" max="30" value="23">
                         <span id="qualityValue">23</span>
                     </div>
                     <div class="control-group">
-                        <label>Audio Processing</label>
+                        <label data-i18n="fps_audio_processing">Audio Processing</label>
                         <select id="audioProcessing">
-                            <option value="copy">Copy Original</option>
-                            <option value="aac">Re-encode AAC</option>
-                            <option value="remove">Remove Audio</option>
+                            <option value="copy" data-i18n="fps_audio_copy">Copy Original</option>
+                            <option value="aac" data-i18n="fps_audio_reencode">Re-encode AAC</option>
+                            <option value="remove" data-i18n="fps_audio_remove">Remove Audio</option>
                         </select>
                     </div>
                 </div>
@@ -566,29 +907,29 @@
 
             <!-- Information Section -->
             <div class="info-section">
-                <h5>Frame Rate Conversion Tips:</h5>
+                <h5 data-i18n="fps_tips_title">Frame Rate Conversion Tips:</h5>
                 <ul>
-                    <li>• Use motion interpolation for smooth slow-motion effects</li>
-                    <li>• 24 fps is standard for films, 30/60 fps for web content</li>
-                    <li>• Higher frame rates increase file size significantly</li>
-                    <li>• Scene detection helps maintain quality during cuts</li>
+                    <li data-i18n="fps_tip_1">• Use motion interpolation for smooth slow-motion effects</li>
+                    <li data-i18n="fps_tip_2">• 24 fps is standard for films, 30/60 fps for web content</li>
+                    <li data-i18n="fps_tip_3">• Higher frame rates increase file size significantly</li>
+                    <li data-i18n="fps_tip_4">• Scene detection helps maintain quality during cuts</li>
                 </ul>
             </div>
 
             <!-- Process Button -->
-            <button class="process-btn" id="processBtn">Convert Frame Rate</button>
+            <button class="process-btn" id="processBtn" data-i18n="frame_rate_converter_real_process_btn">Convert Frame Rate</button>
 
             <!-- Progress -->
             <div class="progress-container" id="progressContainer">
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="status" id="status">Processing...</div>
-                <div class="eta" id="eta">Estimated time remaining: calculating...</div>
+                <div class="status" id="status" data-i18n="progress_processing">Processing...</div>
+                <div class="eta" id="eta" data-i18n="progress_eta_calculating">Estimated time remaining: calculating...</div>
             </div>
 
             <!-- Download Button -->
-            <button class="download-btn" id="downloadBtn">Download Converted Video</button>
+            <button class="download-btn" id="downloadBtn" data-i18n="res_download_btn">Download Converted Video</button>
         </div>
     </div>
 
@@ -901,5 +1242,53 @@
     <!-- Share Integration -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                    translatePage();
+                });
+            }
+        }
+
+        // Main translation function
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined' || typeof window.DROPSHARE_I18N.t !== 'function') {
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.hasAttribute('data-i18n-placeholder')) {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                });
+            }
+        });
+    </script>
 </body>
 </html>

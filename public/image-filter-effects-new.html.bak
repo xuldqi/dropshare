@@ -3,7 +3,77 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Filter Effects - DropShare</title>
+    <title data-i18n="image_filter_effects_title">Image Filter Effects</title>
+    <meta name="description" content="Advanced image filter effects: apply brightness, contrast, saturation, blur, sharpen and artistic filters. Professional photo editing online for free.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="image filter effects, photo effects, brightness filter, contrast adjustment, saturation filter, blur effect, sharpen filter, artistic filters, photo editing online, image enhancement">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="DropShare">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Advanced Image Filter Effects - Professional Photo Editing Online | DropShare">
+    <meta property="og:description" content="Advanced image filter effects: apply brightness, contrast, saturation, blur, sharpen and artistic filters. Professional photo editing online for free.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dropshare.tech/image-filter-effects-new.html">
+    <meta property="og:site_name" content="DropShare">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Advanced Image Filter Effects - Professional Photo Editing Online | DropShare">
+    <meta name="twitter:description" content="Advanced image filter effects: apply brightness, contrast, saturation, blur, sharpen and artistic filters. Professional photo editing online for free.">
+    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dropshare.tech/image-filter-effects-new.html">
+
+    <!-- Icons and Mobile Meta Tags -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="DropShare">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Performance -->
+    <link rel="dns-prefetch" href="//www.gstatic.com">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Image Filter Effects - DropShare",
+        "description": "Advanced image filter effects tool with brightness, contrast, saturation, blur, sharpen and artistic filters for professional photo editing",
+        "url": "https://dropshare.tech/image-filter-effects-new.html",
+        "applicationCategory": "Multimedia",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Brightness and contrast adjustment",
+            "Color saturation controls",
+            "Blur and sharpen effects",
+            "Artistic filter presets",
+            "Real-time preview",
+            "Comparison mode"
+        ]
+    }
+    </script>
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
     <style>
         * {
             margin: 0;
@@ -70,6 +140,18 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .container {
@@ -434,27 +516,276 @@
     </style>    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
 
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="unified-navigation.css">    <script src="/locales/i18n.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
+    
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+
+/* 确保页面内容不被固定header遮挡 */
+body {
+    padding-top: 80px;
+}
+</style>
 </head>
 
 <body>
     <!-- Header -->
+        <!-- Unified Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                🎨 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html" class="active">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <nav class="nav-links" id="mobileNavLinks">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -462,19 +793,19 @@
         <!-- Top-left return button -->
         <div style="margin-bottom: 20px;">
             <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
+                <span data-i18n="nav_back">← back</span>
             </a>
         </div>
         
-        <h1 class="page-title">Image Filter Effects</h1>
-        <p class="page-subtitle">Apply professional-grade filter effects to make images more artistic</p>
+        <h1 class="page-title" data-i18n="image_filter_effects_heading">Image Filter Effects</h1>
+        <p class="page-subtitle" data-i18n="image_filter_effects_subtitle">Apply professional-grade filter effects to make images more artistic</p>
 
         <div class="filter-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🎨</div>
-                <div class="upload-text">Click to select image or drag here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
+                <div class="upload-text" data-i18n="image_filter_effects_upload_text">Click to select image or drag here</div>
+                <div class="upload-hint" data-i18n="image_filter_effects_upload_hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -488,27 +819,27 @@
                 <div class="controls-grid">
                     <!-- 滤镜面板 -->
                     <div class="filter-panel">
-                        <div class="panel-title">🎛️ Filter Controls</div>
+                        <div class="panel-title" data-i18n="image_filter_panel_title">🎛️ Filter Controls</div>
 
                         <!-- 预设滤镜 -->
                         <div class="preset-filters">
-                            <div class="filter-title">🎭 Preset Filters</div>
+                            <div class="filter-title" data-i18n="image_filter_presets">🎭 Preset Filters</div>
                             <div class="preset-grid">
-                                <button class="preset-btn active" data-preset="none">Original</button>
-                                <button class="preset-btn" data-preset="vintage">Vintage</button>
-                                <button class="preset-btn" data-preset="bw">B&W</button>
-                                <button class="preset-btn" data-preset="sepia">Sepia</button>
-                                <button class="preset-btn" data-preset="warm">Warm</button>
-                                <button class="preset-btn" data-preset="cool">Cool</button>
-                                <button class="preset-btn" data-preset="dramatic">Dramatic</button>
-                                <button class="preset-btn" data-preset="dreamy">Dreamy</button>
+                                <button class="preset-btn active" data-preset="none" data-i18n="filter_original">Original</button>
+                                <button class="preset-btn" data-preset="vintage" data-i18n="filter_vintage">Vintage</button>
+                                <button class="preset-btn" data-preset="bw" data-i18n="filter_bw">B&W</button>
+                                <button class="preset-btn" data-preset="sepia" data-i18n="filter_sepia">Sepia</button>
+                                <button class="preset-btn" data-preset="warm" data-i18n="filter_warm">Warm</button>
+                                <button class="preset-btn" data-preset="cool" data-i18n="filter_cool">Cool</button>
+                                <button class="preset-btn" data-preset="dramatic" data-i18n="filter_dramatic">Dramatic</button>
+                                <button class="preset-btn" data-preset="dreamy" data-i18n="filter_dreamy">Dreamy</button>
                             </div>
                         </div>
 
                         <!-- 基础调整 -->
                         <div class="filter-group">
                             <div class="filter-title">
-                                💡 Brightness
+                                💡 <span data-i18n="filter_brightness">Brightness</span>
                                 <span class="filter-value" id="brightnessValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="brightnessSlider" 
@@ -517,7 +848,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌗 Contrast
+                                🌗 <span data-i18n="filter_contrast">Contrast</span>
                                 <span class="filter-value" id="contrastValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="contrastSlider" 
@@ -526,7 +857,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌈 Saturation
+                                🌈 <span data-i18n="filter_saturation">Saturation</span>
                                 <span class="filter-value" id="saturationValue">100%</span>
                             </div>
                             <input type="range" class="filter-slider" id="saturationSlider" 
@@ -535,7 +866,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌅 Hue
+                                🌅 <span data-i18n="filter_hue">Hue</span>
                                 <span class="filter-value" id="hueValue">0°</span>
                             </div>
                             <input type="range" class="filter-slider" id="hueSlider" 
@@ -545,7 +876,7 @@
                         <!-- 高级效果 -->
                         <div class="filter-group">
                             <div class="filter-title">
-                                🌫️ Blur
+                                🌫️ <span data-i18n="filter_blur">Blur</span>
                                 <span class="filter-value" id="blurValue">0px</span>
                             </div>
                             <input type="range" class="filter-slider" id="blurSlider" 
@@ -554,7 +885,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                ✨ Sharpen
+                                ✨ <span data-i18n="filter_sharpen">Sharpen</span>
                                 <span class="filter-value" id="sharpenValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="sharpenSlider" 
@@ -563,7 +894,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                ☀️ Exposure
+                                ☀️ <span data-i18n="filter_exposure">Exposure</span>
                                 <span class="filter-value" id="exposureValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="exposureSlider" 
@@ -572,7 +903,7 @@
 
                         <div class="filter-group">
                             <div class="filter-title">
-                                🎯 Vignette
+                                🎯 <span data-i18n="filter_vignette">Vignette</span>
                                 <span class="filter-value" id="vignetteValue">0%</span>
                             </div>
                             <input type="range" class="filter-slider" id="vignetteSlider" 
@@ -581,34 +912,34 @@
 
                         <!-- 快速操作 -->
                         <div class="quick-actions">
-                            <button class="quick-btn" id="resetFilters">🔄 Reset</button>
-                            <button class="quick-btn" id="randomFilter">🎲 Random</button>
-                            <button class="quick-btn" id="toggleComparison">👁️ Compare</button>
+                            <button class="quick-btn" id="resetFilters" data-i18n="btn_reset">🔄 Reset</button>
+                            <button class="quick-btn" id="randomFilter" data-i18n="filter_random">🎲 Random</button>
+                            <button class="quick-btn" id="toggleComparison" data-i18n="filter_compare">👁️ Compare</button>
                         </div>
                     </div>
 
                     <!-- 图片工作区 -->
                     <div class="image-workspace">
-                        <div class="workspace-title">🖼️ Live Preview</div>
+                        <div class="workspace-title" data-i18n="image_filter_preview">🖼️ Live Preview</div>
                         <div class="image-container">
                             <img id="workspaceImage" class="workspace-image" alt="Filter preview">
                         </div>
                         <div class="image-info">
-                            <div>Size: <span class="size" id="imageSize"></span></div>
-                            <div>File Size: <span class="size" id="fileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">Size:</span> <span class="size" id="imageSize"></span></div>
+                            <div><span data-i18n="label_file_size">File Size:</span> <span class="size" id="fileSize"></span></div>
                         </div>
 
                         <!-- 对比模式 -->
                         <div class="comparison-mode" id="comparisonMode">
                             <div class="comparison-container">
                                 <div class="comparison-item">
-                                    <h4>Original</h4>
+                                    <h4 data-i18n="label_original_image">Original</h4>
                                     <div class="image-container">
                                         <img id="originalComparison" class="workspace-image" alt="Original image">
                                     </div>
                                 </div>
                                 <div class="comparison-item">
-                                    <h4>Filtered</h4>
+                                    <h4 data-i18n="image_filter_filtered">Filtered</h4>
                                     <div class="image-container">
                                         <img id="filteredComparison" class="workspace-image" alt="Filtered image">
                                     </div>
@@ -622,10 +953,10 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 Download Filtered Image
+                    <span data-i18n="image_filter_download">📥 Download Filtered Image</span>
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 Select Again
+                    <span data-i18n="btn_select_again">🔄 Select Again</span>
                 </button>
             </div>
         </div>
@@ -752,14 +1083,11 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('请选择图片文件！');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_select_valid') : 'Please select an image file');
                 return;
             }
 
-            if (file.size > 10 * 1024 * 1024) {
-                alert('文件大小不能超过 10MB！');
-                return;
-            }
+            // 文件大小限制已移除
 
             originalFile = file;
             showProgress();
@@ -980,7 +1308,7 @@
             comparisonMode.style.display = isComparisonMode ? 'block' : 'none';
             
             const btn = document.getElementById('toggleComparison');
-            btn.textContent = isComparisonMode ? '🖼️ 单图' : '👁️ 对比';
+            btn.textContent = isComparisonMode ? window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('filter_single') : '🖼️ Single' : window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('filter_compare') : '👁️ Compare';
             
             if (isComparisonMode) {
                 filteredComparison.style.filter = workspaceImage.style.filter;
@@ -1038,7 +1366,7 @@
             fileInput.value = '';
             
             // 重置UI
-            document.getElementById('toggleComparison').textContent = '👁️ 对比';
+            document.getElementById('toggleComparison').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('filter_compare') : '👁️ Compare';
             document.querySelectorAll('.preset-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.preset === 'none');
             });
@@ -1052,6 +1380,81 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
+    <script>
+    function initializeLanguageSelector() {
+        const languageSelector = document.getElementById('language-selector');
+        
+        if (languageSelector && window.DROPSHARE_I18N) {
+            const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+            languageSelector.value = currentLang;
+            
+            languageSelector.addEventListener('change', function(e) {
+                const newLang = e.target.value;
+                if (window.DROPSHARE_I18N) {
+                    window.DROPSHARE_I18N.setLanguage(newLang);
+                    translatePage();
+                }
+            });
+        }
+    }
+
+    function translatePage() {
+        if (typeof window.DROPSHARE_I18N === 'undefined') return;
+        
+        const elements = document.querySelectorAll('[data-i18n]');
+        elements.forEach(element => {
+            const key = element.getAttribute('data-i18n');
+            const translation = window.DROPSHARE_I18N.t(key);
+            
+            if (translation && translation !== key) {
+                if (element.tagName === 'INPUT' && element.type === 'button') {
+                    element.value = translation;
+                } else if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'password')) {
+                    element.placeholder = translation;
+                } else {
+                    element.textContent = translation;
+                }
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化上传功能
+        initializeUploadFunctionality();
+        
+        // 初始化语言和翻译
+        setTimeout(() => {
+            if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                initializeLanguageSelector();
+                translatePage();
+            }
+        }, 100);
+    });
+
+    function initializeUploadFunctionality() {
+        // 事件监听器
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // 滑块事件
+        Object.keys(sliders).forEach(key => {
+            sliders[key].addEventListener('input', (e) => handleSliderChange(key, e.target.value));
+        });
+
+        // 预设按钮事件
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => applyPreset(e.target.dataset.preset));
+        });
+
+        // 比较模式
+        document.getElementById('toggleComparison').addEventListener('click', toggleComparison);
+
+        downloadBtn.addEventListener('click', downloadFilteredImage);
+        resetBtn.addEventListener('click', resetFilter);
+    }
     </script>
     <!-- Share Integration -->
     <script src="device-selector.js"></script>

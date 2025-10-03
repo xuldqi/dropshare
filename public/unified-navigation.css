@@ -115,6 +115,16 @@
     font-weight: 600;
 }
 
+/* Hide Transfer/Share nav item across all pages */
+.nav-links a[data-i18n="nav_transfer"] {
+    display: none !important;
+}
+/* Also hide legacy headers that link directly to share pages */
+.nav-links a[href*="share.html"],
+.nav-links a[href*="transer.html"] {
+    display: none !important;
+}
+
 /* Hamburger Menu (hidden on desktop) */
 .hamburger {
     display: none;

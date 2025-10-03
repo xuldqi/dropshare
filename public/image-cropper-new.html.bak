@@ -3,7 +3,76 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Cropper - DropShare</title>
+    <title data-i18n="image_cropper_title">Image Cropper</title>
+    <meta name="description" content="Free online image cropper tool. Crop images with precise selection, custom aspect ratios, and professional quality. Perfect for social media, thumbnails, and web use.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="image cropper, crop images, image cropping tool, photo cropper, picture cropper, crop photos, image trimmer, cut images, aspect ratio crop, square crop, custom crop, thumbnail crop, social media crop">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="DropShare">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Image Cropper - Professional Image Cropping Online | DropShare">
+    <meta property="og:description" content="Free online image cropper tool. Crop images with precise selection, custom aspect ratios, and professional quality. Perfect for social media, thumbnails, and web use.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dropshare.tech/image-cropper-new.html">
+    <meta property="og:site_name" content="DropShare">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Image Cropper - Professional Image Cropping Online | DropShare">
+    <meta name="twitter:description" content="Free online image cropper tool. Crop images with precise selection, custom aspect ratios, and professional quality. Perfect for social media, thumbnails, and web use.">
+    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dropshare.tech/image-cropper-new.html">
+
+    <!-- Icons and Mobile Meta Tags -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="DropShare">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Performance -->
+    <link rel="dns-prefetch" href="//www.gstatic.com">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Image Cropper - DropShare",
+        "description": "Professional image cropping tool with precise selection controls, preset aspect ratios, and high-quality output for social media and web optimization.",
+        "url": "https://dropshare.tech/image-cropper-new.html",
+        "applicationCategory": "Multimedia",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Precise crop selection",
+            "Custom aspect ratios",
+            "Preset crop dimensions",
+            "Real-time preview",
+            "Social media optimization",
+            "High-quality output"
+        ]
+    }
+    </script>
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
     <style>
         * {
             margin: 0;
@@ -70,6 +139,84 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .brand-left { display: flex; align-items: center; gap: 12px; }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        .hamburger span {
+            width: 20px;
+            height: 2px;
+            background: #6b7280;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+            margin: 2px 0;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            
+            /* 移动端默认隐藏导航，使用汉堡展开 */
+            .nav-links { display: none !important; }
+            .nav-links.mobile-open {
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 20px;
+                z-index: 999;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+            
+            .nav-links a {
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+            
+            .menu-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.35);
+                z-index: 2000;
+                display: none;
+                pointer-events: auto;
+            }
+            .menu-backdrop.show { display: block; }
         }
 
         .container {
@@ -364,8 +511,20 @@
         }
 
         @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .header-controls {
+                width: 100%;
+                justify-content: center;
+            }
+            
             .nav-links {
-                display: none;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
             }
 
             .container {
@@ -392,47 +551,297 @@
     </style>    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
 
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="unified-navigation.css">    <script src="/locales/i18n.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
+    
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+
+/* 确保页面内容不被固定header遮挡 */
+body {
+    padding-top: 80px;
+}
+</style>
 </head>
 
 <body>
     <!-- Header -->
+        <!-- Unified Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                ✂️ DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html" class="active">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <nav class="nav-links" id="mobileNavLinks">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
+    <div class="menu-backdrop" id="menuBackdrop"></div>
 
     <div class="container">
         <!-- Top-left return button -->
         <div style="margin-bottom: 20px;">
             <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
+                ← <span data-i18n="back">back</span>
             </a>
         </div>
         
-        <h1 class="page-title">Image Cropper</h1>
-        <p class="page-subtitle">Precisely crop images with various aspect ratios and free selection</p>
+        <h1 class="page-title" data-i18n="image_cropper">Image Cropper</h1>
+        <p class="page-subtitle" data-i18n="image_cropper_desc">Precisely crop images with various aspect ratios and free selection</p>
 
         <div class="cropper-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">✂️</div>
-                <div class="upload-text">Click to select image or drag here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
+                <div class="upload-text" data-i18n="upload_image_click_drag">Click to select image or drag here</div>
+                <div class="upload-hint" data-i18n="upload_image_hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -441,9 +850,9 @@
                 <!-- 裁剪控制 -->
                 <div class="crop-controls">
                     <div class="control-group">
-                        <label class="control-label">Preset Ratios:</label>
+                        <label class="control-label" data-i18n="preset_ratios">Preset Ratios:</label>
                         <div class="aspect-ratios">
-                            <button class="aspect-btn" data-ratio="free">Free</button>
+                            <button class="aspect-btn" data-ratio="free" data-i18n="free">Free</button>
                             <button class="aspect-btn active" data-ratio="1:1">1:1</button>
                             <button class="aspect-btn" data-ratio="4:3">4:3</button>
                             <button class="aspect-btn" data-ratio="16:9">16:9</button>
@@ -453,9 +862,9 @@
                     <div class="control-group">
                         <label class="control-label">Custom Dimensions:</label>
                         <div class="dimension-inputs">
-                            <input type="number" class="dimension-input" id="cropWidth" placeholder="Width">
+                            <input type="number" class="dimension-input" id="cropWidth" data-i18n-placeholder="width" placeholder="Width">
                             <span>×</span>
-                            <input type="number" class="dimension-input" id="cropHeight" placeholder="Height">
+                            <input type="number" class="dimension-input" id="cropHeight" data-i18n-placeholder="height" placeholder="Height">
                             <button class="btn btn-primary" id="applySizeBtn" style="padding: 8px 16px; font-size: 14px;">
                                 <span>Apply</span>
                             </button>
@@ -490,19 +899,19 @@
             <div class="preview-section" id="previewSection">
                 <div class="preview-container">
                     <div class="preview-item">
-                        <h3>Original Image</h3>
+                        <h3 data-i18n="original_image">Original Image</h3>
                         <img id="originalPreview" class="preview-image" alt="Original image">
                         <div class="image-info">
-                            <div><span>Size:</span> <span class="size" id="originalSize"></span></div>
-                            <div><span>File Size:</span> <span class="size" id="originalFileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">Size:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span data-i18n="label_file_size">File Size:</span> <span class="size" id="originalFileSize"></span></div>
                         </div>
                     </div>
                     <div class="preview-item">
-                        <h3>Crop Preview</h3>
+                        <h3 data-i18n="crop_preview">Crop Preview</h3>
                         <canvas id="croppedPreview" class="preview-image"></canvas>
                         <div class="image-info">
-                            <div><span>Size:</span> <span class="size" id="croppedSize"></span></div>
-                            <div><span>Est. Size:</span> <span class="size" id="croppedFileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">Size:</span> <span class="size" id="croppedSize"></span></div>
+                            <div><span data-i18n="estimated_size">Estimated size:</span> <span class="size" id="croppedFileSize"></span></div>
                         </div>
                     </div>
                 </div>
@@ -511,13 +920,13 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-primary" id="cropBtn" disabled>
-                    <span>✂️ Start Cropping</span>
+                    <span data-i18n="start_cropping">✂️ Start Cropping</span>
                 </button>
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    <span>📥 Download Cropped Image</span>
+                    <span data-i18n="download_cropped_image">📥 Download Cropped Image</span>
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span>🔄 Select Again</span>
+                    <span data-i18n="select_again">🔄 Select Again</span>
                 </button>
             </div>
         </div>
@@ -551,21 +960,7 @@
         const cropHeightInput = document.getElementById('cropHeight');
         const applySizeBtn = document.getElementById('applySizeBtn');
 
-        // 事件监听器
-        uploadArea.addEventListener('click', () => fileInput.click());
-        uploadArea.addEventListener('dragover', handleDragOver);
-        uploadArea.addEventListener('drop', handleDrop);
-        uploadArea.addEventListener('dragleave', handleDragLeave);
-        fileInput.addEventListener('change', handleFileSelect);
-
-        aspectBtns.forEach(btn => {
-            btn.addEventListener('click', handleAspectRatioChange);
-        });
-
-        applySizeBtn.addEventListener('click', applyCustomSize);
-        cropBtn.addEventListener('click', performCrop);
-        downloadBtn.addEventListener('click', downloadCroppedImage);
-        resetBtn.addEventListener('click', resetCropper);
+        // 事件监听器将在DOM加载后通过initializeUploadFunctionality()添加
 
         // 拖拽处理
         function handleDragOver(e) {
@@ -598,14 +993,12 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert(";
+                const message = window.DROPSHARE_I18N?.t('error_select_image_file') || 'Please select an image file.';
+                alert(message);
                 return;
             }
 
-            if (file.size > 10 * 1024 * 1024) {
-                alert(";
-                return;
-            }
+            // 文件大小限制已移除
 
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -862,7 +1255,8 @@
             const height = parseInt(cropHeightInput.value);
             
             if (!width || !height || width <= 0 || height <= 0) {
-                alert(";
+                const message = window.DROPSHARE_I18N?.t('error_invalid_dimensions') || 'Please enter valid dimensions.';
+                alert(message);
                 return;
             }
             
@@ -975,11 +1369,102 @@
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
     <script>
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                // Set current language
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                // Add change event listener
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    console.log('Language changed to:', newLang);
+                    
+                    // Change language using unified system
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.setLanguage(newLang);
+                        translatePage();
+                    }
+                });
+                
+                console.log('Language selector initialized with language:', currentLang);
+            }
+        }
+        
+        // 同步语言选择器状态
+        function syncLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.getCurrentLanguage === 'function') {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                console.log('Language selector synced to:', currentLang);
+            }
+        }
+
+        // Translation function
+        function translatePage() {
+            console.log('translatePage called');
+            if (typeof window.DROPSHARE_I18N === 'undefined') {
+                console.log('Translation system not loaded yet');
+                return;
+            }
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            console.log('Found', elements.length, 'elements to translate');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && element.type === 'button') {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'password')) {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                    console.log('Translated', key, 'to', translation);
+                }
+            });
+        }
+        
         // Initialize language system when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the i18n system
+            // 初始化上传功能
+            initializeUploadFunctionality();
             
+            // Initialize language selector - standard way
+            setTimeout(() => {
+                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                    initializeLanguageSelector();
+                    translatePage();
+                    setTimeout(() => {
+                        syncLanguageSelector();
+                    }, 100);
+                }
+            }, 100);
         });
+
+        function initializeUploadFunctionality() {
+            // 事件监听器
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleDrop);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            fileInput.addEventListener('change', handleFileSelect);
+
+            aspectBtns.forEach(btn => {
+                btn.addEventListener('click', handleAspectRatioChange);
+            });
+
+            applySizeBtn.addEventListener('click', applyCustomSize);
+            cropBtn.addEventListener('click', performCrop);
+            downloadBtn.addEventListener('click', downloadCroppedImage);
+            resetBtn.addEventListener('click', resetCropper);
+        }
     </script>
     <!-- Share Integration -->
     <script src="device-selector.js"></script>

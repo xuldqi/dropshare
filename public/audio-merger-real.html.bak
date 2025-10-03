@@ -3,7 +3,89 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Merger - DropShare</title>
+    <title data-i18n="audio_merger_real_title">Audio Merger</title>
+    <meta name="description" content="Free online audio merger: combine multiple audio files into one seamless track. Merge MP3, WAV, FLAC files with crossfade effects. Professional audio joining tool.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="audio merger, combine audio files, merge MP3 files, audio joiner, join audio tracks, concatenate audio, audio combiner, crossfade audio, merge music files">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="DropShare">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Audio Merger - Combine Multiple Audio Files Online | DropShare">
+    <meta property="og:description" content="Free online audio merger: combine multiple audio files into one seamless track. Merge MP3, WAV, FLAC files with crossfade effects. Professional audio joining tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dropshare.tech/audio-merger-real.html">
+    <meta property="og:site_name" content="DropShare">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Multilingual alternate pages -->
+    <link rel="alternate" hreflang="en" href="https://dropshare.tech/audio-merger-real.html">
+    <link rel="alternate" hreflang="es" href="https://dropshare.tech/es/audio-merger-real.html">
+    <link rel="alternate" hreflang="fr" href="https://dropshare.tech/fr/audio-merger-real.html">
+    <link rel="alternate" hreflang="de" href="https://dropshare.tech/de/audio-merger-real.html">
+    <link rel="alternate" hreflang="it" href="https://dropshare.tech/it/audio-merger-real.html">
+    <link rel="alternate" hreflang="pt" href="https://dropshare.tech/pt/audio-merger-real.html">
+    <link rel="alternate" hreflang="ru" href="https://dropshare.tech/ru/audio-merger-real.html">
+    <link rel="alternate" hreflang="ja" href="https://dropshare.tech/ja/audio-merger-real.html">
+    <link rel="alternate" hreflang="zh" href="https://dropshare.tech/zh/audio-merger-real.html">
+    <link rel="alternate" hreflang="x-default" href="https://dropshare.tech/audio-merger-real.html">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Audio Merger - Combine Multiple Audio Files Online | DropShare">
+    <meta name="twitter:description" content="Free online audio merger: combine multiple audio files into one seamless track. Merge MP3, WAV, FLAC files with crossfade effects. Professional audio joining tool.">
+    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dropshare.tech/audio-merger-real.html">
+
+    <!-- Icons and Mobile Meta Tags -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="DropShare">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Performance -->
+    <link rel="dns-prefetch" href="//unpkg.com">
+    <link rel="dns-prefetch" href="//www.gstatic.com">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Audio Merger",
+        "description": "Free online audio merger tool to combine multiple audio files into one seamless track",
+        "url": "https://dropshare.tech/audio-merger-real.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "permissions": "browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Merge multiple audio files",
+            "Crossfade effects",
+            "Support MP3, WAV, FLAC, AAC",
+            "Custom track ordering",
+            "Real FFmpeg processing"
+        ]
+    }
+    </script>
+
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <style>
@@ -72,6 +154,18 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .container {
@@ -340,59 +434,308 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="unified-navigation.css">    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
+    
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+
+/* 确保页面内容不被固定header遮挡 */
+body {
+    padding-top: 80px;
+}
+</style>
 </head>
 
 <body>
     <!-- Header -->
+        <!-- Unified Header -->
     <header class="header">
         <div class="header-container">
-            <a href="index.html" class="logo">
-                🎵 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <nav class="nav-links" id="mobileNavLinks">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">Audio Merger</h1>
-        <p class="page-subtitle">Combine multiple audio files into one seamless track - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="audio_merger_real_heading">Audio Merger</h1>
+        <p class="page-subtitle" data-i18n="audio_merger_real_subtitle">Combine multiple audio files into one seamless track - Real FFmpeg Processing</p>
         
         <div class="merger-card">
-            <div class="engine-status" id="engineStatus">
+            <div class="engine-status" id="engineStatus" data-i18n="audio_engine_loading">
                 Loading audio processing engine...
             </div>
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🔗</div>
-                <div class="upload-text">Click or drag to upload multiple audio files</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="audio_merger_real_upload_text">Click or drag to upload multiple audio files</div>
+                <div class="upload-hint" data-i18n="audio_merger_real_upload_hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*" multiple>
             </div>
             
             <div class="file-list" id="fileList">
-                <h3 style="margin-bottom: 16px; color: #374151;">Audio Files (merge in order)</h3>
+                <h3 style="margin-bottom: 16px; color: #374151;" data-i18n="audio_files_merge_order">Audio Files (merge in order)</h3>
                 <div id="audioFiles"></div>
                 
-                <button class="add-more-btn" onclick="document.getElementById('fileInput').click()">
+                <button class="add-more-btn" onclick="document.getElementById('fileInput').click()" data-i18n="add_more_audio_files">
                     + Add More Audio Files
                 </button>
                 
                 <div class="merge-controls">
                     <div class="merge-options">
                         <div class="option-group">
-                            <div class="option-label">Crossfade Duration</div>
+                            <div class="option-label" data-i18n="audio_crossfade_duration">Crossfade Duration</div>
                             <div class="fade-options">
-                                <div class="fade-btn active" data-fade="0">No Crossfade</div>
+                                <div class="fade-btn active" data-fade="0" data-i18n="audio_no_crossfade">No Crossfade</div>
                                 <div class="fade-btn" data-fade="0.5">0.5s</div>
                                 <div class="fade-btn" data-fade="1">1s</div>
                                 <div class="fade-btn" data-fade="2">2s</div>
@@ -400,7 +743,7 @@
                             </div>
                         </div>
                         <div class="option-group">
-                            <div class="option-label">Output Format</div>
+                            <div class="option-label" data-i18n="audio_output_format">Output Format</div>
                             <div class="fade-options">
                                 <div class="fade-btn active" data-format="mp3">MP3</div>
                                 <div class="fade-btn" data-format="wav">WAV</div>
@@ -409,12 +752,12 @@
                             </div>
                         </div>
                     </div>
-                    <button class="merge-button" id="mergeBtn" disabled>Loading Engine...</button>
+                    <button class="merge-button" id="mergeBtn" disabled data-i18n="audio_merger_real_merge_btn">Merge Audio Files</button>
                 </div>
             </div>
 
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing merge...</div>
+                <div id="progressText" data-i18n="audio_preparing_merge">Preparing merge...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -431,7 +774,7 @@
         async function initFFmpeg() {
             const statusEl = document.getElementById('engineStatus');
             statusEl.style.display = 'block';
-            statusEl.textContent = 'Loading audio processing engine...';
+            statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_loading') : 'Loading audio processing engine...';
 
             try {
                 ffmpeg = new FFmpeg();
@@ -456,7 +799,7 @@
                 });
                 
                 isEngineLoaded = true;
-                statusEl.textContent = '✓ Audio processing engine loaded and ready!';
+                statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_loaded') : '✓ Audio processing engine loaded and ready!';
                 statusEl.classList.add('loaded');
                 
                 // Hide status after 3 seconds
@@ -467,14 +810,14 @@
                 // Enable merge button if files are loaded
                 if (audioFiles.length >= 2) {
                     document.getElementById('mergeBtn').disabled = false;
-                    document.getElementById('mergeBtn').textContent = 'Merge Audio Files';
+                    document.getElementById('mergeBtn').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_merge_button') : 'Merge Audio Files';
                 }
                 
                 console.log('FFmpeg loaded successfully');
                 
             } catch (error) {
                 console.error('Failed to load FFmpeg:', error);
-                statusEl.textContent = '✗ Failed to load audio processing engine. Please refresh the page.';
+                statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_failed') : '✗ Failed to load audio processing engine. Please refresh the page.';
                 statusEl.style.background = '#fee2e2';
                 statusEl.style.color = '#dc2626';
             }
@@ -534,10 +877,10 @@
                 const mergeBtn = document.getElementById('mergeBtn');
                 if (isEngineLoaded) {
                     mergeBtn.disabled = false;
-                    mergeBtn.textContent = 'Merge Audio Files';
+                    mergeBtn.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_merge_button') : 'Merge Audio Files';
                 } else {
                     mergeBtn.disabled = true;
-                    mergeBtn.textContent = 'Loading Engine...';
+                    mergeBtn.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('btn_loading_engine') : 'Loading Engine...';
                 }
             } else {
                 document.querySelector('.merge-controls').style.display = 'none';
@@ -604,7 +947,7 @@
             this.disabled = true;
             
             try {
-                document.getElementById('progressText').textContent = 'Loading files...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_loading_files') : 'Loading files...';
                 
                 // Write all input files to FFmpeg filesystem
                 const inputFileNames = [];
@@ -661,7 +1004,7 @@
                 command.push('-y', outputFileName);
                 
                 console.log('FFmpeg merge command:', command.join(' '));
-                document.getElementById('progressText').textContent = 'Merging audio files...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_merging') : 'Merging audio files...';
                 
                 // Execute FFmpeg command
                 await ffmpeg.exec(command);
@@ -703,10 +1046,10 @@
                 
             } catch (error) {
                 console.error('Merge failed:', error);
-                document.getElementById('progressText').textContent = 'Merge failed: ' + error.message;
+                document.getElementById('progressText').textContent = (window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_merge_failed') : 'Merge failed: ') + error.message;
             } finally {
                 this.disabled = false;
-                this.textContent = 'Merge Audio Files';
+                this.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_merge_button') : 'Merge Audio Files';
             }
         });
 
@@ -738,5 +1081,57 @@
     <!-- Share Integration -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                    translatePage();
+                });
+            }
+        }
+
+        function syncLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+            }
+        }
+
+        function translatePage() {
+            if (!window.DROPSHARE_I18N) return;
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.textContent = translation;
+                }
+            });
+        }
+
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                    initializeLanguageSelector();
+                    translatePage();
+                    setTimeout(() => {
+                        syncLanguageSelector();
+                    }, 100);
+                }
+            }, 100);
+        });
+    </script>
 </body>
 </html>

@@ -3,7 +3,89 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Trimmer - DropShare</title>
+    <title data-i18n="audio_trimmer_real_title">Audio Trimmer</title>
+    <meta name="description" content="Free online audio trimmer: cut and trim audio files with precise timing. Professional audio editing tool. Trim MP3, WAV, FLAC files. Real FFmpeg processing.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="audio trimmer, cut audio, trim MP3, audio editor, crop audio, audio cutter, split audio, edit audio online, audio cutting tool">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="DropShare">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Audio Trimmer - Cut and Trim Audio Files Online | DropShare">
+    <meta property="og:description" content="Free online audio trimmer: cut and trim audio files with precise timing. Professional audio editing tool. Trim MP3, WAV, FLAC files. Real FFmpeg processing.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dropshare.tech/audio-trimmer-real.html">
+    <meta property="og:site_name" content="DropShare">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Multilingual alternate pages -->
+    <link rel="alternate" hreflang="en" href="https://dropshare.tech/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="es" href="https://dropshare.tech/es/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="fr" href="https://dropshare.tech/fr/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="de" href="https://dropshare.tech/de/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="it" href="https://dropshare.tech/it/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="pt" href="https://dropshare.tech/pt/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="ru" href="https://dropshare.tech/ru/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="ja" href="https://dropshare.tech/ja/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="zh" href="https://dropshare.tech/zh/audio-trimmer-real.html">
+    <link rel="alternate" hreflang="x-default" href="https://dropshare.tech/audio-trimmer-real.html">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Audio Trimmer - Cut and Trim Audio Files Online | DropShare">
+    <meta name="twitter:description" content="Free online audio trimmer: cut and trim audio files with precise timing. Professional audio editing tool. Trim MP3, WAV, FLAC files. Real FFmpeg processing.">
+    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dropshare.tech/audio-trimmer-real.html">
+
+    <!-- Icons and Mobile Meta Tags -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="DropShare">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Performance -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//unpkg.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Audio Trimmer",
+        "description": "Free online audio trimmer tool to cut and trim audio files with precise timing",
+        "url": "https://dropshare.tech/audio-trimmer-real.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "permissions": "browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Precise audio trimming",
+            "Support MP3, WAV, FLAC, AAC",
+            "Real-time preview",
+            "No file size limits",
+            "FFmpeg processing"
+        ]
+    }
+    </script>
+
     <script src="/vendor/ffmpeg/ffmpeg.js"></script>
     <script src="/vendor/ffmpeg/util.js"></script>
     <style>
@@ -72,6 +154,18 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .container {
@@ -311,42 +405,291 @@
     </style>
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="unified-navigation.css">    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
+    
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+
+/* 确保页面内容不被固定header遮挡 */
+body {
+    padding-top: 80px;
+}
+</style>
 </head>
 
 <body>
     <!-- Header -->
+        <!-- Unified Header -->
     <header class="header">
         <div class="header-container">
-            <a href="index.html" class="logo">
-                🎵 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html">Images</a>
-                <a href="audio-tools.html" class="active">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <nav class="nav-links" id="mobileNavLinks">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <div class="container">
         <!-- Top-left return button -->
         
-        <h1 class="page-title">Audio Trimmer</h1>
-        <p class="page-subtitle">Cut and trim audio files with precise timing - Real FFmpeg Processing</p>
+        <h1 class="page-title" data-i18n="audio_trimmer_real_heading">Audio Trimmer</h1>
+        <p class="page-subtitle" data-i18n="audio_trimmer_real_subtitle">Cut and trim audio files with precise timing - Real FFmpeg Processing</p>
         
         <div class="trimmer-card">
-            <div class="engine-status" id="engineStatus">
+            <div class="engine-status" id="engineStatus" data-i18n="audio_engine_loading">
                 Loading audio processing engine...
             </div>
 
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">✂️</div>
-                <div class="upload-text">Click or drag to upload audio file</div>
-                <div class="upload-hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
+                <div class="upload-text" data-i18n="audio_trimmer_real_upload_text">Click or drag to upload audio file</div>
+                <div class="upload-hint" data-i18n="audio_trimmer_real_upload_hint">Supports MP3, WAV, FLAC, AAC, OGG formats</div>
                 <input type="file" id="fileInput" accept="audio/*">
             </div>
             
@@ -354,37 +697,37 @@
                 <audio class="audio-preview" id="audioPreview" controls></audio>
                 
                 <div class="current-position">
-                    <button class="position-btn" onclick="setCurrentTime('start')">Set as Start</button>
+                    <button class="position-btn" onclick="setCurrentTime('start')" data-i18n="audio_set_as_start">Set as Start</button>
                     <span id="currentTimeDisplay">00:00</span>
-                    <button class="position-btn" onclick="setCurrentTime('end')">Set as End</button>
+                    <button class="position-btn" onclick="setCurrentTime('end')" data-i18n="audio_set_as_end">Set as End</button>
                 </div>
                 
                 <div class="timeline">
-                    <div class="timeline-label">Set Trim Time</div>
+                    <div class="timeline-label" data-i18n="audio_set_trim_time">Set Trim Time</div>
                     <div class="time-inputs">
                         <div class="time-input-group">
-                            <label>Start Time (seconds)</label>
-                            <input type="number" class="time-input" id="startTime" placeholder="0" value="0" min="0" step="0.1">
+                            <label data-i18n="audio_start_time_seconds">Start Time (seconds)</label>
+                            <input type="number" class="time-input" id="startTime" data-i18n-placeholder="start_time_placeholder" value="0" min="0" step="0.1">
                         </div>
                         <div class="time-input-group">
-                            <label>End Time (seconds)</label>
-                            <input type="number" class="time-input" id="endTime" placeholder="10" value="10" min="0" step="0.1">
+                            <label data-i18n="audio_end_time_seconds">End Time (seconds)</label>
+                            <input type="number" class="time-input" id="endTime" data-i18n-placeholder="end_time_placeholder" value="10" min="0" step="0.1">
                         </div>
                     </div>
                     
                     <div class="preset-buttons">
-                        <div class="preset-btn" onclick="setDuration(15)">15 Seconds</div>
-                        <div class="preset-btn" onclick="setDuration(30)">30 Seconds</div>
-                        <div class="preset-btn" onclick="setDuration(60)">1 Minute</div>
-                        <div class="preset-btn" onclick="setDuration(300)">5 Minutes</div>
+                        <div class="preset-btn" onclick="setDuration(15)" data-i18n="audio_preset_15_seconds">15 Seconds</div>
+                        <div class="preset-btn" onclick="setDuration(30)" data-i18n="audio_preset_30_seconds">30 Seconds</div>
+                        <div class="preset-btn" onclick="setDuration(60)" data-i18n="audio_preset_1_minute">1 Minute</div>
+                        <div class="preset-btn" onclick="setDuration(300)" data-i18n="audio_preset_5_minutes">5 Minutes</div>
                     </div>
                 </div>
                 
-                <button class="trim-button" id="trimBtn" disabled>Loading Engine...</button>
+                <button class="trim-button" id="trimBtn" disabled data-i18n="audio_trimmer_real_trim_btn">Trim Audio</button>
             </div>
 
             <div class="progress-section" id="progressSection">
-                <div id="progressText">Preparing trim...</div>
+                <div id="progressText" data-i18n="audio_preparing_trim">Preparing trim...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -402,7 +745,7 @@
         async function initFFmpeg() {
             const statusEl = document.getElementById('engineStatus');
             statusEl.style.display = 'block';
-            statusEl.textContent = 'Loading audio processing engine...';
+            statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_loading') : 'Loading audio processing engine...';
 
             try {
                 const { FFmpeg } = FFmpegWASM;
@@ -439,7 +782,7 @@
                 if (!loaded) throw new Error('FFmpeg core load failed from all sources');
                 
                 isEngineLoaded = true;
-                statusEl.textContent = '✓ Audio processing engine loaded and ready!';
+                statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_loaded') : '✓ Audio processing engine loaded and ready!';
                 statusEl.classList.add('loaded');
                 
                 // Hide status after 3 seconds
@@ -450,14 +793,14 @@
                 // Enable trim button if file is loaded
                 if (audioFile) {
                     document.getElementById('trimBtn').disabled = false;
-                    document.getElementById('trimBtn').textContent = 'Trim Audio';
+                    document.getElementById('trimBtn').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_trim_button') : 'Trim Audio';
                 }
                 
                 console.log('FFmpeg loaded successfully');
                 
             } catch (error) {
                 console.error('Failed to load FFmpeg:', error);
-                statusEl.textContent = '✗ Failed to load audio processing engine. Please refresh the page.';
+                statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_failed') : '✗ Failed to load audio processing engine. Please refresh the page.';
                 statusEl.style.background = '#fee2e2';
                 statusEl.style.color = '#dc2626';
             }
@@ -493,10 +836,10 @@
                 const trimBtn = document.getElementById('trimBtn');
                 if (isEngineLoaded) {
                     trimBtn.disabled = false;
-                    trimBtn.textContent = 'Trim Audio';
+                    trimBtn.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_trim_button') : 'Trim Audio';
                 } else {
                     trimBtn.disabled = true;
-                    trimBtn.textContent = 'Loading Engine...';
+                    trimBtn.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('btn_loading_engine') : 'Loading Engine...';
                 }
             }
         });
@@ -548,12 +891,12 @@
             const endTime = parseFloat(document.getElementById('endTime').value) || 10;
             
             if (startTime >= endTime) {
-                alert('End time must be greater than start time!');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_end_greater_start') : 'End time must be greater than start time!');
                 return;
             }
 
             if (endTime > audioDuration) {
-                alert('End time cannot exceed audio duration!');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_end_exceed_duration') : 'End time cannot exceed audio duration!');
                 return;
             }
             
@@ -568,7 +911,7 @@
                 const inputFileName = 'input.' + fileExtension;
                 const outputFileName = 'trimmed.' + fileExtension;
                 
-                document.getElementById('progressText').textContent = 'Loading file...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_loading_file') : 'Loading file...';
                 await ffmpeg.writeFile(inputFileName, new Uint8Array(await audioFile.arrayBuffer()));
                 
                 // Build FFmpeg command for trimming
@@ -582,7 +925,7 @@
                 ];
                 
                 console.log('FFmpeg trim command:', command.join(' '));
-                document.getElementById('progressText').textContent = 'Trimming audio...';
+                document.getElementById('progressText').textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_trimming') : 'Trimming audio...';
                 
                 // Execute FFmpeg command
                 await ffmpeg.exec(command);
@@ -615,10 +958,10 @@
                 
             } catch (error) {
                 console.error('Trimming failed:', error);
-                document.getElementById('progressText').textContent = 'Trimming failed: ' + error.message;
+                document.getElementById('progressText').textContent = (window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_trimming_failed') : 'Trimming failed: ') + error.message;
             } finally {
                 this.disabled = false;
-                this.textContent = 'Trim Audio';
+                this.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_trim_button') : 'Trim Audio';
             }
         });
 
@@ -650,5 +993,69 @@
     <!-- Share Integration -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
+    <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    window.DROPSHARE_I18N.setLanguage(selectedLang);
+                    translatePage();
+                });
+            }
+        }
+
+        function syncLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+            }
+        }
+
+        function translatePage() {
+            if (!window.DROPSHARE_I18N) return;
+            
+            // 翻译普通文本元素
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.textContent = translation;
+                }
+            });
+            
+            // 翻译placeholder属性
+            const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
+            placeholderElements.forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    element.placeholder = translation;
+                }
+            });
+        }
+
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (typeof window.DROPSHARE_I18N !== 'undefined') {
+                    initializeLanguageSelector();
+                    translatePage();
+                    setTimeout(() => {
+                        syncLanguageSelector();
+                    }, 100);
+                }
+            }, 100);
+        });
+    </script>
 </body>
 </html>

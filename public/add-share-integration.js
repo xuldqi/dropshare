@@ -153,11 +153,29 @@ function addShareEntryToHomepage() {
 function addShareToNavigation() {
     const nav = document.querySelector('nav, .nav-links');
     if (!nav) return;
+
+    // 在以下页面禁用导航中的 Share 注入：
+    // 1) 首页 index.html
+    // 2) 图片工具相关页面 image-*.html 与 image-tools.html
+    try {
+        const pathname = window.location.pathname || '';
+        const page = pathname.split('/').pop();
+        const isHome = (page === 'index.html' || pathname === '/' || pathname === '');
+        const isImagePage = /(^|\/)image-(?:[a-z0-9\-]+)\.html$/i.test(pathname) || page === 'image-tools.html';
+        const isAudioPage = /(^|\/)audio-(?:[a-z0-9\-]+)\.html$/i.test(pathname) || page === 'audio-tools.html';
+        const isVideoPage = /(^|\/)video-(?:[a-z0-9\-]+)\.html$/i.test(pathname) || page === 'video-tools.html';
+        const isDocumentPage = /(^|\/)(?:pdf|document|text|subtitle|metadata|frame-rate|resolution)(?:-[a-z0-9\-]+)?\.html$/i.test(pathname) || page === 'document-tools.html';
+        if (isHome || isImagePage || isAudioPage || isVideoPage || isDocumentPage) {
+            return;
+        }
+    } catch (e) {
+        // 忽略路径解析错误，默认继续（仅首页会被拦截）
+    }
     
     // 检查是否已经有分享链接
     if (nav.querySelector('a[href*="share"]')) return;
     
-    // 创建分享链接
+    // 创建分享链接（非首页）
     const shareLink = document.createElement('a');
     shareLink.href = '/share.html';
     shareLink.textContent = 'Share';

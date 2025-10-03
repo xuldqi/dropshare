@@ -3,7 +3,77 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Watermark Tool - DropShare</title>
+    <title data-i18n="image_watermark_tool_new_title">Image Watermark Tool</title>
+    <meta name="description" content="Free online watermark tool: add text and image watermarks to photos. Protect your images with custom watermarks. No registration required.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="watermark tool, add watermark online, image watermark, photo watermark, copyright protection, brand watermark, watermark maker, watermark creator, image protection, photo branding">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="DropShare">
+    <meta name="theme-color" content="#3367d6">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Free Watermark Tool - Professional Image Watermarking Online | DropShare">
+    <meta property="og:description" content="Free online watermark tool: add text and image watermarks to photos. Protect your images with custom watermarks. No registration required.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dropshare.tech/image-watermark-tool-new.html">
+    <meta property="og:site_name" content="DropShare">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Watermark Tool - Professional Image Watermarking Online | DropShare">
+    <meta name="twitter:description" content="Free online watermark tool: add text and image watermarks to photos. Protect your images with custom watermarks. No registration required.">
+    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dropshare.tech/image-watermark-tool-new.html">
+
+    <!-- Icons and Mobile Meta Tags -->
+    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="DropShare">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Performance -->
+    <link rel="dns-prefetch" href="//www.gstatic.com">
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Watermark Tool - DropShare",
+        "description": "Free online watermark tool for adding text and image watermarks to photos with custom positioning and transparency options",
+        "url": "https://dropshare.tech/image-watermark-tool-new.html",
+        "applicationCategory": "Multimedia",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Text watermarks with custom fonts",
+            "Image logo watermarks",
+            "Custom positioning options",
+            "Transparency controls",
+            "Batch watermarking",
+            "High-quality output"
+        ]
+    }
+    </script>
+    <script src="/locales/i18n.js"></script>
+    <script src="scripts/mobile-navigation.js"></script>
+    <script src="scripts/i18n/languages.js"></script>
     <style>
         * {
             margin: 0;
@@ -70,6 +140,18 @@
             color: #3367d6;
             background: #e3f2fd;
             font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .container {
@@ -459,28 +541,276 @@
     </style>    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
     <!-- Share Integration Styles -->
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="unified-navigation.css">    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
 
+    <script src="/locales/i18n.js"></script>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
+    
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+
+/* 确保页面内容不被固定header遮挡 */
+body {
+    padding-top: 80px;
+}
+</style>
 </head>
 
 <body>
     <!-- Header -->
+                <!-- Unified Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                💧 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html" class="active">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <nav class="nav-links" id="mobileNavLinks">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -492,15 +822,15 @@
             </a>
         </div>
         
-        <h1 class="page-title">Image Watermark Tool</h1>
-        <p class="page-subtitle">Add text or image watermarks to protect your copyright</p>
+        <h1 class="page-title" data-i18n="image_watermark">Image Watermark Tool</h1>
+        <p class="page-subtitle" data-i18n="image_watermark_desc">Add text or image watermarks to protect your copyright</p>
 
         <div class="watermark-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">💧</div>
-                <div class="upload-text">Click to select image or drag here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
+                <div class="upload-text" data-i18n="upload_image_click_drag">Click to select image or drag here</div>
+                <div class="upload-hint" data-i18n="upload_image_hint">Supports JPG, PNG, GIF, WebP formats, max 10MB</div>
                 <input type="file" id="fileInput" accept="image/*">
             </div>
 
@@ -514,23 +844,23 @@
                 <div class="controls-layout">
                     <!-- 控制面板 -->
                     <div class="control-panel">
-                        <div class="panel-title">💧 Watermark Settings</div>
+                        <div class="panel-title" data-i18n="watermark_settings">💧 Watermark Settings</div>
 
                         <!-- 水印类型标签 -->
                         <div class="watermark-tabs">
-                            <button class="tab-btn active" data-tab="text">Text Watermark</button>
-                            <button class="tab-btn" data-tab="image">Image Watermark</button>
+                            <button class="tab-btn active" data-tab="text" data-i18n="text_watermark">Text Watermark</button>
+                            <button class="tab-btn" data-tab="image" data-i18n="image_watermark">Image Watermark</button>
                         </div>
 
                         <!-- 文字水印设置 -->
                         <div class="tab-content active" id="textTab">
                             <div class="form-group">
-                                <label class="form-label">Watermark Text</label>
-                                <input type="text" class="form-input" id="watermarkText" placeholder="Enter watermark text" value="© DropShare">
+                                <label class="form-label" data-i18n="watermark_text">Watermark Text</label>
+                                <input type="text" class="form-input" id="watermarkText" data-i18n-placeholder="enter_watermark_text" placeholder="Enter watermark text" value="© DropShare">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Font</label>
+                                <label class="form-label" data-i18n="font">Font</label>
                                 <select class="form-select" id="fontFamily">
                                     <option value="Arial">Arial</option>
                                     <option value="'Microsoft YaHei'">Microsoft YaHei</option>
@@ -543,23 +873,23 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Font Size: <span class="range-display" id="fontSizeDisplay">24px</span></label>
+                                <label class="form-label"><span data-i18n="font_size">Font Size:</span> <span class="range-display" id="fontSizeDisplay">24px</span></label>
                                 <input type="range" class="form-range" id="fontSize" 
                                        min="12" max="120" value="24">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Font Color</label>
+                                <label class="form-label" data-i18n="font_color">Font Color</label>
                                 <input type="color" class="color-input" id="textColor" value="#ffffff">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Font Style</label>
+                                <label class="form-label" data-i18n="font_style">Font Style</label>
                                 <select class="form-select" id="fontStyle">
-                                    <option value="normal">Normal</option>
-                                    <option value="bold">Bold</option>
-                                    <option value="italic">Italic</option>
-                                    <option value="bold italic">Bold Italic</option>
+                                    <option value="normal" data-i18n="normal">Normal</option>
+                                    <option value="bold" data-i18n="bold">Bold</option>
+                                    <option value="italic" data-i18n="italic">Italic</option>
+                                    <option value="bold italic" data-i18n="bold_italic">Bold Italic</option>
                                 </select>
                             </div>
                         </div>
@@ -567,15 +897,15 @@
                         <!-- 图片水印设置 -->
                         <div class="tab-content" id="imageTab">
                             <div class="form-group">
-                                <label class="form-label">Select Watermark Image</label>
+                                <label class="form-label" data-i18n="select_watermark_image">Select Watermark Image</label>
                                 <div class="file-upload-btn" id="logoUploadBtn">
-                                    📁 Click to select image
+                                    <span data-i18n="click_to_select_image">📁 Click to select image</span>
                                 </div>
                                 <input type="file" id="logoInput" accept="image/*" style="display: none;">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Watermark Size: <span class="range-display" id="logoSizeDisplay">100px</span></label>
+                                <label class="form-label"><span data-i18n="watermark_size">Watermark Size:</span> <span class="range-display" id="logoSizeDisplay">100px</span></label>
                                 <input type="range" class="form-range" id="logoSize" 
                                        min="20" max="300" value="100">
                             </div>
@@ -583,17 +913,17 @@
 
                         <!-- 位置设置 -->
                         <div class="form-group">
-                            <label class="form-label">Watermark Position</label>
+                            <label class="form-label" data-i18n="watermark_position">Watermark Position</label>
                             <div class="position-grid">
-                                <button class="position-btn" data-position="top-left">Top Left</button>
-                                <button class="position-btn" data-position="top-center">Top Center</button>
-                                <button class="position-btn" data-position="top-right">Top Right</button>
-                                <button class="position-btn" data-position="middle-left">Middle Left</button>
-                                <button class="position-btn active" data-position="center">Center</button>
-                                <button class="position-btn" data-position="middle-right">Middle Right</button>
-                                <button class="position-btn" data-position="bottom-left">Bottom Left</button>
-                                <button class="position-btn" data-position="bottom-center">Bottom Center</button>
-                                <button class="position-btn" data-position="bottom-right">Bottom Right</button>
+                                <button class="position-btn" data-position="top-left" data-i18n="top_left">Top Left</button>
+                                <button class="position-btn" data-position="top-center" data-i18n="top_center">Top Center</button>
+                                <button class="position-btn" data-position="top-right" data-i18n="top_right">Top Right</button>
+                                <button class="position-btn" data-position="middle-left" data-i18n="middle_left">Middle Left</button>
+                                <button class="position-btn active" data-position="center" data-i18n="center">Center</button>
+                                <button class="position-btn" data-position="middle-right" data-i18n="middle_right">Middle Right</button>
+                                <button class="position-btn" data-position="bottom-left" data-i18n="bottom_left">Bottom Left</button>
+                                <button class="position-btn" data-position="bottom-center" data-i18n="bottom_center">Bottom Center</button>
+                                <button class="position-btn" data-position="bottom-right" data-i18n="bottom_right">Bottom Right</button>
                             </div>
                         </div>
 
@@ -620,13 +950,13 @@
 
                     <!-- 工作区 -->
                     <div class="watermark-workspace">
-                        <div class="workspace-title">🖼️ Watermark Preview</div>
+                        <div class="workspace-title" data-i18n="watermark_preview">🖼️ Watermark Preview</div>
                         <div class="canvas-container">
                             <canvas id="workspaceCanvas" class="workspace-canvas"></canvas>
                         </div>
                         <div class="image-info">
-                            <div>Size: <span class="size" id="imageSize"></span></div>
-                            <div>File Size: <span class="size" id="fileSize"></span></div>
+                            <div><span data-i18n="label_dimensions">Size:</span> <span class="size" id="imageSize"></span></div>
+                            <div><span data-i18n="label_file_size">File Size:</span> <span class="size" id="fileSize"></span></div>
                         </div>
                     </div>
                 </div>
@@ -635,10 +965,10 @@
             <!-- 操作按钮 -->
             <div class="action-buttons result-actions">
                 <button class="btn btn-success" id="downloadBtn" style="display: none;">
-                    📥 Download Watermarked Image
+                    <span data-i18n="download_watermarked_image">📥 Download Watermarked Image</span>
                 </button>
                 <button class="btn btn-secondary" id="resetBtn">
-                    🔄 Reset
+                    <span data-i18n="reset">🔄 Reset</span>
                 </button>
             </div>
         </div>
@@ -808,14 +1138,11 @@
         // 处理文件
         function processFile(file) {
             if (!file.type.startsWith('image/')) {
-                alert('Please select an image file!');
+                alert(window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('image_select_valid') : 'Please select an image file');
                 return;
             }
 
-            if (file.size > 10 * 1024 * 1024) {
-                alert('File size cannot exceed 10MB!');
-                return;
-            }
+            // 文件大小限制已移除
 
             originalFile = file;
             showProgress();
@@ -1102,7 +1429,7 @@
             selectPosition('center');
             
             // 重置Logo按钮
-            logoUploadBtn.textContent = '📁 Click to select image';
+            logoUploadBtn.innerHTML = '<span data-i18n="click_to_select_image">📁 Click to select image</span>';
             logoUploadBtn.style.borderColor = '#d1d5db';
             logoUploadBtn.style.color = '#6b7280';
         }
@@ -1115,6 +1442,55 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
+    </script>
+    
+    <script>
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.setLanguage(newLang);
+                        translatePage();
+                    }
+                });
+            }
+        }
+
+        function translatePage() {
+            if (typeof window.DROPSHARE_I18N === 'undefined') return;
+            
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const translation = window.DROPSHARE_I18N.t(key);
+                
+                if (translation && translation !== key) {
+                    if (element.tagName === 'INPUT' && element.type === 'button') {
+                        element.value = translation;
+                    } else if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'password')) {
+                        element.placeholder = translation;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize i18n and translate the page
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.initialize === 'function') {
+                window.DROPSHARE_I18N.initialize().then(() => {
+                    translatePage();
+                    initializeLanguageSelector();
+                });
+            }
+        });
     </script>
     
     <!-- Share Integration -->

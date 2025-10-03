@@ -3,7 +3,43 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Format Converter - DropShare</title>
+    <title data-i18n="image_converter_title">Image Format Converter - DropShare</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" data-i18n-content="image_converter_meta_description" content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
+    <meta name="keywords" data-i18n-content="image_converter_meta_keywords" content="image converter, format converter, JPG to PNG, PNG to JPG, WebP converter, GIF converter, BMP to JPG, TIFF converter, image format conversion">
+    <meta name="author" content="DropShare">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://dropshare.tech/image-converter-new.html">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" data-i18n-content="image_converter_og_title" content="Image Converter - Convert JPG, PNG, WebP, GIF Online | DropShare">
+    <meta property="og:description" data-i18n-content="image_converter_meta_description" content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dropshare.tech/image-converter-new.html">
+    <meta property="og:site_name" data-i18n-content="site_name" content="DropShare">
+    <meta property="og:locale" content="en_US" id="og-locale">
+    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" data-i18n-content="image_converter_og_title" content="Image Converter - Convert JPG, PNG, WebP, GIF Online | DropShare">
+    <meta name="twitter:description" data-i18n-content="image_converter_meta_description" content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
+    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
+    
+    <!-- Hreflang Tags -->
+    <link rel="alternate" hreflang="en" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="zh-TW" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="ja" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="ko" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="fr" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="de" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="pt" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="es" href="https://dropshare.tech/image-converter-new.html">
+    <link rel="alternate" hreflang="x-default" href="https://dropshare.tech/image-converter-new.html">
     <style>
         * {
             margin: 0;
@@ -49,6 +85,43 @@
         .nav-links {
             display: flex;
             gap: 16px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Language selector unified styling */
+        .language-selector-container select,
+        .language-selector select {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .language-selector-container select:hover,
+        .language-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .language-selector-container select:focus,
+        .language-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
         }
 
         .nav-links a {
@@ -604,31 +677,284 @@
                 align-items: flex-start;
                 gap: 8px;
             }
+
+            .language-selector-container select,
+            .language-selector select {
+                padding: 4px 8px;
+                font-size: 13px;
+            }
         }
     </style>    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
 
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="unified-navigation.css">    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
+    
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+
+/* 确保页面内容不被固定header遮挡 */
+body {
+    padding-top: 80px;
+}
+</style>
 </head>
 
 <body>
     <!-- Header -->
+        <!-- Unified Header -->
     <header class="header">
         <div class="header-container">
-            <a href="/" class="logo">
-                🔄 DropShare
-            </a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="share.html">Transfer</a>
-                <a href="share.html#rooms">Rooms</a>
-                <a href="image-tools.html" class="active">Images</a>
-                <a href="audio-tools.html">Audio</a>
-                <a href="video-tools.html">Video</a>
-                <a href="document-tools.html">Files</a>
-            </nav>
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z"/>
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;" data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <nav class="nav-links" id="mobileNavLinks">
+                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
+                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
+                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
+                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
+                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
+                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                </nav>
+                <div class="control-buttons" style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false" style="display:none;">Language</button>
+                        <select id="language-selector" style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -636,49 +962,49 @@
         <!-- Top-left return button -->
         <div style="margin-bottom: 20px;">
             <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
-                ← back
+                <span data-i18n="back">← back</span>
             </a>
         </div>
         
-        <h1 class="page-title">Image Format Converter</h1>
-        <p class="page-subtitle">Convert between multiple image formats while maintaining optimal quality</p>
+        <h1 class="page-title" data-i18n="image_converter">Image Format Converter</h1>
+        <p class="page-subtitle" data-i18n="image_converter_desc">Convert between multiple image formats while maintaining optimal quality</p>
 
         <div class="converter-card">
             <!-- 上传区域 -->
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">🖼️</div>
-                <div class="upload-text">Click to select images or drag here</div>
-                <div class="upload-hint">Supports JPG, PNG, GIF, BMP, TIFF, WebP formats, can select multiple files</div>
+                <div class="upload-text" data-i18n="upload_images_click_drag">Click to select images or drag here</div>
+                <div class="upload-hint" data-i18n="upload_images_formats_hint">Supports JPG, PNG, GIF, BMP, TIFF, WebP formats, can select multiple files</div>
                 <input type="file" id="fileInput" accept="image/*" multiple>
             </div>
 
             <!-- 格式选择 -->
             <div class="format-selection">
-                <div class="format-title">Select Output Format</div>
+                <div class="format-title" data-i18n="select_output_format">Select Output Format</div>
                 <div class="format-grid">
                     <div class="format-option selected" data-format="jpeg">
                         <div class="format-name">JPEG</div>
-                        <div class="format-desc">High Compression</div>
+                        <div class="format-desc" data-i18n="jpeg_desc">High Compression</div>
                     </div>
                     <div class="format-option" data-format="png">
                         <div class="format-name">PNG</div>
-                        <div class="format-desc">Lossless</div>
+                        <div class="format-desc" data-i18n="png_desc">Lossless</div>
                     </div>
                     <div class="format-option" data-format="webp">
                         <div class="format-name">WebP</div>
-                        <div class="format-desc">Modern Format</div>
+                        <div class="format-desc" data-i18n="webp_desc">Modern Format</div>
                     </div>
                     <div class="format-option" data-format="gif">
                         <div class="format-name">GIF</div>
-                        <div class="format-desc">Animation Support</div>
+                        <div class="format-desc" data-i18n="gif_desc">Animation Support</div>
                     </div>
                     <div class="format-option" data-format="bmp">
                         <div class="format-name">BMP</div>
-                        <div class="format-desc">Bitmap Format</div>
+                        <div class="format-desc" data-i18n="bmp_desc">Bitmap Format</div>
                     </div>
                     <div class="format-option" data-format="tiff">
                         <div class="format-name">TIFF</div>
-                        <div class="format-desc">Professional Format</div>
+                        <div class="format-desc" data-i18n="tiff_desc">Professional Format</div>
                     </div>
                 </div>
 
@@ -697,7 +1023,7 @@
 
             <!-- 转换按钮 -->
             <button class="convert-button" id="convertButton" disabled>
-                <span>🔄 Start Conversion</span>
+                <span data-i18n="start_conversion">🔄 Start Conversion</span>
             </button>
 
             <!-- 进度条 -->
@@ -711,10 +1037,10 @@
             <!-- 操作按钮 -->
             <div class="action-buttons">
                 <button class="btn btn-secondary" id="resetBtn">
-                    <span>🔄 Select Again</span>
+                    <span data-i18n="select_again">🔄 Select Again</span>
                 </button>
                 <a href="image-tools.html" class="btn btn-primary">
-                    <span>← Back to Tools</span>
+                    <span data-i18n="back_to_tools">← Back to Tools</span>
                 </a>
             </div>
         </div>
@@ -763,12 +1089,44 @@
         // 支持 JPEG 质量调节的格式
         const qualityFormats = ['jpeg', 'webp'];
 
-        // 事件监听器
-        uploadArea.addEventListener('click', () => fileInput.click());
-        uploadArea.addEventListener('dragover', handleDragOver);
-        uploadArea.addEventListener('drop', handleDrop);
-        uploadArea.addEventListener('dragleave', handleDragLeave);
-        fileInput.addEventListener('change', handleFileSelect);
+        // 初始化事件监听器
+        function initializeEventListeners() {
+            console.log('Initializing event listeners...');
+            console.log('uploadArea:', uploadArea);
+            console.log('fileInput:', fileInput);
+            
+            // 检查元素是否存在
+            if (!uploadArea || !fileInput) {
+                console.error('Upload elements not found!');
+                console.error('uploadArea:', uploadArea);
+                console.error('fileInput:', fileInput);
+                return;
+            }
+            
+            // 添加点击事件
+            uploadArea.addEventListener('click', function(e) {
+                console.log('Upload area clicked!', e);
+                e.preventDefault();
+                fileInput.click();
+            });
+            
+            // 添加其他事件
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleDrop);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            console.log('Event listeners initialized successfully');
+        }
+
+        // 等待DOM加载完成再初始化 - 延迟执行确保所有脚本都加载完
+        setTimeout(() => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeEventListeners);
+            } else {
+                initializeEventListeners();
+            }
+        }, 500);
         
         formatOptions.forEach(option => {
             option.addEventListener('click', handleFormatChange);
@@ -807,14 +1165,13 @@
             const imageFiles = files.filter(file => file.type.startsWith('image/'));
             
             if (imageFiles.length === 0) {
-                alert(";
+                const message = window.DROPSHARE_I18N?.t('error_select_image_files') || 'Please select image files only';
+                alert(message);
                 return;
             }
 
             // 检查文件大小
-            const oversizedFiles = imageFiles.filter(file => file.size > 10 * 1024 * 1024);
-            if (oversizedFiles.length > 0) {
-                alert(`${".join('\n')}`);
+            // 文件大小限制已移除`);
                 return;
             }
 
@@ -1106,9 +1463,9 @@
             } else {
                 sendBtn.disabled = false;
                 if (shareMode === 'all') {
-                    sendBtn.textContent = `${" || '个文件到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('send_files_to') || '个文件到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
                 } else {
-                    sendBtn.textContent = `${" || '个设备'}`;
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('send_to') || '传送到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
                 }
             }
         }
@@ -1245,18 +1602,104 @@
     </script>
 
     <!-- Load i18n system -->
+    <script src="locales/i18n.js"></script>
         
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
     <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                    }
+                });
+            }
+        }
+
         // Initialize language system when page loads
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize the i18n system
-            
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
+                window.DROPSHARE_I18N.init().then(() => {
+                    initializeLanguageSelector();
+                });
+            } else {
+                // Fallback: try to initialize after a short delay
+                setTimeout(() => {
+                    if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
+                        window.DROPSHARE_I18N.init().then(() => {
+                            initializeLanguageSelector();
+                        });
+                    } else {
+                        console.warn('DROPSHARE_I18N not available or init method not found');
+                        initializeLanguageSelector();
+                    }
+                }, 100);
+            }
         });
     </script>
-    <!-- Share Integration -->
+    <!-- Legacy Share Integration (keeping for compatibility) -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
+    
+    <!-- New Unified Transfer System -->
+    <script src="scripts/unified-transfer-integration.js"></script>
+    <script>
+        // Test the new unified transfer system
+        document.addEventListener('unified-transfer-ready', function() {
+            console.log('🎉 Unified transfer system is ready!');
+            console.log('📱 Available devices:', window.DropShareTransfer.getDevices().length);
+            
+            // Add custom transfer button for testing
+            setTimeout(() => {
+                const downloadSection = document.querySelector('.download-section');
+                if (downloadSection && downloadSection.style.display !== 'none') {
+                    const testButton = document.createElement('button');
+                    testButton.className = 'unified-transfer-btn test-transfer';
+                    testButton.innerHTML = `
+                        <span class="transfer-icon">🧪</span>
+                        <span class="transfer-text">测试新传送系统</span>
+                    `;
+                    testButton.style.marginLeft = '12px';
+                    
+                    testButton.addEventListener('click', () => {
+                        // Get the converted image file
+                        const downloadLink = document.querySelector('#downloadLink');
+                        if (downloadLink && downloadLink.href) {
+                            // Create a test file object
+                            fetch(downloadLink.href)
+                                .then(response => response.blob())
+                                .then(blob => {
+                                    const file = new File([blob], downloadLink.download || 'converted-image.png', {
+                                        type: blob.type
+                                    });
+                                    window.DropShareTransfer.showDeviceSelector(file);
+                                })
+                                .catch(error => {
+                                    console.error('❌ Failed to prepare test file:', error);
+                                    alert('测试失败: 无法准备文件');
+                                });
+                        } else {
+                            alert('请先转换一张图片再测试传送功能');
+                        }
+                    });
+                    
+                    // Find download button container and add test button
+                    const downloadButton = document.querySelector('#downloadBtn');
+                    if (downloadButton && downloadButton.parentNode) {
+                        downloadButton.parentNode.appendChild(testButton);
+                    }
+                }
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
