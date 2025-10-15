@@ -87,6 +87,7 @@
     </script>
 
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.7/dist/umd/ffmpeg.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <style>
         * {
             margin: 0;
@@ -859,14 +860,26 @@ body {
                 });
                 
                 const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL } = FFmpegWASM;
+                const { toBlobURL } = FFmpegUtil;
                 
-                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd';
-                
-                await ffmpeg.load({
-                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-                });
+                const bases = [
+                    `${location.origin}/vendor/ffmpeg`,
+                    `${location.origin}/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd`,
+                    `${location.origin}/ffmpeg-proxy/cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd`,
+                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
+                ];
+                let ok = false;
+                for (const baseURL of bases) {
+                    try {
+                        await ffmpeg.load({
+                            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                        });
+                        ok = true; break;
+                    } catch (e) { console.warn('FFmpeg core load failed from', baseURL); }
+                }
+                if (!ok) throw new Error('FFmpeg core failed to load from all sources');
                 
                 isEngineLoaded = true;
                 statusEl.textContent = '✓ Audio processing engine loaded and ready!';

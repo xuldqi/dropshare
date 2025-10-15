@@ -936,6 +936,15 @@ body {
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <script>
+        // Fallback loader for local vendor if CDN blocked
+        function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>res();s.onerror=rej;document.head.appendChild(s);});}
+        async function ensureFFmpegScripts(){
+            if (typeof FFmpegWASM !== 'undefined' && typeof FFmpegUtil !== 'undefined') return;
+            try { if (typeof FFmpegWASM === 'undefined') await loadScript('/vendor/ffmpeg/ffmpeg.js'); } catch(_){}
+            try { if (typeof FFmpegUtil === 'undefined') await loadScript('/vendor/ffmpeg/util.js'); } catch(_){}
+        }
+    </script>
+    <script>
         let ffmpeg = null;
         let videoFile = null;
         let videoMetadata = {};
@@ -950,18 +959,9 @@ body {
 
         // Initialize FFmpeg
         async function initFFmpeg() {
+            await ensureFFmpegScripts();
             if (!ffmpeg) {
-                const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL } = FFmpegUtil;
-                
-                ffmpeg = new FFmpeg();
-                
-                const baseURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
-                
-                await ffmpeg.load({
-                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-                });
+                ffmpeg = await FFLoader.loadReady();
             }
         }
 

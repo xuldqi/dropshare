@@ -21,7 +21,7 @@ function updateProgress(message, progress = 0) {
 /**
  * 单线程FFmpeg加载器 - 完全避开Worker CORS问题
  */
-async function loadFFmpegColleTools() {
+async function loadFFmpeg() {
     console.log('[FFmpeg SingleThread] Starting single-thread loading...');
     
     if (ffmpegInstance) {
@@ -219,11 +219,10 @@ function terminateFFmpeg() {
 }
 
 // 导出到全局
-window.loadFFmpeg = loadFFmpegColleTools;
-window.loadFFmpegColleTools = loadFFmpegColleTools;
+window.loadFFmpeg = loadFFmpeg;
 window.getFFmpegInstance = getFFmpegInstance;
 window.isFFmpegLoaded = isFFmpegLoaded;
 window.terminateFFmpeg = terminateFFmpeg;
 
 // 向后兼容
-window.initFFmpeg = loadFFmpegColleTools;
+window.initFFmpeg = loadFFmpeg;

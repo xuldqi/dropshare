@@ -4,6 +4,8 @@
   "description": "Fast and secure local file sharing application that allows instant file transfer between devices on the same network without uploads, downloads, or accounts.",
   "main": "index.js",
   "dependencies": {
+    "compression": "^1.7.4",
+    "node-fetch": "^2.7.0",
     "abab": "^2.0.6",
     "accepts": "^2.0.0",
     "agent-base": "^6.0.2",

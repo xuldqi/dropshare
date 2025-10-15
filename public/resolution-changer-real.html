@@ -955,9 +955,11 @@ body {
                     document.getElementById('progressText').textContent = `Converting... ${percent}%`;
                 });
                 const bases = [
-                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
+                    `${location.origin}/vendor/ffmpeg`,
+                    `${location.origin}/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd`,
+                    `${location.origin}/ffmpeg-proxy/cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd`,
                     'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
-                    `${location.origin}/vendor/ffmpeg`
+                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
                 ];
                 let loaded = false;
                 for (const baseURL of bases) {

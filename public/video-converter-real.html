@@ -857,12 +857,14 @@ body {
         async function loadFFmpegCore(toBlobURL) {
             // Define multiple core file sources
             const coreSources = [
-                // Unpkg CDN (most reliable)
+                // Local files (fastest)
+                `${location.origin}/vendor/ffmpeg`,
+                // Server proxy to bypass CDN blocks
+                `${location.origin}/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd`,
+                `${location.origin}/ffmpeg-proxy/cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd`,
+                // Direct CDNs
                 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
-                // JSDelivr CDN (backup)
-                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
-                // Local files (if available)
-                `${location.origin}/vendor/ffmpeg`
+                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
             ];
             
             for (let i = 0; i < coreSources.length; i++) {

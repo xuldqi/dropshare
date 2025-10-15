@@ -41,6 +41,8 @@ process.on('unhandledRejection', (reason, promise) => {
 })
 
 const express = require('express');
+const compression = require('compression');
+const fetch = require('node-fetch');
 const RateLimit = require('express-rate-limit');
 const http = require('http');
 
@@ -58,22 +60,70 @@ const publicRun = process.argv[2];
 
 app.use(limiter);
 
+// Enable gzip compression to reduce transfer size of HTML/CSS/JS
+app.use(compression({ threshold: 1024 }));
+
 // ensure correct client ip and not the ip of the reverse proxy is used for rate limiting on render.com
 // see https://github.com/express-rate-limit/express-rate-limit#troubleshooting-proxy-issues
 app.set('trust proxy', 5);
 
-// Serve static with proper MIME for .wasm and safer defaults
+// Serve static with proper MIME for .wasm and better cache defaults
 app.use(express.static('public', {
+    etag: true,
+    lastModified: true,
+    maxAge: '7d',
     setHeaders(res, path) {
         if (path.endsWith('.wasm')) {
             res.set('Content-Type', 'application/wasm');
         }
-        // Avoid incorrect caching during dev for core engines
-        if (/\/vendor\/ffmpeg\/ffmpeg-core\.(js|wasm)$/.test(path)) {
+        // Never cache HTML to avoid stale pages
+        if (path.endsWith('.html')) {
             res.set('Cache-Control', 'no-store');
+            return;
+        }
+        // ffmpeg core is heavy: cache long-term in production, disable in dev
+        if (/\/vendor\/ffmpeg\/ffmpeg-core\.(js|wasm)$/.test(path)) {
+            if (process.env.NODE_ENV === 'production') {
+                res.set('Cache-Control', 'public, max-age=31536000, immutable');
+            } else {
+                res.set('Cache-Control', 'no-store');
+            }
         }
     }
 }));
+
+// Lightweight proxy for ffmpeg core files to mitigate CDN blocks
+// Only allows known hosts to avoid SSRF risks
+// Use prefix match to avoid path-to-regexp wildcard issues
+app.use('/ffmpeg-proxy', async (req, res) => {
+    try {
+        // Remove leading `/ffmpeg-proxy/` and preserve rest of path
+        const targetPath = decodeURIComponent((req.originalUrl || '').replace(/^\/ffmpeg-proxy\/?/, ''));
+        const targetUrl = /^https?:\/\//i.test(targetPath) ? targetPath : `https://${targetPath}`;
+        const u = new URL(targetUrl);
+        const allowedHosts = new Set(['unpkg.com', 'cdn.jsdelivr.net']);
+        if (!allowedHosts.has(u.hostname)) {
+            return res.status(400).send('Host not allowed');
+        }
+        const upstream = await fetch(targetUrl);
+        if (!upstream.ok) {
+            res.status(upstream.status);
+        }
+        // Propagate content type; enforce wasm when applicable
+        const ct = upstream.headers.get('content-type') || '';
+        if (u.pathname.endsWith('.wasm')) {
+            res.set('Content-Type', 'application/wasm');
+        } else if (ct) {
+            res.set('Content-Type', ct);
+        }
+        // Cache proxied binaries for a day
+        res.set('Cache-Control', 'public, max-age=86400');
+        upstream.body.pipe(res);
+    } catch (err) {
+        console.error('FFmpeg proxy error:', err.message);
+        res.status(502).send('Bad gateway');
+    }
+});
 
 // Handle WebSocket connection path for client connections
 app.get('/server/webrtc', (req, res) => {
@@ -101,11 +151,13 @@ app.use(function(req, res) {
 const server = http.createServer(app);
 
 // 简化监听方式，添加错误处理
-server.listen(port, '0.0.0.0', () => {
+const host = process.env.HOST || '0.0.0.0';
+server.listen(port, host, () => {
     console.log('---------------------------------------');
-    console.log('DropShare started, listening on all network interfaces');
+    console.log('DropShare started');
+    console.log('Host: ' + host);
     console.log('Port: ' + port);
-    console.log('Please visit: http://localhost:' + port);
+    console.log('Please visit: http://' + (host === '0.0.0.0' ? 'localhost' : host) + ':' + port);
     console.log('---------------------------------------');
 })
 .on('error', (err) => {
@@ -167,6 +219,28 @@ class DropShareServer {
         this._setupCleanupHandlers();
 
         console.log('DropShare is running on port', port);
+    }
+
+    // Debug helper - returns current peers grouped by room (IP)
+    getPeersOverview() {
+        const rooms = {};
+        for (const ip in this._rooms) {
+            const list = [];
+            for (const id in this._rooms[ip]) {
+                const p = this._rooms[ip][id];
+                list.push({
+                    id: p.id,
+                    displayName: (p.name && p.name.displayName) || '',
+                    deviceName: (p.name && p.name.deviceName) || '',
+                    readyState: p.socket ? p.socket.readyState : -1
+                });
+            }
+            rooms[ip] = list;
+        }
+        return {
+            rooms,
+            wsClients: this._wss && this._wss.clients ? this._wss.clients.size : 0
+        };
     }
 
     // Set up cleanup handlers when server shuts down
@@ -388,10 +462,22 @@ class DropShareServer {
         }
     }
 
-    _onHeaders(headers, response) {
-        if (response.headers.cookie && response.headers.cookie.indexOf('peerid=') > -1) return;
-        response.peerId = Peer.uuid();
-        headers.push('Set-Cookie: peerid=' + response.peerId + "; SameSite=Strict; Secure");
+    _onHeaders(headers, request) {
+        // Avoid resetting if client already has a peerid cookie
+        if (request.headers.cookie && request.headers.cookie.indexOf('peerid=') > -1) return;
+        const peerId = Peer.uuid();
+        // Detect TLS (wss) or proxy-forwarded https to decide cookie flags
+        const xfProto = (request.headers['x-forwarded-proto'] || '').toLowerCase();
+        const isTLS = !!(request.connection && request.connection.encrypted);
+        const isSecure = isTLS || xfProto === 'https' || xfProto === 'wss';
+        const flags = [
+            'Path=/',
+            'SameSite=Strict'
+        ];
+        if (isSecure) flags.push('Secure');
+        headers.push(`Set-Cookie: peerid=${peerId}; ${flags.join('; ')}`);
+        // Attach to request for downstream handlers if needed
+        request.peerId = peerId;
     }
 
     _onMessage(sender, message) {
@@ -418,6 +504,21 @@ class DropShareServer {
     }
 
     _processMessage(sender, message) {
+        // Helper to relay any message with a recipient
+        const relay = () => {
+            if (message.to && this._rooms[sender.ip]) {
+                const recipientId = message.to;
+                const recipient = this._rooms[sender.ip][recipientId];
+                if (recipient) {
+                    delete message.to;
+                    message.sender = sender.id;
+                    this._send(recipient, message);
+                    return true;
+                }
+            }
+            return false;
+        };
+
         switch (message.type) {
             case 'disconnect':
                 this._leaveRoom(sender);
@@ -436,6 +537,18 @@ class DropShareServer {
             case 'signal':
                 // 关键的WebRTC信令消息处理
                 this._handleSignal(sender, message);
+                break;
+            // WebSocket relay paths for local networks (no WebRTC)
+            case 'text':
+            case 'header':
+            case 'file-data':
+            case 'partition':
+            case 'partition-received':
+            case 'progress':
+            case 'transfer-complete':
+                if (!relay()) {
+                    console.log(`⚠️ Relay failed for ${message.type} from ${sender.id.substring(0,8)}...`);
+                }
                 break;
             case 'create-room':
                 this._createPrivateRoom(sender, message.roomSettings, message.userInfo);
@@ -457,19 +570,6 @@ class DropShareServer {
                 break;
             default:
                 console.log(`未知消息类型: ${message.type} from ${sender.id.substring(0,8)}...`);
-        }
-
-        // relay message to recipient - 这部分对WebRTC信令至关重要
-        if (message.to && this._rooms[sender.ip]) {
-            const recipientId = message.to; // TODO: sanitize
-            const recipient = this._rooms[sender.ip][recipientId];
-            if (recipient) {
-                delete message.to;
-                // add sender id
-                message.sender = sender.id;
-                this._send(recipient, message);
-            }
-            return;
         }
     }
 
@@ -1503,4 +1603,39 @@ Object.defineProperty(String.prototype, 'hashCode', {
   }
 });
 
-new DropShareServer();
+const dropShareServer = new DropShareServer();
+
+// Local-only debug endpoints
+function isLocalRequest(req) {
+    const ip = (req.ip || '').replace('::ffff:', '');
+    return ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+}
+
+app.get('/debug/peers', (req, res) => {
+    if (!isLocalRequest(req)) return res.status(403).send('Forbidden');
+    res.json(dropShareServer.getPeersOverview());
+});
+
+app.get('/debug/kill/:peerId', (req, res) => {
+    if (!isLocalRequest(req)) return res.status(403).send('Forbidden');
+    const id = req.params.peerId;
+    let removed = false;
+    for (const ip in dropShareServer._rooms) {
+        const room = dropShareServer._rooms[ip];
+        if (room && room[id]) {
+            try {
+                const p = room[id];
+                if (p && p.socket) p.socket.terminate();
+            } catch (_) {}
+            delete room[id];
+            removed = true;
+        }
+    }
+    res.json({ ok: true, removed });
+});
+
+app.get('/debug/clear', (req, res) => {
+    if (!isLocalRequest(req)) return res.status(403).send('Forbidden');
+    dropShareServer._rooms = {};
+    res.json({ ok: true });
+});

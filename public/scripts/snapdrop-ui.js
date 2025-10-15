@@ -515,7 +515,9 @@ class ReceiveTextDialog extends Dialog {
         Events.on('text-received', e => this._onText(e.detail))
         this.$text = this.$el.querySelector('#text');
         const $copy = this.$el.querySelector('#copy');
-        copy.addEventListener('click', _ => this._onCopy());
+        if ($copy) {
+            $copy.addEventListener('click', _ => this._onCopy());
+        }
     }
 
     _onText(e) {
@@ -706,7 +708,12 @@ class Snapdrop {
     }
 }
 
-const snapdrop = new Snapdrop();
+// Allow pages to opt-out of auto-initialization to avoid double
+// ServerConnection/PeersManager instances (e.g., transer.html does manual init)
+if (!window.__DISABLE_SNAPDROP_AUTO_INIT__) {
+  const snapdrop = new Snapdrop();
+  window.snapdrop = snapdrop;
+}
 
 
 

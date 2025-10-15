@@ -51,7 +51,7 @@ function shareCurrentFile() {
         }
     } else {
         // If no result file, open share page for user upload
-        window.open('/share.html', '_blank');
+        window.open('/transer.html', '_blank');
     }
 }
 
@@ -114,7 +114,7 @@ function openSharePage(file) {
     }
     
     // Open share page
-    window.open('/share.html?auto=true', '_blank');
+    window.open('/transer.html?auto=true', '_blank');
 }
 
 // 5. 在主页添加分享入口
@@ -143,7 +143,7 @@ function addShareEntryToHomepage() {
     
     shareCard.onmouseover = () => shareCard.style.transform = 'scale(1.05)';
     shareCard.onmouseout = () => shareCard.style.transform = 'scale(1)';
-    shareCard.onclick = () => window.open('/share.html', '_blank');
+    shareCard.onclick = () => window.open('/transer.html', '_blank');
     
     // 插入到工具列表的第一个位置
     toolsSection.insertBefore(shareCard, toolsSection.firstChild);
@@ -177,7 +177,7 @@ function addShareToNavigation() {
     
     // 创建分享链接（非首页）
     const shareLink = document.createElement('a');
-    shareLink.href = '/share.html';
+    shareLink.href = '/transer.html';
     shareLink.textContent = 'Share';
     shareLink.style.cssText = `
         color: #10b981;

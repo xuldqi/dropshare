@@ -967,6 +967,14 @@ body {
 
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <script>
+        function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>res();s.onerror=rej;document.head.appendChild(s);});}
+        async function ensureFFmpegScripts(){
+            if (typeof FFmpegWASM !== 'undefined' && typeof FFmpegUtil !== 'undefined') return;
+            try { if (typeof FFmpegWASM === 'undefined') await loadScript('/vendor/ffmpeg/ffmpeg.js'); } catch(_){}
+            try { if (typeof FFmpegUtil === 'undefined') await loadScript('/vendor/ffmpeg/util.js'); } catch(_){}
+        }
+    </script>
     <script src="https://unpkg.com/music-metadata-browser@2.5.10/dist/index.min.js"></script>
     <script>
         let ffmpeg = null;
@@ -984,17 +992,30 @@ body {
 
         // Initialize FFmpeg
         async function initFFmpeg() {
+            await ensureFFmpegScripts();
             if (!ffmpeg) {
                 const { toBlobURL } = FFmpegWASM;
                 
                 ffmpeg = new FFmpeg();
                 
-                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd';
-                
-                await ffmpeg.load({
-                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-                });
+                const bases = [
+                    `${location.origin}/vendor/ffmpeg`,
+                    `${location.origin}/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd`,
+                    `${location.origin}/ffmpeg-proxy/cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd`,
+                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
+                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
+                ];
+                let ok = false;
+                for (const baseURL of bases) {
+                    try {
+                        await ffmpeg.load({
+                            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+                            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+                        });
+                        ok = true; break;
+                    } catch (e) { console.warn('FFmpeg core load failed from', baseURL); }
+                }
+                if (!ok) throw new Error('FFmpeg core failed to load from all sources');
             }
         }
 

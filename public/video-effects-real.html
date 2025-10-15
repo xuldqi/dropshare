@@ -1013,7 +1013,7 @@ body {
                 
                 // Load FFmpeg util
                 const utilScript = document.createElement('script');
-                utilScript.src = 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/util.js';
+                utilScript.src = 'https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js';
                 utilScript.onload = checkComplete;
                 utilScript.onerror = () => reject(new Error('Failed to load FFmpeg util script'));
                 document.head.appendChild(utilScript);
@@ -1029,12 +1029,14 @@ body {
         async function loadFFmpegCore(toBlobURL) {
             // Define multiple core file sources
             const coreSources = [
-                // Unpkg CDN (most reliable)
+                // Local mirror first
+                `${location.origin}/vendor/ffmpeg`,
+                // Proxy endpoints
+                `${location.origin}/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd`,
+                `${location.origin}/ffmpeg-proxy/cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd`,
+                // Direct CDNs
                 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
-                // JSDelivr CDN (backup)
-                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
-                // Local files (if available)
-                `${location.origin}/vendor/ffmpeg`
+                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
             ];
             
             for (let i = 0; i < coreSources.length; i++) {

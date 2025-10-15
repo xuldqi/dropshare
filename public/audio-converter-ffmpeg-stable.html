@@ -423,15 +423,15 @@
         let audioFile = null;
         let isEngineLoaded = false;
         
-        // Initialize FFmpeg with ColleTools method
+        // Initialize FFmpeg engine
         async function initFFmpeg() {
             const statusEl = document.getElementById('engineStatus');
             statusEl.style.display = 'block';
             statusEl.textContent = window.DROPSHARE_I18N?.t('audio_converter_loading_engine') || 'Loading audio processing engine...';
 
             try {
-                // Use ColleTools-based loader
-                ffmpeg = await loadFFmpegColleTools();
+                // Use standard loader alias
+                ffmpeg = await loadFFmpeg();
                 
                 isEngineLoaded = true;
                 

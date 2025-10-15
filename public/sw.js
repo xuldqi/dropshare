@@ -86,7 +86,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('ColleTools', options)
+    self.registration.showNotification('DropShare', options)
   );
 });
 

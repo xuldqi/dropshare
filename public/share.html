@@ -4290,7 +4290,20 @@
     <script src="room-debugger.js"></script>
     <script src="scripts/network.js"></script>
     <script src="scripts/ui.js"></script>
-    <script src="scripts/private-rooms.js"></script>
+    <!-- Removed private-rooms.js from initial load; inline room logic already present. -->
+    <script>
+        // Simple helper for future lazy modules
+        window.loadScript = function (src) {
+            return new Promise((resolve, reject) => {
+                var s = document.createElement('script');
+                s.src = src;
+                s.async = true;
+                s.onload = () => resolve();
+                s.onerror = (e) => reject(e);
+                document.body.appendChild(s);
+            });
+        };
+    </script>
     <script src="scripts/clipboard.js" async></script>
 
     <!-- Room functionality JavaScript -->

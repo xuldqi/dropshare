@@ -836,6 +836,12 @@ body {
                     }
                 }
                 
+                // Try local vendor first (non-blocking)
+                (async () => {
+                    try { if (typeof window.FFmpegWASM === 'undefined') await loadScript('/vendor/ffmpeg/ffmpeg.js'); } catch(_){}
+                    try { if (typeof window.FFmpegUtil === 'undefined') await loadScript('/vendor/ffmpeg/util.js'); } catch(_){}
+                })();
+
                 // Load FFmpeg core
                 const ffmpegScript = document.createElement('script');
                 ffmpegScript.src = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js';
@@ -861,12 +867,11 @@ body {
         async function loadFFmpegCore(statusEl, toBlobURL) {
             // Define multiple core file sources
             const coreSources = [
-                // Unpkg CDN (most reliable)
+                `${location.origin}/vendor/ffmpeg`,
+                `${location.origin}/ffmpeg-proxy/unpkg.com/@ffmpeg/core@0.12.6/dist/umd`,
+                `${location.origin}/ffmpeg-proxy/cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd`,
                 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
-                // JSDelivr CDN (backup)
-                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
-                // Local files (if available)
-                `${location.origin}/vendor/ffmpeg`
+                'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd'
             ];
             
             for (let i = 0; i < coreSources.length; i++) {

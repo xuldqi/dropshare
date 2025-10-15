@@ -6,6 +6,7 @@ class ServerConnection {
     constructor() {
         this._currentFileDigester = null; // 初始化文件接收器
         this._wsReceiveState = { bytes: 0, size: 0, sender: null }; // 追踪WS接收进度
+        this._wsPeerRegistry = new Set(); // 记录纯 WS 传输的 peerId
         this._connect();
         Events.on('beforeunload', e => this._disconnect());
         Events.on('pagehide', e => this._disconnect());
@@ -19,7 +20,10 @@ class ServerConnection {
         ws.binaryType = 'arraybuffer';
         ws.onopen = e => {
             console.log('WS: server connected');
+            // Request immediate peers list to avoid any race where
+            // initial server push is missed.
             this._send({ type: 'ping' });
+            this._send({ type: 'get-peers' });
             this._startPingTimer();
         };
         ws.onmessage = e => this._onMessage(e.data);
@@ -36,6 +40,11 @@ class ServerConnection {
 
     _send(message) {
         this.send(message);
+    }
+
+    registerWSPeer(peerId) {
+        if (!peerId) return;
+        this._wsPeerRegistry.add(peerId);
     }
 
     _onFileHeaderReceived(header) {
@@ -142,11 +151,26 @@ class ServerConnection {
                 break;
             case 'header':
                 console.log('📁 收到文件头信息:', msg);
-                this._onFileHeader(msg);
+                if (msg.sender && this._wsPeerRegistry.has(msg.sender)) {
+                    console.log('📁 Header via WebSocket relay:', msg.sender);
+                    this._onFileHeaderReceived({
+                        name: msg.name,
+                        mime: msg.mime,
+                        size: msg.size,
+                        sender: msg.sender
+                    });
+                } else {
+                    this._onFileHeader(msg);
+                }
                 break;
             case 'partition':
                 console.log('📁 收到分区结束消息:', msg);
-                this._onPartitionEnd(msg);
+                if (msg.sender && this._wsPeerRegistry.has(msg.sender)) {
+                    console.log('📁 Partition via WebSocket relay:', msg.sender);
+                    this._onPartitionEndRelay(msg);
+                } else {
+                    this._onPartitionEnd(msg);
+                }
                 break;
             case 'partition-received':
                 console.log('📁 收到分区确认消息:', msg);
@@ -245,6 +269,21 @@ class ServerConnection {
         console.log('📁 ServerConnection: 分区结束，offset:', msg.offset);
         // 发送分区确认
         this.send({ type: 'partition-received', offset: msg.offset });
+    }
+
+    _onPartitionEndRelay(msg) {
+        const sender = msg.sender || this._wsReceiveState.sender;
+        if (this._currentFileDigester) {
+            this._currentFileDigester.progress = 1;
+            Events.fire('file-progress', { sender, progress: 1 });
+        }
+        if (sender) {
+            this._send({
+                type: 'partition-received',
+                to: sender,
+                offset: msg.offset
+            });
+        }
     }
 
     _onChunkReceived(chunk) {
@@ -564,15 +603,23 @@ class PeersManager {
         Events.on('peer-left', e => this._onPeerLeft(e.detail));
     }
 
+    _ensurePeer(peerId) {
+        if (!this.peers[peerId]) {
+            // In WS-forced mode or when mapping is missing, create a WSPeer on demand
+            if (window.DROPSHARE_FORCE_WS || !window.isRtcSupported) {
+                console.log('🆕 On-demand WSPeer for', peerId);
+                this.peers[peerId] = new WSPeer(this._server, peerId);
+            } else {
+                console.log('🆕 On-demand RTCPeer for', peerId);
+                this.peers[peerId] = new RTCPeer(this._server, peerId);
+            }
+        }
+        return this.peers[peerId];
+    }
+
     _onMessage(message) {
         console.log('📨 Received message from:', message.sender);
-        if (!this.peers[message.sender]) {
-            console.log('🆕 Creating new peer from message:', message.sender);
-            this.peers[message.sender] = new RTCPeer(this._server, message.sender);
-            console.log('🔍 Created peer object:', this.peers[message.sender]);
-            console.log('🔍 Peer has sendText method:', typeof this.peers[message.sender].sendText);
-            console.log('🔍 Peer has sendFiles method:', typeof this.peers[message.sender].sendFiles);
-        }
+        this._ensurePeer(message.sender);
         this.peers[message.sender].onServerMessage(message);
     }
 
@@ -592,12 +639,16 @@ class PeersManager {
                 this.peers[peer.id].refresh();
                 return;
             }
-            if (window.isRtcSupported && peer.rtcSupported) {
+            // Prefer WebSocket relay if explicitly forced (e.g., local network without STUN)
+            if (!window.DROPSHARE_FORCE_WS && window.isRtcSupported && peer.rtcSupported) {
                 console.log('🆕 Creating new RTCPeer:', peer.id);
                 this.peers[peer.id] = new RTCPeer(this._server, peer.id);
             } else {
                 console.log('🆕 Creating new WSPeer:', peer.id);
                 this.peers[peer.id] = new WSPeer(this._server, peer.id);
+                if (typeof this._server.registerWSPeer === 'function') {
+                    this._server.registerWSPeer(peer.id);
+                }
             }
             console.log('✅ Created peer object:', this.peers[peer.id]);
             console.log('✅ Peer has sendFiles:', typeof this.peers[peer.id].sendFiles);
@@ -612,11 +663,11 @@ class PeersManager {
 
     _onFilesSelected(message) {
         console.log('📤 _onFilesSelected called with:', message);
+        // Ensure target peer exists in mapping before logging
+        let peer = this._ensurePeer(message.to);
         console.log('📤 Looking for peer:', message.to);
-        console.log('📤 Available peers:', Object.keys(this.peers));
-        console.log('📤 Peer object details:', this.peers);
-        
-        const peer = this.peers[message.to];
+        console.log('📤 Available peers (after ensure):', Object.keys(this.peers));
+        console.log('📤 Peer object:', this.peers[message.to]);
         if (!peer) {
             console.error('❌ Peer not found:', message.to);
             console.error('❌ Available peer IDs:', Object.keys(this.peers));
@@ -632,9 +683,10 @@ class PeersManager {
     }
 
     _onSendText(message) {
+        // Ensure mapping first to avoid race
+        let peer = this._ensurePeer(message.to);
         console.log('🔍 Looking for peer:', message.to);
-        console.log('📋 Available peers:', Object.keys(this.peers));
-        const peer = this.peers[message.to];
+        console.log('📋 Available peers (after ensure):', Object.keys(this.peers));
         if (!peer) {
             console.error('❌ Peer not found:', message.to);
             console.error('❌ Available peer IDs:', Object.keys(this.peers));
@@ -659,6 +711,9 @@ class PeersManager {
 class WSPeer extends Peer {
     constructor(serverConnection, peerId) {
         super(serverConnection, peerId);
+        if (typeof this._server.registerWSPeer === 'function') {
+            this._server.registerWSPeer(peerId);
+        }
     }
 
     _send(message) {

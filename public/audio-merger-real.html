@@ -88,6 +88,7 @@
 
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <script src="/scripts/ffmpeg-loader.js"></script>
     <style>
         * {
             margin: 0;
@@ -777,7 +778,7 @@ body {
             statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_loading') : 'Loading audio processing engine...';
 
             try {
-                ffmpeg = new FFmpeg();
+                ffmpeg = await FFLoader.loadReady();
                 
                 ffmpeg.on('log', ({ message }) => {
                     console.log(message);
@@ -788,15 +789,7 @@ body {
                     updateProgress(percentage);
                 });
                 
-                const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL } = FFmpegUtil;
-                
-                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
-                
-                await ffmpeg.load({
-                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-                });
+                // Core is ready via FFLoader
                 
                 isEngineLoaded = true;
                 statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_loaded') : '✓ Audio processing engine loaded and ready!';

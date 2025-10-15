@@ -1452,7 +1452,7 @@
                     <h3 data-i18n="footer.links">LINKS</h3>
                     <ul class="footer-links">
                         <li><a href="https://zipic.online" target="_blank">ZiPic</a></li>
-                        <li><a href="https://colletools.com" target="_blank">ColleTools</a></li>
+                        <!-- Removed external tools link to keep project self-contained -->
                     </ul>
                 </div>
             </div>

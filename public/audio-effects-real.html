@@ -1073,7 +1073,31 @@ body {
 
     <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/umd/ffmpeg.js"></script>
     <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+    <script src="/scripts/ffmpeg-loader.js"></script>
     <script>
+        // Simple loader with local fallback
+        function loadScript(src){
+            return new Promise((res,rej)=>{
+                const s=document.createElement('script');
+                s.src=src; s.async=true; s.onload=()=>res(); s.onerror=rej; document.head.appendChild(s);
+            });
+        }
+
+        async function ensureFFmpegScripts(){
+            if (typeof FFmpegWASM !== 'undefined' && typeof FFmpegUtil !== 'undefined') return;
+            try {
+                // Try local vendor copies if CDN blocked
+                if (typeof FFmpegWASM === 'undefined') {
+                    await loadScript('/vendor/ffmpeg/ffmpeg.js');
+                }
+                if (typeof FFmpegUtil === 'undefined') {
+                    await loadScript('/vendor/ffmpeg/util.js');
+                }
+            } catch (e) {
+                console.warn('Fallback FFmpeg scripts failed:', e);
+            }
+        }
+
         let ffmpeg = null;
         let audioFile = null;
         let audioElement = null;
@@ -1088,18 +1112,9 @@ body {
 
         // Initialize FFmpeg
         async function initFFmpeg() {
+            await ensureFFmpegScripts();
             if (!ffmpeg) {
-                const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL } = FFmpegUtil;
-                
-                ffmpeg = new FFmpeg();
-                
-                const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
-                
-                await ffmpeg.load({
-                    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-                    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-                });
+                ffmpeg = await FFLoader.loadReady();
             }
         }
 

@@ -477,9 +477,16 @@
     <!-- Scripts -->
     <!-- Load the language loader first -->
     <script src="scripts/snapdrop-languages.js"></script>
-    <!-- Load other scripts -->
-    <script src="scripts/snapdrop-network.js"></script>
-    <script src="scripts/snapdrop-ui.js"></script>
+    <!-- Load other scripts (disable auto init to prevent duplicate connections) -->
+    <script>
+        // Disable auto init and force WebSocket relay to avoid
+        // WebRTC dependency (STUN) on restricted/local networks.
+        window.__DISABLE_SNAPDROP_AUTO_INIT__ = true;
+        window.DROPSHARE_FORCE_WS = true;
+    </script>
+    <!-- add version to avoid cached scripts -->
+    <script src="scripts/snapdrop-network.js?v=20251010"></script>
+    <script src="scripts/snapdrop-ui.js?v=20251010"></script>
     <script src="scripts/snapdrop-theme.js" async></script>
     <script src="scripts/snapdrop-clipboard.js" async></script>
 
@@ -547,13 +554,20 @@
                 window.DROPSHARE_I18N.init();
             }
             
-            // 初始化Snapdrop网络组件
+            // 初始化Snapdrop网络组件 + UI
             window.server = new ServerConnection();
             window.peers = new PeersManager(window.server);
+            // 显式创建 PeersUI（关闭自动初始化后需要手动创建）
+            if (!window.peersUI) {
+                window.peersUI = new PeersUI();
+            }
             
             // 初始化Snapdrop UI组件
             window.receiveDialog = new ReceiveDialog();
             window.sendTextDialog = new SendTextDialog();
+            window.receiveTextDialog = new ReceiveTextDialog();
+            window.toast = new Toast();
+            window.networkStatusUI = new NetworkStatusUI();
             window.notifications = new Notifications();
         });
     </script>

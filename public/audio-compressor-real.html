@@ -73,6 +73,7 @@
     </script>
     <script src="/vendor/ffmpeg/ffmpeg.js"></script>
     <script src="/vendor/ffmpeg/util.js"></script>
+    <script src="/scripts/ffmpeg-loader.js"></script>
     <style>
         * {
             margin: 0;
@@ -694,10 +695,8 @@ body {
             statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_loading') : 'Loading audio processing engine...';
 
             try {
-                const { FFmpeg } = FFmpegWASM;
-                const { toBlobURL } = FFmpegUtil;
-                
-                ffmpeg = new FFmpeg();
+                // Unified loader
+                ffmpeg = await FFLoader.loadReady();
                 
                 ffmpeg.on('log', ({ message }) => {
                     console.log(message);
@@ -708,24 +707,7 @@ body {
                     updateProgress(percentage);
                 });
                 
-                const bases = [
-                    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd',
-                    'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd',
-                    `${location.origin}/vendor/ffmpeg`
-                ];
-                let loaded = false;
-                for (const baseURL of bases) {
-                    try {
-                        const coreURL = await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript');
-                        const wasmURL = await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm');
-                        await ffmpeg.load({ coreURL, wasmURL });
-                        loaded = true;
-                        break;
-                    } catch (e) {
-                        console.warn('FFmpeg load failed from', baseURL, e);
-                    }
-                }
-                if (!loaded) throw new Error('FFmpeg core load failed from all sources');
+                // Core is ready via FFLoader
                 
                 isEngineLoaded = true;
                 statusEl.textContent = window.DROPSHARE_I18N ? window.DROPSHARE_I18N.getText('audio_engine_loaded') : '✓ Audio processing engine loaded and ready!';
