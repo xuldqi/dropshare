@@ -1,0 +1,10 @@
+# Nixpacks ignore file
+# 忽略backup目录和可能有问题的文件
+
+backup/
+**/backup/
+*.backup
+*.bak
+*_backup.*
+*_fixed.js
+
