@@ -113,8 +113,7 @@ Thumbs.db
 .env.test.local
 .env.production.local
 
-# Docker
-.dockerignore
+# Docker (已移除，使用云端部署)
 
 # Output files
 output/

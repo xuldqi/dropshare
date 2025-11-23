@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "DropShare Extension",
+  "version": "1.0.0",
+  "description": "P2P文件传输工具 - 基于WebRTC的局域网文件共享",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs",
+    "notifications",
+    "alarms",
+    "downloads"
+  ],
+  "host_permissions": [
+    "ws://localhost:*/*",
+    "ws://*/*",
+    "wss://*/*",
+    "http://localhost:*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
+

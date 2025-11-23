@@ -1,90 +1,252 @@
-// Simple English-only language system for DropShare
-const TEXTS = {
-    // Basic functionality (kept for compatibility)
-    'open_snapdrop': 'Open DropShare on other devices to send files',
-    'click_to_send': 'Click to send files or right click to send a message',
-    'tap_to_send': 'Tap to send files or long press to send a message',
-    'file_received': 'File Received',
-    'filename': 'Filename',
-    'save': 'Save',
-    'ignore': 'Ignore',
-    'send_message': 'Send a Message',
-    'send': 'Send',
-    'cancel': 'Cancel',
-    'message_received': 'Message Received',
-    'copy': 'Copy',
-    'close': 'Close',
-    'file_transfer_completed': 'File Transfer Completed',
-    'you_are_known_as': 'You are known as',
-    
-    // Navigation
-    'nav_about': 'About',
-    'nav_faq': 'FAQ',
-    'nav_blog': 'Blog',
-    'nav_privacy': 'Privacy',
-    'nav_terms': 'Terms',
-    
-    // Homepage
-    'hero_title': 'Fast Local File Sharing Across Devices on Your Network',
-    'hero_subtitle': 'Share files instantly between devices on the same network without any uploads, downloads, or accounts required',
-    'btn_start_sharing': 'Start Sharing Files',
-    'btn_multiuser_rooms': 'Multi-user Rooms',
-    'section_choose_category': 'Choose Your Tool Category',
-    'section_choose_description': 'Select from our comprehensive collection of file processing tools, designed to handle all your digital file needs efficiently and securely',
-    'category_image_title': 'Image Tools',
-    'category_audio_title': 'Audio Tools',
-    'category_document_title': 'Document Tools',
-    'category_video_title': 'Video Tools',
-    
-    // Page headers
-    'about_header_title': 'About DropShare',
-    'faq_header_title': 'Frequently Asked Questions',
-    'blog_header_title': 'Blog',
-    'privacy_header_title': 'Privacy Policy',
-    'terms_header_title': 'Terms of Service',
-    
-    // Common buttons
-    'btn_download': 'Download',
-    'btn_convert': 'Convert',
-    'back_button': 'Back to DropShare',
-    'loading': 'Loading...',
-    'error': 'Error',
-    'success': 'Success',
-    'ok': 'OK'
+// Multi-language system for DropShare
+const I18N_DATA = {
+    'en': {
+        // Basic functionality (kept for compatibility)
+        'open_snapdrop': 'Open DropShare on other devices to send files',
+        'click_to_send': 'Click to send files or right click to send a message',
+        'tap_to_send': 'Tap to send files or long press to send a message',
+        'file_received': 'File Received',
+        'filename': 'Filename',
+        'save': 'Save',
+        'ignore': 'Ignore',
+        'send_message': 'Send a Message',
+        'send': 'Send',
+        'cancel': 'Cancel',
+        'message_received': 'Message Received',
+        'copy': 'Copy',
+        'close': 'Close',
+        'file_transfer_completed': 'File Transfer Completed',
+        'you_are_known_as': 'You are known as',
+
+        // Navigation
+        'nav_about': 'About',
+        'nav_faq': 'FAQ',
+        'nav_blog': 'Blog',
+        'nav_privacy': 'Privacy',
+        'nav_terms': 'Terms',
+
+        // Homepage
+        'hero_title': 'Fast Local File Sharing Across Devices on Your Network',
+        'hero_subtitle': 'Share files instantly between devices on the same network without any uploads, downloads, or accounts required',
+        'btn_start_sharing': 'Start Sharing Files',
+        'btn_multiuser_rooms': 'Multi-user Rooms',
+        'section_choose_category': 'Choose Your Tool Category',
+        'section_choose_description': 'Select from our comprehensive collection of file processing tools, designed to handle all your digital file needs efficiently and securely',
+        'category_image_title': 'Image Tools',
+        'category_audio_title': 'Audio Tools',
+        'category_document_title': 'Document Tools',
+        'category_video_title': 'Video Tools',
+
+        // Page headers
+        'about_header_title': 'About DropShare',
+        'faq_header_title': 'Frequently Asked Questions',
+        'blog_header_title': 'Blog',
+        'privacy_header_title': 'Privacy Policy',
+        'terms_header_title': 'Terms of Service',
+
+        // Common buttons
+        'btn_download': 'Download',
+        'btn_convert': 'Convert',
+        'back_button': 'Back to DropShare',
+        'loading': 'Loading...',
+        'error': 'Error',
+        'success': 'Success',
+        'ok': 'OK'
+    },
+    'zh-tw': {
+        "open_snapdrop": "在其他裝置上開啟 DropShare 以傳送檔案",
+        "click_to_send": "點擊傳送檔案或右鍵點擊傳送訊息",
+        "tap_to_send": "點擊傳送檔案或長按傳送訊息",
+        "file_received": "已收到檔案",
+        "filename": "檔案名稱",
+        "ask_save_files": "下載前詢問是否儲存每個檔案",
+        "save": "儲存",
+        "ignore": "忽略",
+        "send_message": "傳送訊息",
+        "send": "傳送",
+        "cancel": "取消",
+        "message_received": "已收到訊息",
+        "copy": "複製",
+        "close": "關閉",
+        "file_transfer_completed": "檔案傳輸完成",
+        "about_snapdrop": "關於 DropShare",
+        "easiest_way": "跨裝置傳輸檔案的最簡單方式",
+        "github": "DropShare 的 Github 頁面",
+        "cover_server_costs": "幫助支付伺服器費用！",
+        "twitter": "在 Twitter 上分享 DropShare",
+        "faq": "常見問題",
+        "enable_js": "啟用 JavaScript",
+        "snapdrop_js_only": "DropShare 只能在啟用 JavaScript 的情況下運作",
+        "you_discovered": "此網路上的所有人都可以發現您",
+        "select_language": "選擇語言",
+        "modified_by": "修改的 Node 版本由",
+        "you_are_known_as": "您的名稱是",
+        "nav_about": "關於",
+        "nav_faq": "常見問題",
+        "nav_blog": "部落格",
+        "nav_privacy": "隱私權政策",
+        "nav_terms": "服務條款",
+        "private_network": "因為您和他們在同一網路上",
+        "connecting": "正在連接到伺服器...",
+        "waiting_for_device": "等待其他裝置加入此網路...",
+        "browser_unsupported": "您的瀏覽器不支援此應用程式",
+        "you": "您: ",
+        "someone": "某人",
+        "wants_send_message": "想傳送您一個訊息",
+        "wants_send_file": "想傳送您一個檔案",
+        "sender_disconnected": "傳送者已斷開連接。",
+        "user_denied": "使用者拒絕了傳輸。",
+        "couldnt_connect": "無法連接到裝置。",
+        "connection_timeout": "連接超時。",
+        "file_transfer_failed": "檔案傳輸失敗。",
+        "device_disconnected": "裝置已斷開連接。",
+        "transfer_interrupted": "傳輸被中斷。",
+        "transfer_error": "傳輸錯誤。",
+        "file_hash_failed": "檔案完整性驗證失敗。",
+        "download_failed": "下載失敗。",
+        "offline": "您已離線！請檢查您的網路連接。",
+        "privacy": "隱私",
+        "privacy_policy": "隱私政策",
+        "privacy_policy_content": "Privacy Policy content in English...",
+        "ok": "OK",
+        "settings": "設定",
+        "device_name": "裝置名稱",
+        "language": "語言",
+        "theme": "主題",
+        "theme_light": "淺色",
+        "theme_dark": "深色",
+        "theme_system": "跟隨系統",
+        "notification_permission": "通知權限",
+        "notifications_enabled": "已啟用通知",
+        "notifications_denied": "通知已被拒絕",
+        "enable_notification": "啟用通知",
+        "donate": "捐贈",
+        "menu": "選單",
+        "install": "安裝",
+        "pwa_install": "安裝為應用程式",
+        "pwa_install_desc": "安裝 DropShare 到您的桌面，無需瀏覽器即可使用。",
+        "already_installed": "已安裝",
+        "not_supported": "您的瀏覽器不支持",
+        "more_info": "更多信息",
+        "about_page_title": "關於 DropShare - 輕鬆檔案分享",
+        "about_header_title": "關於 DropShare",
+        "about_what_is_title": "什麼是 DropShare？",
+        "about_what_is_p1": "DropShare 是一款現代化的網頁應用程式，可讓您輕鬆地在同一網路上的裝置之間分享檔案。無需設定、無需註冊、無需雲端儲存空間——只需即時的點對點檔案分享。",
+        "about_how_it_works_title": "運作方式",
+        "about_how_it_works_p1": "DropShare 使用 WebRTC 技術在裝置之間建立直接連線。您的檔案會直接從一個裝置傳輸到另一個裝置，而無需經過伺服器，從而確保隱私和速度。",
+        "about_no_setup_title": "無需設定",
+        "about_no_setup_p1": "只需在瀏覽器中開啟 DropShare，即可立即開始分享檔案。無需建立帳戶或安裝軟體。",
+        "about_privacy_focused_title": "注重隱私",
+        "about_privacy_focused_p1": "所有傳輸都是點對點的，這表示您的檔案絕不會儲存在我們的伺服器上。您的資料將保持私密和安全。",
+        "about_cross_platform_title": "跨平台",
+        "about_cross_platform_p1": "可在所有現代裝置和瀏覽器上運作，包括執行 Windows、macOS、Linux、iOS 或 Android 的智慧型手機、平板電腦和電腦。",
+        "about_fast_transfers_title": "快速傳輸",
+        "about_fast_transfers_p1": "直接的裝置對裝置連線意味著比雲端服務更快的傳輸速度。",
+        "about_how_to_use_title": "如何使用 DropShare",
+        "about_step1_title": "步驟 1：連接裝置",
+        "about_step1_p1": "確保所有裝置都連接到相同的 Wi-Fi 網路或區域網路。",
+        "about_step2_title": "步驟 2：開啟 DropShare",
+        "about_step2_p1": "在您要分享檔案的所有裝置上開啟 DropShare。只需在瀏覽器中造訪該網站即可。",
+        "about_step3_title": "步驟 3：選擇裝置",
+        "about_step3_p1": "您將看到網路上所有可用的裝置。點擊您要傳送檔案的裝置。",
+        "about_step4_title": "步驟 4：傳送檔案",
+        "about_step4_p1": "選擇您要分享的檔案。接收者將收到通知並可以接受傳輸。",
+        "about_back_button": "返回 DropShare",
+        "blog_security_title": "檔案分享安全最佳實務：保護您的資料",
+        "blog_security_p1": "檔案分享已成為我們數位生活中不可或缺的一部分。無論是工作、學習還是個人使用，我們都經常與他人分享檔案。然而，優先考慮安全性以保護您的敏感資料至關重要。以下是一些應遵循的最佳實務：",
+        "blog_security_strong_passwords_title": "使用高強度且唯一的密碼",
+        "blog_security_strong_passwords_p1": "如果您的檔案分享服務需要密碼，請確保使用高強度且唯一的密碼。避免使用容易猜測的密碼，切勿在多個服務中重複使用密碼。",
+        "blog_security_encryption_title": "加密",
+        "blog_security_encryption_p1": "確保檔案在傳輸過程中和靜態時都經過加密。DropShare 使用 WebRTC 加密進行傳輸，確保您的資料在傳輸過程中免遭竊聽。",
+        "blog_security_public_wifi_title": "謹慎使用公用 Wi-Fi",
+        "blog_security_public_wifi_p1": "避免在公用 Wi-Fi 網路上分享敏感檔案。这些網路通常不安全，可能會將您的資料暴露給攻擊者。如果您必須使用公用 Wi-Fi，請使用 VPN 加密您的連線。",
+        "blog_security_receiver_title": "驗證接收者",
+        "blog_security_receiver_p1": "務必再次確認您是將檔案傳送給正確的接收者。使用 DropShare 時，會顯示裝置名稱，協助您確認是否連線到正確的對象。",
+        "blog_security_software_updates_title": "保持軟體更新",
+        "blog_security_software_updates_p1": "確保您的瀏覽器和作業系統都是最新的。軟體更新通常包含安全性修補程式，可防範已知的漏洞。",
+        "blog_security_sensitive_info_title": "小心處理敏感資訊",
+        "blog_security_sensitive_info_p1": "分享敏感資訊前請三思。確保接收者需要這些資訊，並且會安全地處理這些資訊。",
+        "blog_security_local_network_title": "了解區域網路分享",
+        "blog_security_local_network_p1": "DropShare 在您的區域網路上運作。雖然這比雲端服務提高了速度和隱私性，但請記住，同一網路上的任何人如果也執行 DropShare，都有可能發現您的裝置。這就是為什麼 DropShare 會顯示已發現的裝置，以便您控制要連線的對象。",
+        "blog_security_conclusion_title": "結論",
+        "blog_security_conclusion_p1": "遵循這些最佳實務，您可以大幅降低與檔案分享相關的風險並保護您的資料。DropShare 的設計考量到安全性，提供了一種安全的方式在裝置之間直接分享檔案，而無需依賴雲端伺服器。",
+        "faq_new_security_privacy_title": "安全與隱私",
+        "faq_new_q1_security": "在公用 Wi-Fi 上使用 DropShare 安全嗎？",
+        "faq_new_a1_security": "雖然 DropShare 使用 WebRTC 加密進行傳輸，但在公用 Wi-Fi 上使用任何服務時，通常建議謹慎小心。如果可能，請使用受信任的網路。如果您必須使用公用 Wi-Fi，使用 VPN 可以增加額外的安全層。DropShare 本身專為直接點對點傳輸而設計，這本質上比將檔案上傳到第三方伺服器更安全，但底層網路的安全性仍然是一個因素。",
+        "faq_new_q2_security": "DropShare 如何防止未經授權存取我的檔案？",
+        "faq_new_a2_security": "DropShare 根據明確的發現和連線運作。您會依名稱看到網路上執行 DropShare 的其他裝置，並且必須起始連線才能傳送或接收檔案。檔案不會被廣播；它們只會傳送給您選取的裝置。此外，傳輸会經過加密。",
+        "faq_new_q3_security": "我可以控制誰可以在 DropShare 上發現我嗎？",
+        "faq_new_a3_security": "DropShare 會發現同一區域網路上的裝置。您無法阻止同一網路上也執行 DropShare 的其他裝置發現您。但是，發現並不代表存取。除非您明確接受傳入的檔案傳輸或起始傳出的傳輸，否則沒有人可以存取您的檔案。為了加強控制，您可以在不主動使用 DropShare 時關閉其索引標籤。",
+        "faq_new_troubleshooting_title": "疑難排解",
+        "faq_new_q1_troubleshooting": "為什麼我的裝置找不到彼此？",
+        "faq_new_a1_troubleshooting": "請確保所有裝置都在相同的 Wi-Fi 網路上。檢查您的防火牆或路由器設定，這些設定可能會封鎖點對點或 WebRTC 連線（有時在 Wi-Fi 設定中稱為「AP 隔離」或「用戶端隔離」）。嘗試在所有裝置上重新整理 DropShare 頁面。確保已啟用 JavaScript。",
+        "faq_new_q2_troubleshooting": "檔案傳輸非常緩慢。我該怎麼辦？",
+        "faq_new_a2_troubleshooting": "傳輸速度取決於您的 Wi-Fi 訊號強度、網路壅塞情況和裝置的處理能力。將您的裝置移近 Wi-Fi 路由器。關閉其他耗用大量頻寬的應用程式或索引標籤。如果您要傳輸大型檔案，請預期需要更長的時間。您也可以嘗試重新啟動路由器和裝置。",
+        "faq_new_q3_troubleshooting": "我不小心忽略了一個檔案請求。我可以取回它嗎？",
+        "faq_new_a3_troubleshooting": "很遺憾，一旦忽略檔案請求，就無法取回。傳送者需要重新傳送檔案。",
+        "faq_new_q4_troubleshooting": "DropShare 會在背景或手機鎖定時運作嗎？",
+        "faq_new_a4_troubleshooting": "網頁瀏覽器可能會限制背景索引標籤的功能，或在裝置鎖定時限制功能以節省電池和資料。為了可靠的傳輸，最好在兩台裝置上都保持 DropShare 索引標籤作用中且螢幕解鎖，尤其是在進行長時間傳輸時。",
+        "faq_back_button": "返回 DropShare"
+    }
 };
 
-// Simple text function (no language switching)
+let currentLang = 'en'; // Default language
+
+// Function to set the language
+function setLanguage(langCode) {
+    if (I18N_DATA[langCode]) {
+        currentLang = langCode;
+        console.log(`Language changed to: ${langCode}`);
+        translateUI();
+    } else {
+        console.warn(`Language '${langCode}' not found.`);
+    }
+}
+
+// Function to get the current language's text, with fallback to English
 function getText(key) {
-    return TEXTS[key] || key;
+    const langData = I18N_DATA[currentLang];
+    const fallbackData = I18N_DATA['en'];
+    
+    if (langData && langData[key]) {
+        return langData[key];
+    }
+    if (fallbackData && fallbackData[key]) {
+        return fallbackData[key];
+    }
+    return key; // Return the key itself if not found anywhere
 }
 
-// Compatibility functions (do nothing now)
-function changeLanguage(langCode) {
-    console.log('Language switching disabled - English only');
-}
-
+// Function to get the current language setting
 function getCurrentLanguage() {
-    return 'en';
+    return currentLang;
 }
 
+// Function to translate the UI based on data-i18n attributes
 function translateUI() {
-    // Simple translation without language switching
     const elements = document.querySelectorAll('[data-i18n]');
     elements.forEach(element => {
         const key = element.getAttribute('data-i18n');
         const text = getText(key);
         if (text !== key) {
+            // Use textContent for security (prevents HTML injection)
             element.textContent = text;
         }
     });
 }
 
-// Export for compatibility
+// Export for compatibility and external use
 window.DROPSHARE_I18N = {
     changeLanguage: changeLanguage,
     translate: getText,
-    getCurrentLanguage: getCurrentLanguage
+    getCurrentLanguage: getCurrentLanguage,
+    translateUI: translateUI,
+    getAvailableLanguages: () => Object.keys(I18N_DATA)
 };
 
-// Auto-translate on load
-document.addEventListener('DOMContentLoaded', translateUI);
+// Auto-translate on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // You could add logic here to load a saved language from localStorage
+    // For now, it just uses the default 'en'
+    translateUI();
+});

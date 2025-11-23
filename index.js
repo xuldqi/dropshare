@@ -137,6 +137,81 @@ app.get('/server/fallback', (req, res) => {
     res.status(200).send('WebSocket fallback server ready');
 });
 
+const fs = require('fs');
+const path = require('path');
+
+// Helper function to read and parse the translations file
+function getTranslations() {
+    try {
+        const langFilePath = path.join(__dirname, 'public', 'scripts', 'i18n', 'languages.js');
+        const langFileContent = fs.readFileSync(langFilePath, 'utf8');
+
+        // Extract the I18N_DATA object using a regex
+        const match = langFileContent.match(/const I18N_DATA = ({[\s\S]*?});/);
+        if (!match || !match[1]) {
+            return null;
+        }
+
+        // Safely parse the object string
+        const i18nData = new Function(`return ${match[1]}`)();
+        return i18nData;
+    } catch (error) {
+        console.error('Error reading or parsing translations file:', error);
+        return null;
+    }
+}
+
+// Route for the translation admin tool
+app.get('/admin/translations', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'translation_tool.html'));
+});
+
+// API endpoint to get available languages
+app.get('/api/translations/languages', (req, res) => {
+    const translations = getTranslations();
+    if (!translations) {
+        return res.status(500).json({ error: 'Could not load translations.' });
+    }
+    res.json(Object.keys(translations));
+});
+
+// API endpoint to compare two languages
+app.get('/api/translations/compare', (req, res) => {
+    const { source, target } = req.query;
+
+    if (!source || !target) {
+        return res.status(400).json({ error: 'Please provide both source and target language codes.' });
+    }
+
+    const translations = getTranslations();
+    if (!translations) {
+        return res.status(500).json({ error: 'Could not load translations.' });
+    }
+
+    const sourceKeys = translations[source] ? Object.keys(translations[source]) : [];
+    const targetKeys = translations[target] ? Object.keys(translations[target]) : [];
+
+    if (sourceKeys.length === 0) {
+        return res.status(404).json({ error: `Source language '${source}' not found.` });
+    }
+    if (targetKeys.length === 0) {
+        return res.status(404).json({ error: `Target language '${target}' not found.` });
+    }
+
+    const sourceKeySet = new Set(sourceKeys);
+    const targetKeySet = new Set(targetKeys);
+
+    const missing_in_target = sourceKeys.filter(key => !targetKeySet.has(key));
+    const extra_in_target = targetKeys.filter(key => !sourceKeySet.has(key));
+
+    res.json({
+        source,
+        target,
+        missing_in_target,
+        extra_in_target
+    });
+});
+
 // Fallback: only redirect for HTML navigations; return 404 for missing assets to avoid HTML-as-JS
 app.use(function(req, res) {
     const accept = req.headers['accept'] || '';

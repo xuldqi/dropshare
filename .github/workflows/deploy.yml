@@ -23,19 +23,8 @@ jobs:
     - name: Install dependencies
       run: npm ci
       
-    - name: Build application
-      run: npm run build
-      
     - name: Run tests
       run: npm test --if-present
-      
-    - name: Build Docker image
-      run: |
-        docker build -t colletools:${{ github.sha }} .
-        docker tag colletools:${{ github.sha }} colletools:latest
-        
-    - name: Save Docker image
-      run: docker save colletools:latest | gzip > colletools-latest.tar.gz
       
     - name: Deploy to server
       if: github.ref == 'refs/heads/main'
@@ -48,9 +37,6 @@ jobs:
         script: |
           # 进入dropshare项目目录
           cd /var/www/dropshare
-          
-          # 停止现有容器
-          docker-compose down || true
           
           # 拉取最新代码
           git pull origin main
@@ -92,17 +78,32 @@ jobs:
           # 创建必要目录
           mkdir -p uploads logs ssl
           
-          # 清理旧镜像
-          docker image prune -f
+          # 安装依赖
+          npm install --production
           
-          # 构建并启动新容器
-          docker-compose up -d --build
+          # 重启应用（使用PM2）
+          if command -v pm2 &> /dev/null; then
+            pm2 restart dropshare || pm2 start index.js --name dropshare
+            pm2 save
+          else
+            echo "⚠️  PM2未安装，请手动重启应用"
+            # 停止旧进程
+            pkill -f "node index.js" || true
+            # 启动新进程
+            nohup node index.js > logs/app.log 2>&1 &
+          fi
           
-          # 清理未使用的镜像
-          docker image prune -f
+          # 等待应用启动
+          sleep 5
           
-          # 检查容器状态
-          docker-compose ps
+          # 检查应用状态
+          if command -v pm2 &> /dev/null; then
+            pm2 status
+          fi
+          
+          # 测试连接
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || echo "000")
+          echo "HTTP状态码: $HTTP_CODE"
           
           echo "✅ 部署完成！"
           echo "🌐 访问地址：https://dropshare.tech"

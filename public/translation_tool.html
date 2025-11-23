@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation Management Tool</title>
+    <style>
+        body { font-family: sans-serif; padding: 2em; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .controls { margin-bottom: 2em; display: flex; gap: 1em; align-items: center; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .results { display: flex; gap: 2em; }
+        .results > div { flex: 1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Translation Management Tool</h1>
+        <div class="controls">
+            <label for="source-lang">Source:</label>
+            <select id="source-lang"></select>
+            <label for="target-lang">Target:</label>
+            <select id="target-lang"></select>
+            <button id="compare-btn">Compare</button>
+        </div>
+        <div id="loading" style="display: none;">Loading...</div>
+        <div class="results">
+            <div id="missing-keys">
+                <h2>Missing in Target</h2>
+                <table id="missing-keys-table">
+                    <thead>
+                        <tr><th>Key</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="extra-keys">
+                <h2>Extra in Target</h2>
+                <table id="extra-keys-table">
+                    <thead>
+                        <tr><th>Key</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="translation_tool.js"></script>
+</body>
+</html>
