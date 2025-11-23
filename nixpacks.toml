@@ -2,7 +2,7 @@
 # This file tells Nixpacks how to build the application
 
 [phases.setup]
-nixPkgs = ["nodejs_18", "npm"]
+nixPkgs = ["nodejs_18"]
 
 [phases.install]
 cmds = [
