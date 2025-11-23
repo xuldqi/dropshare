@@ -14,14 +14,3 @@ cmds = []
 
 [start]
 cmd = "node index.js"
-
-# Ignore problematic files and directories
-[ignore]
-paths = [
-  "backup/",
-  "**/backup/**",
-  "*.backup",
-  "*.bak",
-  "*_backup.*",
-  "*_fixed.js"
-]
