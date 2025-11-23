@@ -1,0 +1,27 @@
+# Nixpacks configuration for DropShare
+# This file tells Nixpacks how to build the application
+
+[phases.setup]
+nixPkgs = ["nodejs_18", "npm"]
+
+[phases.install]
+cmds = [
+  "npm ci --only=production"
+]
+
+[phases.build]
+cmds = []
+
+[start]
+cmd = "node index.js"
+
+# Ignore problematic files and directories
+[ignore]
+paths = [
+  "backup/",
+  "**/backup/**",
+  "*.backup",
+  "*.bak",
+  "*_backup.*",
+  "*_fixed.js"
+]
