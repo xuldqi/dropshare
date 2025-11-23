@@ -121,6 +121,15 @@ output/
 
 # Embedded git repositories
 snapdrop-source/
+
+# Backup files and directories
+backup/
+**/backup/
+*.backup
+*.bak
+*_backup.*
+*_fixed.js
+
 # Allow tracking app public sources
 !public/
 !public/**
