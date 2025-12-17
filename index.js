@@ -1,14 +1,14 @@
 var process = require('process')
 // Handle SIGINT
 process.on('SIGINT', () => {
-  console.info("SIGINT Received, exiting...")
-  process.exit(0)
+    console.info("SIGINT Received, exiting...")
+    process.exit(0)
 })
 
 // Handle SIGTERM
 process.on('SIGTERM', () => {
-  console.info("SIGTERM Received, exiting...")
-  process.exit(0)
+    console.info("SIGTERM Received, exiting...")
+    process.exit(0)
 })
 
 // Handle APP ERRORS
@@ -18,14 +18,14 @@ process.on('uncaughtException', (error, origin) => {
     console.log('Stack:', error.stack)
     console.log('Origin:', origin)
     console.log('Time:', new Date().toISOString())
-    
+
     // Log memory usage
     const memUsage = process.memoryUsage()
     console.log('Memory usage:')
     console.log(`RSS: ${Math.round(memUsage.rss / 1024 / 1024)} MB`)
     console.log(`Heap Used: ${Math.round(memUsage.heapUsed / 1024 / 1024)} MB`)
     console.log(`Heap Total: ${Math.round(memUsage.heapTotal / 1024 / 1024)} MB`)
-    
+
     // Don't exit process, continue running
     console.log('Server continuing to run...')
 })
@@ -35,7 +35,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.log('Promise:', promise)
     console.log('Reason:', reason)
     console.log('Time:', new Date().toISOString())
-    
+
     // Don't exit process
     console.log('Server continuing to run...')
 })
@@ -47,11 +47,11 @@ const RateLimit = require('express-rate-limit');
 const http = require('http');
 
 const limiter = RateLimit({
-	windowMs: 5 * 60 * 1000, // 5 minutes
-	max: 1000, // Limit each IP to 1000 requests per `window` (here, per 5 minutes)
-	message: 'Too many requests from this IP Address, please try again after 5 minutes.',
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 1000, // Limit each IP to 1000 requests per `window` (here, per 5 minutes)
+    message: 'Too many requests from this IP Address, please try again after 5 minutes.',
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
 const app = express();
@@ -213,7 +213,7 @@ app.get('/api/translations/compare', (req, res) => {
 });
 
 // Fallback: only redirect for HTML navigations; return 404 for missing assets to avoid HTML-as-JS
-app.use(function(req, res) {
+app.use(function (req, res) {
     const accept = req.headers['accept'] || '';
     const isHTML = accept.includes('text/html') || req.method === 'GET' && !req.path.includes('.');
     if (isHTML) {
@@ -235,13 +235,13 @@ server.listen(port, host, () => {
     console.log('Please visit: http://' + (host === '0.0.0.0' ? 'localhost' : host) + ':' + port);
     console.log('---------------------------------------');
 })
-.on('error', (err) => {
-    console.error('Server startup failed:');
-    console.error(err);
-    if(err.code === 'EADDRINUSE') {
-        console.error(`Port ${port} is already in use, please try a different port`);
-}
-});
+    .on('error', (err) => {
+        console.error('Server startup failed:');
+        console.error(err);
+        if (err.code === 'EADDRINUSE') {
+            console.error(`Port ${port} is already in use, please try a different port`);
+        }
+    });
 
 const parser = require('ua-parser-js');
 const { uniqueNamesGenerator, animals, colors } = require('unique-names-generator');
@@ -253,23 +253,23 @@ class DropShareServer {
         console.log('正在初始化WebSocket服务器...');
         this._wss = new WebSocket.Server({ server });
         console.log('WebSocket服务器已创建，绑定到HTTP服务器');
-        
+
         this._wss.on('connection', (socket, request) => {
             console.log('收到新的WebSocket连接请求');
             console.log('请求URL:', request.url);
             console.log('请求头:', request.headers);
             this._onConnection(new Peer(socket, request));
         });
-        
+
         this._wss.on('headers', (headers, response) => {
             console.log('WebSocket握手头部事件');
             this._onHeaders(headers, response);
         });
-        
+
         this._wss.on('error', (error) => {
             console.error('WebSocket服务器错误:', error);
         });
-        
+
         console.log('WebSocket事件监听器已设置');
 
         this._rooms = {};
@@ -328,7 +328,7 @@ class DropShareServer {
                     clearInterval(this._statsTimer);
                     console.log('Main statistics timer cleaned up');
                 }
-                
+
                 // Clean up all custom timers
                 let cleanedCount = 0;
                 for (const [timerId, timerData] of this._timers) {
@@ -337,7 +337,7 @@ class DropShareServer {
                 }
                 this._timers.clear();
                 console.log(`Cleaned up ${cleanedCount} custom timers`);
-                
+
                 // Clean up all peer keepalive timers
                 let peerTimerCount = 0;
                 for (const ip in this._rooms) {
@@ -350,7 +350,7 @@ class DropShareServer {
                     }
                 }
                 console.log(`Cleaned up ${peerTimerCount} peer keepalive timers`);
-                
+
                 console.log('All resources cleaned up');
             } catch (error) {
                 console.error('Error occurred while cleaning up resources:', error);
@@ -366,7 +366,7 @@ class DropShareServer {
     _logServerStats() {
         const uptime = Math.round((Date.now() - this._stats.startTime) / 1000 / 60); // minutes
         const memUsage = process.memoryUsage();
-        
+
         // Debug info hidden - uncomment below lines to show server stats
         // console.log('=== Server Stats ===');
         // console.log(`Uptime: ${uptime} minutes`);
@@ -382,19 +382,19 @@ class DropShareServer {
     _cleanupExpiredData() {
         try {
             console.log('=== Starting cleanup of expired data ===');
-            
+
             // Clean up expired reconnection records (over 10 minutes)
             const now = Date.now();
             const expiredThreshold = 10 * 60 * 1000; // 10 minutes
             let cleanedReconnections = 0;
-            
+
             for (const [peerId, data] of this._recentlyDisconnected) {
                 if (now - data.disconnectTime > expiredThreshold) {
                     this._recentlyDisconnected.delete(peerId);
                     cleanedReconnections++;
                 }
             }
-            
+
             // Clean up expired timers
             let cleanedTimers = 0;
             const timerTypes = {};
@@ -403,16 +403,16 @@ class DropShareServer {
                     clearTimeout(timerData.timer);
                     this._timers.delete(timerId);
                     cleanedTimers++;
-                    
+
                     // Count timer types
                     timerTypes[timerData.type] = (timerTypes[timerData.type] || 0) + 1;
                 }
             }
-            
+
             if (cleanedTimers > 0) {
                 console.log(`Cleaned timer types:`, timerTypes);
             }
-            
+
             // Clean up empty rooms
             let cleanedRooms = 0;
             for (const [ip, room] of Object.entries(this._rooms)) {
@@ -421,7 +421,7 @@ class DropShareServer {
                     cleanedRooms++;
                 }
             }
-            
+
             // Clean up empty private rooms
             let cleanedPrivateRooms = 0;
             for (const [roomCode, room] of Object.entries(this._privateRooms)) {
@@ -430,7 +430,7 @@ class DropShareServer {
                     cleanedPrivateRooms++;
                 }
             }
-            
+
             console.log(`Cleanup completed - Reconnection records: ${cleanedReconnections}, Timers: ${cleanedTimers}, Rooms: ${cleanedRooms}, Private rooms: ${cleanedPrivateRooms}`);
             console.log(`Current status - Reconnection records: ${this._recentlyDisconnected.size}, Timers: ${this._timers.size}, Rooms: ${Object.keys(this._rooms).length}, Private rooms: ${Object.keys(this._privateRooms).length}`);
         } catch (error) {
@@ -444,25 +444,25 @@ class DropShareServer {
             const now = Date.now();
             const recentDisconnectKey = `${peer.id}-${peer.ip}`;
             const lastDisconnect = this._recentlyDisconnected.get(recentDisconnectKey);
-            
+
             if (lastDisconnect && (now - lastDisconnect < 500)) { // 减少到0.5秒
                 console.log(`Ignoring rapid reconnection from ${peer.id} (${now - lastDisconnect}ms ago)`);
                 peer.socket.close();
                 return;
             }
-            
+
             // Remove from recently disconnected list
             this._recentlyDisconnected.delete(recentDisconnectKey);
-            
+
             // Check and remove ALL existing peers with same ID across all rooms
             for (const ip in this._rooms) {
                 if (this._rooms[ip] && this._rooms[ip][peer.id]) {
                     console.log(`Found existing peer ${peer.id} in room ${ip}, removing old connection`);
                     const oldPeer = this._rooms[ip][peer.id];
-                    
+
                     // Immediately remove from room to prevent self-connections
                     delete this._rooms[ip][peer.id];
-                    
+
                     // Then clean up the old connection
                     this._cancelKeepAlive(oldPeer);
                     if (oldPeer.socket) {
@@ -471,18 +471,18 @@ class DropShareServer {
                     }
                 }
             }
-            
+
             // Update connection statistics
             this._stats.connections++;
             this._stats.totalConnections++;
-            console.log(`New connection: ${peer.id} (total: ${this._stats.connections})`);
+            console.log(`🆕 New connection: ${peer.id.substring(0, 8)}... | IP: ${peer.ip} | Device: ${peer.name.deviceName} | Total: ${this._stats.connections}`);
 
             // 🔧 FIX: Assign peer object to WebSocket for _findPeerById to work
             peer.socket.peer = peer;
             console.log(`🔗 Peer object assigned to WebSocket: ${peer.id.substring(0, 8)}...`);
 
             this._joinRoom(peer);
-            
+
             peer.socket.on('message', message => {
                 try {
                     this._onMessage(peer, message);
@@ -494,7 +494,7 @@ class DropShareServer {
                     console.error('========================');
                 }
             });
-            
+
             peer.socket.on('close', () => {
                 try {
                     // Only decrement if this wasn't a replaced connection
@@ -507,7 +507,7 @@ class DropShareServer {
                     console.error('连接关闭处理错误:', error.message);
                 }
             });
-            
+
             peer.socket.on('error', (error) => {
                 console.error('=== WebSocket错误 ===');
                 console.error('Peer ID:', peer.id);
@@ -515,7 +515,7 @@ class DropShareServer {
                 console.error('时间:', new Date().toISOString());
                 console.error('==================');
             });
-            
+
             this._keepAlive(peer);
 
             // send displayName
@@ -622,7 +622,7 @@ class DropShareServer {
             case 'progress':
             case 'transfer-complete':
                 if (!relay()) {
-                    console.log(`⚠️ Relay failed for ${message.type} from ${sender.id.substring(0,8)}...`);
+                    console.log(`⚠️ Relay failed for ${message.type} from ${sender.id.substring(0, 8)}...`);
                 }
                 break;
             case 'create-room':
@@ -644,7 +644,7 @@ class DropShareServer {
                 this._handleRoomFileRemoved(sender, message);
                 break;
             default:
-                console.log(`未知消息类型: ${message.type} from ${sender.id.substring(0,8)}...`);
+                console.log(`未知消息类型: ${message.type} from ${sender.id.substring(0, 8)}...`);
         }
     }
 
@@ -663,7 +663,7 @@ class DropShareServer {
             otherPeers.push(this._rooms[peer.ip][otherPeerId].getInfo());
         }
 
-        console.log(`📋 Sending peers list to ${peer.id.substring(0,8)}...: ${otherPeers.length} peers`);
+        console.log(`📋 Sending peers list to ${peer.id.substring(0, 8)}...: ${otherPeers.length} peers`);
         this._send(peer, {
             type: 'peers',
             peers: otherPeers
@@ -676,6 +676,10 @@ class DropShareServer {
             this._rooms[peer.ip] = {};
         }
 
+        // 添加详细日志帮助调试设备发现问题
+        const existingPeers = Object.keys(this._rooms[peer.ip] || {});
+        console.log(`🏠 Peer ${peer.id.substring(0, 8)}... joining room ${peer.ip} | Existing peers: ${existingPeers.length} | IDs: ${existingPeers.map(id => id.substring(0, 8)).join(', ') || 'none'}`);
+
         // notify all other peers
         for (const otherPeerId in this._rooms[peer.ip]) {
             const otherPeer = this._rooms[peer.ip][otherPeerId];
@@ -683,6 +687,7 @@ class DropShareServer {
                 type: 'peer-joined',
                 peer: peer.getInfo()
             });
+            console.log(`📢 Notified ${otherPeerId.substring(0, 8)}... about new peer ${peer.id.substring(0, 8)}...`);
         }
 
         // notify peer about the other peers (excluding self)
@@ -690,7 +695,7 @@ class DropShareServer {
         for (const otherPeerId in this._rooms[peer.ip]) {
             // Skip if it's the same peer ID (prevents self-connection)
             if (otherPeerId === peer.id) {
-                console.log(`⚠️  Skipping duplicate peer with same ID: ${peer.id.substring(0,8)}...`);
+                console.log(`⚠️  Skipping duplicate peer with same ID: ${peer.id.substring(0, 8)}...`);
                 continue;
             }
             otherPeers.push(this._rooms[peer.ip][otherPeerId].getInfo());
@@ -700,9 +705,11 @@ class DropShareServer {
             type: 'peers',
             peers: otherPeers
         });
+        console.log(`📋 Sent ${otherPeers.length} peers to ${peer.id.substring(0, 8)}...${otherPeers.length > 0 ? ': ' + otherPeers.map(p => p.name?.displayName || p.id.substring(0, 8)).join(', ') : ''}`);
 
         // add peer to room
         this._rooms[peer.ip][peer.id] = peer;
+        console.log(`✅ Peer ${peer.id.substring(0, 8)}... added to room ${peer.ip} | Total peers in room: ${Object.keys(this._rooms[peer.ip]).length}`);
     }
 
     _leaveRoom(peer) {
@@ -738,14 +745,14 @@ class DropShareServer {
                 console.warn('发送消息失败: peer 或 socket 不存在');
                 return;
             }
-            
+
             if (peer.socket.readyState !== peer.socket.OPEN) {
                 const states = ['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'];
                 const stateName = states[peer.socket.readyState] || 'UNKNOWN';
                 console.warn(`发送消息失败: WebSocket状态异常 (${peer.socket.readyState}=${stateName}) for peer ${peer.id}`);
                 return;
             }
-            
+
             const messageStr = JSON.stringify(message);
             peer.socket.send(messageStr, (error) => {
                 if (error) {
@@ -796,16 +803,29 @@ class DropShareServer {
         } else if (message.ice) {
             signalType = 'ice-candidate';
         }
-        console.log(`📡 Signal ${sender.id.substring(0,8)}... → ${message.to.substring(0,8)}...: ${signalType}`);
-        
-        // 继续原有的消息转发逻辑
-        // 这个函数主要是为了调试，实际转发在后面的通用逻辑中进行
+        console.log(`📡 Signal ${sender.id.substring(0, 8)}... → ${message.to ? message.to.substring(0, 8) : 'unknown'}...: ${signalType}`);
+
+        // 实际转发信令消息到目标 peer
+        if (message.to && this._rooms[sender.ip]) {
+            const recipientId = message.to;
+            const recipient = this._rooms[sender.ip][recipientId];
+            if (recipient) {
+                delete message.to;
+                message.sender = sender.id;
+                this._send(recipient, message);
+                console.log(`✅ Signal relayed to ${recipientId.substring(0, 8)}...`);
+            } else {
+                console.log(`⚠️ Signal recipient not found: ${recipientId.substring(0, 8)}...`);
+            }
+        } else {
+            console.log(`⚠️ Signal relay failed: no 'to' field or room not found`);
+        }
     }
 
     // 私密房间功能方法
     _createPrivateRoom(host, roomSettings, userInfo) {
         const roomCode = roomSettings.code;
-        
+
         // 如果提供了userInfo，更新host的显示信息
         if (userInfo) {
             if (userInfo.displayName) {
@@ -815,7 +835,7 @@ class DropShareServer {
                 host.name.deviceName = userInfo.deviceName;
             }
         }
-        
+
         console.log(`=== 创建房间请求 ===`);
         console.log(`Host ID: ${host.id}, Room Code: ${roomCode}`);
         console.log(`当前房间存在: ${!!this._privateRooms[roomCode]}`);
@@ -823,13 +843,13 @@ class DropShareServer {
             console.log(`现有房间成员数: ${this._privateRooms[roomCode].members.size}`);
             console.log(`现有房间成员列表: ${Array.from(this._privateRooms[roomCode].members.keys())}`);
         }
-        
+
         // 检查是否是重连场景
         const recentDisconnect = this._recentlyDisconnected.get(host.id);
         if (recentDisconnect && recentDisconnect.roomCode === roomCode && recentDisconnect.isHost) {
             // 这是房主重连
             console.log(`Host ${host.id} reconnecting to room ${roomCode} after disconnect`);
-            
+
             const existingRoom = this._privateRooms[roomCode];
             if (existingRoom) {
                 // 恢复房主身份
@@ -840,15 +860,15 @@ class DropShareServer {
                     isHost: true,
                     joinedAt: recentDisconnect.memberInfo.joinedAt // 保持原有加入时间
                 });
-                
+
                 host.currentRoom = roomCode;
-                
+
                 // 清除重连记录
                 this._recentlyDisconnected.delete(host.id);
-                
+
                 // 清理重复成员
                 this._deduplicateRoomMembers(roomCode);
-                
+
                 // 发送房间重连成功消息
                 this._send(host, {
                     type: 'room-created',
@@ -861,26 +881,26 @@ class DropShareServer {
                     hostId: host.id,
                     hostInfo: existingRoom.members.get(host.id)
                 });
-                
+
                 // 通知其他成员房主重新上线
                 this._broadcastToRoom(roomCode, {
                     type: 'room-member-joined',
                     member: existingRoom.members.get(host.id),
                     isReconnect: true
                 }, host.id);
-                
+
                 return;
             }
         }
-        
+
         // 检查房间码是否已存在
         if (this._privateRooms[roomCode]) {
             const existingRoom = this._privateRooms[roomCode];
-            
+
             // 检查这个用户是否是原房主 (其他重连场景)
             if (existingRoom.hostId === host.id) {
                 console.log(`Host ${host.id} reconnecting to existing room ${roomCode}`);
-                
+
                 // 更新房主信息但不重复添加到成员列表
                 if (!existingRoom.members.has(host.id)) {
                     existingRoom.members.set(host.id, {
@@ -891,12 +911,12 @@ class DropShareServer {
                         joinedAt: Date.now()
                     });
                 }
-                
+
                 host.currentRoom = roomCode;
-                
+
                 // 清理重复成员
                 this._deduplicateRoomMembers(roomCode);
-                
+
                 // 发送房间重连成功消息
                 this._send(host, {
                     type: 'room-created',
@@ -909,10 +929,10 @@ class DropShareServer {
                     hostId: host.id,
                     hostInfo: existingRoom.members.get(host.id)
                 });
-                
+
                 return;
             }
-            
+
             // 如果不是原房主，返回错误
             this._send(host, {
                 type: 'room-error',
@@ -952,7 +972,7 @@ class DropShareServer {
         // 通知房主房间创建成功
         console.log(`🚀 准备发送房间创建成功消息给 ${host.id}`);
         console.log(`房间代码: ${room.code}, 房间名称: ${room.name}`);
-        
+
         this._send(host, {
             type: 'room-created',
             room: {
@@ -964,7 +984,7 @@ class DropShareServer {
             hostId: host.id,
             hostInfo: room.members.get(host.id)
         });
-        
+
         console.log(`✅ 房间创建成功消息已发送给 ${host.id}`);
     }
 
@@ -978,9 +998,9 @@ class DropShareServer {
                 peer.name.deviceName = userInfo.deviceName;
             }
         }
-        
+
         const room = this._privateRooms[roomCode];
-        
+
         if (!room) {
             this._send(peer, {
                 type: 'room-error',
@@ -1012,7 +1032,7 @@ class DropShareServer {
         if (recentDisconnect && recentDisconnect.roomCode === roomCode && !recentDisconnect.isHost) {
             // 这是普通成员重连
             console.log(`User ${peer.id} reconnecting to room ${roomCode} after disconnect`);
-            
+
             // 恢复成员身份
             room.members.set(peer.id, {
                 id: peer.id,
@@ -1021,15 +1041,15 @@ class DropShareServer {
                 isHost: false,
                 joinedAt: recentDisconnect.memberInfo.joinedAt // 保持原有加入时间
             });
-            
+
             peer.currentRoom = roomCode;
-            
+
             // 清除重连记录
             this._recentlyDisconnected.delete(peer.id);
-            
+
             // 清理重复成员
             this._deduplicateRoomMembers(roomCode);
-            
+
             // 发送重连成功消息
             this._send(peer, {
                 type: 'room-joined',
@@ -1041,7 +1061,7 @@ class DropShareServer {
                 },
                 members: Array.from(room.members.values())
             });
-            
+
             // 发送房间历史文件给重连用户
             if (room.files && room.files.size > 0) {
                 console.log(`Sending ${room.files.size} historical files to reconnected user ${peer.id}`);
@@ -1055,21 +1075,21 @@ class DropShareServer {
                     });
                 });
             }
-            
+
             // 通知其他成员用户重新上线
             this._broadcastToRoom(roomCode, {
                 type: 'room-member-joined',
                 member: room.members.get(peer.id),
                 isReconnect: true
             }, peer.id);
-            
+
             return;
         }
 
         // 检查用户是否已在房间中 (其他重连场景)
         if (room.members.has(peer.id)) {
             console.log(`User ${peer.id} reconnecting to room ${roomCode}`);
-            
+
             // 更新成员信息
             room.members.set(peer.id, {
                 id: peer.id,
@@ -1078,12 +1098,12 @@ class DropShareServer {
                 isHost: false,
                 joinedAt: room.members.get(peer.id).joinedAt // 保持原有加入时间
             });
-            
+
             peer.currentRoom = roomCode;
-            
+
             // 清理重复成员
             this._deduplicateRoomMembers(roomCode);
-            
+
             // 发送重连成功消息
             this._send(peer, {
                 type: 'room-joined',
@@ -1095,7 +1115,7 @@ class DropShareServer {
                 },
                 members: Array.from(room.members.values())
             });
-            
+
             // 发送房间历史文件给重连用户
             if (room.files && room.files.size > 0) {
                 console.log(`Sending ${room.files.size} historical files to reconnected user ${peer.id}`);
@@ -1109,7 +1129,7 @@ class DropShareServer {
                     });
                 });
             }
-            
+
             return;
         }
 
@@ -1170,7 +1190,7 @@ class DropShareServer {
 
     _leavePrivateRoom(peer, roomCode) {
         const room = this._privateRooms[roomCode];
-        
+
         if (!room || !room.members.has(peer.id)) {
             return;
         }
@@ -1198,7 +1218,7 @@ class DropShareServer {
                 type: 'room-disbanded',
                 reason: isHost ? 'Host left the room' : 'Room is empty'
             });
-            
+
             // 清理所有成员的房间状态
             room.members.forEach((member, memberId) => {
                 const memberPeer = this._findPeerById(memberId);
@@ -1206,7 +1226,7 @@ class DropShareServer {
                     memberPeer.currentRoom = null;
                 }
             });
-            
+
             delete this._privateRooms[roomCode];
         }
 
@@ -1219,7 +1239,7 @@ class DropShareServer {
 
     _kickMember(host, roomCode, memberId) {
         const room = this._privateRooms[roomCode];
-        
+
         if (!room || !room.members.has(host.id) || !room.members.get(host.id).isHost) {
             this._send(host, {
                 type: 'room-error',
@@ -1244,7 +1264,7 @@ class DropShareServer {
                 roomCode: roomCode,
                 reason: 'You have been removed from the room by the host.'
             });
-            
+
             memberPeer.currentRoom = null;
         }
 
@@ -1274,7 +1294,7 @@ class DropShareServer {
 
         console.log(`📢 Broadcasting to room ${roomCode}: ${message.type}`);
         console.log(`📊 Room has ${room.members.size} members`);
-        
+
         let sentCount = 0;
         room.members.forEach((member, memberId) => {
             if (memberId !== excludePeerId) {
@@ -1288,13 +1308,13 @@ class DropShareServer {
                 }
             }
         });
-        
+
         console.log(`✅ Broadcast complete: sent to ${sentCount} members`);
     }
 
     _findPeerById(peerId) {
         console.log(`🔍 Looking for peer: ${peerId.substring(0, 8)}...`);
-        
+
         // 首先在普通房间中查找
         for (const ip in this._rooms) {
             if (this._rooms[ip][peerId]) {
@@ -1302,7 +1322,7 @@ class DropShareServer {
                 return this._rooms[ip][peerId];
             }
         }
-        
+
         // 然后在WebSocket连接中查找（私有房间用户）
         let wsCount = 0;
         for (const ws of this._wss.clients) {
@@ -1313,22 +1333,22 @@ class DropShareServer {
                 return ws.peer;
             }
         }
-        
+
         console.log(`❌ Peer not found. Checked ${Object.keys(this._rooms).length} regular rooms and ${wsCount} WebSocket connections`);
         return null;
     }
-    
+
     // 清理房间中的重复成员（只保留最新的）
     _deduplicateRoomMembers(roomCode) {
         const room = this._privateRooms[roomCode];
         if (!room) return;
-        
+
         console.log(`开始清理房间 ${roomCode} 的重复成员`);
         console.log(`清理前成员数: ${room.members.size}`);
-        
+
         const activePeers = new Set();
         const toRemove = [];
-        
+
         // 收集所有活跃的peer ID（包括WebSocket连接）
         for (const ip in this._rooms) {
             for (const peerId in this._rooms[ip]) {
@@ -1339,9 +1359,9 @@ class DropShareServer {
                 }
             }
         }
-        
+
         console.log(`发现活跃连接: ${Array.from(activePeers)}`);
-        
+
         // 检查房间成员，移除不活跃的（但要保留最近创建的成员）
         const now = Date.now();
         for (const [memberId, memberInfo] of room.members) {
@@ -1351,44 +1371,44 @@ class DropShareServer {
                 console.log(`保留新成员: ${memberId} (加入时间: ${memberAge}ms 前)`);
                 continue;
             }
-            
+
             // 如果是房主，更加保守，保留更长时间（5分钟）
             if (memberInfo.isHost && memberAge < 300000) {
                 console.log(`保留房主: ${memberId} (房主，加入时间: ${memberAge}ms 前)`);
                 continue;
             }
-            
+
             if (!activePeers.has(memberId)) {
                 console.log(`发现不活跃成员: ${memberId}, 将被移除`);
                 toRemove.push(memberId);
             }
         }
-        
+
         // 移除不活跃的成员
         toRemove.forEach(memberId => {
             room.members.delete(memberId);
         });
-        
+
         console.log(`清理后成员数: ${room.members.size}`);
         console.log(`剩余成员: ${Array.from(room.members.keys())}`);
-        
+
         return toRemove.length > 0;
     }
-    
+
     // 清理用户的私密房间成员身份（当WebSocket连接断开时）
     _cleanupPrivateRoomMembership(peer) {
         if (!peer.currentRoom) return;
-        
+
         const roomCode = peer.currentRoom;
         const room = this._privateRooms[roomCode];
-        
+
         if (!room || !room.members.has(peer.id)) return;
-        
+
         console.log(`Cleaning up private room membership for ${peer.id} in room ${roomCode}`);
-        
+
         const memberInfo = room.members.get(peer.id);
         const isHost = memberInfo.isHost;
-        
+
         // 记录最近断开连接的用户信息，用于重连检测（5分钟内有效）
         this._recentlyDisconnected.set(peer.id, {
             roomCode: roomCode,
@@ -1396,14 +1416,14 @@ class DropShareServer {
             disconnectTime: Date.now(),
             isHost: isHost
         });
-        
+
         // 5分钟后清理记录
         const cleanupTimerId = `cleanup_reconnect_${peer.id}_${Date.now()}`;
         const cleanupTimer = setTimeout(() => {
             this._recentlyDisconnected.delete(peer.id);
             this._timers.delete(cleanupTimerId);
         }, 5 * 60 * 1000);
-        
+
         // 将计时器添加到管理列表
         this._timers.set(cleanupTimerId, {
             timer: cleanupTimer,
@@ -1412,10 +1432,10 @@ class DropShareServer {
             createdAt: Date.now(),
             expiresAt: Date.now() + (5 * 60 * 1000)
         });
-        
+
         room.members.delete(peer.id);
         peer.currentRoom = null;
-        
+
         // 通知其他成员有成员离开（但不是明确退出，而是连接断开）
         this._broadcastToRoom(roomCode, {
             type: 'room-member-left',
@@ -1429,11 +1449,11 @@ class DropShareServer {
                 members: Array.from(room.members.values())
             }
         });
-        
+
         // 如果房主断开连接，暂时不解散房间，给5分钟重连时间
         if (isHost) {
             console.log(`Host ${peer.id} disconnected from room ${roomCode}, giving 5 minutes to reconnect`);
-            
+
             // 5分钟后如果房主还没重连，则解散房间
             const disbandTimerId = `disband_room_${roomCode}_${peer.id}_${Date.now()}`;
             const disbandTimer = setTimeout(() => {
@@ -1445,7 +1465,7 @@ class DropShareServer {
                         type: 'room-disbanded',
                         reason: 'Host did not reconnect'
                     });
-                    
+
                     // 清理所有成员的房间状态
                     if (currentRoom) {
                         currentRoom.members.forEach((member, memberId) => {
@@ -1460,7 +1480,7 @@ class DropShareServer {
                 // 清理计时器引用
                 this._timers.delete(disbandTimerId);
             }, 5 * 60 * 1000);
-            
+
             // 将计时器添加到管理列表
             this._timers.set(disbandTimerId, {
                 timer: disbandTimer,
@@ -1480,11 +1500,11 @@ class DropShareServer {
             delete this._privateRooms[roomCode];
         }
     }
-    
+
     // 处理房间文件共享
     _handleRoomFileShared(sender, message) {
         const room = this._privateRooms[message.roomCode];
-        
+
         if (!room || !room.members.has(sender.id)) {
             this._send(sender, {
                 type: 'room-error',
@@ -1492,12 +1512,12 @@ class DropShareServer {
             });
             return;
         }
-        
+
         // 保存文件到房间
         if (!room.files) {
             room.files = new Map();
         }
-        
+
         const fileRecord = {
             id: message.fileInfo.id,
             info: message.fileInfo,
@@ -1505,9 +1525,9 @@ class DropShareServer {
             uploadedBy: sender.id,
             uploadedAt: Date.now()
         };
-        
+
         room.files.set(message.fileInfo.id, fileRecord);
-        
+
         // 广播文件共享消息和数据给房间内其他成员（无文件大小限制）
         this._broadcastToRoom(message.roomCode, {
             type: 'room-file-shared',
@@ -1515,16 +1535,16 @@ class DropShareServer {
             fileInfo: message.fileInfo,
             fileData: message.fileData // 包含文件数据
         }, sender.id);
-        
+
         const fileDataSize = message.fileData ? message.fileData.length : 0;
         console.log(`Room ${message.roomCode}: ${sender.name.displayName} shared file: ${message.fileInfo.name} (${fileDataSize} bytes)`);
         console.log(`Room ${message.roomCode} now has ${room.files.size} files`);
     }
-    
+
     // 处理房间文件删除
     _handleRoomFileRemoved(sender, message) {
         const room = this._privateRooms[message.roomCode];
-        
+
         if (!room || !room.members.has(sender.id)) {
             this._send(sender, {
                 type: 'room-error',
@@ -1532,14 +1552,14 @@ class DropShareServer {
             });
             return;
         }
-        
+
         // 广播文件删除消息给房间内其他成员
         this._broadcastToRoom(message.roomCode, {
             type: 'room-file-removed',
             roomCode: message.roomCode,
             fileId: message.fileId
         }, sender.id);
-        
+
         console.log(`Room ${message.roomCode}: ${sender.name.displayName} removed file: ${message.fileId}`);
     }
 }
@@ -1599,18 +1619,18 @@ class Peer {
 
 
         let deviceName = '';
-        
+
         if (ua.os && ua.os.name) {
             deviceName = ua.os.name.replace('Mac OS', 'Mac') + ' ';
         }
-        
+
         if (ua.device.model) {
             deviceName += ua.device.model;
         } else {
             deviceName += ua.browser.name;
         }
 
-        if(!deviceName)
+        if (!deviceName)
             deviceName = 'Unknown Device';
 
         const displayName = uniqueNamesGenerator({
@@ -1618,7 +1638,7 @@ class Peer {
             separator: ' ',
             dictionaries: [colors, animals],
             style: 'capital',
-            seed: Date.now() + Math.random() * 1000000  // 使用时间戳+随机数作为种子，每次都不同
+            seed: this.id.hashCode()  // 使用 peer ID 的 hash 值作为种子，确保同一设备每次显示相同名字
         })
 
         this.name = {
@@ -1667,15 +1687,15 @@ class Peer {
 }
 
 Object.defineProperty(String.prototype, 'hashCode', {
-  value: function() {
-    var hash = 0, i, chr;
-    for (i = 0; i < this.length; i++) {
-      chr   = this.charCodeAt(i);
-      hash  = ((hash << 5) - hash) + chr;
-      hash |= 0; // Convert to 32bit integer
+    value: function () {
+        var hash = 0, i, chr;
+        for (i = 0; i < this.length; i++) {
+            chr = this.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
     }
-    return hash;
-  }
 });
 
 const dropShareServer = new DropShareServer();
@@ -1701,7 +1721,7 @@ app.get('/debug/kill/:peerId', (req, res) => {
             try {
                 const p = room[id];
                 if (p && p.socket) p.socket.terminate();
-            } catch (_) {}
+            } catch (_) { }
             delete room[id];
             removed = true;
         }
