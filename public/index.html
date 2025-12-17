@@ -1319,6 +1319,131 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
+    <style>
+        /* QR Code Modal Styles */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .qr-modal.active {
+            display: flex;
+        }
+
+        .qr-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 90%;
+            width: 340px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .qr-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--gray-900);
+        }
+
+        .qr-subtitle {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 24px;
+        }
+
+        #qrcode {
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background: white;
+        }
+
+        #qrcode canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .qr-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-400);
+            padding: 4px;
+            line-height: 1;
+        }
+
+        .qr-close:hover {
+            color: var(--gray-600);
+        }
+
+        .mobile-connect-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            color: var(--gray-700);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        .mobile-connect-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-300);
+            color: var(--primary-600);
+        }
+
+        .mobile-connect-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-connect-btn span {
+                display: none;
+            }
+
+            .mobile-connect-btn {
+                padding: 8px;
+                margin-right: 8px;
+            }
+        }
+    </style>
 </head>
 
 <body style="display: block; overflow-y: auto;">
@@ -1337,15 +1462,20 @@
                             data-i18n="site_name">DropShare</a>
                     </div>
                 </div>
-                <nav class="nav-links" id="mobileNavLinks">
-                    <a href="transer.html" data-i18n="nav_transfer">Transfer</a>
-                    <a href="rooms-improved.html" data-i18n="nav_rooms">Rooms</a>
-                    <a href="image-tools.html" data-i18n="nav_images">Images</a>
-                    <a href="audio-tools.html" data-i18n="nav_audio">Audio</a>
-                    <a href="video-tools.html" data-i18n="nav_video">Video</a>
-                    <a href="document-tools.html" data-i18n="nav_files">Files</a>
+                <nav class="nav-links" id="mobileNavLinks" style="display: none;">
+                    <!-- Hidden navigation links to declutter header -->
                 </nav>
                 <div class="control-buttons" style="display: flex; justify-content: flex-end; position: relative;">
+                    <button class="mobile-connect-btn" id="show-qr-btn" title="Scan to Connect">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75zM15 15h1.5v1.5H15V15z" />
+                        </svg>
+                        <span>Connect Phone</span>
+                    </button>
                     <div class="language-selector" id="languageSelector">
                         <button id="langToggle" aria-haspopup="listbox" aria-expanded="false"
                             style="display:none;">Language</button>
@@ -1370,165 +1500,82 @@
     <div class="menu-backdrop" id="menuBackdrop"></div>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero"
+        style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 0;">
         <div class="hero-container">
-            <h1 class="hero-title" data-i18n="home.hero_title">Fast Local File Sharing Across Devices on Your Network
-            </h1>
-            <p class="hero-subtitle">
+            <h1 class="hero-title" data-i18n="home.hero_title" style="margin-bottom: 30px;">Fast Local File Sharing
+                Across Devices on Your Network</h1>
+            <p class="hero-subtitle" style="margin-bottom: 60px;">
                 <span data-i18n="home.hero_subtitle">Instantly share files with nearby devices. No setup required,
                     completely peer-to-peer.</span>
             </p>
             <div class="hero-buttons">
-                <a href="transer.html" class="btn btn-primary" data-i18n="home.cta_share">Start Sharing Files</a>
-                <a href="rooms-improved.html" class="btn btn-secondary" data-i18n="home.cta_rooms">Multi-user Rooms</a>
+                <a href="share.html" class="btn btn-primary" style="padding: 20px 40px; font-size: 1.25rem;"
+                    data-i18n="home.cta_share">🚀 Start Sharing Files Now</a>
+                <a href="rooms-improved.html" class="btn btn-secondary" style="padding: 20px 40px; font-size: 1.25rem;"
+                    data-i18n="home.cta_rooms">👥 Join Multi-user Room</a>
             </div>
+
+            <p style="margin-top: 40px; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
+                No App Install • No Registration • No File Size Limit
+            </p>
         </div>
     </section>
 
-    <!-- Tool Categories -->
-    <section id="tools" class="categories">
-        <div class="categories-container">
-            <div class="section-header">
-                <h2 class="section-title" data-i18n="home.choose_category">Choose Your Tool Category</h2>
-                <p class="section-description">
-                    <span data-i18n="home.choose_category_desc">Select from our comprehensive collection of tools
-                        organized by category</span>
-                </p>
-            </div>
-
-            <div class="categories-grid">
-                <!-- Image Tools -->
-                <a href="image-tools.html" class="category-card">
-                    <div class="category-icon icon-image">🖼️</div>
-                    <h3 class="category-title" data-i18n="category.image_title">Image Tools</h3>
-                    <p class="category-description">
-                        <span data-i18n="category.image_desc">Edit, convert, and optimize images</span>
-                    </p>
-                    <div class="category-tools">
-                        <div class="category-tool" data-i18n="tools.format_converter">Format Converter</div>
-                        <div class="category-tool" data-i18n="tools.image_cropper">Image Cropper</div>
-                        <div class="category-tool" data-i18n="tools.background_remover">Background Remover</div>
-                    </div>
-                    <div class="category-link">
-                        <span data-i18n="category_view_tools">View Tools →</span>
-                    </div>
-                </a>
-
-                <!-- Audio Tools -->
-                <a href="audio-tools.html" class="category-card">
-                    <div class="category-icon icon-audio">🎵</div>
-                    <h3 class="category-title" data-i18n="category.audio_title">Audio Tools</h3>
-                    <p class="category-description">
-                        <span data-i18n="category.audio_desc">Convert audio between different formats</span>
-                    </p>
-                    <div class="category-tools">
-                        <div class="category-tool" data-i18n="tools.audio_format_converter">Format Converter</div>
-                        <div class="category-tool" data-i18n="tools.audio_formats">MP3, WAV, AAC, OGG, FLAC</div>
-                        <div class="category-tool" data-i18n="tools.high_quality">High Quality Output</div>
-                    </div>
-                    <div class="category-link">
-                        <span data-i18n="category_view_tools">View Tools →</span>
-                    </div>
-                </a>
-
-                <!-- Document Tools -->
-                <a href="document-tools.html" class="category-card">
-                    <div class="category-icon icon-document">📄</div>
-                    <h3 class="category-title" data-i18n="category.document_title">Document Tools</h3>
-                    <p class="category-description">
-                        <span data-i18n="category.document_desc">Convert, merge, split, and extract text</span>
-                    </p>
-                    <div class="category-tools">
-                        <div class="category-tool" data-i18n="tools.pdf_processor">PDF Processor</div>
-                        <div class="category-tool" data-i18n="tools.text_extractor">Text Extractor</div>
-                        <div class="category-tool" data-i18n="tools.document_merger">Document Merger</div>
-                    </div>
-                    <div class="category-link">
-                        <span data-i18n="category_view_tools">View Tools →</span>
-                    </div>
-                </a>
-
-                <!-- Video Tools -->
-                <a href="video-tools.html" class="category-card">
-                    <div class="category-icon icon-video">🎥</div>
-                    <h3 class="category-title" data-i18n="category.video_title">Video Tools</h3>
-                    <p class="category-description">
-                        <span data-i18n="category.video_desc">Convert videos between different formats</span>
-                    </p>
-                    <div class="category-tools">
-                        <div class="category-tool" data-i18n="tools.video_converter">Video Converter</div>
-                        <div class="category-tool" data-i18n="tools.video_formats">MP4, AVI, MOV, WebM, MKV</div>
-                        <div class="category-tool" data-i18n="tools.professional_quality">Professional Quality</div>
-                    </div>
-                    <div class="category-link">
-                        <span data-i18n="category_view_tools">View Tools →</span>
-                    </div>
-                </a>
-
-            </div>
+    <!-- QR Code Modal -->
+    <div id="qr-modal" class="qr-modal">
+        <div class="qr-content">
+            <button class="qr-close" id="qr-close">&times;</button>
+            <h3 class="qr-title">Connect Mobile</h3>
+            <p class="qr-subtitle">Scan to open on your phone</p>
+            <div id="qrcode"></div>
+            <p style="margin-top: 16px; font-size: 0.8rem; color: #6b7280">Ensure devices are on the same Wi-Fi</p>
         </div>
-    </section>
+    </div>
 
-    <!-- Features -->
-    <section class="features">
-        <div class="features-container">
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">🆓</div>
-                    <h3 class="feature-title" data-i18n="features.free_title">100% Free</h3>
-                    <p class="feature-text">
-                        <span data-i18n="features.free_desc">All tools are completely free to use with no hidden charges
-                            or subscriptions required.</span>
-                    </p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
-                    <h3 class="feature-title" data-i18n="features.secure_title">Secure & Private</h3>
-                    <p class="feature-text">
-                        <span data-i18n="features.secure_desc">Your files are processed locally and securely. No data is
-                            stored on our servers.</span>
-                    </p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title" data-i18n="features.fast_title">Fast & Easy</h3>
-                    <p class="feature-text">
-                        <span data-i18n="features.fast_desc">No registration required. Simply upload your file and get
-                            results in seconds.</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Script Removed: Tools, Features, Popular Sections Removed for Clarity -->
+
+
+    <!-- Tools, Features, and Popular sections removed to focus on file transfer -->
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer class="site-footer" style="margin-top: 0;">
         <div class="footer-content">
-            <div class="footer-grid">
+            <!-- Footer tools links added here for SEO -->
+            <div class="footer-grid"
+                style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); border-bottom: 1px solid #5f6368; padding-bottom: 30px; margin-bottom: 30px;">
                 <div class="footer-section">
-                    <h3 data-i18n="footer.navigate">Navigate</h3>
+                    <h3>Transfer</h3>
                     <ul class="footer-links">
-                        <li><a href="privacy.html" data-i18n="footer.privacy_policy">Privacy Policy</a></li>
-                        <li><a href="terms.html" data-i18n="footer.terms_service">Terms of Service</a></li>
+                        <li><a href="share.html">File Transfer</a></li>
+                        <li><a href="rooms-improved.html">Multi-user Rooms</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
-                    <h3 data-i18n="footer.tools">Tools</h3>
+                    <h3>Media Tools</h3>
                     <ul class="footer-links">
-                        <li><a href="image-tools.html" data-i18n="footer.image_tools">Image Tools</a></li>
-                        <li><a href="audio-tools.html" data-i18n="footer.audio_tools">Audio Tools</a></li>
-                        <li><a href="video-tools.html" data-i18n="footer.video_tools">Video Tools</a></li>
-                        <li><a href="document-tools.html" data-i18n="footer.document_tools">Document Tools</a></li>
-                        <li><a href="transer.html" data-i18n="footer.file_transfer">File Transfer</a></li>
+                        <li><a href="image-tools.html">Image Tools</a></li>
+                        <li><a href="video-tools.html">Video Tools</a></li>
+                        <li><a href="audio-tools.html">Audio Tools</a></li>
+                        <li><a href="document-tools.html">Document Tools</a></li>
                     </ul>
                 </div>
-
                 <div class="footer-section">
-                    <h3 data-i18n="footer.links">LINKS</h3>
+                    <h3>Converters</h3>
                     <ul class="footer-links">
-                        <li><a href="https://zipic.online" target="_blank">ZiPic</a></li>
-                        <li><a href="https://colletools.com" target="_blank">ColleTools</a></li>
+                        <li><a href="video-converter.html">Video Converter</a></li>
+                        <li><a href="audio-converter.html">Audio Converter</a></li>
+                        <li><a href="image-converter.html">Image Converter</a></li>
+                        <li><a href="document-converter-real.html">Format Converter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
@@ -1559,6 +1606,65 @@
 
     <!-- Firebase Analytics Configuration -->
     <script src="scripts/firebase-analytics.js"></script>
+    <script>
+        // QR Code Logic (Using Online API)
+        document.addEventListener('DOMContentLoaded', function () {
+            const qrBtn = document.getElementById('show-qr-btn');
+            const qrModal = document.getElementById('qr-modal');
+            const qrClose = document.getElementById('qr-close');
+            const copyBtn = document.getElementById('copy-link-btn');
+            let qrGenerated = false;
+
+            function showModal() {
+                qrModal.classList.add('active');
+                if (!qrGenerated) {
+                    // Generate QR Code using public API
+                    const currentUrl = encodeURIComponent(window.location.href);
+                    const qrImg = document.createElement('img');
+                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${currentUrl}`;
+                    qrImg.alt = "Scan to connect";
+                    qrImg.style.width = "200px";
+                    qrImg.style.height = "200px";
+
+                    const qrContainer = document.getElementById("qrcode");
+                    qrContainer.innerHTML = ''; // Clear previous
+                    qrContainer.appendChild(qrImg);
+
+                    qrGenerated = true;
+                }
+            }
+
+            function hideModal() {
+                qrModal.classList.remove('active');
+            }
+
+            function copyLink() {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<span style="color: #10b981;">✓ Copied!</span>';
+                    copyBtn.style.borderColor = '#10b981';
+                    copyBtn.style.background = '#ecfdf5';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.style.borderColor = '#e5e7eb';
+                        copyBtn.style.background = '#f9fafb';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+            }
+
+            if (qrBtn) qrBtn.addEventListener('click', showModal);
+            if (qrClose) qrClose.addEventListener('click', hideModal);
+            if (copyBtn) copyBtn.addEventListener('click', copyLink);
+
+            // Close on click outside
+            qrModal.addEventListener('click', function (e) {
+                if (e.target === qrModal) hideModal();
+            });
+        });
+    </script>
+
 
     <!-- Load network module first (contains Events class) -->
     <script src="scripts/network.js"></script>
