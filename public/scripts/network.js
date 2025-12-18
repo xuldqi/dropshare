@@ -1,9 +1,14 @@
+// DropShare Network Module - Version 2.1 (Updated with WebRTC fixes)
 window.URL = window.URL || window.webkitURL;
 window.isRtcSupported = !!(window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection);
 
 class ServerConnection {
 
     constructor() {
+        this._reconnectAttempts = 0;
+        this._maxReconnectAttempts = 10;
+        this._heartbeatInterval = null;
+        this._isManualDisconnect = false;
         this._connect();
         Events.on('beforeunload', e => this._disconnect());
         Events.on('pagehide', e => this._disconnect());
@@ -13,16 +18,46 @@ class ServerConnection {
     _connect() {
         clearTimeout(this._reconnectTimer);
         if (this._isConnected() || this._isConnecting()) return;
+
+        console.log(`WS: Connecting... (attempt ${this._reconnectAttempts + 1}/${this._maxReconnectAttempts})`);
+
         const ws = new WebSocket(this._endpoint());
         ws.binaryType = 'arraybuffer';
-        ws.onopen = e => {
-            console.log('WS: server connected');
-            Events.fire('peer-connected');
-        };
+        ws.onopen = e => this._onOpen();
         ws.onmessage = e => this._onMessage(e.data);
-        ws.onclose = e => this._onDisconnect();
-        ws.onerror = e => console.error(e);
+        ws.onclose = e => this._onDisconnect(e);
+        ws.onerror = e => this._onError(e);
         this._socket = ws;
+    }
+
+    _onOpen() {
+        console.log('WS: server connected');
+        this._reconnectAttempts = 0;
+        this._isManualDisconnect = false;
+        this._startHeartbeat();
+        Events.fire('notify-user', '');
+    }
+
+    _startHeartbeat() {
+        this._stopHeartbeat();
+        this._heartbeatInterval = setInterval(() => {
+            if (this._isConnected()) {
+                this.send({ type: 'ping' });
+            } else {
+                this._stopHeartbeat();
+            }
+        }, 30000); // 30秒心跳
+    }
+
+    _stopHeartbeat() {
+        if (this._heartbeatInterval) {
+            clearInterval(this._heartbeatInterval);
+            this._heartbeatInterval = null;
+        }
+    }
+
+    _onError(error) {
+        console.error('WS: connection error', error);
     }
 
     _onMessage(msg) {
@@ -46,37 +81,41 @@ class ServerConnection {
                 break;
             case 'display-name':
                 Events.fire('display-name', msg);
+                // Store current user's peer ID
+                window.currentPeerId = msg.message.peerId || this._peerId;
                 break;
-            // 房间相关消息处理
+            case 'pong':
+                // Handle pong response from server
+                break;
+            case 'keep-alive':
+                // Handle keep-alive messages
+                break;
+            case 'error':
+                console.error('Server error:', msg.message);
+                break;
+            // Room-related message handling
             case 'room-created':
-                Events.fire('room-created', msg);
-                break;
             case 'room-joined':
-                Events.fire('room-joined', msg);
-                break;
             case 'room-left':
-                Events.fire('room-left', msg);
-                break;
             case 'room-error':
-                Events.fire('room-error', msg);
-                break;
             case 'room-member-joined':
-                Events.fire('room-member-joined', msg);
-                break;
             case 'room-member-left':
-                Events.fire('room-member-left', msg);
-                break;
             case 'room-disbanded':
-                Events.fire('room-disbanded', msg);
-                break;
             case 'room-kicked':
-                Events.fire('room-kicked', msg);
-                break;
             case 'room-file-shared':
-                Events.fire('room-file-shared', msg);
-                break;
             case 'room-file-removed':
-                Events.fire('room-file-removed', msg);
+                // Fire event for UI to handle
+                Events.fire(msg.type, msg);
+
+                // Forward room messages to room manager (legacy support)
+                if (window.roomManager) {
+                    window.roomManager.handleRoomMessage(msg);
+                }
+
+                // Also call the global room response handler (legacy support)
+                if (window.handleRoomResponse) {
+                    window.handleRoomResponse(msg);
+                }
                 break;
             default:
                 console.error('WS: unkown message type', msg);
@@ -94,27 +133,56 @@ class ServerConnection {
         const webrtc = window.isRtcSupported ? '/webrtc' : '/fallback';
         // Always use root path for WebSocket server to avoid path issues
         const url = protocol + '://' + location.host + '/server' + webrtc;
-        console.log('🔗 WebSocket endpoint:', url);
         return url;
     }
 
     _disconnect() {
-        this.send({ type: 'disconnect' });
-        this._socket.onclose = null;
-        this._socket.close();
+        this._isManualDisconnect = true;
+        this._stopHeartbeat();
+        if (this._socket) {
+            this.send({ type: 'disconnect' });
+            this._socket.onclose = null;
+            this._socket.close();
+        }
     }
 
-    _onDisconnect() {
-        console.log('WS: server disconnected');
-        Events.fire('peer-disconnected');
-        Events.fire('notify-user', 'Connection lost. Retry in 3 seconds...');
+    _onDisconnect(event) {
+        console.log('WS: server disconnected', event?.code, event?.reason);
+        this._stopHeartbeat();
+
+        if (this._isManualDisconnect) {
+            console.log('WS: Manual disconnect, not reconnecting');
+            return;
+        }
+
+        if (this._reconnectAttempts >= this._maxReconnectAttempts) {
+            Events.fire('notify-user', 'Connection failed. Please refresh the page.');
+            return;
+        }
+
+        this._reconnectAttempts++;
+        const delay = Math.min(1000 * Math.pow(2, this._reconnectAttempts - 1), 30000); // 指数退避，最多30秒
+
+        Events.fire('notify-user', `Connection lost. Reconnecting in ${Math.ceil(delay / 1000)} seconds... (${this._reconnectAttempts}/${this._maxReconnectAttempts})`);
+
         clearTimeout(this._reconnectTimer);
-        this._reconnectTimer = setTimeout(_ => this._connect(), 3000);
+        this._reconnectTimer = setTimeout(() => this._connect(), delay);
     }
 
     _onVisibilityChange() {
-        if (document.hidden) return;
-        this._connect();
+        if (document.hidden) {
+            // 页面隐藏时停止心跳，但保持连接
+            console.log('WS: Page hidden, reducing activity');
+            this._stopHeartbeat();
+        } else {
+            // 页面重新可见时恢复连接和心跳
+            console.log('WS: Page visible, restoring connection');
+            if (!this._isConnected()) {
+                this._connect();
+            } else {
+                this._startHeartbeat();
+            }
+        }
     }
 
     _isConnected() {
@@ -240,8 +308,14 @@ class Peer {
     }
 
     _onFileReceived(proxyFile) {
+        console.log('📥 File received:', proxyFile.name, 'Size:', proxyFile.size, 'Type:', proxyFile.mime);
         Events.fire('file-received', proxyFile);
         this.sendJSON({ type: 'transfer-complete' });
+
+        // Track file receiving event
+        if (window.trackFileReceived && proxyFile) {
+            window.trackFileReceived(proxyFile.mime || 'unknown', proxyFile.size || 0);
+        }
     }
 
     _onTransferCompleted() {
@@ -249,7 +323,7 @@ class Peer {
         this._reader = null;
         this._busy = false;
         this._dequeueFile();
-        Events.fire('notify-user', 'File transfer completed.');
+        // Events.fire('notify-user', 'File transfer completed.'); // Removed to prevent false notifications
     }
 
     sendText(text) {
@@ -282,6 +356,7 @@ class RTCPeer extends Peer {
     }
 
     _openConnection(peerId, isCaller) {
+        // Original SnapDrop: Simple connection setup
         this._isCaller = isCaller;
         this._peerId = peerId;
         this._conn = new RTCPeerConnection(RTCPeer.config);
@@ -295,18 +370,20 @@ class RTCPeer extends Peer {
             ordered: true,
             reliable: true // Obsolete. See https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/reliable
         });
+        channel.binaryType = 'arraybuffer';
         channel.onopen = e => this._onChannelOpened(e);
-
-        // Set flag before creating offer (for perfect negotiation)
-        this._makingOffer = true;
-        this._conn.createOffer()
-            .then(d => this._onDescription(d))
-            .catch(e => this._onError(e))
-            .finally(() => { this._makingOffer = false; });
+        this._conn.createOffer().then(d => this._onDescription(d)).catch(e => this._onError(e));
     }
 
     _onDescription(description) {
         // description.sdp = description.sdp.replace('b=AS:30', 'b=AS:1638400');
+
+        // Fix for "Called in wrong state: stable" race condition
+        if (description.type === 'answer' && this._conn.signalingState === 'stable') {
+            console.warn('⚠️ RTC: Ignoring redundant answer (already stable)');
+            return;
+        }
+
         this._conn.setLocalDescription(description)
             .then(_ => this._sendSignal({ sdp: description }))
             .catch(e => this._onError(e));
@@ -318,91 +395,38 @@ class RTCPeer extends Peer {
     }
 
     onServerMessage(message) {
-        if (!this._conn) {
-            this._connect(message.sender, false);
-            // Initialize ICE candidate queue
-            this._pendingIceCandidates = [];
-        }
+        if (!this._conn) this._connect(message.sender, false);
 
         if (message.sdp) {
-            this._handleSDP(message);
-        } else if (message.ice) {
-            this._handleIceCandidate(message.ice);
-        }
-    }
-
-    _handleSDP(message) {
-        const signalingState = this._conn.signalingState;
-        console.log(`📡 Received ${message.sdp.type}, current state: ${signalingState}`);
-
-        // Perfect negotiation: decide who is "polite" based on peer ID comparison
-        // The peer with the "lower" ID is polite and will rollback on collision
-        const isPolite = this._peerId > (window.currentPeerId || '');
-        const isCollision = (message.sdp.type === 'offer') &&
-            (signalingState !== 'stable' || this._makingOffer);
-
-        if (isCollision) {
-            if (!isPolite) {
-                // Impolite peer ignores incoming offer
-                console.log('🚫 Impolite peer: ignoring collision offer');
+            // Fix for "Called in wrong state: stable" race condition
+            if (message.sdp.type === 'answer' && this._conn.signalingState === 'stable') {
+                console.warn('⚠️ RTC: Ignoring remote answer (already stable)');
                 return;
             }
-            // Polite peer rolls back
-            console.log('🔄 Polite peer: rolling back for incoming offer');
+            // If we receive an offer but we are not stable, we might be in a glare situation
+            // For simplicity, we process it, but usually one side should back off. 
+            // In SnapDrop logic, active caller ID > passive ID handles some of this, 
+            // but multiple queued invalid signals can still cause issues.
+
+            this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
+                .then(_ => {
+                    if (message.sdp.type === 'offer') {
+                        return this._conn.createAnswer()
+                            .then(d => this._onDescription(d));
+                    }
+                })
+                .catch(e => {
+                    console.error('RS: setRemoteDescription error:', e);
+                    this._onError(e);
+                });
+        } else if (message.ice) {
+            this._conn.addIceCandidate(new RTCIceCandidate(message.ice));
         }
-
-        // Ignore answers when stable (already completed handshake)
-        if (message.sdp.type === 'answer' && signalingState === 'stable') {
-            console.warn('⚠️ Ignoring answer - already in stable state');
-            return;
-        }
-
-        // Set remote description
-        this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
-            .then(() => {
-                // Process any queued ICE candidates
-                this._processQueuedIceCandidates();
-
-                // If offer, create answer
-                if (message.sdp.type === 'offer') {
-                    return this._conn.createAnswer()
-                        .then(answer => {
-                            return this._conn.setLocalDescription(answer)
-                                .then(() => this._sendSignal({ sdp: answer }));
-                        });
-                }
-            })
-            .catch(e => {
-                console.error('SDP handling error:', e.message);
-            });
-    }
-
-    _handleIceCandidate(ice) {
-        if (this._conn.remoteDescription && this._conn.remoteDescription.type) {
-            this._conn.addIceCandidate(new RTCIceCandidate(ice))
-                .catch(e => console.warn('ICE candidate error:', e.message));
-        } else {
-            // Queue ICE candidates until remote description is set
-            if (!this._pendingIceCandidates) this._pendingIceCandidates = [];
-            this._pendingIceCandidates.push(ice);
-            console.log('📦 Queued ICE candidate (waiting for remote description)');
-        }
-    }
-
-    _processQueuedIceCandidates() {
-        if (!this._pendingIceCandidates) return;
-        console.log(`📤 Processing ${this._pendingIceCandidates.length} queued ICE candidates`);
-        this._pendingIceCandidates.forEach(ice => {
-            this._conn.addIceCandidate(new RTCIceCandidate(ice))
-                .catch(e => console.warn('Queued ICE error:', e.message));
-        });
-        this._pendingIceCandidates = [];
     }
 
     _onChannelOpened(event) {
         console.log('RTC: channel opened with', this._peerId);
         const channel = event.channel || event.target;
-        channel.binaryType = 'arraybuffer';
         channel.onmessage = e => this._onMessage(e.data);
         channel.onclose = e => this._onChannelClosed();
         this._channel = channel;
@@ -410,93 +434,32 @@ class RTCPeer extends Peer {
 
     _onChannelClosed() {
         console.log('RTC: channel closed', this._peerId);
-        // Only reconnect if we're the caller and haven't explicitly closed
-        if (!this._isCaller || !this._conn) return;
-        // Add a small delay to avoid rapid reconnection attempts
-        setTimeout(() => {
-            if (this._conn && this._conn.connectionState === 'failed') {
-                this._connect(this._peerId, true);
-            }
-        }, 1000);
+        if (!this._isCaller) return; // Fixed typo: isCaller -> _isCaller
+        this._connect(this._peerId, true); // reopen the channel
     }
 
     _onConnectionStateChange(e) {
-        if (!this._conn) return; // Guard against null connection
-        console.log('🔗 RTC Connection State:', this._conn.connectionState);
+        // Original SnapDrop: Simple state handling
+        console.log('RTC: state changed:', this._conn.connectionState);
         switch (this._conn.connectionState) {
-            case 'connected':
-                console.log('✅ RTC: peer connection established');
-                break;
-            case 'connecting':
-                console.log('🔄 RTC: connecting to peer...');
-                break;
             case 'disconnected':
-                console.log('🔌 RTC: peer connection disconnected - attempting restart');
-                this._resetConnection();
-                // Only attempt reconnect for callers after a delay
-                if (this._isCaller) {
-                    setTimeout(() => {
-                        console.log('🔄 RTC: attempting reconnection...');
-                        this._connect(this._peerId, true);
-                    }, 3000);
-                }
+                this._onChannelClosed();
                 break;
             case 'failed':
-                console.log('❌ RTC: peer connection failed');
-                this._resetConnection();
-                // Only attempt reconnect for callers after a delay
-                if (this._isCaller) {
-                    setTimeout(() => {
-                        console.log('🔄 RTC: attempting reconnection...');
-                        this._connect(this._peerId, true);
-                    }, 5000);
-                }
+                this._conn = null;
+                this._onChannelClosed();
                 break;
-            case 'closed':
-                console.log('🔒 RTC: peer connection closed');
-                break;
-            default:
-                console.log('🔍 RTC Connection State:', this._conn.connectionState);
         }
     }
 
     _onIceConnectionStateChange() {
-        console.log('🔗 ICE Connection State:', this._conn.iceConnectionState);
+        // Original SnapDrop: Simple ICE state logging
         switch (this._conn.iceConnectionState) {
-            case 'connected':
-                console.log('✅ ICE connection established');
-                break;
-            case 'completed':
-                console.log('✅ ICE gathering completed');
-                break;
-            case 'disconnected':
-                // Don't reset immediately - disconnected is often temporary
-                console.log('🔌 ICE connection disconnected (may recover)');
-                // ICE restart instead of full reset
-                if (this._conn && this._conn.restartIce) {
-                    console.log('🔄 Attempting ICE restart...');
-                    this._conn.restartIce();
-                }
-                break;
             case 'failed':
-                console.error('❌ ICE connection failed');
-                // Only reset after a longer delay for failed state
-                if (this._isCaller) {
-                    setTimeout(() => {
-                        console.log('🔄 Attempting reconnection after ICE failure...');
-                        this._resetConnection();
-                        this._connect(this._peerId, true);
-                    }, 10000); // 10 second delay
-                }
-                break;
-            case 'checking':
-                console.log('🔄 ICE connection checking...');
-                break;
-            case 'new':
-                console.log('🆕 ICE connection new');
+                console.error('ICE Gathering failed');
                 break;
             default:
-                console.log('🔍 ICE Connection State:', this._conn.iceConnectionState);
+                console.log('ICE Gathering', this._conn.iceConnectionState);
         }
     }
 
@@ -506,20 +469,7 @@ class RTCPeer extends Peer {
 
     _send(message) {
         if (!this._channel) return this.refresh();
-
-        // Check if the channel is in a ready state before sending
-        if (this._channel.readyState !== 'open') {
-            console.warn('WebRTC channel not ready, state:', this._channel.readyState);
-            return;
-        }
-
-        try {
-            this._channel.send(message);
-        } catch (error) {
-            console.error('Error sending message through WebRTC channel:', error);
-            // If sending fails, try to refresh the connection
-            this.refresh();
-        }
+        this._channel.send(message);
     }
 
     _sendSignal(signal) {
@@ -541,30 +491,6 @@ class RTCPeer extends Peer {
     _isConnecting() {
         return this._channel && this._channel.readyState === 'connecting';
     }
-
-    _resetConnection() {
-        console.log('🔄 Resetting WebRTC connection');
-
-        // Close data channel first
-        if (this._channel) {
-            try {
-                this._channel.close();
-            } catch (e) {
-                console.warn('Error closing data channel:', e);
-            }
-            this._channel = null;
-        }
-
-        // Close peer connection
-        if (this._conn) {
-            try {
-                this._conn.close();
-            } catch (e) {
-                console.warn('Error closing peer connection:', e);
-            }
-            this._conn = null;
-        }
-    }
 }
 
 class PeersManager {
@@ -574,6 +500,7 @@ class PeersManager {
         this._server = serverConnection;
         Events.on('signal', e => this._onMessage(e.detail));
         Events.on('peers', e => this._onPeers(e.detail));
+        Events.on('peer-joined', e => this._onPeerJoined(e.detail)); // Listen to peer-joined
         Events.on('files-selected', e => this._onFilesSelected(e.detail));
         Events.on('send-text', e => this._onSendText(e.detail));
         Events.on('peer-left', e => this._onPeerLeft(e.detail));
@@ -592,54 +519,81 @@ class PeersManager {
                 this.peers[peer.id].refresh();
                 return;
             }
+            // SnapDrop ID 比较机制：只有 ID 更大的 peer 主动发起连接，避免同时发送 offer
             if (window.isRtcSupported && peer.rtcSupported) {
-                this.peers[peer.id] = new RTCPeer(this._server, peer.id);
+                const myId = window.currentPeerId;
+                if (myId && myId > peer.id) {
+                    console.log(`✨ [MyID > PeerID] Initiating connection to ${peer.id.substring(0, 8)}`);
+                    this.peers[peer.id] = new RTCPeer(this._server, peer.id);
+                } else {
+                    console.log(`💤 [MyID < PeerID] Waiting for connection from ${peer.id.substring(0, 8)}`);
+                    // 不创建 peer，等待对方发起连接（通过 _onMessage 处理）
+                }
             } else {
                 this.peers[peer.id] = new WSPeer(this._server, peer.id);
             }
         })
     }
 
-    sendTo(peerId, message) {
-        if (!this.peers[peerId]) {
-            console.error('❌ Peer not found:', peerId, 'Available peers:', Object.keys(this.peers));
-            return;
+    _onPeerJoined(peer) {
+        if (this.peers[peer.id]) return; // Already known
+
+        // SnapDrop ID 比较机制
+        if (window.isRtcSupported && peer.rtcSupported) {
+            const myId = window.currentPeerId;
+            if (myId && myId > peer.id) {
+                console.log(`✨ [MyID > NewPeerID] Initiating connection to ${peer.id.substring(0, 8)}`);
+                this.peers[peer.id] = new RTCPeer(this._server, peer.id);
+            } else {
+                console.log(`💤 [MyID < NewPeerID] Waiting for connection from ${peer.id.substring(0, 8)}`);
+            }
+        } else {
+            this.peers[peer.id] = new WSPeer(this._server, peer.id);
         }
-        this.peers[peerId].send(message);
+    }
+
+    _ensurePeer(peerId) {
+        // 如果需要发送数据但 peer 不存在（因为 ID 更小），现在主动创建连接
+        if (!this.peers[peerId]) {
+            console.log(`⚠️ Peer ${peerId.substring(0, 8)} not found, creating RTCPeer (becoming caller)`);
+            this.peers[peerId] = new RTCPeer(this._server, peerId); // 主动创建连接
+        }
+        return this.peers[peerId];
     }
 
     _onFilesSelected(message) {
         console.log('📤 PeersManager: Files selected for peer:', message.to, 'Files:', message.files.length);
-        if (!this.peers[message.to]) {
-            console.error('❌ Peer not found for file transfer:', message.to, 'Available peers:', Object.keys(this.peers));
-            Events.fire('notify-user', '无法找到目标设备，请刷新页面重试');
-            return;
+        const peer = this._ensurePeer(message.to);
+        if (peer && typeof peer.sendFiles === 'function') {
+            peer.sendFiles(message.files);
+            console.log('✅ Files sent to peer:', message.to);
+        } else {
+            console.error('❌ Cannot send files to peer:', message.to);
         }
-        this.peers[message.to].sendFiles(message.files);
-        console.log('✅ Files sent to peer:', message.to);
     }
 
     _onSendText(message) {
-        console.log('📤 PeersManager: Sending text to peer:', message.to);
-        if (!this.peers[message.to]) {
-            console.error('❌ Peer not found for text:', message.to, 'Available peers:', Object.keys(this.peers));
-            Events.fire('notify-user', '无法找到目标设备，请刷新页面重试');
-            return;
+        const peer = this._ensurePeer(message.to);
+        if (peer && typeof peer.sendText === 'function') {
+            peer.sendText(message.text);
+        } else {
+            console.error('❌ Cannot send text to peer:', message.to);
         }
-        this.peers[message.to].sendText(message.text);
-        console.log('✅ Text sent to peer:', message.to);
     }
 
     _onPeerLeft(peerId) {
         const peer = this.peers[peerId];
         delete this.peers[peerId];
-        if (!peer || !peer._peer) return;
-        peer._peer.close();
+        if (!peer || !peer._conn) return;
+        peer._conn.close();
     }
 
 }
 
 class WSPeer extends Peer {
+    constructor(serverConnection, peerId) {
+        super(serverConnection, peerId);
+    }
 
     _send(message) {
         message.to = this._peerId;
@@ -647,7 +601,7 @@ class WSPeer extends Peer {
     }
 
     refresh() {
-        // WebSocket peers don't need refreshing
+        // WSPeer doesn't need refresh
     }
 }
 
@@ -679,8 +633,7 @@ class FileChunker {
         this._offset += chunk.byteLength;
         this._partitionSize += chunk.byteLength;
         this._onChunk(chunk);
-        if (this.isFileEnd()) return;
-        if (this._isPartitionEnd()) {
+        if (this._isPartitionEnd() || this.isFileEnd()) {
             this._onPartitionEnd(this._offset);
             return;
         }
@@ -753,53 +706,10 @@ class Events {
 
 RTCPeer.config = {
     'sdpSemantics': 'unified-plan',
-    'iceServers': [
-        {
-            urls: 'stun:stun.l.google.com:19302'
-        },
-        {
-            urls: 'stun:stun1.l.google.com:19302'
-        },
-        {
-            urls: 'stun:stun2.l.google.com:19302'
-        },
-        {
-            urls: 'stun:stun.cloudflare.com:3478'
-        },
-        {
-            urls: 'stun:stun3.l.google.com:19302'
-        }
-    ],
-    'iceCandidatePoolSize': 10
+    'iceServers': [{
+        urls: 'stun:stun.l.google.com:19302'
+    }]
 }
 
-// Initialize network connection
-let serverConnection, peersManager;
-
-window.addEventListener('DOMContentLoaded', () => {
-    serverConnection = new ServerConnection();
-    peersManager = new PeersManager(serverConnection);
-
-    // Expose network connection and event system globally for room manager use
-    window.network = {
-        serverConnection: serverConnection,
-        peersManager: peersManager,
-        Events: Events,
-        send: function (message) {
-            if (serverConnection && serverConnection.send) {
-                serverConnection.send(message);
-            } else {
-                console.error('ServerConnection not available for sending message:', message);
-            }
-        },
-        isConnected: function () {
-            return serverConnection && serverConnection._isConnected();
-        }
-    };
-
-    // Also expose Events globally for backward compatibility
-    window.Events = Events;
-
-    console.log('Network system initialization completed, Events and network exposed globally');
-});
-
+// DO NOT auto-initialize here - ui.js handles initialization
+// This prevents duplicate WebSocket connections and state conflicts

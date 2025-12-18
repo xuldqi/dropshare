@@ -68,23 +68,7 @@
     overflow: hidden;
 }
 
-.mobile-enhanced .icon-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s;
-}
-
-.mobile-enhanced .icon-button:active::before {
-    width: 100px;
-    height: 100px;
-}
+/* Ripple effects removed */
 
 /* 键盘弹出时的布局调整 */
 .keyboard-open {

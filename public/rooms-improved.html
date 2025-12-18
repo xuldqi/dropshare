@@ -10,31 +10,102 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="share-premium.css">
     <style>
-        /* Specific overrides for Rooms page that might not be in share-premium.css */
+        /* Specific overrides for Rooms page */
         .room-card {
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            border-radius: 24px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
         }
 
         .room-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -5px rgba(91, 132, 177, 0.2);
+            border-color: #fff;
         }
 
-        /* Adjust page layout */
+        .room-card-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .room-card h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.25rem;
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .room-card p {
+            color: #64748b;
+            margin: 0 0 24px 0;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .room-options {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 40px auto;
+            max-width: 800px;
+        }
+
+        /* Adjust page layout - BLOCK FLOW */
         html,
         body {
             padding-top: 0;
             margin: 0;
-            background: #ffffff !important;
-            background-image: none !important;
+            background: #f8fafc !important;
+            height: auto !important;
+            overflow-y: auto !important;
         }
 
         .page-container {
             padding-top: 70px;
+        }
+
+        /* NEW STRICT LAYOUT CONTAINER */
+        .rooms-page-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding-top: 140px;
+            padding-bottom: 80px;
+            display: block;
+            /* Standard Flow */
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .connection-status {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        /* Room Status Styles */
+        .room-status {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            margin: 40px auto;
+            box-shadow: 0 20px 40px -5px rgba(91, 132, 177, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
 
         /* COMPLETELY REMOVE all radar/ripple/circle effects AND canvas */
@@ -50,16 +121,6 @@
             visibility: hidden !important;
             animation: none !important;
             pointer-events: none !important;
-        }
-
-        /* Override any pulse keyframes */
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 0;
-                transform: none;
-            }
         }
     </style>
     <link rel="stylesheet" href="unified-navigation.css">
@@ -95,7 +156,7 @@
 </head>
 
 <body>
-    <div class="page-container">
+    <div>
 
         <header class="header">
             <div class="header-container"
@@ -112,7 +173,7 @@
                 </div>
                 <div class="control-buttons" style="display: flex; gap: 8px; align-items: center; margin-left: auto;">
                     <div class="language-wrapper" style="position: relative; display: inline-block;">
-                        <button id="langToggle"
+                        <button id="roomLangToggle"
                             style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid #F3F4F6; border-radius: 50px; background: white; color: #2C3E50; font-size: 13px; cursor: pointer;">
                             <span>English</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -120,7 +181,7 @@
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </button>
-                        <div id="langMenu" class="lang-dropdown"
+                        <div id="roomLangMenu" class="lang-dropdown"
                             style="position: absolute; top: calc(100% + 8px); right: 0; background: white; border: 1px solid #F3F4F6; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); min-width: 140px; display: none; z-index: 9999; overflow: hidden; padding: 8px 0;">
                             <div class="lang-option" data-value="en"
                                 style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">English
@@ -154,20 +215,21 @@
         </header>
         <!-- 主要内容 -->
         <main class="main-content">
-            <div class="container">
-                <!-- 英雄区域 -->
+            <div class="rooms-page-container">
+
+                <!-- Initial State: Hero -->
                 <div class="hero-section">
                     <h1 class="hero-title" data-i18n="rooms_title">Rooms</h1>
                     <p class="hero-subtitle" data-i18n="rooms_subtitle">快速与同一网络或远程用户通过房间代码共享文件</p>
                 </div>
 
-                <!-- 连接状态 -->
+                <!-- Connection Status -->
                 <div class="connection-status" id="connectionStatus">
                     <div class="connection-indicator"></div>
                     <div class="connection-text" id="connectionText" data-i18n="connection_disconnected">未连接</div>
                 </div>
 
-                <!-- 房间选项 -->
+                <!-- Room Options -->
                 <div class="room-options" id="roomOptions">
                     <div class="room-card">
                         <div class="room-card-icon">🏠</div>
@@ -186,7 +248,7 @@
                     </div>
                 </div>
 
-                <!-- 房间状态区域 -->
+                <!-- Room Status (Active) -->
                 <div class="room-status" id="roomStatus">
                     <div class="room-info">
                         <div class="room-info-item">
@@ -198,7 +260,7 @@
                             <div class="room-info-value" id="currentRoomCode">-</div>
                         </div>
                         <div class="room-info-item">
-                            <div class="room-info-label" data-i18n="member_count">成员数量</div>
+                            <div class="room-info-label" data-i18n="room_members">成员数量</div>
                             <div class="room-info-value" id="currentMemberCount">0</div>
                         </div>
                         <div class="room-info-item">
@@ -212,15 +274,15 @@
                     </div>
                 </div>
 
-                <!-- 成员列表 -->
+                <!-- Members List -->
                 <div class="members-section" id="membersSection" style="display: none;">
                     <h3>👥 <span data-i18n="room_members">房间成员</span> (<span id="memberCount">0</span>)</h3>
                     <div id="membersList"></div>
                 </div>
 
-                <!-- 文件管理区域 -->
+                <!-- File Management -->
                 <div class="file-management" id="fileManagement" style="display: none;">
-                    <!-- 文件上传 -->
+                    <!-- File Upload -->
                     <div class="file-section">
                         <h3>📤 <span data-i18n="upload_files">上传文件</span></h3>
                         <div class="file-upload-area" id="fileUploadArea"
@@ -247,7 +309,7 @@
                         </div>
                     </div>
 
-                    <!-- 文件列表 -->
+                    <!-- File List -->
                     <div class="file-section">
                         <h3>📋 <span data-i18n="shared_files">共享文件</span> (<span id="fileCount">0</span>)</h3>
                         <div class="file-list" id="fileList">
@@ -695,7 +757,7 @@
                 const membersList = document.getElementById('membersList');
                 const memberCount = document.getElementById('memberCount');
 
-                memberCount.textContent = currentRoom.members.length;
+                if (memberCount) memberCount.textContent = currentRoom.members.length;
                 membersList.innerHTML = '';
 
                 currentRoom.members.forEach(member => {
@@ -810,7 +872,8 @@
                     name: file.name,
                     size: file.size,
                     type: file.type,
-                    uploadTime: new Date()
+                    uploadTime: new Date(),
+                    originalFile: file // Store reference to original file for local download
                 };
 
                 sharedFiles.push(fileInfo);
@@ -849,23 +912,73 @@
 
             function downloadFile(fileId) {
                 const file = sharedFiles.find(f => f.id == fileId);
-                if (file && file.fileData) {
-                    console.log('下载文件:', file.name);
 
-                    // 创建下载链接
-                    const link = document.createElement('a');
-                    link.href = file.fileData; // base64数据URL
-                    link.download = file.name;
-                    link.style.display = 'none';
+                if (!file) return;
 
-                    // 触发下载
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                console.log('下载文件:', file.name);
 
-                    showNotification(`下载完成: ${file.name}`, 'success');
+                // Scenario 1: Local file (I am the uploader)
+                if (file.originalFile) {
+                    try {
+                        const url = URL.createObjectURL(file.originalFile);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = file.name;
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        setTimeout(() => URL.revokeObjectURL(url), 100);
+                        showNotification((window.i18n ? window.i18n.t('download_complete') : '下载完成') + `: ${file.name}`, 'success');
+                        return; // Exit success
+                    } catch (e) {
+                        console.error('本地文件下载出错:', e);
+                    }
+                }
+
+                // Scenario 2: Remote file (Received via WebRTC, Base64 data)
+                if (file.fileData) {
+                    try {
+                        // 将Data URL转换为Blob对象，这通常更可靠
+                        const arr = file.fileData.split(',');
+                        const mime = arr[0].match(/:(.*?);/)[1];
+                        const bstr = atob(arr[1]);
+                        let n = bstr.length;
+                        const u8arr = new Uint8Array(n);
+                        while (n--) {
+                            u8arr[n] = bstr.charCodeAt(n);
+                        }
+                        const blob = new Blob([u8arr], { type: mime });
+                        const url = URL.createObjectURL(blob);
+
+                        // 创建下载链接
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = file.name;
+                        link.style.display = 'none';
+
+                        // 触发下载
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+
+                        // 延迟释放URL
+                        setTimeout(() => URL.revokeObjectURL(url), 100);
+
+                        showNotification((window.i18n ? window.i18n.t('download_complete') : '下载完成') + `: ${file.name}`, 'success');
+                    } catch (e) {
+                        console.error('下载出错:', e);
+                        // 回退到原始方法
+                        const link = document.createElement('a');
+                        link.href = file.fileData;
+                        link.download = file.name;
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
                 } else {
-                    showNotification('文件数据不可用', 'error');
+                    showNotification((window.i18n ? window.i18n.t('file_data_unavailable') : '文件数据不可用'), 'error');
                 }
             }
 
@@ -874,6 +987,55 @@
                     sharedFiles = sharedFiles.filter(f => f.id != fileId);
                     updateFilesList();
                 }
+            }
+
+            // Notification Utility
+            function showNotification(message, type = 'info') {
+                // If snapdrop-ui exists, try to use its method (though usually it's attached to window.ui or similar)
+                // Fallback custom implementation
+                const existingToast = document.querySelector('.toast-notification');
+                if (existingToast) {
+                    document.body.removeChild(existingToast);
+                }
+
+                const toast = document.createElement('div');
+                toast.className = `toast-notification ${type}`;
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: ${type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#3b82f6'};
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 50px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 10000;
+                    font-size: 14px;
+                    font-weight: 500;
+                    opacity: 0;
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                `;
+                toast.textContent = message;
+
+                document.body.appendChild(toast);
+
+                // Animate in
+                requestAnimationFrame(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateX(-50%) translateY(-10px)';
+                });
+
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(-50%) translateY(0)';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            document.body.removeChild(toast);
+                        }
+                    }, 300);
+                }, 3000);
             }
 
             // 工具函数
@@ -1086,8 +1248,8 @@
                 console.log('页面加载完成，开始初始化...');
 
                 // Language selector logic (matching index.html)
-                const langToggle = document.getElementById('langToggle');
-                const langMenu = document.getElementById('langMenu');
+                const langToggle = document.getElementById('roomLangToggle');
+                const langMenu = document.getElementById('roomLangMenu');
                 const options = document.querySelectorAll('.lang-option');
                 const toggleText = langToggle ? langToggle.querySelector('span') : null;
 

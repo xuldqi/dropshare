@@ -1645,5 +1645,13 @@
   "please_create_or_join_room": "请创建或加入房间以分享文件",
   "room_operation_failed": "房间操作失败",
   "room_password_if_required": "房间密码 (如需)",
-  "share_quick_create_room": "快速创建房间"
+  "share_quick_create_room": "快速创建房间",
+  "download_complete": "下载完成",
+  "file_data_unavailable": "文件数据不可用，请尝试重新上传",
+  "confirm_delete_file": "确定要删除这个文件吗？",
+  "received_file": "收到文件",
+  "room_members": "房间成员",
+  "connection_connected": "已连接",
+  "connection_connecting": "连接中...",
+  "connection_disconnected": "未连接"
 }

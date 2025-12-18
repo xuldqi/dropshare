@@ -149,3 +149,4 @@ echo "2. 端口未监听 → 检查应用日志: docker logs dropshare-app"
 echo "3. Nginx配置错误 → sudo nginx -t 检查配置"
 echo "4. 防火墙阻止 → 开放端口: sudo ufw allow 3000"
 
+

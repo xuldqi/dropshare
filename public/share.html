@@ -32,6 +32,7 @@
                     hasPeerId = true;
                     const peerId = cookie.trim().split('=')[1];
                     console.log('🔑 找到现有peerid:', peerId);
+                    window.currentPeerId = peerId; // Set it globally immediately
                     return peerId;
                 }
             }
@@ -41,6 +42,7 @@
                 const peerId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 document.cookie = `peerid=${peerId}; path=/`;
                 console.log('🔑 生成新peerid:', peerId);
+                window.currentPeerId = peerId; // Set it globally immediately
                 return peerId;
             }
         }
@@ -3963,42 +3965,24 @@
                     serverConnection: !!window.serverConnection
                 });
 
-                if (window.network && window.network.serverConnection) {
-                    console.log('✅ Found network.serverConnection, setting up message interceptor');
+                // No interception needed - network.js and ui.js handle everything
 
-                    // Store original message handler
-                    const serverConnection = window.network.serverConnection;
-                    const originalOnMessage = serverConnection._onMessage;
-
-                    // Override message handler
-                    serverConnection._onMessage = function (msg) {
-                        // Parse the message
-                        let message;
-                        try {
-                            message = JSON.parse(msg);
-                        } catch (e) {
-                            // Call original handler if parsing fails
-                            return originalOnMessage.call(this, msg);
-                        }
-
-                        console.log('📨 Intercepted WebSocket message:', message);
-
-                        // Handle room messages before calling original handler
-                        if (message.type && message.type.startsWith('room-')) {
-                            console.log('🏠 Room message detected:', message.type);
-                            handleRoomResponse(message);
-                        }
-
-                        // Call original handler
-                        return originalOnMessage.call(this, msg);
-                    };
-
-                    console.log('✅ WebSocket message interceptor installed successfully');
+                // Add event listeners for room messages
+                if (window.Events) {
+                    console.log('✅ Setting up Event listeners for room messages');
+                    window.Events.on('room-created', e => handleRoomResponse(e.detail));
+                    window.Events.on('room-joined', e => handleRoomResponse(e.detail));
+                    window.Events.on('room-error', e => handleRoomResponse(e.detail));
+                    window.Events.on('room-left', e => leaveRoom());
+                    window.Events.on('room-list', e => {
+                        console.log('📦 Room list received:', e.detail);
+                        // handle room list update if needed
+                    });
                 } else {
-                    console.log('❌ Network system not found, will retry...');
-                    setTimeout(arguments.callee, 500);
+                    console.error('❌ Events system not found, room messages will not be handled');
                 }
-            }, 1000);
+
+            }, 500);
         });
     </script>
 
@@ -4020,7 +4004,8 @@
             <div class="header-container"
                 style="max-width: 1280px; width: 100%; margin: 0 auto; padding: 0 24px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;">
                 <div class="brand-left" style="display: flex; align-items: center;">
-                    <a href="/" class="logo" style="text-decoration: none; cursor: pointer;">
+                    <a href="/" class="logo" onclick="window.location.href='/'; return false;"
+                        style="text-decoration: none; cursor: pointer; pointer-events: auto !important;">
                         <svg viewBox="0 0 24 24">
                             <path
                                 d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z" />
@@ -4069,8 +4054,6 @@
                 --gray-300: #E5E7EB;
                 --gray-900: #2C3E50;
                 --success: #10B981;
-                /* Animation Colors */
-                --ripple-color: rgba(91, 132, 177, 0.4);
             }
 
             /* Force font family */
@@ -4189,10 +4172,40 @@
             }
 
             /* TRANSFER UI SPECIFIC OVERRIDES */
-            /* Ripples */
-            .ripple {
-                border: 1px solid var(--primary-500) !important;
-                opacity: 0.1;
+            /* 完全禁用所有波纹效果 */
+            .button::after,
+            .icon-button::after,
+            x-peer label::after,
+            button::after,
+            .ripple,
+            .ripple-effect,
+            [class*="ripple"],
+            [class*="Ripple"] {
+                display: none !important;
+                content: none !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                width: 0 !important;
+                height: 0 !important;
+                pointer-events: none !important;
+                animation: none !important;
+                transform: none !important;
+            }
+
+            /* 禁用按钮悬停和激活状态的波纹伪元素 */
+            .button:hover::after,
+            .button:active::after,
+            .button:focus::after,
+            .icon-button:hover::after,
+            .icon-button:active::after,
+            .icon-button:focus::after,
+            button:hover::after,
+            button:active::after,
+            button:focus::after {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+                opacity: 0 !important;
             }
 
             /* Peer Icons */
@@ -6250,36 +6263,37 @@
                         });
 
                         console.log('✅ ALL ROOM BUTTON EVENTS BOUND SUCCESSFULLY!');
+
+
+                        // Leave Room
+                        document.getElementById('leaveRoomBtn').addEventListener('click', () => {
+                            this.leaveRoom();
+                        });
+
+                        // Room Code input auto-uppercase
+                        document.getElementById('roomCode').addEventListener('input', (e) => {
+                            e.target.value = e.target.value.toUpperCase();
+                        });
+
+                        // Room info expand/collapse
+                        document.getElementById('toggleDetailsBtn').addEventListener('click', () => {
+                            this.toggleRoomDetails();
+                        });
+
+                        // CopyRoom Code
+                        document.getElementById('copyRoomCode').addEventListener('click', () => {
+                            this.copyRoomCode();
+                        });
+
+                        // File selection and drag
+                        this.initializeFileTransfer();
+
+                        console.log('Room UI event binding completed');
                     };
 
-                    // Leave Room
-                    document.getElementById('leaveRoomBtn').addEventListener('click', () => {
-                        this.leaveRoom();
-                    });
-
-                    // Room Code input auto-uppercase
-                    document.getElementById('roomCode').addEventListener('input', (e) => {
-                        e.target.value = e.target.value.toUpperCase();
-                    });
-
-                    // Room info expand/collapse
-                    document.getElementById('toggleDetailsBtn').addEventListener('click', () => {
-                        this.toggleRoomDetails();
-                    });
-
-                    // CopyRoom Code
-                    document.getElementById('copyRoomCode').addEventListener('click', () => {
-                        this.copyRoomCode();
-                    });
-
-                    // File selection and drag
-                    this.initializeFileTransfer();
-
-                    console.log('Room UI event binding completed');
+                    // Start binding process
+                    bindEvents();
                 }
-
-                // Start binding process
-                bindEvents();
 
                 // Initialize file transfer functionality (disabled - handled by global init)
                 initializeFileTransfer() {
@@ -8608,6 +8622,22 @@
 
             // Initialize navigation bar function links
             function initNavbarFunctionLinks() {
+                // Define helper function to update nav state
+                function updateNavActiveState() {
+                    const currentHash = window.location.hash;
+                    // Remove active class from all links
+                    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+
+                    // Add active class to current link
+                    if (currentHash === '#rooms') {
+                        const link = document.querySelector('a[href="/rooms-improved.html"]');
+                        if (link) link.classList.add('active');
+                    } else {
+                        const link = document.querySelector('a[href="/share.html"]');
+                        if (link) link.classList.add('active');
+                    }
+                }
+
                 // Multi-user Rooms link
                 const roomsLink = document.querySelector('a[href="/rooms-improved.html"]');
                 if (roomsLink) {

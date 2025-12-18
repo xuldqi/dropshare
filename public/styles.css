@@ -457,32 +457,7 @@ x-dialog a {
     outline: none;
 }
 
-.button:before,
-.icon-button:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: currentColor;
-    opacity: 0;
-    transition: opacity 300ms;
-}
-
-.button:hover:before,
-.icon-button:hover:before {
-    opacity: 0.1;
-}
-
-.button:before {
-    border-radius: 8px;
-}
-
-.button:focus:before,
-.icon-button:focus:before {
-    opacity: 0.2;
-}
+/* Ripple effects removed */
 
 
 
@@ -498,9 +473,7 @@ button::-moz-focus-inner {
     height: 40px;
 }
 
-.icon-button:before {
-    border-radius: 50%;
-}
+/* Ripple effects removed */
 
 
 
