@@ -312,49 +312,85 @@ class RTCPeer extends Peer {
     }
 
     onServerMessage(message) {
-        if (!this._conn) this._connect(message.sender, false);
+        if (!this._conn) {
+            this._connect(message.sender, false);
+            // Initialize ICE candidate queue
+            this._pendingIceCandidates = [];
+        }
 
         if (message.sdp) {
-            // Check signaling state before setting remote description
-            const signalingState = this._conn.signalingState;
-
-            // If we receive an answer but we're in stable state, ignore it
-            // This can happen if both peers try to connect simultaneously
-            if (message.sdp.type === 'answer' && signalingState === 'stable') {
-                console.warn('⚠️ Ignoring answer - connection already stable. May be duplicate or out-of-order signal.');
-                return;
-            }
-
-            // If we receive an offer but we already have a remote offer pending,
-            // use "perfect negotiation" pattern - polite peer rolls back
-            if (message.sdp.type === 'offer' && signalingState !== 'stable') {
-                console.log('🔄 Received offer in non-stable state, rolling back...');
-                this._conn.setLocalDescription({ type: 'rollback' })
-                    .then(() => this._handleRemoteSDP(message))
-                    .catch(e => this._onError(e));
-                return;
-            }
-
-            this._handleRemoteSDP(message);
+            this._handleSDP(message);
         } else if (message.ice) {
-            if (this._conn.remoteDescription) {
-                this._conn.addIceCandidate(new RTCIceCandidate(message.ice))
-                    .catch(e => console.warn('Failed to add ICE candidate:', e));
-            } else {
-                console.warn('⚠️ Ignoring ICE candidate - no remote description set yet');
-            }
+            this._handleIceCandidate(message.ice);
         }
     }
 
-    _handleRemoteSDP(message) {
+    _handleSDP(message) {
+        const signalingState = this._conn.signalingState;
+        console.log(`📡 Received ${message.sdp.type}, current state: ${signalingState}`);
+
+        // Perfect negotiation: decide who is "polite" based on peer ID comparison
+        // The peer with the "lower" ID is polite and will rollback on collision
+        const isPolite = this._peerId > (window.currentPeerId || '');
+        const isCollision = (message.sdp.type === 'offer') &&
+            (signalingState !== 'stable' || this._makingOffer);
+
+        if (isCollision) {
+            if (!isPolite) {
+                // Impolite peer ignores incoming offer
+                console.log('🚫 Impolite peer: ignoring collision offer');
+                return;
+            }
+            // Polite peer rolls back
+            console.log('🔄 Polite peer: rolling back for incoming offer');
+        }
+
+        // Ignore answers when stable (already completed handshake)
+        if (message.sdp.type === 'answer' && signalingState === 'stable') {
+            console.warn('⚠️ Ignoring answer - already in stable state');
+            return;
+        }
+
+        // Set remote description
         this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
-            .then(_ => {
+            .then(() => {
+                // Process any queued ICE candidates
+                this._processQueuedIceCandidates();
+
+                // If offer, create answer
                 if (message.sdp.type === 'offer') {
                     return this._conn.createAnswer()
-                        .then(d => this._onDescription(d));
+                        .then(answer => {
+                            return this._conn.setLocalDescription(answer)
+                                .then(() => this._sendSignal({ sdp: answer }));
+                        });
                 }
             })
-            .catch(e => this._onError(e));
+            .catch(e => {
+                console.error('SDP handling error:', e.message);
+            });
+    }
+
+    _handleIceCandidate(ice) {
+        if (this._conn.remoteDescription && this._conn.remoteDescription.type) {
+            this._conn.addIceCandidate(new RTCIceCandidate(ice))
+                .catch(e => console.warn('ICE candidate error:', e.message));
+        } else {
+            // Queue ICE candidates until remote description is set
+            if (!this._pendingIceCandidates) this._pendingIceCandidates = [];
+            this._pendingIceCandidates.push(ice);
+            console.log('📦 Queued ICE candidate (waiting for remote description)');
+        }
+    }
+
+    _processQueuedIceCandidates() {
+        if (!this._pendingIceCandidates) return;
+        console.log(`📤 Processing ${this._pendingIceCandidates.length} queued ICE candidates`);
+        this._pendingIceCandidates.forEach(ice => {
+            this._conn.addIceCandidate(new RTCIceCandidate(ice))
+                .catch(e => console.warn('Queued ICE error:', e.message));
+        });
+        this._pendingIceCandidates = [];
     }
 
     _onChannelOpened(event) {
