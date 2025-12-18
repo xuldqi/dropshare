@@ -133,19 +133,8 @@ body {
 }
 
 .central-logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-md);
-    z-index: 1;
+    display: none !important;
+    /* Hide the bottom radar icon completely */
 }
 
 .central-logo svg {
@@ -255,8 +244,9 @@ x-peer x-icon {
 
 x-peer:hover x-icon {
     transform: scale(1.1) rotate(5deg);
-    background: var(--primary-500) !important;
-    color: white !important;
+    /* Keep original blue color on hover instead of turning gray */
+    background: var(--primary-100) !important;
+    color: var(--primary-600) !important;
 }
 
 /* No Peers Message */
@@ -315,6 +305,10 @@ x-no-peers h2 {
     font-weight: 600;
     color: var(--gray-900);
     font-size: 0.9rem;
+    line-height: 1.6;
+    /* Prevent Chinese character clipping */
+    overflow: visible;
+    padding: 4px 0;
 }
 
 .text-line {
