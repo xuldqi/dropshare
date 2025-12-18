@@ -3,6 +3,22 @@
 
 <head>
     <script>
+        // FORCE CLEAR SERVICE WORKER CACHE - Remove this after debugging
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                    console.log('🧹 Service Worker unregistered');
+                }
+            });
+            caches.keys().then(function (names) {
+                for (let name of names) {
+                    caches.delete(name);
+                    console.log('🧹 Cache deleted:', name);
+                }
+            });
+        }
+
         // CRITICAL: Define all room functions immediately to prevent undefined errors
         console.log('=== DEFINING CRITICAL FUNCTIONS IN HEAD ===');
 
