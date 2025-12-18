@@ -479,13 +479,29 @@
             console.log('📁 Files selected:', input.files);
 
             if (input.files && input.files.length > 0) {
-                // Process each selected file
-                Array.from(input.files).forEach(file => {
-                    console.log('Processing file:', file.name, file.size);
+                // Check if we're in room mode
+                const roomCodeElement = document.getElementById('roomCodeDisplay');
+                const roomCode = roomCodeElement ? roomCodeElement.textContent.replace('Room Code: ', '').trim() : null;
+                const isInRoom = roomCode && roomCode.length > 0 && roomCode !== 'Room Code:';
 
-                    // Share file directly in room mode
-                    shareFileInRoom(file);
-                });
+                if (isInRoom) {
+                    // Room mode - use room file sharing
+                    Array.from(input.files).forEach(file => {
+                        console.log('Processing file for room:', file.name, file.size);
+                        shareFileInRoom(file);
+                    });
+                } else {
+                    // Normal peer-to-peer mode - use WebRTC via Events
+                    console.log('📤 Normal P2P mode - using WebRTC file transfer');
+                    // The file will be sent when user clicks on a peer
+                    // Store files temporarily for peer selection
+                    window._pendingFiles = input.files;
+
+                    // Show notification to click on a peer
+                    if (window.Events) {
+                        Events.fire('notify-user', '请点击一个设备来发送文件');
+                    }
+                }
 
                 // Clear the input so the same file can be selected again
                 input.value = '';
