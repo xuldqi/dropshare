@@ -223,8 +223,8 @@ class Peer {
     }
 
     _onChunkReceived(chunk) {
-        if(!chunk.byteLength) return;
-        
+        if (!chunk.byteLength) return;
+
         this._digester.unchunk(chunk);
         const progress = this._digester.progress;
         this._onDownloadProgress(progress);
@@ -291,7 +291,7 @@ class RTCPeer extends Peer {
     }
 
     _openChannel() {
-        const channel = this._conn.createDataChannel('data-channel', { 
+        const channel = this._conn.createDataChannel('data-channel', {
             ordered: true,
             reliable: true // Obsolete. See https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/reliable
         });
@@ -315,14 +315,27 @@ class RTCPeer extends Peer {
         if (!this._conn) this._connect(message.sender, false);
 
         if (message.sdp) {
-            this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
-                .then( _ => {
-                    if (message.sdp.type === 'offer') {
-                        return this._conn.createAnswer()
-                            .then(d => this._onDescription(d));
-                    }
-                })
-                .catch(e => this._onError(e));
+            // Check signaling state before setting remote description
+            const signalingState = this._conn.signalingState;
+
+            // If we receive an answer but we're in stable state, ignore it
+            // This can happen if both peers try to connect simultaneously
+            if (message.sdp.type === 'answer' && signalingState === 'stable') {
+                console.warn('⚠️ Ignoring answer - connection already stable. May be duplicate or out-of-order signal.');
+                return;
+            }
+
+            // If we receive an offer but we already have a remote offer pending,
+            // use "perfect negotiation" pattern - polite peer rolls back
+            if (message.sdp.type === 'offer' && signalingState !== 'stable') {
+                console.log('🔄 Received offer in non-stable state, rolling back...');
+                this._conn.setLocalDescription({ type: 'rollback' })
+                    .then(() => this._handleRemoteSDP(message))
+                    .catch(e => this._onError(e));
+                return;
+            }
+
+            this._handleRemoteSDP(message);
         } else if (message.ice) {
             if (this._conn.remoteDescription) {
                 this._conn.addIceCandidate(new RTCIceCandidate(message.ice))
@@ -331,6 +344,17 @@ class RTCPeer extends Peer {
                 console.warn('⚠️ Ignoring ICE candidate - no remote description set yet');
             }
         }
+    }
+
+    _handleRemoteSDP(message) {
+        this._conn.setRemoteDescription(new RTCSessionDescription(message.sdp))
+            .then(_ => {
+                if (message.sdp.type === 'offer') {
+                    return this._conn.createAnswer()
+                        .then(d => this._onDescription(d));
+                }
+            })
+            .catch(e => this._onError(e));
     }
 
     _onChannelOpened(event) {
@@ -440,13 +464,13 @@ class RTCPeer extends Peer {
 
     _send(message) {
         if (!this._channel) return this.refresh();
-        
+
         // Check if the channel is in a ready state before sending
         if (this._channel.readyState !== 'open') {
             console.warn('WebRTC channel not ready, state:', this._channel.readyState);
             return;
         }
-        
+
         try {
             this._channel.send(message);
         } catch (error) {
@@ -475,10 +499,10 @@ class RTCPeer extends Peer {
     _isConnecting() {
         return this._channel && this._channel.readyState === 'connecting';
     }
-    
+
     _resetConnection() {
         console.log('🔄 Resetting WebRTC connection');
-        
+
         // Close data channel first
         if (this._channel) {
             try {
@@ -488,7 +512,7 @@ class RTCPeer extends Peer {
             }
             this._channel = null;
         }
-        
+
         // Close peer connection
         if (this._conn) {
             try {
@@ -695,27 +719,27 @@ let serverConnection, peersManager;
 window.addEventListener('DOMContentLoaded', () => {
     serverConnection = new ServerConnection();
     peersManager = new PeersManager(serverConnection);
-    
+
     // Expose network connection and event system globally for room manager use
     window.network = {
         serverConnection: serverConnection,
         peersManager: peersManager,
         Events: Events,
-        send: function(message) {
+        send: function (message) {
             if (serverConnection && serverConnection.send) {
                 serverConnection.send(message);
             } else {
                 console.error('ServerConnection not available for sending message:', message);
             }
         },
-        isConnected: function() {
+        isConnected: function () {
             return serverConnection && serverConnection._isConnected();
         }
     };
-    
+
     // Also expose Events globally for backward compatibility
     window.Events = Events;
-    
+
     console.log('Network system initialization completed, Events and network exposed globally');
 });
 
