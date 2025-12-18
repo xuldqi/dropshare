@@ -793,8 +793,10 @@ class ReceiveTextDialog extends Dialog {
     }
 
     _onText(e) {
+        console.log('📨 Text received:', e);
         this.$text.innerHTML = '';
         const text = e.text;
+        console.log('📝 Displaying text:', text);
         if (isURL(text)) {
             const $a = document.createElement('a');
             $a.href = text;
