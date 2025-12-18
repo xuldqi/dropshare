@@ -8,11 +8,11 @@ window.iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 // Dialog manager
 class DialogManager {
     static dialogs = [];
-    
+
     static register(dialog) {
         this.dialogs.push(dialog);
     }
-    
+
     static closeAll() {
         this.dialogs.forEach(dialog => {
             if (dialog.$el && dialog.$el.hasAttribute('show')) {
@@ -61,21 +61,21 @@ let currentDisplayName = ''; // Store current display name
 Events.on('display-name', e => {
     const me = e.detail.message;
     currentDisplayName = me.displayName; // Store current name
-    
+
     // Store current user's peer ID to global variable
     if (me.peerId) {
         window.currentPeerId = me.peerId;
         console.log('Current peer ID stored:', me.peerId);
-        
+
         // Also store in displayName element's dataset for room manager use
         const displayNameEl = document.getElementById('displayName');
         if (displayNameEl) {
             displayNameEl.dataset.peerId = me.peerId;
         }
     }
-    
+
     updateDisplayName(me.displayName, me.deviceName);
-    
+
     // Also update room area user name display
     updateRoomUserName(me.displayName);
 });
@@ -92,9 +92,9 @@ function updateRoomUserName(displayName) {
 function updateDisplayName(displayName, deviceName) {
     const $displayName = $('displayName');
     if (!$displayName) return;
-    
+
     let displayText = '';
-    
+
     // Always check if i18n is available and apply correct translation
     if (window.DROPSHARE_I18N) {
         const prefix = window.DROPSHARE_I18N.translate('you_are_known_as');
@@ -102,7 +102,7 @@ function updateDisplayName(displayName, deviceName) {
     } else {
         displayText = 'You are known as ' + displayName;
     }
-    
+
     // Clear original placeholder to prevent duplicate text
     $displayName.removeAttribute('placeholder');
     $displayName.textContent = displayText;
@@ -118,7 +118,7 @@ document.addEventListener('language-changed', () => {
         updateDisplayName(currentDisplayName);
         updateRoomUserName(currentDisplayName);
     }
-    
+
     // Update all peer device names
     document.querySelectorAll('x-peer').forEach(peer => {
         if (peer.ui && typeof peer.ui._deviceName === 'function') {
@@ -133,14 +133,14 @@ function initializeLanguageSelector() {
     if (languageSelector && window.DROPSHARE_I18N) {
         // Remove previous listeners
         languageSelector.onchange = null;
-        
+
         languageSelector.addEventListener('change', (e) => {
             window.DROPSHARE_I18N.changeLanguage(e.target.value);
         });
 
         // Set currently selected language
         languageSelector.value = window.DROPSHARE_I18N.getCurrentLanguage();
-        
+
         console.log('Language selector initialization completed, current language:', window.DROPSHARE_I18N.getCurrentLanguage());
         return true;
     }
@@ -259,15 +259,15 @@ class PeerUI {
         el.querySelector('svg use').setAttribute('xlink:href', this._icon());
         el.querySelector('.name').textContent = this._displayName();
         el.querySelector('.device-name').textContent = this._deviceName();
-        
+
         // Add device type identifier to element
         const device = this._peer.name.device || this._peer.name;
         const type = device.type || 'desktop';
         el.setAttribute('data-device-type', type);
-        
+
         // Add animation delay to newly created elements
         el.style.animationDelay = (Math.random() * 0.5) + 's';
-        
+
         this.$el = el;
         this.$progress = el.querySelector('.progress');
     }
@@ -294,13 +294,13 @@ class PeerUI {
         const device = this._peer.name.device || this._peer.name;
         const type = device.type || 'desktop';
         const os = device.os || '';
-        
+
         // Get current language
         let lang = 'en';
         if (window.DROPSHARE_I18N) {
             lang = window.DROPSHARE_I18N.getCurrentLanguage();
         }
-        
+
         // Localized display names for device types
         const deviceLabels = {
             'en': {
@@ -340,13 +340,13 @@ class PeerUI {
                 'ios-tablet': 'iPad'
             }
         };
-        
+
         // Default to English
         const labels = deviceLabels[lang] || deviceLabels['en'];
-        
+
         // Generate device label
         let deviceType = labels[type] || '';
-        
+
         if (type === 'desktop') {
             if (os) {
                 if (os.includes('Windows')) deviceType = labels['windows'];
@@ -364,7 +364,7 @@ class PeerUI {
                 else if (os.includes('iOS')) deviceType = labels['ios-tablet'];
             }
         }
-        
+
         return deviceType || this._peer.name.deviceName || '';
     }
 
@@ -372,7 +372,7 @@ class PeerUI {
         const device = this._peer.name.device || this._peer.name;
         const type = device.type || 'desktop';
         const os = device.os ? device.os.toLowerCase() : 'default';
-        
+
         const deviceType = deviceIcons[type] || deviceIcons['desktop'];
         return deviceType[os] || deviceType['default'];
     }
@@ -384,14 +384,14 @@ class PeerUI {
             files: files,
             to: this._peer.id
         });
-        
+
         // Track file sending event
         if (window.trackFileSent && files && files.length > 0) {
             const totalSize = Array.from(files).reduce((size, file) => size + file.size, 0);
             const fileTypes = Array.from(files).map(file => file.type || 'unknown').join(',');
             window.trackFileSent(fileTypes, totalSize);
         }
-        
+
         $input.value = null;
     }
 
@@ -407,13 +407,13 @@ class PeerUI {
         }
         const degrees = `rotate(${360 * progress}deg)`;
         this.$progress.style.setProperty('--progress', degrees);
-        
+
         // Update progress text
         this._updateProgressText(progress);
-        
+
         // Calculate transfer speed
         this._updateTransferSpeed(progress);
-        
+
         if (progress >= 1) {
             this._onTransferComplete();
             this.setProgress(0);
@@ -421,7 +421,7 @@ class PeerUI {
             this._removeProgressIndicators();
         }
     }
-    
+
     _addProgressIndicators() {
         if (!this.$el.querySelector('.progress-text')) {
             const progressText = document.createElement('div');
@@ -429,7 +429,7 @@ class PeerUI {
             progressText.textContent = '0%';
             this.$el.appendChild(progressText);
         }
-        
+
         if (!this.$el.querySelector('.transfer-speed')) {
             const speedIndicator = document.createElement('div');
             speedIndicator.className = 'transfer-speed';
@@ -437,26 +437,26 @@ class PeerUI {
             this.$el.appendChild(speedIndicator);
         }
     }
-    
+
     _removeProgressIndicators() {
         const progressText = this.$el.querySelector('.progress-text');
         const speedIndicator = this.$el.querySelector('.transfer-speed');
-        
+
         if (progressText) progressText.remove();
         if (speedIndicator) speedIndicator.remove();
     }
-    
+
     _updateProgressText(progress) {
         const progressText = this.$el.querySelector('.progress-text');
         if (progressText) {
             progressText.textContent = Math.round(progress * 100) + '%';
         }
     }
-    
+
     _updateTransferSpeed(progress) {
         const speedIndicator = this.$el.querySelector('.transfer-speed');
         if (!speedIndicator) return;
-        
+
         const now = Date.now();
         if (!this._transferStartTime) {
             this._transferStartTime = now;
@@ -464,40 +464,40 @@ class PeerUI {
             this._lastTime = now;
             return;
         }
-        
+
         const timeDiff = (now - this._lastTime) / 1000; // seconds
         const progressDiff = progress - this._lastProgress;
-        
+
         if (timeDiff > 0.5 && progressDiff > 0) { // Update every 0.5 seconds
             const speed = progressDiff / timeDiff; // progress per second
             const remainingProgress = 1 - progress;
             const estimatedTime = remainingProgress / speed;
-            
+
             if (estimatedTime > 0 && estimatedTime < 3600) { // less than 1 hour
                 const minutes = Math.floor(estimatedTime / 60);
                 const seconds = Math.floor(estimatedTime % 60);
-                
+
                 if (minutes > 0) {
                     speedIndicator.textContent = `${minutes}m ${seconds}s remaining`;
                 } else {
                     speedIndicator.textContent = `${seconds}s remaining`;
                 }
             }
-            
+
             this._lastProgress = progress;
             this._lastTime = now;
         }
     }
-    
+
     _onTransferComplete() {
         // Add completion animation
         this.$el.classList.add('transfer-complete');
-        
+
         // Reset transfer timer
         this._transferStartTime = null;
         this._lastProgress = 0;
         this._lastTime = null;
-        
+
         // Remove completion animation class
         setTimeout(() => {
             this.$el.classList.remove('transfer-complete');
@@ -507,13 +507,13 @@ class PeerUI {
     _onDrop(e) {
         e.preventDefault();
         const files = e.dataTransfer.files;
-        
+
         // Add drag and drop success animation effect
         this.$el.classList.add('file-drop-success');
         setTimeout(() => {
             this.$el.classList.remove('file-drop-success');
         }, 700);
-        
+
         Events.fire('files-selected', {
             files: files,
             to: this._peer.id
@@ -540,7 +540,7 @@ class PeerUI {
             // Mobile enhancement features will handle touch events
             return;
         }
-        
+
         this._touchStart = Date.now();
         this._touchTimer = setTimeout(_ => this._onTouchEnd(), 300);
     }
@@ -551,7 +551,7 @@ class PeerUI {
             // Mobile enhancement features will handle touch events
             return;
         }
-        
+
         if (Date.now() - this._touchStart < 300) {
             clearTimeout(this._touchTimer);
         } else { // this was a long tap
@@ -600,7 +600,7 @@ class Dialog {
             if ($paper) $paper.classList.remove('dialog-entered');
         }, 300);
     }
-    
+
     // Add close method, mapping to hide
     close() {
         this.hide();
@@ -646,11 +646,11 @@ class ReceiveDialog extends Dialog {
         $a.href = url;
         $a.download = file.name;
 
-        if(this._autoDownload()){
+        if (this._autoDownload()) {
             $a.click()
             return
         }
-        if(file.mime.split('/')[0] === 'image'){
+        if (file.mime.split('/')[0] === 'image') {
             console.log('the file is image');
             this.$el.querySelector('.preview').style.visibility = 'inherit';
             this.$el.querySelector("#img-preview").src = url;
@@ -670,23 +670,23 @@ class ReceiveDialog extends Dialog {
         reader.onload = e => $a.href = reader.result;
         reader.readAsDataURL(file.blob);
     }
-    
+
     _addPreviewButton(file) {
         // Check if preview is supported
         if (!window.filePreview) return;
-        
+
         const fileType = file.mime || file.type;
         const isSupported = window.filePreview.supportedImageTypes.includes(fileType) ||
-                           window.filePreview.supportedVideoTypes.includes(fileType) ||
-                           window.filePreview.supportedAudioTypes.includes(fileType) ||
-                           window.filePreview.supportedDocumentTypes.includes(fileType);
-        
+            window.filePreview.supportedVideoTypes.includes(fileType) ||
+            window.filePreview.supportedAudioTypes.includes(fileType) ||
+            window.filePreview.supportedDocumentTypes.includes(fileType);
+
         if (!isSupported) return;
-        
+
         // Remove previous preview button
         const existingBtn = this.$el.querySelector('.preview-btn');
         if (existingBtn) existingBtn.remove();
-        
+
         // Create preview button
         const previewBtn = document.createElement('button');
         previewBtn.className = 'preview-btn';
@@ -702,13 +702,13 @@ class ReceiveDialog extends Dialog {
             margin: 8px 0;
             transition: background-color 0.2s;
         `;
-        
+
         previewBtn.addEventListener('click', () => {
             // Create File object for preview
             const previewFile = new File([file.blob], file.name, { type: file.mime });
             window.filePreview.open(previewFile, file.name);
         });
-        
+
         // Insert button before download button
         const downloadBtn = this.$el.querySelector('#download');
         downloadBtn.parentNode.insertBefore(previewBtn, downloadBtn);
@@ -729,17 +729,17 @@ class ReceiveDialog extends Dialog {
     hide() {
         this.$el.querySelector('.preview').style.visibility = 'hidden';
         this.$el.querySelector("#img-preview").src = "";
-        
+
         // Clean up preview button
         const previewBtn = this.$el.querySelector('.preview-btn');
         if (previewBtn) previewBtn.remove();
-        
+
         super.hide();
         this._dequeueFile();
     }
 
 
-    _autoDownload(){
+    _autoDownload() {
         return !this.$el.querySelector('#autoDownload').checked
     }
 }
@@ -822,20 +822,20 @@ class Toast extends Dialog {
 
     _onNotfiy(message) {
         // Block specific unwanted notifications
-        if (message === 'File transfer completed.' || 
-            message === '文件传输完成' || 
-            message.includes('transfer completed') || 
+        if (message === 'File transfer completed.' ||
+            message === '文件传输完成' ||
+            message.includes('transfer completed') ||
             message.includes('传输完成')) {
             console.log('Blocked unwanted notification:', message);
             return;
         }
-        
+
         this.$el.querySelector('#toast-text').textContent = message;
         this.show();
-        
+
         // Add fade in/out animation
         this.$el.classList.add('toast-shown');
-        
+
         clearTimeout(this._hideTimeout);
         this._hideTimeout = setTimeout(_ => {
             this.$el.classList.remove('toast-shown');
@@ -962,7 +962,7 @@ class WebShareTargetUI {
         let shareTargetText = title ? title : '';
         shareTargetText += text ? shareTargetText ? ' ' + text : text : '';
 
-        if(url) shareTargetText = url; // We share only the Link - no text. Because link-only text becomes clickable.
+        if (url) shareTargetText = url; // We share only the Link - no text. Because link-only text becomes clickable.
 
         if (!shareTargetText) return;
         window.shareTargetText = shareTargetText;
@@ -985,12 +985,12 @@ class Snapdrop {
             const notifications = new Notifications();
             const networkStatusUI = new NetworkStatusUI();
             const webShareTargetUI = new WebShareTargetUI();
-            
+
             // Initialize Transfer History
             if (typeof TransferHistory !== 'undefined' && typeof TransferHistoryUI !== 'undefined') {
                 const transferHistory = new TransferHistory();
                 const transferHistoryUI = new TransferHistoryUI(transferHistory);
-                
+
                 // Set up history button click handler
                 const historyBtn = document.getElementById('historyBtn');
                 if (historyBtn) {
@@ -999,7 +999,7 @@ class Snapdrop {
                         transferHistoryUI.show();
                     });
                 }
-                
+
                 // Listen for transfer events to record history
                 Events.on('file-received', e => {
                     const detail = e.detail;
@@ -1015,7 +1015,7 @@ class Snapdrop {
                         status: 'completed'
                     });
                 });
-                
+
                 Events.on('files-selected', e => {
                     const detail = e.detail;
                     if (detail.files && detail.files.length > 0) {
@@ -1034,7 +1034,7 @@ class Snapdrop {
                         });
                     }
                 });
-                
+
                 Events.on('text-received', e => {
                     const detail = e.detail;
                     transferHistory.recordTransfer({
@@ -1047,7 +1047,7 @@ class Snapdrop {
                         status: 'completed'
                     });
                 });
-                
+
                 Events.on('send-text', e => {
                     const detail = e.detail;
                     transferHistory.recordTransfer({
@@ -1082,9 +1082,11 @@ window.addEventListener('beforeinstallprompt', e => {
         // don't display install banner when installed
         return e.preventDefault();
     } else {
-        const btn = document.querySelector('#install')
-        btn.hidden = false;
-        btn.onclick = _ => e.prompt();
+        const btn = document.querySelector('#install');
+        if (btn) {
+            btn.hidden = false;
+            btn.onclick = _ => e.prompt();
+        }
         return e.preventDefault();
     }
 });
@@ -1138,17 +1140,17 @@ Events.on('load', () => {
     let loading = true;
 
     function animate() {
-        requestAnimationFrame(function() {
+        requestAnimationFrame(function () {
             drawCircles();
             animate();
         });
     }
-    
-    window.animateBackground = function(l) {
+
+    window.animateBackground = function (l) {
         loading = l;
         animate();
     };
-    
+
     init();
     animate();
 });
