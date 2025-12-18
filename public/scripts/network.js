@@ -470,24 +470,24 @@ class RTCPeer extends Peer {
                 console.log('✅ ICE gathering completed');
                 break;
             case 'disconnected':
-                console.log('🔌 ICE connection disconnected - attempting restart');
-                // Reset connection and try again for disconnected state
-                this._resetConnection();
-                setTimeout(() => {
-                    if (this._isCaller) {
-                        this._connect(this._peerId, true);
-                    }
-                }, 3000);
+                // Don't reset immediately - disconnected is often temporary
+                console.log('🔌 ICE connection disconnected (may recover)');
+                // ICE restart instead of full reset
+                if (this._conn && this._conn.restartIce) {
+                    console.log('🔄 Attempting ICE restart...');
+                    this._conn.restartIce();
+                }
                 break;
             case 'failed':
-                console.error('❌ ICE connection failed - attempting restart');
-                // Reset connection and try again
-                this._resetConnection();
-                setTimeout(() => {
-                    if (this._isCaller) {
+                console.error('❌ ICE connection failed');
+                // Only reset after a longer delay for failed state
+                if (this._isCaller) {
+                    setTimeout(() => {
+                        console.log('🔄 Attempting reconnection after ICE failure...');
+                        this._resetConnection();
                         this._connect(this._peerId, true);
-                    }
-                }, 5000);
+                    }, 10000); // 10 second delay
+                }
                 break;
             case 'checking':
                 console.log('🔄 ICE connection checking...');
