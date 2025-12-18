@@ -601,15 +601,33 @@ class PeersManager {
     }
 
     sendTo(peerId, message) {
+        if (!this.peers[peerId]) {
+            console.error('❌ Peer not found:', peerId, 'Available peers:', Object.keys(this.peers));
+            return;
+        }
         this.peers[peerId].send(message);
     }
 
     _onFilesSelected(message) {
+        console.log('📤 PeersManager: Files selected for peer:', message.to, 'Files:', message.files.length);
+        if (!this.peers[message.to]) {
+            console.error('❌ Peer not found for file transfer:', message.to, 'Available peers:', Object.keys(this.peers));
+            Events.fire('notify-user', '无法找到目标设备，请刷新页面重试');
+            return;
+        }
         this.peers[message.to].sendFiles(message.files);
+        console.log('✅ Files sent to peer:', message.to);
     }
 
     _onSendText(message) {
+        console.log('📤 PeersManager: Sending text to peer:', message.to);
+        if (!this.peers[message.to]) {
+            console.error('❌ Peer not found for text:', message.to, 'Available peers:', Object.keys(this.peers));
+            Events.fire('notify-user', '无法找到目标设备，请刷新页面重试');
+            return;
+        }
         this.peers[message.to].sendText(message.text);
+        console.log('✅ Text sent to peer:', message.to);
     }
 
     _onPeerLeft(peerId) {
