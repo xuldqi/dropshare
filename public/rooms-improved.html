@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DropShare - Rooms</title>
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="share-premium.css">
     <style>
@@ -27,8 +29,31 @@
         body {
             padding-top: 80px;
             background: #ffffff !important;
-            /* Ensure no ripple/gradient background */
             background-image: none !important;
+            background-color: #ffffff !important;
+        }
+
+        /* COMPLETELY REMOVE all radar/ripple/circle effects */
+        .radar-container,
+        .radar-circle,
+        .circle-1,
+        .circle-2,
+        .circle-3,
+        .central-logo {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            animation: none !important;
+        }
+
+        /* Override any pulse keyframes */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: none;
+            }
         }
     </style>
     <link rel="stylesheet" href="unified-navigation.css">
