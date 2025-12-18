@@ -296,7 +296,13 @@ class RTCPeer extends Peer {
             reliable: true // Obsolete. See https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/reliable
         });
         channel.onopen = e => this._onChannelOpened(e);
-        this._conn.createOffer().then(d => this._onDescription(d)).catch(e => this._onError(e));
+
+        // Set flag before creating offer (for perfect negotiation)
+        this._makingOffer = true;
+        this._conn.createOffer()
+            .then(d => this._onDescription(d))
+            .catch(e => this._onError(e))
+            .finally(() => { this._makingOffer = false; });
     }
 
     _onDescription(description) {
