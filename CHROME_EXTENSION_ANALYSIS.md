@@ -384,7 +384,7 @@ class LocalNetworkDiscovery {
 1. **WebRTC逻辑**: `public/scripts/network.js` 中的RTCPeer相关代码
 2. **文件处理**: `public/scripts/network.js` 中的FileChunker和FileDigester
 3. **信令协议**: `index.js` 中的WebSocket消息处理逻辑
-4. **UI组件**: `public/transer.html` 中的界面组件
+4. **UI组件**: `public/share.html` 中的界面组件
 
 ## 八、结论
 

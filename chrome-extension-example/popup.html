@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <style>
@@ -221,14 +222,15 @@
     }
   </style>
 </head>
+
 <body>
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
     <h2 style="margin: 0;">DropShare</h2>
-    <button id="settingsBtn" style="background: none; border: 1px solid #d1d5db; border-radius: 6px; padding: 6px 12px; cursor: pointer; font-size: 12px; color: #6b7280;">⚙️ 设置</button>
+    <!-- Settings button hidden by default for simpler UX -->
   </div>
-  
+
   <div class="status disconnected" id="status">
-    正在自动配置服务器...
+    正在连接...
   </div>
 
   <!-- 设置面板 -->
@@ -250,7 +252,8 @@
   <div class="device-list">
     <h3 style="margin-bottom: 10px; font-size: 14px; color: #6b7280;">可用设备</h3>
     <div id="deviceList">
-      <p style="color: #9ca3af; font-size: 14px; text-align: center; padding: 20px;">搜索设备中...<br><small style="font-size: 12px;">确保其他设备也在线</small></p>
+      <p style="color: #9ca3af; font-size: 14px; text-align: center; padding: 20px;">搜索设备中...<br><small
+          style="font-size: 12px;">确保其他设备也在线</small></p>
     </div>
   </div>
 
@@ -271,4 +274,5 @@
 
   <script src="popup.js"></script>
 </body>
+
 </html>

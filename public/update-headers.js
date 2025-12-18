@@ -36,14 +36,14 @@ const pagesToUpdate = [
     'subtitle-editor-real.html',
 
     // Image Tools
-    'image-compressor-new.html',
-    'image-converter-new.html',
-    'image-resizer-new.html',
-    'image-cropper-new.html',
-    'image-filter-effects-new.html',
-    'image-rotator-new.html',
-    'image-watermark-tool-new.html',
-    'image-background-remover-new.html',
+    'image-compressor.html',
+    'image-converter.html',
+    'image-resizer.html',
+    'image-cropper.html',
+    'image-filter-effects.html',
+    'image-rotator.html',
+    'image-watermark-tool.html',
+    'image-background-remover.html',
 
     // Document Tools
     'pdf-compressor-real.html',
@@ -60,7 +60,6 @@ const pagesToUpdate = [
     'video-tools.html',
     'document-tools.html',
     'image-tools.html',
-    'transer.html',
     'rooms-improved.html',
     'share.html',
     'about.html',
@@ -76,14 +75,11 @@ function updateHeader(filePath) {
     try {
         let content = fs.readFileSync(filePath, 'utf8');
 
-        // Remove existing header-specific styles if they exist to avoid conflicts (optional, but safer)
-        // content = content.replace(/<style>[\s\S]*?\.header[\s\S]*?<\/style>/i, ''); 
-
         // Check for existing header
         const headerRegex = /<header[^>]*>[\s\S]*?<\/header>/i;
 
         if (headerRegex.test(content)) {
-            // Replace existing header with template (which includes the style block)
+            // Replace existing header with template
             content = content.replace(headerRegex, headerTemplate);
             console.log(`✓ Updated header in: ${path.basename(filePath)}`);
         } else {

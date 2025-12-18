@@ -13,10 +13,10 @@ class DropShareExtension {
     this.fileQueue = [];
     this.reconnectAttempts = 0;
     this.maxReconnectAttempts = 10;
-    
+
     // 从存储或环境获取服务器URL
     this.serverUrl = null;
-    
+
     this.init();
   }
 
@@ -32,27 +32,12 @@ class DropShareExtension {
   async loadSettings() {
     return new Promise((resolve) => {
       chrome.storage.sync.get(['serverUrl', 'deviceName'], async (result) => {
-        // 如果已有保存的服务器地址，直接使用
-        if (result.serverUrl) {
-          this.serverUrl = result.serverUrl;
-          console.log('Using saved server URL:', this.serverUrl);
-        } else {
-          // 自动检测服务器地址
-          this.serverUrl = await this.autoDetectServerUrl();
-          // 保存检测到的地址
-          if (this.serverUrl) {
-            chrome.storage.sync.set({ serverUrl: this.serverUrl }, () => {
-              console.log('Auto-detected and saved server URL:', this.serverUrl);
-            });
-          } else {
-            // 如果自动检测失败，使用默认的WSS线上服务器
-            this.serverUrl = 'wss://dropshare.tech/server/webrtc';
-            console.log('Using default server URL (WSS):', this.serverUrl);
-          }
-        }
-        
+        // Always default to production server for simplicity
+        // Users don't need to configure anything
+        this.serverUrl = result.serverUrl || 'wss://dropshare.tech/server/webrtc';
         this.deviceName = result.deviceName || this.getDeviceName();
-        console.log('Final Server URL:', this.serverUrl);
+
+        console.log('Using server URL:', this.serverUrl);
         resolve();
       });
     });
@@ -65,8 +50,8 @@ class DropShareExtension {
         // 查找DropShare相关的标签页（优先级从高到低）
         let dropshareTab = tabs.find(tab => {
           const url = tab.url || '';
-          return url.includes('dropshare.tech') || 
-                 url.includes('dropshare');
+          return url.includes('dropshare.tech') ||
+            url.includes('dropshare');
         });
 
         // 如果没有找到，查找localhost
@@ -74,9 +59,9 @@ class DropShareExtension {
           dropshareTab = tabs.find(tab => {
             const url = tab.url || '';
             return url.includes('localhost:8080') ||
-                   url.includes('127.0.0.1:8080') ||
-                   url.includes('transer.html') ||
-                   url.includes('share.html');
+              url.includes('127.0.0.1:8080') ||
+              url.includes('transer.html') ||
+              url.includes('share.html');
           });
         }
 
@@ -133,7 +118,7 @@ class DropShareExtension {
       try {
         const testWs = new WebSocket(url);
         let resolved = false;
-        
+
         testWs.onopen = () => {
           if (!resolved) {
             resolved = true;
@@ -195,21 +180,21 @@ class DropShareExtension {
       console.log('Connecting to signaling server:', this.serverUrl);
       this.signalingSocket = new WebSocket(this.serverUrl);
       this.signalingSocket.binaryType = 'arraybuffer';
-      
+
       this.signalingSocket.onopen = () => {
         console.log('✅ Connected to signaling server');
         this.reconnectAttempts = 0;
         this.notifyPopup('connected', '已连接到服务器');
-        
+
         // 服务器会在连接后自动发送peer列表（通过_joinRoom）
         // 但我们也可以主动请求一次，确保获取最新列表
         setTimeout(() => {
           this.sendSignalingMessage({ type: 'get-peers' });
         }, 500);
-        
+
         // 定期发送ping保持连接，并定期请求peer列表
         this.startKeepAlive();
-        
+
         // 定期请求peer列表（每5秒）
         this.startPeerListRefresh();
       };
@@ -222,7 +207,7 @@ class DropShareExtension {
             // 二进制数据应该在WebRTC DataChannel中处理，这里不应该收到
             return;
           }
-          
+
           const message = JSON.parse(event.data);
           this.handleSignalingMessage(message);
         } catch (error) {
@@ -233,7 +218,7 @@ class DropShareExtension {
       this.signalingSocket.onclose = (event) => {
         console.log('Disconnected from signaling server', event.code, event.reason);
         this.stopKeepAlive();
-        
+
         // 检查是否是协议错误（301重定向通常表示应该使用WSS）
         if (event.code === 1006 && this.serverUrl.startsWith('ws://')) {
           // 尝试自动切换到WSS
@@ -248,7 +233,7 @@ class DropShareExtension {
           setTimeout(() => this.connectToSignalingServer(), 1000);
           return;
         }
-        
+
         let disconnectMsg = '与服务器断开连接';
         if (event.code === 1006) {
           // 1006表示异常关闭（没有收到关闭帧）
@@ -260,9 +245,9 @@ class DropShareExtension {
             disconnectMsg = '连接失败，请检查服务器地址和网络';
           }
         }
-        
+
         this.notifyPopup('disconnected', disconnectMsg);
-        
+
         // 重连逻辑
         if (this.reconnectAttempts < this.maxReconnectAttempts) {
           this.reconnectAttempts++;
@@ -300,15 +285,15 @@ class DropShareExtension {
     if (!serverUrl) {
       return '服务器地址未配置';
     }
-    
+
     if (serverUrl.includes('localhost') || serverUrl.includes('127.0.0.1')) {
       return '无法连接到本地服务器，请确保服务器正在运行';
     }
-    
+
     if (serverUrl.startsWith('ws://') && !serverUrl.includes('localhost')) {
       return '连接失败，请尝试使用WSS://（安全连接）';
     }
-    
+
     if (error && error.message) {
       if (error.message.includes('301') || error.message.includes('redirect')) {
         return '连接失败：服务器要求使用安全连接（WSS://）';
@@ -320,7 +305,7 @@ class DropShareExtension {
         return '无法解析服务器地址，请检查域名是否正确';
       }
     }
-    
+
     return '连接服务器时出错，请检查设置和网络';
   }
 
@@ -408,40 +393,28 @@ class DropShareExtension {
       case 'display-name':
         // 服务器分配的显示名称和peer ID
         console.log('📌 Received display-name message:', message);
-        
+
         // 服务器发送的格式可能是 message.message.peerId
         const serverPeerId = message.peerId || (message.message && message.message.peerId);
         const displayName = message.name || (message.message && message.message.displayName);
-        
+
         if (displayName) {
           this.deviceName = displayName;
           console.log('📌 Server assigned display name:', displayName);
         }
-        
-        if (serverPeerId) {
-          console.log('📌 Server assigned peer ID:', serverPeerId);
-          console.log('📌 Current extension device ID:', this.deviceId);
-          
-          // 更新device ID为服务器分配的peer ID，这样扩展和网站就能同步
-          if (this.deviceId !== serverPeerId) {
-            console.log('🔄 Updating device ID from', this.deviceId, 'to', serverPeerId);
-            const oldDeviceId = this.deviceId;
-            this.deviceId = serverPeerId;
-            
-            // 保存新的device ID
-            chrome.storage.local.set({ deviceId: serverPeerId }, () => {
-              console.log('✅ Device ID updated and saved');
-              // 通知popup设备ID已更新
-              chrome.runtime.sendMessage({
-                type: 'device-id-updated',
-                deviceId: serverPeerId,
-                oldDeviceId: oldDeviceId
-              }).catch(() => {});
-            });
-          } else {
-            console.log('✅ Device ID matches server peer ID');
-          }
-        }
+
+        // IMPORTANT: We should NOT sync our device ID with the server-assigned peer ID
+        // if we want to coexist with the website on the same IP.
+        // Instead, we use our own uniquely generated deviceId to be visible as a separate peer.
+        console.log('📌 Server assigned peer ID:', serverPeerId);
+        console.log('📌 Current extension device ID (preserved):', this.deviceId);
+
+        // Notify popup that we're connected with our unique ID
+        chrome.runtime.sendMessage({
+          type: 'device-id-updated',
+          deviceId: this.deviceId,
+          serverPeerId: serverPeerId
+        }).catch(() => { });
         break;
       default:
         console.log('Unknown message type:', message.type);
@@ -452,16 +425,16 @@ class DropShareExtension {
     console.log('📋 Received peer list:', peers);
     console.log('📋 Current device ID (extension):', this.deviceId);
     console.log('📋 Total peers received:', peers ? peers.length : 0);
-    
+
     if (!peers || !Array.isArray(peers)) {
       console.warn('⚠️ Invalid peer list received:', peers);
       peers = [];
     }
-    
+
     // 重要：不要过滤peer，让服务器处理
     // 服务器已经在_joinRoom中过滤掉了自己（通过peer.id比较）
     // 扩展接收到的peer列表应该已经排除了自己
-    
+
     console.log('✅ Available peers (from server):', peers.length);
     if (peers.length > 0) {
       console.log('✅ Peer IDs:', peers.map(p => p.id ? p.id.substring(0, 8) + '...' : 'Unknown'));
@@ -476,7 +449,7 @@ class DropShareExtension {
       console.log('   2. Other devices are on the same network (same client IP)');
       console.log('   3. Server is correctly grouping peers by IP');
     }
-    
+
     // 通知popup更新设备列表
     chrome.runtime.sendMessage({
       type: 'peer-list-updated',
@@ -510,7 +483,7 @@ class DropShareExtension {
         await peerConnection.setRemoteDescription(new RTCSessionDescription(signal));
         const answer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(answer);
-        
+
         this.sendSignalingMessage({
           type: 'signal',
           to: senderId,
@@ -583,8 +556,8 @@ class DropShareExtension {
       chrome.runtime.sendMessage({
         type: 'connection-ready',
         peerId: peerId
-      }).catch(() => {});
-      
+      }).catch(() => { });
+
       // 如果有待发送的文件，开始发送
       this.processFileQueue(peerId);
     };
@@ -602,7 +575,7 @@ class DropShareExtension {
       chrome.runtime.sendMessage({
         type: 'connection-closed',
         peerId: peerId
-      }).catch(() => {});
+      }).catch(() => { });
     };
 
     dataChannel.onbufferedamountlow = () => {
@@ -631,19 +604,19 @@ class DropShareExtension {
     peerConnection.onconnectionstatechange = () => {
       const state = peerConnection.connectionState;
       console.log(`Connection state with ${currentPeerId}:`, state);
-      
+
       if (state === 'connected') {
         chrome.runtime.sendMessage({
           type: 'peer-connected',
           peerId: currentPeerId
-        }).catch(() => {});
+        }).catch(() => { });
       } else if (state === 'disconnected' || state === 'failed' || state === 'closed') {
         // 清理连接
         this.cleanupPeerConnection(currentPeerId);
         chrome.runtime.sendMessage({
           type: 'peer-disconnected',
           peerId: currentPeerId
-        }).catch(() => {});
+        }).catch(() => { });
       }
     };
 
@@ -658,7 +631,7 @@ class DropShareExtension {
       peerConnection.close();
       this.peerConnections.delete(peerId);
     }
-    
+
     const dataChannel = this.dataChannels.get(peerId);
     if (dataChannel) {
       dataChannel.close();
@@ -692,7 +665,7 @@ class DropShareExtension {
           type: 'file-progress',
           progress: message.progress,
           peerId: peerId
-        }).catch(() => {});
+        }).catch(() => { });
       }
     } catch (e) {
       // 二进制数据（文件块）
@@ -711,15 +684,15 @@ class DropShareExtension {
       receivedSize: 0,
       peerId: peerId
     };
-    
+
     // 为每个peer存储独立的文件接收状态
     if (!this.receivingFiles) {
       this.receivingFiles = new Map();
     }
     this.receivingFiles.set(peerId, fileInfo);
-    
+
     console.log('Receiving file:', fileInfo.name, 'from peer:', peerId);
-    
+
     // 通知popup显示接收文件提示
     chrome.notifications.create({
       type: 'basic',
@@ -735,7 +708,7 @@ class DropShareExtension {
       fileName: fileInfo.name,
       fileSize: fileInfo.size,
       peerId: peerId
-    }).catch(() => {});
+    }).catch(() => { });
   }
 
   handleFileChunk(peerId, chunk) {
@@ -757,7 +730,7 @@ class DropShareExtension {
       peerId: peerId,
       received: fileInfo.receivedSize,
       total: fileInfo.size
-    }).catch(() => {});
+    }).catch(() => { });
 
     // 文件接收完成
     if (fileInfo.receivedSize >= fileInfo.size) {
@@ -782,24 +755,24 @@ class DropShareExtension {
           type: 'file-error',
           error: chrome.runtime.lastError.message,
           fileName: fileInfo.name
-        }).catch(() => {});
+        }).catch(() => { });
       } else {
         console.log('File downloaded:', downloadId);
         chrome.runtime.sendMessage({
           type: 'file-completed',
           fileName: fileInfo.name,
           peerId: peerId
-        }).catch(() => {});
-        
+        }).catch(() => { });
+
         // 显示通知
         chrome.notifications.create({
           type: 'basic',
           iconUrl: chrome.runtime.getURL('icons/icon48.png'),
           title: '文件接收完成',
           message: `${fileInfo.name} 已保存`
-        }).catch(() => {});
+        }).catch(() => { });
       }
-      
+
       // 清理URL
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
@@ -846,7 +819,7 @@ class DropShareExtension {
                 peerId: targetPeerId,
                 sent: offset,
                 total: file.size
-              }).catch(() => {});
+              }).catch(() => { });
 
               if (offset < file.size) {
                 // 检查缓冲区，避免溢出
@@ -978,7 +951,7 @@ class DropShareExtension {
   async handleSendFile(fileData, targetPeerId) {
     // fileData可能是File对象或包含ArrayBuffer的对象
     let file;
-    
+
     if (fileData instanceof File) {
       file = fileData;
     } else if (fileData.data instanceof ArrayBuffer) {
@@ -1015,7 +988,7 @@ class DropShareExtension {
 
   async connectToPeer(peerId) {
     let peerConnection = this.peerConnections.get(peerId);
-    
+
     if (!peerConnection) {
       peerConnection = await this.createPeerConnection(peerId);
     }

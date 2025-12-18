@@ -8,57 +8,282 @@
     <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="share-premium.css">
+    <!-- DO NOT load share-premium.css - it causes ripple issues -->
     <style>
-        /* Specific overrides for Rooms page that might not be in share-premium.css */
-        .room-card {
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            box-shadow: var(--shadow-lg);
+        /* ========== ROOMS PAGE SPECIFIC STYLES ========== */
+        :root {
+            --primary-50: #F4F8FB;
+            --primary-100: #E6EEF5;
+            --primary-500: #5B84B1;
+            --primary-600: #4a6f96;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-900: #2C3E50;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --shadow-lg: 0 10px 30px -5px rgba(91, 132, 177, 0.15);
+            --shadow-xl: 0 15px 40px -10px rgba(91, 132, 177, 0.2);
         }
 
-        .room-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-            background: rgba(255, 255, 255, 0.9);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Adjust page top padding for fixed header */
         html,
         body {
-            padding-top: 80px;
             background: #ffffff !important;
             background-image: none !important;
-            background-color: #ffffff !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
         }
 
-        /* COMPLETELY REMOVE all radar/ripple/circle effects */
+        /* COMPLETELY KILL ALL ANIMATIONS AND RIPPLES */
         .radar-container,
         .radar-circle,
         .circle-1,
         .circle-2,
         .circle-3,
-        .central-logo {
+        .central-logo,
+        .shimmer,
+        .background-animation,
+        canvas {
             display: none !important;
             opacity: 0 !important;
             visibility: hidden !important;
             animation: none !important;
+            pointer-events: none !important;
         }
 
-        /* Override any pulse keyframes */
         @keyframes pulse {
 
             0%,
             100% {
                 opacity: 0;
-                transform: none;
             }
         }
-    </style>
-    <link rel="stylesheet" href="unified-navigation.css">
 
-    <!-- 添加i18n支持 -->
+        body::before,
+        body::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        /* HEADER - fixed at top */
+        .header {
+            padding: 16px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-600);
+            text-decoration: none;
+        }
+
+        /* PAGE LAYOUT */
+        .page-container {
+            padding-top: 80px;
+            /* Space for fixed header */
+            min-height: 100vh;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* HERO */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-500);
+            margin-bottom: 12px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* CONNECTION STATUS */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+            padding: 10px 20px;
+            background: var(--gray-100);
+            border-radius: 50px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .connection-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+
+        .connection-status.connected .connection-indicator {
+            background: #22c55e;
+        }
+
+        /* ROOM CARDS */
+        .room-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 700px;
+            margin: 0 auto 48px;
+        }
+
+        .room-card {
+            background: white;
+            border: 1px solid var(--gray-100);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .room-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .room-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .room-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-600);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* LANGUAGE SELECTOR */
+        .language-wrapper {
+            position: relative;
+        }
+
+        #langToggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid var(--gray-100);
+            border-radius: 50px;
+            background: white;
+            color: var(--text-main);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #langMenu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: white;
+            border: 1px solid var(--gray-100);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            min-width: 140px;
+            display: none;
+            z-index: 9999;
+            overflow: hidden;
+            padding: 8px 0;
+        }
+
+        .lang-option {
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .lang-option:hover {
+            background: var(--primary-50);
+            color: var(--primary-500);
+        }
+    </style>
+
+    <!-- i18n support -->
     <script src="locales/i18n.js"></script>
 
     <script>
@@ -97,10 +322,8 @@
                 <div class="brand-left" style="display: flex; align-items: center;">
                     <a href="/" class="logo"
                         style="text-decoration: none; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.25rem; color: #4a6f96;">
-                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #5B84B1;">
-                            <path
-                                d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z" />
-                        </svg>
+                        <img src="logo_blue_512x512.png" alt="DropShare Logo"
+                            style="width: 32px; height: 32px; object-fit: contain;">
                         <span data-i18n="site_name">DropShare</span>
                     </a>
                 </div>

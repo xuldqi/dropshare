@@ -6,7 +6,7 @@ class PopupManager {
     this.selectedPeerId = null;
     this.peers = [];
     this.deviceId = null;
-    
+
     this.init();
   }
 
@@ -68,11 +68,11 @@ class PopupManager {
       // 查找DropShare相关的标签页
       const dropshareTab = tabs.find(tab => {
         const url = tab.url || '';
-        return url.includes('dropshare') || 
-               url.includes('localhost:8080') ||
-               url.includes('transer.html') ||
-               url.includes('share.html') ||
-               url.includes('index.html');
+        return url.includes('dropshare') ||
+          url.includes('localhost:8080') ||
+          url.includes('share.html') ||
+          url.includes('share.html') ||
+          url.includes('index.html');
       });
 
       if (dropshareTab && dropshareTab.url) {
@@ -82,10 +82,10 @@ class PopupManager {
           const protocol = url.protocol === 'https:' ? 'wss' : 'ws';
           const host = url.host;
           const wsUrl = `${protocol}://${host}/server/webrtc`;
-          
+
           console.log('🔍 Auto-detected server URL:', wsUrl);
           console.log('🔍 Website protocol:', url.protocol, '→ WebSocket protocol:', protocol);
-          
+
           // 自动保存配置
           this.saveSettings(wsUrl, true);
         } catch (error) {
@@ -101,10 +101,10 @@ class PopupManager {
               const protocol = url.protocol === 'https:' ? 'wss' : 'ws';
               const host = url.host;
               const wsUrl = `${protocol}://${host}/server/webrtc`;
-              
+
               console.log('🔍 Auto-detected from current tab:', wsUrl);
               console.log('🔍 Website protocol:', url.protocol, '→ WebSocket protocol:', protocol);
-              
+
               // 填充到输入框（如果设置面板打开）
               const input = document.getElementById('serverUrlInput');
               if (input) {
@@ -310,7 +310,7 @@ class PopupManager {
       try {
         // 读取文件为ArrayBuffer
         const arrayBuffer = await this.readFileAsArrayBuffer(file);
-        
+
         // 发送文件信息
         await new Promise((resolve, reject) => {
           chrome.runtime.sendMessage({
@@ -363,9 +363,9 @@ class PopupManager {
   updateProgress(progress, fileName, received, total) {
     const progressFill = document.getElementById('progressFill');
     const progressText = document.getElementById('progressText');
-    
+
     progressFill.style.width = `${progress * 100}%`;
-    
+
     if (received && total) {
       const receivedStr = this.formatFileSize(received);
       const totalStr = this.formatFileSize(total);
@@ -387,7 +387,7 @@ class PopupManager {
     const progressDiv = document.getElementById('progress');
     progressDiv.style.display = 'none';
     this.updateStatus('connected', `${fileName} 接收完成`);
-    
+
     // 3秒后恢复状态
     setTimeout(() => {
       this.updateStatus('connected', '已连接');
@@ -469,7 +469,7 @@ class PopupManager {
       }
       return;
     }
-    
+
     // 智能协议检测：如果不是localhost，建议使用WSS
     if (serverUrl.startsWith('ws://') && !serverUrl.includes('localhost') && !serverUrl.includes('127.0.0.1')) {
       console.log('⚠️ Using WS for non-localhost server, consider using WSS');

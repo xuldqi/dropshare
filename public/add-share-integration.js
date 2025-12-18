@@ -4,11 +4,11 @@
 function addShareButtons() {
     // Find download buttons and add share buttons next to them
     const downloadButtons = document.querySelectorAll('button[onclick*="download"], a[download]');
-    
+
     downloadButtons.forEach(button => {
         // If share button already exists, skip
         if (button.parentNode.querySelector('.share-button')) return;
-        
+
         // Create share button
         const shareButton = document.createElement('button');
         shareButton.className = 'share-button';
@@ -24,13 +24,13 @@ function addShareButtons() {
             font-size: 14px;
             transition: background 0.3s;
         `;
-        
+
         shareButton.onmouseover = () => shareButton.style.background = '#059669';
         shareButton.onmouseout = () => shareButton.style.background = '#10b981';
-        
+
         // Add click event
         shareButton.onclick = () => shareCurrentFile();
-        
+
         // Insert after download button
         button.parentNode.insertBefore(shareButton, button.nextSibling);
     });
@@ -40,7 +40,7 @@ function addShareButtons() {
 function shareCurrentFile() {
     // Try to get the processing result from current page
     const resultFile = getCurrentResultFile();
-    
+
     if (resultFile) {
         // If result file exists, show device selector
         if (window.deviceSelector) {
@@ -51,14 +51,14 @@ function shareCurrentFile() {
         }
     } else {
         // If no result file, open share page for user upload
-        window.open('/transer.html', '_blank');
+        window.open('/share.html', '_blank');
     }
 }
 
 // 3. Get result file from current page
 function getCurrentResultFile() {
     // Try to get result file from various possible locations
-    
+
     // Method 1: Check if there's a download link
     const downloadLink = document.querySelector('a[download]');
     if (downloadLink && downloadLink.href && downloadLink.href.startsWith('blob:')) {
@@ -68,7 +68,7 @@ function getCurrentResultFile() {
             type: 'processed'
         };
     }
-    
+
     // Method 2: Check canvas result
     const canvas = document.querySelector('canvas');
     if (canvas) {
@@ -78,7 +78,7 @@ function getCurrentResultFile() {
             type: 'canvas'
         };
     }
-    
+
     // Method 3: Check result image
     const resultImg = document.querySelector('.result img, #resultImage');
     if (resultImg && resultImg.src && resultImg.src.startsWith('blob:')) {
@@ -88,7 +88,7 @@ function getCurrentResultFile() {
             type: 'image'
         };
     }
-    
+
     return null;
 }
 
@@ -112,20 +112,20 @@ function openSharePage(file) {
             }));
         });
     }
-    
+
     // Open share page
-    window.open('/transer.html?auto=true', '_blank');
+    window.open('/share.html?auto=true', '_blank');
 }
 
 // 5. 在主页添加分享入口
 function addShareEntryToHomepage() {
     // 检查是否在主页
     if (!window.location.pathname.includes('index.html') && window.location.pathname !== '/') return;
-    
+
     // 查找工具分类区域
     const toolsSection = document.querySelector('.tools-grid, .tool-categories');
     if (!toolsSection) return;
-    
+
     // 创建分享工具卡片
     const shareCard = document.createElement('div');
     shareCard.className = 'tool-card share-card';
@@ -140,11 +140,11 @@ function addShareEntryToHomepage() {
         cursor: pointer;
         transition: transform 0.3s;
     `;
-    
+
     shareCard.onmouseover = () => shareCard.style.transform = 'scale(1.05)';
     shareCard.onmouseout = () => shareCard.style.transform = 'scale(1)';
-    shareCard.onclick = () => window.open('/transer.html', '_blank');
-    
+    shareCard.onclick = () => window.open('/share.html', '_blank');
+
     // 插入到工具列表的第一个位置
     toolsSection.insertBefore(shareCard, toolsSection.firstChild);
 }
@@ -171,13 +171,13 @@ function addShareToNavigation() {
     } catch (e) {
         // 忽略路径解析错误，默认继续（仅首页会被拦截）
     }
-    
+
     // 检查是否已经有分享链接
     if (nav.querySelector('a[href*="share"]')) return;
-    
+
     // 创建分享链接（非首页）
     const shareLink = document.createElement('a');
-    shareLink.href = '/transer.html';
+    shareLink.href = '/share.html';
     shareLink.textContent = 'Share';
     shareLink.style.cssText = `
         color: #10b981;
@@ -185,7 +185,7 @@ function addShareToNavigation() {
         font-weight: 500;
         margin: 0 15px;
     `;
-    
+
     // 添加到导航菜单
     nav.appendChild(shareLink);
 }
@@ -197,21 +197,21 @@ function initShareIntegration() {
         document.addEventListener('DOMContentLoaded', initShareIntegration);
         return;
     }
-    
+
     console.log('🔗 初始化分享功能集成...');
-    
+
     // 添加各种分享功能
     addShareToNavigation();
     addShareEntryToHomepage();
-    
+
     // 延迟添加分享按钮，等待页面工具加载完成
     setTimeout(() => {
         addShareButtons();
-        
+
         // 每5秒检查一次新的下载按钮
         setInterval(addShareButtons, 5000);
     }, 1000);
-    
+
     console.log('✅ 分享功能集成完成');
 }
 

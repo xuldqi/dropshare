@@ -18,7 +18,7 @@ Events.on('display-name', e => {
 function updateDisplayName(displayName, deviceName) {
     const $displayName = $('displayName');
     let displayText = '';
-    
+
     // 确保始终检查是否有i18n可用，并应用正确的翻译
     if (window.DROPSHARE_I18N) {
         const prefix = window.DROPSHARE_I18N.translate('you_are_known_as');
@@ -26,7 +26,7 @@ function updateDisplayName(displayName, deviceName) {
     } else {
         displayText = 'You are known as ' + displayName;
     }
-    
+
     // 清除原有的placeholder，防止出现重复文本
     $displayName.removeAttribute('placeholder');
     $displayName.textContent = displayText;
@@ -41,7 +41,7 @@ document.addEventListener('language-changed', () => {
     if (currentDisplayName) {
         updateDisplayName(currentDisplayName);
     }
-    
+
     // 更新所有对等节点的设备名称
     document.querySelectorAll('x-peer').forEach(peer => {
         if (peer.ui && typeof peer.ui._deviceName === 'function') {
@@ -139,15 +139,15 @@ class PeerUI {
         el.querySelector('svg use').setAttribute('xlink:href', this._icon());
         el.querySelector('.name').textContent = this._displayName();
         el.querySelector('.device-name').textContent = this._deviceName();
-        
+
         // 为元素添加设备类型标识
         const device = this._peer.name.device || this._peer.name;
         const type = device.type || 'desktop';
         el.setAttribute('data-device-type', type);
-        
+
         // 为新创建的元素添加动画延迟
         el.style.animationDelay = (Math.random() * 0.5) + 's';
-        
+
         this.$el = el;
         this.$progress = el.querySelector('.progress');
     }
@@ -174,13 +174,13 @@ class PeerUI {
         const device = this._peer.name.device || this._peer.name;
         const type = device.type || 'desktop';
         const os = device.os || '';
-        
+
         // 获取当前语言
         let lang = 'en';
         if (window.DROPSHARE_I18N) {
             lang = window.DROPSHARE_I18N.getCurrentLanguage();
         }
-        
+
         // 设备类型的本地化显示名称
         const deviceLabels = {
             'en': {
@@ -220,13 +220,13 @@ class PeerUI {
                 'ios-tablet': 'iPad'
             }
         };
-        
+
         // 默认使用英文
         const labels = deviceLabels[lang] || deviceLabels['en'];
-        
+
         // 生成设备标签
         let deviceType = labels[type] || '';
-        
+
         if (type === 'desktop') {
             if (os) {
                 if (os.includes('Windows')) deviceType = labels['windows'];
@@ -244,7 +244,7 @@ class PeerUI {
                 else if (os.includes('iOS')) deviceType = labels['ios-tablet'];
             }
         }
-        
+
         return deviceType || this._peer.name.deviceName || '';
     }
 
@@ -252,7 +252,7 @@ class PeerUI {
         const device = this._peer.name.device || this._peer.name;
         const type = device.type || 'desktop';
         const os = device.os ? device.os.toLowerCase() : 'default';
-        
+
         const deviceType = deviceIcons[type] || deviceIcons['desktop'];
         return deviceType[os] || deviceType['default'];
     }
@@ -264,14 +264,14 @@ class PeerUI {
             files: files,
             to: this._peer.id
         });
-        
+
         // 跟踪文件发送事件
         if (window.trackFileSent && files && files.length > 0) {
             const totalSize = Array.from(files).reduce((size, file) => size + file.size, 0);
             const fileTypes = Array.from(files).map(file => file.type || 'unknown').join(',');
             window.trackFileSent(fileTypes, totalSize);
         }
-        
+
         $input.value = null;
     }
 
@@ -295,13 +295,13 @@ class PeerUI {
     _onDrop(e) {
         e.preventDefault();
         const files = e.dataTransfer.files;
-        
+
         // 添加拖放成功的动画效果
         this.$el.classList.add('file-drop-success');
         setTimeout(() => {
             this.$el.classList.remove('file-drop-success');
         }, 700);
-        
+
         Events.fire('files-selected', {
             files: files,
             to: this._peer.id
@@ -413,18 +413,18 @@ class ReceiveDialog extends Dialog {
             console.error('❌ ReceiveDialog: 文件没有 blob 属性');
             return;
         }
-        
+
         const url = URL.createObjectURL(file.blob);
         $a.href = url;
         $a.download = file.name;
         console.log('📁 ReceiveDialog: 创建下载链接:', { url, name: file.name });
 
-        if(this._autoDownload()){
+        if (this._autoDownload()) {
             console.log('📁 ReceiveDialog: 自动下载文件');
             $a.click()
             return
         }
-        if(file.mime.split('/')[0] === 'image'){
+        if (file.mime.split('/')[0] === 'image') {
             console.log('📁 ReceiveDialog: 显示图片预览');
             this.$el.querySelector('.preview').style.visibility = 'inherit';
             this.$el.querySelector("#img-preview").src = url;
@@ -463,7 +463,7 @@ class ReceiveDialog extends Dialog {
     }
 
 
-    _autoDownload(){
+    _autoDownload() {
         return !this.$el.querySelector('#autoDownload').checked
     }
 }
@@ -551,10 +551,10 @@ class Toast extends Dialog {
     _onNotfiy(message) {
         this.$el.querySelector('#toast-text').textContent = message;
         this.show();
-        
+
         // 添加淡入淡出动画
         this.$el.classList.add('toast-shown');
-        
+
         clearTimeout(this._hideTimeout);
         this._hideTimeout = setTimeout(_ => {
             this.$el.classList.remove('toast-shown');
@@ -681,7 +681,7 @@ class WebShareTargetUI {
         let shareTargetText = title ? title : '';
         shareTargetText += text ? shareTargetText ? ' ' + text : text : '';
 
-        if(url) shareTargetText = url; // We share only the Link - no text. Because link-only text becomes clickable.
+        if (url) shareTargetText = url; // We share only the Link - no text. Because link-only text becomes clickable.
 
         if (!shareTargetText) return;
         window.shareTargetText = shareTargetText;
@@ -709,10 +709,10 @@ class Snapdrop {
 }
 
 // Allow pages to opt-out of auto-initialization to avoid double
-// ServerConnection/PeersManager instances (e.g., transer.html does manual init)
+// ServerConnection/PeersManager instances (e.g., share.html does manual init)
 if (!window.__DISABLE_SNAPDROP_AUTO_INIT__) {
-  const snapdrop = new Snapdrop();
-  window.snapdrop = snapdrop;
+    const snapdrop = new Snapdrop();
+    window.snapdrop = snapdrop;
 }
 
 
@@ -788,17 +788,17 @@ Events.on('load', () => {
     let loading = true;
 
     function animate() {
-        requestAnimationFrame(function() {
+        requestAnimationFrame(function () {
             drawCircles();
             animate();
         });
     }
-    
-    window.animateBackground = function(l) {
+
+    window.animateBackground = function (l) {
         loading = l;
         animate();
     };
-    
+
     init();
     animate();
 });
@@ -822,7 +822,7 @@ window.addEventListener('load', () => {
     if (bgAnimation) {
         bgAnimation.classList.add('animate');
     }
-    
+
     // Set up language selector dropdown
     const langSelector = document.getElementById('language-selector');
     if (langSelector) {
@@ -830,7 +830,7 @@ window.addEventListener('load', () => {
         if (window.DROPSHARE_I18N) {
             const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
             langSelector.value = currentLang;
-            
+
             // Add change event
             langSelector.addEventListener('change', e => {
                 window.DROPSHARE_I18N.changeLanguage(e.target.value);
@@ -870,7 +870,7 @@ function initLanguageSelector() {
         }
 
         // 监听语言选择变化
-        langSelector.addEventListener('change', function() {
+        langSelector.addEventListener('change', function () {
             if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.changeLanguage === 'function') {
                 // 保存用户语言偏好到localStorage
                 localStorage.setItem('preferred_language', this.value);
@@ -884,7 +884,7 @@ function initLanguageSelector() {
 }
 
 // 当DOM加载完成后初始化语言选择器
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 等待DROPSHARE_I18N初始化完成
     setTimeout(() => {
         initLanguageSelector();
