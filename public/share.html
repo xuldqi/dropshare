@@ -5866,7 +5866,7 @@
 
         <!-- Load other scripts -->
         <script src="./security_utils.js"></script>
-        <script src="room-debugger.js"></script>
+        <!-- room-debugger.js removed - was causing 'Not in room' errors on regular share page -->
         <script src="scripts/network.js"></script>
         <script src="scripts/ui.js"></script>
         <!-- Removed private-rooms.js from initial load; inline room logic already present. -->
@@ -8712,8 +8712,7 @@
             </style>
         </noscript>
 
-        <!-- 设备名称显示和Rooms功能修复脚本 -->
-        <script src="rooms-fix-complete.js"></script>
+        <!-- rooms-fix-complete.js removed - was interfering with normal share file uploads -->
         <script>
             (function () {
                 console.log('🔧 开始修复设备名称显示...');
