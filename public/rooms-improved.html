@@ -67,39 +67,57 @@
     <div class="page-container">
 
         <header class="header">
-            <div class="header-container">
-                <div class="brand-left">
-                    <a href="/" class="logo" style="text-decoration: none; cursor: pointer;">
-                        <img src="images/logo_blue_512x512.png" alt="DropShare Logo" style="width: 32px; height: 32px;">
+            <div class="header-container"
+                style="max-width: 1280px; width: 100%; margin: 0 auto; padding: 0 24px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;">
+                <div class="brand-left" style="display: flex; align-items: center;">
+                    <a href="/" class="logo"
+                        style="text-decoration: none; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.25rem; color: #4a6f96;">
+                        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #5B84B1;">
+                            <path
+                                d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z" />
+                        </svg>
                         <span data-i18n="site_name">DropShare</span>
                     </a>
                 </div>
-
-                <div class="control-buttons">
-                    <div class="language-selector">
-                        <button id="langToggle" aria-expanded="false">
+                <div class="control-buttons" style="display: flex; gap: 8px; align-items: center; margin-left: auto;">
+                    <div class="language-wrapper" style="position: relative; display: inline-block;">
+                        <button id="langToggle"
+                            style="display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid #F3F4F6; border-radius: 50px; background: white; color: #2C3E50; font-size: 13px; cursor: pointer;">
                             <span>English</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="6 9 12 15 18 9"></polyline>
                             </svg>
                         </button>
-                        <div id="langMenu" class="lang-menu">
-                            <!-- Options will be populated by JS -->
+                        <div id="langMenu" class="lang-dropdown"
+                            style="position: absolute; top: calc(100% + 8px); right: 0; background: white; border: 1px solid #F3F4F6; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); min-width: 140px; display: none; z-index: 9999; overflow: hidden; padding: 8px 0;">
+                            <div class="lang-option" data-value="en"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">English
+                            </div>
+                            <div class="lang-option" data-value="zh-CN"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">简体中文</div>
+                            <div class="lang-option" data-value="zh-TW"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">繁體中文</div>
+                            <div class="lang-option" data-value="ja"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">日本語</div>
+                            <div class="lang-option" data-value="ko"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">한국어</div>
+                            <div class="lang-option" data-value="fr"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">Français
+                            </div>
+                            <div class="lang-option" data-value="de"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">Deutsch
+                            </div>
+                            <div class="lang-option" data-value="pt"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">Português
+                            </div>
+                            <div class="lang-option" data-value="es"
+                                style="padding: 8px 16px; font-size: 13px; color: #2C3E50; cursor: pointer;">Español
+                            </div>
                         </div>
-                        <!-- Hidden selector for form submission and mobile fallback -->
-                        <select id="language-selector" style="display:none;">
-                            <option value="en">English</option>
-                            <option value="zh-CN">简体中文</option>
-                            <option value="zh-TW">繁體中文</option>
-                            <option value="ja">日本語</option>
-                            <option value="ko">한국어</option>
-                            <option value="fr">Français</option>
-                            <option value="de">Deutsch</option>
-                            <option value="pt">Português</option>
-                            <option value="es">Español</option>
-                        </select>
                     </div>
+                    <!-- Hidden selector for i18n.js compatibility -->
+                    <select id="language-selector" style="display:none;"></select>
                 </div>
             </div>
         </header>
@@ -1036,8 +1054,82 @@
             document.addEventListener('DOMContentLoaded', function () {
                 console.log('页面加载完成，开始初始化...');
 
-                // 初始化语言选择器
-                initializeLanguageSelector();
+                // Language selector logic (matching index.html)
+                const langToggle = document.getElementById('langToggle');
+                const langMenu = document.getElementById('langMenu');
+                const options = document.querySelectorAll('.lang-option');
+                const toggleText = langToggle ? langToggle.querySelector('span') : null;
+
+                function updateActiveOption(langCode) {
+                    options.forEach(opt => {
+                        if (opt.dataset.value === langCode) {
+                            opt.style.fontWeight = '600';
+                            opt.style.color = '#5B84B1';
+                            opt.style.background = '#F4F8FB';
+                            if (toggleText) toggleText.textContent = opt.textContent;
+                        } else {
+                            opt.style.fontWeight = 'normal';
+                            opt.style.color = '#2C3E50';
+                            opt.style.background = 'transparent';
+                        }
+                    });
+                }
+
+                // Initialize current language
+                if (window.DROPSHARE_I18N) {
+                    const initPromise = (typeof window.DROPSHARE_I18N.init === 'function')
+                        ? window.DROPSHARE_I18N.init()
+                        : Promise.resolve();
+
+                    initPromise.then(() => {
+                        const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                        updateActiveOption(currentLang);
+                    });
+                }
+
+                // Toggle Menu
+                if (langToggle) {
+                    langToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (langMenu.style.display === 'block') {
+                            langMenu.style.display = 'none';
+                        } else {
+                            langMenu.style.display = 'block';
+                        }
+                    });
+                }
+
+                // Handle Selection
+                options.forEach(opt => {
+                    opt.addEventListener('mouseover', () => {
+                        opt.style.background = '#F4F8FB';
+                        opt.style.color = '#5B84B1';
+                    });
+                    opt.addEventListener('mouseout', () => {
+                        const currentLang = window.DROPSHARE_I18N?.getCurrentLanguage();
+                        if (opt.dataset.value !== currentLang) {
+                            opt.style.background = 'transparent';
+                            opt.style.color = '#2C3E50';
+                        }
+                    });
+                    opt.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const lang = e.currentTarget.dataset.value;
+                        if (window.DROPSHARE_I18N && window.DROPSHARE_I18N.setLanguage) {
+                            window.DROPSHARE_I18N.setLanguage(lang);
+                            updateActiveOption(lang);
+                            langMenu.style.display = 'none';
+                        } else {
+                            localStorage.setItem('preferred_language', lang);
+                            window.location.reload();
+                        }
+                    });
+                });
+
+                // Close on outside click
+                document.addEventListener('click', () => {
+                    if (langMenu) langMenu.style.display = 'none';
+                });
 
                 console.log('✅ 页面初始化完成');
             });
