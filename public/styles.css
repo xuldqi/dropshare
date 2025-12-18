@@ -768,9 +768,9 @@ body {
 /* Colored Elements */
 body {
     color: var(--text-color) !important;
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    background-image: none !important;
+    /* background: #ffffff !important; */
+    /* background-color: #ffffff !important; */
+    /* background-image: none !important; */
     /* 强制单一背景色，移除所有特效 */
 }
 

@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="image_converter_title">Image Converter - Convert JPG, PNG, WebP, GIF | DropShare</title>
-    <meta name="description" data-i18n-content="image_converter_meta_description" content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
-    
+    <title data-i18n="image_converter_title">Image Format Converter - DropShare</title>
+
     <!-- SEO Meta Tags -->
-    <meta name="keywords" data-i18n-content="image_converter_meta_keywords" content="image converter, format converter, JPG to PNG, PNG to JPG, WebP converter, GIF converter, BMP to JPG, TIFF converter, image format conversion">
-    <meta name="robots" content="index, follow">
+    <meta name="description" data-i18n-content="image_converter_meta_description"
+        content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
+    <meta name="keywords" data-i18n-content="image_converter_meta_keywords"
+        content="image converter, format converter, JPG to PNG, PNG to JPG, WebP converter, GIF converter, BMP to JPG, TIFF converter, image format conversion">
     <meta name="author" content="DropShare">
-    <meta name="theme-color" content="#3367d6">
-    <meta name="color-scheme" content="light dark">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" data-i18n-content="image_converter_og_title" content="Image Converter - Convert JPG, PNG, WebP, GIF Online | DropShare">
-    <meta property="og:description" data-i18n-content="image_converter_meta_description" content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://dropshare.tech/image-converter.html">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" data-i18n-content="image_converter_og_title"
+        content="Image Converter - Convert JPG, PNG, WebP, GIF Online | DropShare">
+    <meta property="og:description" data-i18n-content="image_converter_meta_description"
+        content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://dropshare.tech/image-converter.html">
     <meta property="og:site_name" data-i18n-content="site_name" content="DropShare">
@@ -23,361 +27,77 @@
     <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    
-    <!-- Twitter Card Meta Tags -->
+
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" data-i18n-content="image_converter_og_title" content="Image Converter - Convert JPG, PNG, WebP, GIF Online | DropShare">
-    <meta name="twitter:description" data-i18n-content="image_converter_meta_description" content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
+    <meta name="twitter:title" data-i18n-content="image_converter_og_title"
+        content="Image Converter - Convert JPG, PNG, WebP, GIF Online | DropShare">
+    <meta name="twitter:description" data-i18n-content="image_converter_meta_description"
+        content="Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download. No registration required.">
     <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://dropshare.tech/image-converter.html">
-    
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    
-    <!-- Microsoft Tiles -->
-    <meta name="msapplication-TileColor" content="#3367d6">
-    <meta name="msapplication-TileImage" content="images/mstile-150x150.png">
-    <meta name="msapplication-config" content="browserconfig.xml">
-    
-    <!-- Safari Specific -->
-    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#3367d6">
-    
-    <!-- Mobile Web App Meta -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Image Converter">
-    
-    <!-- Prevent iOS Phone Number Detection -->
-    <meta name="format-detection" content="telephone=no">
-    
-    <!-- Performance and Security -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    
-    <!-- DNS Prefetch and Preconnect for Performance -->
-    <link rel="dns-prefetch" href="//www.gstatic.com">
-    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
-    <link rel="dns-prefetch" href="//www.google-analytics.com">
-    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Image Converter",
-        "description": "Free online image converter. Convert images between JPG, PNG, WebP, GIF, BMP, TIFF formats. High-quality conversion with instant download.",
-        "url": "https://dropshare.tech/image-converter.html",
-        "applicationCategory": "Multimedia",
-        "operatingSystem": "Any",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "creator": {
-            "@type": "Organization",
-            "name": "DropShare",
-            "url": "https://dropshare.tech"
-        },
-        "featureList": [
-            "Convert JPG to PNG",
-            "Convert PNG to JPG",
-            "Convert WebP to JPG/PNG",
-            "Convert GIF to JPG/PNG",
-            "Convert BMP to JPG/PNG",
-            "Convert TIFF to JPG/PNG",
-            "Batch image conversion",
-            "High-quality output"
-        ],
-        "browserRequirements": "HTML5, Canvas support"
-    }
-    </script>
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4803558716082981" 
-            crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <!-- Hreflang Tags -->
+    <link rel="alternate" hreflang="en" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="zh-TW" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="ja" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="ko" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="fr" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="de" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="pt" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="es" href="https://dropshare.tech/image-converter.html">
+    <link rel="alternate" hreflang="x-default" href="https://dropshare.tech/image-converter.html">
     <style>
-        body {
-            padding: 20px;
-            background: var(--bg-color);
-        }
-        
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-        }
-        
-        .header-buttons {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            color: var(--primary-color);
-            text-decoration: none;
-            border: 1px solid var(--primary-color);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-        
-        .back-button:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .converter-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .upload-area {
-            border: 2px dashed var(--border-color);
-            border-radius: 12px;
-            padding: 40px 20px;
-            text-align: center;
-            margin-bottom: 30px;
-            cursor: pointer;
-        }
-        
-        .upload-area:hover {
-            border-color: var(--primary-color);
-            background: var(--bg-color-secondary);
-        }
-        
-        .upload-area.dragover {
-            border-color: var(--primary-color);
-            background: var(--bg-color-secondary);
-        }
-        
-        .format-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .format-option {
-            padding: 8px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            cursor: pointer;
-            background: var(--surface-color);
-        }
-        
-        .format-option:hover {
-            border-color: var(--primary-color);
-        }
-        
-        .format-option.selected {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        
-        .settings-panel {
-            background: var(--bg-color-secondary);
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        
-        .setting-group {
-            margin-bottom: 15px;
-        }
-        
-        .setting-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
-        .setting-group input, .setting-group select {
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background: var(--surface-color);
-            color: var(--text-color);
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: var(--bg-color-secondary);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--primary-color);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: var(--bg-color-secondary);
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        
-        .result-info h4 {
-            margin: 0 0 5px 0;
-        }
-        
-        .result-info p {
+        * {
             margin: 0;
-            font-size: 0.9em;
-            color: var(--text-secondary);
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .result-actions {
-            display: flex;
-            gap: 10px;
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333;
+            line-height: 1.6;
         }
-        
-        /* 预设按钮 */
-        .preset-buttons {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 8px;
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        
-        .preset-btn {
-            padding: 6px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--surface-color);
-            color: var(--text-color);
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s;
-        }
-        
-        .preset-btn:hover {
-            border-color: var(--primary-color);
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .preset-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-        
-        /* 质量信息 */
-        .quality-info {
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
-            margin-top: 8px;
-            font-size: 0.9em;
-            color: var(--text-secondary);
+            align-items: center;
         }
-        
-        .compression-rate, .estimated-size {
-            padding: 4px 8px;
-            background: var(--bg-color-secondary);
-            border-radius: 4px;
-        }
-        
-        /* 尺寸输入 */
-        .size-inputs {
-            display: flex;
-            gap: 15px;
-            margin-top: 8px;
-        }
-        
-        .size-input-group {
+
+        .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
         }
-        
-        .size-input-group input {
-            width: 80px;
-            padding: 6px 8px;
-        }
-        
-        .size-input-group span {
-            font-size: 0.9em;
-            color: var(--text-secondary);
-        }
-        
-        .size-info {
+
+        .nav-links {
             display: flex;
-            justify-content: space-between;
-            margin-top: 8px;
-            font-size: 0.9em;
-            color: var(--text-secondary);
+            gap: 16px;
         }
-        
-        /* 压缩预览 */
-        .compression-preview {
-            margin-top: 20px;
-            padding: 15px;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-        
-        .preview-stats {
+
+        .header-controls {
             display: flex;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        
-        .stat-item {
-            text-align: center;
-            flex: 1;
-        }
-        
-        .stat-label {
-            display: block;
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-        
-        .stat-value {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-        
-        .stat-value.positive {
-            color: var(--success-color);
-        }
-        
-        .stat-value.negative {
-            color: var(--error-color);
+            align-items: center;
+            gap: 16px;
         }
 
         .control-buttons {
@@ -386,55 +106,2866 @@
             align-items: center;
         }
 
-        .lang-selector select {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
+        /* Language selector unified styling */
+        .language-selector-container select,
+        .language-selector select {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
             border-radius: 6px;
-            padding: 8px 12px;
+            background: white;
             color: #374151;
             font-size: 14px;
-            font-family: inherit;
             cursor: pointer;
+            transition: border-color 0.2s ease;
         }
 
-        .lang-selector select:hover {
+        .language-selector-container select:hover,
+        .language-selector select:hover {
             border-color: #3367d6;
         }
 
-        .lang-selector select:focus {
+        .language-selector-container select:focus,
+        .language-selector select:focus {
             outline: none;
             border-color: #3367d6;
             box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
         }
 
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .format-selection {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .format-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .format-option {
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .format-option:hover {
+            border-color: #3367d6;
+            transform: translateY(-2px);
+        }
+
+        .format-option.selected {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .format-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .format-desc {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .quality-settings {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .quality-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .quality-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 8px;
+        }
+
+        .quality-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3367d6;
+            cursor: pointer;
+        }
+
+        .quality-value {
+            text-align: center;
+            background: #3367d6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .file-list {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .file-preview {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .file-details h4 {
+            font-size: 16px;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .file-meta {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .file-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-ready {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-converting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .convert-button {
+            background: #3367d6;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .convert-button:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .convert-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3367d6, #2563eb);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .download-section {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .download-button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .download-button:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        /* 设备选择弹窗样式 */
+        .device-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .device-modal.show {
+            display: flex;
+        }
+
+        .device-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .device-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .device-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin: 0;
+        }
+
+        .device-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .device-modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .device-list {
+            margin-bottom: 20px;
+        }
+
+        .device-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .device-item:hover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .device-item.selected {
+            border-color: #3367d6;
+            background: #dbeafe;
+        }
+
+        .device-checkbox {
+            margin-right: 12px;
+        }
+
+        .device-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .device-info {
+            flex: 1;
+        }
+
+        .device-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+
+        .device-type {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .no-devices {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        .no-devices-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .device-modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn-cancel {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .modal-btn-cancel:hover {
+            background: #e5e7eb;
+        }
+
+        .modal-btn-send {
+            background: #3367d6;
+            color: white;
+        }
+
+        .modal-btn-send:hover {
+            background: #2563eb;
+        }
+
+        .modal-btn-send:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+
         @media (max-width: 768px) {
-            .lang-selector select {
-                padding: 6px 10px;
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .format-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .file-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .language-selector-container select,
+            .language-selector select {
+                padding: 4px 8px;
                 font-size: 13px;
             }
         }
-    </style>    
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
-    
-    <!-- Firebase Analytics Configuration -->
-    <script src="scripts/firebase-analytics.js"></script>
-    <script src="scripts/analytics-enhanced.js"></script>
-    <script src="scripts/tools-analytics.js"></script>
-    
+    </style>
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
+
+    <link rel="stylesheet" href="share-integration.css">
+    <link rel="stylesheet" href="device-selector.css">
+    <link rel="stylesheet" href="unified-navigation.css">
+    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
+
+    <style>
+        /* Unified Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 3000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #2563eb;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* 桌面端导航链接居中 */
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #2563eb;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            min-width: 140px;
+            justify-content: flex-end;
+        }
+
+        /* Hamburger (hidden on desktop) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 18px;
+            height: 2px;
+            background: #374151;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+            margin: 2px 0;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (min-width: 769px) {
+            .header {
+                display: block;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                display: block;
+            }
+
+            .header-container {
+                padding: 0 16px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .hamburger {
+                display: flex !important;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+            }
+
+            /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+            .nav-links {
+                display: none !important;
+            }
+
+            .nav-links.mobile-open {
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 20px;
+                z-index: 999;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .nav-links a {
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+            .brand-left .logo a {
+                display: none;
+            }
+
+            /* 语言选择器保持在右侧 */
+            .control-buttons {
+                min-width: auto !important;
+                justify-content: flex-end !important;
+            }
+
+            .menu-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.35);
+                z-index: 2000;
+                display: none;
+                pointer-events: auto;
+            }
+
+            .menu-backdrop.show {
+                display: block;
+            }
+        }
+
+        /* Mobile: hide header logo icon in navigation to save space */
+        @media (max-width: 768px) {
+            .header .logo svg {
+                display: none;
+            }
+        }
+
+        /* 确保页面内容不被固定header遮挡 */
+        body {
+            padding-top: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <!-- Unified Header -->
+    <!-- Unified Header Template -->
+    <!-- 复制这个header到所有页面，替换现有的header -->
+    <!-- Unified Header Template -->
+    <!-- 复制这个header到所有页面，替换现有的header -->
+    <!-- Unified Header Template -->
+    <!-- 复制这个header到所有页面，替换现有的header -->
+    <!-- Unified Header Template -->
+    <!-- 复制这个header到所有页面，替换现有的header -->
+    <!-- Unified Header Template -->
+    <!-- 复制这个header到所有页面，替换现有的header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-controls">
+                <div class="brand-left">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                    <div class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z" />
+                        </svg>
+                        <a href="index.html" style="text-decoration: none; color: inherit;"
+                            data-i18n="site_name">DropShare</a>
+                    </div>
+                </div>
+                <!-- Navigation removed to match index.html -->
+                <div class="control-buttons"
+                    style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                    <div class="language-selector" id="languageSelector">
+                        <button id="langToggle" aria-haspopup="listbox" aria-expanded="false"
+                            style="display:none;">Language</button>
+                        <select id="language-selector"
+                            style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                            <option value="en">English</option>
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-TW">繁體中文</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="pt">Português</option>
+                            <option value="es">Español</option>
+                        </select>
+                        <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <style>
+        /* PREMIUM THEME OVERRIDES (Diafano Style) */
+        :root {
+            --primary-50: #F4F8FB;
+            --primary-100: #E6EEF5;
+            --primary-500: #5B84B1;
+            /* Premium Muted Blue */
+            --primary-600: #4a6f96;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-900: #2C3E50;
+            --success: #10B981;
+        }
+
+        /* Force font family */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+            background-color: #FDFDFD !important;
+            color: var(--gray-900) !important;
+        }
+
+        /* Unified Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 3000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            color: var(--primary-600) !important;
+            text-decoration: none !important;
+        }
+
+        .logo a {
+            color: var(--primary-600) !important;
+            text-decoration: none !important;
+        }
+
+        .logo svg {
+            width: 32px !important;
+            height: 32px !important;
+            fill: var(--primary-500) !important;
+        }
+
+        /* CARD STYLING */
+        .converter-card,
+        .tool-card,
+        .container>div[class*="card"] {
+            border-radius: 24px !important;
+            box-shadow: 0 20px 40px -10px rgba(91, 132, 177, 0.1) !important;
+            border: 1px solid var(--primary-100) !important;
+            background: white !important;
+            padding: 40px !important;
+        }
+
+        /* UPLOAD AREA */
+        .upload-area {
+            border: 2px dashed var(--primary-100) !important;
+            border-radius: 16px !important;
+            background: var(--gray-50) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-500) !important;
+            background: #fff !important;
+            transform: translateY(-2px);
+        }
+
+        .upload-icon {
+            color: var(--primary-500) !important;
+        }
+
+        /* BUTTONS */
+        .convert-button,
+        .btn-primary,
+        button[type="submit"],
+        .modal-btn-send {
+            border-radius: 50px !important;
+            box-shadow: 0 10px 25px -5px rgba(91, 132, 177, 0.25) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            text-transform: capitalize !important;
+            letter-spacing: 0.5px !important;
+            padding: 14px 40px !important;
+            background: var(--primary-500) !important;
+            border: none !important;
+            font-weight: 600 !important;
+            color: white !important;
+        }
+
+        .convert-button:hover,
+        .btn-primary:hover,
+        button[type="submit"]:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 15px 30px -5px rgba(91, 132, 177, 0.35) !important;
+            background: var(--primary-600) !important;
+        }
+
+        .btn-secondary,
+        .modal-btn-cancel,
+        button[id*="reset"] {
+            border-radius: 50px !important;
+            background: var(--primary-50) !important;
+            color: var(--primary-600) !important;
+            border: none !important;
+            padding: 12px 24px !important;
+            font-weight: 600 !important;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-100) !important;
+        }
+
+        /* FORMAT OPTIONS */
+        .format-option {
+            border-radius: 12px !important;
+            transition: all 0.2s ease !important;
+            border: 1px solid var(--gray-100) !important;
+        }
+
+        .format-option:hover {
+            border-color: var(--primary-500) !important;
+            background: var(--primary-50) !important;
+        }
+
+        .format-option.selected {
+            border-color: var(--primary-500) !important;
+            background: var(--primary-500) !important;
+            color: white !important;
+            box-shadow: 0 8px 16px -4px rgba(91, 132, 177, 0.3) !important;
+        }
+
+        .format-option.selected .format-desc {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        /* TITLES */
+        .page-title {
+            color: var(--gray-900) !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.02em !important;
+        }
+
+        .page-subtitle {
+            color: var(--text-muted) !important;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            /* Changed to flex-end to push Lang right */
+            width: 100%;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+        }
+
+        /* Language Selector */
+        .language-selector select {
+            border: 1px solid var(--gray-100) !important;
+            border-radius: 50px !important;
+            /* Pill shape for premium feel */
+            padding: 8px 16px !important;
+            font-size: 13px !important;
+            color: var(--gray-900) !important;
+            background-color: white !important;
+            cursor: pointer;
+            outline: none !important;
+        }
+
+        .language-selector select:hover {
+            border-color: var(--primary-500) !important;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 16px;
+            }
+
+            .hamburger {
+                display: flex !important;
+                border: none !important;
+                background: transparent !important;
+            }
+
+            .hamburger span {
+                background: var(--gray-900) !important;
+            }
+
+            /* Mobile Menu styling could go here if navigation existed */
+        }
+    </style>
+
+    <style>
+        /* Unified Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 3000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px !important;
+            font-weight: bold !important;
+            color: #4a6f96 !important;
+            /* Matching index.html --primary-600 */
+            text-decoration: none !important;
+        }
+
+        .logo a {
+            color: #4a6f96 !important;
+            text-decoration: none !important;
+        }
+
+        .logo svg {
+            width: 32px !important;
+            height: 32px !important;
+            fill: #5B84B1 !important;
+            /* Matching index.html --primary-500 */
+        }
+
+        /* Tool Page Optimizations (Diafano Style) */
+        .convert-button,
+        .btn-primary,
+        button[type="submit"] {
+            border-radius: 50px !important;
+            box-shadow: 0 10px 25px -5px rgba(91, 132, 177, 0.25) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            text-transform: capitalize !important;
+            letter-spacing: 0.5px !important;
+            padding: 12px 32px !important;
+            background: #3367d6 !important;
+            /* Keep tool button blue, or use #5B84B1 */
+            border: none !important;
+        }
+
+        .convert-button:hover,
+        .btn-primary:hover,
+        button[type="submit"]:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 15px 30px -5px rgba(91, 132, 177, 0.35) !important;
+        }
+
+        .format-option {
+            border-radius: 12px !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .format-option:hover {
+            border-color: #5B84B1 !important;
+            background: #F4F8FB !important;
+        }
+
+        .format-option.selected {
+            border-color: #5B84B1 !important;
+            background: #5B84B1 !important;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* 桌面端导航链接居中 */
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+            margin: 0 20px !important;
+        }
+
+        .nav-links a {
+            color: #6b7280 !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+            padding: 8px 16px !important;
+            border-radius: 6px !important;
+            transition: all 0.2s ease !important;
+            background: transparent !important;
+        }
+
+        .nav-links a:hover {
+            color: #5B84B1 !important;
+            background: #f3f4f6 !important;
+        }
+
+        .nav-links a.active {
+            color: #5B84B1 !important;
+            background: #e3f2fd !important;
+            font-weight: 600 !important;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            min-width: 140px;
+            justify-content: flex-end;
+        }
+
+        /* Hamburger (hidden on desktop) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 18px;
+            height: 2px;
+            background: #374151;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+            margin: 2px 0;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (min-width: 769px) {
+            .header {
+                display: block;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                display: block;
+            }
+
+            .header-container {
+                padding: 0 16px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .hamburger {
+                display: flex !important;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+            }
+
+            /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+            .nav-links {
+                display: none !important;
+            }
+
+            .nav-links.mobile-open {
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 20px;
+                z-index: 999;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .nav-links a {
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+            .brand-left .logo a {
+                display: none;
+            }
+
+            /* 语言选择器保持在右侧 */
+            .control-buttons {
+                min-width: auto !important;
+                justify-content: flex-end !important;
+            }
+
+            .menu-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.35);
+                z-index: 2000;
+                display: none;
+                pointer-events: auto;
+            }
+
+            .menu-backdrop.show {
+                display: block;
+            }
+        }
+
+        /* Mobile: hide header logo icon in navigation to save space */
+        @media (max-width: 768px) {
+            .header .logo svg {
+                display: none;
+            }
+        }
+    </style>
+
+    <style>
+        /* Unified Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 3000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px !important;
+            font-weight: bold !important;
+            color: #4a6f96 !important;
+            /* Matching index.html --primary-600 */
+            text-decoration: none !important;
+        }
+
+        .logo a {
+            color: #4a6f96 !important;
+            text-decoration: none !important;
+        }
+
+        .logo svg {
+            width: 32px !important;
+            height: 32px !important;
+            fill: #5B84B1 !important;
+            /* Matching index.html --primary-500 */
+        }
+
+        /* Tool Page Optimizations (Diafano Style) */
+        .convert-button,
+        .btn-primary,
+        button[type="submit"] {
+            border-radius: 50px !important;
+            box-shadow: 0 10px 25px -5px rgba(91, 132, 177, 0.25) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            text-transform: capitalize !important;
+            letter-spacing: 0.5px !important;
+            padding: 12px 32px !important;
+            background: #3367d6 !important;
+            /* Keep tool button blue, or use #5B84B1 */
+            border: none !important;
+        }
+
+        .convert-button:hover,
+        .btn-primary:hover,
+        button[type="submit"]:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 15px 30px -5px rgba(91, 132, 177, 0.35) !important;
+        }
+
+        .format-option {
+            border-radius: 12px !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .format-option:hover {
+            border-color: #5B84B1 !important;
+            background: #F4F8FB !important;
+        }
+
+        .format-option.selected {
+            border-color: #5B84B1 !important;
+            background: #5B84B1 !important;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* 桌面端导航链接居中 */
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+            margin: 0 20px !important;
+        }
+
+        .nav-links a {
+            color: #6b7280 !important;
+            text-decoration: none !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+            padding: 8px 16px !important;
+            border-radius: 6px !important;
+            transition: all 0.2s ease !important;
+            background: transparent !important;
+        }
+
+        .nav-links a:hover {
+            color: #5B84B1 !important;
+            background: #f3f4f6 !important;
+        }
+
+        .nav-links a.active {
+            color: #5B84B1 !important;
+            background: #e3f2fd !important;
+            font-weight: 600 !important;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            min-width: 140px;
+            justify-content: flex-end;
+        }
+
+        /* Hamburger (hidden on desktop) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 18px;
+            height: 2px;
+            background: #374151;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+            margin: 2px 0;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (min-width: 769px) {
+            .header {
+                display: block;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                display: block;
+            }
+
+            .header-container {
+                padding: 0 16px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .hamburger {
+                display: flex !important;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+            }
+
+            /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+            .nav-links {
+                display: none !important;
+            }
+
+            .nav-links.mobile-open {
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 20px;
+                z-index: 999;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .nav-links a {
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+            .brand-left .logo a {
+                display: none;
+            }
+
+            /* 语言选择器保持在右侧 */
+            .control-buttons {
+                min-width: auto !important;
+                justify-content: flex-end !important;
+            }
+
+            .menu-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.35);
+                z-index: 2000;
+                display: none;
+                pointer-events: auto;
+            }
+
+            .menu-backdrop.show {
+                display: block;
+            }
+        }
+
+        /* Mobile: hide header logo icon in navigation to save space */
+        @media (max-width: 768px) {
+            .header .logo svg {
+                display: none;
+            }
+        }
+    </style>
+
+    <style>
+        /* Unified Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 3000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a6f96;
+            /* Matching index.html --primary-600 */
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #5B84B1;
+            /* Matching index.html --primary-500 */
+        }
+
+        /* Tool Page Optimizations (Diafano Style) */
+        .convert-button,
+        .btn-primary,
+        button[type="submit"] {
+            border-radius: 50px !important;
+            box-shadow: 0 10px 25px -5px rgba(91, 132, 177, 0.25) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            text-transform: capitalize !important;
+            letter-spacing: 0.5px !important;
+            padding: 12px 32px !important;
+            background: #3367d6 !important;
+            /* Keep tool button blue, or use #5B84B1 */
+        }
+
+        .convert-button:hover,
+        .btn-primary:hover,
+        button[type="submit"]:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 15px 30px -5px rgba(91, 132, 177, 0.35) !important;
+        }
+
+        .format-option {
+            border-radius: 12px !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .format-option:hover {
+            border-color: #5B84B1 !important;
+            background: #F4F8FB !important;
+        }
+
+        .format-option.selected {
+            border-color: #5B84B1 !important;
+            background: #5B84B1 !important;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* 桌面端导航链接居中 */
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #5B84B1;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #5B84B1;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            min-width: 140px;
+            justify-content: flex-end;
+        }
+
+        /* Hamburger (hidden on desktop) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 18px;
+            height: 2px;
+            background: #374151;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+            margin: 2px 0;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (min-width: 769px) {
+            .header {
+                display: block;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                display: block;
+            }
+
+            .header-container {
+                padding: 0 16px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .hamburger {
+                display: flex !important;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+            }
+
+            /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+            .nav-links {
+                display: none !important;
+            }
+
+            .nav-links.mobile-open {
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 20px;
+                z-index: 999;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .nav-links a {
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+            .brand-left .logo a {
+                display: none;
+            }
+
+            /* 语言选择器保持在右侧 */
+            .control-buttons {
+                min-width: auto !important;
+                justify-content: flex-end !important;
+            }
+
+            .menu-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.35);
+                z-index: 2000;
+                display: none;
+                pointer-events: auto;
+            }
+
+            .menu-backdrop.show {
+                display: block;
+            }
+        }
+
+        /* Mobile: hide header logo icon in navigation to save space */
+        @media (max-width: 768px) {
+            .header .logo svg {
+                display: none;
+            }
+        }
+    </style>
+
+    <style>
+        /* Unified Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 3000;
+            padding: 12px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #2563eb;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* 桌面端导航链接居中 */
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #2563eb;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            min-width: 140px;
+            justify-content: flex-end;
+        }
+
+        /* Hamburger (hidden on desktop) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 18px;
+            height: 2px;
+            background: #374151;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+            margin: 2px 0;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-selector select {
+            cursor: pointer;
+        }
+
+        /* Mobile Responsive */
+        @media (min-width: 769px) {
+            .header {
+                display: block;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                display: block;
+            }
+
+            .header-container {
+                padding: 0 16px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .hamburger {
+                display: flex !important;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+            }
+
+            /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+            .nav-links {
+                display: none !important;
+            }
+
+            .nav-links.mobile-open {
+                display: flex !important;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                padding: 20px;
+                z-index: 999;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .nav-links a {
+                font-size: 14px;
+                padding: 8px 12px;
+                border-radius: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+            .brand-left .logo a {
+                display: none;
+            }
+
+            /* 语言选择器保持在右侧 */
+            .control-buttons {
+                min-width: auto !important;
+                justify-content: flex-end !important;
+            }
+
+            .menu-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.35);
+                z-index: 2000;
+                display: none;
+                pointer-events: auto;
+            }
+
+            .menu-backdrop.show {
+                display: block;
+            }
+        }
+
+        /* Mobile: hide header logo icon in navigation to save space */
+        @media (max-width: 768px) {
+            .header .logo svg {
+                display: none;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="image-tools.html"
+                style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;"
+                onmouseover="this.style.background='#3367d6'; this.style.color='white'"
+                onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                <span data-i18n="back">← back</span>
+            </a>
+        </div>
+
+        <h1 class="page-title" data-i18n="image_converter">Image Format Converter</h1>
+        <p class="page-subtitle" data-i18n="image_converter_desc">Convert between multiple image formats while
+            maintaining optimal quality</p>
+
+        <div class="converter-card">
+            <!-- 上传区域 -->
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">🖼️</div>
+                <div class="upload-text" data-i18n="upload_images_click_drag">Click to select images or drag here</div>
+                <div class="upload-hint" data-i18n="upload_images_formats_hint">Supports JPG, PNG, GIF, BMP, TIFF, WebP
+                    formats, can select multiple files</div>
+                <input type="file" id="fileInput" accept="image/*" multiple onclick="event.stopPropagation()">
+            </div>
+
+            <!-- 格式选择 -->
+            <div class="format-selection">
+                <div class="format-title" data-i18n="select_output_format">Select Output Format</div>
+                <div class="format-grid">
+                    <div class="format-option selected" data-format="jpeg">
+                        <div class="format-name">JPEG</div>
+                        <div class="format-desc" data-i18n="jpeg_desc">High Compression</div>
+                    </div>
+                    <div class="format-option" data-format="png">
+                        <div class="format-name">PNG</div>
+                        <div class="format-desc" data-i18n="png_desc">Lossless</div>
+                    </div>
+                    <div class="format-option" data-format="webp">
+                        <div class="format-name">WebP</div>
+                        <div class="format-desc" data-i18n="webp_desc">Modern Format</div>
+                    </div>
+                    <div class="format-option" data-format="gif">
+                        <div class="format-name">GIF</div>
+                        <div class="format-desc" data-i18n="gif_desc">Animation Support</div>
+                    </div>
+                    <div class="format-option" data-format="bmp">
+                        <div class="format-name">BMP</div>
+                        <div class="format-desc" data-i18n="bmp_desc">Bitmap Format</div>
+                    </div>
+                    <div class="format-option" data-format="tiff">
+                        <div class="format-name">TIFF</div>
+                        <div class="format-desc" data-i18n="tiff_desc">Professional Format</div>
+                    </div>
+                </div>
+
+                <!-- 质量设置 -->
+                <div class="quality-settings" id="qualitySettings">
+                    <label class="quality-label">
+                        <span>Image Quality:</span> <span class="quality-value" id="qualityValue">90%</span>
+                    </label>
+                    <input type="range" class="quality-slider" id="qualitySlider" min="10" max="100" value="90">
+                </div>
+            </div>
+
+            <!-- 文件列表 -->
+            <div class="file-list" id="fileList"></div>
+
+            <!-- 转换按钮 -->
+            <button class="convert-button" id="convertButton" disabled>
+                <span data-i18n="start_conversion">🔄 Start Conversion</span>
+            </button>
+
+            <!-- 进度条 -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- 下载区域 -->
+            <div class="download-section" id="downloadSection"></div>
+
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <button class="btn btn-secondary" id="resetBtn">
+                    <span data-i18n="select_again">🔄 Select Again</span>
+                </button>
+                <a href="image-tools.html" class="btn btn-primary">
+                    <span data-i18n="back_to_tools">← Back to Tools</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 设备选择弹窗 -->
+    <div class="device-modal" id="deviceModal">
+        <div class="device-modal-content">
+            <div class="device-modal-header">
+                <h3 class="device-modal-title">Select Device</h3>
+                <button class="device-modal-close" onclick="closeDeviceModal()">&times;</button>
+            </div>
+            <div class="device-list" id="deviceList">
+                <!-- 设备列表将在这里动态生成 -->
+            </div>
+            <div class="device-modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeviceModal()">Cancel</button>
+                <button class="modal-btn modal-btn-send" id="sendToDevicesBtn" onclick="sendToSelectedDevices()"
+                    disabled>
+                    <span>Send to Selected Device</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let selectedFiles = [];
+        let convertedFiles = [];
+        let selectedFormat = 'jpeg';
+        let isConverting = false;
+
+        // DOM 元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const formatOptions = document.querySelectorAll('.format-option');
+        const qualitySettings = document.getElementById('qualitySettings');
+        const qualitySlider = document.getElementById('qualitySlider');
+        const qualityValue = document.getElementById('qualityValue');
+        const convertButton = document.getElementById('convertButton');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const downloadSection = document.getElementById('downloadSection');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // 支持 JPEG 质量调节的格式
+        const qualityFormats = ['jpeg', 'webp'];
+
+        // 初始化事件监听器
+        function initializeEventListeners() {
+            console.log('Initializing event listeners...');
+            console.log('uploadArea:', uploadArea);
+            console.log('fileInput:', fileInput);
+
+            // 检查元素是否存在
+            if (!uploadArea || !fileInput) {
+                console.error('Upload elements not found!');
+                console.error('uploadArea:', uploadArea);
+                console.error('fileInput:', fileInput);
+                return;
+            }
+
+            // 添加点击事件
+            uploadArea.addEventListener('click', function (e) {
+                console.log('Upload area clicked!', e);
+                e.preventDefault();
+                fileInput.click();
+            });
+
+            // 添加其他事件
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleDrop);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            fileInput.addEventListener('change', handleFileSelect);
+
+            console.log('Event listeners initialized successfully');
+        }
+
+        // 等待DOM加载完成再初始化 - 延迟执行确保所有脚本都加载完
+        setTimeout(() => {
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeEventListeners);
+            } else {
+                initializeEventListeners();
+            }
+        }, 500);
+
+        formatOptions.forEach(option => {
+            option.addEventListener('click', handleFormatChange);
+        });
+
+        qualitySlider.addEventListener('input', handleQualityChange);
+        convertButton.addEventListener('click', convertAllFiles);
+        resetBtn.addEventListener('click', resetConverter);
+
+        // 拖拽处理
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            processFiles(files);
+        }
+
+        // 文件选择处理
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            processFiles(files);
+        }
+
+        // 处理文件
+        function processFiles(files) {
+            const imageFiles = files.filter(file => file.type.startsWith('image/'));
+
+            if (imageFiles.length === 0) {
+                const message = window.DROPSHARE_I18N?.t('error_select_image_files') || 'Please select image files only';
+                alert(message);
+                return;
+            }
+
+            // 检查文件大小
+            // 文件大小限制已移除`);
+            return;
+        }
+
+        selectedFiles = imageFiles;
+        displayFileList();
+        convertButton.disabled = false;
+        }
+
+        // 显示文件列表
+        function displayFileList() {
+            fileList.style.display = 'block';
+            fileList.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    fileItem.innerHTML = `
+                        <div class="file-info">
+                            <img src="${e.target.result}" class="file-preview" alt="Preview">
+                            <div class="file-details">
+                                <h4>${file.name}</h4>
+                                <div class="file-meta">
+                                    ${formatFileSize(file.size)} • ${getFileExtension(file.name).toUpperCase()}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="file-status status-ready" id="status-${index}">
+                            <span>Pending</span>
+                        </div>
+                    `;
+                };
+                reader.readAsDataURL(file);
+
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        // 格式选择变化
+        function handleFormatChange(e) {
+            formatOptions.forEach(option => option.classList.remove('selected'));
+            e.target.classList.add('selected');
+            selectedFormat = e.target.dataset.format;
+
+            // 显示/隐藏质量设置
+            if (qualityFormats.includes(selectedFormat)) {
+                qualitySettings.style.display = 'block';
+            } else {
+                qualitySettings.style.display = 'none';
+            }
+        }
+
+        // 质量滑块变化
+        function handleQualityChange(e) {
+            const value = e.target.value;
+            qualityValue.textContent = value + '%';
+        }
+
+        // 转换所有文件
+        async function convertAllFiles() {
+            if (isConverting) return;
+
+            isConverting = true;
+            convertButton.disabled = true;
+            progressBar.style.display = 'block';
+            convertedFiles = [];
+
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                const statusEl = document.getElementById(`status-${i}`);
+
+                try {
+                    // 更新状态
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_converting') || 'Converting...';
+                    statusEl.className = 'file-status status-converting';
+
+                    // 转换文件
+                    const convertedBlob = await convertImage(file);
+
+                    // 保存转换结果
+                    convertedFiles.push({
+                        originalName: file.name,
+                        blob: convertedBlob,
+                        newName: getNewFileName(file.name, selectedFormat)
+                    });
+
+                    // 更新状态
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_convert_complete') || 'Conversion Complete';
+                    statusEl.className = 'file-status status-completed';
+
+                } catch (error) {
+                    console.error('Conversion failed:', error);
+                    statusEl.textContent = window.DROPSHARE_I18N?.t('status_convert_failed') || 'Conversion Failed';
+                    statusEl.className = 'file-status status-error';
+                }
+
+                // 更新进度
+                const progress = ((i + 1) / selectedFiles.length) * 100;
+                progressFill.style.width = progress + '%';
+            }
+
+            // 转换完成
+            isConverting = false;
+            setTimeout(() => {
+                progressBar.style.display = 'none';
+                showDownloadSection();
+            }, 500);
+        }
+
+        // 转换单个图片
+        function convertImage(file) {
+            return new Promise((resolve, reject) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    const mimeType = `image/${selectedFormat}`;
+                    const quality = qualityFormats.includes(selectedFormat)
+                        ? qualitySlider.value / 100
+                        : undefined;
+
+                    canvas.toBlob(resolve, mimeType, quality);
+                };
+
+                img.onerror = reject;
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        // 显示下载区域
+        function showDownloadSection() {
+            downloadSection.style.display = 'block';
+            downloadSection.innerHTML = `
+                <h3 style="margin-bottom: 20px; color: #374151;"><span>🎉 Conversion Complete!</span></h3>
+                <div style="margin-bottom: 20px;">
+                    ${convertedFiles.map((file, index) => `
+                        <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;">
+                            <button class="download-button" onclick="downloadFile(${index})">
+                                <span>📥 Download</span> ${file.newName}
+                            </button>
+                            <button class="download-button" onclick="shareFile(${index})" style="background: #10b981;">
+                                <span>📤 Send</span> ${file.newName}
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                    <button class="download-button" onclick="downloadAllFiles()" style="background: #7c3aed;">
+                        <span>📦 Download All Files (ZIP)</span>
+                    </button>
+                    <button class="download-button" onclick="shareAllFiles()" style="background: #f59e0b;">
+                        <span>📤 Send All Files</span>
+                    </button>
+                </div>
+            `;
+        }
+
+        // 下载单个文件
+        function downloadFile(index) {
+            const file = convertedFiles[index];
+            const url = URL.createObjectURL(file.blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.newName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 下载所有文件（这里简化实现，实际项目可以使用 JSZip）
+        function downloadAllFiles() {
+            convertedFiles.forEach((file, index) => {
+                setTimeout(() => downloadFile(index), index * 500);
+            });
+        }
+
+        // 全局变量存储当前要传送的文件
+        let currentFilesToShare = null;
+        let selectedDevices = new Set();
+        let shareMode = 'single'; // 'single' 或 'all'
+
+        // 传送单个文件到其他设备
+        function shareFile(index) {
+            const file = convertedFiles[index];
+
+            // 创建File对象用于传输
+            currentFilesToShare = [new File([file.blob], file.newName, {
+                type: file.blob.type
+            })];
+
+            shareMode = 'single';
+            showDeviceModal();
+        }
+
+        // 传送所有文件到其他设备
+        function shareAllFiles() {
+            if (convertedFiles.length === 0) return;
+
+            // 创建所有文件的File对象
+            currentFilesToShare = convertedFiles.map(file =>
+                new File([file.blob], file.newName, {
+                    type: file.blob.type
+                })
+            );
+
+            shareMode = 'all';
+            showDeviceModal();
+        }
+
+        // 显示设备选择弹窗
+        function showDeviceModal() {
+            const modal = document.getElementById('deviceModal');
+            const deviceList = document.getElementById('deviceList');
+
+            // 清空选中设备
+            selectedDevices.clear();
+            updateSendButton();
+
+            // 获取可用设备
+            const devices = getAvailableDevices();
+
+            if (devices.length === 0) {
+                deviceList.innerHTML = `
+                    <div class="no-devices">
+                        <div class="no-devices-icon">📱</div>
+                        <p>未发现可用设备</p>
+                        <p style="font-size: 14px; margin-top: 8px;">请确保其他设备已打开DropShare并连接到同一网络</p>
+                    </div>
+                `;
+            } else {
+                deviceList.innerHTML = devices.map(device => `
+                    <div class="device-item" onclick="toggleDevice('${device.id}')">
+                        <input type="checkbox" class="device-checkbox" id="device-${device.id}">
+                        <div class="device-icon">${getDeviceIcon(device)}</div>
+                        <div class="device-info">
+                            <div class="device-name">${device.name}</div>
+                            <div class="device-type">${device.type}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            modal.classList.add('show');
+        }
+
+        // 关闭设备选择弹窗
+        function closeDeviceModal() {
+            const modal = document.getElementById('deviceModal');
+            modal.classList.remove('show');
+            selectedDevices.clear();
+            currentFilesToShare = null;
+        }
+
+        // 切换设备选择状态
+        function toggleDevice(deviceId) {
+            const checkbox = document.getElementById(`device-${deviceId}`);
+            const deviceItem = checkbox.closest('.device-item');
+
+            if (selectedDevices.has(deviceId)) {
+                selectedDevices.delete(deviceId);
+                checkbox.checked = false;
+                deviceItem.classList.remove('selected');
+            } else {
+                selectedDevices.add(deviceId);
+                checkbox.checked = true;
+                deviceItem.classList.add('selected');
+            }
+
+            updateSendButton();
+        }
+
+        // 更新发送按钮状态
+        function updateSendButton() {
+            const sendBtn = document.getElementById('sendToDevicesBtn');
+            const count = selectedDevices.size;
+            const fileCount = currentFilesToShare ? currentFilesToShare.length : 0;
+
+            if (count === 0) {
+                sendBtn.disabled = true;
+                sendBtn.textContent = window.DROPSHARE_I18N?.t('btn_send_to_selected_devices') || '传送到选中设备';
+            } else {
+                sendBtn.disabled = false;
+                if (shareMode === 'all') {
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('send_files_to') || '个文件到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
+                } else {
+                    sendBtn.textContent = `${window.DROPSHARE_I18N?.t('send_to') || '传送到'} ${count} ${window.DROPSHARE_I18N?.t('label_devices') || '个设备'}`;
+                }
+            }
+        }
+
+        // 传送到选中的设备
+        function sendToSelectedDevices() {
+            if (!currentFilesToShare || selectedDevices.size === 0) return;
+
+            const deviceCount = selectedDevices.size;
+            const fileCount = currentFilesToShare.length;
+
+            // 检查是否有可用的传输系统
+            if (window.Events && typeof window.Events.fire === 'function') {
+                // 向每个选中的设备发送文件
+                selectedDevices.forEach(deviceId => {
+                    window.Events.fire('files-selected', {
+                        files: currentFilesToShare,
+                        to: deviceId
+                    });
+                });
+
+                alert(`${fileCount} ${" || ' devices'}!`);
+                closeDeviceModal();
+            } else {
+                // 如果传输系统不可用，提供跳转选项
+                if (confirm(") {
+                    // 将文件信息存储到sessionStorage，供传送页面使用
+                    const filesInfo = currentFilesToShare.map(file => ({
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    timestamp: Date.now()
+                }));
+                if (shareMode === 'all') {
+                    sessionStorage.setItem('pendingFilesTransfer', JSON.stringify(filesInfo));
+                } else {
+                    sessionStorage.setItem('pendingFileTransfer', JSON.stringify(filesInfo[0]));
+                }
+                window.location.href = 'share.html';
+            }
+        }
+        }
+
+        // 获取可用设备列表
+        function getAvailableDevices() {
+            // 尝试从现有的传输系统获取设备列表
+            const devices = [];
+
+            // 从DOM中获取设备信息（如果在传送页面）
+            const peerElements = document.querySelectorAll('x-peer');
+            if (peerElements.length > 0) {
+                peerElements.forEach(peer => {
+                    devices.push({
+                        id: peer.id,
+                        name: peer.querySelector('.name')?.textContent || (",
+                        type: peer.querySelector('.device-name')?.textContent || ("
+                    });
+                });
+            }
+
+            // 如果没有找到设备，检查是否有全局的设备信息
+            if (devices.length === 0) {
+                if (window.peersManager && window.peersManager.peers) {
+                    Object.keys(window.peersManager.peers).forEach(peerId => {
+                        devices.push({
+                            id: peerId,
+                            name: `${"}`,
+                            type: '网络设备'
+                        });
+                    });
+                }
+            }
+
+            return devices;
+        }
+
+        // 获取设备图标
+        function getDeviceIcon(device) {
+            const type = device.type.toLowerCase();
+            if (type.includes('phone') || type.includes('mobile')) return '📱';
+            if (type.includes('tablet') || type.includes('ipad')) return '📺';
+            if (type.includes('mac') || type.includes('apple')) return '💻';
+            if (type.includes('windows') || type.includes('pc')) return '🖥️';
+            return '💻'; // 默认电脑图标
+        }
+
+        // 重置转换器
+        function resetConverter() {
+            selectedFiles = [];
+            convertedFiles = [];
+            isConverting = false;
+            fileList.style.display = 'none';
+            downloadSection.style.display = 'none';
+            progressBar.style.display = 'none';
+            progressFill.style.width = '0%';
+            convertButton.disabled = true;
+            fileInput.value = '';
+        }
+
+        // 工具函数
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getFileExtension(filename) {
+            return filename.slice((filename.lastIndexOf(".") - 1 >>> 0) + 2);
+        }
+
+        function getNewFileName(originalName, newFormat) {
+            const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
+            return `${nameWithoutExt}.${newFormat}`;
+        }
+
+        // 初始化质量设置显示状态
+        if (qualityFormats.includes(selectedFormat)) {
+            qualitySettings.style.display = 'block';
+        }
+
+        // 阻止弹窗背景点击关闭
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('deviceModal');
+            if (modal) {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) {
+                        closeDeviceModal();
+                    }
+                });
+            }
+        });
+    </script>
+
     <!-- Load i18n system -->
-        
+    <script src="locales/i18n.js"></script>
+
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
     <script>
+        // Language selector functions
+        function initializeLanguageSelector() {
+            const languageSelector = document.getElementById('language-selector');
+
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+
+                languageSelector.addEventListener('change', function (e) {
+                    const newLang = e.target.value;
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                    }
+                });
+            }
+        }
+
         // Initialize language system when page loads
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Initialize the i18n system
-            
+            if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
+                window.DROPSHARE_I18N.init().then(() => {
+                    initializeLanguageSelector();
+                });
+            } else {
+                // Fallback: try to initialize after a short delay
+                setTimeout(() => {
+                    if (window.DROPSHARE_I18N && typeof window.DROPSHARE_I18N.init === 'function') {
+                        window.DROPSHARE_I18N.init().then(() => {
+                            initializeLanguageSelector();
+                        });
+                    } else {
+                        console.warn('DROPSHARE_I18N not available or init method not found');
+                        initializeLanguageSelector();
+                    }
+                }, 100);
+            }
         });
     </script>
-    <!-- Share Integration -->
+    <!-- Legacy Share Integration (keeping for compatibility) -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
+
+    <!-- New Unified Transfer System -->
+    <script src="scripts/unified-transfer-integration.js"></script>
+    <script>
+        // Test the new unified transfer system
+        document.addEventListener('unified-transfer-ready', function () {
+            console.log('🎉 Unified transfer system is ready!');
+            console.log('📱 Available devices:', window.DropShareTransfer.getDevices().length);
+
+            // Add custom transfer button for testing
+            setTimeout(() => {
+                const downloadSection = document.querySelector('.download-section');
+                if (downloadSection && downloadSection.style.display !== 'none') {
+                    const testButton = document.createElement('button');
+                    testButton.className = 'unified-transfer-btn test-transfer';
+                    testButton.innerHTML = `
+                        <span class="transfer-icon">🧪</span>
+                        <span class="transfer-text">测试新传送系统</span>
+                    `;
+                    testButton.style.marginLeft = '12px';
+
+                    testButton.addEventListener('click', () => {
+                        // Get the converted image file
+                        const downloadLink = document.querySelector('#downloadLink');
+                        if (downloadLink && downloadLink.href) {
+                            // Create a test file object
+                            fetch(downloadLink.href)
+                                .then(response => response.blob())
+                                .then(blob => {
+                                    const file = new File([blob], downloadLink.download || 'converted-image.png', {
+                                        type: blob.type
+                                    });
+                                    window.DropShareTransfer.showDeviceSelector(file);
+                                })
+                                .catch(error => {
+                                    console.error('❌ Failed to prepare test file:', error);
+                                    alert('测试失败: 无法准备文件');
+                                });
+                        } else {
+                            alert('请先转换一张图片再测试传送功能');
+                        }
+                    });
+
+                    // Find download button container and add test button
+                    const downloadButton = document.querySelector('#downloadBtn');
+                    if (downloadButton && downloadButton.parentNode) {
+                        downloadButton.parentNode.appendChild(testButton);
+                    }
+                }
+            }, 2000);
+        });
+    </script>
+    <script src="remove-share-navigation.js?v=20241015"></script>
 </body>
+
 </html>

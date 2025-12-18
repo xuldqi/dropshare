@@ -3,288 +3,2672 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="image_compressor_title">Image Compressor</title>
-    <meta name="description" content="Free online image compressor: reduce JPG, PNG, WebP file sizes up to 90% while maintaining quality. Fast, secure image compression. No registration required.">
-
+    <title data-i18n="image_compressor_title">Image Compressor - DropShare</title>
+    
     <!-- SEO Meta Tags -->
-    <meta name="keywords" content="image compressor, compress images online, reduce image size, JPG compressor, PNG compressor, WebP compressor, image optimization, compress photos, reduce file size, free image compression, online photo compressor">
+    <meta name="description" data-i18n="image_compressor_meta_description" content="Compress images online for free. Reduce file size while maintaining quality. Support for JPG, PNG, WebP formats with adjustable compression settings.">
+    <meta name="keywords" data-i18n="image_compressor_meta_keywords" content="image compressor, compress images, reduce file size, image optimization, JPG PNG WebP">
     <meta name="robots" content="index, follow">
     <meta name="author" content="DropShare">
-    <meta name="theme-color" content="#3367d6">
-    <meta name="color-scheme" content="light dark">
-
+    <link rel="canonical" href="https://dropshare.top/image-compressor.html">
+    
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Image Compressor - Professional Image Compression Online | DropShare">
-    <meta property="og:description" content="Free online image compressor: reduce JPG, PNG, WebP file sizes up to 90% while maintaining quality. Fast, secure image compression. No registration required.">
+    <meta property="og:title" data-i18n="image_compressor_title" content="Image Compressor - DropShare">
+    <meta property="og:description" data-i18n="image_compressor_meta_description" content="Compress images online for free. Reduce file size while maintaining quality. Support for JPG, PNG, WebP formats with adjustable compression settings.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://dropshare.tech/image-compressor.html">
+    <meta property="og:url" content="https://dropshare.top/image-compressor.html">
+    <meta property="og:image" content="https://dropshare.top/images/image-compressor-preview.jpg">
     <meta property="og:site_name" content="DropShare">
     <meta property="og:locale" content="en_US">
-    <meta property="og:image" content="https://dropshare.tech/images/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
+    
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Image Compressor - Professional Image Compression Online | DropShare">
-    <meta name="twitter:description" content="Free online image compressor: reduce JPG, PNG, WebP file sizes up to 90% while maintaining quality. Fast, secure image compression. No registration required.">
-    <meta name="twitter:image" content="https://dropshare.tech/images/og-image.png">
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://dropshare.tech/image-compressor.html">
-
-    <!-- Icons and Mobile Meta Tags -->
-    <link rel="icon" sizes="96x96" href="images/favicon-96x96.png">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="DropShare">
-    <meta name="format-detection" content="telephone=no">
-
-    <!-- Performance -->
-    <link rel="dns-prefetch" href="//www.gstatic.com">
-    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-
+    <meta name="twitter:title" data-i18n="image_compressor_title" content="Image Compressor - DropShare">
+    <meta name="twitter:description" data-i18n="image_compressor_meta_description" content="Compress images online for free. Reduce file size while maintaining quality. Support for JPG, PNG, WebP formats with adjustable compression settings.">
+    <meta name="twitter:image" content="https://dropshare.top/images/image-compressor-preview.jpg">
+    <meta name="twitter:site" content="@DropShare">
+    
+    <!-- Multilingual SEO -->
+    <link rel="alternate" hreflang="en" href="https://dropshare.top/image-compressor.html">
+    <link rel="alternate" hreflang="zh-CN" href="https://dropshare.top/image-compressor.html?lang=zh-CN">
+    <link rel="alternate" hreflang="zh-TW" href="https://dropshare.top/image-compressor.html?lang=zh-TW">
+    <link rel="alternate" hreflang="ja" href="https://dropshare.top/image-compressor.html?lang=ja">
+    <link rel="alternate" hreflang="ko" href="https://dropshare.top/image-compressor.html?lang=ko">
+    <link rel="alternate" hreflang="fr" href="https://dropshare.top/image-compressor.html?lang=fr">
+    <link rel="alternate" hreflang="de" href="https://dropshare.top/image-compressor.html?lang=de">
+    <link rel="alternate" hreflang="pt" href="https://dropshare.top/image-compressor.html?lang=pt">
+    <link rel="alternate" hreflang="es" href="https://dropshare.top/image-compressor.html?lang=es">
+    <link rel="alternate" hreflang="x-default" href="https://dropshare.top/image-compressor.html">
+    
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "Image Compressor - DropShare",
-        "description": "Free online image compressor for JPG, PNG, and WebP files with up to 90% size reduction while maintaining quality",
-        "url": "https://dropshare.tech/image-compressor.html",
-        "applicationCategory": "Multimedia",
-        "operatingSystem": "Any",
+        "name": "Image Compressor",
+        "description": "Free online image compression tool with support for JPG, PNG, and WebP formats",
+        "url": "https://dropshare.top/image-compressor.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web Browser",
         "offers": {
             "@type": "Offer",
             "price": "0",
             "priceCurrency": "USD"
         },
-        "featureList": [
-            "Compress JPG images",
-            "Compress PNG images", 
-            "Compress WebP images",
-            "Maintain image quality",
-            "Up to 90% size reduction",
-            "Secure client-side processing"
-        ]
+        "provider": {
+            "@type": "Organization",
+            "name": "DropShare"
+        }
     }
     </script>
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            padding: 20px;
-            background: var(--bg-color);
-        }
-        
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-        }
-        
-        .header-buttons {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            color: var(--primary-color);
-            text-decoration: none;
-            border: 1px solid var(--primary-color);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-        
-        .back-button:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .tool-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .coming-soon {
-            font-size: 64px;
-            margin-bottom: 20px;
-        }
-        
-        .tool-title {
-            font-size: 32px;
-            font-weight: bold;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-        }
-        
-        .tool-description {
-            font-size: 18px;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff !important;
+            color: #333;
             line-height: 1.6;
         }
         
-        .features-list {
-            text-align: left;
-            max-width: 500px;
-            margin: 0 auto 30px auto;
-            background: var(--background-color);
-            padding: 24px;
-            border-radius: 8px;
+        /* 确保页面背景不被其他样式覆盖 */
+        html, body {
+            background: #ffffff !important;
+            background-image: none !important;
+            background-attachment: initial !important;
+            background-repeat: no-repeat !important;
+            background-position: initial !important;
+            background-size: initial !important;
         }
         
-        .features-list h3 {
-            margin-bottom: 16px;
-            color: var(--text-primary);
+        /* 强制覆盖任何可能的扩散纹理背景 */
+        *, *::before, *::after {
+            background-image: none !important;
         }
         
-        .features-list ul {
-            list-style: none;
-            padding: 0;
+        /* 特别针对可能的容器背景 */
+        .container, .compressor-card, body > *, html > * {
+            background: transparent !important;
+            background-image: none !important;
         }
         
-        .features-list li {
-            padding: 8px 0;
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--border-color);
+        /* 彻底移除任何可能的背景图案和特效 */
+        html, body, div, section, article, main, header, footer {
+            background: #ffffff !important;
+            background-image: none !important;
+            background-attachment: initial !important;
+            background-repeat: no-repeat !important;
+            background-position: initial !important;
+            background-size: initial !important;
+            background-origin: initial !important;
+            background-clip: initial !important;
         }
         
-        .features-list li:last-child {
-            border-bottom: none;
+        /* 移除任何可能的伪元素背景 */
+        html::before, html::after, body::before, body::after {
+            display: none !important;
         }
         
-        .features-list li:before {
-            content: "✨ ";
-            color: var(--primary-color);
-        }
-        
-        .notify-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .notify-btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
+        /* 确保所有子元素都没有背景图案 */
+        .container *, .compressor-card *, body * {
+            background-image: none !important;
         }
 
-        /* Language selector styles */
-        .control-buttons {
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
             display: flex;
-            gap: 12px;
+            justify-content: space-between;
             align-items: center;
         }
 
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #3367d6;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Language selector unified styling */
+        .language-selector-container select,
+        .language-selector select {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .language-selector-container select:hover,
+        .language-selector select:hover {
+            border-color: #3367d6;
+        }
+
+        .language-selector-container select:focus,
+        .language-selector select:focus {
+            outline: none;
+            border-color: #3367d6;
+            box-shadow: 0 0 0 3px rgba(51, 103, 214, 0.1);
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3367d6;
+            background: #f3f4f6;
+        }
+
+        .nav-links a.active {
+            color: #3367d6;
+            background: #e3f2fd;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .compressor-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #3367d6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #9ca3af;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .image-preview {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .preview-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .preview-item {
+            text-align: center;
+        }
+
+        .preview-item h3 {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+        }
+
+        .image-info {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .image-info .size {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .compression-controls {
+            background: #f9fafb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .quality-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .quality-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3367d6;
+            cursor: pointer;
+        }
+
+        .quality-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3367d6;
+            cursor: pointer;
+            border: none;
+        }
+
+        .quality-value {
+            display: inline-block;
+            background: #3367d6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+
+        .format-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .format-option {
+            padding: 8px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .format-option:hover {
+            border-color: #3367d6;
+        }
+
+        .format-option.selected {
+            border-color: #3367d6;
+            background: #3367d6;
+            color: white;
+        }
+
+        .size-reduction {
+            text-align: center;
+            margin: 20px 0;
+            padding: 16px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3367d6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3367d6;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .preview-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 20px 16px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .format-options {
+                justify-content: center;
+            }
+
+            .language-selector-container select,
+            .language-selector select {
+                padding: 4px 8px;
+                font-size: 13px;
+            }
+        }
     </style>    
     <!-- Mobile Responsive Styles -->
     <link rel="stylesheet" href="styles/mobile-responsive.css">
+    <link rel="stylesheet" href="mobile-button-fix.css">
 
     <link rel="stylesheet" href="share-integration.css">
     <link rel="stylesheet" href="device-selector.css">
-    <script src="/locales/i18n.js"></script>
+    <link rel="stylesheet" href="unified-navigation.css">    <script src="scripts/mobile-enhancements.js"></script>
+    <script src="mobile-button-fix.js"></script>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
+    
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+
+/* 确保页面内容不被固定header遮挡 */
+body {
+    padding-top: 80px;
+}
+</style>
 </head>
 
 <body>
-    <div class="page-header">
-        <h1>📦 Images压缩器</h1>
-        <div class="header-buttons">
-            <div class="control-buttons">
-                
+    <!-- Header -->
+        <!-- Unified Header -->
+    <!-- Unified Header Template -->
+<!-- 复制这个header到所有页面，替换现有的header -->
+<!-- Unified Header Template -->
+<!-- 复制这个header到所有页面，替换现有的header -->
+<!-- Unified Header Template -->
+<!-- 复制这个header到所有页面，替换现有的header -->
+<!-- Unified Header Template -->
+<!-- 复制这个header到所有页面，替换现有的header -->
+<!-- Unified Header Template -->
+<!-- 复制这个header到所有页面，替换现有的header -->
+<header class="header">
+    <div class="header-container">
+        <div class="header-controls">
+            <div class="brand-left">
+                <button class="hamburger" id="hamburgerBtn" aria-label="Open Menu"><span></span></button>
+                <div class="logo">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 11c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2c0-3.31-2.69-6-6-6s-6 2.69-6 6c0 2.22 1.21 4.15 3 5.19l1-1.74c-1.19-.7-2-1.97-2-3.45 0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.48-.81 2.75-2 3.45l1 1.74c1.79-1.04 3-2.97 3-5.19zM12 3C6.48 3 2 7.48 2 13c0 3.7 2.01 6.92 4.99 8.65l1-1.73C5.61 18.53 4 15.96 4 13c0-4.42 3.58-8 8-8s8 3.58 8 8c0 2.96-1.61 5.53-4 6.92l1 1.73c2.99-1.73 5-4.95 5-8.65 0-5.52-4.48-10-10-10z" />
+                    </svg>
+                    <a href="index.html" style="text-decoration: none; color: inherit;"
+                        data-i18n="site_name">DropShare</a>
+                </div>
             </div>
-            
-            <a href="index.html" class="back-button">🏠 首页</a>
+            <!-- Navigation removed to match index.html -->
+            <div class="control-buttons"
+                style="min-width: 140px; display: flex; justify-content: flex-end; position: relative;">
+                <div class="language-selector" id="languageSelector">
+                    <button id="langToggle" aria-haspopup="listbox" aria-expanded="false"
+                        style="display:none;">Language</button>
+                    <select id="language-selector"
+                        style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 14px;">
+                        <option value="en">English</option>
+                        <option value="zh-CN">简体中文</option>
+                        <option value="zh-TW">繁體中文</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="pt">Português</option>
+                        <option value="es">Español</option>
+                    </select>
+                    <div class="lang-menu" id="langMenu" role="listbox" aria-label="Select language"></div>
+                </div>
+            </div>
         </div>
     </div>
+</header>
+
+<style>
+    /* PREMIUM THEME OVERRIDES (Diafano Style) */
+    :root {
+        --primary-50: #F4F8FB;
+        --primary-100: #E6EEF5;
+        --primary-500: #5B84B1;
+        /* Premium Muted Blue */
+        --primary-600: #4a6f96;
+        --gray-50: #F9FAFB;
+        --gray-100: #F3F4F6;
+        --gray-900: #2C3E50;
+        --success: #10B981;
+    }
+
+    /* Force font family */
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        background-color: #FDFDFD !important;
+        color: var(--gray-900) !important;
+    }
+
+    /* Unified Header Styles */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #e5e7eb;
+        z-index: 3000;
+        padding: 12px 0;
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px !important;
+        font-weight: 700 !important;
+        color: var(--primary-600) !important;
+        text-decoration: none !important;
+    }
+
+    .logo a {
+        color: var(--primary-600) !important;
+        text-decoration: none !important;
+    }
+
+    .logo svg {
+        width: 32px !important;
+        height: 32px !important;
+        fill: var(--primary-500) !important;
+    }
+
+    /* CARD STYLING */
+    .converter-card,
+    .tool-card,
+    .container>div[class*="card"] {
+        border-radius: 24px !important;
+        box-shadow: 0 20px 40px -10px rgba(91, 132, 177, 0.1) !important;
+        border: 1px solid var(--primary-100) !important;
+        background: white !important;
+        padding: 40px !important;
+    }
+
+    /* UPLOAD AREA */
+    .upload-area {
+        border: 2px dashed var(--primary-100) !important;
+        border-radius: 16px !important;
+        background: var(--gray-50) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .upload-area:hover {
+        border-color: var(--primary-500) !important;
+        background: #fff !important;
+        transform: translateY(-2px);
+    }
+
+    .upload-icon {
+        color: var(--primary-500) !important;
+    }
+
+    /* BUTTONS */
+    .convert-button,
+    .btn-primary,
+    button[type="submit"],
+    .modal-btn-send {
+        border-radius: 50px !important;
+        box-shadow: 0 10px 25px -5px rgba(91, 132, 177, 0.25) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        text-transform: capitalize !important;
+        letter-spacing: 0.5px !important;
+        padding: 14px 40px !important;
+        background: var(--primary-500) !important;
+        border: none !important;
+        font-weight: 600 !important;
+        color: white !important;
+    }
+
+    .convert-button:hover,
+    .btn-primary:hover,
+    button[type="submit"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 15px 30px -5px rgba(91, 132, 177, 0.35) !important;
+        background: var(--primary-600) !important;
+    }
+
+    .btn-secondary,
+    .modal-btn-cancel,
+    button[id*="reset"] {
+        border-radius: 50px !important;
+        background: var(--primary-50) !important;
+        color: var(--primary-600) !important;
+        border: none !important;
+        padding: 12px 24px !important;
+        font-weight: 600 !important;
+    }
+
+    .btn-secondary:hover {
+        background: var(--primary-100) !important;
+    }
+
+    /* FORMAT OPTIONS */
+    .format-option {
+        border-radius: 12px !important;
+        transition: all 0.2s ease !important;
+        border: 1px solid var(--gray-100) !important;
+    }
+
+    .format-option:hover {
+        border-color: var(--primary-500) !important;
+        background: var(--primary-50) !important;
+    }
+
+    .format-option.selected {
+        border-color: var(--primary-500) !important;
+        background: var(--primary-500) !important;
+        color: white !important;
+        box-shadow: 0 8px 16px -4px rgba(91, 132, 177, 0.3) !important;
+    }
+
+    .format-option.selected .format-desc {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* TITLES */
+    .page-title {
+        color: var(--gray-900) !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em !important;
+    }
+
+    .page-subtitle {
+        color: var(--text-muted) !important;
+    }
+
+    .header-controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        /* Changed to flex-end to push Lang right */
+        width: 100%;
+    }
+
+    .control-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    /* Hamburger */
+    .hamburger {
+        display: none;
+    }
+
+    /* Language Selector */
+    .language-selector select {
+        border: 1px solid var(--gray-100) !important;
+        border-radius: 50px !important;
+        /* Pill shape for premium feel */
+        padding: 8px 16px !important;
+        font-size: 13px !important;
+        color: var(--gray-900) !important;
+        background-color: white !important;
+        cursor: pointer;
+        outline: none !important;
+    }
+
+    .language-selector select:hover {
+        border-color: var(--primary-500) !important;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .header-container {
+            padding: 0 16px;
+        }
+
+        .hamburger {
+            display: flex !important;
+            border: none !important;
+            background: transparent !important;
+        }
+
+        .hamburger span {
+            background: var(--gray-900) !important;
+        }
+
+        /* Mobile Menu styling could go here if navigation existed */
+    }
+</style>
+
+<style>
+    /* Unified Header Styles */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #e5e7eb;
+        z-index: 3000;
+        padding: 12px 0;
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px !important;
+        font-weight: bold !important;
+        color: #4a6f96 !important;
+        /* Matching index.html --primary-600 */
+        text-decoration: none !important;
+    }
+
+    .logo a {
+        color: #4a6f96 !important;
+        text-decoration: none !important;
+    }
+
+    .logo svg {
+        width: 32px !important;
+        height: 32px !important;
+        fill: #5B84B1 !important;
+        /* Matching index.html --primary-500 */
+    }
+
+    /* Tool Page Optimizations (Diafano Style) */
+    .convert-button,
+    .btn-primary,
+    button[type="submit"] {
+        border-radius: 50px !important;
+        box-shadow: 0 10px 25px -5px rgba(91, 132, 177, 0.25) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        text-transform: capitalize !important;
+        letter-spacing: 0.5px !important;
+        padding: 12px 32px !important;
+        background: #3367d6 !important;
+        /* Keep tool button blue, or use #5B84B1 */
+        border: none !important;
+    }
+
+    .convert-button:hover,
+    .btn-primary:hover,
+    button[type="submit"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 15px 30px -5px rgba(91, 132, 177, 0.35) !important;
+    }
+
+    .format-option {
+        border-radius: 12px !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .format-option:hover {
+        border-color: #5B84B1 !important;
+        background: #F4F8FB !important;
+    }
+
+    .format-option.selected {
+        border-color: #5B84B1 !important;
+        background: #5B84B1 !important;
+    }
+
+    .header-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    /* 桌面端导航链接居中 */
+    .nav-links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+        margin: 0 20px !important;
+    }
+
+    .nav-links a {
+        color: #6b7280 !important;
+        text-decoration: none !important;
+        font-weight: 500 !important;
+        font-size: 14px !important;
+        padding: 8px 16px !important;
+        border-radius: 6px !important;
+        transition: all 0.2s ease !important;
+        background: transparent !important;
+    }
+
+    .nav-links a:hover {
+        color: #5B84B1 !important;
+        background: #f3f4f6 !important;
+    }
+
+    .nav-links a.active {
+        color: #5B84B1 !important;
+        background: #e3f2fd !important;
+        font-weight: 600 !important;
+    }
+
+    .control-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        min-width: 140px;
+        justify-content: flex-end;
+    }
+
+    /* Hamburger (hidden on desktop) */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    .hamburger span {
+        width: 18px;
+        height: 2px;
+        background: #374151;
+        transition: all 0.3s ease;
+        border-radius: 1px;
+        margin: 2px 0;
+    }
+
+    /* Language Selector */
+    .language-selector {
+        position: relative;
+    }
+
+    .language-selector select {
+        cursor: pointer;
+    }
+
+    /* Mobile Responsive */
+    @media (min-width: 769px) {
+        .header {
+            display: block;
+        }
+
+        .hamburger {
+            display: none;
+        }
+
+        .nav-links {
+            display: flex !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .header {
+            display: block;
+        }
+
+        .header-container {
+            padding: 0 16px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hamburger {
+            display: flex !important;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+        }
+
+        /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+        .nav-links {
+            display: none !important;
+        }
+
+        .nav-links.mobile-open {
+            display: flex !important;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+        .brand-left .logo a {
+            display: none;
+        }
+
+        /* 语言选择器保持在右侧 */
+        .control-buttons {
+            min-width: auto !important;
+            justify-content: flex-end !important;
+        }
+
+        .menu-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 2000;
+            display: none;
+            pointer-events: auto;
+        }
+
+        .menu-backdrop.show {
+            display: block;
+        }
+    }
+
+    /* Mobile: hide header logo icon in navigation to save space */
+    @media (max-width: 768px) {
+        .header .logo svg {
+            display: none;
+        }
+    }
+</style>
+
+<style>
+    /* Unified Header Styles */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #e5e7eb;
+        z-index: 3000;
+        padding: 12px 0;
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px !important;
+        font-weight: bold !important;
+        color: #4a6f96 !important;
+        /* Matching index.html --primary-600 */
+        text-decoration: none !important;
+    }
+
+    .logo a {
+        color: #4a6f96 !important;
+        text-decoration: none !important;
+    }
+
+    .logo svg {
+        width: 32px !important;
+        height: 32px !important;
+        fill: #5B84B1 !important;
+        /* Matching index.html --primary-500 */
+    }
+
+    /* Tool Page Optimizations (Diafano Style) */
+    .convert-button,
+    .btn-primary,
+    button[type="submit"] {
+        border-radius: 50px !important;
+        box-shadow: 0 10px 25px -5px rgba(91, 132, 177, 0.25) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        text-transform: capitalize !important;
+        letter-spacing: 0.5px !important;
+        padding: 12px 32px !important;
+        background: #3367d6 !important;
+        /* Keep tool button blue, or use #5B84B1 */
+        border: none !important;
+    }
+
+    .convert-button:hover,
+    .btn-primary:hover,
+    button[type="submit"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 15px 30px -5px rgba(91, 132, 177, 0.35) !important;
+    }
+
+    .format-option {
+        border-radius: 12px !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .format-option:hover {
+        border-color: #5B84B1 !important;
+        background: #F4F8FB !important;
+    }
+
+    .format-option.selected {
+        border-color: #5B84B1 !important;
+        background: #5B84B1 !important;
+    }
+
+    .header-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    /* 桌面端导航链接居中 */
+    .nav-links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+        margin: 0 20px !important;
+    }
+
+    .nav-links a {
+        color: #6b7280 !important;
+        text-decoration: none !important;
+        font-weight: 500 !important;
+        font-size: 14px !important;
+        padding: 8px 16px !important;
+        border-radius: 6px !important;
+        transition: all 0.2s ease !important;
+        background: transparent !important;
+    }
+
+    .nav-links a:hover {
+        color: #5B84B1 !important;
+        background: #f3f4f6 !important;
+    }
+
+    .nav-links a.active {
+        color: #5B84B1 !important;
+        background: #e3f2fd !important;
+        font-weight: 600 !important;
+    }
+
+    .control-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        min-width: 140px;
+        justify-content: flex-end;
+    }
+
+    /* Hamburger (hidden on desktop) */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    .hamburger span {
+        width: 18px;
+        height: 2px;
+        background: #374151;
+        transition: all 0.3s ease;
+        border-radius: 1px;
+        margin: 2px 0;
+    }
+
+    /* Language Selector */
+    .language-selector {
+        position: relative;
+    }
+
+    .language-selector select {
+        cursor: pointer;
+    }
+
+    /* Mobile Responsive */
+    @media (min-width: 769px) {
+        .header {
+            display: block;
+        }
+
+        .hamburger {
+            display: none;
+        }
+
+        .nav-links {
+            display: flex !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .header {
+            display: block;
+        }
+
+        .header-container {
+            padding: 0 16px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hamburger {
+            display: flex !important;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+        }
+
+        /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+        .nav-links {
+            display: none !important;
+        }
+
+        .nav-links.mobile-open {
+            display: flex !important;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+        .brand-left .logo a {
+            display: none;
+        }
+
+        /* 语言选择器保持在右侧 */
+        .control-buttons {
+            min-width: auto !important;
+            justify-content: flex-end !important;
+        }
+
+        .menu-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 2000;
+            display: none;
+            pointer-events: auto;
+        }
+
+        .menu-backdrop.show {
+            display: block;
+        }
+    }
+
+    /* Mobile: hide header logo icon in navigation to save space */
+    @media (max-width: 768px) {
+        .header .logo svg {
+            display: none;
+        }
+    }
+</style>
+
+<style>
+    /* Unified Header Styles */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #e5e7eb;
+        z-index: 3000;
+        padding: 12px 0;
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #4a6f96;
+        /* Matching index.html --primary-600 */
+    }
+
+    .logo svg {
+        width: 32px;
+        height: 32px;
+        fill: #5B84B1;
+        /* Matching index.html --primary-500 */
+    }
+
+    /* Tool Page Optimizations (Diafano Style) */
+    .convert-button,
+    .btn-primary,
+    button[type="submit"] {
+        border-radius: 50px !important;
+        box-shadow: 0 10px 25px -5px rgba(91, 132, 177, 0.25) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        text-transform: capitalize !important;
+        letter-spacing: 0.5px !important;
+        padding: 12px 32px !important;
+        background: #3367d6 !important;
+        /* Keep tool button blue, or use #5B84B1 */
+    }
+
+    .convert-button:hover,
+    .btn-primary:hover,
+    button[type="submit"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 15px 30px -5px rgba(91, 132, 177, 0.35) !important;
+    }
+
+    .format-option {
+        border-radius: 12px !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .format-option:hover {
+        border-color: #5B84B1 !important;
+        background: #F4F8FB !important;
+    }
+
+    .format-option.selected {
+        border-color: #5B84B1 !important;
+        background: #5B84B1 !important;
+    }
+
+    .header-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    /* 桌面端导航链接居中 */
+    .nav-links {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        color: #6b7280;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+        color: #5B84B1;
+        background: #f3f4f6;
+    }
+
+    .nav-links a.active {
+        color: #5B84B1;
+        background: #e3f2fd;
+        font-weight: 600;
+    }
+
+    .control-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        min-width: 140px;
+        justify-content: flex-end;
+    }
+
+    /* Hamburger (hidden on desktop) */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    .hamburger span {
+        width: 18px;
+        height: 2px;
+        background: #374151;
+        transition: all 0.3s ease;
+        border-radius: 1px;
+        margin: 2px 0;
+    }
+
+    /* Language Selector */
+    .language-selector {
+        position: relative;
+    }
+
+    .language-selector select {
+        cursor: pointer;
+    }
+
+    /* Mobile Responsive */
+    @media (min-width: 769px) {
+        .header {
+            display: block;
+        }
+
+        .hamburger {
+            display: none;
+        }
+
+        .nav-links {
+            display: flex !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .header {
+            display: block;
+        }
+
+        .header-container {
+            padding: 0 16px;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hamburger {
+            display: flex !important;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+        }
+
+        /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+        .nav-links {
+            display: none !important;
+        }
+
+        .nav-links.mobile-open {
+            display: flex !important;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+        .brand-left .logo a {
+            display: none;
+        }
+
+        /* 语言选择器保持在右侧 */
+        .control-buttons {
+            min-width: auto !important;
+            justify-content: flex-end !important;
+        }
+
+        .menu-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 2000;
+            display: none;
+            pointer-events: auto;
+        }
+
+        .menu-backdrop.show {
+            display: block;
+        }
+    }
+
+    /* Mobile: hide header logo icon in navigation to save space */
+    @media (max-width: 768px) {
+        .header .logo svg {
+            display: none;
+        }
+    }
+</style>
+
+<style>
+/* Unified Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 3000;
+    padding: 12px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-left { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.logo svg {
+    width: 32px;
+    height: 32px;
+    fill: #2563eb;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 桌面端导航链接居中 */
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: #2563eb;
+    background: #f3f4f6;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    background: #e3f2fd;
+    font-weight: 600;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 140px;
+    justify-content: flex-end;
+}
+
+/* Hamburger (hidden on desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    width: 18px;
+    height: 2px;
+    background: #374151;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    margin: 2px 0;
+}
+
+/* Language Selector */
+.language-selector {
+    position: relative;
+}
+
+.language-selector select {
+    cursor: pointer;
+}
+
+/* Mobile Responsive */
+@media (min-width: 769px) {
+    .header {
+        display: block;
+    }
     
-    <div class="tool-container">
-        <div class="coming-soon">🚧</div>
-        <h2 class="tool-title">即将推出</h2>
-        <p class="tool-description">
-            智能Images压缩工具正在开发中，将为您提供高质量的Images压缩服务
-        </p>
-        
-        <div class="features-list">
-            <h3>🎯 预期功能</h3>
-            <ul>
-                <li>无损压缩算法</li>
-                <li>智能质量调整</li>
-                <li>批量处理支持</li>
-                <li>实时压缩预览</li>
-                <li>Documents大小对比</li>
-                <li>多种压缩级别</li>
-            </ul>
+    .hamburger {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        display: block;
+    }
+    
+    .header-container {
+        padding: 0 16px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .hamburger { 
+        display: flex !important; 
+        background: rgba(255,255,255,0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+    
+    /* 移动端隐藏导航链接，通过汉堡菜单显示 */
+    .nav-links { 
+        display: none !important; 
+    }
+    
+    .nav-links.mobile-open {
+        display: flex !important;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 20px;
+        z-index: 999;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .nav-links a {
+        font-size: 14px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* 品牌区域只显示汉堡菜单，隐藏logo文字 */
+    .brand-left .logo a { 
+        display: none; 
+    }
+    
+    /* 语言选择器保持在右侧 */
+    .control-buttons { 
+        min-width: auto !important; 
+        justify-content: flex-end !important; 
+    }
+    
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.35);
+        z-index: 2000;
+        display: none;
+        pointer-events: auto;
+    }
+    .menu-backdrop.show { display: block; }
+}
+
+/* Mobile: hide header logo icon in navigation to save space */
+@media (max-width: 768px) {
+    .header .logo svg { display: none; }
+}
+</style>
+
+    <div class="container">
+        <!-- Top-left return button -->
+        <div style="margin-bottom: 20px;">
+            <a href="image-tools.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; color: #3367d6; text-decoration: none; border: 1px solid #3367d6; border-radius: 8px; transition: all 0.3s ease; font-size: 14px;" onmouseover="this.style.background='#3367d6'; this.style.color='white'" onmouseout="this.style.background=''; this.style.color='#3367d6'">
+                <span data-i18n="back">← back</span>
+            </a>
         </div>
         
-        <button class="notify-btn" onclick="showNotifyMessage()">
-            🔔 通知我上线
-        </button>
+        <h1 class="page-title" data-i18n="image_compressor">Image Compressor</h1>
+        <p class="page-subtitle" data-i18n="image_compressor_desc">Smartly compress images to reduce file size while preserving quality</p>
+
+        <div class="compressor-card">
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📸</div>
+                <div class="upload-text" data-i18n="upload_image_click_drag">Click to choose images or drag them here</div>
+                <div class="upload-hint" data-i18n="upload_image_hint">Supports JPG, PNG, WebP; up to 10MB</div>
+                <input type="file" id="fileInput" onclick="event.stopPropagation()" accept="image/*" multiple>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Image Preview and Compression Controls -->
+            <div class="image-preview" id="imagePreview">
+                <div class="preview-container">
+                    <div class="preview-item">
+                        <h3 data-i18n="common_original_image">Original Image</h3>
+                        <img id="originalImage" class="preview-image" alt="Original image">
+                        <div class="image-info">
+                            <div><span>Dimensions:</span> <span class="size" id="originalSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="originalFileSize"></span></div>
+                        </div>
+                    </div>
+                    <div class="preview-item">
+                        <h3 data-i18n="compressed_image">Compressed Image</h3>
+                        <img id="compressedImage" class="preview-image" alt="Compressed image">
+                        <div class="image-info">
+                            <div><span>Dimensions:</span> <span class="size" id="compressedSize"></span></div>
+                            <div><span>File size:</span> <span class="size" id="compressedFileSize"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size Reduction Display -->
+                <div class="size-reduction" id="sizeReduction" style="display: none;">
+                    <span>File size reduced by</span> <span id="reductionPercentage"></span>
+                </div>
+
+                <!-- Compression Controls -->
+                <div class="compression-controls">
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>Image quality:</span> <span class="quality-value" id="qualityValue">80%</span>
+                        </label>
+                        <input type="range" class="quality-slider" id="qualitySlider" 
+                               min="10" max="100" value="80">
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">Output format:</label>
+                        <div class="format-options">
+                            <div class="format-option selected" data-format="jpeg">JPEG</div>
+                            <div class="format-option" data-format="png">PNG</div>
+                            <div class="format-option" data-format="webp">WebP</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-success" id="downloadBtn" disabled>
+                        <span data-i18n="download_compressed_image">📥 Download compressed image</span>
+                    </button>
+                    <button class="btn btn-secondary" id="sendBtn" disabled>
+                        <span data-i18n="send_image">Send Image</span>
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <span data-i18n="reset">🔄 Reset</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics-compat.js"></script>
-    
-    <!-- Firebase Analytics Configuration -->
-    <script src="scripts/firebase-analytics.js"></script>
-    <script src="scripts/analytics-enhanced.js"></script>
-    <script src="scripts/tools-analytics.js"></script>
+    <script>
+        // Global variables
+        let originalFile = null;
+        let originalCanvas = null;
+        let compressedCanvas = null;
+
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const originalImage = document.getElementById('originalImage');
+        const compressedImage = document.getElementById('compressedImage');
+        const qualitySlider = document.getElementById('qualitySlider');
+        const qualityValue = document.getElementById('qualityValue');
+        const formatOptions = document.querySelectorAll('.format-option');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const sendBtn = document.getElementById('sendBtn'); // Added sendBtn
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+
+        // Handle quality slider change
+        function handleQualityChange() {
+            if (originalCanvas && compressedCanvas) {
+                compressImage();
+            }
+        }
+
+        // Handle format option change
+        function handleFormatChange(e) {
+            // Remove selected class from all options
+            formatOptions.forEach(option => option.classList.remove('selected'));
+            // Add selected class to clicked option
+            e.target.classList.add('selected');
+            // Re-compress if we have an image
+            if (originalCanvas && compressedCanvas) {
+                compressImage();
+            }
+        }
+
+        // Event listeners
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        fileInput.addEventListener('change', handleFileSelect);
+        qualitySlider.addEventListener('input', handleQualityChange);
+        formatOptions.forEach(option => {
+            option.addEventListener('click', handleFormatChange);
+        });
+        downloadBtn.addEventListener('click', downloadCompressedImage);
+        sendBtn.addEventListener('click', sendCompressedImage); // Added sendBtn listener
+        resetBtn.addEventListener('click', resetCompressor);
+
+        // Drag & Drop handlers
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        // File selection handler
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        // Process file
+        function processFile(file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                const message = window.DROPSHARE_I18N?.t('error_select_image_file') || 'Please select an image file.';
+                alert(message);
+                return;
+            }
+
+            // Validate file size
+            // 文件大小限制已移除
+
+            originalFile = file;
+            showProgress();
+            loadImage(file);
+        }
+
+        // Show progress bar
+        function showProgress() {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressFill.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                        progressFill.style.width = '0%';
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        // Load image
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    displayOriginalImage(img, file);
+                    compressImage();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Display original image
+        function displayOriginalImage(img, file) {
+            originalImage.src = img.src;
+            
+            // Show original image info
+            document.getElementById('originalSize').textContent = `${img.width} × ${img.height}`;
+            document.getElementById('originalFileSize').textContent = formatFileSize(file.size);
+            
+            // Create canvas for original image
+            originalCanvas = document.createElement('canvas');
+            const ctx = originalCanvas.getContext('2d');
+            originalCanvas.width = img.width;
+            originalCanvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            
+            // Show preview area
+            imagePreview.style.display = 'block';
+        }
+
+        // Get selected output format
+        function getSelectedFormat() {
+            const selected = document.querySelector('.format-option.selected');
+            return selected ? selected.dataset.format : 'jpeg'; // Default to jpeg
+        }
+
+        // Compress image
+        function compressImage() {
+            console.log("compressImage called");
+            console.log("originalCanvas:", originalCanvas);
+            
+            if (!originalCanvas) {
+                console.error("No original canvas to compress");
+                return;
+            }
+
+            try {
+            const quality = qualitySlider.value / 100;
+            const format = getSelectedFormat();
+                
+                // Update quality display
+                document.getElementById('qualityValue').textContent = qualitySlider.value + '%';
+            
+            // Create canvas for compressed image
+            compressedCanvas = document.createElement('canvas');
+            const ctx = compressedCanvas.getContext('2d');
+            compressedCanvas.width = originalCanvas.width;
+            compressedCanvas.height = originalCanvas.height;
+            
+            // Draw image
+            ctx.drawImage(originalCanvas, 0, 0);
+            
+            // Convert to specified format and quality
+            const mimeType = `image/${format}`;
+            const dataUrl = compressedCanvas.toDataURL(mimeType, quality);
+                
+                console.log("Compressed image dataUrl length:", dataUrl.length);
+                console.log("Compressed canvas dimensions:", compressedCanvas.width, "x", compressedCanvas.height);
+            
+            // Show compressed image
+            compressedImage.src = dataUrl;
+                console.log("Set compressed image src");
+            
+            // Estimate compressed file size
+            const compressedSize = Math.round((dataUrl.length - 22) * 3 / 4); // 估算大小
+            document.getElementById('compressedSize').textContent = 
+                `${compressedCanvas.width} × ${compressedCanvas.height}`;
+            document.getElementById('compressedFileSize').textContent = formatFileSize(compressedSize);
+            
+            // Show reduction percentage
+            const originalSize = originalFile.size;
+            const reduction = Math.round((1 - compressedSize / originalSize) * 100);
+            if (reduction > 0) {
+                document.getElementById('reductionPercentage').textContent = `${reduction}%`;
+                document.getElementById('sizeReduction').style.display = 'block';
+            } else {
+                document.getElementById('sizeReduction').style.display = 'none';
+                }
+
+                // Enable download and send buttons
+                downloadBtn.disabled = false;
+                sendBtn.disabled = false;
+
+            } catch (error) {
+                console.error('Compression error:', error);
+            }
+        }
+
+        function sendCompressedImage() {
+            console.log("Send button clicked");
+            console.log("compressedCanvas:", compressedCanvas);
+            console.log("originalFile:", originalFile);
+            
+            if (!compressedCanvas) {
+                console.error("No compressed image to send.");
+                alert("没有压缩图片可发送");
+                return;
+            }
+
+            // 显示设备选择弹窗
+            showDeviceSelector();
+        }
+
+        // 显示设备选择弹窗
+        function showDeviceSelector() {
+            // 创建弹窗背景
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+
+            // 创建弹窗内容
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white;
+                border-radius: 12px;
+                padding: 24px;
+                max-width: 500px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            `;
+
+            modalContent.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 600;">选择设备发送</h3>
+                    <button id="closeModal" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">×</button>
+                </div>
+                
+                <div id="deviceList" style="margin-bottom: 20px;">
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <div style="margin-bottom: 16px;">🔍</div>
+                        <div>正在搜索设备...</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button id="cancelSend" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">取消</button>
+                    <button id="confirmSend" style="padding: 8px 16px; background: #3367d6; color: white; border: none; border-radius: 6px; cursor: pointer; display: none;">发送</button>
+                </div>
+            `;
+
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+
+            // 尝试获取真实设备列表
+            let realDevices = [];
+            
+            // 检查主传输系统
+            console.log("🔍 Checking for main transfer system...");
+            console.log("window.peersManager:", typeof window.peersManager);
+            console.log("window.Events:", typeof window.Events);
+            console.log("window.network:", typeof window.network);
+            
+            // 直接尝试获取设备列表
+            function getRealDevices() {
+                // 方法1: 从peersManager获取
+                if (typeof window.peersManager !== 'undefined' && window.peersManager.peers) {
+                    const peers = window.peersManager.peers;
+                    const devices = Object.keys(peers).map(peerId => {
+                        const peer = peers[peerId];
+                        return {
+                            id: peerId,
+                            name: peer.name || peer.deviceName || `Device ${peerId.substring(0, 8)}`,
+                            type: peer.deviceType || 'Computer',
+                            status: 'online'
+                        };
+                    });
+                    console.log("✅ Found real devices from peersManager:", devices);
+                    return devices;
+                }
+                
+                // 方法2: 从DOM中查找设备元素
+                const deviceElements = document.querySelectorAll('x-peer');
+                if (deviceElements.length > 0) {
+                    const devices = Array.from(deviceElements).map(el => ({
+                        id: el.id || Math.random().toString(36).substr(2, 9),
+                        name: el.querySelector('.peer-name')?.textContent || 'Unknown Device',
+                        type: 'Computer',
+                        status: 'online'
+                    }));
+                    console.log("✅ Found devices from DOM:", devices);
+                    return devices;
+                }
+                
+                // 方法3: 从share.html页面的设备列表获取
+                if (window.parent && window.parent !== window) {
+                    try {
+                        const parentDevices = window.parent.document.querySelectorAll('x-peer');
+                        if (parentDevices.length > 0) {
+                            const devices = Array.from(parentDevices).map(el => ({
+                                id: el.id || Math.random().toString(36).substr(2, 9),
+                                name: el.querySelector('.peer-name')?.textContent || 'Unknown Device',
+                                type: 'Computer',
+                                status: 'online'
+                            }));
+                            console.log("✅ Found devices from parent window:", devices);
+                            return devices;
+                        }
+                    } catch (error) {
+                        console.log("Cannot access parent window:", error.message);
+                    }
+                }
+                
+                return [];
+            }
+            
+            // 获取真实设备
+            realDevices = getRealDevices();
+            
+            // 如果仍然没有真实设备，显示提示信息
+            if (realDevices.length === 0) {
+                console.log("⚠️ No real devices found, showing empty state");
+                realDevices = [];
+            }
+            
+            // 立即显示设备列表
+            updateDeviceList(realDevices);
+
+            // 更新设备列表的函数
+            function updateDeviceList(devices) {
+                const deviceList = document.getElementById('deviceList');
+                if (devices.length === 0) {
+                    deviceList.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #666;">
+                            <div style="margin-bottom: 16px;">📱</div>
+                            <div>没有找到在线设备</div>
+                        </div>
+                    `;
+                } else {
+                    deviceList.innerHTML = devices.map(device => {
+                        // 根据设备类型选择图标
+                        let icon = '📱';
+                        if (device.type.toLowerCase().includes('mac') || device.type.toLowerCase().includes('macos')) {
+                            icon = '💻';
+                        } else if (device.type.toLowerCase().includes('windows') || device.type.toLowerCase().includes('pc')) {
+                            icon = '🖥️';
+                        } else if (device.type.toLowerCase().includes('android')) {
+                            icon = '📱';
+                        }
+                        
+                        return `
+                            <div class="device-item" data-device-id="${device.id}" style="padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                                <input type="checkbox" style="margin: 0;">
+                                <div style="font-size: 24px;">${icon}</div>
+                                <div>
+                                    <div style="font-weight: 500;">${device.name}</div>
+                                    <div style="font-size: 12px; color: #666;">${device.type} • 在线</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // 添加设备选择事件
+                const deviceItems = modal.querySelectorAll('.device-item');
+                const confirmBtn = document.getElementById('confirmSend');
+                let selectedDevices = [];
+
+                deviceItems.forEach(item => {
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    
+                    item.addEventListener('click', (e) => {
+                        if (e.target.type !== 'checkbox') {
+                            checkbox.checked = !checkbox.checked;
+                        }
+                        
+                        if (checkbox.checked) {
+                            item.style.borderColor = '#3367d6';
+                            item.style.backgroundColor = '#f0f4ff';
+                            selectedDevices.push(item.dataset.deviceId);
+                        } else {
+                            item.style.borderColor = '#e5e7eb';
+                            item.style.backgroundColor = 'white';
+                            selectedDevices = selectedDevices.filter(id => id !== item.dataset.deviceId);
+                        }
+                        
+                        confirmBtn.style.display = selectedDevices.length > 0 ? 'block' : 'none';
+                    });
+                });
+
+                // 确认发送
+                confirmBtn.addEventListener('click', () => {
+                    if (selectedDevices.length > 0) {
+                        const format = getSelectedFormat();
+                        const quality = qualitySlider.value / 100;
+                        const mimeType = `image/${format}`;
+
+                        compressedCanvas.toBlob(function(blob) {
+                            console.log("Sending file:", blob);
+                            console.log("To devices:", selectedDevices);
+                            
+                            // 这里应该调用真正的发送逻辑
+                            alert(`正在向 ${selectedDevices.length} 个设备发送 ${originalFile.name} (${formatFileSize(blob.size)})`);
+                            
+                            // 关闭弹窗
+                            document.body.removeChild(modal);
+                        }, mimeType, quality);
+                    }
+                });
+            // }, 1500);
+
+            // 关闭弹窗事件
+            document.getElementById('closeModal').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+
+            document.getElementById('cancelSend').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+
+            // 点击背景关闭
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+        }
+        
+        function downloadCompressedImage() {
+            console.log("Download button clicked");
+            console.log("compressedCanvas:", compressedCanvas);
+            console.log("originalFile:", originalFile);
+            
+            if (!compressedCanvas) {
+                console.error("No compressed file to download.");
+                alert("没有压缩文件可下载");
+                return;
+            }
+
+            const format = getSelectedFormat();
+            const quality = qualitySlider.value / 100;
+            const mimeType = `image/${format}`;
+            
+            compressedCanvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `compressed_${originalFile.name.split('.')[0]}.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, mimeType, quality);
+        }
+
+        // Reset compressor
+        function resetCompressor() {
+            originalFile = null;
+            originalCanvas = null;
+            compressedCanvas = null;
+            imagePreview.style.display = 'none';
+            fileInput.value = '';
+            document.getElementById('sizeReduction').style.display = 'none';
+            // Disable buttons on reset
+            downloadBtn.disabled = true;
+            sendBtn.disabled = true;
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
     
     <!-- Load i18n system -->
+    <script src="locales/i18n.js"></script>
+    
+    <!-- Load main transfer system scripts -->
+    <script src="scripts/network.js"></script>
         
     <!-- Mobile Navigation and Touch Optimization -->
     <script src="scripts/mobile-navigation.js"></script>
     <script>
-        // Show notification message
-        function showNotifyMessage() {
-            const message = getTranslation('alert_notify_message') || '感谢您的关注！我们会尽快推出这个功能。';
-            alert(message);
-        }
-
-        // Initialize the i18n system
-        function initializeI18n() {
-            // Get user language preference
-            const userLanguage = getUserLanguage();
-            
-            // Set initial language
-            setLanguage(userLanguage);
-            
-            // Update language selector
+        // Language selector functions
+        function initializeLanguageSelector() {
             const languageSelector = document.getElementById('language-selector');
-            if (languageSelector) {
-                languageSelector.value = userLanguage;
-                languageSelector.addEventListener('change', (e) => {
-                    setLanguage(e.target.value);
+            
+            if (languageSelector && window.DROPSHARE_I18N) {
+                const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
+                languageSelector.value = currentLang;
+                
+                languageSelector.addEventListener('change', function(e) {
+                    const newLang = e.target.value;
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.changeLanguage(newLang);
+                    }
                 });
             }
         }
 
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initializeI18n);
+        // Initialize language system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the i18n system
+            if (window.DROPSHARE_I18N) {
+                window.DROPSHARE_I18N.init().then(() => {
+                    initializeLanguageSelector();
+                });
+            } else {
+                // Fallback: try to initialize after a short delay
+                setTimeout(() => {
+                    if (window.DROPSHARE_I18N) {
+                        window.DROPSHARE_I18N.init().then(() => {
+                            initializeLanguageSelector();
+                        });
+                    }
+                }, 100);
+            }
+        });
     </script>
     <!-- Share Integration -->
     <script src="device-selector.js"></script>
     <script src="add-share-integration.js"></script>
-</body>
+    <script src="remove-share-navigation.js?v=20241015"></script></body>
 </html>

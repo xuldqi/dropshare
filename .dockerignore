@@ -1,0 +1,7 @@
+# Docker ignore file (also used by some build tools)
+backup/
+**/backup/**
+*_fixed.js
+*.backup
+*.bak
+
