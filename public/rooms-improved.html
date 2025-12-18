@@ -1042,65 +1042,7 @@
                 console.log('✅ 页面初始化完成');
             });
         </script>
-        <script>
-            // Language selector logic
-            document.addEventListener('DOMContentLoaded', function () {
-                const langToggle = document.getElementById('langToggle');
-                const langMenu = document.getElementById('langMenu');
-                const options = document.querySelectorAll('.lang-option');
-                const toggleText = langToggle.querySelector('span');
 
-                // Initialize
-                if (window.DROPSHARE_I18N) {
-                    const initPromise = (typeof window.DROPSHARE_I18N.init === 'function')
-                        ? window.DROPSHARE_I18N.init()
-                        : Promise.resolve();
-
-                    initPromise.then(() => {
-                        const currentLang = window.DROPSHARE_I18N.getCurrentLanguage();
-                        updateActiveOption(currentLang);
-                    });
-                }
-
-                function updateActiveOption(langCode) {
-                    options.forEach(opt => {
-                        if (opt.dataset.value === langCode) {
-                            opt.classList.add('selected');
-                            toggleText.textContent = opt.textContent;
-                        } else {
-                            opt.classList.remove('selected');
-                        }
-                    });
-                }
-
-                // Toggle Menu
-                langToggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    langMenu.classList.toggle('show');
-                });
-
-                // Handle Selection
-                options.forEach(opt => {
-                    opt.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const lang = e.currentTarget.dataset.value;
-                        if (window.DROPSHARE_I18N && window.DROPSHARE_I18N.setLanguage) {
-                            window.DROPSHARE_I18N.setLanguage(lang);
-                            updateActiveOption(lang);
-                            langMenu.classList.remove('show');
-                        } else {
-                            localStorage.setItem('preferred_language', lang);
-                            window.location.reload();
-                        }
-                    });
-                });
-
-                // Close on outside click
-                document.addEventListener('click', () => {
-                    langMenu.classList.remove('show');
-                });
-            });
-        </script>
 </body>
 
 </html>
